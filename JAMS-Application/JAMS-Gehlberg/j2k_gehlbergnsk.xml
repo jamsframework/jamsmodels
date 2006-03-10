@@ -1,0 +1,731 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<!--<!DOCTYPE JAMSModel SYSTEM "jamsmodel.dtd">-->
+<model name="J2K" author="Peter Krause" date="30.01.2006">
+    <globvar name="workspaceDir" value="D:\java\jamsmodels\JAMS-Application\JAMS-Gehlberg"/>
+    <globvar name="snow_trs" value="0.5"/>
+    <globvar name="snow_trans" value="2.0"/>
+    <globvar name="data_caching" value="1"/>
+	
+    <compoundcomponent class="org.unijena.jams.model.JAMSSpatialContext" name="CatchmentContext">
+        
+        <component class="org.unijena.j2k.io.StandardEntityReader" name="ParaReader">
+            <jamsvar name="dirName" globvar="workspaceDir"/>
+            <jamsvar name="hruFileName" value="parameter\hrus_new.par"/>
+            <jamsvar name="reachFileName" value="parameter\reach.par"/>
+        </component>
+    
+        <component class="org.unijena.j2k.io.StandardLUReader" name="LUReader">
+            <jamsvar name="dirName" globvar="workspaceDir"/>
+            <jamsvar name="luFileName" value="parameter\landuse.par"/>
+            <jamsvar name="hrus" provider="ParaReader" providervar="hrus"/>
+        </component>
+    
+        <component class="org.unijena.j2k.io.StandardSoilParaReader" name="STReader">
+            <jamsvar name="dirName" globvar="workspaceDir"/>
+            <jamsvar name="stFileName" value="parameter\soil.par"/>
+            <jamsvar name="hrus" provider="ParaReader" providervar="hrus"/>
+        </component>
+    
+        <component class="org.unijena.j2k.io.StandardGroundwaterParaReader" name="GWReader">
+            <jamsvar name="dirName" globvar="workspaceDir"/>
+            <jamsvar name="gwFileName" value="parameter\hgeo.par"/>
+            <jamsvar name="hrus" provider="ParaReader" providervar="hrus"/>
+        </component>
+    
+        <component class="org.unijena.j2k.io.TSDataReader" name="InitTmeanDataReader">
+            <jamsvar name="dirName" globvar="workspaceDir"/>
+            <jamsvar name="skipRegression" globvar="data_caching"/>
+            <jamsvar name="dataFileName" value="data\tmean.dat"/>
+            <jamsvar name="startColumn" value="3"/>
+        </component>
+    
+        <component class="org.unijena.j2k.io.TSDataReader" name="InitTminDataReader">
+            <jamsvar name="dirName" globvar="workspaceDir"/>
+            <jamsvar name="skipRegression" globvar="data_caching"/>
+            <jamsvar name="dataFileName" value="data\tmin.dat"/>
+            <jamsvar name="startColumn" value="3"/>
+        </component>
+    
+        <component class="org.unijena.j2k.io.TSDataReader" name="InitTmaxDataReader">
+            <jamsvar name="dirName" globvar="workspaceDir"/>
+            <jamsvar name="skipRegression" globvar="data_caching"/>
+            <jamsvar name="dataFileName" value="data\tmax.dat"/>
+            <jamsvar name="startColumn" value="3"/>
+        </component>
+    
+        <component class="org.unijena.j2k.io.TSDataReader" name="InitAhumDataReader">
+            <jamsvar name="dirName" globvar="workspaceDir"/>
+            <jamsvar name="skipRegression" globvar="data_caching"/>
+            <jamsvar name="dataFileName" value="data\ahum.dat"/>
+            <jamsvar name="startColumn" value="3"/>
+        </component>
+    
+        <component class="org.unijena.j2k.io.TSDataReader" name="InitPrecipDataReader">
+            <jamsvar name="dirName" globvar="workspaceDir"/>
+            <jamsvar name="skipRegression" globvar="data_caching"/>
+            <jamsvar name="dataFileName" value="data\rcorr2.dat"/>
+            <jamsvar name="startColumn" value="3"/>
+        </component>
+    
+        <component class="org.unijena.j2k.io.TSDataReader" name="InitSunhDataReader">
+            <jamsvar name="dirName" globvar="workspaceDir"/>
+            <jamsvar name="skipRegression" globvar="data_caching"/>
+            <jamsvar name="dataFileName" value="data\sunh.dat"/>
+            <jamsvar name="startColumn" value="3"/>
+        </component>
+    
+        <component class="org.unijena.j2k.io.TSDataReader" name="InitWindDataReader">
+            <jamsvar name="dirName" globvar="workspaceDir"/>
+            <jamsvar name="skipRegression" globvar="data_caching"/>
+            <jamsvar name="dataFileName" value="data\wind.dat"/>
+            <jamsvar name="startColumn" value="3"/>
+        </component>
+
+        <compoundcomponent class="org.unijena.jams.model.JAMSSpatialContext" name="InitCatchmentContext">
+            <jamsvar name="entities" provider="ParaReader" providervar="hrus"/>
+
+            <component class="org.unijena.j2k.aggregate.SumAggregator" name="AreaCalculator">
+                <jamsvar name="value" provider="InitCatchmentContext" spatattrib="area"/>
+                <jamsvar name="sum" provider="CatchmentContext" spatattrib="area"/>
+            </component>
+        </compoundcomponent>
+        
+        <compoundcomponent class="org.unijena.jams.model.JAMSSpatialContext" name="InitHRUContext">
+            <jamsvar name="entities" provider="ParaReader" providervar="hrus"/>
+                
+            <component class="org.unijena.j2k.CalcAreaWeight" name="AreaWeight">
+                <jamsvar name="entityArea" provider="InitHRUContext" spatattrib="area"/>
+                <jamsvar name="catchmentArea" provider="CatchmentContext" spatattrib="area"/>
+                <jamsvar name="areaWeight" provider="InitHRUContext" spatattrib="areaweight"/>
+            </component>
+
+            <component class="org.unijena.j2k.geographicalCalculations.CalcLatLong" name="CalcLatLong">
+                <jamsvar name="x" provider="InitHRUContext" spatattrib="x"/>
+                <jamsvar name="y" provider="InitHRUContext" spatattrib="y"/>
+                <jamsvar name="slope" provider="InitHRUContext" spatattrib="slope"/>
+                <jamsvar name="aspect" provider="InitHRUContext" spatattrib="aspect"/>
+                <jamsvar name="latitude" provider="InitHRUContext" spatattrib="latitude"/>
+                <jamsvar name="longitude" provider="InitHRUContext" spatattrib="longitude"/>
+                <jamsvar name="slAsCfArray" provider="InitHRUContext" spatattrib="slAsCfArray"/>
+            </component>
+        
+            <component class="org.unijena.j2k.inputData.CalcLanduseStateVars" name="CalcLanduseStateVars">
+                <jamsvar name="entity" provider="InitHRUContext" providervar="currentEntity"/>
+                <jamsvar name="LAIArray" provider="InitHRUContext" spatattrib="LAIArray"/>
+                <jamsvar name="effHArray" provider="InitHRUContext" spatattrib="effHArray"/>
+                <jamsvar name="rsc0Array" provider="InitHRUContext" spatattrib="rsc0Array"/>
+                <jamsvar name="elevation" provider="InitHRUContext" spatattrib="elevation"/>
+            </component>
+        
+            <component class="org.unijena.j2k.radiation.CalcExtraterrRadiation" name="ExtRad">
+                <jamsvar name="latitude" provider="InitHRUContext" spatattrib="latitude"/>
+                <jamsvar name="longitude" provider="InitHRUContext" spatattrib="longitude"/>
+                <jamsvar name="longTZ" value="15"/>
+                <jamsvar name="locGrw" value="e"/>
+                <jamsvar name="tempRes" value="d"/>
+                <jamsvar name="extRadArray" provider="InitHRUContext" spatattrib="extRadArray"/>
+            </component>
+        
+            <component class="org.unijena.j2k.soilWater.InitJ2KProcessLumpedSoilWaterStates" name="InitSoilWater">
+                <jamsvar name="entity" provider="InitHRUContext" providervar="currentEntity"/>
+                <jamsvar name="area" provider="InitHRUContext" spatattrib="area"/>
+                <jamsvar name="rootDepth" provider="InitHRUContext" spatattrib="rootDepth"/>
+                <jamsvar name="maxMPS" provider="InitHRUContext" spatattrib="maxMPS"/>
+                <jamsvar name="maxLPS" provider="InitHRUContext" spatattrib="maxLPS"/>
+                <jamsvar name="actMPS" provider="InitHRUContext" spatattrib="actMPS"/>
+                <jamsvar name="actLPS" provider="InitHRUContext" spatattrib="actLPS"/>
+                <jamsvar name="satMPS" provider="InitHRUContext" spatattrib="satMPS"/>
+                <jamsvar name="satLPS" provider="InitHRUContext" spatattrib="satLPS"/>
+                <jamsvar name="satSoil" provider="InitHRUContext" spatattrib="satSoil"/>
+                <jamsvar name="FCAdaptation" value="1.2"/>
+                <jamsvar name="ACAdaptation" value="1"/>
+            </component>
+        
+            <component class="org.unijena.j2k.groundwater.InitJ2KProcessGroundwater" name="InitGroundWater">
+                <jamsvar name="entity" provider="InitHRUContext" providervar="currentEntity"/>
+                <jamsvar name="area" provider="InitHRUContext" spatattrib="area"/>
+                <jamsvar name="maxRG1" provider="InitHRUContext" spatattrib="maxRG1"/>
+                <jamsvar name="maxRG2" provider="InitHRUContext" spatattrib="maxRG2"/>
+                <jamsvar name="actRG1" provider="InitHRUContext" spatattrib="actRG1"/>
+                <jamsvar name="actRG2" provider="InitHRUContext" spatattrib="actRG2"/>
+                <jamsvar name="initRG1" value="0.0"/>
+                <jamsvar name="initRG2" value="0.0"/>
+            </component>
+        
+            <component class="org.unijena.j2k.regionalisation.CalcNidwWeights" name="tminWeights">
+                <jamsvar name="entityX" provider="InitHRUContext" spatattrib="x"/>
+                <jamsvar name="entityY" provider="InitHRUContext" spatattrib="y"/>
+                <jamsvar name="statX" provider="InitTminDataReader" providervar="xCoord"/>
+                <jamsvar name="statY" provider="InitTminDataReader" providervar="yCoord"/>
+                <jamsvar name="nidw" value="3"/>
+                <jamsvar name="pidw" value="2"/>
+                <jamsvar name="statWeights" provider="InitHRUContext" spatattrib="tminWeights"/>
+            </component>
+        
+            <component class="org.unijena.j2k.regionalisation.CalcNidwWeights" name="tmeanWeights">
+                <jamsvar name="entityX" provider="InitHRUContext" spatattrib="x"/>
+                <jamsvar name="entityY" provider="InitHRUContext" spatattrib="y"/>
+                <jamsvar name="statX" provider="InitTmeanDataReader" providervar="xCoord"/>
+                <jamsvar name="statY" provider="InitTmeanDataReader" providervar="yCoord"/>
+                <jamsvar name="nidw" value="3"/>
+                <jamsvar name="pidw" value="2"/>
+                <jamsvar name="statWeights" provider="InitHRUContext" spatattrib="tmeanWeights"/>
+            </component>
+        
+            <component class="org.unijena.j2k.regionalisation.CalcNidwWeights" name="tmaxWeights">
+                <jamsvar name="entityX" provider="InitHRUContext" spatattrib="x"/>
+                <jamsvar name="entityY" provider="InitHRUContext" spatattrib="y"/>
+                <jamsvar name="statX" provider="InitTmaxDataReader" providervar="xCoord"/>
+                <jamsvar name="statY" provider="InitTmaxDataReader" providervar="yCoord"/>
+                <jamsvar name="nidw" value="3"/>
+                <jamsvar name="pidw" value="2"/>
+                <jamsvar name="statWeights" provider="InitHRUContext" spatattrib="tmaxWeights"/>
+            </component>
+        
+            <component class="org.unijena.j2k.regionalisation.CalcNidwWeights" name="ahumWeights">
+                <jamsvar name="entityX" provider="InitHRUContext" spatattrib="x"/>
+                <jamsvar name="entityY" provider="InitHRUContext" spatattrib="y"/>
+                <jamsvar name="statX" provider="InitAhumDataReader" providervar="xCoord"/>
+                <jamsvar name="statY" provider="InitAhumDataReader" providervar="yCoord"/>
+                <jamsvar name="nidw" value="3"/>
+                <jamsvar name="pidw" value="2"/>
+                <jamsvar name="statWeights" provider="InitHRUContext" spatattrib="ahumWeights"/>
+            </component>
+        
+            <component class="org.unijena.j2k.regionalisation.CalcNidwWeights" name="sunhWeights">
+                <jamsvar name="entityX" provider="InitHRUContext" spatattrib="x"/>
+                <jamsvar name="entityY" provider="InitHRUContext" spatattrib="y"/>
+                <jamsvar name="statX" provider="InitSunhDataReader" providervar="xCoord"/>
+                <jamsvar name="statY" provider="InitSunhDataReader" providervar="yCoord"/>
+                <jamsvar name="nidw" value="3"/>
+                <jamsvar name="pidw" value="2"/>
+                <jamsvar name="statWeights" provider="InitHRUContext" spatattrib="sunhWeights"/>
+            </component>
+        
+            <component class="org.unijena.j2k.regionalisation.CalcNidwWeights" name="windWeights">
+                <jamsvar name="entityX" provider="InitHRUContext" spatattrib="x"/>
+                <jamsvar name="entityY" provider="InitHRUContext" spatattrib="y"/>
+                <jamsvar name="statX" provider="InitWindDataReader" providervar="xCoord"/>
+                <jamsvar name="statY" provider="InitWindDataReader" providervar="yCoord"/>
+                <jamsvar name="nidw" value="3"/>
+                <jamsvar name="pidw" value="2"/>
+                <jamsvar name="statWeights" provider="InitHRUContext" spatattrib="windWeights"/>
+            </component>
+        
+            <component class="org.unijena.j2k.regionalisation.CalcNidwWeights" name="precipWeights">
+                <jamsvar name="entityX" provider="InitHRUContext" spatattrib="x"/>
+                <jamsvar name="entityY" provider="InitHRUContext" spatattrib="y"/>
+                <jamsvar name="statX" provider="InitPrecipDataReader" providervar="xCoord"/>
+                <jamsvar name="statY" provider="InitPrecipDataReader" providervar="yCoord"/>
+                <jamsvar name="nidw" value="5"/>
+                <jamsvar name="pidw" value="2"/>
+                <jamsvar name="statWeights" provider="InitHRUContext" spatattrib="precipWeights"/>
+            </component>
+                
+        </compoundcomponent>
+
+        <compoundcomponent class="org.unijena.jams.model.JAMSTemporalContext" name="TemporalContext">
+            <jamsvar name="timeInterval" value="1989-11-01 7:30 1993-10-31 7:30 6 1"/>
+        
+            <component class="org.unijena.jams.gui.JAMSProgress" name="JAMSProgress">
+                <jamsvar name="title" value="J2K model execution"/>
+                <jamsvar name="height" value="20"/>
+                <jamsvar name="width" value="600"/>
+                <jamsvar name="ontop" value="false"/>
+            </component>
+        
+            <component class="org.unijena.j2k.io.TSDataReader" name="TmeanDataReader">
+                <jamsvar name="dirName" globvar="workspaceDir"/>
+                <jamsvar name="skipRegression" globvar="data_caching"/>
+                <jamsvar name="timeInterval" provider="TemporalContext" providervar="timeInterval"/>
+                <jamsvar name="dataFileName" value="data\tmean.dat"/>
+                <jamsvar name="startColumn" value="3"/>
+            </component>
+        
+            <component class="org.unijena.j2k.io.TSDataReader" name="TminDataReader">
+                <jamsvar name="dirName" globvar="workspaceDir"/>
+                <jamsvar name="skipRegression" globvar="data_caching"/>
+                <jamsvar name="timeInterval" provider="TemporalContext" providervar="timeInterval"/>
+                <jamsvar name="dataFileName" value="data\tmin.dat"/>
+                <jamsvar name="startColumn" value="3"/>
+            </component>
+        
+            <component class="org.unijena.j2k.io.TSDataReader" name="TmaxDataReader">
+                <jamsvar name="dirName" globvar="workspaceDir"/>
+                <jamsvar name="skipRegression" globvar="data_caching"/>
+                <jamsvar name="timeInterval" provider="TemporalContext" providervar="timeInterval"/>
+                <jamsvar name="dataFileName" value="data\tmax.dat"/>
+                <jamsvar name="startColumn" value="3"/>
+            </component>
+        
+            <component class="org.unijena.j2k.io.TSDataReader" name="AhumDataReader">
+                <jamsvar name="dirName" globvar="workspaceDir"/>
+                <jamsvar name="skipRegression" globvar="data_caching"/>
+                <jamsvar name="timeInterval" provider="TemporalContext" providervar="timeInterval"/>
+                <jamsvar name="dataFileName" value="data\ahum.dat"/>
+                <jamsvar name="startColumn" value="3"/>
+            </component>
+        
+            <component class="org.unijena.j2k.io.TSDataReader" name="PrecipDataReader">
+                <jamsvar name="dirName" globvar="workspaceDir"/>
+                <jamsvar name="skipRegression" globvar="data_caching"/>
+                <jamsvar name="timeInterval" provider="TemporalContext" providervar="timeInterval"/>
+                <jamsvar name="dataFileName" value="data\rcorr2.dat"/>
+                <jamsvar name="startColumn" value="3"/>
+            </component>
+        
+            <component class="org.unijena.j2k.io.TSDataReader" name="SunhDataReader">
+                <jamsvar name="dirName" globvar="workspaceDir"/>
+                <jamsvar name="skipRegression" globvar="data_caching"/>
+                <jamsvar name="timeInterval" provider="TemporalContext" providervar="timeInterval"/>
+                <jamsvar name="dataFileName" value="data\sunh.dat"/>
+                <jamsvar name="startColumn" value="3"/>
+            </component>
+        
+            <component class="org.unijena.j2k.io.TSDataReader" name="WindDataReader">
+                <jamsvar name="dirName" globvar="workspaceDir"/>
+                <jamsvar name="skipRegression" globvar="data_caching"/>
+                <jamsvar name="timeInterval" provider="TemporalContext" providervar="timeInterval"/>
+                <jamsvar name="dataFileName" value="data\wind.dat"/>
+                <jamsvar name="startColumn" value="3"/>
+            </component>
+        
+            <component class="org.unijena.j2k.io.TSDataReader" name="ObsRunoffDataReader">
+                <jamsvar name="dirName" globvar="workspaceDir"/>
+                <jamsvar name="skipRegression" globvar="data_caching"/>
+                <jamsvar name="timeInterval" provider="TemporalContext" providervar="timeInterval"/>
+                <jamsvar name="dataFileName" value="data\orun.dat"/>
+                <jamsvar name="startColumn" value="3"/>
+            </component>
+        
+            <compoundcomponent class="org.unijena.jams.model.JAMSSpatialContext" name="HRUContext">
+                <jamsvar name="entities" provider="ParaReader" providervar="hrus"/>
+            
+                <component class="org.unijena.j2k.J2KArrayGrabber" name="j2kArrayGrabber">
+                    <jamsvar name="time" provider="TemporalContext" providervar="current"/>
+                    <jamsvar name="LAIArray" provider="HRUContext" spatattrib="LAIArray"/>
+                    <jamsvar name="effHArray" provider="HRUContext" spatattrib="effHArray"/>
+                    <jamsvar name="slAsCfArray" provider="HRUContext" spatattrib="slAsCfArray"/>
+                    <jamsvar name="rsc0Array" provider="HRUContext" spatattrib="rsc0Array"/>
+                    <jamsvar name="extRadArray" provider="HRUContext" spatattrib="extRadArray"/>
+                    <jamsvar name="actLAI" provider="HRUContext" spatattrib="actLAI"/>
+                    <jamsvar name="actEffH" provider="HRUContext" spatattrib="actEffH"/>
+                    <jamsvar name="actSlAsCf" provider="HRUContext" spatattrib="actSlAsCf"/>
+                    <jamsvar name="actRsc0" provider="HRUContext" spatattrib="actRsc0"/>
+                    <jamsvar name="actExtRad" provider="HRUContext" spatattrib="actExtRad"/>
+                    <jamsvar name="tempRes" value="d"/>
+                </component>
+            
+                <component class="org.unijena.j2k.regionalisation.Regionalisation" name="TmeanRegionaliser">
+                    <jamsvar name="dirName" globvar="workspaceDir"/>
+                    <jamsvar name="dataCaching" globvar="data_caching"/>
+                    <jamsvar name="dataArray" provider="TmeanDataReader" providervar="dataArray"/>
+                    <jamsvar name="regCoeff" provider="TmeanDataReader" providervar="regCoeff"/>
+                    <jamsvar name="statElevation" provider="TmeanDataReader" providervar="elevation"/>
+                    <jamsvar name="statX" provider="TmeanDataReader" providervar="xCoord"/>
+                    <jamsvar name="statY" provider="TmeanDataReader" providervar="yCoord"/>
+                    <jamsvar name="dataSetName" provider="TmeanDataReader" providervar="dataSetName"/>
+                    <jamsvar name="entityElevation" provider="HRUContext" spatattrib="elevation"/>
+                    <jamsvar name="statWeights" provider="HRUContext" spatattrib="tmeanWeights"/>
+                    <jamsvar name="elevationCorrection" value="1"/>
+                    <jamsvar name="rsqThreshold" value="0.75"/>
+                    <jamsvar name="dataValue" provider="HRUContext" spatattrib="tmean"/>
+                </component>
+            
+                <component class="org.unijena.j2k.regionalisation.Regionalisation" name="TminRegionaliser">
+                    <jamsvar name="dirName" globvar="workspaceDir"/>
+                    <jamsvar name="dataCaching" globvar="data_caching"/>
+                    <jamsvar name="dataArray" provider="TminDataReader" providervar="dataArray"/>
+                    <jamsvar name="regCoeff" provider="TminDataReader" providervar="regCoeff"/>
+                    <jamsvar name="statElevation" provider="TminDataReader" providervar="elevation"/>
+                    <jamsvar name="statX" provider="TminDataReader" providervar="xCoord"/>
+                    <jamsvar name="statY" provider="TminDataReader" providervar="yCoord"/>
+                    <jamsvar name="dataSetName" provider="TminDataReader" providervar="dataSetName"/>
+                    <jamsvar name="entityElevation" provider="HRUContext" spatattrib="elevation"/>
+                    <jamsvar name="statWeights" provider="HRUContext" spatattrib="tminWeights"/>
+                    <jamsvar name="elevationCorrection" value="1"/>
+                    <jamsvar name="rsqThreshold" value="0.75"/>
+                    <jamsvar name="dataValue" provider="HRUContext" spatattrib="tmin"/>
+                </component>
+            
+                <component class="org.unijena.j2k.regionalisation.Regionalisation" name="TmaxRegionaliser">
+                    <jamsvar name="dirName" globvar="workspaceDir"/>
+                    <jamsvar name="dataCaching" globvar="data_caching"/>
+                    <jamsvar name="dataArray" provider="TmaxDataReader" providervar="dataArray"/>
+                    <jamsvar name="regCoeff" provider="TmaxDataReader" providervar="regCoeff"/>
+                    <jamsvar name="statElevation" provider="TmaxDataReader" providervar="elevation"/>
+                    <jamsvar name="statX" provider="TmaxDataReader" providervar="xCoord"/>
+                    <jamsvar name="statY" provider="TmaxDataReader" providervar="yCoord"/>
+                    <jamsvar name="dataSetName" provider="TmaxDataReader" providervar="dataSetName"/>
+                    <jamsvar name="entityElevation" provider="HRUContext" spatattrib="elevation"/>
+                    <jamsvar name="statWeights" provider="HRUContext" spatattrib="tmaxWeights"/>
+                    <jamsvar name="elevationCorrection" value="1"/>
+                    <jamsvar name="rsqThreshold" value="0.75"/>
+                    <jamsvar name="dataValue" provider="HRUContext" spatattrib="tmax"/>
+                </component>
+            
+                <component class="org.unijena.j2k.regionalisation.Regionalisation" name="AhumRegionaliser">
+                    <jamsvar name="dirName" globvar="workspaceDir"/>
+                    <jamsvar name="dataCaching" globvar="data_caching"/>
+                    <jamsvar name="dataArray" provider="AhumDataReader" providervar="dataArray"/>
+                    <jamsvar name="regCoeff" provider="AhumDataReader" providervar="regCoeff"/>
+                    <jamsvar name="statElevation" provider="AhumDataReader" providervar="elevation"/>
+                    <jamsvar name="statX" provider="AhumDataReader" providervar="xCoord"/>
+                    <jamsvar name="statY" provider="AhumDataReader" providervar="yCoord"/>
+                    <jamsvar name="dataSetName" provider="AhumDataReader" providervar="dataSetName"/>
+                    <jamsvar name="entityElevation" provider="HRUContext" spatattrib="elevation"/>
+                    <jamsvar name="statWeights" provider="HRUContext" spatattrib="ahumWeights"/>
+                    <jamsvar name="elevationCorrection" value="1"/>
+                    <jamsvar name="rsqThreshold" value="0.75"/>
+                    <jamsvar name="dataValue" provider="HRUContext" spatattrib="ahum"/>
+                </component>
+            
+                <component class="org.unijena.j2k.regionalisation.Regionalisation" name="PrecipRegionaliser">
+                    <jamsvar name="dirName" globvar="workspaceDir"/>
+                    <jamsvar name="dataCaching" globvar="data_caching"/>
+                    <jamsvar name="dataArray" provider="PrecipDataReader" providervar="dataArray"/>
+                    <jamsvar name="regCoeff" provider="PrecipDataReader" providervar="regCoeff"/>
+                    <jamsvar name="statElevation" provider="PrecipDataReader" providervar="elevation"/>
+                    <jamsvar name="statX" provider="PrecipDataReader" providervar="xCoord"/>
+                    <jamsvar name="statY" provider="PrecipDataReader" providervar="yCoord"/>
+                    <jamsvar name="dataSetName" provider="PrecipDataReader" providervar="dataSetName"/>
+                    <jamsvar name="entityElevation" provider="HRUContext" spatattrib="elevation"/>
+                    <jamsvar name="statWeights" provider="HRUContext" spatattrib="precipWeights"/>
+                    <jamsvar name="elevationCorrection" value="1"/>
+                    <jamsvar name="rsqThreshold" value="0.75"/>
+                    <jamsvar name="dataValue" provider="HRUContext" spatattrib="precip"/>
+                </component>
+            
+                <component class="org.unijena.j2k.regionalisation.Regionalisation" name="SunhRegionaliser">
+                    <jamsvar name="dirName" globvar="workspaceDir"/>
+                    <jamsvar name="dataCaching" globvar="data_caching"/>
+                    <jamsvar name="dataArray" provider="SunhDataReader" providervar="dataArray"/>
+                    <jamsvar name="regCoeff" provider="SunhDataReader" providervar="regCoeff"/>
+                    <jamsvar name="statElevation" provider="SunhDataReader" providervar="elevation"/>
+                    <jamsvar name="statX" provider="SunhDataReader" providervar="xCoord"/>
+                    <jamsvar name="statY" provider="SunhDataReader" providervar="yCoord"/>
+                    <jamsvar name="dataSetName" provider="SunhDataReader" providervar="dataSetName"/>
+                    <jamsvar name="entityElevation" provider="HRUContext" spatattrib="elevation"/>
+                    <jamsvar name="statWeights" provider="HRUContext" spatattrib="sunhWeights"/>
+                    <jamsvar name="elevationCorrection" value="0"/>
+                    <jamsvar name="rsqThreshold" value="0.75"/>
+                    <jamsvar name="dataValue" provider="HRUContext" spatattrib="sunh"/>
+                </component>
+            
+                <component class="org.unijena.j2k.regionalisation.Regionalisation" name="WindRegionaliser">
+                    <jamsvar name="dirName" globvar="workspaceDir"/>
+                    <jamsvar name="dataCaching" globvar="data_caching"/>
+                    <jamsvar name="dataArray" provider="WindDataReader" providervar="dataArray"/>
+                    <jamsvar name="regCoeff" provider="WindDataReader" providervar="regCoeff"/>
+                    <jamsvar name="statElevation" provider="WindDataReader" providervar="elevation"/>
+                    <jamsvar name="statX" provider="WindDataReader" providervar="xCoord"/>
+                    <jamsvar name="statY" provider="WindDataReader" providervar="yCoord"/>
+                    <jamsvar name="dataSetName" provider="WindDataReader" providervar="dataSetName"/>
+                    <jamsvar name="entityElevation" provider="HRUContext" spatattrib="elevation"/>
+                    <jamsvar name="statWeights" provider="HRUContext" spatattrib="windWeights"/>
+                    <jamsvar name="elevationCorrection" value="0"/>
+                    <jamsvar name="rsqThreshold" value="0.75"/>
+                    <jamsvar name="dataValue" provider="HRUContext" spatattrib="wind"/>
+                </component>
+            
+                <component class="org.unijena.j2k.inputData.CalcRelativeHumidity" name="CalcRelativeHumidity">
+                    <jamsvar name="tmean" provider="HRUContext" spatattrib="tmean"/>
+                    <jamsvar name="ahum" provider="HRUContext" spatattrib="ahum"/>
+                    <jamsvar name="rhum" provider="HRUContext" spatattrib="rhum"/>
+                </component>
+            
+                <component class="org.unijena.j2k.radiation.CalcDailySolarRadiation" name="CalcDailySolarRadiation">
+                    <jamsvar name="dirName" globvar="workspaceDir"/>
+                    <jamsvar name="dataCaching" globvar="data_caching"/>
+                    <jamsvar name="time" provider="TemporalContext" providervar="current"/>
+                    <jamsvar name="actSlAsCf" provider="HRUContext" spatattrib="actSlAsCf"/>
+                    <jamsvar name="latitude" provider="HRUContext" spatattrib="latitude"/>
+                    <jamsvar name="actExtRad" provider="HRUContext" spatattrib="actExtRad"/>
+                    <jamsvar name="sunh" provider="HRUContext" spatattrib="sunh"/>
+                    <jamsvar name="angstrom_a" value="0.25"/>
+                    <jamsvar name="angstrom_b" value="0.5"/>
+                    <jamsvar name="solRad" provider="HRUContext" spatattrib="solRad"/>
+                </component>
+            
+                <component class="org.unijena.j2k.radiation.CalcDailyNetRadiation" name="CalcDailyNetRadiation">
+                    <jamsvar name="dirName" globvar="workspaceDir"/>
+                    <jamsvar name="dataCaching" globvar="data_caching"/>
+                    <jamsvar name="time" provider="TemporalContext" providervar="current"/>
+                    <jamsvar name="tmean" provider="HRUContext" spatattrib="tmean"/>
+                    <jamsvar name="sunh" provider="HRUContext" spatattrib="sunh"/>
+                    <jamsvar name="rhum" provider="HRUContext" spatattrib="rhum"/>
+                    <jamsvar name="solRad" provider="HRUContext" spatattrib="solRad"/>
+                    <jamsvar name="latitude" provider="HRUContext" spatattrib="latitude"/>
+                    <jamsvar name="elevation" provider="HRUContext" spatattrib="elevation"/>
+                    <jamsvar name="albedo" provider="HRUContext" spatattrib="albedo"/>
+                    <jamsvar name="netRad" provider="HRUContext" spatattrib="netRad"/>
+                </component>
+
+                <component class="org.unijena.j2k.potET.RefET" name="CalcRefET">
+                    <jamsvar name="dirName" globvar="workspaceDir"/>
+                    <jamsvar name="dataCaching" globvar="data_caching"/>
+                    <jamsvar name="netRad" provider="HRUContext" spatattrib="netRad"/>
+                    <jamsvar name="tmean" provider="HRUContext" spatattrib="tmean"/>
+                    <jamsvar name="rhum" provider="HRUContext" spatattrib="rhum"/>
+                    <jamsvar name="wind" provider="HRUContext" spatattrib="wind"/>
+                    <jamsvar name="elevation" provider="HRUContext" spatattrib="elevation"/>
+                    <jamsvar name="area" provider="HRUContext" spatattrib="area"/>
+                    <jamsvar name="refET" provider="HRUContext" spatattrib="refET"/>
+                    <jamsvar name="actET" provider="HRUContext" spatattrib="actET"/>
+                    <jamsvar name="tempRes" value="d"/>
+                </component>
+            
+                <component class="org.unijena.j2k.potET.PenmanMonteith" name="CalcPotentialET">
+                    <jamsvar name="dirName" globvar="workspaceDir"/>
+                    <jamsvar name="dataCaching" globvar="data_caching"/>
+                    <jamsvar name="netRad" provider="HRUContext" spatattrib="netRad"/>
+                    <jamsvar name="tmean" provider="HRUContext" spatattrib="tmean"/>
+                    <jamsvar name="rhum" provider="HRUContext" spatattrib="rhum"/>
+                    <jamsvar name="wind" provider="HRUContext" spatattrib="wind"/>
+                    <jamsvar name="actRsc0" provider="HRUContext" spatattrib="actRsc0"/>
+                    <jamsvar name="actLAI" provider="HRUContext" spatattrib="actLAI"/>
+                    <jamsvar name="actEffH" provider="HRUContext" spatattrib="actEffH"/>
+                    <jamsvar name="elevation" provider="HRUContext" spatattrib="elevation"/>
+                    <jamsvar name="area" provider="HRUContext" spatattrib="area"/>
+                    <jamsvar name="potET" provider="HRUContext" spatattrib="potET"/>
+                    <jamsvar name="actET" provider="HRUContext" spatattrib="actET"/>
+                    <jamsvar name="rs" provider="HRUContext" spatattrib="rs"/>
+                    <jamsvar name="ra" provider="HRUContext" spatattrib="ra"/>
+                    <jamsvar name="tempRes" value="d"/>
+                </component>
+            
+                <component class="org.unijena.j2k.snow.CalcRainSnowParts" name="CalcRainSnowParts">
+                    <jamsvar name="precip" provider="HRUContext" spatattrib="precip"/>
+                    <jamsvar name="tmin" provider="HRUContext" spatattrib="tmean"/>
+                    <jamsvar name="tmean" provider="HRUContext" spatattrib="tmean"/>
+                    <jamsvar name="area" provider="HRUContext" spatattrib="area"/>
+                    <jamsvar name="snow_trs" globvar="snow_trs"/>
+                    <jamsvar name="snow_trans" globvar="snow_trans"/>
+                    <jamsvar name="rain" provider="HRUContext" spatattrib="rain"/>
+                    <jamsvar name="snow" provider="HRUContext" spatattrib="snow"/>
+                </component>
+            
+                <component class="org.unijena.j2k.interception.J2KProcessInterception" name="J2KProcessInterception">
+                    <jamsvar name="area" provider="HRUContext" spatattrib="area"/>
+                    <jamsvar name="tmean" provider="HRUContext" spatattrib="tmean"/>
+                    <jamsvar name="rain" provider="HRUContext" spatattrib="rain"/>
+                    <jamsvar name="snow" provider="HRUContext" spatattrib="snow"/>
+                    <jamsvar name="potET" provider="HRUContext" spatattrib="potET"/>
+                    <jamsvar name="actET" provider="HRUContext" spatattrib="actET"/>
+                    <jamsvar name="actLAI" provider="HRUContext" spatattrib="actLAI"/>
+                    <jamsvar name="snow_trs" globvar="snow_trs"/>
+                    <jamsvar name="snow_trans" globvar="snow_trans"/>
+                    <jamsvar name="a_rain" value="0.2"/>
+                    <jamsvar name="a_snow" value="0.5"/>
+                    <jamsvar name="netRain" provider="HRUContext" spatattrib="netRain"/>
+                    <jamsvar name="netSnow" provider="HRUContext" spatattrib="netSnow"/>
+                    <jamsvar name="throughfall" provider="HRUContext" spatattrib="throughfall"/>
+                    <jamsvar name="interception" provider="HRUContext" spatattrib="interception"/>
+                    <jamsvar name="intercStorage" provider="HRUContext" spatattrib="intercStorage"/>
+                </component>
+            
+                <component class="org.unijena.j2k.snow.J2KProcessSnow" name="J2KProcessSnow">
+                    <jamsvar name="area" provider="HRUContext" spatattrib="area"/>
+                    <jamsvar name="actSlAsCf" provider="HRUContext" spatattrib="actSlAsCf"/>
+                    <jamsvar name="minTemp" provider="HRUContext" spatattrib="tmean"/>
+                    <jamsvar name="meanTemp" provider="HRUContext" spatattrib="tmean"/>
+                    <jamsvar name="maxTemp" provider="HRUContext" spatattrib="tmean"/>
+                    <jamsvar name="netRain" provider="HRUContext" spatattrib="netRain"/>
+                    <jamsvar name="netSnow" provider="HRUContext" spatattrib="netSnow"/>
+                    <jamsvar name="snowTotSWE" provider="HRUContext" spatattrib="snowTotSWE"/>
+                    <jamsvar name="drySWE" provider="HRUContext" spatattrib="drySWE"/>
+                    <jamsvar name="totDens" provider="HRUContext" spatattrib="totDens"/>
+                    <jamsvar name="dryDens" provider="HRUContext" spatattrib="dryDens"/>
+                    <jamsvar name="snowDepth" provider="HRUContext" spatattrib="snowDepth"/>
+                    <jamsvar name="snowAge" provider="HRUContext" spatattrib="snowAge"/>
+                    <jamsvar name="snowColdContent" provider="HRUContext" spatattrib="snowColdContent"/>
+                    <jamsvar name="snowMelt" provider="HRUContext" spatattrib="snowMelt"/>
+                    <jamsvar name="snow_trs" globvar="snow_trs"/>
+                    <jamsvar name="snow_trans" globvar="snow_trans"/>
+                    <jamsvar name="t_factor" value="0.7"/>
+                    <jamsvar name="r_factor" value="0.008"/>
+                    <jamsvar name="g_factor" value="4.04"/>
+                    <jamsvar name="snowCritDens" value="0.45"/>
+                    <jamsvar name="ccf_factor" value="0.001"/>
+                </component>
+            
+                <component class="org.unijena.j2k.soilWater.J2KProcessLumpedSoilWater" name="J2KProcessLumpedSoilWater">
+                    <jamsvar name="time" provider="TemporalContext" providervar="current"/>
+                    <jamsvar name="area" provider="HRUContext" spatattrib="area"/>
+                    <jamsvar name="slope" provider="HRUContext" spatattrib="slope"/>
+                    <jamsvar name="sealedGrade" provider="HRUContext" spatattrib="sealedGrade"/>
+                    <jamsvar name="netRain" provider="HRUContext" spatattrib="netRain"/>
+                    <jamsvar name="netSnow" provider="HRUContext" spatattrib="netSnow"/>
+                    <jamsvar name="potET" provider="HRUContext" spatattrib="potET"/>
+                    <jamsvar name="actET" provider="HRUContext" spatattrib="actET"/>
+                    <jamsvar name="snowDepth" provider="HRUContext" spatattrib="snowDepth"/>
+                    <jamsvar name="snowMelt" provider="HRUContext" spatattrib="snowMelt"/>
+                    <jamsvar name="maxMPS" provider="HRUContext" spatattrib="maxMPS"/>
+                    <jamsvar name="maxLPS" provider="HRUContext" spatattrib="maxLPS"/>
+                    <jamsvar name="actDPS" provider="HRUContext" spatattrib="actDPS"/>
+                    <jamsvar name="actMPS" provider="HRUContext" spatattrib="actMPS"/>
+                    <jamsvar name="actLPS" provider="HRUContext" spatattrib="actLPS"/>
+                    <jamsvar name="satMPS" provider="HRUContext" spatattrib="satMPS"/>
+                    <jamsvar name="satLPS" provider="HRUContext" spatattrib="satLPS"/>
+                    <jamsvar name="satSoil" provider="HRUContext" spatattrib="satSoil"/>
+                    <jamsvar name="infiltration" provider="HRUContext" spatattrib="infiltration"/>
+                    <jamsvar name="interflow" provider="HRUContext" spatattrib="interflow"/>
+                    <jamsvar name="percolation" provider="HRUContext" spatattrib="percolation"/>
+                    <jamsvar name="inRD1" provider="HRUContext" spatattrib="inRD1"/>
+                    <jamsvar name="inRD2" provider="HRUContext" spatattrib="inRD2"/>
+                    <jamsvar name="genRD1" provider="HRUContext" spatattrib="genRD1"/>
+                    <jamsvar name="genRD2" provider="HRUContext" spatattrib="genRD2"/>
+                    <jamsvar name="outRD1" provider="HRUContext" spatattrib="outRD1"/>
+                    <jamsvar name="outRD2" provider="HRUContext" spatattrib="outRD2"/>
+                    <jamsvar name="soilMaxDPS" value="2.0"/>
+                    <jamsvar name="soilPolRed" value="5.0"/>
+                    <jamsvar name="soilLinRed" value="0.0"/>
+                    <jamsvar name="soilMaxInfSummer" value="80.0"/>
+                    <jamsvar name="soilMaxInfWinter" value="100.0"/>
+                    <jamsvar name="soilMaxInfSnow" value="50.0"/>
+                    <jamsvar name="soilImpGT80" value="0.25"/>
+                    <jamsvar name="soilImpLT80" value="0.6"/>
+                    <jamsvar name="soilDistMPSLPS" value="0.1"/>
+                    <jamsvar name="soilDiffMPSLPS" value="0.68"/>
+                    <jamsvar name="soilOutLPS" value="0.9"/>
+                    <jamsvar name="soilLatVertLPS" value="0.5"/>
+                    <jamsvar name="soilMaxPerc" value="5.0"/>
+                    <jamsvar name="soilConcRD1" value="1.0"/>
+                    <jamsvar name="soilConcRD2" value="1.8"/>
+                </component>
+            
+                <component class="org.unijena.j2k.groundwater.J2KProcessGroundwater" name="J2KProcessGroundwater">
+                    <jamsvar name="area" provider="HRUContext" spatattrib="area"/>
+                    <jamsvar name="slope" provider="HRUContext" spatattrib="slope"/>
+                    <jamsvar name="maxRG1" provider="HRUContext" spatattrib="maxRG1"/>
+                    <jamsvar name="maxRG2" provider="HRUContext" spatattrib="maxRG2"/>
+                    <jamsvar name="kRG1" provider="HRUContext" spatattrib="RG1_k"/>
+                    <jamsvar name="kRG2" provider="HRUContext" spatattrib="RG2_k"/>
+                    <jamsvar name="actRG1" provider="HRUContext" spatattrib="actRG1"/>
+                    <jamsvar name="actRG2" provider="HRUContext" spatattrib="actRG2"/>
+                    <jamsvar name="inRG1" provider="HRUContext" spatattrib="inRG1"/>
+                    <jamsvar name="inRG2" provider="HRUContext" spatattrib="inRG2"/>
+                    <jamsvar name="outRG1" provider="HRUContext" spatattrib="outRG1"/>
+                    <jamsvar name="outRG2" provider="HRUContext" spatattrib="outRG2"/>
+                    <jamsvar name="genRG1" provider="HRUContext" spatattrib="genRG1"/>
+                    <jamsvar name="genRG2" provider="HRUContext" spatattrib="genRG2"/>
+                    <jamsvar name="percolation" provider="HRUContext" spatattrib="percolation"/>
+                    <jamsvar name="gwExcess" provider="HRUContext" spatattrib="outRD2"/>
+                    <jamsvar name="maxSoilStorage" provider="HRUContext" spatattrib="maxMPS"/>
+                    <jamsvar name="actSoilStorage" provider="HRUContext" spatattrib="actMPS"/>
+                    <jamsvar name="gwRG1RG2dist" value="0.8"/>
+                    <jamsvar name="gwRG1Fact" value="1.0"/>
+                    <jamsvar name="gwRG2Fact" value="1.0"/>
+                    <jamsvar name="gwCapRise" value="0.0"/>
+                </component>
+            
+                <component class="org.unijena.j2k.routing.J2KProcessRouting" name="J2KProcessRouting">
+                    <jamsvar name="reaches" provider="ParaReader" providervar="reaches"/>
+                    <jamsvar name="entity" provider="HRUContext" providervar="currentEntity"/>
+                    <jamsvar name="inRD1" provider="HRUContext" spatattrib="inRD1"/>
+                    <jamsvar name="inRD2" provider="HRUContext" spatattrib="inRD2"/>
+                    <jamsvar name="inRG1" provider="HRUContext" spatattrib="inRG1"/>
+                    <jamsvar name="inRG2" provider="HRUContext" spatattrib="inRG2"/>
+                    <jamsvar name="outRD1" provider="HRUContext" spatattrib="outRD1"/>
+                    <jamsvar name="outRD2" provider="HRUContext" spatattrib="outRD2"/>
+                    <jamsvar name="outRG1" provider="HRUContext" spatattrib="outRG1"/>
+                    <jamsvar name="outRG2" provider="HRUContext" spatattrib="outRG2"/>
+                </component>
+       
+                <!-- formerly known as SpatialAggregator - aggregationType 1 -->
+                <component class="org.unijena.j2k.aggregate.WeightedSumAggregator" name="SpatialWeightedSumAggregator1">
+                    <jamsvar name="value" provider="HRUContext" spatattrib="precip;tmean;rhum;wind;solRad;netRad;snowDepth;satMPS;satLPS;rs;ra"/>
+                    <jamsvar name="weight" provider="HRUContext" spatattrib="areaweight"/>
+                    <jamsvar name="sum" provider="CatchmentContext" spatattrib="precip;tmean;rhum;wind;solRad;netRad;snowDepth;satMPS;satLPS;rs;ra"/>
+                </component>
+
+                <!-- formerly known as SpatialAggregator - aggregationType 3 -->
+                <component class="org.unijena.j2k.aggregate.WeightedSumAggregator" name="SpatialWeightedSumAggregator2">
+                    <jamsvar name="value" provider="HRUContext" spatattrib="rain;snow;potET;refET;actET;netSnow;netRain;throughfall;interception;intercStorage;snowTotSWE;snowMelt;actMPS;actLPS;actDPS;percolation;actRG1;actRG2;outRD1;outRD2;outRG1;outRG2"/>
+                    <jamsvar name="weight" provider="CatchmentContext" spatattrib="area"/>
+                    <jamsvar name="sum" provider="CatchmentContext" spatattrib="rain;snow;potET;refET;actET;netSnow;netRain;throughfall;interception;intercStorage;snowTotSWE;snowMelt;actMPS;actLPS;actDPS;percolation;actRG1;actRG2;outRD1;outRD2;outRG1;outRG2"/>
+                </component>            
+
+            </compoundcomponent>
+            
+            <compoundcomponent class="org.unijena.jams.model.JAMSSpatialContext" name="ReachContext">
+                <jamsvar name="entities" provider="ParaReader" providervar="reaches"/>
+            
+                <component class="org.unijena.j2k.routing.J2KProcessReachRouting" name="J2KProcessReachRouting">
+                    <jamsvar name="entity" provider="ReachContext" providervar="currentEntity"/>
+                    <jamsvar name="length" provider="ReachContext" spatattrib="length"/>
+                    <jamsvar name="slope" provider="ReachContext" spatattrib="slope"/>
+                    <jamsvar name="width" provider="ReachContext" spatattrib="width"/>
+                    <jamsvar name="roughness" provider="ReachContext" spatattrib="rough"/>
+                    <jamsvar name="inRD1" provider="ReachContext" spatattrib="inRD1"/>
+                    <jamsvar name="inRD2" provider="ReachContext" spatattrib="inRD2"/>
+                    <jamsvar name="inRG1" provider="ReachContext" spatattrib="inRG1"/>
+                    <jamsvar name="inRG2" provider="ReachContext" spatattrib="inRG2"/>
+                    <jamsvar name="actRD1" provider="ReachContext" spatattrib="actRD1"/>
+                    <jamsvar name="actRD2" provider="ReachContext" spatattrib="actRD2"/>
+                    <jamsvar name="actRG1" provider="ReachContext" spatattrib="actRG1"/>
+                    <jamsvar name="actRG2" provider="ReachContext" spatattrib="actRG2"/>
+                    <jamsvar name="outRD1" provider="ReachContext" spatattrib="reachOutRD1"/>
+                    <jamsvar name="outRD2" provider="ReachContext" spatattrib="reachOutRD2"/>
+                    <jamsvar name="outRG1" provider="ReachContext" spatattrib="reachOutRG1"/>
+                    <jamsvar name="outRG2" provider="ReachContext" spatattrib="reachOutRG2"/>
+                    <jamsvar name="catchmentRD1" provider="CatchmentContext" spatattrib="catchmentRD1"/>
+                    <jamsvar name="catchmentRD2" provider="CatchmentContext" spatattrib="catchmentRD2"/>
+                    <jamsvar name="catchmentRG1" provider="CatchmentContext" spatattrib="catchmentRG1"/>
+                    <jamsvar name="catchmentRG2" provider="CatchmentContext" spatattrib="catchmentRG2"/>
+                    <jamsvar name="catchmentSimRunoff" provider="CatchmentContext" spatattrib="catchmentSimRunoff"/>
+                    <jamsvar name="simRunoff" provider="ReachContext" spatattrib="simRunoff"/>
+                    <jamsvar name="channelStorage" provider="ReachContext" spatattrib="channelStorage"/>
+                    <jamsvar name="flowRouteTA" value="1.0"/>
+                </component>              
+            
+                <component class="org.unijena.j2k.aggregate.SumAggregator" name="ChannelStorageAggregator">
+                    <jamsvar name="value" provider="ReachContext" spatattrib="channelStorage"/>
+                    <jamsvar name="sum" provider="CatchmentContext" spatattrib="channelStorage"/>
+                </component> 
+            
+            </compoundcomponent>
+
+            <component class="org.unijena.j2k.aggregate.WeightedSumAggregator" name="FlowWeightedSumAggregator">
+                <jamsvar name="value" provider="CatchmentContext" spatattrib="catchmentRD1;catchmentRD2;catchmentRG1;catchmentRG2;channelStorage"/>
+                <jamsvar name="weight" provider="CatchmentContext" spatattrib="area"/>
+                <jamsvar name="sum" provider="CatchmentContext" spatattrib="catchmentRD1_w;catchmentRD2_w;catchmentRG1_w;catchmentRG2_w;channelStorage_w"/>
+            </component> 
+    
+            <component class="org.unijena.jams.tools.JAMSUnitConverter" name="SimRunoffConverter">
+                <jamsvar name="inUnit" value="L/day"/>
+                <jamsvar name="outUnit" value="m³/s"/>
+                <jamsvar name="inValue" provider="CatchmentContext" spatattrib="catchmentSimRunoff"/>
+                <jamsvar name="outValue" provider="CatchmentContext" spatattrib="catchmentSimRunoff_qm"/>
+            </component> 
+       
+            <component class="org.unijena.j2k.io.StandardTSDataProvider" name="ObsRunoff">
+                <jamsvar name="dataArray" provider="ObsRunoffDataReader" providervar="dataArray"/>
+                <jamsvar name="attribute" provider="CatchmentContext" spatattrib="catchmentObsRunoff"/>
+                <jamsvar name="column" value="1"/>
+            </component>
+            
+            <component class="org.unijena.j2k.io.StandardDataWriter" name="CatchmentWriter">
+                <jamsvar name="dirName" globvar="workspaceDir"/>
+                <jamsvar name="fileName" value="data\result-gb.dat"/>
+                <jamsvar name="time" provider="TemporalContext" providervar="current"/>
+                <jamsvar name="headers" value="precip;tmean;rhum;wind;rain;snow;solRad;netRad;refET;potET;actET;netRain;netSnow;throughfall;interception;intercStorage;snowDepth;snowTotSWE;snowMelt;satMPS;satLPS;actMPS;actLPS;percolation;actRG1;actRG2;catchmentRD1_w;catchmentRD2_w;catchmentRG1_w;catchmentRG2_w;channelStorage_w;catchmentSimRunoff_qm;catchmentObsRunoff;rs;ra"/>
+                <jamsvar name="value" provider="CatchmentContext" spatattrib="precip;tmean;rhum;wind;rain;snow;solRad;netRad;refET;potET;actET;netRain;netSnow;throughfall;interception;intercStorage;snowDepth;snowTotSWE;snowMelt;satMPS;satLPS;actMPS;actLPS;percolation;actRG1;actRG2;catchmentRD1_w;catchmentRD2_w;catchmentRG1_w;catchmentRG2_w;channelStorage_w;catchmentSimRunoff_qm;catchmentObsRunoff;rs;ra"/>
+            </component>            
+
+            <component class="org.unijena.j2k.DoubleSetter" name="CatchmentResetter">
+                <jamsvar name="attributes" provider="CatchmentContext" spatattrib="precip;tmean;rhum;wind;rain;snow;solRad;netRad;refET;potET;actET;netRain;netSnow;throughfall;interception;intercStorage;snowDepth;snowTotSWE;snowMelt;satMPS;satLPS;actMPS;actLPS;percolation;actRG1;actRG2;catchmentRD1_w;catchmentRD2_w;catchmentRG1_w;catchmentRG2_w;channelStorage_w;channelStorage;rs;ra"/>
+                <jamsvar name="value" value="0"/>
+            </component>
+            
+            <component class="org.unijena.j2k.efficiencies.StandardEfficiencyCalculator" name="EfficiencyCalculator">
+            <jamsvar name="timeInterval" provider="TemporalContext" providervar="timeInterval"/>
+            <jamsvar name="effMethod" value="1,2,3,4,5,6,7,8"/>
+            <jamsvar name="validation" provider="CatchmentContext" spatattrib="catchmentObsRunoff"/>
+            <jamsvar name="prediction" provider="CatchmentContext" spatattrib="catchmentSimRunoff_qm"/>
+            </component>
+
+        </compoundcomponent>
+            
+    </compoundcomponent>
+</model>

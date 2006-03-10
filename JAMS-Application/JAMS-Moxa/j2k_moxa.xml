@@ -1,0 +1,775 @@
+<?xml version='1.0' encoding='utf-8'?>
+
+<!--<!DOCTYPE JAMSModel SYSTEM "jamsmodel.dtd">-->
+
+<model name="J2K" author="Peter Krause" date="03.11.2005">
+    <globvar name="workspaceDir" value="D:\Development\JAMS\Jams_models\moxa"/>
+    <globvar name="snow_trs" value="0.2"/>
+    <globvar name="snow_trans" value="2.0"/>
+    <globvar name="data_caching" value="1"/>
+
+    <component class="org.unijena.j2k.StandardEntityReader" name="ParaReader">
+    	<jamsvar class="org.unijena.jams.data.JAMSString" name="dirName" globvar="workspaceDir"/>
+        <jamsvar class="org.unijena.jams.data.JAMSString" name="hruFileName" value="parameter\hrus.par"/>
+        <jamsvar class="org.unijena.jams.data.JAMSString" name="reachFileName" value="parameter\reach.par"/>
+    </component>
+
+    <component class="org.unijena.j2k.StandardLUReader" name="LUReader">
+        <jamsvar class="org.unijena.jams.data.JAMSString" name="dirName" globvar="workspaceDir"/>
+        <jamsvar class="org.unijena.jams.data.JAMSString" name="luFileName" value="parameter\landuse.par"/>
+        <jamsvar class="org.unijena.jams.data.JAMSEntityCollection" name="hrus" provider="ParaReader" providervar="hrus"/>
+    </component>
+    
+    <component class="org.unijena.j2k.StandardSoilParaReader" name="STReader">
+        <jamsvar class="org.unijena.jams.data.JAMSString" name="dirName" globvar="workspaceDir"/>
+        <jamsvar class="org.unijena.jams.data.JAMSString" name="stFileName" value="parameter\soil.par"/>
+        <jamsvar class="org.unijena.jams.data.JAMSEntityCollection" name="hrus" provider="ParaReader" providervar="hrus"/>
+    </component>
+    
+    <component class="org.unijena.j2k.StandardGroundwaterParaReader" name="GWReader">
+        <jamsvar class="org.unijena.jams.data.JAMSString" name="dirName" globvar="workspaceDir"/>
+        <jamsvar class="org.unijena.jams.data.JAMSString" name="gwFileName" value="parameter\hgeo.par"/>
+        <jamsvar class="org.unijena.jams.data.JAMSEntityCollection" name="hrus" provider="ParaReader" providervar="hrus"/>
+    </component>
+    
+    <component class="org.unijena.j2k.EntityCreator" name="CatchmentCreator">
+        <jamsvar class="org.unijena.jams.data.JAMSEntityCollection" name="sourceObjects" provider="ParaReader" providervar="hrus"/>
+	<jamsvar class="org.unijena.jams.data.JAMSString" name="aNameArea" value="area"/>
+    </component>
+
+    <compoundcomponent class="org.unijena.jams.model.JAMSTemporalContext" name="TemporalContext">
+        <jamsvar class="org.unijena.jams.data.JAMSTimeInterval" name="timeInterval" value="2004-02-19 13:00 2004-10-03 22:00 11 1"/>
+            <component class="org.unijena.jams.gui.JAMSProgress" name="JAMSProgress">
+                <jamsvar class="org.unijena.jams.data.JAMSString" name="title" value="J2K model execution"/>
+                <jamsvar class="org.unijena.jams.data.JAMSInteger" name="height" value="20"/>
+                <jamsvar class="org.unijena.jams.data.JAMSInteger" name="width" value="600"/>
+                <jamsvar class="org.unijena.jams.data.JAMSBoolean" name="ontop" value="false"/>
+            </component>
+            
+            <component class="org.unijena.j2k.TSDataReader" name="TemperatureDataReader">
+                <jamsvar class="org.unijena.jams.data.JAMSString" name="dirName" globvar="workspaceDir"/>
+                <jamsvar class="org.unijena.jams.data.JAMSBoolean" name="skipRegression" globvar="data_caching"/>
+                <jamsvar class="org.unijena.jams.data.JAMSTimeInterval" name="timeInterval" provider="TemporalContext" providervar="timeInterval"/>
+                <jamsvar class="org.unijena.jams.data.JAMSString" name="dataFileName" value="data\t.dat"/>
+                <jamsvar class="org.unijena.jams.data.JAMSInteger" name="startColumn" value="3"/>
+            </component>
+            
+            <component class="org.unijena.j2k.TSDataReader" name="AHumDataReader">
+                <jamsvar class="org.unijena.jams.data.JAMSString" name="dirName" globvar="workspaceDir"/>
+                <jamsvar class="org.unijena.jams.data.JAMSBoolean" name="skipRegression" globvar="data_caching"/>
+                <jamsvar class="org.unijena.jams.data.JAMSTimeInterval" name="timeInterval" provider="TemporalContext" providervar="timeInterval"/>
+                <jamsvar class="org.unijena.jams.data.JAMSString" name="dataFileName" value="data\ahum.dat"/>
+                <jamsvar class="org.unijena.jams.data.JAMSInteger" name="startColumn" value="3"/>
+            </component>    
+            <component class="org.unijena.j2k.TSDataReader" name="PrecipDataReader">
+                <jamsvar class="org.unijena.jams.data.JAMSString" name="dirName" globvar="workspaceDir"/>
+                <jamsvar class="org.unijena.jams.data.JAMSBoolean" name="skipRegression" globvar="data_caching"/>
+                <jamsvar class="org.unijena.jams.data.JAMSTimeInterval" name="timeInterval" provider="TemporalContext" providervar="timeInterval"/>
+                <jamsvar class="org.unijena.jams.data.JAMSString" name="dataFileName" value="data\rain.dat"/>
+                <jamsvar class="org.unijena.jams.data.JAMSInteger" name="startColumn" value="3"/>
+            </component>
+            <component class="org.unijena.j2k.TSDataReader" name="SunHDataReader">
+                <jamsvar class="org.unijena.jams.data.JAMSString" name="dirName" globvar="workspaceDir"/>
+                <jamsvar class="org.unijena.jams.data.JAMSBoolean" name="skipRegression" globvar="data_caching"/>
+                <jamsvar class="org.unijena.jams.data.JAMSTimeInterval" name="timeInterval" provider="TemporalContext" providervar="timeInterval"/>
+                <jamsvar class="org.unijena.jams.data.JAMSString" name="dataFileName" value="data\sunh.dat"/>
+                <jamsvar class="org.unijena.jams.data.JAMSInteger" name="startColumn" value="3"/>
+            </component>
+            <component class="org.unijena.j2k.TSDataReader" name="WindDataReader">
+                <jamsvar class="org.unijena.jams.data.JAMSString" name="dirName" globvar="workspaceDir"/>
+                <jamsvar class="org.unijena.jams.data.JAMSBoolean" name="skipRegression" globvar="data_caching"/>
+                <jamsvar class="org.unijena.jams.data.JAMSTimeInterval" name="timeInterval" provider="TemporalContext" providervar="timeInterval"/>
+                <jamsvar class="org.unijena.jams.data.JAMSString" name="dataFileName" value="data\wind.dat"/>
+                <jamsvar class="org.unijena.jams.data.JAMSInteger" name="startColumn" value="3"/>
+            </component>
+            <component class="org.unijena.j2k.TSDataReader" name="ObsRunoffDataReader">
+                <jamsvar class="org.unijena.jams.data.JAMSString" name="dirName" globvar="workspaceDir"/>
+                <jamsvar class="org.unijena.jams.data.JAMSBoolean" name="skipRegression" globvar="data_caching"/>
+                <jamsvar class="org.unijena.jams.data.JAMSTimeInterval" name="timeInterval" provider="TemporalContext" providervar="timeInterval"/>
+                <jamsvar class="org.unijena.jams.data.JAMSString" name="dataFileName" value="data\orun.dat"/>
+                <jamsvar class="org.unijena.jams.data.JAMSInteger" name="startColumn" value="3"/>
+            </component>
+                    
+            <compoundcomponent class="org.unijena.jams.model.JAMSSpatialContext" name="HRUContext">
+                <jamsvar class="org.unijena.jams.data.JAMSEntityCollection" name="entities" provider="ParaReader" providervar="hrus"/>
+            
+                <component class="org.unijena.j2k.CalcAdditionalHRUAttribs" name="AdditionalHRUAttributes">
+                    <jamsvar class="org.unijena.jams.data.JAMSEntityCollection" name="hrus" provider="ParaReader" providervar="hrus"/>
+                    <jamsvar class="org.unijena.jams.data.JAMSEntity" name="entity" provider="HRUContext" providervar="currentEntity"/>
+                    <jamsvar class="org.unijena.jams.data.JAMSCalendar" name="time" provider="TemporalContext" providervar="current"/>
+                    <jamsvar class="org.unijena.jams.data.JAMSString" name="aNameXCoord" value="x"/>
+                    <jamsvar class="org.unijena.jams.data.JAMSString" name="aNameYCoord" value="y"/>
+                    <jamsvar class="org.unijena.jams.data.JAMSString" name="aNameLatitude" value="latitude"/>
+                    <jamsvar class="org.unijena.jams.data.JAMSString" name="aNameLongitude" value="longitude"/>
+                    <jamsvar class="org.unijena.jams.data.JAMSString" name="aNameSlope" value="slope"/>
+                    <jamsvar class="org.unijena.jams.data.JAMSString" name="aNameAspect" value="aspect"/>
+                    <jamsvar class="org.unijena.jams.data.JAMSString" name="aNameSAC" value="slopeAspectCorrection"/>
+                </component>
+
+                <component class="org.unijena.j2k.Regionalisation" name="TemperatureRegionaliser">
+                    <jamsvar class="org.unijena.jams.data.JAMSString" name="dirName" globvar="workspaceDir"/>
+                    <jamsvar class="org.unijena.jams.data.JAMSBoolean" name="dataCaching" globvar="data_caching"/>
+                    <jamsvar class="org.unijena.jams.data.JAMSEntityCollection" name="hrus" provider="ParaReader" providervar="hrus"/>
+                    <jamsvar class="org.unijena.jams.data.JAMSEntity" name="entity" provider="HRUContext" providervar="currentEntity"/>           
+                    <jamsvar class="org.unijena.jams.data.JAMSDoubleArray" name="dataArray" provider="TemperatureDataReader" providervar="dataArray"/>		        		
+                    <jamsvar class="org.unijena.jams.data.JAMSDoubleArray" name="regCoeff" provider="TemperatureDataReader" providervar="regCoeff"/>
+                    <jamsvar class="org.unijena.jams.data.JAMSDoubleArray" name="elevation" provider="TemperatureDataReader" providervar="elevation"/>
+                    <jamsvar class="org.unijena.jams.data.JAMSDoubleArray" name="xCoord" provider="TemperatureDataReader" providervar="xCoord"/>
+                    <jamsvar class="org.unijena.jams.data.JAMSDoubleArray" name="yCoord" provider="TemperatureDataReader" providervar="yCoord"/>
+                    <jamsvar class="org.unijena.jams.data.JAMSString" name="aNameX" value="x"/>
+                    <jamsvar class="org.unijena.jams.data.JAMSString" name="aNameY" value="y"/>
+                    <jamsvar class="org.unijena.jams.data.JAMSString" name="aNameData" value="tmean"/>
+                    <jamsvar class="org.unijena.jams.data.JAMSString" name="aNameElevation" value="elevation"/>
+                    <jamsvar class="org.unijena.jams.data.JAMSInteger" name="nidw" value="3"/>
+                    <jamsvar class="org.unijena.jams.data.JAMSDouble" name="pidw" value="2"/>
+                    <jamsvar class="org.unijena.jams.data.JAMSInteger" name="elevationCorrection" value="1"/>
+                    <jamsvar class="org.unijena.jams.data.JAMSDouble" name="rsqThreshold" value="0.75"/>
+                </component>
+                
+                
+                <component class="org.unijena.j2k.Regionalisation" name="AHumRegionaliser">
+                    <jamsvar class="org.unijena.jams.data.JAMSString" name="dirName" globvar="workspaceDir"/>
+                    <jamsvar class="org.unijena.jams.data.JAMSBoolean" name="dataCaching" globvar="data_caching"/>
+                    <jamsvar class="org.unijena.jams.data.JAMSEntityCollection" name="hrus" provider="ParaReader" providervar="hrus"/>
+                    <jamsvar class="org.unijena.jams.data.JAMSEntity" name="entity" provider="HRUContext" providervar="currentEntity"/>           
+                    <jamsvar class="org.unijena.jams.data.JAMSDoubleArray" name="dataArray" provider="AHumDataReader" providervar="dataArray"/>
+                    <jamsvar class="org.unijena.jams.data.JAMSDoubleArray" name="regCoeff" provider="AHumDataReader" providervar="regCoeff"/>
+                    <jamsvar class="org.unijena.jams.data.JAMSDoubleArray" name="elevation" provider="AHumDataReader" providervar="elevation"/>
+                    <jamsvar class="org.unijena.jams.data.JAMSDoubleArray" name="xCoord" provider="AHumDataReader" providervar="xCoord"/>
+                    <jamsvar class="org.unijena.jams.data.JAMSDoubleArray" name="yCoord" provider="AHumDataReader" providervar="yCoord"/>
+                    <jamsvar class="org.unijena.jams.data.JAMSString" name="aNameX" value="x"/>
+                    <jamsvar class="org.unijena.jams.data.JAMSString" name="aNameY" value="y"/>
+                    <jamsvar class="org.unijena.jams.data.JAMSString" name="aNameData" value="ahum"/>
+                    <jamsvar class="org.unijena.jams.data.JAMSString" name="aNameElevation" value="elevation"/>
+                    <jamsvar class="org.unijena.jams.data.JAMSInteger" name="nidw" value="3"/>
+                    <jamsvar class="org.unijena.jams.data.JAMSDouble" name="pidw" value="2"/>
+                    <jamsvar class="org.unijena.jams.data.JAMSInteger" name="elevationCorrection" value="1"/>
+                    <jamsvar class="org.unijena.jams.data.JAMSDouble" name="rsqThreshold" value="0.75"/>
+                </component>
+
+                <component class="org.unijena.j2k.Regionalisation" name="PrecipRegionaliser">
+                    <jamsvar class="org.unijena.jams.data.JAMSString" name="dirName" globvar="workspaceDir"/>
+                    <jamsvar class="org.unijena.jams.data.JAMSBoolean" name="dataCaching" globvar="data_caching"/>
+                    <jamsvar class="org.unijena.jams.data.JAMSEntityCollection" name="hrus" provider="ParaReader" providervar="hrus"/>
+                    <jamsvar class="org.unijena.jams.data.JAMSEntity" name="entity" provider="HRUContext" providervar="currentEntity"/>           
+                    <jamsvar class="org.unijena.jams.data.JAMSDoubleArray" name="dataArray" provider="PrecipDataReader" providervar="dataArray"/>
+                    <jamsvar class="org.unijena.jams.data.JAMSDoubleArray" name="regCoeff" provider="PrecipDataReader" providervar="regCoeff"/>
+                    <jamsvar class="org.unijena.jams.data.JAMSDoubleArray" name="elevation" provider="PrecipDataReader" providervar="elevation"/>
+                    <jamsvar class="org.unijena.jams.data.JAMSDoubleArray" name="xCoord" provider="PrecipDataReader" providervar="xCoord"/>
+                    <jamsvar class="org.unijena.jams.data.JAMSDoubleArray" name="yCoord" provider="PrecipDataReader" providervar="yCoord"/>
+                    <jamsvar class="org.unijena.jams.data.JAMSString" name="aNameX" value="x"/>
+                    <jamsvar class="org.unijena.jams.data.JAMSString" name="aNameY" value="y"/>
+                    <jamsvar class="org.unijena.jams.data.JAMSString" name="aNameData" value="precip"/>
+                    <jamsvar class="org.unijena.jams.data.JAMSString" name="aNameElevation" value="elevation"/>
+                    <jamsvar class="org.unijena.jams.data.JAMSInteger" name="nidw" value="5"/>
+                    <jamsvar class="org.unijena.jams.data.JAMSDouble" name="pidw" value="2"/>
+                    <jamsvar class="org.unijena.jams.data.JAMSInteger" name="elevationCorrection" value="1"/>
+                    <jamsvar class="org.unijena.jams.data.JAMSDouble" name="rsqThreshold" value="0.75"/>
+                </component>				    
+
+                <component class="org.unijena.j2k.Regionalisation" name="SunHRegionaliser">
+                    <jamsvar class="org.unijena.jams.data.JAMSString" name="dirName" globvar="workspaceDir"/>
+                		<jamsvar class="org.unijena.jams.data.JAMSBoolean" name="dataCaching" globvar="data_caching"/>
+                    <jamsvar class="org.unijena.jams.data.JAMSEntityCollection" name="hrus" provider="ParaReader" providervar="hrus"/>
+                    <jamsvar class="org.unijena.jams.data.JAMSEntity" name="entity" provider="HRUContext" providervar="currentEntity"/>           
+                    <jamsvar class="org.unijena.jams.data.JAMSDoubleArray" name="dataArray" provider="SunHDataReader" providervar="dataArray"/>
+                    <jamsvar class="org.unijena.jams.data.JAMSDoubleArray" name="regCoeff" provider="SunHDataReader" providervar="regCoeff"/>
+                    <jamsvar class="org.unijena.jams.data.JAMSDoubleArray" name="elevation" provider="SunHDataReader" providervar="elevation"/>
+                    <jamsvar class="org.unijena.jams.data.JAMSDoubleArray" name="xCoord" provider="SunHDataReader" providervar="xCoord"/>
+                    <jamsvar class="org.unijena.jams.data.JAMSDoubleArray" name="yCoord" provider="SunHDataReader" providervar="yCoord"/>
+                    <jamsvar class="org.unijena.jams.data.JAMSString" name="aNameX" value="x"/>
+                    <jamsvar class="org.unijena.jams.data.JAMSString" name="aNameY" value="y"/>
+                    <jamsvar class="org.unijena.jams.data.JAMSString" name="aNameData" value="sunh"/>
+                    <jamsvar class="org.unijena.jams.data.JAMSString" name="aNameElevation" value="elevation"/>
+                    <jamsvar class="org.unijena.jams.data.JAMSInteger" name="nidw" value="3"/>
+                    <jamsvar class="org.unijena.jams.data.JAMSDouble" name="pidw" value="2"/>
+                    <jamsvar class="org.unijena.jams.data.JAMSInteger" name="elevationCorrection" value="0"/>
+                    <jamsvar class="org.unijena.jams.data.JAMSDouble" name="rsqThreshold" value="0.75"/>
+                </component>				    
+
+                <component class="org.unijena.j2k.Regionalisation" name="WindRegionaliser">
+                    <jamsvar class="org.unijena.jams.data.JAMSString" name="dirName" globvar="workspaceDir"/>
+                    <jamsvar class="org.unijena.jams.data.JAMSBoolean" name="dataCaching" globvar="data_caching"/>
+                    <jamsvar class="org.unijena.jams.data.JAMSEntityCollection" name="hrus" provider="ParaReader" providervar="hrus"/>
+                    <jamsvar class="org.unijena.jams.data.JAMSEntity" name="entity" provider="HRUContext" providervar="currentEntity"/>           
+                    <jamsvar class="org.unijena.jams.data.JAMSDoubleArray" name="dataArray" provider="WindDataReader" providervar="dataArray"/>
+                    <jamsvar class="org.unijena.jams.data.JAMSDoubleArray" name="regCoeff" provider="WindDataReader" providervar="regCoeff"/>
+                    <jamsvar class="org.unijena.jams.data.JAMSDoubleArray" name="elevation" provider="WindDataReader" providervar="elevation"/>
+                    <jamsvar class="org.unijena.jams.data.JAMSDoubleArray" name="xCoord" provider="WindDataReader" providervar="xCoord"/>
+                    <jamsvar class="org.unijena.jams.data.JAMSDoubleArray" name="yCoord" provider="WindDataReader" providervar="yCoord"/>
+                    <jamsvar class="org.unijena.jams.data.JAMSString" name="aNameX" value="x"/>
+                    <jamsvar class="org.unijena.jams.data.JAMSString" name="aNameY" value="y"/>
+                    <jamsvar class="org.unijena.jams.data.JAMSString" name="aNameData" value="wind"/>
+                    <jamsvar class="org.unijena.jams.data.JAMSString" name="aNameElevation" value="elevation"/>
+                    <jamsvar class="org.unijena.jams.data.JAMSInteger" name="nidw" value="3"/>
+                    <jamsvar class="org.unijena.jams.data.JAMSDouble" name="pidw" value="2"/>
+                    <jamsvar class="org.unijena.jams.data.JAMSInteger" name="elevationCorrection" value="0"/>
+                    <jamsvar class="org.unijena.jams.data.JAMSDouble" name="rsqThreshold" value="0.75"/>
+                </component>				    
+
+                <component class="org.unijena.j2k.CalcRelativeHumidity" name="CalcRelativeHumidity">
+                    <jamsvar class="org.unijena.jams.data.JAMSEntityCollection" name="hrus" provider="ParaReader" providervar="hrus"/>
+                    <jamsvar class="org.unijena.jams.data.JAMSEntity" name="entity" provider="HRUContext" providervar="currentEntity"/>
+                    <jamsvar class="org.unijena.jams.data.JAMSString" name="aNameTmean" value="tmean"/>
+                    <jamsvar class="org.unijena.jams.data.JAMSString" name="aNameAhum" value="ahum"/>
+                    <jamsvar class="org.unijena.jams.data.JAMSString" name="aNameRhum" value="rhum"/>
+                </component>
+
+                <component class="org.unijena.j2k.CalcLanduseStateVars" name="CalcLanduseStateVars">
+                    <jamsvar class="org.unijena.jams.data.JAMSEntityCollection" name="hrus" provider="ParaReader" providervar="hrus"/>
+                    <jamsvar class="org.unijena.jams.data.JAMSEntity" name="entity" provider="HRUContext" providervar="currentEntity"/>
+                    <jamsvar class="org.unijena.jams.data.JAMSCalendar" name="time" provider="TemporalContext" providervar="current"/>
+                    <jamsvar class="org.unijena.jams.data.JAMSString" name="aNameLAIArray" value="LAIvals"/>
+                    <jamsvar class="org.unijena.jams.data.JAMSString" name="aNameEffHeightArray" value="EffHvals"/>
+                    <jamsvar class="org.unijena.jams.data.JAMSString" name="aNameRSC0" value="RSC0"/>
+                    <jamsvar class="org.unijena.jams.data.JAMSString" name="aNameLuRSC0" value="RSC0_"/>
+                    <jamsvar class="org.unijena.jams.data.JAMSString" name="aNameLAI" value="LAI"/>
+                    <jamsvar class="org.unijena.jams.data.JAMSString" name="aNameLAI_1" value="LAI_d1"/>
+                    <jamsvar class="org.unijena.jams.data.JAMSString" name="aNameLAI_2" value="LAI_d2"/>
+                    <jamsvar class="org.unijena.jams.data.JAMSString" name="aNameLAI_3" value="LAI_d3"/>
+                    <jamsvar class="org.unijena.jams.data.JAMSString" name="aNameLAI_4" value="LAI_d4"/>
+                    <jamsvar class="org.unijena.jams.data.JAMSString" name="aNameEffHeight" value="EffHeight"/>
+                    <jamsvar class="org.unijena.jams.data.JAMSString" name="aNameEffHeight_1" value="effHeight_d1"/>
+                    <jamsvar class="org.unijena.jams.data.JAMSString" name="aNameEffHeight_2" value="effHeight_d2"/>
+                    <jamsvar class="org.unijena.jams.data.JAMSString" name="aNameEffHeight_3" value="effHeight_d3"/>
+                    <jamsvar class="org.unijena.jams.data.JAMSString" name="aNameEffHeight_4" value="effHeight_d4"/>
+                    <jamsvar class="org.unijena.jams.data.JAMSString" name="aNameElevation" value="elevation"/>
+                </component>
+
+                <component class="org.unijena.j2k.CalcDailyETP_Haude" name="CalcHourlyETP">
+                    <jamsvar class="org.unijena.jams.data.JAMSString" name="dirName" globvar="workspaceDir"/>
+                    <jamsvar class="org.unijena.jams.data.JAMSEntityCollection" name="hrus" provider="ParaReader" providervar="hrus"/>
+                    <jamsvar class="org.unijena.jams.data.JAMSEntity" name="entity" provider="HRUContext" providervar="currentEntity"/>
+                    <jamsvar class="org.unijena.jams.data.JAMSCalendar" name="time" provider="TemporalContext" providervar="current"/>
+                    <jamsvar class="org.unijena.jams.data.JAMSString" name="aNameTmean" value="tmean"/>
+                    <jamsvar class="org.unijena.jams.data.JAMSString" name="aNameRhum" value="rhum"/>
+                    <jamsvar class="org.unijena.jams.data.JAMSString" name="aNameArea" value="area"/>
+                    <jamsvar class="org.unijena.jams.data.JAMSString" name="aNameHaudeFactor" value="hFact_"/>
+                    <jamsvar class="org.unijena.jams.data.JAMSString" name="aNamePotETP" value="potETP_haude"/>
+                    <jamsvar class="org.unijena.jams.data.JAMSString" name="aNameActETP" value="actETP_haude"/>
+                </component>
+                
+                <component class="org.unijena.j2k.CalcHourlySolarRadiation" name="solRadCalculation">
+                                <jamsvar class="org.unijena.jams.data.JAMSEntityCollection" name="hrus" provider="ParaReader" providervar="hrus"/>
+				<jamsvar class="org.unijena.jams.data.JAMSEntity" name="entity" provider="HRUContext" providervar="currentEntity"/>
+                                <jamsvar class="org.unijena.jams.data.JAMSCalendar" name="time" provider="TemporalContext" providervar="current"/>
+                                <jamsvar class="org.unijena.jams.data.JAMSString" name="aNameElevation" value="elevation"/>
+                                <jamsvar class="org.unijena.jams.data.JAMSString" name="aNameSlope" value="slope"/>
+                                <jamsvar class="org.unijena.jams.data.JAMSString" name="aNameAspect" value="aspect"/>
+                                <jamsvar class="org.unijena.jams.data.JAMSString" name="aNameLat" value="latitude"/>
+                                <jamsvar class="org.unijena.jams.data.JAMSString" name="aNameLong" value="longitude"/>
+                                <jamsvar class="org.unijena.jams.data.JAMSString" name="aNameSAC" value="slopeAspectCorrection"/>
+                                <jamsvar class="org.unijena.jams.data.JAMSString" name="aNameSunFrac" value="sunh"/>
+                                <jamsvar class="org.unijena.jams.data.JAMSString" name="aNameSolRad" value="solRad"/>
+                        </component>
+                        
+                        <component class="org.unijena.j2k.CalcHourlyNetRadiation" name="CalcHourlyNetRadiation">
+                                <jamsvar class="org.unijena.jams.data.JAMSString" name="dirName" globvar="workspaceDir"/>
+                                <jamsvar class="org.unijena.jams.data.JAMSEntityCollection" name="hrus" provider="ParaReader" providervar="hrus"/>
+                                <jamsvar class="org.unijena.jams.data.JAMSEntity" name="entity" provider="HRUContext" providervar="currentEntity"/>
+                                <jamsvar class="org.unijena.jams.data.JAMSCalendar" name="time" provider="TemporalContext" providervar="current"/>
+                                <jamsvar class="org.unijena.jams.data.JAMSString" name="aNameElevation" value="elevation"/>
+                                <jamsvar class="org.unijena.jams.data.JAMSString" name="aNameTmean" value="tmean"/>
+                                <jamsvar class="org.unijena.jams.data.JAMSString" name="aNameSunh" value="sunh"/>
+                                <jamsvar class="org.unijena.jams.data.JAMSString" name="aNameRhum" value="rhum"/>
+                                <jamsvar class="org.unijena.jams.data.JAMSString" name="aNameSolRad" value="solRad"/>
+                                <jamsvar class="org.unijena.jams.data.JAMSString" name="aNameAlbedo" value="albedo"/>
+                                <jamsvar class="org.unijena.jams.data.JAMSString" name="aNameNetRad" value="netRad"/>
+                        </component>
+                            
+                        <component class="org.unijena.j2k.CalcDailyETP_PenmanMonteith" name="CalcDailyETP">
+                                <jamsvar class="org.unijena.jams.data.JAMSString" name="dirName" globvar="workspaceDir"/>
+                                <jamsvar class="org.unijena.jams.data.JAMSEntityCollection" name="hrus" provider="ParaReader" providervar="hrus"/>
+                                <jamsvar class="org.unijena.jams.data.JAMSEntity" name="entity" provider="HRUContext" providervar="currentEntity"/>
+                                <jamsvar class="org.unijena.jams.data.JAMSString" name="aNameTempRes" value="h"/>
+                                <jamsvar class="org.unijena.jams.data.JAMSString" name="aNameNetRad" value="netRad"/>
+                                <jamsvar class="org.unijena.jams.data.JAMSString" name="aNameTmean" value="tmean"/>
+                                <jamsvar class="org.unijena.jams.data.JAMSString" name="aNameRhum" value="rhum"/>
+                                <jamsvar class="org.unijena.jams.data.JAMSString" name="aNameWind" value="wind"/>
+                                <jamsvar class="org.unijena.jams.data.JAMSString" name="aNameRSC0" value="RSC0"/>
+                                <jamsvar class="org.unijena.jams.data.JAMSString" name="aNameLAI" value="LAI"/>
+                                <jamsvar class="org.unijena.jams.data.JAMSString" name="aNameElevation" value="elevation"/>
+                                <jamsvar class="org.unijena.jams.data.JAMSString" name="aNameArea" value="area"/>
+                                <jamsvar class="org.unijena.jams.data.JAMSString" name="aNameEffHeight" value="EffHeight"/>
+                                <jamsvar class="org.unijena.jams.data.JAMSString" name="aNamePotETP" value="potETP"/>
+                                <jamsvar class="org.unijena.jams.data.JAMSString" name="aNameActETP" value="actETP"/>
+                            </component>
+
+                <component class="org.unijena.j2k.CalcRainSnowParts" name="CalcRainSnowParts">
+                    <jamsvar class="org.unijena.jams.data.JAMSEntityCollection" name="hrus" provider="ParaReader" providervar="hrus"/>
+                    <jamsvar class="org.unijena.jams.data.JAMSEntity" name="entity" provider="HRUContext" providervar="currentEntity"/>
+                    <jamsvar class="org.unijena.jams.data.JAMSString" name="aNamePrecip" value="precip"/>
+                    <jamsvar class="org.unijena.jams.data.JAMSString" name="aNameTmean" value="tmean"/>
+                    <jamsvar class="org.unijena.jams.data.JAMSString" name="aNameArea" value="area"/>
+                    <jamsvar class="org.unijena.jams.data.JAMSDouble" name="snow_trs" globvar="snow_trs"/>
+                    <jamsvar class="org.unijena.jams.data.JAMSDouble" name="snow_trans" globvar="snow_trans"/>
+                    <jamsvar class="org.unijena.jams.data.JAMSString" name="aNameRain" value="rain"/>
+                    <jamsvar class="org.unijena.jams.data.JAMSString" name="aNameSnow" value="snow"/>		
+                </component>	    
+
+                <component class="org.unijena.j2k.J2KProcessInterception" name="J2KProcessInterception">
+                    <jamsvar class="org.unijena.jams.data.JAMSEntityCollection" name="hrus" provider="ParaReader" providervar="hrus"/>
+                    <jamsvar class="org.unijena.jams.data.JAMSEntity" name="entity" provider="HRUContext" providervar="currentEntity"/>
+                    <jamsvar class="org.unijena.jams.data.JAMSString" name="aNameArea" value="area"/>
+                    <jamsvar class="org.unijena.jams.data.JAMSString" name="aNameTmean" value="tmean"/>
+                    <jamsvar class="org.unijena.jams.data.JAMSString" name="aNameRain" value="rain"/>
+                    <jamsvar class="org.unijena.jams.data.JAMSString" name="aNameSnow" value="snow"/>
+                    <jamsvar class="org.unijena.jams.data.JAMSString" name="aNamePotETP" value="potETP"/>
+                    <jamsvar class="org.unijena.jams.data.JAMSString" name="aNameActETP" value="actETP"/>
+                    <jamsvar class="org.unijena.jams.data.JAMSString" name="aNameLAI" value="LAI"/>
+                    <jamsvar class="org.unijena.jams.data.JAMSDouble" name="snow_trs" globvar="snow_trs"/>
+                    <jamsvar class="org.unijena.jams.data.JAMSDouble" name="snow_trans" globvar="snow_trans"/>
+                    <jamsvar class="org.unijena.jams.data.JAMSDouble" name="a_rain" value="0.2"/>
+                    <jamsvar class="org.unijena.jams.data.JAMSDouble" name="a_snow" value="0.5"/>
+                    <jamsvar class="org.unijena.jams.data.JAMSString" name="aNameNetRain" value="netRain"/>
+                    <jamsvar class="org.unijena.jams.data.JAMSString" name="aNameNetSnow" value="netSnow"/>
+                    <jamsvar class="org.unijena.jams.data.JAMSString" name="aNameThroughfall" value="throughfall"/>
+                    <jamsvar class="org.unijena.jams.data.JAMSString" name="aNameInterception" value="interception"/>
+                    <jamsvar class="org.unijena.jams.data.JAMSString" name="aNameIntercStorage" value="intercStorage"/>		
+                </component>
+
+                <component class="org.unijena.j2k.J2KProcessSnow" name="J2KProcessSnow">
+                    <jamsvar class="org.unijena.jams.data.JAMSEntityCollection" name="hrus" provider="ParaReader" providervar="hrus"/>
+                    <jamsvar class="org.unijena.jams.data.JAMSEntity" name="entity" provider="HRUContext" providervar="currentEntity"/>
+                    <jamsvar class="org.unijena.jams.data.JAMSString" name="aNameArea" value="area"/>
+                    <jamsvar class="org.unijena.jams.data.JAMSString" name="aNameSAC" value="slopeAspectCorrection"/>
+                    <jamsvar class="org.unijena.jams.data.JAMSString" name="aNameTmean" value="tmean"/>
+                    <jamsvar class="org.unijena.jams.data.JAMSString" name="aNameNetRain" value="netRain"/>
+                    <jamsvar class="org.unijena.jams.data.JAMSString" name="aNameNetSnow" value="netSnow"/>
+                    <jamsvar class="org.unijena.jams.data.JAMSString" name="aNameSnowTotSWE" value="snowTotSWE"/>
+                    <jamsvar class="org.unijena.jams.data.JAMSString" name="aNameSnowDrySWE" value="snowDrySWE"/>
+                    <jamsvar class="org.unijena.jams.data.JAMSString" name="aNameSnowTotDens" value="snowTotDens"/>
+                    <jamsvar class="org.unijena.jams.data.JAMSString" name="aNameSnowDryDens" value="snowDryDens"/>
+                    <jamsvar class="org.unijena.jams.data.JAMSString" name="aNameSnowDepth" value="snowDepth"/>
+                    <jamsvar class="org.unijena.jams.data.JAMSString" name="aNameSnowAge" value="snowAge"/>
+                    <jamsvar class="org.unijena.jams.data.JAMSString" name="aNameSnowColdContent" value="snowColdContent"/>
+                    <jamsvar class="org.unijena.jams.data.JAMSString" name="aNameSnowMelt" value="snowMelt"/>
+                    <jamsvar class="org.unijena.jams.data.JAMSDouble" name="snow_trs" globvar="snow_trs"/>
+                    <jamsvar class="org.unijena.jams.data.JAMSDouble" name="snow_trans" globvar="snow_trans"/>
+                    <jamsvar class="org.unijena.jams.data.JAMSDouble" name="t_factor" value="0.7"/>
+                    <jamsvar class="org.unijena.jams.data.JAMSDouble" name="r_factor" value="0.008"/>
+                    <jamsvar class="org.unijena.jams.data.JAMSDouble" name="g_factor" value="4.04"/>
+                    <jamsvar class="org.unijena.jams.data.JAMSDouble" name="snowCritDens" value="0.45"/>
+                    <jamsvar class="org.unijena.jams.data.JAMSDouble" name="ccf_factor" value="0.001"/>
+                </component>
+
+                <component class="org.unijena.j2k.J2KProcessLumpedSoilWater" name="J2KProcessLumpedSoilWater">
+                    <jamsvar class="org.unijena.jams.data.JAMSEntityCollection" name="hrus" provider="ParaReader" providervar="hrus"/>
+                    <jamsvar class="org.unijena.jams.data.JAMSEntity" name="entity" provider="HRUContext" providervar="currentEntity"/>
+                    <jamsvar class="org.unijena.jams.data.JAMSCalendar" name="time" provider="TemporalContext" providervar="current"/>
+                    <jamsvar class="org.unijena.jams.data.JAMSString" name="aNameArea" value="area"/>
+                    <jamsvar class="org.unijena.jams.data.JAMSString" name="aNameSlope" value="slope"/>
+                    <jamsvar class="org.unijena.jams.data.JAMSString" name="aNameSealedGrade" value="sealedGrade"/>
+                    <jamsvar class="org.unijena.jams.data.JAMSString" name="aNameNetRain" value="netRain"/>
+                    <jamsvar class="org.unijena.jams.data.JAMSString" name="aNameNetSnow" value="netSnow"/>
+                    <jamsvar class="org.unijena.jams.data.JAMSString" name="aNamePotETP" value="potETP"/>
+                    <jamsvar class="org.unijena.jams.data.JAMSString" name="aNameActETP" value="actETP"/>
+                    <jamsvar class="org.unijena.jams.data.JAMSString" name="aNameSnowDepth" value="snowDepth"/>
+                    <jamsvar class="org.unijena.jams.data.JAMSString" name="aNameSnowMelt" value="snowMelt"/>
+                    <jamsvar class="org.unijena.jams.data.JAMSString" name="aNameFC" value="fc_"/>
+                    <jamsvar class="org.unijena.jams.data.JAMSString" name="aNameAC" value="aircap"/>
+                    <jamsvar class="org.unijena.jams.data.JAMSString" name="aNameRootDepth" value="rootDepth"/>
+                    <jamsvar class="org.unijena.jams.data.JAMSString" name="aNameMaxMPS" value="maxMPS"/>
+                    <jamsvar class="org.unijena.jams.data.JAMSString" name="aNameMaxLPS" value="maxLPS"/>
+                    <jamsvar class="org.unijena.jams.data.JAMSString" name="aNameActDPS" value="actDPS"/>
+                    <jamsvar class="org.unijena.jams.data.JAMSString" name="aNameActMPS" value="actMPS"/>
+                    <jamsvar class="org.unijena.jams.data.JAMSString" name="aNameActLPS" value="actLPS"/>
+                    <jamsvar class="org.unijena.jams.data.JAMSString" name="aNameSatMPS" value="satMPS"/>
+                    <jamsvar class="org.unijena.jams.data.JAMSString" name="aNameSatLPS" value="satLPS"/>
+                    <jamsvar class="org.unijena.jams.data.JAMSString" name="aNameSatSoil" value="satSoil"/>
+                    <jamsvar class="org.unijena.jams.data.JAMSString" name="aNameInfiltration" value="infiltration"/>
+                    <jamsvar class="org.unijena.jams.data.JAMSString" name="aNameInterflow" value="interflow"/>
+                    <jamsvar class="org.unijena.jams.data.JAMSString" name="aNamePercolation" value="percolation"/>
+                    <jamsvar class="org.unijena.jams.data.JAMSString" name="aNameInRD1" value="inRD1"/>
+                    <jamsvar class="org.unijena.jams.data.JAMSString" name="aNameInRD2" value="inRD2"/>
+                    <jamsvar class="org.unijena.jams.data.JAMSString" name="aNameGenRD1" value="genRD1"/>
+                    <jamsvar class="org.unijena.jams.data.JAMSString" name="aNameGenRD2" value="genRD2"/>
+                    <jamsvar class="org.unijena.jams.data.JAMSString" name="aNameOutRD1" value="outRD1"/>
+                    <jamsvar class="org.unijena.jams.data.JAMSString" name="aNameOutRD2" value="outRD2"/>
+                    <jamsvar class="org.unijena.jams.data.JAMSDouble" name="soilMaxDPS" value="4.0"/>
+                    <jamsvar class="org.unijena.jams.data.JAMSDouble" name="soilPolRed" value="4.0"/>
+                    <jamsvar class="org.unijena.jams.data.JAMSDouble" name="soilLinRed" value="0.0"/>
+                    <jamsvar class="org.unijena.jams.data.JAMSDouble" name="soilMaxInfSummer" value="20.0"/>
+                    <jamsvar class="org.unijena.jams.data.JAMSDouble" name="soilMaxInfWinter" value="30.0"/>
+                    <jamsvar class="org.unijena.jams.data.JAMSDouble" name="soilMaxInfSnow" value="20.0"/>
+                    <jamsvar class="org.unijena.jams.data.JAMSDouble" name="soilImpGT80" value="0.25"/>
+                    <jamsvar class="org.unijena.jams.data.JAMSDouble" name="soilImpLT80" value="0.6"/>
+                    <jamsvar class="org.unijena.jams.data.JAMSDouble" name="soilDistMPSLPS" value="1"/>
+                    <jamsvar class="org.unijena.jams.data.JAMSDouble" name="soilDiffMPSLPS" value="1"/>
+                    <jamsvar class="org.unijena.jams.data.JAMSDouble" name="soilOutLPS" value="0.05"/>
+                    <jamsvar class="org.unijena.jams.data.JAMSDouble" name="soilLatVertLPS" value="1.0"/>
+                    <jamsvar class="org.unijena.jams.data.JAMSDouble" name="soilMaxPerc" value="0.2"/>
+                    <jamsvar class="org.unijena.jams.data.JAMSDouble" name="soilConcRD1" value="12"/>
+                    <jamsvar class="org.unijena.jams.data.JAMSDouble" name="soilConcRD2" value="24"/>
+                    <jamsvar class="org.unijena.jams.data.JAMSDouble" name="FCAdaptation" value="1.0"/>
+                    <jamsvar class="org.unijena.jams.data.JAMSDouble" name="ACAdaptation" value="1.0"/>
+                </component>
+
+                <component class="org.unijena.j2k.J2KProcessGroundwater" name="J2KProcessGroundwater">
+                    <jamsvar class="org.unijena.jams.data.JAMSEntityCollection" name="hrus" provider="ParaReader" providervar="hrus"/>
+                    <jamsvar class="org.unijena.jams.data.JAMSEntity" name="entity" provider="HRUContext" providervar="currentEntity"/>
+                    <jamsvar class="org.unijena.jams.data.JAMSString" name="aNameArea" value="area"/>
+                    <jamsvar class="org.unijena.jams.data.JAMSString" name="aNameSlope" value="slope"/>
+                    <jamsvar class="org.unijena.jams.data.JAMSString" name="aNameMaxRG1_f" value="RG1_max"/>
+                    <jamsvar class="org.unijena.jams.data.JAMSString" name="aNameMaxRG2_f" value="RG2_max"/>
+                    <jamsvar class="org.unijena.jams.data.JAMSString" name="aNameMaxRG1" value="maxRG1"/>
+                    <jamsvar class="org.unijena.jams.data.JAMSString" name="aNameMaxRG2" value="maxRG2"/>
+                    <jamsvar class="org.unijena.jams.data.JAMSString" name="aNameKRG1" value="RG1_k"/>
+                    <jamsvar class="org.unijena.jams.data.JAMSString" name="aNameKRG2" value="RG2_k"/>
+                    <jamsvar class="org.unijena.jams.data.JAMSString" name="aNameActRG1" value="actRG1"/>
+                    <jamsvar class="org.unijena.jams.data.JAMSString" name="aNameActRG2" value="actRG2"/>
+                    <jamsvar class="org.unijena.jams.data.JAMSString" name="aNameInRG1" value="inRG1"/>
+                    <jamsvar class="org.unijena.jams.data.JAMSString" name="aNameInRG2" value="inRG2"/>
+                    <jamsvar class="org.unijena.jams.data.JAMSString" name="aNameOutRG1" value="outRG1"/>
+                    <jamsvar class="org.unijena.jams.data.JAMSString" name="aNameOutRG2" value="outRG2"/>
+                    <jamsvar class="org.unijena.jams.data.JAMSString" name="aNameGenRG1" value="genRG1"/>
+                    <jamsvar class="org.unijena.jams.data.JAMSString" name="aNameGenRG2" value="genRG2"/>
+                    <jamsvar class="org.unijena.jams.data.JAMSString" name="aNamePercolation" value="percolation"/>
+                    <jamsvar class="org.unijena.jams.data.JAMSString" name="aNameInterflow" value="outRD2"/>
+                    <jamsvar class="org.unijena.jams.data.JAMSString" name="aNameMaxSoilStorage" value="maxMPS"/>
+                    <jamsvar class="org.unijena.jams.data.JAMSString" name="aNameActSoilStorage" value="actMPS"/>
+                    <jamsvar class="org.unijena.jams.data.JAMSDouble" name="gwRG1RG2dist" value="0.8"/>
+                    <jamsvar class="org.unijena.jams.data.JAMSDouble" name="gwRG1Fact" value="1.0"/>
+                    <jamsvar class="org.unijena.jams.data.JAMSDouble" name="gwRG2Fact" value="24.0"/>
+                    <jamsvar class="org.unijena.jams.data.JAMSDouble" name="gwCapRise" value="0.0"/>
+                </component>
+
+                <component class="org.unijena.j2k.J2KProcessRouting" name="J2KProcessRouting">
+                    <jamsvar class="org.unijena.jams.data.JAMSEntityCollection" name="reaches" provider="ParaReader" providervar="reaches"/>
+                    <jamsvar class="org.unijena.jams.data.JAMSEntity" name="entity" provider="HRUContext" providervar="currentEntity"/>
+                    <jamsvar class="org.unijena.jams.data.JAMSString" name="aNameInRD1" value="inRD1"/>
+                    <jamsvar class="org.unijena.jams.data.JAMSString" name="aNameInRD2" value="inRD2"/>
+                    <jamsvar class="org.unijena.jams.data.JAMSString" name="aNameInRG1" value="inRG1"/>
+                    <jamsvar class="org.unijena.jams.data.JAMSString" name="aNameInRG2" value="inRG2"/>
+                    <jamsvar class="org.unijena.jams.data.JAMSString" name="aNameOutRD1" value="outRD1"/>
+                    <jamsvar class="org.unijena.jams.data.JAMSString" name="aNameOutRD2" value="outRD2"/>
+                    <jamsvar class="org.unijena.jams.data.JAMSString" name="aNameOutRG1" value="outRG1"/>
+                    <jamsvar class="org.unijena.jams.data.JAMSString" name="aNameOutRG2" value="outRG2"/>
+                </component>
+
+        </compoundcomponent>
+        
+        <compoundcomponent class="org.unijena.jams.model.JAMSSpatialContext" name="ReachContext">
+            <jamsvar class="org.unijena.jams.data.JAMSEntityCollection" name="entities" provider="ParaReader" providervar="reaches"/>
+            
+            <component class="org.unijena.j2k.J2KProcessReachRouting" name="J2KProcessReachRouting">
+                <jamsvar class="org.unijena.jams.data.JAMSEntityCollection" name="reaches" provider="ParaReader" providervar="reaches"/>
+                <jamsvar class="org.unijena.jams.data.JAMSEntity" name="entity" provider="ReachContext" providervar="currentEntity"/>
+                <jamsvar class="org.unijena.jams.data.JAMSString" name="aNameLength" value="length"/>
+                <jamsvar class="org.unijena.jams.data.JAMSString" name="aNameSlope" value="slope"/>
+                <jamsvar class="org.unijena.jams.data.JAMSString" name="aNameWidth" value="width"/>
+                <jamsvar class="org.unijena.jams.data.JAMSString" name="aNameRoughness" value="rough"/>
+                <jamsvar class="org.unijena.jams.data.JAMSString" name="aNameInRD1" value="inRD1"/>
+                <jamsvar class="org.unijena.jams.data.JAMSString" name="aNameInRD2" value="inRD2"/>
+                <jamsvar class="org.unijena.jams.data.JAMSString" name="aNameInRG1" value="inRG1"/>
+                <jamsvar class="org.unijena.jams.data.JAMSString" name="aNameInRG2" value="inRG2"/>
+                <jamsvar class="org.unijena.jams.data.JAMSString" name="aNameActRD1" value="actRD1"/>
+                <jamsvar class="org.unijena.jams.data.JAMSString" name="aNameActRD2" value="actRD2"/>
+                <jamsvar class="org.unijena.jams.data.JAMSString" name="aNameActRG1" value="actRG1"/>
+                <jamsvar class="org.unijena.jams.data.JAMSString" name="aNameActRG2" value="actRG2"/>
+                <jamsvar class="org.unijena.jams.data.JAMSString" name="aNameOutRD1" value="reachOutRD1"/>
+                <jamsvar class="org.unijena.jams.data.JAMSString" name="aNameOutRD2" value="reachOutRD2"/>
+                <jamsvar class="org.unijena.jams.data.JAMSString" name="aNameOutRG1" value="reachOutRG1"/>
+                <jamsvar class="org.unijena.jams.data.JAMSString" name="aNameOutRG2" value="reachOutRG2"/>
+                <jamsvar class="org.unijena.jams.data.JAMSString" name="aNameSimRunoff" value="simRunoff"/>
+                <jamsvar class="org.unijena.jams.data.JAMSString" name="aNameChannelStorage" value="channelStorage"/>
+                <jamsvar class="org.unijena.jams.data.JAMSDouble" name="flowRouteTA" value="1.0"/>
+            </component>
+        </compoundcomponent>
+        		    
+	<component class="org.unijena.j2k.SpatialAggregator" name="PrecipAggregator">
+            <jamsvar class="org.unijena.jams.data.JAMSEntityCollection" name="hrus" provider="ParaReader" providervar="hrus"/>
+            <jamsvar class="org.unijena.jams.data.JAMSEntity" name="targetEntity" provider="CatchmentCreator" providervar="entity"/>
+            <jamsvar class="org.unijena.jams.data.JAMSString" name="aNameData" value="precip"/>
+            <jamsvar class="org.unijena.jams.data.JAMSString" name="aNameArea" value="area"/>
+            <jamsvar class="org.unijena.jams.data.JAMSInteger" name="aggregationType" value="1"/>
+        </component>
+
+        <component class="org.unijena.j2k.SpatialAggregator" name="TMeanAggregator">
+            <jamsvar class="org.unijena.jams.data.JAMSEntityCollection" name="hrus" provider="ParaReader" providervar="hrus"/>
+            <jamsvar class="org.unijena.jams.data.JAMSEntity" name="targetEntity" provider="CatchmentCreator" providervar="entity"/>
+            <jamsvar class="org.unijena.jams.data.JAMSString" name="aNameData" value="tmean"/>
+            <jamsvar class="org.unijena.jams.data.JAMSString" name="aNameArea" value="area"/>
+            <jamsvar class="org.unijena.jams.data.JAMSInteger" name="aggregationType" value="1"/>
+        </component>
+		    
+        <component class="org.unijena.j2k.SpatialAggregator" name="RhumAggregator">
+            <jamsvar class="org.unijena.jams.data.JAMSEntityCollection" name="hrus" provider="ParaReader" providervar="hrus"/>
+            <jamsvar class="org.unijena.jams.data.JAMSEntity" name="targetEntity" provider="CatchmentCreator" providervar="entity"/>
+            <jamsvar class="org.unijena.jams.data.JAMSString" name="aNameData" value="rhum"/>
+            <jamsvar class="org.unijena.jams.data.JAMSString" name="aNameArea" value="area"/>
+            <jamsvar class="org.unijena.jams.data.JAMSInteger" name="aggregationType" value="1"/>
+        </component>
+		    
+        <component class="org.unijena.j2k.SpatialAggregator" name="RainAggregator">
+            <jamsvar class="org.unijena.jams.data.JAMSEntityCollection" name="hrus" provider="ParaReader" providervar="hrus"/>
+            <jamsvar class="org.unijena.jams.data.JAMSEntity" name="targetEntity" provider="CatchmentCreator" providervar="entity"/>
+            <jamsvar class="org.unijena.jams.data.JAMSString" name="aNameData" value="rain"/>
+            <jamsvar class="org.unijena.jams.data.JAMSString" name="aNameArea" value="area"/>
+            <jamsvar class="org.unijena.jams.data.JAMSInteger" name="aggregationType" value="3"/>
+        </component>
+		    
+        <component class="org.unijena.j2k.SpatialAggregator" name="SnowAggregator">
+            <jamsvar class="org.unijena.jams.data.JAMSEntityCollection" name="hrus" provider="ParaReader" providervar="hrus"/>
+            <jamsvar class="org.unijena.jams.data.JAMSEntity" name="targetEntity" provider="CatchmentCreator" providervar="entity"/>
+            <jamsvar class="org.unijena.jams.data.JAMSString" name="aNameData" value="snow"/>
+            <jamsvar class="org.unijena.jams.data.JAMSString" name="aNameArea" value="area"/>
+            <jamsvar class="org.unijena.jams.data.JAMSInteger" name="aggregationType" value="3"/>
+        </component>
+
+        <component class="org.unijena.j2k.SpatialAggregator" name="PETPAggregator">
+            <jamsvar class="org.unijena.jams.data.JAMSEntityCollection" name="hrus" provider="ParaReader" providervar="hrus"/>
+            <jamsvar class="org.unijena.jams.data.JAMSEntity" name="targetEntity" provider="CatchmentCreator" providervar="entity"/>
+            <jamsvar class="org.unijena.jams.data.JAMSString" name="aNameData" value="potETP"/>
+            <jamsvar class="org.unijena.jams.data.JAMSString" name="aNameArea" value="area"/>
+            <jamsvar class="org.unijena.jams.data.JAMSInteger" name="aggregationType" value="3"/>
+        </component>
+		    
+        <component class="org.unijena.j2k.SpatialAggregator" name="AETPAggregator">
+            <jamsvar class="org.unijena.jams.data.JAMSEntityCollection" name="hrus" provider="ParaReader" providervar="hrus"/>
+            <jamsvar class="org.unijena.jams.data.JAMSEntity" name="targetEntity" provider="CatchmentCreator" providervar="entity"/>
+            <jamsvar class="org.unijena.jams.data.JAMSString" name="aNameData" value="actETP"/>
+            <jamsvar class="org.unijena.jams.data.JAMSString" name="aNameArea" value="area"/>
+            <jamsvar class="org.unijena.jams.data.JAMSInteger" name="aggregationType" value="3"/>
+        </component>
+
+         <component class="org.unijena.j2k.SpatialAggregator" name="NetSnowAggregator">
+            <jamsvar class="org.unijena.jams.data.JAMSEntityCollection" name="hrus" provider="ParaReader" providervar="hrus"/>
+            <jamsvar class="org.unijena.jams.data.JAMSEntity" name="targetEntity" provider="CatchmentCreator" providervar="entity"/>
+            <jamsvar class="org.unijena.jams.data.JAMSString" name="aNameData" value="netSnow"/>
+            <jamsvar class="org.unijena.jams.data.JAMSString" name="aNameArea" value="area"/>
+            <jamsvar class="org.unijena.jams.data.JAMSInteger" name="aggregationType" value="3"/>
+        </component>
+		    
+        <component class="org.unijena.j2k.SpatialAggregator" name="NetRainAggregator">
+            <jamsvar class="org.unijena.jams.data.JAMSEntityCollection" name="hrus" provider="ParaReader" providervar="hrus"/>
+            <jamsvar class="org.unijena.jams.data.JAMSEntity" name="targetEntity" provider="CatchmentCreator" providervar="entity"/>
+            <jamsvar class="org.unijena.jams.data.JAMSString" name="aNameData" value="netRain"/>
+            <jamsvar class="org.unijena.jams.data.JAMSString" name="aNameArea" value="area"/>
+            <jamsvar class="org.unijena.jams.data.JAMSInteger" name="aggregationType" value="3"/>
+        </component>
+
+        <component class="org.unijena.j2k.SpatialAggregator" name="ThroughfallAggregator">
+            <jamsvar class="org.unijena.jams.data.JAMSEntityCollection" name="hrus" provider="ParaReader" providervar="hrus"/>
+            <jamsvar class="org.unijena.jams.data.JAMSEntity" name="targetEntity" provider="CatchmentCreator" providervar="entity"/>
+            <jamsvar class="org.unijena.jams.data.JAMSString" name="aNameData" value="throughfall"/>
+            <jamsvar class="org.unijena.jams.data.JAMSString" name="aNameArea" value="area"/>
+            <jamsvar class="org.unijena.jams.data.JAMSInteger" name="aggregationType" value="3"/>
+        </component>
+
+        <component class="org.unijena.j2k.SpatialAggregator" name="IntcAggregator">
+            <jamsvar class="org.unijena.jams.data.JAMSEntityCollection" name="hrus" provider="ParaReader" providervar="hrus"/>
+            <jamsvar class="org.unijena.jams.data.JAMSEntity" name="targetEntity" provider="CatchmentCreator" providervar="entity"/>
+            <jamsvar class="org.unijena.jams.data.JAMSString" name="aNameData" value="interception"/>
+            <jamsvar class="org.unijena.jams.data.JAMSString" name="aNameArea" value="area"/>
+            <jamsvar class="org.unijena.jams.data.JAMSInteger" name="aggregationType" value="3"/>
+        </component>
+
+        <component class="org.unijena.j2k.SpatialAggregator" name="IntcStorAggregator">
+            <jamsvar class="org.unijena.jams.data.JAMSEntityCollection" name="hrus" provider="ParaReader" providervar="hrus"/>
+            <jamsvar class="org.unijena.jams.data.JAMSEntity" name="targetEntity" provider="CatchmentCreator" providervar="entity"/>
+            <jamsvar class="org.unijena.jams.data.JAMSString" name="aNameData" value="intercStorage"/>
+            <jamsvar class="org.unijena.jams.data.JAMSString" name="aNameArea" value="area"/>
+            <jamsvar class="org.unijena.jams.data.JAMSInteger" name="aggregationType" value="3"/>
+        </component>
+
+        <component class="org.unijena.j2k.SpatialAggregator" name="SnowDepthAggregator">
+            <jamsvar class="org.unijena.jams.data.JAMSEntityCollection" name="hrus" provider="ParaReader" providervar="hrus"/>
+            <jamsvar class="org.unijena.jams.data.JAMSEntity" name="targetEntity" provider="CatchmentCreator" providervar="entity"/>
+            <jamsvar class="org.unijena.jams.data.JAMSString" name="aNameData" value="snowDepth"/>
+            <jamsvar class="org.unijena.jams.data.JAMSString" name="aNameArea" value="area"/>
+            <jamsvar class="org.unijena.jams.data.JAMSInteger" name="aggregationType" value="1"/>
+        </component>
+		    
+        <component class="org.unijena.j2k.SpatialAggregator" name="SnowMeltAggregator">
+            <jamsvar class="org.unijena.jams.data.JAMSEntityCollection" name="hrus" provider="ParaReader" providervar="hrus"/>
+            <jamsvar class="org.unijena.jams.data.JAMSEntity" name="targetEntity" provider="CatchmentCreator" providervar="entity"/>
+            <jamsvar class="org.unijena.jams.data.JAMSString" name="aNameData" value="snowMelt"/>
+            <jamsvar class="org.unijena.jams.data.JAMSString" name="aNameArea" value="area"/>
+            <jamsvar class="org.unijena.jams.data.JAMSInteger" name="aggregationType" value="3"/>
+        </component>
+
+        <component class="org.unijena.j2k.SpatialAggregator" name="totSWEAggregator">
+            <jamsvar class="org.unijena.jams.data.JAMSEntityCollection" name="hrus" provider="ParaReader" providervar="hrus"/>
+            <jamsvar class="org.unijena.jams.data.JAMSEntity" name="targetEntity" provider="CatchmentCreator" providervar="entity"/>
+            <jamsvar class="org.unijena.jams.data.JAMSString" name="aNameData" value="snowTotSWE"/>
+            <jamsvar class="org.unijena.jams.data.JAMSString" name="aNameArea" value="area"/>
+            <jamsvar class="org.unijena.jams.data.JAMSInteger" name="aggregationType" value="3"/>
+        </component>
+
+        <component class="org.unijena.j2k.SpatialAggregator" name="MPSsatAggregator">
+            <jamsvar class="org.unijena.jams.data.JAMSEntityCollection" name="hrus" provider="ParaReader" providervar="hrus"/>
+            <jamsvar class="org.unijena.jams.data.JAMSEntity" name="targetEntity" provider="CatchmentCreator" providervar="entity"/>
+            <jamsvar class="org.unijena.jams.data.JAMSString" name="aNameData" value="satMPS"/>
+            <jamsvar class="org.unijena.jams.data.JAMSString" name="aNameArea" value="area"/>
+            <jamsvar class="org.unijena.jams.data.JAMSInteger" name="aggregationType" value="1"/>
+        </component>
+		    
+        <component class="org.unijena.j2k.SpatialAggregator" name="LPSsatAggregator">
+            <jamsvar class="org.unijena.jams.data.JAMSEntityCollection" name="hrus" provider="ParaReader" providervar="hrus"/>
+            <jamsvar class="org.unijena.jams.data.JAMSEntity" name="targetEntity" provider="CatchmentCreator" providervar="entity"/>
+            <jamsvar class="org.unijena.jams.data.JAMSString" name="aNameData" value="satLPS"/>
+            <jamsvar class="org.unijena.jams.data.JAMSString" name="aNameArea" value="area"/>
+            <jamsvar class="org.unijena.jams.data.JAMSInteger" name="aggregationType" value="1"/>
+        </component>
+
+        <component class="org.unijena.j2k.SpatialAggregator" name="MPSactAggregator">
+            <jamsvar class="org.unijena.jams.data.JAMSEntityCollection" name="hrus" provider="ParaReader" providervar="hrus"/>
+            <jamsvar class="org.unijena.jams.data.JAMSEntity" name="targetEntity" provider="CatchmentCreator" providervar="entity"/>
+            <jamsvar class="org.unijena.jams.data.JAMSString" name="aNameData" value="actMPS"/>
+            <jamsvar class="org.unijena.jams.data.JAMSString" name="aNameArea" value="area"/>
+            <jamsvar class="org.unijena.jams.data.JAMSInteger" name="aggregationType" value="3"/>
+        </component>
+		    
+        <component class="org.unijena.j2k.SpatialAggregator" name="LPSactAggregator">
+            <jamsvar class="org.unijena.jams.data.JAMSEntityCollection" name="hrus" provider="ParaReader" providervar="hrus"/>
+            <jamsvar class="org.unijena.jams.data.JAMSEntity" name="targetEntity" provider="CatchmentCreator" providervar="entity"/>
+            <jamsvar class="org.unijena.jams.data.JAMSString" name="aNameData" value="actLPS"/>
+            <jamsvar class="org.unijena.jams.data.JAMSString" name="aNameArea" value="area"/>
+            <jamsvar class="org.unijena.jams.data.JAMSInteger" name="aggregationType" value="3"/>
+        </component>
+
+        <component class="org.unijena.j2k.SpatialAggregator" name="DPSactAggregator">
+            <jamsvar class="org.unijena.jams.data.JAMSEntityCollection" name="hrus" provider="ParaReader" providervar="hrus"/>
+            <jamsvar class="org.unijena.jams.data.JAMSEntity" name="targetEntity" provider="CatchmentCreator" providervar="entity"/>
+            <jamsvar class="org.unijena.jams.data.JAMSString" name="aNameData" value="actDPS"/>
+            <jamsvar class="org.unijena.jams.data.JAMSString" name="aNameArea" value="area"/>
+            <jamsvar class="org.unijena.jams.data.JAMSInteger" name="aggregationType" value="3"/>
+        </component>
+
+        <component class="org.unijena.j2k.SpatialAggregator" name="PercolationAggregator">
+            <jamsvar class="org.unijena.jams.data.JAMSEntityCollection" name="hrus" provider="ParaReader" providervar="hrus"/>
+            <jamsvar class="org.unijena.jams.data.JAMSEntity" name="targetEntity" provider="CatchmentCreator" providervar="entity"/>
+            <jamsvar class="org.unijena.jams.data.JAMSString" name="aNameData" value="percolation"/>
+            <jamsvar class="org.unijena.jams.data.JAMSString" name="aNameArea" value="area"/>
+            <jamsvar class="org.unijena.jams.data.JAMSInteger" name="aggregationType" value="3"/>
+        </component>
+		    
+        <component class="org.unijena.j2k.SpatialAggregator" name="RD1Aggregator">
+            <jamsvar class="org.unijena.jams.data.JAMSEntityCollection" name="hrus" provider="ParaReader" providervar="hrus"/>
+            <jamsvar class="org.unijena.jams.data.JAMSEntity" name="targetEntity" provider="CatchmentCreator" providervar="entity"/>
+            <jamsvar class="org.unijena.jams.data.JAMSString" name="aNameData" value="outRD1"/>
+            <jamsvar class="org.unijena.jams.data.JAMSString" name="aNameArea" value="area"/>
+            <jamsvar class="org.unijena.jams.data.JAMSInteger" name="aggregationType" value="3"/>
+        </component>
+
+        <component class="org.unijena.j2k.SpatialAggregator" name="RD2Aggregator">
+            <jamsvar class="org.unijena.jams.data.JAMSEntityCollection" name="hrus" provider="ParaReader" providervar="hrus"/>
+            <jamsvar class="org.unijena.jams.data.JAMSEntity" name="targetEntity" provider="CatchmentCreator" providervar="entity"/>
+            <jamsvar class="org.unijena.jams.data.JAMSString" name="aNameData" value="outRD2"/>
+            <jamsvar class="org.unijena.jams.data.JAMSString" name="aNameArea" value="area"/>
+            <jamsvar class="org.unijena.jams.data.JAMSInteger" name="aggregationType" value="3"/>
+        </component>
+
+        <component class="org.unijena.j2k.SpatialAggregator" name="RG1StorAggregator">
+            <jamsvar class="org.unijena.jams.data.JAMSEntityCollection" name="hrus" provider="ParaReader" providervar="hrus"/>
+            <jamsvar class="org.unijena.jams.data.JAMSEntity" name="targetEntity" provider="CatchmentCreator" providervar="entity"/>
+            <jamsvar class="org.unijena.jams.data.JAMSString" name="aNameData" value="actRG1"/>
+            <jamsvar class="org.unijena.jams.data.JAMSString" name="aNameArea" value="area"/>
+            <jamsvar class="org.unijena.jams.data.JAMSInteger" name="aggregationType" value="3"/>
+        </component>
+		    
+        <component class="org.unijena.j2k.SpatialAggregator" name="RG2StorAggregator">
+            <jamsvar class="org.unijena.jams.data.JAMSEntityCollection" name="hrus" provider="ParaReader" providervar="hrus"/>
+            <jamsvar class="org.unijena.jams.data.JAMSEntity" name="targetEntity" provider="CatchmentCreator" providervar="entity"/>
+            <jamsvar class="org.unijena.jams.data.JAMSString" name="aNameData" value="actRG2"/>
+            <jamsvar class="org.unijena.jams.data.JAMSString" name="aNameArea" value="area"/>
+            <jamsvar class="org.unijena.jams.data.JAMSInteger" name="aggregationType" value="3"/>
+        </component>
+
+        <component class="org.unijena.j2k.SpatialAggregator" name="RG1Aggregator">
+            <jamsvar class="org.unijena.jams.data.JAMSEntityCollection" name="hrus" provider="ParaReader" providervar="hrus"/>
+            <jamsvar class="org.unijena.jams.data.JAMSEntity" name="targetEntity" provider="CatchmentCreator" providervar="entity"/>
+            <jamsvar class="org.unijena.jams.data.JAMSString" name="aNameData" value="outRG1"/>
+            <jamsvar class="org.unijena.jams.data.JAMSString" name="aNameArea" value="area"/>
+            <jamsvar class="org.unijena.jams.data.JAMSInteger" name="aggregationType" value="3"/>
+        </component>
+
+        <component class="org.unijena.j2k.SpatialAggregator" name="RG2Aggregator">
+            <jamsvar class="org.unijena.jams.data.JAMSEntityCollection" name="hrus" provider="ParaReader" providervar="hrus"/>
+            <jamsvar class="org.unijena.jams.data.JAMSEntity" name="targetEntity" provider="CatchmentCreator" providervar="entity"/>
+            <jamsvar class="org.unijena.jams.data.JAMSString" name="aNameData" value="outRG2"/>
+            <jamsvar class="org.unijena.jams.data.JAMSString" name="aNameArea" value="area"/>
+            <jamsvar class="org.unijena.jams.data.JAMSInteger" name="aggregationType" value="3"/>
+        </component>
+		    
+        <component class="org.unijena.j2k.FlowAggregator" name="FlowRD1Aggregator">
+            <jamsvar class="org.unijena.jams.data.JAMSEntityCollection" name="reaches" provider="ParaReader" providervar="reaches"/>
+            <jamsvar class="org.unijena.jams.data.JAMSEntity" name="targetEntity" provider="CatchmentCreator" providervar="entity"/>
+            <jamsvar class="org.unijena.jams.data.JAMSString" name="aNameArea" value="area"/>
+            <jamsvar class="org.unijena.jams.data.JAMSInteger" name="reachEntity" value="1"/>
+            <jamsvar class="org.unijena.jams.data.JAMSString" name="aNameFlowComponent" value="reachOutRD1"/>
+            <jamsvar class="org.unijena.jams.data.JAMSInteger" name="aggregationType" value="3"/>
+        </component>
+
+        <component class="org.unijena.j2k.FlowAggregator" name="FlowRD2Aggregator">
+            <jamsvar class="org.unijena.jams.data.JAMSEntityCollection" name="reaches" provider="ParaReader" providervar="reaches"/>
+            <jamsvar class="org.unijena.jams.data.JAMSEntity" name="targetEntity" provider="CatchmentCreator" providervar="entity"/>
+            <jamsvar class="org.unijena.jams.data.JAMSString" name="aNameArea" value="area"/>
+            <jamsvar class="org.unijena.jams.data.JAMSInteger" name="reachEntity" value="1"/>
+            <jamsvar class="org.unijena.jams.data.JAMSString" name="aNameFlowComponent" value="reachOutRD2"/>
+            <jamsvar class="org.unijena.jams.data.JAMSInteger" name="aggregationType" value="3"/>
+        </component>
+		    
+        <component class="org.unijena.j2k.FlowAggregator" name="FlowRG1Aggregator">
+            <jamsvar class="org.unijena.jams.data.JAMSEntityCollection" name="reaches" provider="ParaReader" providervar="reaches"/>
+            <jamsvar class="org.unijena.jams.data.JAMSEntity" name="targetEntity" provider="CatchmentCreator" providervar="entity"/>
+            <jamsvar class="org.unijena.jams.data.JAMSString" name="aNameArea" value="area"/>
+            <jamsvar class="org.unijena.jams.data.JAMSInteger" name="reachEntity" value="1"/>
+            <jamsvar class="org.unijena.jams.data.JAMSString" name="aNameFlowComponent" value="reachOutRG1"/>
+            <jamsvar class="org.unijena.jams.data.JAMSInteger" name="aggregationType" value="3"/>
+        </component>
+
+        <component class="org.unijena.j2k.FlowAggregator" name="FlowRG2Aggregator">
+            <jamsvar class="org.unijena.jams.data.JAMSEntityCollection" name="reaches" provider="ParaReader" providervar="reaches"/>
+            <jamsvar class="org.unijena.jams.data.JAMSEntity" name="targetEntity" provider="CatchmentCreator" providervar="entity"/>
+            <jamsvar class="org.unijena.jams.data.JAMSString" name="aNameArea" value="area"/>
+            <jamsvar class="org.unijena.jams.data.JAMSInteger" name="reachEntity" value="1"/>
+            <jamsvar class="org.unijena.jams.data.JAMSString" name="aNameFlowComponent" value="reachOutRG2"/>
+            <jamsvar class="org.unijena.jams.data.JAMSInteger" name="aggregationType" value="3"/>
+        </component>
+		    
+        <component class="org.unijena.j2k.FlowAggregator" name="ChannelStorageAggregator">
+            <jamsvar class="org.unijena.jams.data.JAMSEntityCollection" name="reaches" provider="ParaReader" providervar="reaches"/>
+            <jamsvar class="org.unijena.jams.data.JAMSEntity" name="targetEntity" provider="CatchmentCreator" providervar="entity"/>
+            <jamsvar class="org.unijena.jams.data.JAMSString" name="aNameArea" value="area"/>
+            <jamsvar class="org.unijena.jams.data.JAMSInteger" name="reachEntity" value="0"/>
+            <jamsvar class="org.unijena.jams.data.JAMSString" name="aNameFlowComponent" value="channelStorage"/>
+            <jamsvar class="org.unijena.jams.data.JAMSInteger" name="aggregationType" value="3"/>
+        </component>
+
+        <component class="org.unijena.j2k.FlowAggregator" name="SimRunoffAggregator">
+            <jamsvar class="org.unijena.jams.data.JAMSEntityCollection" name="reaches" provider="ParaReader" providervar="reaches"/>
+            <jamsvar class="org.unijena.jams.data.JAMSEntity" name="targetEntity" provider="CatchmentCreator" providervar="entity"/>
+            <jamsvar class="org.unijena.jams.data.JAMSString" name="aNameArea" value="area"/>
+            <jamsvar class="org.unijena.jams.data.JAMSInteger" name="reachEntity" value="1"/>
+            <jamsvar class="org.unijena.jams.data.JAMSString" name="aNameFlowComponent" value="simRunoff"/>
+            <jamsvar class="org.unijena.jams.data.JAMSInteger" name="aggregationType" value="4"/>
+        </component>
+        
+        <component class="org.unijena.j2k.StandardTSDataProvider" name="ObsRunoff">
+            <jamsvar class="org.unijena.jams.data.JAMSDoubleArray" name="dataArray" provider="ObsRunoffDataReader" providervar="dataArray"/>		        		
+            <jamsvar class="org.unijena.jams.data.JAMSEntity" name="targetEntity" provider="CatchmentCreator" providervar="entity"/>
+            <jamsvar class="org.unijena.jams.data.JAMSInteger" name="column" value="1"/>
+            <jamsvar class="org.unijena.jams.data.JAMSString" name="aNameDataName" value="obsRunoff"/>
+        </component>           
+
+        <component class="org.unijena.j2k.StandardDataWriter" name="CatchmentWriter">
+            <jamsvar class="org.unijena.jams.data.JAMSString" name="dirName" globvar="workspaceDir"/>
+            <jamsvar class="org.unijena.jams.data.JAMSEntity" name="entity" provider="CatchmentCreator" providervar="entity"/>
+            <jamsvar class="org.unijena.jams.data.JAMSCalendar" name="time" provider="TemporalContext" providervar="current"/>
+            <jamsvar class="org.unijena.jams.data.JAMSString" name="fileName" value="data\result.dat"/>
+            <jamsvar class="org.unijena.jams.data.JAMSStringArray" name="headers" value="precip;tmean;rhum;rain;snow;potETP;netRain;netSnow;throughfall;interception;intercStorage;actETP;snowDepth;snowTotSWE;snowMelt;satMPS;satLPS;actDPS;actMPS;actLPS;percolation;actRG1;actRG2;reachOutRD1;reachOutRD2;reachOutRG1;reachOutRG2;channelStorage;simRunoff;obsRunoff"/>
+            <jamsvar class="org.unijena.jams.data.JAMSStringArray" name="attributeNames" value="precip;tmean;rhum;rain;snow;potETP;netRain;netSnow;throughfall;interception;intercStorage;actETP;snowDepth;snowTotSWE;snowMelt;satMPS;satLPS;actDPS;actMPS;actLPS;percolation;actRG1;actRG2;reachOutRD1;reachOutRD2;reachOutRG1;reachOutRG2;channelStorage;simRunoff;obsRunoff"/>
+        </component>
+        
+        <component class="org.unijena.j2k.StandardEfficiencyCalculator" name="EfficiencyCalculator">
+            <jamsvar class="org.unijena.jams.data.JAMSTimeInterval" name="timeInterval" provider="TemporalContext" providervar="timeInterval"/>
+            <jamsvar class="org.unijena.jams.data.JAMSEntity" name="sourceEntity" provider="CatchmentCreator" providervar="entity"/>
+            <jamsvar class="org.unijena.jams.data.JAMSIntegerArray" name="effMethod" value="1,2,3,4"/>
+            <jamsvar class="org.unijena.jams.data.JAMSString" name="aNameValidation" value="obsRunoff"/>
+            <jamsvar class="org.unijena.jams.data.JAMSString" name="aNamePrediction" value="simRunoff"/>
+        </component>
+    </compoundcomponent>
+    
+</model>
