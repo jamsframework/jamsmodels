@@ -130,7 +130,7 @@ import org.unijena.jams.model.*;
             )
             public JAMSDouble fertNH4;
     
-     @JAMSVarDescription(
+    @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
             update = JAMSVarDescription.UpdateType.RUN,
             description = " Stable organig N input due to Fertilisation in kgN/ha"
@@ -144,6 +144,19 @@ import org.unijena.jams.model.*;
             )
             public JAMSDouble fertactivorg;
     
+    @JAMSVarDescription(
+            access = JAMSVarDescription.AccessType.WRITE,
+            update = JAMSVarDescription.UpdateType.RUN,
+            description = " Input of plant residues kg/ha"
+            )
+            public JAMSDouble inp_biomass;
+    
+    @JAMSVarDescription(
+            access = JAMSVarDescription.AccessType.WRITE,
+            update = JAMSVarDescription.UpdateType.RUN,
+            description = "Nitrogen input of plant residues in kgN/ha"
+            )
+            public JAMSDouble inpN_biomass;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
@@ -151,7 +164,7 @@ import org.unijena.jams.model.*;
             description = "number of layers in soil profile in [-]"
             )
             public JAMSDouble Layer;
-   
+    
     
     
     
@@ -199,7 +212,7 @@ import org.unijena.jams.model.*;
         double[] Residue_poolvals = new double[layer];
         
         double[] InterflowN_invals = new double[layer];
-               
+        
         
         double fr_actN = 0.02;      /** nitrogen active pool fraction. The fraction of organic nitrogen in the active pool. */
         
@@ -211,7 +224,7 @@ import org.unijena.jams.model.*;
             runC_org = C_org.getValue()[i];
             runsoil_bulk_density = soil_bulk_density.getValue()[i];
             runlayerdepth = layerdepth.getValue()[i] * 10; //from mm to mm
-            hor_dept = hor_dept + runlayerdepth; 
+            hor_dept = hor_dept + runlayerdepth;
             runResidue_pool = 10;
             runNO3_Pool = ((7 * Math.exp(-hor_dept/100)) * runsoil_bulk_density * runlayerdepth)/100;
             runNH4_Pool = 0.1 * runNO3_Pool;
@@ -242,6 +255,8 @@ import org.unijena.jams.model.*;
         fertNH4.setValue(0);
         fertstableorg.setValue(0);
         fertactivorg.setValue(0);
+        inp_biomass.setValue(0);
+        inpN_biomass.setValue(0);
     }
     
     

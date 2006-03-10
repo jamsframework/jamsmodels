@@ -5,7 +5,7 @@
     <globvar name="snow_trs" value="0.5"/>
     <globvar name="snow_trans" value="2.0"/>
     <globvar name="data_caching" value="1"/>
-    <compoundcomponent class="org.unijena.jams.model.JAMSSpatialContext" name="CatchmentContext">	
+    <contextcomponent class="org.unijena.jams.model.JAMSSpatialContext" name="CatchmentContext">	
         <component class="org.unijena.j2k.io.StandardEntityReader" name="ParaReader">
             <jamsvar name="dirName" globvar="workspaceDir"/>
             <jamsvar name="hruFileName" value="parameter\hrus.par"/>
@@ -74,15 +74,15 @@
             <jamsvar name="startColumn" value="3"/>
         </component>
         
-        <compoundcomponent class="org.unijena.jams.model.JAMSSpatialContext" name="InitCatchmentContext">
+        <contextcomponent class="org.unijena.jams.model.JAMSSpatialContext" name="InitCatchmentContext">
             <jamsvar name="entities" provider="ParaReader" providervar="hrus"/>
             <component class="org.unijena.j2k.aggregate.SumAggregator" name="AreaCalculator">
                 <jamsvar name="value" provider="InitCatchmentContext" spatattrib="area"/>
                 <jamsvar name="sum" provider="CatchmentContext" spatattrib="area"/>
             </component>
-        </compoundcomponent>
+        </contextcomponent>
         
-        <compoundcomponent class="org.unijena.jams.model.JAMSSpatialContext" name="InitHRUContext">
+        <contextcomponent class="org.unijena.jams.model.JAMSSpatialContext" name="InitHRUContext">
             <jamsvar class="org.unijena.jams.data.JAMSEntityCollection" name="entities" provider="ParaReader" providervar="hrus"/>
             
             <component class="org.unijena.j2k.CalcAreaWeight" name="AreaWeight">
@@ -165,7 +165,7 @@
                 <jamsvar name="bulk_density_h" provider="InitHRUContext" spatattrib="bulk_density_h"/>
                 <jamsvar name="inRD2_h" provider="InitHRUContext" spatattrib="inRD2_h"/>
             </component>
-            <component class="org.jams.j2k.s_n.init.initJ2KNSoillayer" name="InitJ2KNSoillayer">
+            <component class="org.jams.j2k.s_n.init.InitJ2KNSoillayer" name="InitJ2KNSoillayer">
                 <jamsvar name="NO3_Pool" provider="InitHRUContext" spatattrib="NO3_Pool"/>
                 <jamsvar name="NH4_Pool" provider="InitHRUContext" spatattrib="NH4_Pool"/>
                 <jamsvar name="N_activ_pool" provider="InitHRUContext" spatattrib="N_activ_pool"/>
@@ -256,8 +256,8 @@
                 <jamsvar name="statWeights" provider="InitHRUContext" spatattrib="precipWeights"/>
             </component>
           
-        </compoundcomponent> 
-        <compoundcomponent class="org.unijena.jams.model.JAMSTemporalContext" name="TemporalContextpre">
+        </contextcomponent> 
+        <contextcomponent class="org.unijena.jams.model.JAMSTemporalContext" name="TemporalContextpre">
             <jamsvar class="org.unijena.jams.data.JAMSTimeInterval" name="timeInterval" value="1989-11-01 7:30 1993-10-30 7:30 6 1"/>
             
             <component class="org.unijena.j2k.io.TSDataReader" name="TmeanDataReaderpre">
@@ -268,7 +268,7 @@
             </component>
             
                 
-            <compoundcomponent class="org.unijena.jams.model.JAMSSpatialContext" name="HRUContextpre">
+            <contextcomponent class="org.unijena.jams.model.JAMSSpatialContext" name="HRUContextpre">
                 <jamsvar class="org.unijena.jams.data.JAMSEntityCollection" name="entities" provider="ParaReader" providervar="hrus"/>
         
                 <component class="org.unijena.j2k.regionalisation.Regionalisation" name="TmeanRegionaliserpre">
@@ -300,10 +300,10 @@
 			
                 </component>
 			
-            </compoundcomponent>
-        </compoundcomponent>
+            </contextcomponent>
+        </contextcomponent>
         
-        <compoundcomponent class="org.unijena.jams.model.JAMSTemporalContext" name="TemporalContext">
+        <contextcomponent class="org.unijena.jams.model.JAMSTemporalContext" name="TemporalContext">
             <jamsvar class="org.unijena.jams.data.JAMSTimeInterval" name="timeInterval" value="1989-11-01 7:30 1990-11-30 7:30 6 1"/>
             <component class="org.unijena.jams.gui.JAMSProgress" name="JAMSProgress">
                 <jamsvar class="org.unijena.jams.data.JAMSString" name="title" value="J2K model execution"/>
@@ -367,7 +367,7 @@
                 <jamsvar name="dataFileName" value="data\orun.dat"/>
                 <jamsvar name="startColumn" value="3"/>
             </component>
-            <compoundcomponent class="org.unijena.jams.model.JAMSSpatialContext" name="HRUContext">
+            <contextcomponent class="org.unijena.jams.model.JAMSSpatialContext" name="HRUContext">
                 <jamsvar class="org.unijena.jams.data.JAMSEntityCollection" name="entities" provider="ParaReader" providervar="hrus"/>
             
                 <component class="org.unijena.j2k.J2KArrayGrabber" name="j2kArrayGrabber">
@@ -857,8 +857,8 @@
                     <jamsvar name="weight" provider="CatchmentContext" spatattrib="area"/>
                     <jamsvar name="sum" provider="CatchmentContext" spatattrib="rain;snow;potET;refET;actET;netSnow;netRain;throughfall;interception;intercStorage;snowTotSWE;snowMelt;actDPS;actMPS;actLPS;percolation;actRG1;actRG2;outRD1;outRD2;outRG1;outRG2"/>
                 </component>
-            </compoundcomponent>
-            <compoundcomponent class="org.unijena.jams.model.JAMSSpatialContext" name="ReachContext">
+            </contextcomponent>
+            <contextcomponent class="org.unijena.jams.model.JAMSSpatialContext" name="ReachContext">
                 <jamsvar class="org.unijena.jams.data.JAMSEntityCollection" name="entities" provider="ParaReader" providervar="reaches"/>
             
                 <component class="org.unijena.j2k.routing.J2KProcessReachRouting" name="J2KProcessReachRouting">
@@ -894,7 +894,7 @@
                     <jamsvar name="sum" provider="CatchmentContext" spatattrib="channelStorage"/>
                 </component>
             
-            </compoundcomponent>
+            </contextcomponent>
             
             <component class="org.unijena.j2k.aggregate.WeightedSumAggregator" name="FlowWeightedSumAggregator">
                 <jamsvar name="value" provider="CatchmentContext" spatattrib="catchmentRD1;catchmentRD2;catchmentRG1;catchmentRG2;channelStorage"/>
@@ -990,6 +990,6 @@
             </component!-->
         
             
-        </compoundcomponent>
-    </compoundcomponent>
+        </contextcomponent>
+    </contextcomponent>
 </model>

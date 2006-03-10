@@ -323,6 +323,13 @@ import org.unijena.jams.model.*;
             )
             public JAMSDoubleArray actETP_h = new JAMSDoubleArray();
     
+     @JAMSVarDescription(
+            access = JAMSVarDescription.AccessType.WRITE,
+            update = JAMSVarDescription.UpdateType.RUN,
+            description = " Nitrate input due to Fertilisation in kgN/ha"
+            )
+            public JAMSDouble fertNO3;
+    
        @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
             update = JAMSVarDescription.UpdateType.RUN,
@@ -343,6 +350,21 @@ import org.unijena.jams.model.*;
             description = " Activ organig N input due to Fertilisation in kgN/ha"
             )
             public JAMSDouble fertactivorg;
+            
+     @JAMSVarDescription(
+            access = JAMSVarDescription.AccessType.READ,
+            update = JAMSVarDescription.UpdateType.RUN,
+            description = " Input of plant residues kg/ha"
+            )
+            public JAMSDouble inp_biomass;
+    
+    @JAMSVarDescription(
+            access = JAMSVarDescription.AccessType.READ,
+            update = JAMSVarDescription.UpdateType.RUN,
+            description = "Nitrogen input of plant residues in kgN/ha"
+            )
+            public JAMSDouble inpN_biomass;
+    
          
     // constants and calibration parameter
     @JAMSVarDescription(
@@ -425,7 +447,7 @@ import org.unijena.jams.model.*;
     private double h_infilt_mm;
     private int layer;
     private double runvolati_trans;
-    private double runNH4inp;
+    
     private double runplantupN;
     private double rundenit_trans;
     private double runsurfaceN;
@@ -473,6 +495,7 @@ import org.unijena.jams.model.*;
         this.gamma_water = 0;
         this.runarea = area.getValue();
         this.layer = (int)Layer.getValue();
+        
         
         double h_infilt_mm_sum = 0;
         double Sumvolati_trans = 0;
@@ -542,7 +565,7 @@ import org.unijena.jams.model.*;
             this.h_perco_mm = perco_hor.getValue()[i] / runarea;
             
             this.runvolati_trans = 0;
-            this.runNH4inp = NH4inp.getValue();
+            
             this.rundenit_trans = 0;
             this.runsurfaceN = 0;
             this.runinterflowN = 0;
@@ -571,11 +594,8 @@ import org.unijena.jams.model.*;
             } else{
                 gamma_water = 0;
             }
-            if (runnetPrecip  > 0){
-                
-                runNH4inp = 0 * runnetPrecip / runarea; /*for testing*/
-                
-            }
+           
+            
             
             precalc_nit_vol = calc_nit_volati();
             
@@ -591,7 +611,7 @@ import org.unijena.jams.model.*;
             
             /*Calculations of NPools   Check Order of calculations !!!!!!!!!!!!!!*/
             
-            runNH4_Pool = runNH4_Pool + runNH4inp - (runvolati_trans + runnitri_trans);
+            runNH4_Pool = runNH4_Pool - (runvolati_trans + runnitri_trans);
             
             if (runNH4_Pool < 0){
                 runNH4_Pool = 0;
@@ -612,6 +632,9 @@ import org.unijena.jams.model.*;
             
             
             if (i < 1){
+                runResidue_pool = runResidue_pool + inp_biomass.getValue();
+                runN_residue_pool_fresh = runN_residue_pool_fresh + inpN_biomass.getValue();
+                runNH4_Pool = runNH4_Pool + fertNH4.getValue();
                 delta_ntr = this.calc_Res_N_trans();
                 
                 
@@ -623,15 +646,15 @@ import org.unijena.jams.model.*;
                 }
                 
                 
+                runN_stabel_pool = runN_stabel_pool + fertstableorg.getValue();
                 
-                
-                runN_activ_pool = runN_activ_pool + (0.2 * (delta_ntr * runN_residue_pool_fresh));
+                runN_activ_pool = runN_activ_pool + fertactivorg.getValue() + (0.2 * (delta_ntr * runN_residue_pool_fresh));
                 
                 if (runN_activ_pool < 0){
                     runN_activ_pool = 0;
                 }
                 
-                runNO3_Pool = runNO3_Pool + runnitri_trans + Hum_act_min +  runinterflowN_in + runsurfaceN_in +(0.8 * (delta_ntr * runN_residue_pool_fresh));
+                runNO3_Pool = runNO3_Pool + fertNO3.getValue() + runnitri_trans + Hum_act_min +  runinterflowN_in + runsurfaceN_in +(0.8 * (delta_ntr * runN_residue_pool_fresh));
                 
                 if (runNO3_Pool > runplantupN){
                     
