@@ -40,7 +40,7 @@ import org.unijena.jams.model.*;
     /*
      *  Component variables
      */
-  
+    
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
             update = JAMSVarDescription.UpdateType.RUN,
@@ -54,7 +54,7 @@ import org.unijena.jams.model.*;
             description = "actual RG2 storage"
             )
             public JAMSDouble actRG2;
-     
+    
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
             update = JAMSVarDescription.UpdateType.RUN,
@@ -162,6 +162,19 @@ import org.unijena.jams.model.*;
             )
             public JAMSDouble maxRG2;
     
+    @JAMSVarDescription(
+            access = JAMSVarDescription.AccessType.READWRITE,
+            update = JAMSVarDescription.UpdateType.RUN,
+            description = "gwExcess"
+            )
+            public JAMSDouble gwExcess;
+    
+    @JAMSVarDescription(
+            access = JAMSVarDescription.AccessType.READWRITE,
+            update = JAMSVarDescription.UpdateType.RUN,
+            description = "gwExcess"
+            )
+            public JAMSDouble NExcess;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
@@ -177,23 +190,7 @@ import org.unijena.jams.model.*;
             )
             public JAMSDouble pot_RG2;
     
-    
     @JAMSVarDescription(
-            access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.RUN,
-            description = "portion of percolation to interflow in l"
-            )
-            public JAMSDouble partint;
-    
-    
-    @JAMSVarDescription(
-            access = JAMSVarDescription.AccessType.READWRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
-            description = " Nitrate in interflow in  in kgN"
-            )
-            public JAMSDouble InterflowNabs;
-    
-        @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
             update = JAMSVarDescription.UpdateType.INIT,
             description = "Relativ size of the groundwaterN damping tank RG1 0 - 10 to calibrate in -"
@@ -206,13 +203,14 @@ import org.unijena.jams.model.*;
             description = "Relativ size of the groundwaterN damping tank RG2 0 - 10 to calibrate in -"
             )
             public JAMSDouble N_delay_RG2;
-  
+    
+    
     /*
      *  Component run stages
      */
     
     public void init()  throws JAMSEntity.NoSuchAttributeException {
-
+        
     }
     
     public void run() throws JAMSEntity.NoSuchAttributeException {
@@ -225,31 +223,30 @@ import org.unijena.jams.model.*;
         double ActRG2 = actRG2.getValue();
         double MaxRG1 = maxRG1.getValue();
         double MaxRG2 = maxRG2.getValue();
+        double rungwExcess = gwExcess.getValue();
         double runN_RG1_in = N_RG1_in.getValue();
         double runN_RG2_in = N_RG2_in.getValue();
         double runNActRG1 = NActRG1.getValue();
         double runNActRG2 = NActRG2.getValue();
         double runN_concRG1 = N_concRG1.getValue();
         double runN_concRG2 = N_concRG2.getValue();
-        double runpartint = partint.getValue();
         double runpot_RG1 = pot_RG1.getValue();
         double runpot_RG2 = pot_RG1.getValue();
         double percoN = PercoNabs.getValue();
-        double runInterflowNabs = InterflowNabs.getValue();
         double RGNretentinon = 1;
-        double partN_interflow = 0;
+        double partN_Excess = NExcess.getValue();
         double partN_RG1 = 0;
         double partN_RG2 = 0;
-        double percwatersum = runpot_RG1 + runpot_RG2 + runpartint;
+        double percwatersum = runpot_RG1 + runpot_RG2 + rungwExcess;
         if (percwatersum > 0){
-        partN_RG1 = (runpot_RG1 / percwatersum) * percoN;
-        partN_RG2 = (runpot_RG2 / percwatersum) * percoN;
-        partN_interflow = (runpartint / percwatersum) * percoN;
+            partN_RG1 = (runpot_RG1 / percwatersum) * percoN;
+            partN_RG2 = (runpot_RG2 / percwatersum) * percoN;
+            partN_Excess = (rungwExcess / percwatersum) * percoN;
         }
         
         double watersum_RG1 = ActRG1 +  RG1_out +  (MaxRG1  * N_delay_RG1.getValue());
         double watersum_RG2 = ActRG2 +  RG2_out +  (MaxRG2  * N_delay_RG2.getValue());
-        runInterflowNabs = runInterflowNabs + partN_interflow;
+        rungwExcess = rungwExcess + partN_Excess;
         
         runNActRG1 = runNActRG1 + runN_RG1_in + partN_RG1;
         runNActRG2 = runNActRG2 + runN_RG2_in + partN_RG2;
@@ -285,14 +282,14 @@ import org.unijena.jams.model.*;
 //       System.out.println("N_RG2_out = " + N_RG2_out +" RG2_out =  "+ RG2_out);
         
         
-
+        
         N_RG1_out.setValue(runN_RG1_out);
         N_RG2_out.setValue(runN_RG2_out);
         NActRG1.setValue(runNActRG1);
         NActRG2.setValue(runNActRG2);
         N_concRG1.setValue(runN_concRG1);
         N_concRG2.setValue(runN_concRG2);
-        InterflowNabs.setValue(runInterflowNabs);
+        NExcess.setValue(partN_Excess);
     }
     
     public void cleanup() {
@@ -301,29 +298,29 @@ import org.unijena.jams.model.*;
 }
 
 /*
- 			<component class="org.jams.j2k.s_n.J2KGroundwaterN" name="J2KGroundwaterN">
-				<jamsvar name="inRG1" provider="HRUContext" providervar="currentEntity.inRG1"/>
-				<jamsvar name="inRG2" provider="HRUContext" providervar="currentEntity.inRG2"/>
-				<jamsvar name="outRG1" provider="HRUContext" providervar="currentEntity.outRG1"/>
-				<jamsvar name="outRG2" provider="HRUContext" providervar="currentEntity.outRG2"/>
-				<jamsvar name="actRG1" provider="HRUContext" providervar="currentEntity.actRG1"/>
-				<jamsvar name="actRG2" provider="HRUContext" providervar="currentEntity.actRG1"/>
-				<jamsvar name="N_RG1_out" provider="HRUContext" providervar="currentEntity.N_RG1_out"/>
-				<jamsvar name="N_RG2_out" provider="HRUContext" providervar="currentEntity.N_RG2_out"/>
-				<jamsvar name="N_RG1_in" provider="HRUContext" providervar="currentEntity.N_RG1_in"/>
-				<jamsvar name="N_RG2_in" provider="HRUContext" providervar="currentEntity.N_RG2_in"/>
-				<jamsvar name="N_concRG1" provider="HRUContext" providervar="currentEntity.N_concRG1"/>
-				<jamsvar name="NActRG1" provider="HRUContext" providervar="currentEntity.NActRG1"/>
-				<jamsvar name="N_concRG2" provider="HRUContext" providervar="currentEntity.N_concRG2"/>
-				<jamsvar name="NActRG2" provider="HRUContext" providervar="currentEntity.NActRG2"/>
-				<jamsvar name="pot_RG1" provider="HRUContext" providervar="currentEntity.pot_RG1"/>
-				<jamsvar name="pot_RG2" provider="HRUContext" providervar="currentEntity.pot_RG2"/>
-				<jamsvar name="partint" provider="HRUContext" providervar="currentEntity.partint"/>
-				<jamsvar name="PercoNabs" provider="HRUContext" providervar="currentEntity.PercoNabs"/>
-				<jamsvar name="maxRG1" provider="HRUContext" providervar="currentEntity.maxRG1"/>
-				<jamsvar name="maxRG2" provider="HRUContext" providervar="currentEntity.maxRG2"/>
-				<jamsvar name="InterflowNabs" provider="HRUContext" providervar="currentEntity.InterflowNabs"/>
-				<jamsvar name="N_delay_RG1" globvar="N_delay_RG1"/>
-				<jamsvar name="N_delay_RG2" globvar="N_delay_RG2"/>
-			</component>
+                        <component class="org.jams.j2k.s_n.J2KGroundwaterN" name="J2KGroundwaterN">
+                                <jamsvar name="inRG1" provider="HRUContext" providervar="currentEntity.inRG1"/>
+                                <jamsvar name="inRG2" provider="HRUContext" providervar="currentEntity.inRG2"/>
+                                <jamsvar name="outRG1" provider="HRUContext" providervar="currentEntity.outRG1"/>
+                                <jamsvar name="outRG2" provider="HRUContext" providervar="currentEntity.outRG2"/>
+                                <jamsvar name="actRG1" provider="HRUContext" providervar="currentEntity.actRG1"/>
+                                <jamsvar name="actRG2" provider="HRUContext" providervar="currentEntity.actRG1"/>
+                                <jamsvar name="N_RG1_out" provider="HRUContext" providervar="currentEntity.N_RG1_out"/>
+                                <jamsvar name="N_RG2_out" provider="HRUContext" providervar="currentEntity.N_RG2_out"/>
+                                <jamsvar name="N_RG1_in" provider="HRUContext" providervar="currentEntity.N_RG1_in"/>
+                                <jamsvar name="N_RG2_in" provider="HRUContext" providervar="currentEntity.N_RG2_in"/>
+                                <jamsvar name="N_concRG1" provider="HRUContext" providervar="currentEntity.N_concRG1"/>
+                                <jamsvar name="NActRG1" provider="HRUContext" providervar="currentEntity.NActRG1"/>
+                                <jamsvar name="N_concRG2" provider="HRUContext" providervar="currentEntity.N_concRG2"/>
+                                <jamsvar name="NActRG2" provider="HRUContext" providervar="currentEntity.NActRG2"/>
+                                <jamsvar name="pot_RG1" provider="HRUContext" providervar="currentEntity.pot_RG1"/>
+                                <jamsvar name="pot_RG2" provider="HRUContext" providervar="currentEntity.pot_RG2"/>
+                                <jamsvar name="partint" provider="HRUContext" providervar="currentEntity.partint"/>
+                                <jamsvar name="PercoNabs" provider="HRUContext" providervar="currentEntity.PercoNabs"/>
+                                <jamsvar name="maxRG1" provider="HRUContext" providervar="currentEntity.maxRG1"/>
+                                <jamsvar name="maxRG2" provider="HRUContext" providervar="currentEntity.maxRG2"/>
+                                <jamsvar name="InterflowNabs" provider="HRUContext" providervar="currentEntity.InterflowNabs"/>
+                                <jamsvar name="N_delay_RG1" globvar="N_delay_RG1"/>
+                                <jamsvar name="N_delay_RG2" globvar="N_delay_RG2"/>
+                        </component>
  */

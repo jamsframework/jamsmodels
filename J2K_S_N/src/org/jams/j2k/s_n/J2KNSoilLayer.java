@@ -982,11 +982,11 @@ import org.unijena.jams.model.*;
         double  soilstorage = 0;
         
         soilstorage = sto_LPS + sto_MPS + sto_FPS;
-        if (i == 1) {
+        if (i == 0) {
             mobilewater = RD1_out_mm + RD2_out_mm + h_perco_mm + hor_by_infilt[i] +  1.e-10;
         }
         
-        else if (i > 1) {
+        else if (i > 0) {
             mobilewater = RD2_out_mm + h_perco_mm + hor_by_infilt[i] + 1.e-10;
         }
         if (i == (layer -1)){
@@ -1009,11 +1009,11 @@ import org.unijena.jams.model.*;
         double  soilstorage = 0;
         
         soilstorage = sto_LPS + sto_MPS + sto_FPS;
-        if (layer == 1) {
+        if (layer == 0) {
             mobilewater = RD1_out_mm + RD2_out_mm + d_perco_mm + 1.e-10;
         }
         
-        else if (layer > 1) {
+        else if (layer > 0) {
             mobilewater = RD2_out_mm + d_perco_mm + 1.e-10;
         }
         concN_mobile = (runNO3_Pool / (mobilewater + ((1 - theta_nit) * soilstorage)));
@@ -1036,10 +1036,10 @@ import org.unijena.jams.model.*;
     
     private double calc_interflowN(int i){
         double interflowN = 0;
-        if (i == 1) {
+        if (i == 0) {
             interflowN = (1 - runBeta_NO3) * RD2_out_mm * concN_mobile;
             interflowN = Math.min(interflowN,runNO3_Pool);
-        } else if (i > 1) {
+        } else if (i > 0) {
             interflowN = RD2_out_mm * concN_mobile;
             interflowN = Math.min(interflowN,runNO3_Pool);
         }

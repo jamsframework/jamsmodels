@@ -67,8 +67,15 @@ import org.unijena.jams.model.*;
             update = JAMSVarDescription.UpdateType.INIT,
             description = "RD2 N inflow in kgN"
             )
-            public JAMSDoubleArray InterflowN_inh = new JAMSDoubleArray();
+            public JAMSDoubleArray InterflowN_in = new JAMSDoubleArray();
     
+/*    @JAMSVarDescription(
+            access = JAMSVarDescription.AccessType.READWRITE,
+            update = JAMSVarDescription.UpdateType.INIT,
+            description = "RD2 N inflow in kgN lumped"
+            )
+            public JAMSDouble InterflowN_sum;
+ */
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
             update = JAMSVarDescription.UpdateType.INIT,
@@ -96,181 +103,211 @@ import org.unijena.jams.model.*;
             update = JAMSVarDescription.UpdateType.INIT,
             description = "RD2 N outflow in kgN"
             )
-            public JAMSDoubleArray InterflowNabs  = new JAMSDoubleArray();;
-            
-            @JAMSVarDescription(
-                    access = JAMSVarDescription.AccessType.READWRITE,
-                    update = JAMSVarDescription.UpdateType.INIT,
-                    description = "RG1 N outflow in kgN"
-                    )
-                    public JAMSDouble N_RG1_out;
-            
-            @JAMSVarDescription(
-                    access = JAMSVarDescription.AccessType.READWRITE,
-                    update = JAMSVarDescription.UpdateType.INIT,
-                    description = "RG2 N outflow in kgN"
-                    )
-                    public JAMSDouble N_RG2_out;
-            
-            double[][] fracOut;
-            double[] percNOut;
+            public JAMSDoubleArray InterflowNabs  = new JAMSDoubleArray();
+    
+    @JAMSVarDescription(
+            access = JAMSVarDescription.AccessType.READWRITE,
+            update = JAMSVarDescription.UpdateType.INIT,
+            description = "RG1 N outflow in kgN"
+            )
+            public JAMSDouble N_RG1_out;
+    
+    @JAMSVarDescription(
+            access = JAMSVarDescription.AccessType.READWRITE,
+            update = JAMSVarDescription.UpdateType.INIT,
+            description = "RG2 N outflow in kgN"
+            )
+            public JAMSDouble N_RG2_out;
+    
+    @JAMSVarDescription(
+            access = JAMSVarDescription.AccessType.READWRITE,
+            update = JAMSVarDescription.UpdateType.RUN,
+            description = "gwExcess"
+            )
+            public JAMSDouble NExcess;
+    
+    double[][] fracOut;
+    double[] percNOut;
     /*
      *  Component run stages
      */
-            
-            public void init() throws JAMSEntity.NoSuchAttributeException {
-                
-            }
-            
-            public void run() throws JAMSEntity.NoSuchAttributeException {
-                //receiving polygon
-                JAMSEntity toPoly = (JAMSEntity) entity.getObject("to_poly");
-                //receiving reach
-                JAMSEntity toReach = (JAMSEntity) entity.getObject("to_reach");
-                
-                
-                
-                double NRD1out = SurfaceNabs.getValue();
-                double[] NRD2out_h = InterflowNabs.getValue();
-                double NRG1out = N_RG1_out.getValue();
-                double NRG2out = N_RG2_out.getValue();
-                
-                double reachNRD2in = 0;
+    
+    public void init() throws JAMSEntity.NoSuchAttributeException {
+        
+    }
+    
+    public void run() throws JAMSEntity.NoSuchAttributeException {
+        //receiving polygon
+        JAMSEntity toPoly = (JAMSEntity) entity.getObject("to_poly");
+        //receiving reach
+        JAMSEntity toReach = (JAMSEntity) entity.getObject("to_reach");
+        
+        
+        
+        double NRD1out = SurfaceNabs.getValue();
+        double[] NRD2out_h = InterflowNabs.getValue();
+        double NRG1out = N_RG1_out.getValue();
+        double NRG2out = N_RG2_out.getValue();
+        
+        double reachNRD2in = 0;
 //        System.out.println("NRD2out: " + NRD2out);
-                
-                if(toPoly != null){
-                    
-                    double[] srcDepth = ((JAMSDoubleArray)entity.getObject("depth_h")).getValue();
-                    double[] recDepth = ((JAMSDoubleArray)toPoly.getObject("depth_h")).getValue();
-                    int srcHors = srcDepth.length;
-                    int recHors = recDepth.length;
-                    double[] NRD2in_h = new double[recHors];
-                    this.calcParts(srcDepth, recDepth);
-                    
-                    double NRD1in = toPoly.getDouble("SurfaceN_in");
-                    double[] rdArN = ((JAMSDoubleArray)toPoly.getObject("InterflowN_inh")).getValue();
-                    double NRG1in = toPoly.getDouble("N_RG1_in");
-                    double NRG2in = toPoly.getDouble("N_RG2_in");
+        
+        if(toPoly != null){
+            
+            double[] srcDepth = ((JAMSDoubleArray)entity.getObject("depth_h")).getValue();
+            double[] recDepth = ((JAMSDoubleArray)toPoly.getObject("depth_h")).getValue();
+            int srcHors = srcDepth.length;
+            int recHors = recDepth.length;
+            double[] NRD2in_h = new double[recHors];
+            this.calcParts(srcDepth, recDepth);
+            
+            double NRD1in = toPoly.getDouble("SurfaceN_in");
+            double[] rdArN = ((JAMSDoubleArray)toPoly.getObject("InterflowN_in")).getValue();
+/*
+            Object o = toPoly.getObject("InterflowN_in");
+ 
+            double[] rdArN = null;
+            try {
+                rdArN = ((JAMSDoubleArray)o).getValue();
+ 
+            } catch (Exception e) {
+                System.out.println("MIST");
+            }*/
+            double NRG1in = toPoly.getDouble("N_RG1_in");
+            double NRG2in = toPoly.getDouble("N_RG2_in");
 //            double NRG1in = 0;
 //            double NRG2in = 0;
-                    for(int j = 0; j < recHors; j++){
-                        NRD2in_h[j] = rdArN[j];
-                        for(int i = 0; i < srcHors; i++){
-                            NRD2in_h[j] = NRD2in_h[j] + NRD2out_h[i] * fracOut[i][j];
-                            NRG1in = NRG1in + NRD2out_h[i] * this.percNOut[i];
-                            //RD2out[i] -= RD2out[i] * fracOut[i][j];
-                        }
-                    }
-                    
-                    for(int i = 0; i < srcHors; i++){
-                        NRD2out_h[i] = 0;
-                    }
-                    
-                    double RD1in = toPoly.getDouble("inRD1");
-                    
-                    
-                    double RG2in = toPoly.getDouble("inRG2");
-                    
-                    NRD1in = NRD1in + NRD1out;
-                    NRG1in = NRG1in + NRG1out;
-                    NRG2in = NRG2in + NRG2out;
-                    
-                    NRD1out = 0;
-                    NRG1out = 0;
-                    NRG2out = 0;
-                    
-                    SurfaceNabs.setValue(0);
-                    InterflowNabs.setValue(NRD2out_h);
-                    N_RG1_out.setValue(0);
-                    N_RG2_out.setValue(0);
-                    
-                    toPoly.setDouble("SurfaceN_in",NRD1in);
-                    toPoly.setObject("InterflowN_inh", rdArN);
-                    toPoly.setDouble("N_RG1_in", NRG1in);
-                    toPoly.setDouble("N_RG2_in", NRG2in);
-                } else if(toReach != null){
-                    
-                    double NRD1in = toReach.getDouble("SurfaceN_in");
-                    
-                    double NRG1in = toReach.getDouble("N_RG1_in");
-                    double NRG2in = toReach.getDouble("N_RG2_in");
-                    
-                    for(int h = 0; h < NRD2out_h.length; h++){
-                        reachNRD2in = reachNRD2in + NRD2out_h[h];
-                        NRD2out_h[h] = 0;
-                    }
-                    NRD1in = NRD1in + NRD1out;
-                    
-                    NRG1in = NRG1in + NRG1out;
-                    NRG2in = NRG2in + NRG2out;
-                    
-                    NRD1out = 0;
-                    
-                    NRG1out = 0;
-                    NRG2out = 0;
-                    
-                    
-                    
-                    SurfaceNabs.setValue(NRD1out);
-                    toReach.setDouble("SurfaceN_in", NRD1in);
-                    InterflowNabs.setValue(NRD2out_h);
-                    toReach.setDouble("InterflowN_in", reachNRD2in);
-                    N_RG1_out.setValue(NRG1out);
-                    toReach.setDouble("N_RG1_in", NRG1in);
-                    N_RG2_out.setValue(NRG2out);
-                    toReach.setDouble("N_RG2_in", NRG2in);
-                    
-                } else{
-                    System.out.println("Current entity ID: " + entity.getInt("ID") + " has no receiver.");
+            for(int j = 0; j < recHors; j++){
+                NRD2in_h[j] = rdArN[j];
+                for(int i = 0; i < srcHors; i++){
+                    NRD2in_h[j] = NRD2in_h[j] + NRD2out_h[i] * fracOut[i][j];
+                    NRG1in = NRG1in + NRD2out_h[i] * this.percNOut[i];
+                    //RD2out[i] -= RD2out[i] * fracOut[i][j];
                 }
-                
-            }
-            public void cleanup() {
-                
             }
             
-            private void calcParts(double[] depthSrc, double[] depthRec){
-                int srcHorizons = depthSrc.length;
-                int recHorizons = depthRec.length;
+            
+            for(int i = 0; i < srcHors; i++){
+                NRD2out_h[i] = 0;
+            }
+            NRD2in_h[recHors-1] += NExcess.getValue();
+            double RD1in = toPoly.getDouble("inRD1");
+            
+            
+            double RG2in = toPoly.getDouble("inRG2");
+            
+            NRD1in = NRD1in + NRD1out;
+            NRG1in = NRG1in + NRG1out;
+            NRG2in = NRG2in + NRG2out;
+            
+            NRD1out = 0;
+            NRG1out = 0;
+            NRG2out = 0;
+            
+            SurfaceNabs.setValue(0);
+            InterflowNabs.setValue(NRD2out_h);
+            N_RG1_out.setValue(0);
+            N_RG2_out.setValue(0);
+            NExcess.setValue(0);
+            
+            JAMSDoubleArray rdAN = (JAMSDoubleArray)toPoly.getObject("InterflowN_in");
+            toPoly.setDouble("SurfaceN_in",NRD1in);
+            toPoly.setObject("InterflowN_in", rdAN);
+            toPoly.setDouble("N_RG1_in", NRG1in);
+            toPoly.setDouble("N_RG2_in", NRG2in);
+        } else if(toReach != null){
+            
+            double NRD1in = toReach.getDouble("SurfaceN_in");
+/*            
+            try {
+                reachNRD2in = toReach.getDouble("InterflowN_sum");
                 
-                double[] upBoundSrc = new double[srcHorizons];
-                double[] lowBoundSrc = new double[srcHorizons];
-                double low = 0;
-                double up = 0;
-                for(int i = 0; i < srcHorizons; i++){
-                    low += depthSrc[i];
-                    up = low - depthSrc[i];
-                    upBoundSrc[i] = up;
-                    lowBoundSrc[i] = low;
-                    //System.out.println("Src --> up: "+up+", low: "+low);
-                    
-                }
-                double[] upBoundRec = new double[recHorizons];
-                double[] lowBoundRec = new double[recHorizons];
-                low = 0;
-                up = 0;
-                for(int i = 0; i < recHorizons; i++){
-                    low += depthRec[i];
-                    up = low - depthRec[i];
-                    upBoundRec[i] = up;
-                    lowBoundRec[i] = low;
-                    //System.out.println("Rec --> up: "+up+", low: "+low);
-                }
-                
-                
-                fracOut = new double[depthSrc.length][depthRec.length];
-                percNOut = new double[depthSrc.length];
-                for(int i = 0; i < depthSrc.length; i++){
-                    double sumFrac = 0;
-                    for(int j = 0; j < depthRec.length; j++){
-                        if((lowBoundSrc[i] > upBoundRec[j]) && (upBoundSrc[i] < lowBoundRec[j])){
-                            double relDepth = Math.min(lowBoundSrc[i], lowBoundRec[j]) - Math.max(upBoundSrc[i], upBoundRec[j]);
-                            double fracDepth = relDepth / depthSrc[i];
-                            sumFrac += fracDepth;
-                            fracOut[i][j] = fracDepth;
-                        }
-                    }
-                    percNOut[i] = 1.0 - sumFrac;
+            } catch (Exception e) {
+                System.out.println("MIST");
+            }
+*/            
+            
+            reachNRD2in = toReach.getDouble("InterflowN_sum");
+            
+            double NRG1in = toReach.getDouble("N_RG1_in");
+            double NRG2in = toReach.getDouble("N_RG2_in");
+            
+            for(int h = 0; h < NRD2out_h.length; h++){
+                reachNRD2in = reachNRD2in + NRD2out_h[h];
+                NRD2out_h[h] = 0;
+            }
+            NRD1in = NRD1in + NRD1out;
+            reachNRD2in += NExcess.getValue();
+            NRG1in = NRG1in + NRG1out;
+            NRG2in = NRG2in + NRG2out;
+            
+            NRD1out = 0;
+            
+            NRG1out = 0;
+            NRG2out = 0;
+            
+            
+            NExcess.setValue(0);
+            SurfaceNabs.setValue(NRD1out);
+            toReach.setDouble("SurfaceN_in", NRD1in);
+            InterflowNabs.setValue(NRD2out_h);
+            toReach.setDouble("InterflowN_sum", reachNRD2in);
+            N_RG1_out.setValue(NRG1out);
+            toReach.setDouble("N_RG1_in", NRG1in);
+            N_RG2_out.setValue(NRG2out);
+            toReach.setDouble("N_RG2_in", NRG2in);
+            
+        } else{
+            System.out.println("Current entity ID: " + entity.getInt("ID") + " has no receiver.");
+        }
+        
+    }
+    public void cleanup() {
+        
+    }
+    
+    private void calcParts(double[] depthSrc, double[] depthRec){
+        int srcHorizons = depthSrc.length;
+        int recHorizons = depthRec.length;
+        
+        double[] upBoundSrc = new double[srcHorizons];
+        double[] lowBoundSrc = new double[srcHorizons];
+        double low = 0;
+        double up = 0;
+        for(int i = 0; i < srcHorizons; i++){
+            low += depthSrc[i];
+            up = low - depthSrc[i];
+            upBoundSrc[i] = up;
+            lowBoundSrc[i] = low;
+            //System.out.println("Src --> up: "+up+", low: "+low);
+            
+        }
+        double[] upBoundRec = new double[recHorizons];
+        double[] lowBoundRec = new double[recHorizons];
+        low = 0;
+        up = 0;
+        for(int i = 0; i < recHorizons; i++){
+            low += depthRec[i];
+            up = low - depthRec[i];
+            upBoundRec[i] = up;
+            lowBoundRec[i] = low;
+            //System.out.println("Rec --> up: "+up+", low: "+low);
+        }
+        
+        
+        fracOut = new double[depthSrc.length][depthRec.length];
+        percNOut = new double[depthSrc.length];
+        for(int i = 0; i < depthSrc.length; i++){
+            double sumFrac = 0;
+            for(int j = 0; j < depthRec.length; j++){
+                if((lowBoundSrc[i] > upBoundRec[j]) && (upBoundSrc[i] < lowBoundRec[j])){
+                    double relDepth = Math.min(lowBoundSrc[i], lowBoundRec[j]) - Math.max(upBoundSrc[i], upBoundRec[j]);
+                    double fracDepth = relDepth / depthSrc[i];
+                    sumFrac += fracDepth;
+                    fracOut[i][j] = fracDepth;
                 }
             }
+            percNOut[i] = 1.0 - sumFrac;
+        }
+    }
 }

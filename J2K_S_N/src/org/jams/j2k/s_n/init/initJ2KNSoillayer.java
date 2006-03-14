@@ -251,12 +251,12 @@ import org.unijena.jams.model.*;
         Residue_pool.setValue(Residue_poolvals);
         N_residue_pool_fresh.setValue(N_residue_pool_freshvals);
         InterflowN_in.setValue(InterflowN_invals);
-        fertNO3.setValue(0);
-        fertNH4.setValue(0);
-        fertstableorg.setValue(0);
-        fertactivorg.setValue(0);
-        inp_biomass.setValue(0);
-        inpN_biomass.setValue(0);
+        fertNO3.setValue(0.3);
+        fertNH4.setValue(0.3);
+        fertstableorg.setValue(0.3);
+        fertactivorg.setValue(0.03);
+        inp_biomass.setValue(0.3);
+        inpN_biomass.setValue(0.3);
     }
     
     

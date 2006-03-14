@@ -146,12 +146,12 @@ import org.unijena.jams.model.*;
             )
             public JAMSDouble percolation;
     
-    @JAMSVarDescription(
+        @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
             update = JAMSVarDescription.UpdateType.RUN,
-            description = "interflow"
+            description = "gwExcess"
             )
-            public JAMSDouble interflow;
+            public JAMSDouble gwExcess;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
@@ -166,13 +166,6 @@ import org.unijena.jams.model.*;
             description = "portion of percolation to RG2 in l"
             )
             public JAMSDouble pot_RG2;
-    
-    @JAMSVarDescription(
-            access = JAMSVarDescription.AccessType.WRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
-            description = "portion of percolation to interflow in l"
-            )
-            public JAMSDouble partint;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
@@ -218,7 +211,7 @@ import org.unijena.jams.model.*;
     
     double run_maxRG1, run_maxRG2, run_actRG1, run_actRG2, run_inRG1, run_inRG2, run_outRG1, run_outRG2, run_genRG1, run_genRG2,
             run_k_RG1, run_k_RG2, run_RG1_rec, run_RG2_rec, run_maxSoilStor, run_actSoilStor, run_slope,
-            run_percolation, run_interflow, run_pot_RG1, run_pot_RG2, run_partint;
+            run_percolation, run_interflow, run_pot_RG1, run_pot_RG2, run_gwExcess;
     /*
      *  Component run stages
      */
@@ -234,11 +227,12 @@ import org.unijena.jams.model.*;
         this.run_actRG2 = actRG2.getValue();
         this.run_inRG1 = inRG1.getValue();
         this.run_inRG2 = inRG2.getValue();
+        this.run_gwExcess    = gwExcess.getValue();
         
         this.run_maxSoilStor = maxSoilStorage.getValue();
         this.run_actSoilStor = actSoilStorage.getValue();
         this.run_percolation = percolation.getValue();
-        this.run_interflow = interflow.getValue();
+
         
         this.run_outRG1 = 0;
         this.run_outRG2 = 0;
@@ -268,11 +262,12 @@ import org.unijena.jams.model.*;
         genRG2.setValue(this.run_genRG2);
         inRG1.setValue(this.run_inRG1);
         inRG2.setValue(this.run_inRG2);
-        interflow.setValue(this.run_interflow);
+        gwExcess.setValue(this.run_gwExcess);
+
         actSoilStorage.setValue(this.run_actSoilStor);
         pot_RG1.setValue(this.run_pot_RG1);
         pot_RG2.setValue(this.run_pot_RG2);
-        partint.setValue(this.run_partint);
+
     }
     
     public void cleanup() {
@@ -350,13 +345,12 @@ import org.unijena.jams.model.*;
             this.run_pot_RG2 = run_pot_RG2 - delta_RG2;
         }
         double delta_RG1 = this.run_actRG1 - this.run_maxRG1;
-        if(delta_RG1 > 0){
-            this.run_interflow = this.run_interflow + delta_RG1;
-            this.run_actRG1 = this.run_maxRG1;
-            this.run_pot_RG1 = run_pot_RG1 - delta_RG1;
-            this.run_partint = delta_RG1;
-        }
+       
         
+        if(delta_RG1 > 0){
+            this.run_gwExcess = this.run_gwExcess + delta_RG1;
+            this.run_actRG1 = this.run_maxRG1;
+        }
         return true;
     }
     

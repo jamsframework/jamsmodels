@@ -262,7 +262,7 @@ import org.unijena.jams.model.*;
             update = JAMSVarDescription.UpdateType.RUN,
             description = "(fast) InterflowN inflow in kgN"
             )
-            public JAMSDouble InterflowN_in;
+            public JAMSDouble InterflowN_sum;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
@@ -278,19 +278,90 @@ import org.unijena.jams.model.*;
             )
             public JAMSDouble N_RG2_in;
     
-        @JAMSVarDescription(
+    @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
             update = JAMSVarDescription.UpdateType.RUN,
             description = "Current time"
             )
             public JAMSCalendar time;
     
+    
+    @JAMSVarDescription(
+            access = JAMSVarDescription.AccessType.WRITE,
+            update = JAMSVarDescription.UpdateType.RUN,
+            description = "Catchment outlet RD1 storage"
+            )
+            public JAMSDouble catchmentRD1;
+    
+    @JAMSVarDescription(
+            access = JAMSVarDescription.AccessType.WRITE,
+            update = JAMSVarDescription.UpdateType.RUN,
+            description = "Catchment outlet RD2 storage"
+            )
+            public JAMSDouble catchmentRD2;
+    
+    @JAMSVarDescription(
+            access = JAMSVarDescription.AccessType.WRITE,
+            update = JAMSVarDescription.UpdateType.RUN,
+            description = "Catchment outlet RG1 storage"
+            )
+            public JAMSDouble catchmentRG1;
+    
+    @JAMSVarDescription(
+            access = JAMSVarDescription.AccessType.WRITE,
+            update = JAMSVarDescription.UpdateType.RUN,
+            description = "Catchment outlet RG2 storage"
+            )
+            public JAMSDouble catchmentRG2;
+    
+    @JAMSVarDescription(
+            access = JAMSVarDescription.AccessType.WRITE,
+            update = JAMSVarDescription.UpdateType.RUN,
+            description = "Catchment outlet sim runoff"
+            )
+            public JAMSDouble catchmentSimRunoff;
+    
+    
+    @JAMSVarDescription(
+            access = JAMSVarDescription.AccessType.WRITE,
+            update = JAMSVarDescription.UpdateType.RUN,
+            description = "Catchment outlet NRD1 storage"
+            )
+            public JAMSDouble catchmentNRD1;
+    
+    @JAMSVarDescription(
+            access = JAMSVarDescription.AccessType.WRITE,
+            update = JAMSVarDescription.UpdateType.RUN,
+            description = "Catchment outlet NRD2 storage"
+            )
+            public JAMSDouble catchmentNRD2;
+    
+    @JAMSVarDescription(
+            access = JAMSVarDescription.AccessType.WRITE,
+            update = JAMSVarDescription.UpdateType.RUN,
+            description = "Catchment outlet NRG1 storage"
+            )
+            public JAMSDouble catchmentNRG1;
+    
+    @JAMSVarDescription(
+            access = JAMSVarDescription.AccessType.WRITE,
+            update = JAMSVarDescription.UpdateType.RUN,
+            description = "Catchment outlet NRG2 storage"
+            )
+            public JAMSDouble catchmentNRG2;
+    
+    @JAMSVarDescription(
+            access = JAMSVarDescription.AccessType.WRITE,
+            update = JAMSVarDescription.UpdateType.RUN,
+            description = "Catchment outlet sim Nitrogen runoff"
+            )
+            public JAMSDouble catchmentSimRunoffN;    
     /*
      *  Component run stages
      */
     
     public void init() throws JAMSEntity.NoSuchAttributeException {
- 
+        
     }
     
     public void run() throws JAMSEntity.NoSuchAttributeException {
@@ -308,7 +379,7 @@ import org.unijena.jams.model.*;
         double RG2act = this.actRG2.getValue() + this.inRG2.getValue();
         
         double RD1act_N = this.ActRD1_N.getValue() + this.SurfaceN_in.getValue();
-        double RD2act_N = this.ActRD2_N.getValue() + this.InterflowN_in.getValue();
+        double RD2act_N = this.ActRD2_N.getValue() + this.InterflowN_sum.getValue();
         double RG1act_N = this.ActRG1_N.getValue() + this.N_RG1_in.getValue();
         double RG2act_N = this.ActRG2_N.getValue() + this.N_RG2_in.getValue();
         
@@ -316,14 +387,14 @@ import org.unijena.jams.model.*;
         inRD2.setValue(0);
         inRG1.setValue(0);
         inRG2.setValue(0);
-         
+        
         actRD1.setValue(0);
         actRD2.setValue(0);
         actRG1.setValue(0);
         actRG2.setValue(0);
-       
+        
         SurfaceN_in.setValue(0);
-        InterflowN_in.setValue(0);
+        InterflowN_sum.setValue(0);
         N_RG1_in.setValue(0);
         N_RG2_in.setValue(0);
         
@@ -351,7 +422,7 @@ import org.unijena.jams.model.*;
             RG2DestIn = DestReach.getDouble("inRG2");
             
             RD1DestIn_N = DestReach.getDouble("SurfaceN_in");
-            RD2DestIn_N = DestReach.getDouble("InterflowN_in");
+            RD2DestIn_N = DestReach.getDouble("InterflowN_sum");
             RG1DestIn_N = DestReach.getDouble("N_RG1_in");
             RG2DestIn_N = DestReach.getDouble("N_RG2_in");
             
@@ -391,19 +462,19 @@ import org.unijena.jams.model.*;
         double RG2_part_N = 0;
         
         if(q_act_tot_N == 0){
-        
-
+            
+            
             
         } else{
             
-        RD1_part_N = RD1act_N / q_act_tot_N;
-        RD2_part_N = RD2act_N / q_act_tot_N;
-        RG1_part_N = RG1act_N / q_act_tot_N;
-        RG2_part_N = RG2act_N / q_act_tot_N;
-        
-        //calculation of N-Concentration with q_act_tot and q_act_tot_N
-        
-        
+            RD1_part_N = RD1act_N / q_act_tot_N;
+            RD2_part_N = RD2act_N / q_act_tot_N;
+            RG1_part_N = RG1act_N / q_act_tot_N;
+            RG2_part_N = RG2act_N / q_act_tot_N;
+            
+            //calculation of N-Concentration with q_act_tot and q_act_tot_N
+            
+            
         }
         double N_conc_tot = q_act_tot_N / q_act_tot;
         //calculation of flow velocity
@@ -465,7 +536,7 @@ import org.unijena.jams.model.*;
         double cumOutflow = RD1out + RD2out + RG1out + RG2out;
         double cumOutflow_N = RD1out_N + RD2out_N + RG1out_N + RG2out_N;
         
-
+        
         
         simRunoff.setValue(cumOutflow);
         SimRunoff_N.setValue(cumOutflow_N);
@@ -478,7 +549,7 @@ import org.unijena.jams.model.*;
         inRG2.setValue(0);
         
         SurfaceN_in.setValue(0);
-        InterflowN_in.setValue(0);
+        InterflowN_sum.setValue(0);
         N_RG1_in.setValue(0);
         N_RG2_in.setValue(0);
         
@@ -486,11 +557,11 @@ import org.unijena.jams.model.*;
         actRD2.setValue(RD2act);
         actRG1.setValue(RG1act);
         actRG2.setValue(RG2act);
-       
+        
         ActRD1_N.setValue(RD1act_N);
         ActRD2_N.setValue(RD2act_N);
         ActRG1_N.setValue(RG1act_N);
-        ActRG2_N.setValue(RG2act_N); 
+        ActRG2_N.setValue(RG2act_N);
         
         outRD1.setValue(RD1out);
         outRD2.setValue(RD2out);
@@ -502,11 +573,11 @@ import org.unijena.jams.model.*;
         N_RG1_out.setValue(RG1out_N);
         N_RG2_out.setValue(RG2out_N);
         
-        if(entity.getObject("to_reach") == null){
-        
+/*        if(entity.getObject("to_reach") == null){
+ 
         System.out.println(RD1out + " RD1out " + RD2out + " RD2out "+ RG1out +" RG1out " + RG2out +" RG2out ");
-         
-        }
+ 
+        }*/
         if(entity.getObject("to_reach") != null){
             DestReach.setDouble("inRD1",RD1DestIn);
             DestReach.setDouble("inRD2",RD2DestIn);
@@ -514,11 +585,23 @@ import org.unijena.jams.model.*;
             DestReach.setDouble("inRG2",RG2DestIn);
             
             DestReach.setDouble("SurfaceN_in", RD1DestIn_N);
-            DestReach.setDouble("InterflowN_in", RD2DestIn_N);
+            DestReach.setDouble("InterflowN_sum", RD2DestIn_N);
             DestReach.setDouble("N_RG1_in", RG1DestIn_N);
             DestReach.setDouble("N_RG2_in", RG2DestIn_N);
             
+        }else{
             
+            catchmentRD1.setValue(RD1out);
+            catchmentRD2.setValue(RD2out);
+            catchmentRG1.setValue(RG1out);
+            catchmentRG2.setValue(RG2out);
+            catchmentSimRunoff.setValue(cumOutflow);
+            
+            catchmentNRD1.setValue(RD1out_N);
+            catchmentNRD2.setValue(RD2out_N);
+            catchmentNRG1.setValue(RG1out_N);
+            catchmentNRG2.setValue(RG2out_N);
+            catchmentSimRunoffN.setValue(cumOutflow_N);
         }
         
     }

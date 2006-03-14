@@ -35,7 +35,7 @@ import org.unijena.jams.model.*;
         author="Manfred Fink",
         description="intitiallizing groundwater N module with two different N-Pools"
         )
-        public class initJ2KGroundwaterN extends JAMSComponent  {
+        public class InitJ2KGroundwaterN extends JAMSComponent  {
     
     /*
      *  Component variables
