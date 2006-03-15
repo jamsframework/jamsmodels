@@ -1,5 +1,5 @@
 /*
- * initJ2KNSoil.java
+ * InitJ2KNSoil.java
  * Created on 13. February 2006, 09:03
  *
  * This file is part of JAMS
@@ -31,7 +31,7 @@ import org.unijena.jams.model.*;
  * @author Manfred Fink
  */
 @JAMSComponentDescription(
-        title="initJ2KGroundwaterN",
+        title="InitJ2KGroundwaterN",
         author="Manfred Fink",
         description="intitiallizing groundwater N module with two different N-Pools"
         )

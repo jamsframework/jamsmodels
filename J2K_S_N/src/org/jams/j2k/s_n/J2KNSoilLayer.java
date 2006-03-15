@@ -539,7 +539,7 @@ import org.unijena.jams.model.*;
         while (i < layer) {
             
             this.runSoil_Temp_Layer = Soil_Temp_Layer.getValue()[i];
-            this.runlayerdepth = layerdepth.getValue()[i] * 100;
+            this.runlayerdepth = layerdepth.getValue()[i] * 10;
             this.sto_MPS = stohru_MPS.getValue()[i] / runarea;
             this.sto_LPS = stohru_LPS.getValue()[i] / runarea;
 //        this.runsto_FPS = stohru_FPS.getValue() / area;
@@ -794,7 +794,7 @@ import org.unijena.jams.model.*;
         
         
         while (j < layer) {
-            this.runlayerdepth = layerdepth.getValue()[j] * 100;
+            this.runlayerdepth = layerdepth.getValue()[j] * 10;
             
             upNO3_Pool = NO3_Pool.getValue()[j] * 100;
                        
@@ -1036,6 +1036,7 @@ import org.unijena.jams.model.*;
     
     private double calc_interflowN(int i){
         double interflowN = 0;
+        
         if (i == 0) {
             interflowN = (1 - runBeta_NO3) * RD2_out_mm * concN_mobile;
             interflowN = Math.min(interflowN,runNO3_Pool);
@@ -1043,6 +1044,9 @@ import org.unijena.jams.model.*;
             interflowN = RD2_out_mm * concN_mobile;
             interflowN = Math.min(interflowN,runNO3_Pool);
         }
+/*        if (interflowN > 0){
+        System.out.println(RD2_out_mm + " = RD2_out_mm " + interflowN +" = interflowN");
+        }*/
         return interflowN;
         
     }

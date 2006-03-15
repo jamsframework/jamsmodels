@@ -35,7 +35,7 @@ import org.unijena.jams.model.*;
         author="Manfred Fink",
         description="Asinghs soil temperature initial states in diffrent depths"
         )
-        public class initJ2KSoilTemp extends JAMSComponent {
+        public class InitJ2KSoilTemp extends JAMSComponent {
     
     /*
      *  Component variables
