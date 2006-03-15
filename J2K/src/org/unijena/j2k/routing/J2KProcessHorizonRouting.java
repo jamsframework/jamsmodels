@@ -174,8 +174,7 @@ import org.unijena.jams.model.*;
             }
             RD2in[recHors-1] += inGWExcess.getValue();
             double RD1in = toPoly.getDouble("inRD1");
-            
-            
+                        
             double RG2in = toPoly.getDouble("inRG2");
             
             RD1in = RD1in + RD1out;
