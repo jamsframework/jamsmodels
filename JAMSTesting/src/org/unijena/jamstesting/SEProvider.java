@@ -43,7 +43,7 @@ import java.util.*;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
-            update = JAMSVarDescription.UpdateType.SETUP
+            update = JAMSVarDescription.UpdateType.INIT
             )
             public JAMSEntityCollection entities = new JAMSEntityCollection();
     
@@ -60,7 +60,7 @@ import java.util.*;
             )
             public JAMSDouble test;
     
-    public void setup(){
+    public void init(){
         
         System.out.println("SEProvider: " + test);
         
@@ -71,7 +71,7 @@ import java.util.*;
         
         for (long i = 0; i < max.getValue(); i++) {
             e = JAMSDataFactory.newEntity();
-            e.setObject("xinit",  new JAMSDouble(42));
+            //e.setObject("attr",  new JAMSDouble(i+1));
             entityList.add(e);            
         }
         

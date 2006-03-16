@@ -35,84 +35,26 @@ import org.unijena.jams.data.*;
 public class Testcomponent2 extends JAMSComponent {
     
     @JAMSVarDescription(
-            access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.RUN
-            )
-            public JAMSDoubleArray test = new JAMSDoubleArray();
-    
-    @JAMSVarDescription(
-            access = JAMSVarDescription.AccessType.READ,
+            access = JAMSVarDescription.AccessType.READWRITE,
             update = JAMSVarDescription.UpdateType.RUN,
             lowerBound = 0,
             upperBound = 1000,
             unit = "L/min",
             description = "This is a short description"
             )
-            public JAMSDouble dValue1;
+            public JAMSDouble value;
+    
+    public void init() {
 
-    @JAMSVarDescription(
-            access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.RUN
-            )
-            public JAMSString str = new JAMSString();  
-    
-    @JAMSVarDescription(
-            access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.INIT
-            )
-            public JAMSDouble dValue2;
-    @JAMSVarDescription(
-            access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.RUN
-            )
-            public JAMSDouble dValue3;
-    @JAMSVarDescription(
-            access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.RUN
-            )
-            public JAMSDouble dValue4;
-    @JAMSVarDescription(
-            access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.RUN
-            )
-            public JAMSDouble dValue5;
-    
-    @JAMSVarDescription(
-            access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.RUN
-            )
-            public JAMSEntity entity;
-    
-    public void init(){
-        //test.setValue(42);
-        System.out.println("calibration parameter: " + dValue2);
     }
-    public void run() throws Exception {
-        //test.setValue(entity.getDouble("x"));
-        //System.out.println("Testcomponent2: " + test);
-        dValue1.setValue(dValue1.getValue()+1);
+    
+    public void run() {
+        value.setValue(value.getValue()-9);
+        System.out.println(value);
     }
     
     public void cleanup() {
-        System.out.println("Testcomponent2: " + test.getValue()[0]);
-        System.out.println("Testcomponent2: " + dValue1);
-        System.out.println(str.getValue());
-    }
-    
-    public static void main(String[] args) throws Exception {
-        JAMSDouble d;
-        JAMSEntity[] ea = new JAMSEntity[10];
-        for (int i=0; i<10; i++) {
-            ea[i] = JAMSDataFactory.newEntity();
-            d = new JAMSDouble();
-            d.setValue(i);
-            ea[i].setObject("x", d);
-        }
-        
-        JAMSComponent c = new Testcomponent2();
-        JAMSDoubleAccessor da = new JAMSDoubleAccessor(ea, c, "x", "test");
-        
-        c.run();
+        System.out.println("Testcomponent2: " + value);
     }
     
 }

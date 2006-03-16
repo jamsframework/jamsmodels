@@ -1,5 +1,5 @@
 /*
- * Testcomponent.java
+ * Testcomponent1.java
  *
  * Created on 8. September 2005, 16:32
  *
@@ -23,6 +23,7 @@
  */
 
 package org.unijena.jamstesting;
+
 import org.unijena.jams.model.*;
 import org.unijena.jams.data.*;
 
@@ -31,57 +32,28 @@ import org.unijena.jams.data.*;
  * @author S. Kralisch
  */
 
-public class Testcomponent extends JAMSComponent {
-    
+public class Testcomponent1  extends JAMSComponent {
     
     @JAMSVarDescription(
-            access = JAMSVarDescription.AccessType.WRITE,
+            access = JAMSVarDescription.AccessType.READWRITE,
             update = JAMSVarDescription.UpdateType.RUN,
             lowerBound = 0,
             upperBound = 1000,
             unit = "km",
             description = "This is a short description"
             )
-            public JAMSDoubleArray lengthVal = new JAMSDoubleArray();
-    
-    @JAMSVarDescription(
-            access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.INIT
-            )
-            public JAMSDouble initLength;    
-
-    @JAMSVarDescription(
-            access = JAMSVarDescription.AccessType.WRITE,
-            update = JAMSVarDescription.UpdateType.RUN
-            )
-            public JAMSString s = new JAMSString();        
-    
-    @JAMSVarDescription(
-            access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.INIT
-            )
-            public JAMSEntityCollection entities;
-    
-    @JAMSVarDescription(
-            access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.RUN
-            )
-            public JAMSEntity entity;    
-    
+            public JAMSDouble length;
+        
     public void init() {
-        //System.out.println(initLength);
-        //lengthVal.setValue(initLength.getValue());
-        double[] x = {0};
-        lengthVal.setValue(x);
-        s.setValue("TEST");
+        length.setValue(0);
     }
     
     public void run(){
-        lengthVal.getValue()[0] = lengthVal.getValue()[0] + 1;
-        //entity.setDouble("x", length.getValue());
+        length.setValue(length.getValue() + 15);
     }
     
     public void cleanup() {
+        
     }
     
 }
