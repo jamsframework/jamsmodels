@@ -162,6 +162,35 @@ import org.unijena.jams.model.*;
             )
             public JAMSDoubleArray N_stabel_pool = new JAMSDoubleArray();
     
+        @JAMSVarDescription(
+            access = JAMSVarDescription.AccessType.WRITE,
+            update = JAMSVarDescription.UpdateType.RUN,
+            description = "sum of NO3-Pool in kgN/ha"
+            )
+            public JAMSDouble sNO3_Pool;
+    
+    @JAMSVarDescription(
+            access = JAMSVarDescription.AccessType.WRITE,
+            update = JAMSVarDescription.UpdateType.RUN,
+            description = " sum of NH4-Pool in kgN/ha"
+            )
+            public JAMSDouble sNH4_Pool;
+    
+    @JAMSVarDescription(
+            access = JAMSVarDescription.AccessType.WRITE,
+            update = JAMSVarDescription.UpdateType.RUN,
+            description = " sum of N-Organic Pool with reactive organic matter in kgN/ha"
+            )
+            public JAMSDouble sN_activ_pool;
+    
+    @JAMSVarDescription(
+            access = JAMSVarDescription.AccessType.WRITE,
+            update = JAMSVarDescription.UpdateType.RUN,
+            description = "sum of N-Organic Pool with stable organic matter in kgN/ha"
+            )
+            public JAMSDouble sN_stabel_pool;
+    
+    
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
             update = JAMSVarDescription.UpdateType.RUN,
@@ -495,8 +524,10 @@ import org.unijena.jams.model.*;
         this.gamma_water = 0;
         this.runarea = area.getValue();
         this.layer = (int)Layer.getValue();
-        
-        
+        double sumNO3_Pool = 0;
+        double sumNH4_Pool = 0;
+        double sumN_activ_pool = 0;
+        double sumN_stabel_pool = 0;
         double h_infilt_mm_sum = 0;
         double Sumvolati_trans = 0;
         double Sumdenit_trans = 0;
@@ -515,8 +546,8 @@ import org.unijena.jams.model.*;
         hor_by_infilt = new double[layer];
         
         NO3_Poolvals = calc_plantuptake();
-        
-        //calculation of infiltration water that bypasses the horizonts   loop
+//        NO3_Poolvals = NO3_Pool.getValue();
+                //calculation of infiltration water that bypasses the horizonts   loop
         i = layer - 1;
         
         while (i  > 0) {
@@ -744,6 +775,11 @@ import org.unijena.jams.model.*;
             percoNvals[i] = runpercoN;
             percoNabsvals[i] = runpercoNabs;
             
+            sumN_stabel_pool = runN_stabel_pool + sumN_stabel_pool;
+            sumN_activ_pool = runN_activ_pool + sumN_activ_pool;
+            sumNH4_Pool = runNH4_Pool + sumNH4_Pool;
+            sumNO3_Pool = runNO3_Pool + sumNO3_Pool;
+            
             Sumvolati_trans = Sumvolati_trans + runvolati_trans;
             Sumdenit_trans = Sumdenit_trans + rundenit_trans;
             Sumnitri_trans = Sumnitri_trans + runnitri_trans;
@@ -769,6 +805,11 @@ import org.unijena.jams.model.*;
         Volati_trans.setValue(Sumvolati_trans);
         Denit_trans.setValue(Sumdenit_trans);
         Nitri_trans.setValue(Sumnitri_trans);
+        sN_stabel_pool.setValue(sumN_stabel_pool);
+        sN_activ_pool.setValue(sumN_activ_pool);
+        sNH4_Pool.setValue(sumNH4_Pool);
+        sNO3_Pool.setValue(sumNO3_Pool);
+        
 //        System.out.println("percoN = " + percoN +" percoNabs =  "+ percoNabs);
         
         
@@ -796,7 +837,7 @@ import org.unijena.jams.model.*;
         while (j < layer) {
             this.runlayerdepth = layerdepth.getValue()[j] * 10;
             
-            upNO3_Pool = NO3_Pool.getValue()[j] * 100;
+            upNO3_Pool = NO3_Pool.getValue()[j];
                        
             potN_up_z[j] = (runpotN_up /(1 - Math.exp(-runBeta_Ndist)))*(1 - Math.exp(-runBeta_Ndist * (runlayerdepth / runrootdepth)));
             demand1 = upNO3_Pool - potN_up_z[j];
