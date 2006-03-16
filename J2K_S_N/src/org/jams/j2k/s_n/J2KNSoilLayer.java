@@ -25,6 +25,9 @@ package org.jams.j2k.s_n;
 
 import org.unijena.jams.data.*;
 import org.unijena.jams.model.*;
+import org.unijena.jams.io.*;
+import java.util.*;
+import java.io.*;
 
 /**
  *
@@ -126,7 +129,7 @@ import org.unijena.jams.model.*;
             description = "soil temperature in layerdepth in °C"
             )
             public JAMSDoubleArray Soil_Temp_Layer  = new JAMSDoubleArray();
-        
+    
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
             update = JAMSVarDescription.UpdateType.INIT,
@@ -162,7 +165,7 @@ import org.unijena.jams.model.*;
             )
             public JAMSDoubleArray N_stabel_pool = new JAMSDoubleArray();
     
-        @JAMSVarDescription(
+    @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
             update = JAMSVarDescription.UpdateType.RUN,
             description = "sum of NO3-Pool in kgN/ha"
@@ -330,7 +333,7 @@ import org.unijena.jams.model.*;
             description = "actual nitrate uptake by plants in kgN/ha"
             )
             public JAMSDouble actN_up;
-       
+    
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
             update = JAMSVarDescription.UpdateType.RUN,
@@ -352,21 +355,21 @@ import org.unijena.jams.model.*;
             )
             public JAMSDoubleArray actETP_h = new JAMSDoubleArray();
     
-     @JAMSVarDescription(
+    @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
             update = JAMSVarDescription.UpdateType.RUN,
             description = " Nitrate input due to Fertilisation in kgN/ha"
             )
             public JAMSDouble fertNO3;
     
-       @JAMSVarDescription(
+    @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
             update = JAMSVarDescription.UpdateType.RUN,
             description = " Ammonium input due to Fertilisation in kgN/ha"
             )
             public JAMSDouble fertNH4;
     
-     @JAMSVarDescription(
+    @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
             update = JAMSVarDescription.UpdateType.RUN,
             description = " Stable organig N input due to Fertilisation in kgN/ha"
@@ -379,8 +382,8 @@ import org.unijena.jams.model.*;
             description = " Activ organig N input due to Fertilisation in kgN/ha"
             )
             public JAMSDouble fertactivorg;
-            
-     @JAMSVarDescription(
+    
+    @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
             update = JAMSVarDescription.UpdateType.RUN,
             description = " Input of plant residues kg/ha"
@@ -394,7 +397,7 @@ import org.unijena.jams.model.*;
             )
             public JAMSDouble inpN_biomass;
     
-         
+    
     // constants and calibration parameter
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
@@ -431,13 +434,20 @@ import org.unijena.jams.model.*;
             )
             public JAMSDouble Beta_Ndist;
     
-        @JAMSVarDescription(
+    @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
             update = JAMSVarDescription.UpdateType.INIT,
             description = "infiltration bypass parameter to calibrate = 0 - 1"
             )
             public JAMSDouble infil_conc_factor;
-       
+    
+    @JAMSVarDescription(
+            access = JAMSVarDescription.AccessType.READ,
+            update = JAMSVarDescription.UpdateType.RUN,
+            description = "Current time"
+            )
+            public JAMSCalendar time;
+    
     /*
      *  Component run stages
      */
@@ -487,7 +497,7 @@ import org.unijena.jams.model.*;
     private double runpercoNabs;
     private double runsurfaceN_in;
     private double runinterflowN_in;
-  
+    
     
     private double runBeta_trans;
     private double runBeta_min;
@@ -516,7 +526,12 @@ import org.unijena.jams.model.*;
     }
     
     public void run() throws JAMSEntity.NoSuchAttributeException{
-        
+        JAMSCalendar testtime = new JAMSCalendar();
+        testtime.setValue("1994-08-30 07:30");
+        if (time.equals(testtime)){
+            System.out.println(time.getValue()) ;
+        }
+            
         
         int i = 0;
         
@@ -547,22 +562,22 @@ import org.unijena.jams.model.*;
         
         NO3_Poolvals = calc_plantuptake();
 //        NO3_Poolvals = NO3_Pool.getValue();
-                //calculation of infiltration water that bypasses the horizonts   loop
+        //calculation of infiltration water that bypasses the horizonts   loop
         i = layer - 1;
         
         while (i  > 0) {
-        
-        this.h_infilt_mm = infiltration_hor.getValue()[i] / runarea;
-        
-        sumh_infilt_mm = sumh_infilt_mm + h_infilt_mm;
-        
-        hor_by_infilt[i - 1] = sumh_infilt_mm * infil_conc_factor.getValue();
-/*        
+            
+            this.h_infilt_mm = infiltration_hor.getValue()[i] / runarea;
+            
+            sumh_infilt_mm = sumh_infilt_mm + h_infilt_mm;
+            
+            hor_by_infilt[i - 1] = sumh_infilt_mm * infil_conc_factor.getValue();
+/*
         if (i == 2 & hor_by_infilt[i] > 0){
             System.out.println();
         }*/
-        
-        i--;
+            
+            i--;
         }
         
         i = 0;
@@ -584,7 +599,7 @@ import org.unijena.jams.model.*;
 //        this.C_org = entity.getDouble(aNameC_org.getValue());
             this.runC_org = C_org.getValue()[i];
             this.runNO3_Pool = NO3_Poolvals[i];
-            this.runNH4_Pool = NH4_Pool.getValue()[i];
+            runNH4_Pool = NH4_Pool.getValue()[i];
             this.runN_activ_pool = N_activ_pool.getValue()[i];
             this.runN_stabel_pool = N_stabel_pool.getValue()[i];
             this.runN_residue_pool_fresh = N_residue_pool_fresh.getValue()[i];
@@ -625,7 +640,7 @@ import org.unijena.jams.model.*;
             } else{
                 gamma_water = 0;
             }
-           
+            
             
             
             precalc_nit_vol = calc_nit_volati();
@@ -838,7 +853,7 @@ import org.unijena.jams.model.*;
             this.runlayerdepth = layerdepth.getValue()[j] * 10;
             
             upNO3_Pool = NO3_Pool.getValue()[j];
-                       
+            
             potN_up_z[j] = (runpotN_up /(1 - Math.exp(-runBeta_Ndist)))*(1 - Math.exp(-runBeta_Ndist * (runlayerdepth / runrootdepth)));
             demand1 = upNO3_Pool - potN_up_z[j];
             
@@ -870,7 +885,7 @@ import org.unijena.jams.model.*;
         
         // plant uptake loop 2: summarising rest N demand
         while (ii < layer) {
-                        
+            
             demand2 = demandN_up_z[ii] + demand2;
             
             ii++;
@@ -1031,7 +1046,7 @@ import org.unijena.jams.model.*;
             mobilewater = RD2_out_mm + h_perco_mm + hor_by_infilt[i] + 1.e-10;
         }
         if (i == (layer -1)){
-            mobilewater = RD2_out_mm + d_perco_mm  + 1.e-10; 
+            mobilewater = RD2_out_mm + d_perco_mm  + 1.e-10;
         }
         concN_temp = (runNO3_Pool * (1 - Math.exp(- mobilewater / ((1 - theta_nit) * soilstorage))));
         concN_mobile = concN_temp / mobilewater;
@@ -1094,16 +1109,36 @@ import org.unijena.jams.model.*;
     
     private double calc_percoN(int i){
         double percoN = 0;
-        if (i < (layer -1)){       
-        percoN = (hor_by_infilt[i] + h_perco_mm) * concN_mobile;
+        if (i < (layer -1)){
+            percoN = (hor_by_infilt[i] + h_perco_mm) * concN_mobile;
         }else{
-         percoN = d_perco_mm  * concN_mobile;   
+            percoN = d_perco_mm  * concN_mobile;
         }
         percoN = Math.min(percoN,runNO3_Pool);
         return percoN;
     }
     
-    
+    private JAMSCalendar parseJ2KTime(String timeString) {
+        
+        //Array keeping values for year, month, day, hour, minute
+        String[] timeArray = new String[5];
+        timeArray[0] = "1";
+        timeArray[1] = "1";
+        timeArray[2] = "0";
+        timeArray[3] = "0";
+        timeArray[4] = "0";
+        
+        StringTokenizer st = new StringTokenizer(timeString, ".-/ :");
+        int n = st.countTokens();
+        
+        for (int i = 0; i < n; i++) {
+            timeArray[i] = st.nextToken();
+        }
+        
+        JAMSCalendar cal = new JAMSCalendar();
+        cal.setValue(timeArray[2]+"-"+timeArray[1]+"-"+timeArray[0]+" "+timeArray[3]+":"+timeArray[4]);
+        return cal;
+    }
     public void cleanup() throws JAMSEntity.NoSuchAttributeException{
         
     }

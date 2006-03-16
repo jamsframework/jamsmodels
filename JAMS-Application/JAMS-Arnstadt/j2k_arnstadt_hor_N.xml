@@ -258,7 +258,7 @@
           
         </contextcomponent> 
         <contextcomponent class="org.unijena.jams.model.JAMSTemporalContext" name="TemporalContextpre">
-            <jamsvar class="org.unijena.jams.data.JAMSTimeInterval" name="timeInterval" value="1989-11-01 7:30 1999-11-30 7:30 6 1"/>
+            <jamsvar class="org.unijena.jams.data.JAMSTimeInterval" name="timeInterval" value="1989-11-01 7:30 1990-10-31 7:30 6 1"/>
             
             <component class="org.unijena.j2k.io.TSDataReader" name="TmeanDataReaderpre">
                 <jamsvar name="dirName" globvar="workspaceDir"/>
@@ -796,6 +796,7 @@
                     <jamsvar name="Beta_NO3" value="0.05"/>
                     <jamsvar name="Beta_Ndist" value="1"/>
                     <jamsvar name="infil_conc_factor" value="1"/>
+                    <jamsvar name="time" provider="TemporalContext" providervar="current"/>
                 </component>
                 
                 <component class="org.jams.j2k.s_n.J2KProcessGroundwater" name="J2KProcessGroundwater">
