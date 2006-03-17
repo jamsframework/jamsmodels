@@ -172,6 +172,7 @@ import java.io.*;
             )
             public JAMSDouble sNO3_Pool;
     
+    
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
             update = JAMSVarDescription.UpdateType.RUN,
@@ -464,8 +465,8 @@ import java.io.*;
     private double runsoil_bulk_density;
     private double sto_MPS;
     private double sto_LPS;
+   
     private double sto_FPS;
-    
     private double act_LPS;
     private double act_MPS;
     
@@ -527,11 +528,11 @@ import java.io.*;
     
     public void run() throws JAMSEntity.NoSuchAttributeException{
         JAMSCalendar testtime = new JAMSCalendar();
-        testtime.setValue("1994-08-30 07:30");
+/*        testtime.setValue("1994-08-30 07:30");
         if (time.equals(testtime)){
             System.out.println(time.getValue()) ;
         }
-            
+ */       
         
         int i = 0;
         
@@ -588,7 +589,7 @@ import java.io.*;
             this.runlayerdepth = layerdepth.getValue()[i] * 10;
             this.sto_MPS = stohru_MPS.getValue()[i] / runarea;
             this.sto_LPS = stohru_LPS.getValue()[i] / runarea;
-//        this.runsto_FPS = stohru_FPS.getValue() / area;
+            this.sto_FPS = stohru_FPS.getValue()[i] / runarea;
             this.sto_FPS = sto_MPS * 0.3;
             
             this.act_LPS = sat_LPS.getValue()[i] * sto_LPS;
@@ -599,7 +600,7 @@ import java.io.*;
 //        this.C_org = entity.getDouble(aNameC_org.getValue());
             this.runC_org = C_org.getValue()[i];
             this.runNO3_Pool = NO3_Poolvals[i];
-            runNH4_Pool = NH4_Pool.getValue()[i];
+            this.runNH4_Pool = NH4_Pool.getValue()[i];
             this.runN_activ_pool = N_activ_pool.getValue()[i];
             this.runN_stabel_pool = N_stabel_pool.getValue()[i];
             this.runN_residue_pool_fresh = N_residue_pool_fresh.getValue()[i];
@@ -799,9 +800,18 @@ import java.io.*;
             Sumdenit_trans = Sumdenit_trans + rundenit_trans;
             Sumnitri_trans = Sumnitri_trans + runnitri_trans;
             
+        double NH4test1 = NH4_Poolvals[0];
+        double NH4test2 = NH4_Pool.getValue()[0];
+        if (NH4test1 > NH4test2){
+            System.out.println("Wundersame NH4 vermehrung");
+        }
+            
             i++;
         }
         // writing of pools
+        
+
+        
         NO3_Pool.setValue(NO3_Poolvals);
         NH4_Pool.setValue(NH4_Poolvals);
         N_activ_pool.setValue(N_activ_poolvals);
@@ -930,9 +940,9 @@ import java.io.*;
         
         eta_temp = 0.41 * ((runSoil_Temp_Layer - 5) / 10);
         
-        if (act_LPS + act_MPS - sto_FPS < 0.25 * (sto_LPS + sto_MPS - sto_FPS)){
-            eta_water = (act_LPS + act_MPS - sto_FPS) / (0.25 * (sto_LPS + sto_MPS - sto_FPS));
-        } else if (act_LPS + act_MPS - sto_FPS >= 0.25 * (sto_LPS + sto_MPS - sto_FPS)) {
+        if (act_LPS + act_MPS < 0.25 * (sto_LPS + sto_MPS )){
+            eta_water = (act_LPS + act_MPS + sto_FPS ) / (0.25 * (sto_LPS + sto_MPS + sto_FPS));
+        } else if (act_LPS + act_MPS >= 0.25 * (sto_LPS + sto_MPS)) {
             eta_water = 1;
         }
         
