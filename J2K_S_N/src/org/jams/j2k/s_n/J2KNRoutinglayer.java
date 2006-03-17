@@ -154,6 +154,7 @@ import org.unijena.jams.model.*;
         
         if(toPoly != null){
             
+        }else if(toPoly != null){
             double[] srcDepth = ((JAMSDoubleArray)entity.getObject("depth_h")).getValue();
             double[] recDepth = ((JAMSDoubleArray)toPoly.getObject("depth_h")).getValue();
             int srcHors = srcDepth.length;
