@@ -234,7 +234,8 @@ import org.unijena.jams.model.*;
         double runpot_RG2 = pot_RG1.getValue();
         double percoN = PercoNabs.getValue();
         double RGNretentinon = 1;
-        double partN_Excess = NExcess.getValue();
+        double N_Excess = NExcess.getValue();
+        double partN_Excess = 0;
         double partN_RG1 = 0;
         double partN_RG2 = 0;
         double percwatersum = runpot_RG1 + runpot_RG2 + rungwExcess;
@@ -246,7 +247,7 @@ import org.unijena.jams.model.*;
         
         double watersum_RG1 = ActRG1 +  RG1_out +  (MaxRG1  * N_delay_RG1.getValue());
         double watersum_RG2 = ActRG2 +  RG2_out +  (MaxRG2  * N_delay_RG2.getValue());
-        rungwExcess = rungwExcess + partN_Excess;
+        N_Excess = N_Excess + partN_Excess;
         
         runNActRG1 = runNActRG1 + runN_RG1_in + partN_RG1;
         runNActRG2 = runNActRG2 + runN_RG2_in + partN_RG2;
@@ -289,7 +290,7 @@ import org.unijena.jams.model.*;
         NActRG2.setValue(runNActRG2);
         N_concRG1.setValue(runN_concRG1);
         N_concRG2.setValue(runN_concRG2);
-        NExcess.setValue(partN_Excess);
+        NExcess.setValue(N_Excess);
     }
     
     public void cleanup() {
