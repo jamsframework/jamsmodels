@@ -13,7 +13,7 @@
             <jamsvar name="entities" provider="SEProvider" providervar="entities"/>
 
             <component class="org.unijena.jamstesting.Testcomponent1" name="Test1">
-                <jamsvar name="length" provider="SpatialContext" spatattrib="attr"/>
+                <jamsvar name="length" provider="SpatialContext" spatattrib="attr; test"/>
             </component>
             
             <component class="org.unijena.jamstesting.Testcomponent2" name="Test2">

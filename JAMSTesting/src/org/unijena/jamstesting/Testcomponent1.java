@@ -42,14 +42,14 @@ public class Testcomponent1  extends JAMSComponent {
             unit = "km",
             description = "This is a short description"
             )
-            public JAMSDouble length;
+            public JAMSDouble[] length;
         
     public void init() {
-        length.setValue(0);
+//        length.setValue(0);
     }
     
     public void run(){
-        length.setValue(length.getValue() + 15);
+        length[0].setValue(length[0].getValue() + 15);
     }
     
     public void cleanup() {
