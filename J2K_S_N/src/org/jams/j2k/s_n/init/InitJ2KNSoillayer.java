@@ -226,7 +226,7 @@ import org.unijena.jams.model.*;
             runlayerdepth = layerdepth.getValue()[i] * 10; //from cm to mm
             hor_dept = hor_dept + runlayerdepth;
             runResidue_pool = 10;
-            runNO3_Pool = ((7 * Math.exp(-hor_dept/100)) * runsoil_bulk_density * runlayerdepth)/100;
+            runNO3_Pool = ((7 * Math.exp(-hor_dept/1000)) * runsoil_bulk_density * runlayerdepth)/1000;
             runNH4_Pool = 0.1 * runNO3_Pool;
             orgNhum = 10000 * runC_org / 14;
             runN_activ_pool = ((orgNhum * fr_actN) * runsoil_bulk_density * runlayerdepth)/100;
