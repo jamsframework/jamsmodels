@@ -1,0 +1,7 @@
+# RID Croprotation-id
+# CID crop-id in Abfolge der Rotation
+# RID 1: 27 spring wheat; 88 winter rape; 97 winter barley
+RID	CID	CID	CID	CID	CID
+1	88	27	97
+2	88	28	88	19	31
+#end of file croprotation.par	
