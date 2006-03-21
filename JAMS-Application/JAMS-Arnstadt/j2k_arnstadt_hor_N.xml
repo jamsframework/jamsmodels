@@ -711,12 +711,15 @@
                 <component class="org.jams.j2k.s_n.j2kETP_E_TP" name="j2kETP_E_TP">
                     <jamsvar name="time" provider="TemporalContext" providervar="current"/>
                     <jamsvar name="aETP" provider="HRUContext" spatattrib="actET"/>
-                    <jamsvar name="LAIArray" provider="HRUContext" spatattrib="LAIArray"/>
+                    <jamsvar name="LAI" provider="HRUContext" spatattrib="actLAI"/>
+                    <jamsvar name="actETP_h" provider="HRUContext" spatattrib="actETP_h"/>
+                    <jamsvar name="Layer" provider="HRUContext" spatattrib="horizons"/>	
                     <jamsvar name="aEP" provider="HRUContext" spatattrib="aEvap"/>
                     <jamsvar name="aTP" provider="HRUContext" spatattrib="aTransp"/>
                     <jamsvar name="pETP" provider="HRUContext" spatattrib="potETP"/>
                     <jamsvar name="pEP" provider="HRUContext" spatattrib="pEvap"/>
                     <jamsvar name="pTP" provider="HRUContext" spatattrib="pTransp"/>
+                    <jamsvar name="aEP_h" provider="HRUContext" spatattrib="aEP_h"/>
                 </component>
 
                 <component class="org.jams.j2k.s_n.J2KSoilTemplayer" name="J2KSoilTemplayer">
@@ -750,7 +753,6 @@
                     <jamsvar name="stohru_FPS" provider="HRUContext" spatattrib="maxFPS_h"/>
                     <jamsvar name="sat_MPS" provider="HRUContext" spatattrib="satMPS_h"/>
                     <jamsvar name="sat_LPS" provider="HRUContext" spatattrib="satLPS_h"/>
-                    <jamsvar name="aEvap" provider="HRUContext" spatattrib="aEvap"/>
                     <jamsvar name="RD1_out" provider="HRUContext" spatattrib="outRD1"/>
                     <jamsvar name="RD2_out" provider="HRUContext" spatattrib="outRD2_h"/>
                     <jamsvar name="D_perco" provider="HRUContext" spatattrib="percolation"/>
@@ -790,13 +792,16 @@
                     <jamsvar name="fertNH4" provider="HRUContext" spatattrib="fertNH4"/>
                     <jamsvar name="fertstableorg" provider="HRUContext" spatattrib="fertstableorg"/>
                     <jamsvar name="fertactivorg" provider="HRUContext" spatattrib="fertactivorg"/>
-                    <jamsvar name="actETP_h" provider="HRUContext" spatattrib="actETP_h"/>
+                    <jamsvar name="sum_Ninput" provider="HRUContext" spatattrib="sum_Ninput"/>                    
+                    <jamsvar name="aEP_h" provider="HRUContext" spatattrib="aEP_h"/>
+                    <jamsvar name="precip" provider="HRUContext" spatattrib="precip"/>
                     <jamsvar name="Beta_trans" value="0.00001"/>
                     <jamsvar name="Beta_min" value="0.002"/>
                     <jamsvar name="Beta_rsd" value="0.05"/>
                     <jamsvar name="Beta_NO3" value="0.05"/>
                     <jamsvar name="Beta_Ndist" value="1"/>
                     <jamsvar name="infil_conc_factor" value="1"/>
+                    <jamsvar name="deposition_factor" value="0.02"/>
                     <jamsvar name="time" provider="TemporalContext" providervar="current"/>
                 </component>
                 
@@ -924,9 +929,9 @@
 
                 <!-- formerly known as SpatialAggregator - aggregationType 3 -->
                 <component class="org.unijena.j2k.aggregate.WeightedSumAggregator" name="SpatialWeightedSumAggregator2">
-                    <jamsvar name="value" provider="HRUContext" spatattrib="rain;snow;potET;refET;actET;netSnow;netRain;throughfall;interception;intercStorage;snowTotSWE;snowMelt;actDPS;soilActMPS;soilActLPS;percolation;actRG1;actRG2;outRD1;outRD2;outRG1;outRG2;sNO3_Pool;sNH4_Pool;sN_activ_pool;sN_stabel_pool"/>
+                    <jamsvar name="value" provider="HRUContext" spatattrib="rain;snow;potET;refET;actET;netSnow;netRain;throughfall;interception;intercStorage;snowTotSWE;snowMelt;actDPS;soilActMPS;soilActLPS;percolation;actRG1;actRG2;outRD1;outRD2;outRG1;outRG2;sNO3_Pool;sNH4_Pool;sN_activ_pool;sN_stabel_pool;sum_Ninput"/>
                     <jamsvar name="weight" provider="CatchmentContext" spatattrib="area"/>
-                    <jamsvar name="sum" provider="CatchmentContext" spatattrib="rain;snow;potET;refET;actET;netSnow;netRain;throughfall;interception;intercStorage;snowTotSWE;snowMelt;actDPS;actMPS;actLPS;percolation;actRG1;actRG2;outRD1;outRD2;outRG1;outRG2;sNO3_Pool;sNH4_Pool;sN_activ_pool;sN_stabel_pool"/>
+                    <jamsvar name="sum" provider="CatchmentContext" spatattrib="rain;snow;potET;refET;actET;netSnow;netRain;throughfall;interception;intercStorage;snowTotSWE;snowMelt;actDPS;actMPS;actLPS;percolation;actRG1;actRG2;outRD1;outRD2;outRG1;outRG2;sNO3_Pool;sNH4_Pool;sN_activ_pool;sN_stabel_pool;sum_Ninput"/>
                 </component>
             </contextcomponent>
             <contextcomponent class="org.unijena.jams.model.JAMSSpatialContext" name="ReachContext">
@@ -1016,9 +1021,9 @@
             </contextcomponent>
             
             <component class="org.unijena.j2k.aggregate.WeightedSumAggregator" name="FlowWeightedSumAggregator">
-                <jamsvar name="value" provider="CatchmentContext" spatattrib="catchmentRD1;catchmentRD2;catchmentRG1;catchmentRG2;channelStorage;catchmentNRD1;catchmentNRD2;catchmentNRG1;catchmentNRG2;catchmentSimRunoffN"/>
+                <jamsvar name="value" provider="CatchmentContext" spatattrib="catchmentRD1;catchmentRD2;catchmentRG1;catchmentRG2;channelStorage;catchmentNRD1;catchmentNRD2;catchmentNRG1;catchmentNRG2"/>
                 <jamsvar name="weight" provider="CatchmentContext" spatattrib="area"/>
-                <jamsvar name="sum" provider="CatchmentContext" spatattrib="catchmentRD1_w;catchmentRD2_w;catchmentRG1_w;catchmentRG2_w;channelStorage_w;catchmentNRD1_w;catchmentNRD2_w;catchmentNRG1_w;catchmentNRG2_w;catchmentSimRunoffN"/>
+                <jamsvar name="sum" provider="CatchmentContext" spatattrib="catchmentRD1_w;catchmentRD2_w;catchmentRG1_w;catchmentRG2_w;channelStorage_w;catchmentNRD1_w;catchmentNRD2_w;catchmentNRG1_w;catchmentNRG2_w"/>
             </component> 
     
             <component class="org.unijena.jams.tools.JAMSUnitConverter" name="SimRunoffConverter">
@@ -1039,19 +1044,19 @@
                 <jamsvar name="fileName" value="output\result-as-full.txt"/>
                 <jamsvar name="time" provider="TemporalContext" providervar="current"/>
                 <jamsvar name="headers" value="precip;tmean;surfacetemp;soil_Tempaverage;rhum;wind;rain;snow;solRad;netRad;refET;potET;actET;netRain;netSnow;throughfall;interception;intercStorage;snowDepth;snowTotSWE;snowMelt;satMPS;satLPS;actDPS;actMPS;actLPS;percolation;actRG1;actRG2;catchmentRD1_w;catchmentRD2_w;catchmentRG1_w;catchmentRG2_w;channelStorage_w;catchmentSimRunoff_qm;catchmentObsRunoff"/>
-                <jamsvar name="value" provider="CatchmentContext" spatattrib="precip;tmean;surfacetemp;soil_Tempaverage;rhum;wind;rain;snow;solRad;netRad;refET;potET;actET;netRain;netSnow;throughfall;interception;intercStorage;snowDepth;snowTotSWE;snowMelt;satMPS;satLPS;actDPS;actMPS;actLPS;percolation;actRG1;actRG2;catchmentRD1_w;catchmentRD2_w;catchmentRG1_w;catchmentRG2_w;catchmentSimRunoffN_w;catchmentSimRunoff_qm;catchmentObsRunoff"/>
+                <jamsvar name="value" provider="CatchmentContext" spatattrib="precip;tmean;surfacetemp;soil_Tempaverage;rhum;wind;rain;snow;solRad;netRad;refET;potET;actET;netRain;netSnow;throughfall;interception;intercStorage;snowDepth;snowTotSWE;snowMelt;satMPS;satLPS;actDPS;actMPS;actLPS;percolation;actRG1;actRG2;catchmentRD1_w;catchmentRD2_w;catchmentRG1_w;catchmentRG2_w;catchmentSimRunoffN;catchmentSimRunoff_qm;catchmentObsRunoff"/>
             </component>            
 
             <component class="org.unijena.j2k.io.StandardDataWriter" name="CatchmentWriterN">
                 <jamsvar name="dirName" globvar="workspaceDir"/>
                 <jamsvar name="fileName" value="output\result_nitrogen.txt"/>
                 <jamsvar name="time" provider="TemporalContext" providervar="current"/>
-                <jamsvar name="headers" value="catchmentNRD1_w;catchmentNRD2_w;catchmentNRG1_w;catchmentNRG2_w;catchmentSimRunoffN_w;sNO3_Pool;sNH4_Pool;sN_activ_pool;sN_stabel_pool"/>
-                <jamsvar name="value" provider="CatchmentContext" spatattrib="catchmentNRD1_w;catchmentNRD2_w;catchmentNRG1_w;catchmentNRG2_w;catchmentSimRunoffN_w;sNO3_Pool;sNH4_Pool;sN_activ_pool;sN_stabel_pool"/>
+                <jamsvar name="headers" value="catchmentNRD1_w;catchmentNRD2_w;catchmentNRG1_w;catchmentNRG2_w;catchmentSimRunoffN;sNO3_Pool;sNH4_Pool;sN_activ_pool;sN_stabel_pool;sum_Ninput"/>
+                <jamsvar name="value" provider="CatchmentContext" spatattrib="catchmentNRD1_w;catchmentNRD2_w;catchmentNRG1_w;catchmentNRG2_w;catchmentSimRunoffN;sNO3_Pool;sNH4_Pool;sN_activ_pool;sN_stabel_pool;sum_Ninput"/>
             </component>      
             
             <component class="org.unijena.j2k.DoubleSetter" name="CatchmentResetter">
-                <jamsvar name="attributes" provider="CatchmentContext" spatattrib="precip;tmean;surfacetemp;soil_Tempaverage;rhum;wind;rain;snow;solRad;netRad;refET;potET;actET;netRain;netSnow;throughfall;interception;intercStorage;snowDepth;snowTotSWE;snowMelt;satMPS;satLPS;actDPS;actMPS;actLPS;percolation;actRG1;actRG2;catchmentRD1_w;catchmentRD2_w;catchmentRG1_w;catchmentRG2_w;channelStorage_w;channelStorage;catchmentNRD1_w;catchmentNRD2_w;catchmentNRG1_w;catchmentNRG2_w;catchmentSimRunoffN_w;sNO3_Pool;sNH4_Pool;sN_activ_pool;sN_stabel_pool"/>
+                <jamsvar name="attributes" provider="CatchmentContext" spatattrib="precip;tmean;surfacetemp;soil_Tempaverage;rhum;wind;rain;snow;solRad;netRad;refET;potET;actET;netRain;netSnow;throughfall;interception;intercStorage;snowDepth;snowTotSWE;snowMelt;satMPS;satLPS;actDPS;actMPS;actLPS;percolation;actRG1;actRG2;catchmentRD1_w;catchmentRD2_w;catchmentRG1_w;catchmentRG2_w;channelStorage_w;channelStorage;catchmentNRD1_w;catchmentNRD2_w;catchmentNRG1_w;catchmentNRG2_w;catchmentSimRunoffN_w;sNO3_Pool;sNH4_Pool;sN_activ_pool;sN_stabel_pool;sum_Ninput"/>
                 <jamsvar name="value" value="0"/>
             </component>
             
