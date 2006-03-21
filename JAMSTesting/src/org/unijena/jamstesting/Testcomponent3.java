@@ -23,7 +23,6 @@ package org.unijena.jamstesting;
  *
  */
 
-import org.unijena.jams.dataaccess.entity.JAMSDoubleAccessor;
 import org.unijena.jams.model.*;
 import org.unijena.jams.data.*;
 
