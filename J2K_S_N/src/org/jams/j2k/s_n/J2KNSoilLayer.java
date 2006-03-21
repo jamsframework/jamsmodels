@@ -214,7 +214,7 @@ import java.io.*;
             update = JAMSVarDescription.UpdateType.RUN,
             description = " actual evaporation in mm"
             )
-            public JAMSDouble aEvap;
+            public JAMSDoubleArray aEP_h = new JAMSDoubleArray();
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
@@ -282,27 +282,27 @@ import java.io.*;
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
             update = JAMSVarDescription.UpdateType.RUN,
-            description = " Nitrate in percolation in  in kgN/ha"
+            description = " Nitrate in percolation in kgN/ha"
             )
             public JAMSDouble PercoN;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
             update = JAMSVarDescription.UpdateType.RUN,
-            description = " Nitrate in surface runoff in  in kgN"
+            description = " Nitrate in surface runoff in kgN"
             )
             public JAMSDouble SurfaceNabs;
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
             update = JAMSVarDescription.UpdateType.RUN,
-            description = " Nitrate in interflow in  in kgN"
+            description = " Nitrate in interflow in in kgN"
             )
             public JAMSDoubleArray InterflowNabs = new JAMSDoubleArray();
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
             update = JAMSVarDescription.UpdateType.RUN,
-            description = " Nitrate in percolation in  in kgN"
+            description = " Nitrate in percolation in in kgN"
             )
             public JAMSDouble PercoNabs;
     
@@ -385,6 +385,14 @@ import java.io.*;
             public JAMSDouble fertactivorg;
     
     @JAMSVarDescription(
+            access = JAMSVarDescription.AccessType.READWRITE,
+            update = JAMSVarDescription.UpdateType.RUN,
+            description = "Sum of N input due fertilisation and deposition in kgN/ha"
+            )
+            public JAMSDouble sum_Ninput;
+    
+    
+    @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
             update = JAMSVarDescription.UpdateType.RUN,
             description = " Input of plant residues kg/ha"
@@ -444,6 +452,20 @@ import java.io.*;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
+            update = JAMSVarDescription.UpdateType.INIT,
+            description = "concentration of Nitrate in rain = 0 - 0.05 kgN/(mm * ha)"
+            )
+            public JAMSDouble deposition_factor;
+    
+    @JAMSVarDescription(
+            access = JAMSVarDescription.AccessType.READ,
+            update = JAMSVarDescription.UpdateType.RUN,
+            description = "precipitation in mm"
+            )
+            public JAMSDouble precip;
+    
+    @JAMSVarDescription(
+            access = JAMSVarDescription.AccessType.READ,
             update = JAMSVarDescription.UpdateType.RUN,
             description = "Current time"
             )
@@ -465,7 +487,7 @@ import java.io.*;
     private double runsoil_bulk_density;
     private double sto_MPS;
     private double sto_LPS;
-   
+    
     private double sto_FPS;
     private double act_LPS;
     private double act_MPS;
@@ -479,7 +501,6 @@ import java.io.*;
     private double runN_stabel_pool;
     private double runN_residue_pool_fresh;
     private double runResidue_pool;
-    private double runaEvap;
     private double RD1_out_mm;
     private double RD2_out_mm;
     private double d_perco_mm;
@@ -487,6 +508,7 @@ import java.io.*;
     private double h_infilt_mm;
     private int layer;
     private double runvolati_trans;
+    private double runsum_Ninput;
     
     private double runplantupN;
     private double rundenit_trans;
@@ -520,6 +542,7 @@ import java.io.*;
     
     private int datumjul = 0;
     double[] hor_by_infilt;
+    double[] NO3_Poolvals;
     
     public void init() throws JAMSEntity.NoSuchAttributeException{
         
@@ -532,7 +555,7 @@ import java.io.*;
         if (time.equals(testtime)){
             System.out.println(time.getValue()) ;
         }
- */       
+ */
         
         int i = 0;
         
@@ -540,6 +563,9 @@ import java.io.*;
         this.gamma_water = 0;
         this.runarea = area.getValue();
         this.layer = (int)Layer.getValue();
+        double runprecip  = precip.getValue();
+        
+        
         double sumNO3_Pool = 0;
         double sumNH4_Pool = 0;
         double sumN_activ_pool = 0;
@@ -549,7 +575,8 @@ import java.io.*;
         double Sumdenit_trans = 0;
         double Sumnitri_trans = 0;
         double sumh_infilt_mm = 0;
-        double[] NO3_Poolvals = new double[layer];
+        double sum_Nupmove = 0;
+//        double[] NO3_Poolvals = new double[layer];
         double[] NH4_Poolvals = new double[layer];
         double[] N_activ_poolvals = new double[layer];
         double[] N_stabel_poolvals = new double[layer];
@@ -559,11 +586,13 @@ import java.io.*;
         double[] percoNvals = new double[layer];
         double[] interflowNabsvals = new double[layer];
         double[] percoNabsvals = new double[layer];
+        
         hor_by_infilt = new double[layer];
         
         NO3_Poolvals = calc_plantuptake();
 //        NO3_Poolvals = NO3_Pool.getValue();
-        //calculation of infiltration water that bypasses the horizonts   loop
+        /*        calculation of infiltration water that bypasses the horizonts   loop */
+        
         i = layer - 1;
         
         while (i  > 0) {
@@ -581,7 +610,11 @@ import java.io.*;
             i--;
         }
         
+        
+           
+        
         i = 0;
+        
         // horizont processies loop
         while (i < layer) {
             
@@ -590,14 +623,12 @@ import java.io.*;
             this.sto_MPS = stohru_MPS.getValue()[i] / runarea;
             this.sto_LPS = stohru_LPS.getValue()[i] / runarea;
             this.sto_FPS = stohru_FPS.getValue()[i] / runarea;
-            this.sto_FPS = sto_MPS * 0.3;
+            
             
             this.act_LPS = sat_LPS.getValue()[i] * sto_LPS;
             this.act_MPS = sat_MPS.getValue()[i] * sto_MPS;
-            
-            
-            
-//        this.C_org = entity.getDouble(aNameC_org.getValue());
+   
+
             this.runC_org = C_org.getValue()[i];
             this.runNO3_Pool = NO3_Poolvals[i];
             this.runNH4_Pool = NH4_Pool.getValue()[i];
@@ -605,7 +636,7 @@ import java.io.*;
             this.runN_stabel_pool = N_stabel_pool.getValue()[i];
             this.runN_residue_pool_fresh = N_residue_pool_fresh.getValue()[i];
             this.runResidue_pool = Residue_pool.getValue()[i];
-            this.runaEvap = aEvap.getValue();
+
             this.RD1_out_mm = RD1_out.getValue() / runarea;
             this.RD2_out_mm = RD2_out.getValue()[i] / runarea;
             this.d_perco_mm = D_perco.getValue() / runarea;
@@ -628,7 +659,21 @@ import java.io.*;
             this.runBeta_rsd = Beta_rsd.getValue();
             this.runBeta_NO3 = Beta_NO3.getValue();
             
+           
             
+            /*          calculation of amount of nitrogen uptake with epaporation from soil */
+           
+            int j = 1;
+            
+            while (j < layer) {
+                
+                
+                
+                double N_upmove_h = calc_nitrateupmove(j);
+                sum_Nupmove = sum_Nupmove + N_upmove_h;
+                
+                j ++;
+            }
             
             
             
@@ -683,7 +728,7 @@ import java.io.*;
                 runN_residue_pool_fresh = runN_residue_pool_fresh + inpN_biomass.getValue();
                 runNH4_Pool = runNH4_Pool + fertNH4.getValue();
                 delta_ntr = this.calc_Res_N_trans();
-                
+                double a_deposition = deposition_factor.getValue() * runprecip;
                 
                 
                 runResidue_pool = runResidue_pool - (delta_ntr * runResidue_pool);
@@ -692,6 +737,7 @@ import java.io.*;
                     runResidue_pool = 0;
                 }
                 
+                runsum_Ninput = sum_Ninput.getValue() + fertactivorg.getValue() + fertNH4.getValue() + a_deposition;
                 
                 runN_stabel_pool = runN_stabel_pool + fertstableorg.getValue();
                 
@@ -701,7 +747,7 @@ import java.io.*;
                     runN_activ_pool = 0;
                 }
                 
-                runNO3_Pool = runNO3_Pool + fertNO3.getValue() + runnitri_trans + Hum_act_min +  runinterflowN_in + runsurfaceN_in +(0.8 * (delta_ntr * runN_residue_pool_fresh));
+                runNO3_Pool = runNO3_Pool + sum_Nupmove + fertNO3.getValue() + a_deposition + runnitri_trans + Hum_act_min +  runinterflowN_in + runsurfaceN_in +(0.8 * (delta_ntr * runN_residue_pool_fresh));
                 
                 if (runNO3_Pool > runplantupN){
                     
@@ -800,18 +846,15 @@ import java.io.*;
             Sumdenit_trans = Sumdenit_trans + rundenit_trans;
             Sumnitri_trans = Sumnitri_trans + runnitri_trans;
             
-        double NH4test1 = NH4_Poolvals[0];
-        double NH4test2 = NH4_Pool.getValue()[0];
-        if (NH4test1 > NH4test2){
-            System.out.println("Wundersame NH4 vermehrung");
-        }
+            double NH4test1 = NH4_Poolvals[0];
+            double NH4test2 = NH4_Pool.getValue()[0];
+            if (NH4test1 > NH4test2){
+                System.out.println("Wundersame NH4 vermehrung");
+            }
             
             i++;
         }
         // writing of pools
-        
-
-        
         NO3_Pool.setValue(NO3_Poolvals);
         NH4_Pool.setValue(NH4_Poolvals);
         N_activ_pool.setValue(N_activ_poolvals);
@@ -826,6 +869,7 @@ import java.io.*;
         SurfaceN.setValue(runsurfaceN);
         runsurfaceNabs = runsurfaceN * runarea / 1000;
         SurfaceNabs.setValue(runsurfaceNabs);
+        sum_Ninput.setValue(runsum_Ninput);
         // writing of transfomations
         Volati_trans.setValue(Sumvolati_trans);
         Denit_trans.setValue(Sumdenit_trans);
@@ -834,6 +878,7 @@ import java.io.*;
         sN_activ_pool.setValue(sumN_activ_pool);
         sNH4_Pool.setValue(sumNH4_Pool);
         sNO3_Pool.setValue(sumNO3_Pool);
+        
         
 //        System.out.println("percoN = " + percoN +" percoNabs =  "+ percoNabs);
         
@@ -1034,9 +1079,20 @@ import java.io.*;
         }
         return denit_trans;
     }
-    private double calc_nitrateupmove(){
+    private double calc_nitrateupmove(int j){
         double n_upmove = 0;
-        n_upmove = 0.1 * runNO3_Pool * (runaEvap / (act_LPS + act_MPS + sto_FPS));
+        double runaEvap = aEP_h.getValue()[j];
+        double sto_MPS = stohru_MPS.getValue()[j];
+        double sto_LPS = stohru_LPS.getValue()[j];
+        double sto_FPS = stohru_FPS.getValue()[j];
+        double act_LPS = sat_LPS.getValue()[j] * sto_LPS;
+        double act_MPS = sat_MPS.getValue()[j] * sto_MPS;
+        
+        
+        
+        n_upmove = 0.1 * NO3_Poolvals[j] * (runaEvap / (act_LPS + act_MPS + sto_FPS));
+        
+        NO3_Poolvals[j] = NO3_Poolvals[j] - n_upmove;
         
         return n_upmove;
     }
@@ -1128,27 +1184,8 @@ import java.io.*;
         return percoN;
     }
     
-    private JAMSCalendar parseJ2KTime(String timeString) {
-        
-        //Array keeping values for year, month, day, hour, minute
-        String[] timeArray = new String[5];
-        timeArray[0] = "1";
-        timeArray[1] = "1";
-        timeArray[2] = "0";
-        timeArray[3] = "0";
-        timeArray[4] = "0";
-        
-        StringTokenizer st = new StringTokenizer(timeString, ".-/ :");
-        int n = st.countTokens();
-        
-        for (int i = 0; i < n; i++) {
-            timeArray[i] = st.nextToken();
-        }
-        
-        JAMSCalendar cal = new JAMSCalendar();
-        cal.setValue(timeArray[2]+"-"+timeArray[1]+"-"+timeArray[0]+" "+timeArray[3]+":"+timeArray[4]);
-        return cal;
-    }
+    
+    
     public void cleanup() throws JAMSEntity.NoSuchAttributeException{
         
     }

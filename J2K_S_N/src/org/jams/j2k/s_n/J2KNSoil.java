@@ -334,6 +334,7 @@ import org.unijena.jams.model.*;
             description = " net precipitation in mm"
             )
             public JAMSDouble NetPrecip;
+    
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
             update = JAMSVarDescription.UpdateType.RUN,

@@ -44,15 +44,28 @@ import org.unijena.jams.model.*;
      *  Component variables
      */
     
+    @JAMSVarDescription(
+            access = JAMSVarDescription.AccessType.READ,
+            update = JAMSVarDescription.UpdateType.RUN,
+            description = "number of layers in soil profile in [-]"
+            )
+            public JAMSDouble Layer;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
             update = JAMSVarDescription.UpdateType.RUN,
             description = "Array of state variables LAI "
             )
-            public JAMSDoubleArray LAIArray = new JAMSDoubleArray();
+            public JAMSDouble LAI;
     
     @JAMSVarDescription(
+            access = JAMSVarDescription.AccessType.READ,
+            update = JAMSVarDescription.UpdateType.RUN,
+            description = "HRU actual Evapotranspiration in mm"
+            )
+            public JAMSDoubleArray actETP_h = new JAMSDoubleArray();
+    
+     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
             update = JAMSVarDescription.UpdateType.RUN,
             description = "HRU actual Evapotranspiration in mm"
@@ -67,28 +80,28 @@ import org.unijena.jams.model.*;
             public JAMSDouble aEP;
     
     @JAMSVarDescription(
-            access = JAMSVarDescription.AccessType.READ,
+            access = JAMSVarDescription.AccessType.WRITE,
             update = JAMSVarDescription.UpdateType.RUN,
             description = "HRU actual Transpiration in mm"
             )
             public JAMSDouble aTP;
     
     @JAMSVarDescription(
-            access = JAMSVarDescription.AccessType.READ,
+            access = JAMSVarDescription.AccessType.WRITE,
             update = JAMSVarDescription.UpdateType.RUN,
             description = "HRU potential Evapotranspiration in mm"
             )
             public JAMSDouble pETP;
     
     @JAMSVarDescription(
-            access = JAMSVarDescription.AccessType.READ,
+            access = JAMSVarDescription.AccessType.WRITE,
             update = JAMSVarDescription.UpdateType.RUN,
             description = "HRU potential Evaporation in mm"
             )
             public JAMSDouble pEP;
     
     @JAMSVarDescription(
-            access = JAMSVarDescription.AccessType.READ,
+            access = JAMSVarDescription.AccessType.WRITE,
             update = JAMSVarDescription.UpdateType.RUN,
             description = "HRU potential Transpiration in mm"
             )
@@ -100,6 +113,13 @@ import org.unijena.jams.model.*;
             description = "time"
             )
             public JAMSCalendar time;
+    
+     @JAMSVarDescription(
+            access = JAMSVarDescription.AccessType.WRITE,
+            update = JAMSVarDescription.UpdateType.RUN,
+            description = " actual evaporation in mm"
+            )
+            public JAMSDoubleArray aEP_h = new JAMSDoubleArray();
     /*
      *  Component run stages
      */
@@ -109,19 +129,20 @@ import org.unijena.jams.model.*;
     }
     
     public void run() throws JAMSEntity.NoSuchAttributeException{
-        int day = time.get(time.DAY_OF_YEAR) - 1;
+        int layer = (int)Layer.getValue();
         double runpETP = pETP.getValue(); /*potential evapotranspiration in mm*/
         double runaETP = aETP.getValue(); /*actual evapotranspiration in mm*/
         double aTransp = 0; /*actual transpiration in mm*/
         double aEvap = 0; /*actual evaporation in mm*/
         double pTransp = 0; /*potential transpiration in mm*/
         double pEvap = 0; /*potential evaporation in mm*/
-        double LAI = this.LAIArray.getValue()[day]; /*Leaf area index*/
+        double runLAI = LAI.getValue(); /*Leaf area index*/
+        double[] actet_h = new double[layer];
         
-        if (LAI <= 3){
-            aTransp = (runaETP * LAI) / 3;
-            pTransp = (runpETP * LAI) / 3;
-        } else if (LAI > 3){
+        if (runLAI <= 3){
+            aTransp = (runaETP * runLAI) / 3;
+            pTransp = (runpETP * runLAI) / 3;
+        } else if (runLAI > 3){
             aTransp = runaETP;
             pTransp = runpETP;
         }
@@ -133,6 +154,22 @@ import org.unijena.jams.model.*;
         aTP.setValue(aTransp);
         pEP.setValue(pEvap);
         pTP.setValue(pTransp);
+         
+        int i = 0;
+        while (i < layer){
+         double actTran = 0;
+         double actETP = actETP_h.getValue()[i];
+         
+         if (runLAI <= 3){
+            actTran  = (actETP * runLAI) / 3;
+        } else if (runLAI > 3){
+            actTran = actETP;
+        }
+         
+         actet_h[i] = actETP - actTran;
+         i++;   
+        } 
+        aEP_h.setValue(actet_h); 
     }
     
     public void cleanup() {
