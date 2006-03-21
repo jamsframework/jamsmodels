@@ -77,7 +77,7 @@ public class StandardManagementParaReader extends JAMSComponent {
             description = "Rotation parameter file name"
             )
             public JAMSString rotationFileName;
-
+    
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
             update = JAMSVarDescription.UpdateType.INIT,
@@ -339,7 +339,8 @@ public class StandardManagementParaReader extends JAMSComponent {
         
         BufferedReader reader;
         StringTokenizer tokenizer;
-        Integer rid, hid;
+        Double hid;
+        Integer rid;
         ArrayList<J2KSNCrop> rotation;
         JAMSEntity hru;
         HashMap<Double, JAMSEntity> hruMap = new HashMap<Double, JAMSEntity>();
@@ -371,13 +372,15 @@ public class StandardManagementParaReader extends JAMSComponent {
                 
                 tokenizer = new StringTokenizer(s, "\t");
                 
-                hid = Integer.parseInt(tokenizer.nextToken());
+                hid = Double.parseDouble(tokenizer.nextToken());
                 rid = Integer.parseInt(tokenizer.nextToken());
                 
                 rotation = rotations.get(rid);
                 hru = hruMap.get(hid);
                 
                 hru.setObject("landuseRotation",  rotation);
+                hru.setInt("rotPos", 0);
+                hru.setInt("managementPos", 0);
                 
                 
                 s = reader.readLine();
@@ -399,7 +402,7 @@ public class StandardManagementParaReader extends JAMSComponent {
         HashMap<Integer, J2KSNCrop> crops = readCrops("C:\\jamsmodels\\JAMS-Application\\JAMS-Arnstadt\\parameter\\crop.par", managements);
         HashMap<Integer, ArrayList<J2KSNCrop>> rotations = readRotations("C:\\jamsmodels\\JAMS-Application\\JAMS-Arnstadt\\parameter\\croprotation.par", crops);
         linkCrops("C:\\jamsmodels\\JAMS-Application\\JAMS-Arnstadt\\parameter\\hrus_rot.par", rotations);
-        */
+         */
         
         HashMap<Integer, J2KSNFertilizer> ferts = readFertPara(dirName.getValue() + "/" + fertFileName.getValue());
         HashMap<Integer, J2KSNTillage> tills = readTillPara(dirName.getValue() + "/" + tillFileName.getValue());
