@@ -12,11 +12,17 @@
 # (3) assumes harvesting with Haupt- & Nebenfrucht, plant growth continues (may not be suitable for meadows)
 # (4) assumes harvesting with Hauptfrucht, plant growth continues
 # FracHarv is the fraction of the target biomass which will be removed by the harvest (according to harvest code)
-# CID 27 spring wheat; 88 winter rape; 97 winter barley
+# CID 27 spring wheat; 88 winter rape; 97 winter barley; 12 pasture ; 7 Forrest; 98 urban
 # 19
 # 28
 # 31
 CID	Date	TID	FID	FAmount	PLANT	HARVEST	FRACHARV
+88	231	76	-	-	-	-	-	
+88	243	-	-	-	1	-	-
+88	276	-	45	3000	-	-	-
+88	92	-	45	2000	-	-	-
+88	202	-	-	-	-	1	1
+88	210	1	-	-	-	-	-	
 27	75	76	-	-	-	-	-
 27	91	-	45	3000	-	-	-
 27	112	-	-	-	1	-	-
@@ -24,12 +30,6 @@ CID	Date	TID	FID	FAmount	PLANT	HARVEST	FRACHARV
 27	153	-	4	60	-	-	-
 27	214	-	-	-	-	1	0.9
 27	229	1	-	-	-	-	-
-88	231	76	-	-	-	-	-	
-88	243	-	-	-	1	-	-
-88	276	-	45	3000	-	-	-
-88	92	-	45	2000	-	-	-
-88	202	-	-	-	-	1	1
-88	210	1	-	-	-	-	-	
 97	250	76	-	-	-	-	-
 97	267	-	-	-	1	-	-
 97	65	-	4	140	-	-	-
@@ -37,4 +37,11 @@ CID	Date	TID	FID	FAmount	PLANT	HARVEST	FRACHARV
 97	150	-	4	100	-	-	-
 97	200	-	-	-	-	1	0.9
 97	210	1	-	-	-	-	-	
+12	1	-	-	-	-	-	-
+12	90	-	45	3000	-	-	-	
+12	365	-	-	-	-	1	-
+7	1	-	-	-	1	-	-
+7	365	-	-	-	-	1	-	
+98	1	-	-	-	1	-	-
+98	365	-	-	-	-	1	-	
 #end of file lmArable.par	
