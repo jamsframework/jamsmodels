@@ -29,8 +29,21 @@
         <component class="org.unijena.j2k.io.StandardGroundwaterParaReader" name="GWReader">
             <jamsvar name="dirName" globvar="workspaceDir"/>
             <jamsvar name="gwFileName" value="parameter\hgeo.par"/>
-            <jamsvar name="hrus" provider="ParaReader" providervar="hrus"/>
+            <jamsvar name="hrus" provider="ParaReader" providervar="hrus"/>          
         </component>
+        
+        <component class="org.jams.j2k.s_n.io.StandardManagementParaReader" name="ManagementReader">
+            <jamsvar name="dirName" globvar="workspaceDir"/>
+            <jamsvar name="fertFileName" value="parameter\fert.par"/>
+            <jamsvar name="tillFileName" value="parameter\till.par"/>
+            <jamsvar name="managementFileName" value="parameter\LMArable.par"/>
+            <jamsvar name="cropFileName" value="parameter\crop.par"/>
+            <jamsvar name="rotationFileName" value="parameter\croprotation.par"/>
+            <jamsvar name="hruRotationFileName" value="parameter\hrus_rot.par"/>
+            <jamsvar name="hrus" provider="ParaReader" providervar="hrus"/>
+            <jamsvar name="aNameHRUID" value="ID"/>
+        </component>        
+        
         <component class="org.unijena.j2k.io.TSDataReader" name="InitTmeanDataReader">
             <jamsvar name="dirName" globvar="workspaceDir"/>
             <jamsvar name="skipRegression" globvar="data_caching"/>
@@ -722,6 +735,48 @@
                     <jamsvar name="aEP_h" provider="HRUContext" spatattrib="aEP_h"/>
                 </component>
 
+                <component class="org.jams.j2k.s_n.management.ManageLanduse" name="ManageLanduse">
+                    <jamsvar name="entity" provider="HRUContext" providervar="currentEntity"/>
+                    <jamsvar name="time" provider="TemporalContext" providervar="current"/>
+                    <jamsvar name="fertNH4N" provider="HRUContext" spatattrib="fertNH4"/>
+                    <jamsvar name="fertNO3N" provider="HRUContext" spatattrib="fertNO3"/>
+                    <jamsvar name="fertorgN" provider="HRUContext" spatattrib="fertorgN"/>
+                    <jamsvar name="plantExisting" provider="HRUContext" spatattrib="plantExisting"/>
+                </component>                
+                
+                  
+                <component class="org.jams.j2k.s_n.crop.j2kpotCropGrowth" name="j2kpotCropGrowth">
+                    <jamsvar name="Area" provider="HRUContext" spatattrib="area"/>
+                    <jamsvar name="entity" provider="HRUContext" providervar="currentEntity"/>
+                    <jamsvar name="Tmean" provider="HRUContext" spatattrib="tmean"/>
+                    <jamsvar name="PHUact" provider="HRUContext" spatattrib="PHUact"/>
+                    <jamsvar name="BioAct" provider="HRUContext" spatattrib="BioAct"/>
+                    <jamsvar name="CanHeightAct" provider="HRUContext" spatattrib="CanHeightAct"/>
+                    <jamsvar name="ZRootD" provider="HRUContext" spatattrib="ZRootD"/>
+                    <jamsvar name="FNPlant" provider="HRUContext" spatattrib="FNPlant"/>
+                    <jamsvar name="PlantNDemAct" provider="HRUContext" spatattrib="PlantNDemAct"/>
+                    <jamsvar name="BioNoptAct" provider="HRUContext" spatattrib="BioNoptAct"/>
+                    <jamsvar name="BioNAct" provider="HRUContext" spatattrib="BioNAct"/>
+                    <jamsvar name="Yield" provider="HRUContext" spatattrib="Yield"/>
+                    <jamsvar name="BioagAct" provider="HRUContext" spatattrib="BioagAct"/>
+                    <jamsvar name="SolRad" provider="HRUContext" spatattrib="solRad"/>
+                    <jamsvar name="aTP" provider="HRUContext" spatattrib="aTransp"/>
+                    <jamsvar name="pTP" provider="HRUContext" spatattrib="pTransp"/>
+                    <jamsvar name="tbase" provider="HRUContext" spatattrib="tbase"/> 
+                    <jamsvar name="topt" provider="HRUContext" spatattrib="topt"/> 
+                    <jamsvar name="LExCoef" value="-0.65"/>
+                    <jamsvar name="frLAImxAct" provider="HRUContext" spatattrib="frLAImxAct"/>
+                    <jamsvar name="frRootAct" provider="HRUContext" spatattrib="frRootAct"/>
+                    <jamsvar name="BioYield" provider="HRUContext" spatattrib="BioYield"/>
+                    <jamsvar name="NYield" provider="HRUContext" spatattrib="NYield"/>
+                    <jamsvar name="NYield_ha" provider="HRUContext" spatattrib="NYield_ha"/>
+                    <jamsvar name="time" provider="TemporalContext" providervar="current"/>
+                    <jamsvar name="LAI" provider="HRUContext" spatattrib="LAI"/>
+                    <jamsvar name="HarvIndex" provider="HRUContext" spatattrib="HarvIndex"/>
+                    <jamsvar name="FPHUact" provider="HRUContext" spatattrib="FPHUact"/>
+                    <jamsvar name="plantExisting" provider="HRUContext" spatattrib="plantExisting"/>
+                </component>                
+                
                 <component class="org.jams.j2k.s_n.J2KSoilTemplayer" name="J2KSoilTemplayer">
                     <jamsvar name="area" provider="HRUContext" spatattrib="area"/>
                     <jamsvar name="atemp_mean" provider="HRUContext" spatattrib="tmean"/>
@@ -860,7 +915,32 @@
                 </component>
 
               
-                
+               <component class="org.jams.j2k.s_n.J2KPlantGrowthWaterStress" name="J2KPlantGrowthWaterStress">                                                       
+                    <jamsvar name="wstrs" provider="HRUContext" spatattrib="wstrs"/>
+                    <jamsvar name="pTP" provider="HRUContext" spatattrib="pTransp"/>     
+                    <jamsvar name="aTP" provider="HRUContext" spatattrib="aTransp"/>                             
+                </component>
+
+                <component class="org.jams.j2k.s_n.J2KPlantGrowthTemperatureStress" name="J2KPlantGrowthTemperatureStress">                                                       
+                    <jamsvar name="tstrs" provider="HRUContext" spatattrib="tstrs"/>
+                    <jamsvar name="tmean" provider="HRUContext" spatattrib="tmean"/>     
+                    <jamsvar name="tbase" provider="HRUContext" spatattrib="tbase"/> 
+                    <jamsvar name="topti" provider="HRUContext" spatattrib="topt"/> 
+                </component>
+
+                <component class="org.jams.j2k.s_n.J2KPlantGrowthNitrogenStress" name="J2KPlantGrowthNitrogenStress">                                                       
+                    <jamsvar name="nstrs" provider="HRUContext" spatattrib="nstrs"/>
+                    <jamsvar name="optibioN" provider="HRUContext" spatattrib="BioNoptAct"/>     
+                    <jamsvar name="actbioN" provider="HRUContext" spatattrib="BioNAct"/>
+                    <jamsvar name="actN_up" provider="HRUContext" spatattrib="actN_up"/>
+                </component>
+
+                <component class="org.jams.j2k.s_n.J2KPlantGrowthStress" name="J2KPlantGrowthStress">                                                       
+                    <jamsvar name="nstrs" provider="HRUContext" spatattrib="nstrs"/>
+                    <jamsvar name="tstrs" provider="HRUContext" spatattrib="tstrs"/> 
+                    <jamsvar name="wstrs" provider="HRUContext" spatattrib="wstrs"/>
+                    <jamsvar name="BioAct" provider="HRUContext" spatattrib="BioAct"/>
+                </component>                
 
                 <!--component class="org.unijena.j2k.routing.J2KProcessRouting" name="J2KProcessRouting">
                 <jamsvar name="reaches" provider="ParaReader" providervar="reaches"/>
