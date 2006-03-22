@@ -194,6 +194,14 @@ import java.util.ArrayList;
             description = "Daily fraction of max LAI [-]"
             )
             public JAMSDouble frLAImxAct;
+     
+    @JAMSVarDescription(
+            access = JAMSVarDescription.AccessType.READ,
+            update = JAMSVarDescription.UpdateType.RUN,
+            description = "Daily fraction of max LAI [-]"
+            )
+            public JAMSDouble frLAImx_xi;
+    
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
@@ -261,6 +269,15 @@ import java.util.ArrayList;
             description = "actual potential heat units sum [-]"
             )
             public JAMSDouble FPHUact;
+      
+    
+    @JAMSVarDescription(
+            access = JAMSVarDescription.AccessType.READWRITE,
+            update = JAMSVarDescription.UpdateType.RUN,
+            description = "delta potential heat units sum [-]"
+            )
+            public JAMSDouble PHUdelta;
+    
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
@@ -299,6 +316,7 @@ import java.util.ArrayList;
             )
             public JAMSBoolean plantStateReset = new JAMSBoolean();    
     
+    
      /*
       
       *  Component run stages
@@ -334,7 +352,7 @@ import java.util.ArrayList;
     private double frgrw1;
     private double frgrw2;
     private double frLAImx;
-    
+    private double frLAImx_Xi;
     private double solrad;
     private double rue;
     private double leco;
@@ -374,6 +392,7 @@ import java.util.ArrayList;
     public int harvest;
     public double fracharvest;
     
+    private double phu_delta;
     
    /* double dec; // days to reach specific plant stage
     double hu_ec; // Potential heat units to reach specific plant stage
@@ -399,11 +418,16 @@ import java.util.ArrayList;
         this.hu_ec7 = crop.hu_ec7;
         this.hu_ec8 = crop.hu_ec8;
         this.hu_ec9 = crop.hu_ec9;*/
+        this.tmean = Tmean.getValue();
+        this.fphu_act = FPHUact.getValue();
+        this.phu_daily = PHUact.getValue();
+        this.phu_delta = PHUdelta.getValue();
         this.area_ha = Area.getValue() /10000;
         this.solrad = SolRad.getValue();
         this.leco = LExCoef.getValue();
         this.lai_act = LAI.getValue();
         this.frLAImx_act = frLAImxAct.getValue();
+        this.frLAImx_Xi = frLAImx_xi.getValue();
         this.hc_act = CanHeightAct.getValue(); /*actual Canopy height [m] on a given day */
         this.frroot_act = frRootAct.getValue();
         this.zrootd_act = ZRootD.getValue();
@@ -413,9 +437,6 @@ import java.util.ArrayList;
         this.bioN_act = BioNAct.getValue(); /*actual biomass in kg/ha adapted by stress*/
         this.hi_act = HarvIndex.getValue();;
         this.bioag_act = BioagAct.getValue();
-        this.fphu_act = FPHUact.getValue();
-        this.phu_daily = PHUact.getValue();
-        this.tmean = Tmean.getValue();
         this.bio_opt = BioAct.getValue();
         this.yield =  BioYield.getValue();
         this.yldN =  NYield.getValue();
@@ -460,7 +481,10 @@ import java.util.ArrayList;
             calc_cropyield();
             calc_cropyield_ha();
             
-            
+            PHUdelta.setValue(phu_delta); 
+            PHUact.setValue(phu_daily);
+            tbase.setValue(Tbase);
+            topt.setValue(Topt);
             frLAImxAct.setValue(frLAImx_act); /*actual fraction of max LAI for a given day */
             LAI.setValue(lai_act);
             // BioOpt.setValue(bio_opt);
@@ -479,14 +503,13 @@ import java.util.ArrayList;
             NYield_ha.setValue(yldN_ha);
             FPHUact.setValue(fphu_act);
             BioNAct.setValue(bioN_act); /*actual biomass in kg/ha adapted by stress*/
-            PHUact.setValue(phu_daily);
-            tbase.setValue(Tbase);
-            topt.setValue(Topt);
+            frLAImx_xi.setValue(frLAImx_Xi);
             plantStateReset.setValue(true);
-            
+           
         } else if (plantStateReset.getValue()) {
             
             //System.out.println("########################## resetting values ##########################");
+            PHUdelta.setValue(0); 
             frLAImxAct.setValue(0); /*actual fraction of max LAI for a given day */
             LAI.setValue(0);
             // BioOpt.setValue(bio_opt);
@@ -531,11 +554,11 @@ import java.util.ArrayList;
     private boolean calc_phu() throws JAMSEntity.NoSuchAttributeException {
         
         if (this.tmean > this.Tbase) {         //phänologisch wirksame Temperatursumme
-            double phu_delta = this.tmean - this.Tbase;
-            phu_daily = phu_delta + phu_daily;
+            this.phu_delta = this.tmean - this.Tbase;
+            phu_daily = this.phu_delta + phu_daily;
             fphu_act = phu_daily / this.phu;
             
-         /*   if (phu_delta > 0){
+          /*  if (phu_delta > 0){
                 System.out.println("tägliche Temperatursumme " + phu_daily +" "+ fphu_act  +" "+ tmean +" ");
             }*/
         }
@@ -553,16 +576,15 @@ import java.util.ArrayList;
         /* Fraction of plant's maximum LAI */
         
         double frLAImx_delta =  this.fphu_act / (this.fphu_act + Math.exp(sc1_LAI - sc2_LAI * this.fphu_act));
-        //double frLAImx_xi = frLAImx ; // save frLAImx from the day before
+        frLAImx_Xi = frLAImx_delta ; // save frLAImx_delta from the day before
         frLAImx_act = frLAImx_delta + frLAImx_act; //
-        double frLAImx_def = frLAImx_act - frLAImx_delta ;
-        
+               
         // System.out.println("FracLAImax: " + frLAImx_delta +" "+  frLAImx_act +" ");
         
         // Total leaf area index is calculated by frLAImx added on a day
         
-        double LAI_delta = (frLAImx_def) * this.mlai *(1 - Math.exp(5.0 * (lai_act - this.mlai)));
-        lai_act = LAI_delta+lai_act;
+        double LAI_delta = (frLAImx_act - frLAImx_xi.getValue()) * this.mlai *(1 - Math.exp(5.0 * (this.lai_act - this.mlai)));
+        this.lai_act = LAI_delta+lai_act;
         
         // System.out.println("LAI: " + lai_act +" "+  LAI_delta +" ");
         
