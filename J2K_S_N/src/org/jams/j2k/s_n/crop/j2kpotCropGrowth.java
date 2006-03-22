@@ -52,7 +52,7 @@ import java.util.ArrayList;
             )
             public JAMSEntity entity;
     
-   @JAMSVarDescription(
+    @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
             update = JAMSVarDescription.UpdateType.RUN
             )
@@ -72,14 +72,14 @@ import java.util.ArrayList;
             )
             public JAMSDouble Tmean;
     
-   @JAMSVarDescription(
+    @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
             update = JAMSVarDescription.UpdateType.RUN,
             description = "Daily solar radiation [MJ/m²]"
             )
             public JAMSDouble SolRad;
     
- 
+    
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
             update = JAMSVarDescription.UpdateType.RUN,
@@ -108,14 +108,14 @@ import java.util.ArrayList;
             )
             public JAMSDouble FNPlant;
     
-        
+    
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
             update = JAMSVarDescription.UpdateType.RUN,
             description = "Actual nitrogen stored in the plants biomass for a given day"
             )
             public JAMSDouble BioNact;
-  
+    
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
             update = JAMSVarDescription.UpdateType.RUN,
@@ -123,7 +123,7 @@ import java.util.ArrayList;
             )
             public JAMSDouble Yield;
     
-              
+    
   /*  @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
             update = JAMSVarDescription.UpdateType.RUN,
@@ -269,35 +269,42 @@ import java.util.ArrayList;
             )
             public JAMSBoolean plantExisting = new JAMSBoolean();
     
-     @JAMSVarDescription(
+    @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
             update = JAMSVarDescription.UpdateType.RUN,
             description = "actual potential heat units sum [-]"
             )
             public JAMSDouble PHUact;
-     
-     
-     @JAMSVarDescription(
+    
+    
+    @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
             update = JAMSVarDescription.UpdateType.RUN,
             description = "Plants base growth temperature [°C]"
             )
             public JAMSDouble tbase;
-     
-     
-     @JAMSVarDescription(
+    
+    
+    @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
             update = JAMSVarDescription.UpdateType.RUN,
             description = "Plants optimum growth temperature [°C]"
             )
             public JAMSDouble topt;
-                     
-     /*
-     
-     *  Component run stages
-     */
+
+    @JAMSVarDescription(
+            access = JAMSVarDescription.AccessType.READWRITE,
+            update = JAMSVarDescription.UpdateType.RUN,
+            description = "Reset plant state variables?"
+            )
+            public JAMSBoolean plantStateReset = new JAMSBoolean();    
     
-   
+     /*
+      
+      *  Component run stages
+      */
+    
+    
     private double area_ha;
     private double sc1_LAI;
     private double sc2_LAI;
@@ -392,7 +399,7 @@ import java.util.ArrayList;
         this.hu_ec7 = crop.hu_ec7;
         this.hu_ec8 = crop.hu_ec8;
         this.hu_ec9 = crop.hu_ec9;*/
-        this.area_ha = Area.getValue() /10000;     
+        this.area_ha = Area.getValue() /10000;
         this.solrad = SolRad.getValue();
         this.leco = LExCoef.getValue();
         this.lai_act = LAI.getValue();
@@ -413,7 +420,7 @@ import java.util.ArrayList;
         this.yield =  BioYield.getValue();
         this.yldN =  NYield.getValue();
         this.yldN_ha = NYield_ha.getValue();
-     
+        
         
         ArrayList<J2KSNCrop> rotation = (ArrayList<J2KSNCrop>) entity.getObject("landuseRotation");
         int rotPos = entity.getInt("rotPos");
@@ -452,51 +459,75 @@ import java.util.ArrayList;
             calc_nuptake();
             calc_cropyield();
             calc_cropyield_ha();
-        }      
-           
-        frLAImxAct.setValue(frLAImx_act); /*actual fraction of max LAI for a given day */
-        LAI.setValue(lai_act);
-        // BioOpt.setValue(bio_opt); 
-        // BioOpt.setValue(bio_opt * area_ha); /*Plants optimal biomass */
-        CanHeightAct.setValue(hc_act); /*Actual canopy height */
-        frRootAct.setValue(frroot_act);  /* daily fraction of root development [mm] */
-        ZRootD.setValue(zrootd_act);  /* daily root development [mm] */
-        FNPlant.setValue(fnplant_act); /* daily fraction of N in plant biomass */
-        BioNoptAct.setValue(bioNopt_act);
-        BioAct.setValue(bio_opt); /*Plants optimal biomass */
-        PlantNDemAct.setValue(Ndemand_act);
-        HarvIndex.setValue(hi_act);
-        BioagAct.setValue(bioag_act);
-        BioYield.setValue(yield);
-        NYield.setValue(yldN); /* N Content from the above biomass */
-        NYield_ha.setValue(yldN_ha);
-        FPHUact.setValue(fphu_act);
-        if (fphu_act > 0){
-            System.out.println("Temperatursumme, aber zackig:  " +fphu_act);
+            
+            
+            frLAImxAct.setValue(frLAImx_act); /*actual fraction of max LAI for a given day */
+            LAI.setValue(lai_act);
+            // BioOpt.setValue(bio_opt);
+            // BioOpt.setValue(bio_opt * area_ha); /*Plants optimal biomass */
+            CanHeightAct.setValue(hc_act); /*Actual canopy height */
+            frRootAct.setValue(frroot_act);  /* daily fraction of root development [mm] */
+            ZRootD.setValue(zrootd_act);  /* daily root development [mm] */
+            FNPlant.setValue(fnplant_act); /* daily fraction of N in plant biomass */
+            BioNoptAct.setValue(bioNopt_act);
+            BioAct.setValue(bio_opt); /*Plants optimal biomass */
+            PlantNDemAct.setValue(Ndemand_act);
+            HarvIndex.setValue(hi_act);
+            BioagAct.setValue(bioag_act);
+            BioYield.setValue(yield);
+            NYield.setValue(yldN); /* N Content from the above biomass */
+            NYield_ha.setValue(yldN_ha);
+            FPHUact.setValue(fphu_act);
+            BioNAct.setValue(bioN_act); /*actual biomass in kg/ha adapted by stress*/
+            PHUact.setValue(phu_daily);
+            tbase.setValue(Tbase);
+            topt.setValue(Topt);
+            plantStateReset.setValue(true);
+            
+        } else if (plantStateReset.getValue()) {
+            
+            //System.out.println("########################## resetting values ##########################");
+            frLAImxAct.setValue(0); /*actual fraction of max LAI for a given day */
+            LAI.setValue(0);
+            // BioOpt.setValue(bio_opt);
+            // BioOpt.setValue(bio_opt * area_ha); /*Plants optimal biomass */
+            CanHeightAct.setValue(0); /*Actual canopy height */
+            frRootAct.setValue(0);  /* daily fraction of root development [mm] */
+            ZRootD.setValue(0);  /* daily root development [mm] */
+            FNPlant.setValue(0); /* daily fraction of N in plant biomass */
+            BioNoptAct.setValue(0);
+            BioAct.setValue(0); /*Plants optimal biomass */
+            PlantNDemAct.setValue(0);
+            HarvIndex.setValue(0);
+            BioagAct.setValue(0);
+            BioYield.setValue(0);
+            NYield.setValue(0); /* N Content from the above biomass */
+            NYield_ha.setValue(0);
+            FPHUact.setValue(0);
+            BioNAct.setValue(0); /*actual biomass in kg/ha adapted by stress*/
+            PHUact.setValue(0);
+            plantStateReset.setValue(false);
+            
         }
-        BioNAct.setValue(bioN_act); /*actual biomass in kg/ha adapted by stress*/
-        PHUact.setValue(phu_daily);
-        tbase.setValue(Tbase);
-        topt.setValue(Topt);
     }
 //        idc = idc+1;
 //        cropClass.setValue(idc);
-        
+    
 //        cropClass.setValue(cropClass.getValue()+1);
-        
-
+    
+    
 // Optimal growth
-        //
-        // Biomass production
-        //
-        // First the daily development of the LAI is calculated as a fraction of maximimum LAI development (frLAImx)
-        // Hereby the fraction of plants maximum leaf area index corresponding to a given fraction of PHU is calculated
-        // and two shape-coefficient, sc1 and sc2 are needed
-        // calculation the maximum leaf area corresponding to fraction of heat units,
-        // expressed as LAI fraction of the known max LAI
-        // @todo declare how is continuosly vegetated land use is determined
-        
-       
+    //
+    // Biomass production
+    //
+    // First the daily development of the LAI is calculated as a fraction of maximimum LAI development (frLAImx)
+    // Hereby the fraction of plants maximum leaf area index corresponding to a given fraction of PHU is calculated
+    // and two shape-coefficient, sc1 and sc2 are needed
+    // calculation the maximum leaf area corresponding to fraction of heat units,
+    // expressed as LAI fraction of the known max LAI
+    // @todo declare how is continuosly vegetated land use is determined
+    
+    
     private boolean calc_phu() throws JAMSEntity.NoSuchAttributeException {
         
         if (this.tmean > this.Tbase) {         //phänologisch wirksame Temperatursumme
@@ -504,9 +535,9 @@ import java.util.ArrayList;
             phu_daily = phu_delta + phu_daily;
             fphu_act = phu_daily / this.phu;
             
-            if (phu_delta > 0){
+         /*   if (phu_delta > 0){
                 System.out.println("tägliche Temperatursumme " + phu_daily +" "+ fphu_act  +" "+ tmean +" ");
-            }
+            }*/
         }
         return true;
     }
@@ -518,14 +549,14 @@ import java.util.ArrayList;
         
         sc2_LAI = ((Math.log(this.frgrw1/this.mlai1)-this.frgrw1)-(Math.log(this.frgrw2/this.mlai2)-this.frgrw2))/ (this.frgrw2 - this.frgrw1);
         sc1_LAI = Math.log((this.frgrw1/this.mlai1)-this.frgrw1)+ this.sc2_LAI * this.frgrw1;
-                    
-                /* Fraction of plant's maximum LAI */
+        
+        /* Fraction of plant's maximum LAI */
         
         double frLAImx_delta =  this.fphu_act / (this.fphu_act + Math.exp(sc1_LAI - sc2_LAI * this.fphu_act));
         //double frLAImx_xi = frLAImx ; // save frLAImx from the day before
         frLAImx_act = frLAImx_delta + frLAImx_act; //
         double frLAImx_def = frLAImx_act - frLAImx_delta ;
-     
+        
         // System.out.println("FracLAImax: " + frLAImx_delta +" "+  frLAImx_act +" ");
         
         // Total leaf area index is calculated by frLAImx added on a day
@@ -533,7 +564,7 @@ import java.util.ArrayList;
         double LAI_delta = (frLAImx_def) * this.mlai *(1 - Math.exp(5.0 * (lai_act - this.mlai)));
         lai_act = LAI_delta+lai_act;
         
-       // System.out.println("LAI: " + lai_act +" "+  LAI_delta +" ");
+        // System.out.println("LAI: " + lai_act +" "+  LAI_delta +" ");
         
 //        System.out.println(lai_act);
         
@@ -579,7 +610,7 @@ import java.util.ArrayList;
 // frLAImx = fraction of plants maximum canopy height
     
     private double calc_canopy() throws JAMSEntity.NoSuchAttributeException {
-      
+        
         double hc_delta = this.chtmx * Math.sqrt(frLAImx_act);
         double hc_act = hc_delta + this.hc_act;
         
@@ -640,7 +671,7 @@ import java.util.ArrayList;
         
         if
                 (this.idc == 3 || this.idc == 6 || this.idc == 7) {
-                double zrootd_act = this.rdmx;
+            double zrootd_act = this.rdmx;
         }
         
         // annuals
@@ -691,7 +722,7 @@ import java.util.ArrayList;
         // with bn3_ca as fraction of N in the plant biomass near maturity
         // n1 and n2 are shape coefficients by solving the equation of two known points
         // (frn2 by 50% of PHU and frn3 by 100% of PHU
-              
+        
         // First calculation of shape coefficients n1 and n2 is needed
         double frn_sub1 = this.bn1 - this.bn3;
         double frn_sub2 = this.bn2 - this.bn3;
