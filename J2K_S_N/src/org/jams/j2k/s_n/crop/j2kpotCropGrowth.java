@@ -275,7 +275,25 @@ import java.util.ArrayList;
             description = "actual potential heat units sum [-]"
             )
             public JAMSDouble PHUact;
+     
+     
+     @JAMSVarDescription(
+            access = JAMSVarDescription.AccessType.READWRITE,
+            update = JAMSVarDescription.UpdateType.RUN,
+            description = "Plants base growth temperature [°C]"
+            )
+            public JAMSDouble tbase;
+     
+     
+     @JAMSVarDescription(
+            access = JAMSVarDescription.AccessType.READWRITE,
+            update = JAMSVarDescription.UpdateType.RUN,
+            description = "Plants optimum growth temperature [°C]"
+            )
+            public JAMSDouble topt;
+                     
      /*
+     
      *  Component run stages
      */
     
@@ -340,8 +358,8 @@ import java.util.ArrayList;
     private double yield;
     
     private double tmean;
-    private double tbase;
-    
+    private double Tbase;
+    private double Topt;
     private double julday;
     
     public double famount;
@@ -395,26 +413,7 @@ import java.util.ArrayList;
         this.yield =  BioYield.getValue();
         this.yldN =  NYield.getValue();
         this.yldN_ha = NYield_ha.getValue();
-        
-        frLAImxAct.setValue(frLAImx_act); /*actual fraction of max LAI for a given day */
-        LAI.setValue(lai_act);
-        // BioOpt.setValue(bio_opt); 
-        // BioOpt.setValue(bio_opt * area_ha); /*Plants optimal biomass */
-        CanHeightAct.setValue(hc_act); /*Actual canopy height */
-        frRootAct.setValue(frroot_act);  /* daily fraction of root development [mm] */
-        ZRootD.setValue(zrootd_act);  /* daily root development [mm] */
-        FNPlant.setValue(fnplant_act); /* daily fraction of N in plant biomass */
-        BioNoptAct.setValue(bioNopt_act);
-        BioAct.setValue(bio_opt); /*Plants optimal biomass */
-        PlantNDemAct.setValue(Ndemand_act);
-        HarvIndex.setValue(hi_act);
-        BioagAct.setValue(bioag_act);
-        BioYield.setValue(yield);
-        NYield.setValue(yldN); /* N Content from the above biomass */
-        NYield_ha.setValue(yldN_ha);
-        FPHUact.setValue(fphu_act);
-        BioNAct.setValue(bioN_act); /*actual biomass in kg/ha adapted by stress*/
-        PHUact.setValue(phu_daily);
+     
         
         ArrayList<J2KSNCrop> rotation = (ArrayList<J2KSNCrop>) entity.getObject("landuseRotation");
         int rotPos = entity.getInt("rotPos");
@@ -432,8 +431,8 @@ import java.util.ArrayList;
         /*this.dlai = crop.dlai;*/
         this.chtmx = crop.chtmx;
         this.rdmx = crop.rdmx;
-        /*this.topt = crop.topt;*/ //Optimal growth temperature
-        this.tbase = crop.tbase;
+        this.Topt = crop.topt; //Optimal growth temperature
+        this.Tbase = crop.tbase;
         this.cnyld = crop.cnyld;
         this.bn1 = crop.bn1; //Normal fraction of N in the plant biomass at the emergence
         this.bn2 = crop.bn2; //Normal fraction of N in the plant biomass at 50% of plant growth
@@ -454,7 +453,32 @@ import java.util.ArrayList;
             calc_cropyield();
             calc_cropyield_ha();
         }      
-        
+           
+        frLAImxAct.setValue(frLAImx_act); /*actual fraction of max LAI for a given day */
+        LAI.setValue(lai_act);
+        // BioOpt.setValue(bio_opt); 
+        // BioOpt.setValue(bio_opt * area_ha); /*Plants optimal biomass */
+        CanHeightAct.setValue(hc_act); /*Actual canopy height */
+        frRootAct.setValue(frroot_act);  /* daily fraction of root development [mm] */
+        ZRootD.setValue(zrootd_act);  /* daily root development [mm] */
+        FNPlant.setValue(fnplant_act); /* daily fraction of N in plant biomass */
+        BioNoptAct.setValue(bioNopt_act);
+        BioAct.setValue(bio_opt); /*Plants optimal biomass */
+        PlantNDemAct.setValue(Ndemand_act);
+        HarvIndex.setValue(hi_act);
+        BioagAct.setValue(bioag_act);
+        BioYield.setValue(yield);
+        NYield.setValue(yldN); /* N Content from the above biomass */
+        NYield_ha.setValue(yldN_ha);
+        FPHUact.setValue(fphu_act);
+        if (fphu_act > 0){
+            System.out.println("Temperatursumme, aber zackig:  " +fphu_act);
+        }
+        BioNAct.setValue(bioN_act); /*actual biomass in kg/ha adapted by stress*/
+        PHUact.setValue(phu_daily);
+        tbase.setValue(Tbase);
+        topt.setValue(Topt);
+    }
 //        idc = idc+1;
 //        cropClass.setValue(idc);
         
@@ -472,19 +496,17 @@ import java.util.ArrayList;
         // expressed as LAI fraction of the known max LAI
         // @todo declare how is continuosly vegetated land use is determined
         
-    }
-    
+       
     private boolean calc_phu() throws JAMSEntity.NoSuchAttributeException {
         
-             
-        
-        if (this.tmean > this.tbase) {         //phänologisch wirksame Temperatursumme
-            double phu_delta = this.tmean - this.tbase;
+        if (this.tmean > this.Tbase) {         //phänologisch wirksame Temperatursumme
+            double phu_delta = this.tmean - this.Tbase;
             phu_daily = phu_delta + phu_daily;
             fphu_act = phu_daily / this.phu;
             
-            
-            // System.out.println("tägliche Temperatursumme " + phu_daily +" "+ fphu_act  +" "+ tmean +" ");
+            if (phu_delta > 0){
+                System.out.println("tägliche Temperatursumme " + phu_daily +" "+ fphu_act  +" "+ tmean +" ");
+            }
         }
         return true;
     }
@@ -496,18 +518,23 @@ import java.util.ArrayList;
         
         sc2_LAI = ((Math.log(this.frgrw1/this.mlai1)-this.frgrw1)-(Math.log(this.frgrw2/this.mlai2)-this.frgrw2))/ (this.frgrw2 - this.frgrw1);
         sc1_LAI = Math.log((this.frgrw1/this.mlai1)-this.frgrw1)+ this.sc2_LAI * this.frgrw1;
+                    
+                /* Fraction of plant's maximum LAI */
         
-        /* Fraction of plant's maximum LAI */
-        
-        double frLAImx =  this.fphu_act / (this.fphu_act + Math.exp(sc1_LAI - sc2_LAI * this.fphu_act));
-        double frLAImx_xi = frLAImx ; // save frLAImx from the day before
-        frLAImx_act = frLAImx + frLAImx_act; //
+        double frLAImx_delta =  this.fphu_act / (this.fphu_act + Math.exp(sc1_LAI - sc2_LAI * this.fphu_act));
+        //double frLAImx_xi = frLAImx ; // save frLAImx from the day before
+        frLAImx_act = frLAImx_delta + frLAImx_act; //
+        double frLAImx_def = frLAImx_act - frLAImx_delta ;
+     
+        // System.out.println("FracLAImax: " + frLAImx_delta +" "+  frLAImx_act +" ");
         
         // Total leaf area index is calculated by frLAImx added on a day
         
-        lai_act = 0;
-        double LAI_delta1 = (frLAImx_act - frLAImx_xi) * this.mlai *(1 - Math.exp(5.0 * (lai_act - this.mlai)));
-        lai_act = LAI_delta1+lai_act;
+        double LAI_delta = (frLAImx_def) * this.mlai *(1 - Math.exp(5.0 * (lai_act - this.mlai)));
+        lai_act = LAI_delta+lai_act;
+        
+       // System.out.println("LAI: " + lai_act +" "+  LAI_delta +" ");
+        
 //        System.out.println(lai_act);
         
         // LAI will remain constant until leaf senescence begins to exceed leaf growth
@@ -533,7 +560,7 @@ import java.util.ArrayList;
 // whereas the total biomass on a given day is summed up
     
     private double calc_biomass() throws JAMSEntity.NoSuchAttributeException {
-        double bio_opt = 0;
+        
         double Hphosyn = 0.5 * this.solrad * (1 - Math.exp(this.leco*lai_act)); // Intercepted photosynthetically active radiation [MJ/m²]
         
         double bio_opt_delta = this.rue * Hphosyn;
@@ -552,10 +579,8 @@ import java.util.ArrayList;
 // frLAImx = fraction of plants maximum canopy height
     
     private double calc_canopy() throws JAMSEntity.NoSuchAttributeException {
-        
-        double hc_delta = 0;
-        double frLAImx_act = 0;
-        hc_delta = this.chtmx * Math.sqrt(frLAImx_act);
+      
+        double hc_delta = this.chtmx * Math.sqrt(frLAImx_act);
         double hc_act = hc_delta + this.hc_act;
         
         return hc_act;
@@ -572,7 +597,6 @@ import java.util.ArrayList;
 //
     private boolean calc_root() throws JAMSEntity.NoSuchAttributeException {
         
-        double frroot_act = 0;
         double frroot = 0.40 - 0.20 * this.fphu_act;
         frroot_act = frroot+frroot_act;
         
@@ -616,12 +640,12 @@ import java.util.ArrayList;
         
         if
                 (this.idc == 3 || this.idc == 6 || this.idc == 7) {
-            double zrootd_act = this.rdmx;
+                double zrootd_act = this.rdmx;
         }
         
         // annuals
         // if case: as long pfhu is within 0.4; as fphu 0.4 is the time of max root depth
-        double zrootd_act = 0;
+        
         if
                 (this.idc ==  1 || this.idc == 2 || this.idc == 4 || this.idc == 5 && this.fphu_act <= 0.40) {
             
@@ -667,11 +691,7 @@ import java.util.ArrayList;
         // with bn3_ca as fraction of N in the plant biomass near maturity
         // n1 and n2 are shape coefficients by solving the equation of two known points
         // (frn2 by 50% of PHU and frn3 by 100% of PHU
-        
-        double fnplant_act = 0;
-        double bioNopt_act = 0;
-        double Ndemand_act = 0;
-        
+              
         // First calculation of shape coefficients n1 and n2 is needed
         double frn_sub1 = this.bn1 - this.bn3;
         double frn_sub2 = this.bn2 - this.bn3;
@@ -709,20 +729,17 @@ import java.util.ArrayList;
         // @todo should we take depth distribution into account? probably not as this point
         // N uptake within the soil profile
         
-        zrootd_act = 0;
-        double Nup_layer = 0;
-        
         if (this.betaN == 1) {
             
-            Nup_layer = zrootd_act;
+            double Nup_layer = zrootd_act;
             
         }else if (betaN > 1 ){
             
-            Nup_layer = this.betaN / zrootd_act * 100;
+            double Nup_layer = this.betaN / zrootd_act * 100;
             
         }else if (betaN == 0 ){
             
-            Nup_layer = 0.1;
+            double Nup_layer = 0.1;
             
             double Nup_depth = Ndemand_act / (1 - Math.exp(-betaN)) * (1-Math.exp(-betaN * this.rdmx / zrootd_act));
         }
@@ -737,9 +754,6 @@ import java.util.ArrayList;
 // Crop Yield
     private boolean calc_cropyield() throws JAMSEntity.NoSuchAttributeException {
         double yield;
-        hi_act = 0;
-        bioag_act = 0;
-        frroot_act = 0 ;
         
         //for harvesting 4 codes are implemented:
         // (1) assumes harvesting with Haupt- & Nebenfrucht, plant growth stopped
@@ -772,7 +786,6 @@ import java.util.ArrayList;
         // total yield biomass on the day of harvest
         // @todo harvest options
         
-        yield = 0;
         if (hi_act <= 1.00 || this.fphu_act >= 1.00) {
             yield = bioag_act * hi_act;
         }
@@ -785,7 +798,7 @@ import java.util.ArrayList;
         // Amounts of nitrogen [kg N/ha](and who wants P) to be removed from the field
         // whereas cnyld is the fraction of N being removed by the field crop
         
-        
+        yield = 0;
         double yldN = this.cnyld * yield;
         
         //double yldP = this.cpyld * yield;
