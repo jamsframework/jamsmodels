@@ -233,7 +233,7 @@
         </compoundcomponent> 
 	
         <compoundcomponent class="org.unijena.jams.model.JAMSTemporalContext" name="TemporalContext">
-            <jamsvar class="org.unijena.jams.data.JAMSTimeInterval" name="timeInterval" value="1989-08-01 7:30 1990-08-30 7:30 6 1"/>
+            <jamsvar class="org.unijena.jams.data.JAMSTimeInterval" name="timeInterval" value="1989-07-01 7:30 1990-12-30 7:30 6 1"/>
             <component class="org.unijena.jams.gui.JAMSProgress" name="JAMSProgress">
                 <jamsvar class="org.unijena.jams.data.JAMSString" name="title" value="J2K model execution"/>
                 <jamsvar class="org.unijena.jams.data.JAMSInteger" name="height" value="20"/>
@@ -604,6 +604,8 @@
                     <jamsvar name="entity" provider="HRUContext" providervar="currentEntity"/>
                     <jamsvar name="Tmean" provider="HRUContext" spatattrib="tmean"/>
                     <jamsvar name="PHUact" provider="HRUContext" spatattrib="PHUact"/>
+                    <jamsvar name="FPHUact" provider="HRUContext" spatattrib="FPHUact"/>
+                    <jamsvar name="PHUdelta" provider="HRUContext" spatattrib="PHUdelta"/>
                     <jamsvar name="BioAct" provider="HRUContext" spatattrib="BioAct"/>
                     <jamsvar name="CanHeightAct" provider="HRUContext" spatattrib="CanHeightAct"/>
                     <jamsvar name="ZRootD" provider="HRUContext" spatattrib="ZRootD"/>
@@ -618,6 +620,7 @@
                     <jamsvar name="pTP" provider="HRUContext" spatattrib="pTransp"/>
                     <jamsvar name="LExCoef" value="-0.65"/>
                     <jamsvar name="frLAImxAct" provider="HRUContext" spatattrib="frLAImxAct"/>
+                    <jamsvar name="frLAImx_xi" provider="HRUContext" spatattrib="frLAImx_xi"/>
                     <jamsvar name="frRootAct" provider="HRUContext" spatattrib="frRootAct"/>
                     <jamsvar name="BioYield" provider="HRUContext" spatattrib="BioYield"/>
                     <jamsvar name="NYield" provider="HRUContext" spatattrib="NYield"/>
@@ -625,8 +628,9 @@
                     <jamsvar name="time" provider="TemporalContext" providervar="current"/>
                     <jamsvar name="LAI" provider="HRUContext" spatattrib="LAI"/>
                     <jamsvar name="HarvIndex" provider="HRUContext" spatattrib="HarvIndex"/>
-                    <jamsvar name="FPHUact" provider="HRUContext" spatattrib="FPHUact"/>
+                   
                     <jamsvar name="plantExisting" provider="HRUContext" spatattrib="plantExisting"/>
+                    <jamsvar name="plantStateReset" provider="HRUContext" spatattrib="plantStateReset"/>
                 </component>
                 
                 <!--component class="org.unijena.j2k.soilWater.J2KProcessLumpedSoilWater" name="J2KProcessLumpedSoilWater">
@@ -740,14 +744,26 @@
                     <jamsvar name="sum" provider="CatchmentContext" spatattrib="rain;snow;potET;refET;actET;netSnow;netRain;throughfall;interception;intercStorage;snowTotSWE;snowMelt;actDPS;actMPS;actLPS;percolation;actRG1;actRG2;outRD1;outRD2;outRG1;outRG2"/>
                 </component>
                 
-                <component class="org.unijena.j2k.io.StandardEntityWriter" name="tempsumWriter">
-                    <jamsvar class="org.unijena.jams.data.JAMSString" name="dirName" globvar="workspaceDir"/>
-                    <jamsvar name="entitySet" provider="HRUContext" providervar="entities"/>
+                <component class="org.unijena.j2k.io.SelectiveDataWriter" name="HRU_6_Writer">
+                    <jamsvar name="dirName" globvar="workspaceDir"/>
+                    <jamsvar name="fileName" value="output\hru6_crop.txt"/>
                     <jamsvar name="time" provider="TemporalContext" providervar="current"/>
-                    <jamsvar name="fileName" value="output\hru_tempsum.txt"/>
-                    <jamsvar name="header" value=" HRU-output"/>
-                    <jamsvar name="attributeName" value="PHUact"/>
-                    </component>
+                    <jamsvar name="headers" value="PHUact;FPHUact;LAI;BioAct;CanHeightAct;ZRootD;FNPlant;PlantNDemAct;BioNoptAct;Yield;BioagAct;frLAImxAct;frRootAct;BioYield;NYield;HarvIndex"/>
+                    <jamsvar name="value" provider="HRUContext" spatattrib="PHUact;FPHUact;LAI;BioAct;CanHeightAct;ZRootD;FNPlant;PlantNDemAct;BioNoptAct;Yield;BioagAct;frLAImxAct;frRootAct;BioYield;NYield;HarvIndex"/>
+                    <jamsvar name="entityID" provider="HRUContext" spatattrib="ID"/>
+                    <jamsvar name="idValue" value="6"/>
+                </component>                  
+ 
+                <component class="org.unijena.j2k.io.SelectiveDataWriter" name="HRU_9_Writer">
+                    <jamsvar name="dirName" globvar="workspaceDir"/>
+                    <jamsvar name="fileName" value="output\hru9_crop.txt"/>
+                    <jamsvar name="time" provider="TemporalContext" providervar="current"/>
+                    <jamsvar name="headers" value="PHUact;FPHUact;LAI;BioAct;CanHeightAct;ZRootD;FNPlant;PlantNDemAct;BioNoptAct;Yield;BioagAct;frLAImxAct;frRootAct;BioYield;NYield;HarvIndex"/>
+                    <jamsvar name="value" provider="HRUContext" spatattrib="PHUact;FPHUact;LAI;BioAct;CanHeightAct;ZRootD;FNPlant;PlantNDemAct;BioNoptAct;Yield;BioagAct;frLAImxAct;frRootAct;BioYield;NYield;HarvIndex"/>
+                    <jamsvar name="entityID" provider="HRUContext" spatattrib="ID"/>
+                    <jamsvar name="idValue" value="9"/>
+                </component>     
+                
             </compoundcomponent>
             <compoundcomponent class="org.unijena.jams.model.JAMSSpatialContext" name="ReachContext">
                 <jamsvar class="org.unijena.jams.data.JAMSEntityCollection" name="entities" provider="ParaReader" providervar="reaches"/>
@@ -805,7 +821,7 @@
                 <jamsvar name="attribute" provider="CatchmentContext" spatattrib="catchmentObsRunoff"/>
                 <jamsvar name="column" value="1"/>
             </component>
-            
+
             <component class="org.unijena.j2k.io.StandardDataWriter" name="CatchmentWriter">
                 <jamsvar name="dirName" globvar="workspaceDir"/>
                 <jamsvar name="fileName" value="output\result-as-full.txt"/>
@@ -878,8 +894,36 @@
             <jamsvar name="fileName" value="output\hru_LPSst.txt"/>
             <jamsvar name="header" value=" HRU-output"/>
             <jamsvar name="attributeName" value="actLPS_h"/>
-            </component!-->
-        
+            </component>
+            
+            
+            <component class="org.unijena.j2k.io.StandardEntityWriter" name="RG2Writer">
+            <jamsvar class="org.unijena.jams.data.JAMSString" name="dirName" globvar="workspaceDir"/>
+            <jamsvar name="entitySet" provider="HRUContext" providervar="entities"/>
+            <jamsvar name="time" provider="TemporalContext" providervar="current"/>
+            <jamsvar name="fileName" value="output\hru_RG2.txt"/>
+            <jamsvar name="header" value=" HRU-output"/>
+            <jamsvar name="attributeName" value="genRG2"/>
+            </component>
+         
+            <component class="org.unijena.j2k.io.StandardEntityWriter" name="tempsumWriter">
+                <jamsvar class="org.unijena.jams.data.JAMSString" name="dirName" globvar="workspaceDir"/>
+                <jamsvar name="entitySet" provider="HRUContext" providervar="entities"/>
+                <jamsvar name="time" provider="TemporalContext" providervar="current"/>
+                <jamsvar name="fileName" value="output\hru_tempsum.txt"/>
+                <jamsvar name="header" value=" HRU-output"/>
+                <jamsvar name="attributeName" value="PHUact"/>
+            </component>
+            
+            
+            <component class="org.unijena.j2k.io.StandardEntityWriter" name="bioActSumWriter">
+                <jamsvar class="org.unijena.jams.data.JAMSString" name="dirName" globvar="workspaceDir"/>
+                <jamsvar name="entitySet" provider="HRUContext" providervar="entities"/>
+                <jamsvar name="time" provider="TemporalContext" providervar="current"/>
+                <jamsvar name="fileName" value="output\hru_tempsum.txt"/>
+                <jamsvar name="header" value=" HRU-output"/>
+                <jamsvar name="attributeName" value="BioAct"/>
+            </component>-->
             
         </compoundcomponent>
     </compoundcomponent>
