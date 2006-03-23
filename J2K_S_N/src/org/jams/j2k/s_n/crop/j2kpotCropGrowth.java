@@ -552,7 +552,7 @@ import java.util.ArrayList;
     
     
     private boolean calc_phu() throws JAMSEntity.NoSuchAttributeException {
-        
+                
         if (this.tmean > this.Tbase) {         //phänologisch wirksame Temperatursumme
             this.phu_delta = this.tmean - this.Tbase;
             phu_daily = this.phu_delta + phu_daily;
@@ -748,11 +748,12 @@ import java.util.ArrayList;
         // First calculation of shape coefficients n1 and n2 is needed
         double frn_sub1 = this.bn1 - this.bn3;
         double frn_sub2 = this.bn2 - this.bn3;
-        double bn3_ca = this.bn3 - 0.00001;
-        double frn_sub3 = bn3_ca - this.bn3;  // the module assumes that the denominator term does not equals 1
+        double bn3_ca = 0.00001;
+        double frn_sub3 = this.bn3 - bn3_ca;  // the module assumes that the denominator term does not equals 1
         // therefore the construction of denominator term bn3_ca is needed
         
-        double sc4_Nbio = (Math.log(this.phu_50/(1-(frn_sub2)/(frn_sub1))- this.phu_50)- (Math.log(this.phu/(1-(frn_sub3)/frn_sub1))))/ this.phu - this.phu_50;
+        phu_50 = this.phu / 2;
+        double sc4_Nbio = (Math.log(this.phu_50/(1-(frn_sub2)/(frn_sub1))- this.phu_50)- (Math.log(this.phu/(1-(frn_sub3)/frn_sub1))))/ this.phu_50;
         double sc3_Nbio = Math.log(this.phu_50/(1-((frn_sub2)/(frn_sub1))- this.phu_50) + sc4_Nbio * this.phu_50);
         
         /* Fraction of N in plant biomass as a function of growth stage given optimal conditions */
