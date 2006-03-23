@@ -104,6 +104,7 @@ public class ManageLanduse extends JAMSComponent {
             } else if (currentManagement.harvest != -1) {
                 //do harvesting here!!
                 this.plantExisting.setValue(false);
+                
             }
         }
         
