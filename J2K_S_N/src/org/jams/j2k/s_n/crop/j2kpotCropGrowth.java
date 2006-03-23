@@ -753,13 +753,19 @@ import java.util.ArrayList;
         // therefore the construction of denominator term bn3_ca is needed
         
         phu_50 = this.phu / 2;
-        double sc4_Nbio = (Math.log(this.phu_50/(1-(frn_sub2)/(frn_sub1))- this.phu_50)- (Math.log(this.phu/(1-(frn_sub3)/frn_sub1))))/ this.phu_50;
-        double sc3_Nbio = Math.log(this.phu_50/(1-((frn_sub2)/(frn_sub1))- this.phu_50) + sc4_Nbio * this.phu_50);
+        
+        
+        double t1 = Math.log(this.phu_50/(1-(frn_sub2/frn_sub1))- this.phu_50);
+        double t2 = Math.log(this.phu/(1-(frn_sub3/frn_sub1)) - this.phu);
+        double sc4_Nbio = (t1 - t2)/ this.phu_50;
+        double t3 = Math.log(this.phu_50/(1-(frn_sub2/frn_sub1))- this.phu_50);
+        double sc3_Nbio = t3 + sc4_Nbio * this.phu_50;
         
         /* Fraction of N in plant biomass as a function of growth stage given optimal conditions */
+        double t4 =  this.fphu_act + Math.exp(sc3_Nbio - sc4_Nbio * this.fphu_act);
+        double fnplant = (this.bn1 - this.bn3) * (1 -(this.fphu_act / t4)) + this.bn3;
         
-        double fnplant = (this.bn1 - this.bn3) * (1 -(this.fphu_act / this.fphu_act + Math.exp(sc3_Nbio - sc4_Nbio * this.fphu_act))) + this.bn3;
-        fnplant_act = fnplant + fnplant_act;
+        fnplant_act = fnplant;
         
         // Determing the mass of N that should be stored in the plant biomass on a given day
         // whereas the fnplant is the optimal fraction of nitrogen in the plant biomass for the current growth stage
