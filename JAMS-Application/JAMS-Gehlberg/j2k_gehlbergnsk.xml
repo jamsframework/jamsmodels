@@ -593,7 +593,7 @@
                     <var name="soilConcRD1" value="1.0"/>
                     <var name="soilConcRD2" value="1.8"/>
                 </component>
-            
+
                 <component class="org.unijena.j2k.groundwater.J2KProcessGroundwater" name="J2KProcessGroundwater">
                     <var name="area" context="HRUContext" attribute="area"/>
                     <var name="slope" context="HRUContext" attribute="slope"/>
@@ -618,7 +618,7 @@
                     <var name="gwRG2Fact" value="1.0"/>
                     <var name="gwCapRise" value="0.0"/>
                 </component>
-            
+
                 <component class="org.unijena.j2k.routing.J2KProcessRouting" name="J2KProcessRouting">
                     <var name="reaches" context="ParaReader" cvar="reaches"/>
                     <var name="entity" context="HRUContext" cvar="currentEntity"/>
@@ -631,7 +631,7 @@
                     <var name="outRG1" context="HRUContext" attribute="outRG1"/>
                     <var name="outRG2" context="HRUContext" attribute="outRG2"/>
                 </component>
-       
+
                 <!-- formerly known as SpatialAggregator - aggregationType 1 -->
                 <component class="org.unijena.j2k.aggregate.WeightedSumAggregator" name="SpatialWeightedSumAggregator1">
                     <var name="value" context="HRUContext" attribute="precip;tmean;rhum;wind;solRad;netRad;snowDepth;satMPS;satLPS;rs;ra"/>

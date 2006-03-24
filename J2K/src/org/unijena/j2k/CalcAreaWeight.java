@@ -30,6 +30,11 @@ import org.unijena.jams.data.*;
  *
  * @author S. Kralisch
  */
+@JAMSComponentDescription(
+        title="CalcAreaWeight",
+        author="Peter Krause",
+        description="Calculates the area weight"
+        )
 public class CalcAreaWeight extends JAMSComponent {
     
     @JAMSVarDescription(
