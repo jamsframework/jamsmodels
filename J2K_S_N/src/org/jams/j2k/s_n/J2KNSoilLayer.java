@@ -183,6 +183,20 @@ import java.io.*;
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
             update = JAMSVarDescription.UpdateType.RUN,
+            description = " sum of interflowNabs in kgN/ha"
+            )
+            public JAMSDouble sinterflowNabs;
+    
+    @JAMSVarDescription(
+            access = JAMSVarDescription.AccessType.WRITE,
+            update = JAMSVarDescription.UpdateType.RUN,
+            description = " sum of interflowN in kgN/ha"
+            )
+            public JAMSDouble sinterflowN;
+    
+    @JAMSVarDescription(
+            access = JAMSVarDescription.AccessType.WRITE,
+            update = JAMSVarDescription.UpdateType.RUN,
             description = " sum of N-Organic Pool with reactive organic matter in kgN/ha"
             )
             public JAMSDouble sN_activ_pool;
@@ -471,6 +485,13 @@ import java.io.*;
             )
             public JAMSCalendar time;
     
+    @JAMSVarDescription(
+            access = JAMSVarDescription.AccessType.READ,
+            update = JAMSVarDescription.UpdateType.RUN,
+            description = " actual Transpiration in mm"
+            )
+            public JAMSDouble aTransp;
+    
     /*
      *  Component run stages
      */
@@ -508,7 +529,7 @@ import java.io.*;
     private double h_infilt_mm;
     private int layer;
     private double runvolati_trans;
-    private double runsum_Ninput;
+   
     
     private double runplantupN;
     private double rundenit_trans;
@@ -551,11 +572,11 @@ import java.io.*;
     
     public void run() throws JAMSEntity.NoSuchAttributeException{
         JAMSCalendar testtime = new JAMSCalendar();
-/*        testtime.setValue("1994-08-30 07:30");
+        testtime.setValue("1994-08-30 07:30");
         if (time.equals(testtime)){
             System.out.println(time.getValue()) ;
         }
- */
+
         
         int i = 0;
         
@@ -565,9 +586,11 @@ import java.io.*;
         this.layer = (int)Layer.getValue();
         double runprecip  = precip.getValue();
         
-        
+        double runsum_Ninput = 0;
         double sumNO3_Pool = 0;
         double sumNH4_Pool = 0;
+        double suminterflowNabs = 0;
+        double suminterflowN = 0;
         double sumN_activ_pool = 0;
         double sumN_stabel_pool = 0;
         double h_infilt_mm_sum = 0;
@@ -589,8 +612,9 @@ import java.io.*;
         
         hor_by_infilt = new double[layer];
         
-        NO3_Poolvals = calc_plantuptake();
-//        NO3_Poolvals = NO3_Pool.getValue();
+        
+//        NO3_Poolvals = calc_plantuptake();
+       NO3_Poolvals = NO3_Pool.getValue();
         /*        calculation of infiltration water that bypasses the horizonts   loop */
         
         i = layer - 1;
@@ -643,7 +667,7 @@ import java.io.*;
             this.h_perco_mm = perco_hor.getValue()[i] / runarea;
             
             this.runvolati_trans = 0;
-            
+           
             this.rundenit_trans = 0;
             this.runsurfaceN = 0;
             this.runinterflowN = 0;
@@ -737,7 +761,9 @@ import java.io.*;
                     runResidue_pool = 0;
                 }
                 
-                runsum_Ninput = sum_Ninput.getValue() + fertactivorg.getValue() + fertNH4.getValue() + a_deposition;
+                runsum_Ninput =  fertactivorg.getValue() + fertNH4.getValue() + fertNO3.getValue() + a_deposition + runinterflowN_in;
+                
+             
                 
                 runN_stabel_pool = runN_stabel_pool + fertstableorg.getValue();
                 
@@ -776,6 +802,8 @@ import java.io.*;
                 
             } else {
                 
+                runsum_Ninput = runsum_Ninput + runinterflowN_in;
+           
                 runNO3_Pool = runNO3_Pool + runnitri_trans + runinterflowN_in + percoNvals[i-1];
                 
                 if (runNO3_Pool > runplantupN){
@@ -841,16 +869,17 @@ import java.io.*;
             sumN_activ_pool = runN_activ_pool + sumN_activ_pool;
             sumNH4_Pool = runNH4_Pool + sumNH4_Pool;
             sumNO3_Pool = runNO3_Pool + sumNO3_Pool;
-            
+            suminterflowNabs = runinterflowNabs + suminterflowNabs;
+            suminterflowN = runinterflowN + suminterflowN;
             Sumvolati_trans = Sumvolati_trans + runvolati_trans;
             Sumdenit_trans = Sumdenit_trans + rundenit_trans;
             Sumnitri_trans = Sumnitri_trans + runnitri_trans;
             
-            double NH4test1 = NH4_Poolvals[0];
+/*             double NH4test1 = NH4_Poolvals[0];
             double NH4test2 = NH4_Pool.getValue()[0];
-            if (NH4test1 > NH4test2){
+           if (NH4test1 > NH4test2){
                 System.out.println("Wundersame NH4 vermehrung");
-            }
+            }*/
             
             i++;
         }
@@ -870,6 +899,8 @@ import java.io.*;
         runsurfaceNabs = runsurfaceN * runarea / 1000;
         SurfaceNabs.setValue(runsurfaceNabs);
         sum_Ninput.setValue(runsum_Ninput);
+        sinterflowNabs.setValue(suminterflowNabs);
+        sinterflowN.setValue(suminterflowN);
         // writing of transfomations
         Volati_trans.setValue(Sumvolati_trans);
         Denit_trans.setValue(Sumdenit_trans);
@@ -880,6 +911,7 @@ import java.io.*;
         sNO3_Pool.setValue(sumNO3_Pool);
         
         
+        
 //        System.out.println("percoN = " + percoN +" percoNabs =  "+ percoNabs);
         
         
@@ -888,7 +920,8 @@ import java.io.*;
     private double[] calc_plantuptake(){
         double upNO3_Pool = 0;
         double runrootdepth =rootdepth.getValue();
-        double runpotN_up = potN_up.getValue();
+        double runpotN_up = (aTransp.getValue() * 0.015) / runarea;
+ //       double runpotN_up = potN_up.getValue();
         double[] NO3_Poolvals = new double[layer];
         double[] potN_up_z = new double[layer];
         double[] demandN_up_z = new double[layer];
@@ -897,6 +930,7 @@ import java.io.*;
         double demand3 = 0;
         double demand2 = 0;
         double demand1 = 0;
+        double runactN_up = 0;
         int ii = 0;
         int jj = 0;
         int j = 0;
@@ -904,15 +938,28 @@ import java.io.*;
         // plant uptake loop 1: calculating N demand by plants and rest NO3_Pools
         
         
-        while (j < layer) {
+        while (j < layer - 1) {
             this.runlayerdepth = layerdepth.getValue()[j] * 10;
             
             upNO3_Pool = NO3_Pool.getValue()[j];
             
             potN_up_z[j] = (runpotN_up /(1 - Math.exp(-runBeta_Ndist)))*(1 - Math.exp(-runBeta_Ndist * (runlayerdepth / runrootdepth)));
-            demand1 = upNO3_Pool - potN_up_z[j];
+            //krücke
+            double NO3_Poolpf = (upNO3_Pool * 0.8) - potN_up_z[j];
             
-            //determination of layers within the rootzone
+            if (NO3_Poolpf < 0){
+            upNO3_Pool = upNO3_Pool * 0.2;
+            potN_up_z[j] = upNO3_Pool * 0.8;
+                
+            } else{
+            upNO3_Pool = upNO3_Pool  - potN_up_z[j];    
+            }
+            runactN_up = runactN_up + potN_up_z[j];  
+            
+            NO3_Poolvals[j] = upNO3_Pool;
+            j++;
+            //krücke ende
+           /* //determination of layers within the rootzone
             if (potN_up_z[j] > 0){
                 rootlayer = j;
             }
@@ -939,7 +986,7 @@ import java.io.*;
         }
         
         // plant uptake loop 2: summarising rest N demand
-        while (ii < layer) {
+        /* while (ii < layer) {
             
             demand2 = demandN_up_z[ii] + demand2;
             
@@ -949,7 +996,9 @@ import java.io.*;
         if (demand2 < 0){
             
             // plant uptake loop 3: redistributing rest N demand on rest NO3_Pools within rootdepth
-            while (jj < rootlayer) {
+            
+          /*  while (jj < rootlayer) {
+                jj++;
                 demand3 = demand2;
                 
                 demand3 = demand3 + NO3_Poolvals[jj];
@@ -967,10 +1016,10 @@ import java.io.*;
                     
                     demand2 = 0;
                 }
-            }
+            }*/
         }
         
-        double runactN_up = runpotN_up + demand2;
+//        double runactN_up = runpotN_up + demand2;
         
         actN_up.setValue(runactN_up);
         
@@ -1070,10 +1119,10 @@ import java.io.*;
     
     private double calc_denitrification(){
         double denit_trans = 0;
-        if (gamma_water > 0.75){
+        if (gamma_water > 0.95){
             denit_trans = runNO3_Pool * (1 - Math.exp(-1.4 * gamma_temp * runC_org));
             
-        } else if (gamma_water <= 0.75){
+        } else if (gamma_water <= 0.95){
             denit_trans = 0;
             
         }

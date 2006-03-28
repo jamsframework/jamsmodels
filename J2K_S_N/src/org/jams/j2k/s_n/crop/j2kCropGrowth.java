@@ -703,7 +703,7 @@ import java.io.*;
          double LAI_init = this.int_lai;        
          double LAI_delta1 = (frLAImx_act - frLAImx_xi) * this.mlai *(1 - Math.exp(5.0 * (LAI_init - this.mlai)));
          lai_act = LAI_delta1+lai_act;
-         System.out.println (lai_act);
+//         System.out.println (lai_act);
          
         // LAI will remain constant until leaf senescence begins to exceed leaf growth
         // this. phu_sense is the fphu when senescence becomes dominant

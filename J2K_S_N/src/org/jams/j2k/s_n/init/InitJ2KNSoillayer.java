@@ -165,7 +165,12 @@ import org.unijena.jams.model.*;
             )
             public JAMSDouble Layer;
     
-    
+     @JAMSVarDescription(
+            access = JAMSVarDescription.AccessType.WRITE,
+            update = JAMSVarDescription.UpdateType.RUN,
+            description = "flag plant existing yes or no " // attention its a boolean!
+            )
+            public JAMSBoolean plantExisting = new JAMSBoolean();
     
     
     /*
@@ -186,7 +191,7 @@ import org.unijena.jams.model.*;
         double orgNhum = 0; /*concentration of humic organic nitrogen in the layer (mg/kg)*/
         int layer = (int)Layer.getValue();
         double runlayerdepth;
-        
+        plantExisting.setValue(true);
         double runsoil_bulk_density;
         
         double runC_org;

@@ -206,6 +206,16 @@
                 <jamsvar name="initRG1" value="0.0"/>
                 <jamsvar name="initRG2" value="0.0"/>
             </component>
+             <component class="org.jams.j2k.s_n.init.InitJ2KGroundwaterN" name="InitJ2KGroundwaterN">
+                <jamsvar name="maxRG1" provider="InitHRUContext" spatattrib="maxRG1"/>
+                <jamsvar name="maxRG2" provider="InitHRUContext" spatattrib="maxRG2"/>
+                <jamsvar name="NActRG1" provider="InitHRUContext" spatattrib="NActRG1"/>
+                <jamsvar name="NActRG2" provider="InitHRUContext" spatattrib="NActRG2"/>
+                <jamsvar name="N_concRG1" value="3.84"/>
+                <jamsvar name="N_concRG2" value="3.84"/>
+                <jamsvar name="N_delay_RG1" value="0"/>
+                <jamsvar name="N_delay_RG2" value="0"/>
+            </component>
             <component class="org.unijena.j2k.regionalisation.CalcNidwWeights" name="tminWeights">
                 <jamsvar name="entityX" provider="InitHRUContext" spatattrib="x"/>
                 <jamsvar name="entityY" provider="InitHRUContext" spatattrib="y"/>
@@ -804,6 +814,7 @@
 
                 <component class="org.jams.j2k.s_n.J2KNSoilLayer" name="J2KNSoilLayer">
                     <jamsvar name="area" provider="HRUContext" spatattrib="area"/>
+                    <jamsvar name="aTransp" provider="HRUContext" spatattrib="aTransp"/>
                     <jamsvar name="stohru_MPS" provider="HRUContext" spatattrib="maxMPS_h"/>
                     <jamsvar name="stohru_LPS" provider="HRUContext" spatattrib="maxLPS_h"/>
                     <jamsvar name="stohru_FPS" provider="HRUContext" spatattrib="maxFPS_h"/>
@@ -912,8 +923,8 @@
                     <jamsvar name="maxRG1" provider="HRUContext" spatattrib="maxRG1"/>
                     <jamsvar name="maxRG2" provider="HRUContext" spatattrib="maxRG2"/>
                     <jamsvar name="NExcess" provider="HRUContext" spatattrib="NExcess"/>
-                    <jamsvar name="N_delay_RG1" value="0"/>
-                    <jamsvar name="N_delay_RG2" value="0"/>
+                    <jamsvar name="N_delay_RG1" value="0.0"/>
+                    <jamsvar name="N_delay_RG2" value="0.0"/>
                 </component>
 
               

@@ -63,6 +63,13 @@ import org.unijena.jams.model.*;
             )
             public JAMSDouble nstrs;
     
+   @JAMSVarDescription(
+            access = JAMSVarDescription.AccessType.READ,
+            update = JAMSVarDescription.UpdateType.RUN,
+            description = "actual nitrate uptake by plants in kgN/ha"
+            )
+            public JAMSDouble actN_up;
+    
     /*
      *  Component run stages
      */
@@ -75,9 +82,10 @@ import org.unijena.jams.model.*;
         double run_nstrs = 0;
         double run_optibioN = optibioN.getValue();
         double run_actbioN = actbioN.getValue();
+        double runactN_up = actN_up.getValue();
         double phi_nit = 0; // scaling factor for nitrogen stress [-]
         
-        phi_nit = 200 * ((run_actbioN / run_optibioN) - 0.5);
+        phi_nit = 200 * (((run_actbioN + runactN_up) / run_optibioN) - 0.5);
         
         run_nstrs = 1 - (phi_nit / (phi_nit * Math.exp(3.535 - (0.02597 * phi_nit))));
      

@@ -43,12 +43,6 @@ import org.unijena.jams.model.*;
 
     
     
-    @JAMSVarDescription(
-            access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.RUN,
-            description = "The current hru entity"
-            )
-            public JAMSEntity entity;
     
     
     @JAMSVarDescription(
@@ -64,20 +58,6 @@ import org.unijena.jams.model.*;
             description = "maximum RG2 storage"
             )
             public JAMSDouble maxRG2;
-    @JAMSVarDescription(
-            access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.RUN,
-            description = "actual RG1 storage"
-            )
-            public JAMSDouble actRG1;
-    
-    @JAMSVarDescription(
-            access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.RUN,
-            description = "actual RG2 storage"
-            )
-            public JAMSDouble actRG2;
-    
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
