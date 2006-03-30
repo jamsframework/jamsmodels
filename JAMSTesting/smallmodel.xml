@@ -3,21 +3,24 @@
 <!--<!DOCTYPE JAMSModel SYSTEM "jamsmodel.dtd">-->
 <model name="The smallmodel testmodel" author="Sven Kralisch" date="10.06.2005">
     <component class="org.unijena.jamstesting.SEProvider" name="SEProvider">
-        <jamsvar name="max" value="10"/>
-        <jamsvar name="test" value="3.4"/>
+        <var name="max" value="13"/>
+        <var name="test" attribute="test"/>
+        <var name="entities" attribute="entities"/>
     </component>
     <contextcomponent class="org.unijena.jams.model.JAMSTemporalContext" name="TemporalContext">
-        <jamsvar name="timeInterval" value="1989-11-01 7:30 1989-11-03 7:30 6 1"/>
+        <var name="timeInterval" value="1989-11-01 7:30 1989-11-03 7:30 6 1"/>
 
         <contextcomponent class="org.unijena.jams.model.JAMSSpatialContext" name="SpatialContext">
-            <jamsvar name="entities" provider="SEProvider" providervar="entities"/>
+            <var name="entities" attribute="entities"/>
+            <!--<var name="entities" context="SEProvider" cvar="entities"/>-->
 
             <component class="org.unijena.jamstesting.Testcomponent1" name="Test1">
-                <jamsvar name="length" provider="SpatialContext" spatattrib="attr; test"/>
+                <var name="length" context="SpatialContext" attribute="attr; test"/>
+                <!--<var name="test" attribute="test"/>-->
             </component>
             
             <component class="org.unijena.jamstesting.Testcomponent2" name="Test2">
-                <jamsvar name="value" provider="SpatialContext" spatattrib="attr"/>
+                <var name="value" context="SpatialContext" attribute="attr"/>
             </component>
 
         </contextcomponent>

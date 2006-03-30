@@ -55,14 +55,14 @@ import java.util.*;
     
     
     @JAMSVarDescription(
-            access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.INIT
+            access = JAMSVarDescription.AccessType.WRITE,
+            update = JAMSVarDescription.UpdateType.RUN
             )
             public JAMSDouble test;
     
     public void init(){
         
-        System.out.println("SEProvider: " + test);
+        System.out.println("SEProvider: ");
         
         JAMSEntity e;
         
@@ -80,7 +80,7 @@ import java.util.*;
     }
     
     public void run(){
-        
+        test.setValue(test.getValue()+112);
     }
     
     public void cleanup(){

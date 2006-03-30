@@ -43,13 +43,21 @@ public class Testcomponent1  extends JAMSComponent {
             description = "This is a short description"
             )
             public JAMSDouble[] length;
-        
+    
+    @JAMSVarDescription(
+            access = JAMSVarDescription.AccessType.READ,
+            update = JAMSVarDescription.UpdateType.RUN
+            )
+            public JAMSDouble test;
+    
+    
     public void init() {
 //        length.setValue(0);
     }
     
     public void run(){
         length[0].setValue(length[0].getValue() + 15);
+        System.out.println("test: " + test);
     }
     
     public void cleanup() {
