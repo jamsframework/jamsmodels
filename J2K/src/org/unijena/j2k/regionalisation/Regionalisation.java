@@ -23,7 +23,7 @@
 
 package org.unijena.j2k.regionalisation;
 import java.io.*;
-import org.unijena.j2k.statistics.*;
+import org.unijena.jams.JAMS;
 import org.unijena.jams.data.*;
 import org.unijena.jams.model.*;
 
@@ -172,7 +172,8 @@ public class Regionalisation extends JAMSComponent {
         cacheFile = new File(dirName.getValue() + "/$" + this.getInstanceName() + ".cache");
 
         if (!cacheFile.exists() && dataCaching.getValue()) {
-            fireNotification(this.getInstanceName() + ": data caching is switched on but no cache file available!");
+            JAMS.sendErrorMsg(this.getInstanceName() + ": data caching is switched on but no cache file available!");
+            JAMS.sendHalt();
         } 
         
         if (dataCaching.getValue()) {

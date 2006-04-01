@@ -38,9 +38,9 @@
 package org.unijena.j2k.radiation;
 
 import java.io.*;
+import org.unijena.jams.JAMS;
 import org.unijena.jams.data.*;
 import org.unijena.jams.model.*;
-import org.unijena.j2k.physicalCalculations.SolarRadiationCalculationMethods;
 
 /**
  *
@@ -140,7 +140,8 @@ import org.unijena.j2k.physicalCalculations.SolarRadiationCalculationMethods;
         //first, check if cached data are available
         cacheFile = new File(dirName.getValue() + "/$" + this.getInstanceName() + ".cache");
         if (!cacheFile.exists() && dataCaching.getValue()) {
-            fireNotification(this.getInstanceName() + ": dataCaching is true but no cache file available!");
+            JAMS.sendErrorMsg(this.getInstanceName() + ": dataCaching is true but no cache file available!");
+            JAMS.sendHalt();
         }
         if(dataCaching.getValue()){               
             useCache = true;

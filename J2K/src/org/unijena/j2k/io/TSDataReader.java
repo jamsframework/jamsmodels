@@ -29,6 +29,7 @@ import org.unijena.jams.model.*;
 import org.unijena.jams.io.*;
 import java.util.*;
 import java.io.*;
+import org.unijena.jams.JAMS;
 
 /**
  *
@@ -236,7 +237,8 @@ public class TSDataReader extends JAMSComponent {
         if(timeInterval != null){
             //check if the time series start and end date match the temporal context's time interval
             if (timeInterval.getStart().before(startTime) || timeInterval.getEnd().after(endTime)) {
-                fireNotification("TSData start and end time do not match current temporal context!");
+                JAMS.sendErrorMsg("TSData start and end time do not match current temporal context!");
+                JAMS.sendHalt();
             }
         }
                 
