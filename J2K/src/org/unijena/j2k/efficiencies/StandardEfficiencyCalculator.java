@@ -23,7 +23,6 @@
 
 package org.unijena.j2k.efficiencies;
 
-import org.unijena.j2k.efficiencies.*;
 import org.unijena.j2k.statistics.Regression;
 import org.unijena.jams.data.*;
 import org.unijena.jams.model.*;
