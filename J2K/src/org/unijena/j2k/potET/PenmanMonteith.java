@@ -198,8 +198,7 @@ import org.unijena.jams.model.*;
         cacheFile = new File(dirName.getValue() + "/$" + this.getInstanceName() + ".cache");
         
         if (!cacheFile.exists() && dataCaching.getValue()) {
-            JAMS.sendErrorMsg(this.getInstanceName() + ": dataCaching is true but no cache file available!");
-            JAMS.sendHalt();
+            JAMS.sendHalt(this.getInstanceName() + ": dataCaching is true but no cache file available!");
         }
         
         if (dataCaching.getValue()) {

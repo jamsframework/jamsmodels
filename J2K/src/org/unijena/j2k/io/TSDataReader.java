@@ -237,8 +237,7 @@ public class TSDataReader extends JAMSComponent {
         if(timeInterval != null){
             //check if the time series start and end date match the temporal context's time interval
             if (timeInterval.getStart().before(startTime) || timeInterval.getEnd().after(endTime)) {
-                JAMS.sendErrorMsg("TSData start and end time do not match current temporal context!");
-                JAMS.sendHalt();
+                JAMS.sendHalt("TSData start and end time do not match current temporal context!");
             }
         }
                 
