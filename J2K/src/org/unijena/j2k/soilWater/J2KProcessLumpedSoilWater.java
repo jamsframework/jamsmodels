@@ -23,6 +23,7 @@
 
 package org.unijena.j2k.soilWater;
 
+import org.unijena.jams.JAMS;
 import org.unijena.jams.data.*;
 import org.unijena.jams.model.*;
 
@@ -504,7 +505,7 @@ import org.unijena.jams.model.*;
             this.run_inRD2 = this.calcMPSInflow(this.run_inRD2);
             this.run_inRD2 = this.calcLPSInflow(this.run_inRD2);
             if(this.run_inRD2 > 0){
-                System.out.println("RD2 is not null");
+                JAMS.sendInfoMsg("RD2 is not null");
             }
         }
         return true;

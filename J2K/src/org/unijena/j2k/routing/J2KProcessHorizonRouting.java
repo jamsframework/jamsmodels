@@ -23,6 +23,7 @@
 
 package org.unijena.j2k.routing;
 
+import org.unijena.jams.JAMS;
 import org.unijena.jams.data.*;
 import org.unijena.jams.model.*;
 
@@ -229,7 +230,7 @@ import org.unijena.jams.model.*;
             inGWExcess.setValue(0);
             
         } else{
-            System.out.println("Current entity ID: " + entity.getDouble("elevation") + " has no receiver.");
+            JAMS.sendInfoMsg("Current entity ID: " + entity.getDouble("elevation") + " has no receiver.");
         }
         
     }

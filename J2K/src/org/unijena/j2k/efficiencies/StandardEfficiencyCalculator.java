@@ -24,6 +24,7 @@
 package org.unijena.j2k.efficiencies;
 
 import org.unijena.j2k.statistics.Regression;
+import org.unijena.jams.JAMS;
 import org.unijena.jams.data.*;
 import org.unijena.jams.model.*;
 
@@ -106,9 +107,9 @@ import org.unijena.jams.model.*;
         }
         //int ts = (int)tsteps;
         int ts = (int) this.getContext().getNumberOfIterations();
-        System.out.println("Startdate:\t" + sd.toString());
-        System.out.println("Enddate:\t" + ed.toString());
-        System.out.println("Tsteps:\t" + ts);
+        JAMS.sendInfoMsg("Startdate:\t" + sd.toString());
+        JAMS.sendInfoMsg("Enddate:\t" + ed.toString());
+        JAMS.sendInfoMsg("Tsteps:\t" + ts);
         
         valData = new double[ts];
         preData = new double[ts];
@@ -125,7 +126,7 @@ import org.unijena.jams.model.*;
     
     public void cleanup() {
         //eff calculations
-        System.out.println("Counter is:\t " + counter);
+        JAMS.sendInfoMsg("Counter is:\t " + counter);
         JAMSIntegerArray method = new JAMSIntegerArray();
         double[] valData_1, preData_1;
         //data without first year
@@ -141,26 +142,26 @@ import org.unijena.jams.model.*;
             for(int i = 0; i < effMethod.getValue().length; i++){
                 if(effMethod.getValue()[i] == this.E1){
                     double e1 = NashSutcliffe.efficiency(preData_1, valData_1, 1);
-                    System.out.println("e1 a-1:\t " + e1);
+                    JAMS.sendInfoMsg("e1 a-1:\t " + e1);
                 }else if(effMethod.getValue()[i] == this.E2){
                     double e2 = NashSutcliffe.efficiency(preData_1, valData_1, 2);
-                    System.out.println("e2 a-1:\t " + e2);
+                    JAMS.sendInfoMsg("e2 a-1:\t " + e2);
                 }else if(effMethod.getValue()[i] == this.LOG_E1){
                     double le1 = NashSutcliffe.logEfficiency(preData_1, valData_1, 1);
-                    System.out.println("log e1 a-1:\t " + le1);
+                    JAMS.sendInfoMsg("log e1 a-1:\t " + le1);
                 }else if(effMethod.getValue()[i] == this.LOG_E2){
                     double le2 = NashSutcliffe.logEfficiency(preData_1, valData_1, 2);
-                    System.out.println("log e2 a-1:\t " + le2);
+                    JAMS.sendInfoMsg("log e2 a-1:\t " + le2);
                 }else if(effMethod.getValue()[i] == this.IOA_1){
                     double ioa1 = IndexOfAgreement.calc_IOA(preData_1, valData_1, 1);
-                    System.out.println("ioa1 a-1:\t " + ioa1);
+                    JAMS.sendInfoMsg("ioa1 a-1:\t " + ioa1);
                 }else if(effMethod.getValue()[i] == this.IOA_2){
                     double ioa2 = IndexOfAgreement.calc_IOA(preData_1, valData_1, 2);
-                    System.out.println("ioa2 a-1:\t " + ioa2);
+                    JAMS.sendInfoMsg("ioa2 a-1:\t " + ioa2);
                 }else if(effMethod.getValue()[i] == this.R2){
                     double[] rCoeff = Regression.calcLinReg(valData_1, preData_1);
-                    System.out.println("r² a-1:\t " + rCoeff[2]);
-                    System.out.println("grad a-1:\t" + rCoeff[1]);
+                    JAMS.sendInfoMsg("r² a-1:\t " + rCoeff[2]);
+                    JAMS.sendInfoMsg("grad a-1:\t" + rCoeff[1]);
                 }else if(effMethod.getValue()[i] == this.WR2){
                     double[] rCoeff = Regression.calcLinReg(valData_1, preData_1);
                     double wr;
@@ -168,7 +169,7 @@ import org.unijena.jams.model.*;
                         wr = Math.abs(rCoeff[1]) * rCoeff[2];
                     else
                         wr = Math.pow(Math.abs(rCoeff[1]), -1.0) * rCoeff[2];
-                    System.out.println("wr² a-1:\t " + wr);
+                    JAMS.sendInfoMsg("wr² a-1:\t " + wr);
                 }
                 
             }
@@ -176,26 +177,26 @@ import org.unijena.jams.model.*;
         for(int i = 0; i < effMethod.getValue().length; i++){
             if(effMethod.getValue()[i] == this.E1){
                 double e1 = NashSutcliffe.efficiency(preData, valData, 1);
-                System.out.println("e1:\t " + e1);
+                JAMS.sendInfoMsg("e1:\t " + e1);
             }else if(effMethod.getValue()[i] == this.E2){
                 double e2 = NashSutcliffe.efficiency(preData, valData, 2);
-                System.out.println("e2:\t\t" + e2);
+                JAMS.sendInfoMsg("e2:\t\t" + e2);
             }else if(effMethod.getValue()[i] == this.LOG_E1){
                 double le1 = NashSutcliffe.logEfficiency(preData, valData, 1);
-                System.out.println("log e1:\t " + le1);
+                JAMS.sendInfoMsg("log e1:\t " + le1);
             }else if(effMethod.getValue()[i] == this.LOG_E2){
                 double le2 = NashSutcliffe.logEfficiency(preData, valData, 2);
-                System.out.println("log e2:\t " + le2);
+                JAMS.sendInfoMsg("log e2:\t " + le2);
             }else if(effMethod.getValue()[i] == this.IOA_1){
                 double ioa1 = IndexOfAgreement.calc_IOA(preData, valData, 1);
-                System.out.println("ioa1:\t " + ioa1);
+                JAMS.sendInfoMsg("ioa1:\t " + ioa1);
             }else if(effMethod.getValue()[i] == this.IOA_2){
                 double ioa2 = IndexOfAgreement.calc_IOA(preData, valData, 2);
-                System.out.println("ioa2:\t " + ioa2);
+                JAMS.sendInfoMsg("ioa2:\t " + ioa2);
             }else if(effMethod.getValue()[i] == this.R2){
                 double[] rCoeff = Regression.calcLinReg(valData, preData);
-                System.out.println("r²:\t " + rCoeff[2]);
-                System.out.println("grad:\t" + rCoeff[1]);
+                JAMS.sendInfoMsg("r²:\t " + rCoeff[2]);
+                JAMS.sendInfoMsg("grad:\t" + rCoeff[1]);
             }else if(effMethod.getValue()[i] == this.WR2){
                 double[] rCoeff = Regression.calcLinReg(valData, preData);
                 double wr;
@@ -203,7 +204,7 @@ import org.unijena.jams.model.*;
                         wr = Math.abs(rCoeff[1]) * rCoeff[2];
                     else
                         wr = Math.pow(Math.abs(rCoeff[1]), -1.0) * rCoeff[2];
-                System.out.println("wr²:\t " + wr);
+                JAMS.sendInfoMsg("wr²:\t " + wr);
             }
         }
     }

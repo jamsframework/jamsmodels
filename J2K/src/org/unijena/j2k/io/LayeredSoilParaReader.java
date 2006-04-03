@@ -27,7 +27,7 @@ import org.unijena.j2k.*;
 import org.unijena.jams.data.*;
 import org.unijena.jams.model.*;
 import java.util.*;
-import java.io.*;
+import org.unijena.jams.JAMS;
 
 /**
  *
@@ -100,7 +100,7 @@ public class LayeredSoilParaReader extends JAMSComponent {
             }
             e.setDouble("horizons", horizon);
         }
-        System.out.println("Layered soil parameter file processed ...");
+        JAMS.sendInfoMsg("Layered soil parameter file processed ...");
     }
     
     

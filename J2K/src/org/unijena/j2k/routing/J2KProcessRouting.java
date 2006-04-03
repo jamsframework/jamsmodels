@@ -23,6 +23,7 @@
 
 package org.unijena.j2k.routing;
 
+import org.unijena.jams.JAMS;
 import org.unijena.jams.data.*;
 import org.unijena.jams.model.*;
 
@@ -195,7 +196,7 @@ import org.unijena.jams.model.*;
             toReach.setDouble("inRG2", RG2in);
             
         } else{
-            System.out.println("Current entity ID: " + entity.getDouble("elevation") + " has no receiver.");
+            JAMS.sendInfoMsg("Current entity ID: " + entity.getDouble("elevation") + " has no receiver.");
         }
         
     }

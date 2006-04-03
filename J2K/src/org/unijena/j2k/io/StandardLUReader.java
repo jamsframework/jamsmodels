@@ -27,7 +27,7 @@ import org.unijena.j2k.*;
 import org.unijena.jams.data.*;
 import org.unijena.jams.model.*;
 import java.util.*;
-import java.io.*;
+import org.unijena.jams.JAMS;
 
 /**
  *
@@ -91,7 +91,7 @@ public class StandardLUReader extends JAMSComponent {
             }
             
         }
-        System.out.println("Landuse parameter file processed ...");
+        JAMS.sendInfoMsg("Landuse parameter file processed ...");
     }
     
     

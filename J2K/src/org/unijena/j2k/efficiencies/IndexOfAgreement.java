@@ -9,6 +9,8 @@
 
 package org.unijena.j2k.efficiencies;
 
+import org.unijena.jams.JAMS;
+
 /**
  *
  * @author c0krpe
@@ -33,7 +35,7 @@ public class IndexOfAgreement {
         int td_size = prediction.length;
         int vd_size = validation.length;
         if(td_size != vd_size){
-            System.out.println("Data sets in ioa does not match!");
+            JAMS.sendInfoMsg("Data sets in ioa does not match!");
             return -99999;
         }
         
@@ -44,7 +46,7 @@ public class IndexOfAgreement {
         
         /** checking if both data arrays have the same number of elements*/
         if(td_size != vd_size){
-            System.out.println("Test Data and Verification Data are not consistent!");
+            JAMS.sendInfoMsg("Test Data and Verification Data are not consistent!");
             return -9999;
         }
         else{

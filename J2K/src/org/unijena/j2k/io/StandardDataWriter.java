@@ -23,7 +23,7 @@
 
 package org.unijena.j2k.io;
 
-import java.util.*;
+import org.unijena.jams.JAMS;
 import org.unijena.jams.data.*;
 import org.unijena.jams.model.*;
 import org.unijena.jams.io.*;
@@ -108,7 +108,7 @@ public class StandardDataWriter extends JAMSComponent {
         try {
             writer.writeData();
         } catch (org.unijena.jams.runtime.JAMSRuntimeException jre) {
-            System.out.println(jre.getMessage());
+            JAMS.sendInfoMsg(jre.getMessage());
         }
     }
     

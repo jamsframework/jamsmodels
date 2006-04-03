@@ -22,8 +22,8 @@ package org.unijena.j2k.inputData;
  *
  */
 
+import org.unijena.jams.JAMS;
 import org.unijena.jams.data.*;
-import org.unijena.jams.data.JAMSEntity.NoSuchAttributeException;
 import org.unijena.jams.model.*;
 
 /**
@@ -112,7 +112,7 @@ import org.unijena.jams.model.*;
         latLong = org.unijena.j2k.geographicalCalculations.GKConversion.GK2LatLon(x.getValue(), y.getValue());
         latitude.setValue(latLong[0]);
         longitude.setValue(latLong[1]);
-        System.out.println("slope:"+slope.getValue());
+        JAMS.sendInfoMsg("slope:"+slope.getValue());
     }
     
     public void run() throws JAMSEntity.NoSuchAttributeException{

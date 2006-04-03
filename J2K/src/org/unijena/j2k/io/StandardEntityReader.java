@@ -27,7 +27,7 @@ import org.unijena.j2k.*;
 import org.unijena.jams.data.*;
 import org.unijena.jams.model.*;
 import java.util.*;
-import java.io.*;
+import org.unijena.jams.JAMS;
 
 /**
  *
@@ -84,11 +84,11 @@ public class StandardEntityReader extends JAMSComponent {
         createTopology();
         
         //create total order on hrus and reaches that allows processing them subsequently
-        System.out.println("Create ordered hru-list");
+        JAMS.sendInfoMsg("Create ordered hru-list");
         createOrderedList(hrus, "to_poly");
-        System.out.println("Create ordered reach-list");
+        JAMS.sendInfoMsg("Create ordered reach-list");
         createOrderedList(reaches, "to_reach");
-        System.out.println("Entities read successfull!");
+        JAMS.sendInfoMsg("Entities read successfull!");
     }
     
     private void createTopology() throws JAMSEntity.NoSuchAttributeException {

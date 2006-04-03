@@ -23,6 +23,7 @@
 
 package org.unijena.j2k.io;
 
+import org.unijena.jams.JAMS;
 import org.unijena.jams.data.*;
 import org.unijena.jams.model.*;
 import org.unijena.jams.io.*;
@@ -160,7 +161,7 @@ public class StandardEntityWriter extends JAMSComponent {
         try {
             writer.writeData();
         } catch (org.unijena.jams.runtime.JAMSRuntimeException jre) {
-            System.out.println(jre.getMessage());
+            JAMS.handle(jre);
         }
     }
     
