@@ -28,6 +28,7 @@ import org.unijena.jams.model.*;
 import java.util.*;
 import java.io.*;
 import org.jams.j2k.s_n.crop.*;
+import org.unijena.jams.JAMS;
 import org.unijena.jams.data.*;
 
 /**
@@ -352,7 +353,7 @@ public class StandardManagementParaReader extends JAMSComponent {
             try {
                 hruMap.put(hru.getDouble(aNameHRUID.getValue()),  hru);
             } catch (JAMSEntity.NoSuchAttributeException nsae) {
-                fireNotification("Attribute " + aNameHRUID + " not found!", true);
+                JAMS.sendHalt("Attribute " + aNameHRUID + " not found!");
             }
         }
         
