@@ -529,7 +529,7 @@ import java.io.*;
     private double h_infilt_mm;
     private int layer;
     private double runvolati_trans;
-   
+    
     
     private double runplantupN;
     private double rundenit_trans;
@@ -576,7 +576,7 @@ import java.io.*;
         if (time.equals(testtime)){
             System.out.println(time.getValue()) ;
         }
-
+        
         
         int i = 0;
         
@@ -613,8 +613,8 @@ import java.io.*;
         hor_by_infilt = new double[layer];
         
         
-//        NO3_Poolvals = calc_plantuptake();
-       NO3_Poolvals = NO3_Pool.getValue();
+        NO3_Poolvals = calc_plantuptake();
+//       NO3_Poolvals = NO3_Pool.getValue();
         /*        calculation of infiltration water that bypasses the horizonts   loop */
         
         i = layer - 1;
@@ -635,7 +635,7 @@ import java.io.*;
         }
         
         
-           
+        
         
         i = 0;
         
@@ -651,8 +651,8 @@ import java.io.*;
             
             this.act_LPS = sat_LPS.getValue()[i] * sto_LPS;
             this.act_MPS = sat_MPS.getValue()[i] * sto_MPS;
-   
-
+            
+            
             this.runC_org = C_org.getValue()[i];
             this.runNO3_Pool = NO3_Poolvals[i];
             this.runNH4_Pool = NH4_Pool.getValue()[i];
@@ -660,14 +660,14 @@ import java.io.*;
             this.runN_stabel_pool = N_stabel_pool.getValue()[i];
             this.runN_residue_pool_fresh = N_residue_pool_fresh.getValue()[i];
             this.runResidue_pool = Residue_pool.getValue()[i];
-
+            
             this.RD1_out_mm = RD1_out.getValue() / runarea;
             this.RD2_out_mm = RD2_out.getValue()[i] / runarea;
             this.d_perco_mm = D_perco.getValue() / runarea;
             this.h_perco_mm = perco_hor.getValue()[i] / runarea;
             
             this.runvolati_trans = 0;
-           
+            
             this.rundenit_trans = 0;
             this.runsurfaceN = 0;
             this.runinterflowN = 0;
@@ -683,10 +683,10 @@ import java.io.*;
             this.runBeta_rsd = Beta_rsd.getValue();
             this.runBeta_NO3 = Beta_NO3.getValue();
             
-           
+            
             
             /*          calculation of amount of nitrogen uptake with epaporation from soil */
-           
+            
             int j = 1;
             
             while (j < layer) {
@@ -763,7 +763,7 @@ import java.io.*;
                 
                 runsum_Ninput =  fertactivorg.getValue() + fertNH4.getValue() + fertNO3.getValue() + a_deposition + runinterflowN_in;
                 
-             
+                
                 
                 runN_stabel_pool = runN_stabel_pool + fertstableorg.getValue();
                 
@@ -803,7 +803,7 @@ import java.io.*;
             } else {
                 
                 runsum_Ninput = runsum_Ninput + runinterflowN_in;
-           
+                
                 runNO3_Pool = runNO3_Pool + runnitri_trans + runinterflowN_in + percoNvals[i-1];
                 
                 if (runNO3_Pool > runplantupN){
@@ -919,9 +919,10 @@ import java.io.*;
     }
     private double[] calc_plantuptake(){
         double upNO3_Pool = 0;
-        double runrootdepth =rootdepth.getValue();
-        double runpotN_up = (aTransp.getValue() * 0.015) / runarea;
- //       double runpotN_up = potN_up.getValue();
+        double runrootdepth =rootdepth.getValue() * 10;
+        double runpotN_up = 0.1;
+//       double runpotN_up = (aTransp.getValue() * 0.015) / runarea;
+        //       double runpotN_up = potN_up.getValue();
         double[] NO3_Poolvals = new double[layer];
         double[] potN_up_z = new double[layer];
         double[] demandN_up_z = new double[layer];
@@ -934,36 +935,31 @@ import java.io.*;
         int ii = 0;
         int jj = 0;
         int j = 0;
+       
+        //determination of layers within the rootzone
+            if (potN_up_z[j] > 0){
+                rootlayer = j;
+            }
         
-        // plant uptake loop 1: calculating N demand by plants and rest NO3_Pools
-        
-        
+       // plant uptake loop 1: calculating N demand by plants and rest NO3_Pools
+               
         while (j < layer - 1) {
             this.runlayerdepth = layerdepth.getValue()[j] * 10;
             
             upNO3_Pool = NO3_Pool.getValue()[j];
             
             potN_up_z[j] = (runpotN_up /(1 - Math.exp(-runBeta_Ndist)))*(1 - Math.exp(-runBeta_Ndist * (runlayerdepth / runrootdepth)));
-            //krücke
-            double NO3_Poolpf = (upNO3_Pool * 0.8) - potN_up_z[j];
             
-            if (NO3_Poolpf < 0){
-            upNO3_Pool = upNO3_Pool * 0.2;
-            potN_up_z[j] = upNO3_Pool * 0.8;
-                
-            } else{
-            upNO3_Pool = upNO3_Pool  - potN_up_z[j];    
-            }
-            runactN_up = runactN_up + potN_up_z[j];  
+            
+            
+            upNO3_Pool = upNO3_Pool  - potN_up_z[j];
             
             NO3_Poolvals[j] = upNO3_Pool;
-            j++;
-            //krücke ende
-           /* //determination of layers within the rootzone
-            if (potN_up_z[j] > 0){
-                rootlayer = j;
-            }
+            runactN_up = runactN_up + potN_up_z[j];
             
+            
+            j++;
+                       
             if (demand1 >= 0){
                 
                 demandN_up_z[j] = 0;
@@ -986,7 +982,7 @@ import java.io.*;
         }
         
         // plant uptake loop 2: summarising rest N demand
-        /* while (ii < layer) {
+        while (ii < layer) {
             
             demand2 = demandN_up_z[ii] + demand2;
             
@@ -997,7 +993,7 @@ import java.io.*;
             
             // plant uptake loop 3: redistributing rest N demand on rest NO3_Pools within rootdepth
             
-          /*  while (jj < rootlayer) {
+            while (jj < rootlayer) {
                 jj++;
                 demand3 = demand2;
                 
@@ -1016,10 +1012,10 @@ import java.io.*;
                     
                     demand2 = 0;
                 }
-            }*/
+            }
         }
         
-//        double runactN_up = runpotN_up + demand2;
+        runactN_up = runpotN_up + demand2;
         
         actN_up.setValue(runactN_up);
         
