@@ -447,14 +447,14 @@ import org.unijena.jams.model.*;
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
             update = JAMSVarDescription.UpdateType.RUN,
-            description = "percolation out ouf the single horizonts"
+            description = "percolation out of the single horizonts"
             )
             public JAMSDoubleArray perco_hor = new JAMSDoubleArray();
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
             update = JAMSVarDescription.UpdateType.RUN,
-            description = "percolation out ouf the single horizonts"
+            description = "evapotranspiration out of the single horizonts"
             )
             public JAMSDoubleArray actETP_h = new JAMSDoubleArray();
     
