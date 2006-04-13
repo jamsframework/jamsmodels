@@ -504,7 +504,7 @@ import java.io.*;
     private double gamma_water;
     private double runarea;
     private double runSoil_Temp_Layer;
-    private double runlayerdepth;
+    private double[] runlayerdepth;
     private double runsoil_bulk_density;
     private double sto_MPS;
     private double sto_LPS;
@@ -541,7 +541,7 @@ import java.io.*;
     private double runpercoNabs;
     private double runsurfaceN_in;
     private double runinterflowN_in;
-    
+    private double sumlayer;
     
     private double runBeta_trans;
     private double runBeta_min;
@@ -572,7 +572,7 @@ import java.io.*;
     
     public void run() throws JAMSEntity.NoSuchAttributeException{
         JAMSCalendar testtime = new JAMSCalendar();
-        testtime.setValue("1994-08-30 07:30");
+        testtime.setValue("1993-10-12 07:30");
         if (time.equals(testtime)){
             System.out.println(time.getValue()) ;
         }
@@ -585,7 +585,7 @@ import java.io.*;
         this.runarea = area.getValue();
         this.layer = (int)Layer.getValue();
         double runprecip  = precip.getValue();
-        
+        sumlayer = 0;
         double runsum_Ninput = 0;
         double sumNO3_Pool = 0;
         double sumNH4_Pool = 0;
@@ -600,6 +600,7 @@ import java.io.*;
         double sumh_infilt_mm = 0;
         double sum_Nupmove = 0;
 //        double[] NO3_Poolvals = new double[layer];
+        runlayerdepth = new double[layer];
         double[] NH4_Poolvals = new double[layer];
         double[] N_activ_poolvals = new double[layer];
         double[] N_stabel_poolvals = new double[layer];
@@ -643,7 +644,7 @@ import java.io.*;
         while (i < layer) {
             
             this.runSoil_Temp_Layer = Soil_Temp_Layer.getValue()[i];
-            this.runlayerdepth = layerdepth.getValue()[i] * 10;
+            
             this.sto_MPS = stohru_MPS.getValue()[i] / runarea;
             this.sto_LPS = stohru_LPS.getValue()[i] / runarea;
             this.sto_FPS = stohru_FPS.getValue()[i] / runarea;
@@ -713,7 +714,7 @@ import java.io.*;
             
             
             
-            precalc_nit_vol = calc_nit_volati();
+            precalc_nit_vol = calc_nit_volati(i);
             
             runvolati_trans = calc_voltalisation();
             
@@ -919,8 +920,10 @@ import java.io.*;
     }
     private double[] calc_plantuptake(){
         double upNO3_Pool = 0;
-        double runrootdepth =rootdepth.getValue();
+        double runrootdepth =rootdepth.getValue() * 10;
+        double[] partroot = new double[layer];
         double runpotN_up = potN_up.getValue();
+        runpotN_up = 0.3;
         double[] NO3_Poolvals = new double[layer];
         double[] potN_up_z = new double[layer];
         double[] demandN_up_z = new double[layer];
@@ -929,25 +932,66 @@ import java.io.*;
         double demand3 = 0;
         double demand2 = 0;
         double demand1 = 0;
+        double uptake1 = 0;
         int ii = 0;
         int jj = 0;
         int j = 0;
+        int i = 0;
         
-        // plant uptake loop 1: calculating N demand by plants and rest NO3_Pools
         
         
-        while (j < layer) {
-            this.runlayerdepth = layerdepth.getValue()[j] * 10;
+        
+        // plant uptake loop 1: calculating layer poritions within rootdepth
+        while (i < layer) {
+            sumlayer =   sumlayer  +  layerdepth.getValue()[i] * 10;
+            this.runlayerdepth[i] = sumlayer;
+            if (runrootdepth > runlayerdepth[0]){
+                if (runrootdepth > runlayerdepth[i]){
+                    partroot[i] = 1 ;
+                    rootlayer = i;
+                }else if (runrootdepth > runlayerdepth[i - 1]){
+                    partroot[i] = (runrootdepth - runlayerdepth[i - 1]) /  (runlayerdepth[i] - runlayerdepth[i - 1]);
+                    rootlayer = i;
+                }else {
+                    partroot[i] = 0;
+                }
+            }else{
+               partroot[i] = runrootdepth /  runlayerdepth[0];
+            }
+            i++;
             
+        }
+        
+        // plant uptake loop 2: calculating N demand by plants and rest NO3_Pools
+        while (j <= rootlayer) {
             upNO3_Pool = NO3_Pool.getValue()[j];
             
-            potN_up_z[j] = (runpotN_up /(1 - Math.exp(-runBeta_Ndist)))*(1 - Math.exp(-runBeta_Ndist * (runlayerdepth / runrootdepth)));
-            demand1 = upNO3_Pool - potN_up_z[j];
-            
-            //determination of layers within the rootzone
-            if (potN_up_z[j] > 0){
-                rootlayer = j;
+            if (j == 0){
+                potN_up_z[j] = (runpotN_up /(1 - Math.exp(-runBeta_Ndist)))*(1 - Math.exp(-runBeta_Ndist * (runlayerdepth[j] / runrootdepth)));
+                demand1 = upNO3_Pool - potN_up_z[j];
+                uptake1 = potN_up_z[j];
+                
+            } else if (j > 0 && j < rootlayer){
+                
+                potN_up_z[j] = ((runpotN_up /(1 - Math.exp(-runBeta_Ndist)))*(1 - Math.exp(-runBeta_Ndist * (runlayerdepth[j] / runrootdepth)))) - uptake1;
+                
+                demand1 = upNO3_Pool - potN_up_z[j];
+                uptake1 = uptake1 + potN_up_z[j];
+                
+            } else if (j == rootlayer){
+                potN_up_z[j] = ((runpotN_up /(1 - Math.exp(-runBeta_Ndist)))*(1 - Math.exp(-runBeta_Ndist))) - uptake1;
+                demand1 = (upNO3_Pool * partroot[j]) - potN_up_z[j];
+                uptake1 = uptake1 + potN_up_z[j];
+            /*    
+                if (uptake1 == runpotN_up){
+                    System.out.println("good");
+                }else{
+                    System.out.println("bad");
+                }
+              */  
             }
+            
+            
             
             if (demand1 >= 0){
                 
@@ -970,8 +1014,8 @@ import java.io.*;
             j++;
         }
         
-        // plant uptake loop 2: summarising rest N demand
-        while (ii < layer) {
+        // plant uptake loop 3: summarising rest N demand
+        while (ii <= rootlayer) {
             
             demand2 = demandN_up_z[ii] + demand2;
             
@@ -980,7 +1024,7 @@ import java.io.*;
         
         if (demand2 < 0){
             
-            // plant uptake loop 3: redistributing rest N demand on rest NO3_Pools within rootdepth
+            // plant uptake loop 4: redistributing rest N demand on rest NO3_Pools within rootdepth
             while (jj < rootlayer) {
                 demand3 = demand2;
                 
@@ -999,6 +1043,7 @@ import java.io.*;
                     
                     demand2 = 0;
                 }
+                jj++;
             }
         }
         
@@ -1008,7 +1053,7 @@ import java.io.*;
         
         return NO3_Poolvals;
     }
-    private boolean calc_nit_volati(){/*precalculations for nitrification and volatlisation */
+    private boolean calc_nit_volati(int i){/*precalculations for nitrification and volatlisation */
         double eta_water = 0;
         double eta_temp = 0;
         double eta_volz = 0;
@@ -1023,7 +1068,7 @@ import java.io.*;
             eta_water = 1;
         }
         
-        eta_volz = 1 -(runlayerdepth / (runlayerdepth + Math.exp(4.706 - (0.305 * runlayerdepth))));
+        eta_volz = 1 -(runlayerdepth[i] / (runlayerdepth[i] + Math.exp(4.706 - (0.305 * runlayerdepth[i]))));
         
         eta_nitri = eta_water * eta_temp;
         
@@ -1074,9 +1119,6 @@ import java.io.*;
     
     private double calc_nitrification(){
         double nitri_trans = 0;
-        if (!precalc_nit_vol){
-            calc_nit_volati();
-        }
         
         if (runSoil_Temp_Layer > 5){
             nitri_trans =  (frac_nitr /(frac_nitr + frac_vol)) * N_nit_vol;
@@ -1089,9 +1131,7 @@ import java.io.*;
     
     private double calc_voltalisation(){
         double volati_trans = 0;
-        if (!precalc_nit_vol){
-            calc_nit_volati();
-        }
+        
         if (runSoil_Temp_Layer > 5){
             volati_trans =  (frac_vol /(frac_nitr + frac_vol)) * N_nit_vol;
         } else if (runSoil_Temp_Layer <= 5){
