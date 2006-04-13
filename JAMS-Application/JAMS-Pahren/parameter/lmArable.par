@@ -1,0 +1,47 @@
+# landuse management for spring 
+# ID crop-ID referred to crop.par
+# Date when operation starts
+# Till-id according to till.par
+# Fert-id according to fert.par
+# FAmount amount of fertilizer application [kg/ha] absolut
+# Plant (1) assumes that planting operation; - no planting
+# Harvest (1-4)assumes that plant is harvested; - no harvest
+# for harvesting 4 codes are implemented:
+# (1) assumes harvesting with Haupt- & Nebenfrucht, Nebenfrucht leaves the field, plant growth stopped
+# (2) assumes harvesting with Hauptfrucht, Nebenfrucht remains on the field, plant growth stopped
+# (3) assumes harvesting with Haupt- & Nebenfrucht, plant growth continues (may not be suitable for meadows)
+# (4) assumes harvesting with Hauptfrucht, plant growth continues
+# FracHarv is the fraction of the target biomass which will be removed by the harvest (according to harvest code)
+# CID 27 spring wheat; 88 winter rape; 97 winter barley; 12 pasture ; 7 Forrest; 98 urban
+# 19
+# 28
+# 31
+CID	Date	TID	FID	FAmount	PLANT	HARVEST	FRACHARV
+88	231	76	-	-	-	-	-	
+88	243	-	-	-	1	-	-
+88	276	-	45	3000	-	-	-
+88	92	-	45	2000	-	-	-
+88	202	-	-	-	-	1	1
+88	210	1	-	-	-	-	-	
+27	75	76	-	-	-	-	-
+27	91	-	45	3000	-	-	-
+27	112	-	-	-	1	-	-
+27	122	-	21	45	-	-	-
+27	153	-	4	60	-	-	-
+27	214	-	-	-	-	1	0.9
+27	229	1	-	-	-	-	-
+97	250	76	-	-	-	-	-
+97	267	-	-	-	1	-	-
+97	65	-	4	140	-	-	-
+97	94	-	4	50	-	-	-
+97	150	-	4	100	-	-	-
+97	200	-	-	-	-	1	0.9
+97	210	1	-	-	-	-	-	
+12	1	-	-	-	-	-	-
+12	90	-	45	3000	-	-	-	
+12	365	-	-	-	-	1	-
+7	1	-	-	-	1	-	-
+7	365	-	-	-	-	1	-	
+98	1	-	-	-	1	-	-
+98	365	-	-	-	-	1	-	
+#end of file lmArable.par	

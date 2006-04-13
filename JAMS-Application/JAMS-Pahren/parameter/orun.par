@@ -1,0 +1,6 @@
+#orun.par - gage parameters for observed runoff
+##############################################
+#GID	Elev	x-coord	y-coord	unit
+##############################################
+574300	456.839100	4492021.212999	5611201.537277	m3/s
+#end of orun.par

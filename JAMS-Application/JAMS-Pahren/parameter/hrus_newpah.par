@@ -1,0 +1,7 @@
+# hru.par created 21-06-2006 Pahren													
+ID	x	y	elevation	area	type	to_poly	to_reach	slope	aspect	flowlength	soilID	landuseID	hgeoID
+6	4492043	5611151.131700	457.50	3333.40	3	0	100	4.15	333	39	11	7	1
+#end_of_hru_new.par													
+
+
+													

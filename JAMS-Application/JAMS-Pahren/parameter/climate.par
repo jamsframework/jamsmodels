@@ -1,0 +1,6 @@
+#climate.par - Parameter der Klimastationen
+##############################################
+#STAT	Höhe	Rechtswert	Hochwert
+##############################################
+1	490	4492131.5	5611151.131700
+#end of climate.par
