@@ -353,7 +353,7 @@ public class StandardManagementParaReader extends JAMSComponent {
             try {
                 hruMap.put(hru.getDouble(aNameHRUID.getValue()),  hru);
             } catch (JAMSEntity.NoSuchAttributeException nsae) {
-                JAMS.sendHalt("Attribute " + aNameHRUID + " not found!");
+//                JAMS.sendHalt("Attribute " + aNameHRUID + " not found!");
             }
         }
         
