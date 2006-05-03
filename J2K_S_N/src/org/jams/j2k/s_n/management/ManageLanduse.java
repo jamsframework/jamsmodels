@@ -54,7 +54,14 @@ public class ManageLanduse extends JAMSComponent {
             update = JAMSVarDescription.UpdateType.RUN,
             description = "Current organic fertilizer amount"
             )
-            public JAMSDouble fertorgN;
+            public JAMSDouble fertorgNactive;
+     
+    @JAMSVarDescription(
+            access = JAMSVarDescription.AccessType.WRITE,
+            update = JAMSVarDescription.UpdateType.RUN,
+            description = "Current organic fertilizer amount"
+            )
+            public JAMSDouble fertorgNfresh;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
@@ -68,7 +75,8 @@ public class ManageLanduse extends JAMSComponent {
         
         this.fertNO3N.setValue(0);
         this.fertNH4N.setValue(0);
-        this.fertorgN.setValue(0);
+        this.fertorgNactive.setValue(0);
+        this.fertorgNfresh.setValue(0);
         
         ArrayList<J2KSNCrop> rotation = (ArrayList<J2KSNCrop>) entity.getObject("landuseRotation");
         int rotPos = entity.getInt("rotPos");
@@ -121,8 +129,10 @@ public class ManageLanduse extends JAMSComponent {
         
         double fertN_total = famount * fert.fminn;
         double fertNH4N = fertN_total * fert.fnh4n;
-        double fertNO3N = fertN_total - fertNH4N;
-        double fertorgN = famount * fert.forgn;
+        double fertNO3N = fert.fminn * (1- fertNH4N * famount);
+        double fertorgNfresh = 0.5 * fert.forgn * famount; // amount of nitrogen in the fresh organic pool added to the soil
+        double fertorgNactive = 0.5 * famount * fert.forgn; //orgNact is the amount of nitrogen in the active organic pool added to the soil
+        
         
        /* if (fertorgN > 0 || fertNO3N > 0 || fertNH4N > 0) {
         System.out.println("Gebe die Düngemengen aus :"  + fertNO3N + fertorgN + fertNH4N );
@@ -134,7 +144,8 @@ public class ManageLanduse extends JAMSComponent {
         
         this.fertNO3N.setValue(fertNO3N);
         this.fertNH4N.setValue(fertNH4N);
-        this.fertorgN.setValue(fertorgN);
+        this.fertorgNfresh.setValue(fertorgNfresh);
+        this.fertorgNactive.setValue(fertorgNactive);
     }
     
 }
