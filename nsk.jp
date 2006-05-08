@@ -1,4 +1,4 @@
-#JAMS property configuration file
+#JAMS configuration file
 model = D:/jamsmodels/JAMS-Application/JAMS-Gehlberg/j2k_gehlbergnsk.xml
 libs = D:/jamsprojects/J2K/dist/J2K.jar
 debug = 3
