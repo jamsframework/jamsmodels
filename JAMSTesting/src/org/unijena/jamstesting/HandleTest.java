@@ -23,6 +23,8 @@
 
 package org.unijena.jamstesting;
 
+import java.util.HashMap;
+import org.unijena.jams.JAMS;
 import org.unijena.jams.data.*;
 import org.unijena.jams.model.*;
 
@@ -43,22 +45,36 @@ import org.unijena.jams.model.*;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.RUN,
+            update = JAMSVarDescription.UpdateType.INIT,
             description = "Description"
             )
-            public JAMSDouble number;
+            public JAMSDouble number1;
+
+    @JAMSVarDescription(
+            access = JAMSVarDescription.AccessType.READ,
+            update = JAMSVarDescription.UpdateType.INIT,
+            description = "Description"
+            )
+            public JAMSDouble number2;
     
     
     /*
      *  Component run stages
      */
     
+    JAMSDouble x;
+    double i = 0;
+    
     public void init() {
-        
+/*
+        HashMap<String, JAMSData> handles = JAMS.getRuntime().getModel().getDataHandles();
+        String key = "Test.number1";
+        x = (JAMSDouble) handles.get(key);
+ */
     }
     
     public void run() {
-        System.out.println("RUN");
+//        System.out.println("RUN " + number1 + " - " + number2);
     }
     
     public void cleanup() {

@@ -8,10 +8,13 @@
     
     <datahandle componentname="Test" varname="number"/>
     
-    <contextcomponent class="org.unijena.jams.model.JAMSTemporalContext" name="TemporalContext">
-        <var name="timeInterval" value="1989-11-01 7:30 1993-10-31 7:30 6 1"/>
+    <contextcomponent class="org.unijena.jamstesting.JAMSParaSampler" name="JAMSParaSampler">
+        <var name="parameterIDs" value="Test.number1;Test.number2"/>
+        <var name="boundaries" value="[0>5];[5>10]"/>
             
         <component class="org.unijena.jamstesting.HandleTest" name="Test">
+            <var name="number1" value="3"/>
+            <var name="number2" value="5"/>
         </component>
 
     </contextcomponent>
