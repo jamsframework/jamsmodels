@@ -74,7 +74,7 @@ import org.unijena.jams.model.*;
     }
     
     public void run() {
-//        System.out.println("RUN " + number1 + " - " + number2);
+        System.out.println("RUN " + number1 + " - " + number2);
     }
     
     public void cleanup() {

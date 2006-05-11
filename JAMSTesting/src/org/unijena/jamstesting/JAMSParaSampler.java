@@ -23,6 +23,7 @@
 
 package org.unijena.jamstesting;
 
+import java.util.Random;
 import java.util.StringTokenizer;
 import org.unijena.jams.JAMS;
 import org.unijena.jams.data.*;
@@ -57,37 +58,83 @@ import org.unijena.jams.model.*;
             )
             public JAMSString boundaries;
     
-    int i = 0;
+    @JAMSVarDescription(
+            access = JAMSVarDescription.AccessType.READ,
+            update = JAMSVarDescription.UpdateType.INIT,
+            description = "Number of samples to be taken"
+            )
+            public JAMSInteger sampleCount;
+    
     JAMSDouble[] parameters;
+    double[] lowBound;
+    double[] upBound;
+    int currentCount;
+    Random generator;
     
     private boolean hasNext() {
-        return i<10;
+        return currentCount < sampleCount.getValue();
     }
     
     private void updateValues() {
-        i++;
+        //set parameter values to corresponding lower boundaries
+        for (int i = 0; i < parameters.length; i++) {
+            double d = generator.nextDouble();
+            parameters[i].setValue(lowBound[i] + d * (upBound[i]-lowBound[i]));
+        }
+        currentCount++;
     }
     
     private void resetValues() {
-        i = 0;
+
+        //set parameter values to initial values corresponding to their boundaries
+        generator = new Random(System.currentTimeMillis());
+        for (int i = 0; i < parameters.length; i++) {
+            double d = generator.nextDouble();
+            parameters[i].setValue(lowBound[i] + d * (upBound[i]-lowBound[i]));
+        }
+        currentCount = 1;
     }
     
     public void init() {
-        /*
+        
+//add more checks!!!
+        
+        int i;
         StringTokenizer tok = new StringTokenizer(parameterIDs.getValue(), ";");
         String key;
         parameters = new JAMSDouble[tok.countTokens()];
-        int i = 0;
+        i = 0;
         while (tok.hasMoreTokens()) {
             key = tok.nextToken();
             parameters[i++] = (JAMSDouble) JAMS.getRuntime().getModel().getDataHandles().get(key);
         }
 
         tok = new StringTokenizer(boundaries.getValue(), ";");
+        int n = tok.countTokens();
+        lowBound = new double[n];
+        upBound = new double[n];
+
+        //check if number of parameter ids and boundaries match
+        if (n != i) {
+            JAMS.sendHalt("Component " + this.getInstanceName() + ": Different number of parameterIDs and boundaries!");
+        }
+                
+        i = 0;
         while (tok.hasMoreTokens()) {
             key = tok.nextToken();
-            System.out.println(key);
-        }*/
+            key = key.substring(1, key.length()-1);
+
+            StringTokenizer boundTok = new StringTokenizer(key, ">");
+            lowBound[i] = Double.parseDouble(boundTok.nextToken());
+            upBound[i] = Double.parseDouble(boundTok.nextToken());
+            
+            //check if upBound is higher than lowBound
+            if (upBound[i] <= lowBound[i]) {
+                JAMS.sendHalt("Component " + this.getInstanceName() + ": upBound must be higher than lowBound!");
+            }
+            
+            i++;
+        }
     }
     
     class RunEnumerator implements JAMSComponentEnumerator {
@@ -95,9 +142,9 @@ import org.unijena.jams.model.*;
         JAMSComponentEnumerator ce = getChildrenEnumerator();
         
         public boolean hasNext() {
-            boolean nextTime = JAMSParaSampler.this.hasNext();
+            boolean nextStep = JAMSParaSampler.this.hasNext();
             boolean nextComp = ce.hasNext();
-            return (nextTime || nextComp) ;
+            return (nextStep || nextComp) ;
         }
         
         public JAMSComponent next() {

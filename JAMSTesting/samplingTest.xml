@@ -1,16 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--<!DOCTYPE JAMSModel SYSTEM "jamsmodel.dtd">-->
 <model name="J2K" author="Sven Kralisch" date="30.01.2006">
-    <globvar name="workspaceDir" value="D:\jamsmodels\JAMS-Application\JAMS-Gehlberg"/>
-    <globvar name="snow_trs" value="0.5"/>
-    <globvar name="snow_trans" value="2.0"/>
-    <globvar name="data_caching" value="1"/>
-    
-    <datahandle componentname="Test" varname="number"/>
     
     <contextcomponent class="org.unijena.jamstesting.JAMSParaSampler" name="JAMSParaSampler">
         <var name="parameterIDs" value="Test.number1;Test.number2"/>
-        <var name="boundaries" value="[0>5];[5>10]"/>
+        <var name="boundaries" value="[0>5];[18>20]"/>
+        <var name="sampleCount" value="3"/>
             
         <component class="org.unijena.jamstesting.HandleTest" name="Test">
             <var name="number1" value="3"/>
