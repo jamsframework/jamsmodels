@@ -97,6 +97,12 @@ import org.unijena.jams.model.*;
             )
             public JAMSDoubleArray slAsCfArray = new JAMSDoubleArray();
     
+    @JAMSVarDescription(
+            access = JAMSVarDescription.AccessType.READ,
+            update = JAMSVarDescription.UpdateType.INIT,
+            description = "Projection [GK, UTMZZL]"
+            )
+            public JAMSString projection;
        
     /*
      *  Component run stages
@@ -108,8 +114,16 @@ import org.unijena.jams.model.*;
     
     public void run() throws JAMSEntity.NoSuchAttributeException{
         double[] latLong = new double[2];
+        String proj = this.projection.toString();
         //double xc = entities.getCurrent().getDouble("x");
-        latLong = org.unijena.j2k.geographicalCalculations.GKConversion.GK2LatLon(x.getValue(), y.getValue());
+        if(proj.equals("GK")){
+            latLong = org.unijena.j2k.geographicalCalculations.GKConversion.GK2LatLon(x.getValue(), y.getValue());
+        }
+        else if(proj.substring(0,2).equals("UTM")){
+            int len = proj.length();
+            String zoneStr = proj.substring(3, len-1);
+            latLong = org.unijena.j2k.geographicalCalculations.UTMConversion.utm2LatLong(x.getValue(), y.getValue(), zoneStr);
+        }
         latitude.setValue(latLong[0]);
         longitude.setValue(latLong[1]);
         
