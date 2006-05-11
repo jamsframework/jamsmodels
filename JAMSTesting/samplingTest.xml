@@ -2,7 +2,7 @@
 <!--<!DOCTYPE JAMSModel SYSTEM "jamsmodel.dtd">-->
 <model name="J2K" author="Sven Kralisch" date="30.01.2006">
     
-    <contextcomponent class="org.unijena.jamstesting.JAMSParaSampler" name="JAMSParaSampler">
+    <contextcomponent class="org.unijena.jams.tools.JAMSParaSampler" name="JAMSParaSampler">
         <var name="parameterIDs" value="Test.number1;Test.number2"/>
         <var name="boundaries" value="[0>5];[18>20]"/>
         <var name="sampleCount" value="3"/>
