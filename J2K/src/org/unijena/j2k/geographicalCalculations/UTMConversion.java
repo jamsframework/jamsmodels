@@ -25,19 +25,19 @@ public class UTMConversion {
         java.awt.EventQueue.invokeLater(new Runnable() {
             
             public void run() {
-                double lat = 51;
-                double lon = 12;
+                
                 double[] xy = new double[2];
-                double[] latLong = new double[2];
+                double[] latLong = {54.016666,7.883333};
                 
-                xy = latLong2UTM(lat, lon);
-                System.out.println("X: " + xy[0] + " Y: " + xy[1]);
-                
-                String zoneStr = getZoneStr(lat, lon);
-                int zone = getZoneNumber(lat, lon);
-                latLong = utm2LatLong(xy[0], xy[1], zoneStr);
-                System.out.println("Lat: " + latLong[0] + " Long: " + latLong[1]);
-                
+                //for(int i = 0; i < 10; i++){
+                    xy = latLong2UTM(latLong[0], latLong[1]);
+                    System.out.println("X: " + xy[0] + " Y: " + xy[1]);
+
+                    String zoneStr = getZoneStr(latLong[0], latLong[1]);
+                    int zone = getZoneNumber(latLong[0], latLong[1]);
+                    latLong = utm2LatLong(xy[0], xy[1], zoneStr);
+                    System.out.println("Lat: " + latLong[0] + " Long: " + latLong[1]);
+                //}
             }
         });
     }
@@ -100,7 +100,7 @@ public class UTMConversion {
 	else if((16 > lat) && (lat >= 8)) LetterDesignator = "P";
 	else if(( 8 > lat) && (lat >= 0)) LetterDesignator = "N";
 	else if(( 0 > lat) && (lat >= -8)) LetterDesignator = "M";
-	else if((-8> lat) && (lat >= -16)) LetterDesignator = "L";
+	else if((-8 > lat) && (lat >= -16)) LetterDesignator = "L";
 	else if((-16 > lat) && (lat >= -24)) LetterDesignator = "K";
 	else if((-24 > lat) && (lat >= -32)) LetterDesignator = "J";
 	else if((-32 > lat) && (lat >= -40)) LetterDesignator = "H";

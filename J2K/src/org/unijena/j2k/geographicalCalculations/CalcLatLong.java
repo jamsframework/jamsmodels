@@ -114,8 +114,11 @@ import org.unijena.jams.model.*;
     
     public void run() throws JAMSEntity.NoSuchAttributeException{
         double[] latLong = new double[2];
-        String proj = this.projection.toString();
-        //double xc = entities.getCurrent().getDouble("x");
+        String proj;
+        if(this.projection.toString() == null)
+            proj = "GK";
+        else
+            proj = this.projection.toString();
         if(proj.equals("GK")){
             latLong = org.unijena.j2k.geographicalCalculations.GKConversion.GK2LatLon(x.getValue(), y.getValue());
         }
