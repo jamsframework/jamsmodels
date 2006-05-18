@@ -39,13 +39,6 @@ public class Regionalisation extends JAMSComponent {
             description = "Workspace directory name"
             )
             public JAMSString dirName;    
-
-    @JAMSVarDescription(
-            access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.INIT,
-            description = "The current hru entity"
-            )
-            public JAMSEntity entity;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
