@@ -138,9 +138,7 @@ public class ClimatologicalVariables {
     }
     
     public static double calc_VirtualTemperature(double tabs, double pz, double ea){
-        pz = pz / 10;
         double vt = tabs * Math.pow((1-0.378*(ea/pz)),-1);
-        
         return vt;
     }
     /**
