@@ -98,14 +98,14 @@
         </component>
 
 <component class="org.unijena.j2k.geographicalCalculations.CalcLatLong" name="CalcLatLong">
-               <jamsvar name="projection" value="GK" />
-               <jamsvar name="x" provider="InitHRUContext" spatattrib="x"/>
-               <jamsvar name="y" provider="InitHRUContext" spatattrib="y"/>
-               <jamsvar name="slope" provider="InitHRUContext" spatattrib="slope"/>
-               <jamsvar name="aspect" provider="InitHRUContext" spatattrib="aspect"/>
-               <jamsvar name="latitude" provider="InitHRUContext" spatattrib="latitude"/>
-               <jamsvar name="longitude" provider="InitHRUContext" spatattrib="longitude"/>
-               <jamsvar name="slAsCfArray" provider="InitHRUContext" spatattrib="slAsCfArray"/>
+               <var name="projection" value="GK" />
+               <var name="x" context="InitHRUContext" attribute="x"/>
+               <var name="y" context="InitHRUContext" attribute="y"/>
+               <var name="slope" context="InitHRUContext" attribute="slope"/>
+               <var name="aspect" context="InitHRUContext" attribute="aspect"/>
+               <var name="latitude" context="InitHRUContext" attribute="latitude"/>
+               <var name="longitude" context="InitHRUContext" attribute="longitude"/>
+               <var name="slAsCfArray" context="InitHRUContext" attribute="slAsCfArray"/>
            </component> 
                    
         <component class="org.unijena.j2k.inputData.CalcLanduseStateVars" name="CalcLanduseStateVars">
