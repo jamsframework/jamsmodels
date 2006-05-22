@@ -7,7 +7,7 @@
         <var name="parameterIDs" value="abcModel.a;abcModel.b;abcModel.c"/>
         <var name="boundaries" value="[0>1];[0>1];[0>1]"/>
         <var name="sampleCount" value="1000"/>
-        <var name="goodness" attribute="rsq"/>
+        <var name="goodness" attribute="e2"/>
         
         <contextcomponent class="org.unijena.jams.model.JAMSTemporalContext" name="TemporalContext">
             <var name="timeInterval" value="1948-01-01 00:01 1986-12-01 00:00 1 1"/>
@@ -36,7 +36,7 @@
                 <var name="effMethod" value="1,2,3,4,5,6,7,8"/>
                 <var name="validation" context="abcOutput" cvar="obsRunoff"/>
                 <var name="prediction" context="abcOutput" cvar="simRunoff"/>
-                <var name="rsq" attribute="rsq"/>
+                <var name="e2" attribute="e2"/>
             </component>
             
         </contextcomponent>
