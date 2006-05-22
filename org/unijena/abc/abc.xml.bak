@@ -1,0 +1,28 @@
+<?xml version='1.0' encoding='utf-8'?>
+
+<!--<!DOCTYPE JAMSModel SYSTEM "jamsmodel.dtd">-->
+
+<model name="abc model" author="D. Boyle and P. Krause" date="18.05.2006">
+
+    <compoundcomponent class="org.unijena.jams.model.JAMSTemporalContext" name="TemporalContext">
+        <jamsvar class="org.unijena.jams.data.JAMSTimeInterval" name="timeInterval" value="1960-01-01 00:01 1990-12-01 00:00 2 1"/>
+
+        <component class="org.unijena.abc.Climate" name="ClimateReader">
+            <jamsvar name="fileName" value="D:\Development\J2K\src\org\unijena\abc\abc.dat"/>
+        </component>
+
+        <component class="org.unijena.abc.ABCModel" name="abcModel">
+        	<jamsvar name="precip" provider="ClimateReader" providervar="precip"/>
+        	<jamsvar name="a" value="0.2" />
+        	<jamsvar name="b" value="0.6" />
+        	<jamsvar name="c" value="0.01" />
+        	<jamsvar name="initStor" value="500" />
+				</component>
+				
+				<component class="org.unijena.abc.Output" name="abcOutput">
+					<jamsvar name="fileName" value="D:\Development\J2K\src\org\unijena\abc\abc.out"/>
+					<jamsvar name="obsRunoff" provider="ClimateReader" />
+					<jamsvar name="simRunoff" provider="abcModel" />
+        </component>
+    </compoundcomponent>
+</model>

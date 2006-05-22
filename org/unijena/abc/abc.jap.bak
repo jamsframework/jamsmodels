@@ -1,0 +1,7 @@
+#JAMS configuration file
+#Mon May 08 11:36:39 CEST 2006
+verbose=1
+debug=3
+errorlog=D:/Development/abc_model/src/org/unijena/abc/jamserror.log
+libs=D:/Development/abc_model/dist/ABC_MODEL.jar
+infolog=D:/Development/abc_model/src/org/unijena/abc/jamsinfo.log

@@ -1,0 +1,63 @@
+INFO: The model definition in "D:\Development\abc_model\src\org\unijena\abc\abc.xml" has been adapted in order to meet modifications of the JAMS model DTD.
+The new definition has been stored in "D:\Development\abc_model\src\org\unijena\abc\_abc.xml" while your original file was left untouched.
+INFO: Loading model from "D:\Development\abc_model\src\org\unijena\abc\_abc.xml"...
+INFO: created class loader using [file:/D:/Development/J2K_work/dist/J2K_work.jar, file:/D:/Development/abc_model/dist/ABC_MODEL.jar]
+INFO: ************* "abc model" *************
+INFO: author  : D. Boyle and P. Krause
+INFO: creation: 18.05.2006
+INFO: **************************
+INFO: Adding: TemporalContext (org.unijena.jams.model.JAMSTemporalContext)
+INFO: org.unijena.jams.model.JAMSTemporalContext
+INFO:      TemporalContext var declaration: timeInterval (org.unijena.jams.data.JAMSTimeInterval)
+INFO:           Access: READ Update: INIT
+INFO: Adding: ClimateReader (org.unijena.abc.Climate)
+INFO: org.unijena.abc.Climate
+INFO:      ClimateReader var declaration: fileName (org.unijena.jams.data.JAMSString)
+INFO:           Access: READ Update: INIT
+INFO: Adding: abcModel (org.unijena.abc.ABCModel)
+INFO: org.unijena.abc.ABCModel
+INFO:      abcModel var declaration: precip (org.unijena.jams.data.JAMSDouble)
+INFO:           Access: READ Update: RUN
+INFO:      abcModel var declaration: a (org.unijena.jams.data.JAMSDouble)
+INFO:           Access: READ Update: INIT
+INFO:      abcModel var declaration: b (org.unijena.jams.data.JAMSDouble)
+INFO:           Access: READ Update: INIT
+INFO:      abcModel var declaration: c (org.unijena.jams.data.JAMSDouble)
+INFO:           Access: READ Update: INIT
+INFO:      abcModel var declaration: initStor (org.unijena.jams.data.JAMSDouble)
+INFO:           Access: READ Update: INIT
+INFO: Adding: abcOutput (org.unijena.abc.Output)
+INFO: org.unijena.abc.Output
+INFO:      abcOutput var declaration: time (org.unijena.jams.data.JAMSCalendar)
+INFO:           Access: READ Update: RUN
+INFO:      abcOutput var declaration: fileName (org.unijena.jams.data.JAMSString)
+INFO:           Access: READ Update: INIT
+INFO:      abcOutput var declaration: obsRunoff (org.unijena.jams.data.JAMSDouble)
+INFO:           Access: READ Update: RUN
+INFO:      abcOutput var declaration: simRunoff (org.unijena.jams.data.JAMSDouble)
+INFO:           Access: READ Update: RUN
+INFO: Adding: EfficiencyCalculator (org.unijena.j2k.efficiencies.StandardEfficiencyCalculator)
+INFO: org.unijena.j2k.efficiencies.StandardEfficiencyCalculator
+INFO:      EfficiencyCalculator var declaration: timeInterval (org.unijena.jams.data.JAMSTimeInterval)
+INFO:           Access: READ Update: INIT
+INFO:      EfficiencyCalculator var declaration: effMethod (org.unijena.jams.data.JAMSIntegerArray)
+INFO:           Access: READ Update: INIT
+INFO:      EfficiencyCalculator var declaration: validation (org.unijena.jams.data.JAMSDouble)
+INFO:           Access: READ Update: RUN
+INFO:      EfficiencyCalculator var declaration: prediction (org.unijena.jams.data.JAMSDouble)
+INFO:           Access: READ Update: RUN
+INFO: JAMS model setup time: 328 ms
+INFO: Startdate:	1948-01-01 07:30
+INFO: Enddate:	1986-12-31 07:30
+INFO: Tsteps:	39
+INFO: Counter is:	 39
+INFO: e1:	 0.20520005347271497
+INFO: e2:		0.44649245441764995
+INFO: log e1:	 0.1322802589118094
+INFO: log e2:	 0.2276432334206684
+INFO: ioa1:	 0.5148018485642686
+INFO: ioa2:	 0.7802645980707056
+INFO: r²:	 0.8170293148105151
+INFO: grad:	0.4455717264863728
+INFO: wr²:	 0.3640451623900994
+INFO: JAMS model execution time: 94 ms
