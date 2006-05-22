@@ -69,6 +69,69 @@ import org.unijena.jams.model.*;
             description = "Validation value"
             )
             public JAMSDouble validation;
+
+    @JAMSVarDescription(
+            access = JAMSVarDescription.AccessType.WRITE,
+            update = JAMSVarDescription.UpdateType.RUN,
+            description = ""
+            )
+            public JAMSDouble e1;
+    
+    @JAMSVarDescription(
+            access = JAMSVarDescription.AccessType.WRITE,
+            update = JAMSVarDescription.UpdateType.RUN,
+            description = ""
+            )
+            public JAMSDouble e2;
+    
+    @JAMSVarDescription(
+            access = JAMSVarDescription.AccessType.WRITE,
+            update = JAMSVarDescription.UpdateType.RUN,
+            description = ""
+            )
+            public JAMSDouble le1;
+    
+    @JAMSVarDescription(
+            access = JAMSVarDescription.AccessType.WRITE,
+            update = JAMSVarDescription.UpdateType.RUN,
+            description = ""
+            )
+            public JAMSDouble le2;
+    
+    @JAMSVarDescription(
+            access = JAMSVarDescription.AccessType.WRITE,
+            update = JAMSVarDescription.UpdateType.RUN,
+            description = ""
+            )
+            public JAMSDouble ioa1;
+    
+    @JAMSVarDescription(
+            access = JAMSVarDescription.AccessType.WRITE,
+            update = JAMSVarDescription.UpdateType.RUN,
+            description = ""
+            )
+            public JAMSDouble ioa2;
+    
+    @JAMSVarDescription(
+            access = JAMSVarDescription.AccessType.WRITE,
+            update = JAMSVarDescription.UpdateType.RUN,
+            description = ""
+            )
+            public JAMSDouble rsq;
+    
+    @JAMSVarDescription(
+            access = JAMSVarDescription.AccessType.WRITE,
+            update = JAMSVarDescription.UpdateType.RUN,
+            description = ""
+            )
+            public JAMSDouble grad;
+    
+    @JAMSVarDescription(
+            access = JAMSVarDescription.AccessType.WRITE,
+            update = JAMSVarDescription.UpdateType.RUN,
+            description = ""
+            )
+            public JAMSDouble wrsq;
     
     private final int E1 = 1;
     private final int E2 = 2;
@@ -177,24 +240,32 @@ import org.unijena.jams.model.*;
         for(int i = 0; i < effMethod.getValue().length; i++){
             if(effMethod.getValue()[i] == this.E1){
                 double e1 = NashSutcliffe.efficiency(preData, valData, 1);
+                this.e1.setValue(e1);
                 JAMS.sendInfoMsg("e1:\t " + e1);
             }else if(effMethod.getValue()[i] == this.E2){
                 double e2 = NashSutcliffe.efficiency(preData, valData, 2);
+                this.e2.setValue(e2);
                 JAMS.sendInfoMsg("e2:\t\t" + e2);
             }else if(effMethod.getValue()[i] == this.LOG_E1){
                 double le1 = NashSutcliffe.logEfficiency(preData, valData, 1);
+                this.le1.setValue(le1);
                 JAMS.sendInfoMsg("log e1:\t " + le1);
             }else if(effMethod.getValue()[i] == this.LOG_E2){
                 double le2 = NashSutcliffe.logEfficiency(preData, valData, 2);
+                this.le2.setValue(le2);
                 JAMS.sendInfoMsg("log e2:\t " + le2);
             }else if(effMethod.getValue()[i] == this.IOA_1){
                 double ioa1 = IndexOfAgreement.calc_IOA(preData, valData, 1);
+                this.ioa1.setValue(ioa1);
                 JAMS.sendInfoMsg("ioa1:\t " + ioa1);
             }else if(effMethod.getValue()[i] == this.IOA_2){
                 double ioa2 = IndexOfAgreement.calc_IOA(preData, valData, 2);
+                this.ioa2.setValue(ioa2);
                 JAMS.sendInfoMsg("ioa2:\t " + ioa2);
             }else if(effMethod.getValue()[i] == this.R2){
                 double[] rCoeff = Regression.calcLinReg(valData, preData);
+                this.rsq.setValue(rCoeff[2]);
+                this.grad.setValue(rCoeff[1]);
                 JAMS.sendInfoMsg("r²:\t " + rCoeff[2]);
                 JAMS.sendInfoMsg("grad:\t" + rCoeff[1]);
             }else if(effMethod.getValue()[i] == this.WR2){
@@ -204,6 +275,7 @@ import org.unijena.jams.model.*;
                         wr = Math.abs(rCoeff[1]) * rCoeff[2];
                     else
                         wr = Math.pow(Math.abs(rCoeff[1]), -1.0) * rCoeff[2];
+                this.wrsq.setValue(wr);
                 JAMS.sendInfoMsg("wr²:\t " + wr);
             }
         }

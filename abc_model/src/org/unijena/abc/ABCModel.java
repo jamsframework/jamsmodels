@@ -63,12 +63,7 @@ import org.unijena.jams.model.*;
             description = "the initial storage content [S_0]"
             )
             public JAMSDouble initStor;
-    @JAMSVarDescription(
-            access = JAMSVarDescription.AccessType.READWRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
-            description = "the storage [S_t]"
-            )
-            public JAMSDouble storage;
+
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
             update = JAMSVarDescription.UpdateType.RUN,
@@ -95,14 +90,12 @@ import org.unijena.jams.model.*;
      */
     
     public void init() throws JAMSEntity.NoSuchAttributeException {
-        System.out.println("INIT ABCModel");
+        //System.out.println("INIT ABCModel");
         this.storageTm1.setValue(this.initStor.getValue());
-        this.storage.setValue(0);
     }
     
     public void run() throws JAMSEntity.NoSuchAttributeException{
-        System.out.println("RUN ABCModel");
-        double storage = this.storage.getValue();
+        //System.out.println("RUN ABCModel");
         double storageTm1 = this.storageTm1.getValue();
         double precip = this.precip.getValue();
         double runoff = 0;
@@ -117,12 +110,9 @@ import org.unijena.jams.model.*;
         }
         
         runoff = ( 1 - a - b) * precip + c * storageTm1;
-        double saveStor = storage;
-        storage = a * precip + (1-c) * storageTm1;
-        storageTm1 = saveStor;
+        storageTm1 = a * precip + (1-c) * storageTm1;
         
         this.simRunoff.setValue(runoff);
-        this.storage.setValue(storage);
         this.storageTm1.setValue(storageTm1);
     }
     

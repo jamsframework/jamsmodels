@@ -3,6 +3,6 @@
 verbose=1
 debug=3
 model=D:/Development/J2K/src/org/unijena/abc/abc.xml
-errorlog=D:/Development/J2K/src/org/unijena/abc/jamserror.log
+errorlog=d:/jamserror.log
 libs=D\:/jamsprojects/J2K/dist/J2K.jar?D\:/jamsprojects/ABCModel/dist/ABCModel.jar
-infolog=D:/Development/J2K/src/org/unijena/abc/jamsinfo.log
+infolog=d:/jamsinfo.log

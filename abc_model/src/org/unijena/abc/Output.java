@@ -77,7 +77,7 @@ public class Output extends JAMSComponent {
     public void run(){
         
         writer.addData(time);
-        System.out.println("time:" + time.toString());
+        //System.out.println("time:" + time.toString());
         writer.addData(simRunoff);
         writer.addData(obsRunoff);
         try {
