@@ -95,11 +95,13 @@ import org.unijena.jams.model.*;
      */
     
     public void init() throws JAMSEntity.NoSuchAttributeException {
+        System.out.println("INIT ABCModel");
         this.storageTm1.setValue(this.initStor.getValue());
         this.storage.setValue(0);
     }
     
     public void run() throws JAMSEntity.NoSuchAttributeException{
+        System.out.println("RUN ABCModel");
         double storage = this.storage.getValue();
         double storageTm1 = this.storageTm1.getValue();
         double precip = this.precip.getValue();

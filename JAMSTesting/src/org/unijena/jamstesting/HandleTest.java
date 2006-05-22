@@ -56,6 +56,13 @@ import org.unijena.jams.model.*;
             description = "Description"
             )
             public JAMSDouble number2;
+
+    @JAMSVarDescription(
+            access = JAMSVarDescription.AccessType.READ,
+            update = JAMSVarDescription.UpdateType.RUN,
+            description = "Description"
+            )
+            public JAMSCalendar time;
     
     
     /*
@@ -66,12 +73,7 @@ import org.unijena.jams.model.*;
     double i = 0;
     
     public void init() {
-        System.out.println("INIT");
-/*
-        HashMap<String, JAMSData> handles = JAMS.getRuntime().getModel().getDataHandles();
-        String key = "Test.number1";
-        x = (JAMSDouble) handles.get(key);
- */
+        System.out.println("INIT" + getContext().getNumberOfIterations());
     }
     
     public void run() {

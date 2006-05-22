@@ -57,6 +57,7 @@ public class Climate extends JAMSComponent {
     private JAMSTableDataStore store;
     
     public void init(){
+        System.out.println("INIT climate");
         store = new GenericDataReader(fileName.getValue(), true, 4, 6);
     }
     
@@ -71,6 +72,7 @@ public class Climate extends JAMSComponent {
     }
     
     public void cleanup(){
+        System.out.println("CLEANUP climate");
         store.close();
     }
     

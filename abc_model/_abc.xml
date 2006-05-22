@@ -3,16 +3,16 @@
 <!--<!DOCTYPE JAMSModel SYSTEM "jamsmodel.dtd">-->
 
 <model name="abc model" author="D. Boyle and P. Krause" date="18.05.2006">
-    <!--contextcomponent class="org.unijena.jams.tools.JAMSParaSampler" name="Sampler">
+    <contextcomponent class="org.unijena.jams.tools.JAMSParaSampler" name="Sampler">
         <var name="parameterIDs" value="abcModel.a;abcModel.b"/>
-        <var name="boundaries" value="[0>1];[0>1]"/>
-        <var name="sampleCount" value="1"/!-->
+        <var name="boundaries" value="[0>0.5];[0>0.5]"/>
+        <var name="sampleCount" value="5"/>
         
         <contextcomponent class="org.unijena.jams.model.JAMSTemporalContext" name="TemporalContext">
             <var name="timeInterval" value="1948-01-01 00:01 1986-12-01 00:00 1 1"/>
 
             <component class="org.unijena.abc.Climate" name="ClimateReader">
-                <var name="fileName" value="D:\Development\J2K\src\org\unijena\abc\abc.dat"/>
+                <var name="fileName" value="D:\jamsmodels\abc_model\abc.dat"/>
             </component>
 
             <component class="org.unijena.abc.ABCModel" name="abcModel">
@@ -25,7 +25,7 @@
 				
             <component class="org.unijena.abc.Output" name="abcOutput">
                 <var name="time" context="TemporalContext" cvar="current"/>
-                <var name="fileName" value="D:\Development\J2K\src\org\unijena\abc\abc.out"/>
+                <var name="fileName" value="D:\jamsmodels\abc_model\abc.out"/>
                 <var name="obsRunoff" context="ClimateReader" cvar="obsRunoff"/>
                 <var name="simRunoff" context="abcModel" cvar="simRunoff"/>
             </component>
@@ -37,6 +37,6 @@
                 <var name="prediction" context="abcOutput" cvar="simRunoff"/>
             </component>
             
-        <!--/contextcomponent-->
+        </contextcomponent>
     </contextcomponent>
 </model>
