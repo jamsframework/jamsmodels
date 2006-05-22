@@ -1,0 +1,8 @@
+#JAMS configuration file
+#Mon May 08 11:36:39 CEST 2006
+verbose=1
+debug=3
+model=D:/Development/J2K/src/org/unijena/abc/abc.xml
+errorlog=D:/Development/J2K/src/org/unijena/abc/jamserror.log
+libs=D:/Development/JAMS/dist/JAMS.jar?D:/Development/J2K_work/dist/J2K_work.jar
+infolog=D:/Development/J2K/src/org/unijena/abc/jamsinfo.log
