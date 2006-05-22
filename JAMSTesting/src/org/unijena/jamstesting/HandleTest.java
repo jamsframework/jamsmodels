@@ -66,6 +66,7 @@ import org.unijena.jams.model.*;
     double i = 0;
     
     public void init() {
+        System.out.println("INIT");
 /*
         HashMap<String, JAMSData> handles = JAMS.getRuntime().getModel().getDataHandles();
         String key = "Test.number1";
@@ -78,7 +79,7 @@ import org.unijena.jams.model.*;
     }
     
     public void cleanup() {
-        
+        System.out.println("CLEANUP");
     }
     
 }
