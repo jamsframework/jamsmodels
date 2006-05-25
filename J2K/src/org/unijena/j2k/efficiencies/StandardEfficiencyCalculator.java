@@ -133,6 +133,27 @@ import org.unijena.jams.model.*;
             )
             public JAMSDouble wrsq;
     
+    @JAMSVarDescription(
+            access = JAMSVarDescription.AccessType.WRITE,
+            update = JAMSVarDescription.UpdateType.RUN,
+            description = ""
+            )
+            public JAMSDouble dsGrad;
+    
+    @JAMSVarDescription(
+            access = JAMSVarDescription.AccessType.WRITE,
+            update = JAMSVarDescription.UpdateType.RUN,
+            description = ""
+            )
+            public JAMSDouble absVolErr;
+    
+    @JAMSVarDescription(
+            access = JAMSVarDescription.AccessType.WRITE,
+            update = JAMSVarDescription.UpdateType.RUN,
+            description = ""
+            )
+            public JAMSDouble rmse;
+    
     private final int E1 = 1;
     private final int E2 = 2;
     private final int LOG_E1 = 3;
@@ -141,6 +162,9 @@ import org.unijena.jams.model.*;
     private final int IOA_2 = 6;
     private final int R2 = 7;
     private final int WR2 = 8;
+    private final int DSGRAD = 9;
+    private final int ABSVOLERROR = 10;
+    private final int RMSE = 11;
     
     private final int TOTAL_PERIOD = 0;
     private final int HYDROLOGICAL_YEAR = 1;
@@ -233,6 +257,18 @@ import org.unijena.jams.model.*;
                     else
                         wr = Math.pow(Math.abs(rCoeff[1]), -1.0) * rCoeff[2];
                     JAMS.sendInfoMsg("wr² a-1:\t " + wr);
+                }else if(effMethod.getValue()[i] == this.DSGRAD){
+                    double dsGrad = DoubleSumAnalysis.dsGrad(valData_1, preData_1);
+                    this.dsGrad.setValue(dsGrad);
+                    JAMS.sendInfoMsg("dsGrad a-1:\t" + dsGrad);
+                }else if(effMethod.getValue()[i] == this.ABSVOLERROR){
+                    double volErr = VolumeError.absVolumeError(valData_1, preData_1);
+                    this.absVolErr.setValue(volErr);
+                    JAMS.sendInfoMsg("absVolumeError a-1:\t" + volErr);
+                }else if(effMethod.getValue()[i] == this.RMSE){
+                    double rmse = PredictionErrors.rootMeanSquareError(valData_1, preData_1);
+                    this.rmse.setValue(rmse);
+                    JAMS.sendInfoMsg("RMSE a-1:\t" + rmse);
                 }
                 
             }
@@ -245,7 +281,7 @@ import org.unijena.jams.model.*;
             }else if(effMethod.getValue()[i] == this.E2){
                 double e2 = NashSutcliffe.efficiency(preData, valData, 2);
                 this.e2.setValue(e2);
-                JAMS.sendInfoMsg("e2:\t\t" + e2);
+                JAMS.sendInfoMsg("e2:\t" + e2);
             }else if(effMethod.getValue()[i] == this.LOG_E1){
                 double le1 = NashSutcliffe.logEfficiency(preData, valData, 1);
                 this.le1.setValue(le1);
@@ -271,13 +307,26 @@ import org.unijena.jams.model.*;
             }else if(effMethod.getValue()[i] == this.WR2){
                 double[] rCoeff = Regression.calcLinReg(valData, preData);
                 double wr;
-                    if(rCoeff[1] <= 1)
-                        wr = Math.abs(rCoeff[1]) * rCoeff[2];
-                    else
-                        wr = Math.pow(Math.abs(rCoeff[1]), -1.0) * rCoeff[2];
+                if(rCoeff[1] <= 1)
+                    wr = Math.abs(rCoeff[1]) * rCoeff[2];
+                else
+                    wr = Math.pow(Math.abs(rCoeff[1]), -1.0) * rCoeff[2];
                 this.wrsq.setValue(wr);
                 JAMS.sendInfoMsg("wr²:\t " + wr);
+            }else if(effMethod.getValue()[i] == this.DSGRAD){
+                double dsGrad = DoubleSumAnalysis.dsGrad(valData, preData);
+                this.dsGrad.setValue(dsGrad);
+                JAMS.sendInfoMsg("dsGrad:\t" + dsGrad);
+            }else if(effMethod.getValue()[i] == this.ABSVOLERROR){
+                double volErr = VolumeError.absVolumeError(valData, preData);
+                this.absVolErr.setValue(volErr);
+                JAMS.sendInfoMsg("absVolumeError a-1:\t" + volErr);
+            }else if(effMethod.getValue()[i] == this.RMSE){
+                double rmse = PredictionErrors.rootMeanSquareError(valData, preData);
+                this.rmse.setValue(rmse);
+                JAMS.sendInfoMsg("RMSE a-1:\t" + rmse);
             }
+            
         }
     }
 }
