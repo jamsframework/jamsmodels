@@ -70,6 +70,8 @@ import org.unijena.jams.model.*;
             )
             public JAMSDouble BioAct;
     
+    
+    
     /*
      *  Component run stages
      */
@@ -87,6 +89,8 @@ import org.unijena.jams.model.*;
         }
         double bioact = stressfactor * BioAct.getValue();    
         BioAct.setValue(bioact);
+        
+        
        
        
     
