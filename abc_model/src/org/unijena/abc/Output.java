@@ -61,7 +61,7 @@ public class Output extends JAMSComponent {
     private GenericDataWriter writer;
     
     public void init(){
-        
+        //System.out.println("Init output ...");
         writer = new GenericDataWriter(fileName.getValue());
 
         writer.addComment("abc model output");
@@ -89,7 +89,7 @@ public class Output extends JAMSComponent {
     }
     
     public void cleanup(){
-        
+        //System.out.println("cleanup output ...");
         writer.close();
 
     }

@@ -33,7 +33,7 @@ import java.util.*;
  *
  * @author S. Kralisch
  */
-public class Climate extends JAMSComponent {
+public class GehlbergDataReader extends JAMSComponent {
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
@@ -95,52 +95,26 @@ public class Climate extends JAMSComponent {
             )
             public JAMSDouble compQbas;
     
-    @JAMSVarDescription(
-            access = JAMSVarDescription.AccessType.WRITE,
-            update = JAMSVarDescription.UpdateType.RUN
-            )
-            public JAMSDoubleArray data = new JAMSDoubleArray();
-    
-    @JAMSVarDescription(
-            access = JAMSVarDescription.AccessType.WRITE,
-            update = JAMSVarDescription.UpdateType.RUN
-            )
-            public JAMSStringArray dataNames = new JAMSStringArray();
-    
-    
-    
-    
     private JAMSTableDataStore store;
-    public java.util.HashMap dataMap = new java.util.HashMap();
-    private String[] md;
     public void init(){
         
         store = new GenericDataReader(fileName.getValue(), true, 1, 2);
-        md = store.getMetadata();
-        this.dataNames.setValue(md);
-        for(int i = 0; i < md.length; i++)
-            System.out.println("metadata["+i+"]: "+md[i]);
     }
     
     public void run(){
         
         JAMSTableDataArray da = store.getNext();
         double[] vals = JAMSTableDataConverter.toDouble(da);
-        this.data.setValue(vals);
         
-        for(int i = 0; i < md.length; i++)
-            dataMap.put(md[i], vals[i]);
-        
-        this.precip.setValue(((Double)dataMap.get("precip")).doubleValue());//vals[0]);
-        this.temperature.setValue(((Double)dataMap.get("tmean")).doubleValue());
-        this.obsRunoff.setValue(((Double)dataMap.get("obsRO")).doubleValue());
-        this.compRD1.setValue(((Double)dataMap.get("RD1")).doubleValue());
-        this.compRD2.setValue(((Double)dataMap.get("RD2")).doubleValue());
-        this.compRG1.setValue(((Double)dataMap.get("RG1")).doubleValue());
-        this.compRG2.setValue(((Double)dataMap.get("RG2")).doubleValue());
-        this.compQdir.setValue(((Double)dataMap.get("QD")).doubleValue());
-        this.compQbas.setValue(((Double)dataMap.get("QB")).doubleValue());
-
+        this.precip.setValue(vals[0]);
+        this.temperature.setValue(vals[1]);
+        this.obsRunoff.setValue(vals[2]);
+        this.compRD1.setValue(vals[3]);
+        this.compRD2.setValue(vals[4]);
+        this.compRG1.setValue(vals[5]);
+        this.compRG2.setValue(vals[6]);
+        this.compQdir.setValue(vals[7]);
+        this.compQbas.setValue(vals[8]);
     }
     
     public void cleanup(){

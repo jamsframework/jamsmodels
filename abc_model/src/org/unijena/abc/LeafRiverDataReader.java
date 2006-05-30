@@ -33,7 +33,7 @@ import java.util.*;
  *
  * @author S. Kralisch
  */
-public class Climate extends JAMSComponent {
+public class LeafRiverDataReader extends JAMSComponent {
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
