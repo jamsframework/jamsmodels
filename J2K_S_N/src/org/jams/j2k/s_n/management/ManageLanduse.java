@@ -55,7 +55,7 @@ public class ManageLanduse extends JAMSComponent {
             description = "Current organic fertilizer amount"
             )
             public JAMSDouble fertorgNactive;
-     
+    
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
             update = JAMSVarDescription.UpdateType.RUN,
@@ -70,6 +70,13 @@ public class ManageLanduse extends JAMSComponent {
             )
             public JAMSBoolean plantExisting = new JAMSBoolean();
 
+    @JAMSVarDescription(
+            access = JAMSVarDescription.AccessType.WRITE,
+            update = JAMSVarDescription.UpdateType.RUN,
+            description = "Indicator for harvesting"
+            )
+            public JAMSBoolean doHarvest = new JAMSBoolean();
+    
     
     public void run() throws JAMSEntity.NoSuchAttributeException {
         
@@ -87,10 +94,17 @@ public class ManageLanduse extends JAMSComponent {
         J2KSNLMArable currentManagement = managementList.get(managementPos);
         
         int nextDay = currentManagement.jDay;
-    
+        this.doHarvest.setValue(false);
+        
 //            System.out.println("da" + nextDay + time.get(JAMSCalendar.DAY_OF_YEAR));
         
-            
+        if ((nextDay-1) == time.get(JAMSCalendar.DAY_OF_YEAR)) {
+            if (currentManagement.harvest != -1) {
+                //do harvesting here!!
+                this.doHarvest.setValue(true);
+            }
+        }
+        
         if (nextDay == time.get(JAMSCalendar.DAY_OF_YEAR)) {
             
             if ((managementPos+1) ==  managementList.size()) {

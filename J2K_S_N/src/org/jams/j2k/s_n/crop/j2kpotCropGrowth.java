@@ -375,7 +375,12 @@ import java.util.ArrayList;
             )
             public JAMSBoolean plantStateReset = new JAMSBoolean();
     
-    
+    @JAMSVarDescription(
+            access = JAMSVarDescription.AccessType.READ,
+            update = JAMSVarDescription.UpdateType.RUN,
+            description = "Indicator for harvesting"
+            )
+            public JAMSBoolean doHarvest = new JAMSBoolean();    
      /*
       
       *  Component run stages
@@ -531,7 +536,13 @@ import java.util.ArrayList;
         ArrayList<J2KSNCrop> rotation = (ArrayList<J2KSNCrop>) entity.getObject("landuseRotation");
         int rotPos = entity.getInt("rotPos");
         J2KSNCrop crop = rotation.get(rotPos);
-        
+
+        if (this.doHarvest.getValue()) {
+            int managementPos = entity.getInt("managementPos");
+            J2KSNLMArable currentManagement = crop.managementList.get(managementPos);
+            double fracHarvest = currentManagement.fracHarvest;
+        }
+            
         this.phu = crop.phu; /* total heat units required to reach maturity */
         this.idc = crop.idc;
         this.rue = crop.rue; // Radiation use efficiency
