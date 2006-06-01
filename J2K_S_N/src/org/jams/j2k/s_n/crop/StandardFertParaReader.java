@@ -62,7 +62,7 @@ public class StandardFertParaReader extends JAMSComponent {
         
         //read fertilizer parameter
         JAMSEntityCollection fert = new JAMSEntityCollection();
-        fert.setEntities(J2KFunctions.readParas(dirName.getValue()+"/"+ftFileName.getValue()));
+        fert.setEntities(J2KFunctions.readParas(dirName.getValue()+"/"+ftFileName.getValue(), getModel()));
         
         HashMap<Double, JAMSEntity> ftMap = new HashMap<Double, JAMSEntity>();
         JAMSEntity ft, e;

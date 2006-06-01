@@ -62,7 +62,7 @@ public class StandardSoilParaReader extends JAMSComponent {
         
         //read soil parameters
         JAMSEntityCollection soilTypes = new JAMSEntityCollection();
-        soilTypes.setEntities(J2KFunctions.readParas(dirName.getValue()+"/"+stFileName.getValue()));
+        soilTypes.setEntities(J2KFunctions.readParas(dirName.getValue()+"/"+stFileName.getValue(), getModel()));
         
         HashMap<Double, JAMSEntity> stMap = new HashMap<Double, JAMSEntity>();
         JAMSEntity st, e;

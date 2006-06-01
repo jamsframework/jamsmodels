@@ -223,7 +223,7 @@ public class TSDataReader extends JAMSComponent {
             
             
         } catch (IOException ioe) {
-            org.unijena.jams.JAMS.handle(ioe);
+            getModel().handle(ioe);
         }
         
         store = new GenericDataReader(dirName.getValue()+"/"+dataFileName.getValue(), false, headerLineCount+1);
@@ -237,7 +237,7 @@ public class TSDataReader extends JAMSComponent {
         if(timeInterval != null){
             //check if the time series start and end date match the temporal context's time interval
             if (timeInterval.getStart().before(startTime) || timeInterval.getEnd().after(endTime)) {
-                JAMS.sendHalt("TSData start and end time do not match current temporal context!");
+                getModel().sendHalt("TSData start and end time do not match current temporal context!");
             }
         }
                 

@@ -63,7 +63,7 @@ public class StandardTillParaReader extends JAMSComponent {
         
         //read tillage parameter
         JAMSEntityCollection till = new JAMSEntityCollection();
-        till.setEntities(J2KFunctions.readParas(dirName.getValue()+"/"+tlFileName.getValue()));
+        till.setEntities(J2KFunctions.readParas(dirName.getValue()+"/"+tlFileName.getValue(), getModel()));
         
         HashMap<Double, JAMSEntity> tlMap = new HashMap<Double, JAMSEntity>();
         JAMSEntity tl, e;

@@ -525,7 +525,7 @@ import java.util.ArrayList;
         this.yield =  BioYield.getValue();
         this.yldN =  NYield.getValue();
         this.yldN_ha = NYield_ha.getValue();
-        this.soil_no3 = NO3_Pool.getValue();
+        //this.soil_no3 = NO3_Pool.getValue();
         
         
         ArrayList<J2KSNCrop> rotation = (ArrayList<J2KSNCrop>) entity.getObject("landuseRotation");
@@ -595,7 +595,7 @@ import java.util.ArrayList;
             BioNAct.setValue(bioN_act); /*actual biomass in kg/ha adapted by stress*/
             frLAImx_xi.setValue(frLAImx_Xi);
             plantStateReset.setValue(true);
-            NO3_Pool.setValue(soil_no3);
+            //NO3_Pool.setValue(soil_no3);
             Test.setValue(test);
             
         } else if (plantStateReset.getValue()) {
@@ -629,7 +629,7 @@ import java.util.ArrayList;
             PHUact.setValue(0);
             PlantNDemAct.setValue(0);
             plantStateReset.setValue(false);
-            NO3_Pool.setValue(0);
+            //NO3_Pool.setValue(0);
             Test.setValue(0);
             
         }
@@ -961,7 +961,7 @@ import java.util.ArrayList;
         // of the optimal plants biomass and the actual N content of the plants biomass
         
        // double bioN_act;
-        bioN_act = bioN_act + actN_up;
+        bioN_act = bioN_act + actN_up.getValue();
         Ndemand_act = bioNopt_act - bioN_act; //@todo: declare the actual N content according to the
         
         Ndemand_accumu = Ndemand_act + Ndemand_accumu;

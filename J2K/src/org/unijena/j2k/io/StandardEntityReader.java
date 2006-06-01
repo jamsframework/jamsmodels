@@ -74,21 +74,21 @@ public class StandardEntityReader extends JAMSComponent {
         
         //read hru parameter
         hrus = new JAMSEntityCollection();
-        hrus.setEntities(J2KFunctions.readParas(dirName.getValue() + "/" + hruFileName.getValue()));
+        hrus.setEntities(J2KFunctions.readParas(dirName.getValue() + "/" + hruFileName.getValue(), getModel()));
         
         //read reach parameter
         reaches = new JAMSEntityCollection();
-        reaches.setEntities(J2KFunctions.readParas(dirName.getValue() + "/" + reachFileName.getValue()));
+        reaches.setEntities(J2KFunctions.readParas(dirName.getValue() + "/" + reachFileName.getValue(), getModel()));
         
         //create object associations from id attributes for hrus and reaches
         createTopology();
         
         //create total order on hrus and reaches that allows processing them subsequently
-        JAMS.sendInfoMsg("Create ordered hru-list");
+        getModel().sendInfoMsg("Create ordered hru-list");
         createOrderedList(hrus, "to_poly");
-        JAMS.sendInfoMsg("Create ordered reach-list");
+        getModel().sendInfoMsg("Create ordered reach-list");
         createOrderedList(reaches, "to_reach");
-        JAMS.sendInfoMsg("Entities read successfull!");
+        getModel().sendInfoMsg("Entities read successfull!");
     }
     
     private void createTopology() throws JAMSEntity.NoSuchAttributeException {

@@ -10,6 +10,7 @@
 package org.unijena.j2k.efficiencies;
 
 import org.unijena.jams.JAMS;
+import org.unijena.jams.model.JAMSModel;
 
 /**
  *
@@ -30,12 +31,12 @@ public class IndexOfAgreement {
      * @param verificationData the verification data set
      * @return the calculated ioa or -9999 if an error occurs
      */    
-    public static double calc_IOA(double[] prediction, double[] validation, double pow){
+    public static double calc_IOA(double[] prediction, double[] validation, double pow, JAMSModel model){
         double ioa;
         int td_size = prediction.length;
         int vd_size = validation.length;
         if(td_size != vd_size){
-            JAMS.sendInfoMsg("Data sets in ioa does not match!");
+            model.sendInfoMsg("Data sets in ioa does not match!");
             return -99999;
         }
         
@@ -46,7 +47,7 @@ public class IndexOfAgreement {
         
         /** checking if both data arrays have the same number of elements*/
         if(td_size != vd_size){
-            JAMS.sendInfoMsg("Test Data and Verification Data are not consistent!");
+            model.sendInfoMsg("Test Data and Verification Data are not consistent!");
             return -9999;
         }
         else{

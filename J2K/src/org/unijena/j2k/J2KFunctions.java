@@ -26,6 +26,7 @@ package org.unijena.j2k;
 import java.util.*;
 import java.io.*;
 import org.unijena.jams.data.*;
+import org.unijena.jams.model.JAMSModel;
 
 
 /**
@@ -34,7 +35,7 @@ import org.unijena.jams.data.*;
  */
 public class J2KFunctions {
     
-    public static ArrayList<JAMSEntity> readParas(String fileName) {
+    public static ArrayList<JAMSEntity> readParas(String fileName, JAMSModel model) {
         
         BufferedReader reader;
         ArrayList <JAMSEntity> entityList = new ArrayList<JAMSEntity>();
@@ -81,7 +82,7 @@ public class J2KFunctions {
                     try {
                         //hopefully these are double values :-)
                         e.setDouble(attributeNames.get(i), Double.parseDouble(token));
-                        org.unijena.jams.JAMS.println(attributeNames.get(i) + ": " + token, 4);
+                        model.println(attributeNames.get(i) + ": " + token, 4);
                     } catch (NumberFormatException nfe) {
                         //most probably this happens because of string values within J2K parameter files
                         e.setObject(attributeNames.get(i), token);
@@ -93,14 +94,14 @@ public class J2KFunctions {
             }
             
         } catch (IOException ioe) {
-            org.unijena.jams.JAMS.handle(ioe);
+            model.handle(ioe);
         }
         
         return entityList;
         
     }
     
-    public static ArrayList<JAMSEntity> createStationEntities(String fileName) {
+    public static ArrayList<JAMSEntity> createStationEntities(String fileName, JAMSModel model) {
         ArrayList <JAMSEntity> entityList = new ArrayList<JAMSEntity>();
         //handle the j2k metadata descriptions
         int headerLineCount = 0;
@@ -206,7 +207,7 @@ public class J2KFunctions {
             
             
         } catch (IOException ioe) {
-            org.unijena.jams.JAMS.handle(ioe);
+            model.handle(ioe);
         }
         return entityList;
     }

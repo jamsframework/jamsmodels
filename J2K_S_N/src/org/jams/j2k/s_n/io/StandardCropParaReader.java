@@ -63,7 +63,7 @@ public class StandardCropParaReader extends JAMSComponent {
         
         //read crop parameter
         JAMSEntityCollection crops = new JAMSEntityCollection();
-        crops.setEntities(J2KFunctions.readParas(dirName.getValue()+"/"+crFileName.getValue()));
+        crops.setEntities(J2KFunctions.readParas(dirName.getValue()+"/"+crFileName.getValue(), getModel()));
         
         HashMap<Double, JAMSEntity> crMap = new HashMap<Double, JAMSEntity>();
         JAMSEntity cr, e;

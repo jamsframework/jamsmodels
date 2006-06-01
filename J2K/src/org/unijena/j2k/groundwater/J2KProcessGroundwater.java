@@ -332,7 +332,7 @@ import org.unijena.jams.model.*;
             this.run_actRG1 = this.run_maxRG1;
         }
         if(delta_RG1 > 0){
-            //JAMS.sendInfoMsg("interflow surplus in gw: "+delta_RG1);
+            //getModel().sendInfoMsg("interflow surplus in gw: "+delta_RG1);
         }
         return true;
     }

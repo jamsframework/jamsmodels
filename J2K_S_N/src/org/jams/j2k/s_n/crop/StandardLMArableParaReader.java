@@ -63,7 +63,7 @@ public class StandardLMArableParaReader extends JAMSComponent {
         
         //read crop rotation parameter
         JAMSEntityCollection croprot = new JAMSEntityCollection();
-        croprot.setEntities(J2KFunctions.readParas(dirName.getValue()+"/"+laFileName.getValue()));
+        croprot.setEntities(J2KFunctions.readParas(dirName.getValue()+"/"+laFileName.getValue(), getModel()));
         
         HashMap<Double, JAMSEntity> ctMap = new HashMap<Double, JAMSEntity>();
         JAMSEntity ct, e;

@@ -134,7 +134,7 @@ public class StandardManagementParaReader extends JAMSComponent {
             }
             
         } catch (IOException ioe) {
-            org.unijena.jams.JAMS.handle(ioe);
+            getModel().handle(ioe);
         }
         
         return map;
@@ -177,7 +177,7 @@ public class StandardManagementParaReader extends JAMSComponent {
             }
             
         } catch (IOException ioe) {
-            org.unijena.jams.JAMS.handle(ioe);
+            getModel().handle(ioe);
         }
         
         return map;
@@ -229,7 +229,7 @@ public class StandardManagementParaReader extends JAMSComponent {
             map.put(cid, managements);
             
         } catch (IOException ioe) {
-            org.unijena.jams.JAMS.handle(ioe);
+            getModel().handle(ioe);
         }
         
         return map;
@@ -277,7 +277,7 @@ public class StandardManagementParaReader extends JAMSComponent {
             
             
         } catch (IOException ioe) {
-            org.unijena.jams.JAMS.handle(ioe);
+            getModel().handle(ioe);
         }
         
         return map;
@@ -330,7 +330,7 @@ public class StandardManagementParaReader extends JAMSComponent {
             
             
         } catch (IOException ioe) {
-            org.unijena.jams.JAMS.handle(ioe);
+            getModel().handle(ioe);
         }
         
         return map;
@@ -353,7 +353,7 @@ public class StandardManagementParaReader extends JAMSComponent {
             try {
                 hruMap.put(hru.getDouble(aNameHRUID.getValue()),  hru);
             } catch (JAMSEntity.NoSuchAttributeException nsae) {
-//                JAMS.sendHalt("Attribute " + aNameHRUID + " not found!");
+//                getModel().sendHalt("Attribute " + aNameHRUID + " not found!");
             }
         }
         
@@ -389,7 +389,7 @@ public class StandardManagementParaReader extends JAMSComponent {
             
             
         } catch (IOException ioe) {
-            org.unijena.jams.JAMS.handle(ioe);
+            getModel().handle(ioe);
         }
         
     }

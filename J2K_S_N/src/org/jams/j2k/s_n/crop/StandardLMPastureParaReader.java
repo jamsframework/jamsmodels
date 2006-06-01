@@ -62,7 +62,7 @@ public class StandardLMPastureParaReader extends JAMSComponent {
         
         //read pasture management parameter
         JAMSEntityCollection lmpas = new JAMSEntityCollection();
-        lmpas.setEntities(J2KFunctions.readParas(dirName.getValue()+"/"+lpFileName.getValue()));
+        lmpas.setEntities(J2KFunctions.readParas(dirName.getValue()+"/"+lpFileName.getValue(), getModel()));
         
         HashMap<Double, JAMSEntity> lpMap = new HashMap<Double, JAMSEntity>();
         JAMSEntity lp, e;

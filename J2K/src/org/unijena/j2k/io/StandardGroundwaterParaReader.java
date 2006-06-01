@@ -62,7 +62,7 @@ public class StandardGroundwaterParaReader extends JAMSComponent {
         
         //read lu parameter
         JAMSEntityCollection gwTypes = new JAMSEntityCollection();
-        gwTypes.setEntities(J2KFunctions.readParas(dirName.getValue()+"/"+gwFileName.getValue()));
+        gwTypes.setEntities(J2KFunctions.readParas(dirName.getValue()+"/"+gwFileName.getValue(), getModel()));
         
         HashMap<Double, JAMSEntity> gwMap = new HashMap<Double, JAMSEntity>();
         JAMSEntity gw, e;

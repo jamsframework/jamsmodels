@@ -165,7 +165,7 @@ public class Regionalisation extends JAMSComponent {
         cacheFile = new File(dirName.getValue() + "/$" + this.getInstanceName() + ".cache");
 
         if (!cacheFile.exists() && dataCaching.getValue()) {
-            JAMS.sendHalt(this.getInstanceName() + ": data caching is switched on but no cache file available!");
+            getModel().sendHalt(this.getInstanceName() + ": data caching is switched on but no cache file available!");
         } 
         
         if (dataCaching.getValue()) {

@@ -62,7 +62,7 @@ public class StandardLUReader extends JAMSComponent {
         
         //read lu parameter
         JAMSEntityCollection lus = new JAMSEntityCollection();
-        lus.setEntities(J2KFunctions.readParas(dirName.getValue()+"/"+luFileName.getValue()));
+        lus.setEntities(J2KFunctions.readParas(dirName.getValue()+"/"+luFileName.getValue(), getModel()));
         
         HashMap<Double, JAMSEntity> luMap = new HashMap<Double, JAMSEntity>();
         JAMSEntity lu, e;
@@ -91,7 +91,7 @@ public class StandardLUReader extends JAMSComponent {
             }
             
         }
-        JAMS.sendInfoMsg("Landuse parameter file processed ...");
+        getModel().sendInfoMsg("Landuse parameter file processed ...");
     }
     
     

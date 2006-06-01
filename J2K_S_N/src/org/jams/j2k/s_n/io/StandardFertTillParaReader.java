@@ -71,7 +71,7 @@ public class StandardFertTillParaReader extends JAMSComponent {
             }
             
         } catch (IOException ioe) {
-            org.unijena.jams.JAMS.handle(ioe);
+            getModel().handle(ioe);
         }
         
         return map;
@@ -113,7 +113,7 @@ public class StandardFertTillParaReader extends JAMSComponent {
             }
             
         } catch (IOException ioe) {
-            org.unijena.jams.JAMS.handle(ioe);
+            getModel().handle(ioe);
         }
         
         return map;

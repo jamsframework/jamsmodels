@@ -62,7 +62,7 @@ public class LayeredSoilParaReader extends JAMSComponent {
         
         //read soil parameters
         JAMSEntityCollection soilTypes = new JAMSEntityCollection();
-        soilTypes.setEntities(J2KFunctions.readParas(dirName.getValue()+"/"+stFileName.getValue()));
+        soilTypes.setEntities(J2KFunctions.readParas(dirName.getValue()+"/"+stFileName.getValue(), getModel()));
         
         HashMap<Double, JAMSEntity> stMap = new HashMap<Double, JAMSEntity>();
         JAMSEntity st, e;
@@ -100,7 +100,7 @@ public class LayeredSoilParaReader extends JAMSComponent {
             }
             e.setDouble("horizons", horizon);
         }
-        JAMS.sendInfoMsg("Layered soil parameter file processed ...");
+        getModel().sendInfoMsg("Layered soil parameter file processed ...");
     }
     
     

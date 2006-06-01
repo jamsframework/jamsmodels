@@ -96,9 +96,6 @@ import org.unijena.jams.model.*;
     
     public void run() throws JAMSEntity.NoSuchAttributeException{
         //System.out.println("RUN ABCModel");
-        System.out.println(a);
-        System.out.println(b);
-        System.out.println(c);
         double storageTm1 = this.storageTm1.getValue();
         double precip = this.precip.getValue();
         double runoff = 0;

@@ -230,7 +230,7 @@ import org.unijena.jams.model.*;
             inGWExcess.setValue(0);
             
         } else{
-            JAMS.sendInfoMsg("Current entity ID: " + entity.getDouble("elevation") + " has no receiver.");
+            getModel().sendInfoMsg("Current entity ID: " + entity.getDouble("elevation") + " has no receiver.");
         }
         
     }

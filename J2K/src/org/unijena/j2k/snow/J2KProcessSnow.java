@@ -344,17 +344,17 @@ import org.unijena.jams.model.*;
         double balOut = this.run_snowMelt + this.in_rain + this.in_snow;
         double balance = balIn  + (balStorStart - balStorEnd) - balOut;
         if(Math.abs(balance) > 0.0001){
-            JAMS.sendInfoMsg("balance error in snow module: "+balance);
-            JAMS.sendInfoMsg("balIn: " + balIn);
-            JAMS.sendInfoMsg("balStorStart: " + balStorStart);
-            JAMS.sendInfoMsg("balStorEnd: " + balStorEnd);
-            JAMS.sendInfoMsg("balOut: " + balOut);
-            JAMS.sendInfoMsg("shit!");
+            getModel().sendInfoMsg("balance error in snow module: "+balance);
+            getModel().sendInfoMsg("balIn: " + balIn);
+            getModel().sendInfoMsg("balStorStart: " + balStorStart);
+            getModel().sendInfoMsg("balStorEnd: " + balStorEnd);
+            getModel().sendInfoMsg("balOut: " + balOut);
+            getModel().sendInfoMsg("shit!");
         }
         //if(this.run_drySWE > this.run_totSWE)
         //    System.out.println("dry is larger than tot at end at time: " + time.toString() + " in entity: " + entity.getDouble("ID"));
         if(this.run_snowMelt < 0)
-            JAMS.sendInfoMsg("negative snowmelt!!");
+            getModel().sendInfoMsg("negative snowmelt!!");
     }
     
     public void cleanup() {
@@ -505,7 +505,7 @@ import org.unijena.jams.model.*;
     
     private double calcPotRunoff(double crit_dens, double tot_dens, double liq_water){
         if(Math.abs(liq_water) > 0.00001 && liq_water < 0)
-            JAMS.sendInfoMsg("liq_water is negative: "+liq_water);
+            getModel().sendInfoMsg("liq_water is negative: "+liq_water);
         double potRunoff = (1 - Math.exp(-1 * Math.pow((crit_dens/tot_dens), 4))) * liq_water;
         if(potRunoff < 0)
             potRunoff = 0;

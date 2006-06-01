@@ -63,7 +63,7 @@ public class HydroNETCalc extends JAMSComponent {
 	NitrogenOutNeuron.reset();
 	CostOutNeuron.reset();
 	
-        JAMS.sendInfoMsg("NO - Output:" + new Double(NitrogenOutNeuron.getActivation()).toString() + 
+        getModel().sendInfoMsg("NO - Output:" + new Double(NitrogenOutNeuron.getActivation()).toString() + 
                          "  Cost - Output:" + new Double(CostOutNeuron.getActivation()).toString() );
         
         //second step backpropagate        

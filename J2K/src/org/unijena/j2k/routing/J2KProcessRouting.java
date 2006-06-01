@@ -196,7 +196,7 @@ import org.unijena.jams.model.*;
             toReach.setDouble("inRG2", RG2in);
             
         } else{
-            JAMS.sendInfoMsg("Current entity ID: " + entity.getDouble("elevation") + " has no receiver.");
+            getModel().sendInfoMsg("Current entity ID: " + entity.getDouble("elevation") + " has no receiver.");
         }
         
     }
