@@ -214,7 +214,7 @@ import org.unijena.jams.model.*;
         for(int h = 0; h < horizons; h++){
             System.out.print("\t"+mxLPS[h]);
         }
-        System.out.println("");*/
+        System.out.getRuntime().println("");*/
     }
     
     public void cleanup() {

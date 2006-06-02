@@ -195,9 +195,9 @@ import org.unijena.jams.model.*;
         }
         //int ts = (int)tsteps;
         int ts = (int) this.getContext().getNumberOfIterations();
-        getModel().sendInfoMsg("Startdate:\t" + sd.toString());
-        getModel().sendInfoMsg("Enddate:\t" + ed.toString());
-        getModel().sendInfoMsg("Tsteps:\t" + ts);
+        getModel().getRuntime().println("Startdate:\t" + sd.toString());
+        getModel().getRuntime().println("Enddate:\t" + ed.toString());
+        getModel().getRuntime().println("Tsteps:\t" + ts);
         
         valData = new double[ts];
         preData = new double[ts];
@@ -214,7 +214,7 @@ import org.unijena.jams.model.*;
     
     public void cleanup() {
         //eff calculations
-        getModel().sendInfoMsg("Counter is:\t " + counter);
+        getModel().getRuntime().println("Counter is:\t " + counter);
         JAMSIntegerArray method = new JAMSIntegerArray();
         double[] valData_1, preData_1;
         //data without first year
@@ -230,26 +230,26 @@ import org.unijena.jams.model.*;
             for(int i = 0; i < effMethod.getValue().length; i++){
                 if(effMethod.getValue()[i] == this.E1){
                     double e1 = NashSutcliffe.efficiency(preData_1, valData_1, 1);
-                    getModel().sendInfoMsg("e1 a-1:\t " + e1);
+                    getModel().getRuntime().println("e1 a-1:\t " + e1);
                 }else if(effMethod.getValue()[i] == this.E2){
                     double e2 = NashSutcliffe.efficiency(preData_1, valData_1, 2);
-                    getModel().sendInfoMsg("e2 a-1:\t " + e2);
+                    getModel().getRuntime().println("e2 a-1:\t " + e2);
                 }else if(effMethod.getValue()[i] == this.LOG_E1){
                     double le1 = NashSutcliffe.logEfficiency(preData_1, valData_1, 1);
-                    getModel().sendInfoMsg("log e1 a-1:\t " + le1);
+                    getModel().getRuntime().println("log e1 a-1:\t " + le1);
                 }else if(effMethod.getValue()[i] == this.LOG_E2){
                     double le2 = NashSutcliffe.logEfficiency(preData_1, valData_1, 2);
-                    getModel().sendInfoMsg("log e2 a-1:\t " + le2);
+                    getModel().getRuntime().println("log e2 a-1:\t " + le2);
                 }else if(effMethod.getValue()[i] == this.IOA_1){
                     double ioa1 = IndexOfAgreement.calc_IOA(preData_1, valData_1, 1, getModel());
-                    getModel().sendInfoMsg("ioa1 a-1:\t " + ioa1);
+                    getModel().getRuntime().println("ioa1 a-1:\t " + ioa1);
                 }else if(effMethod.getValue()[i] == this.IOA_2){
                     double ioa2 = IndexOfAgreement.calc_IOA(preData_1, valData_1, 2, getModel());
-                    getModel().sendInfoMsg("ioa2 a-1:\t " + ioa2);
+                    getModel().getRuntime().println("ioa2 a-1:\t " + ioa2);
                 }else if(effMethod.getValue()[i] == this.R2){
                     double[] rCoeff = Regression.calcLinReg(valData_1, preData_1);
-                    getModel().sendInfoMsg("r² a-1:\t " + rCoeff[2]);
-                    getModel().sendInfoMsg("grad a-1:\t" + rCoeff[1]);
+                    getModel().getRuntime().println("r² a-1:\t " + rCoeff[2]);
+                    getModel().getRuntime().println("grad a-1:\t" + rCoeff[1]);
                 }else if(effMethod.getValue()[i] == this.WR2){
                     double[] rCoeff = Regression.calcLinReg(valData_1, preData_1);
                     double wr;
@@ -257,19 +257,19 @@ import org.unijena.jams.model.*;
                         wr = Math.abs(rCoeff[1]) * rCoeff[2];
                     else
                         wr = Math.pow(Math.abs(rCoeff[1]), -1.0) * rCoeff[2];
-                    getModel().sendInfoMsg("wr² a-1:\t " + wr);
+                    getModel().getRuntime().println("wr² a-1:\t " + wr);
                 }else if(effMethod.getValue()[i] == this.DSGRAD){
                     double dsGrad = DoubleSumAnalysis.dsGrad(valData_1, preData_1);
                     this.dsGrad.setValue(dsGrad);
-                    getModel().sendInfoMsg("dsGrad a-1:\t" + dsGrad);
+                    getModel().getRuntime().println("dsGrad a-1:\t" + dsGrad);
                 }else if(effMethod.getValue()[i] == this.ABSVOLERROR){
                     double volErr = VolumeError.absVolumeError(valData_1, preData_1);
                     this.absVolErr.setValue(volErr);
-                    getModel().sendInfoMsg("absVolumeError a-1:\t" + volErr);
+                    getModel().getRuntime().println("absVolumeError a-1:\t" + volErr);
                 }else if(effMethod.getValue()[i] == this.RMSE){
                     double rmse = PredictionErrors.rootMeanSquareError(valData_1, preData_1);
                     this.rmse.setValue(rmse);
-                    getModel().sendInfoMsg("RMSE a-1:\t" + rmse);
+                    getModel().getRuntime().println("RMSE a-1:\t" + rmse);
                 }
                 
             }
@@ -278,33 +278,33 @@ import org.unijena.jams.model.*;
             if(effMethod.getValue()[i] == this.E1){
                 double e1 = NashSutcliffe.efficiency(preData, valData, 1);
                 this.e1.setValue(e1);
-                getModel().sendInfoMsg("e1:\t " + e1);
+                getModel().getRuntime().println("e1:\t " + e1);
             }else if(effMethod.getValue()[i] == this.E2){
                 double e2 = NashSutcliffe.efficiency(preData, valData, 2);
                 this.e2.setValue(e2);
-                getModel().sendInfoMsg("e2:\t" + e2);
+                getModel().getRuntime().println("e2:\t" + e2);
             }else if(effMethod.getValue()[i] == this.LOG_E1){
                 double le1 = NashSutcliffe.logEfficiency(preData, valData, 1);
                 this.le1.setValue(le1);
-                getModel().sendInfoMsg("log e1:\t " + le1);
+                getModel().getRuntime().println("log e1:\t " + le1);
             }else if(effMethod.getValue()[i] == this.LOG_E2){
                 double le2 = NashSutcliffe.logEfficiency(preData, valData, 2);
                 this.le2.setValue(le2);
-                getModel().sendInfoMsg("log e2:\t " + le2);
+                getModel().getRuntime().println("log e2:\t " + le2);
             }else if(effMethod.getValue()[i] == this.IOA_1){
                 double ioa1 = IndexOfAgreement.calc_IOA(preData, valData, 1, getModel());
                 this.ioa1.setValue(ioa1);
-                getModel().sendInfoMsg("ioa1:\t " + ioa1);
+                getModel().getRuntime().println("ioa1:\t " + ioa1);
             }else if(effMethod.getValue()[i] == this.IOA_2){
                 double ioa2 = IndexOfAgreement.calc_IOA(preData, valData, 2, getModel());
                 this.ioa2.setValue(ioa2);
-                getModel().sendInfoMsg("ioa2:\t " + ioa2);
+                getModel().getRuntime().println("ioa2:\t " + ioa2);
             }else if(effMethod.getValue()[i] == this.R2){
                 double[] rCoeff = Regression.calcLinReg(valData, preData);
                 this.rsq.setValue(rCoeff[2]);
                 this.grad.setValue(rCoeff[1]);
-                getModel().sendInfoMsg("r²:\t " + rCoeff[2]);
-                getModel().sendInfoMsg("grad:\t" + rCoeff[1]);
+                getModel().getRuntime().println("r²:\t " + rCoeff[2]);
+                getModel().getRuntime().println("grad:\t" + rCoeff[1]);
             }else if(effMethod.getValue()[i] == this.WR2){
                 double[] rCoeff = Regression.calcLinReg(valData, preData);
                 double wr;
@@ -313,19 +313,19 @@ import org.unijena.jams.model.*;
                 else
                     wr = Math.pow(Math.abs(rCoeff[1]), -1.0) * rCoeff[2];
                 this.wrsq.setValue(wr);
-                getModel().sendInfoMsg("wr²:\t " + wr);
+                getModel().getRuntime().println("wr²:\t " + wr);
             }else if(effMethod.getValue()[i] == this.DSGRAD){
                 double dsGrad = DoubleSumAnalysis.dsGrad(valData, preData);
                 this.dsGrad.setValue(dsGrad);
-                getModel().sendInfoMsg("dsGrad:\t" + dsGrad);
+                getModel().getRuntime().println("dsGrad:\t" + dsGrad);
             }else if(effMethod.getValue()[i] == this.ABSVOLERROR){
                 double volErr = VolumeError.absVolumeError(valData, preData);
                 this.absVolErr.setValue(volErr);
-                getModel().sendInfoMsg("absVolumeError a-1:\t" + volErr);
+                getModel().getRuntime().println("absVolumeError a-1:\t" + volErr);
             }else if(effMethod.getValue()[i] == this.RMSE){
                 double rmse = PredictionErrors.rootMeanSquareError(valData, preData);
                 this.rmse.setValue(rmse);
-                getModel().sendInfoMsg("RMSE a-1:\t" + rmse);
+                getModel().getRuntime().println("RMSE a-1:\t" + rmse);
             }
             
         }

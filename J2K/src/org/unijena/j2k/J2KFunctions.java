@@ -82,7 +82,7 @@ public class J2KFunctions {
                     try {
                         //hopefully these are double values :-)
                         e.setDouble(attributeNames.get(i), Double.parseDouble(token));
-                        model.println(attributeNames.get(i) + ": " + token, 4);
+                        model.getRuntime().println(attributeNames.get(i) + ": " + token, 4);
                     } catch (NumberFormatException nfe) {
                         //most probably this happens because of string values within J2K parameter files
                         e.setObject(attributeNames.get(i), token);
@@ -94,7 +94,7 @@ public class J2KFunctions {
             }
             
         } catch (IOException ioe) {
-            model.handle(ioe);
+            model.getRuntime().handle(ioe);
         }
         
         return entityList;
@@ -150,64 +150,64 @@ public class J2KFunctions {
                         strTok = new StringTokenizer(line, "\t");
                         String desc = strTok.nextToken();
                         if(desc.compareTo("missingDataVal") == 0){
-                           missData = Double.parseDouble(strTok.nextToken()); 
+                            missData = Double.parseDouble(strTok.nextToken());
                         }else if(desc.compareTo("dataStart") == 0){
-                           start = strTok.nextToken(); 
+                            start = strTok.nextToken();
                         }else if(desc.compareTo("dataEnd") == 0){
-                           end = strTok.nextToken(); 
+                            end = strTok.nextToken();
                         }else if(desc.compareTo("tres") == 0){
-                           tres = strTok.nextToken(); 
+                            tres = strTok.nextToken();
                         }
                         i++;
                         line = reader.readLine();
                         strTok = new StringTokenizer(line, "\t");
                         token = strTok.nextToken();
-                    }   
+                    }
                 }else if(token.compareTo("@statAttribVal") == 0){
                     int i = 0;
                     line = reader.readLine();
                     while(i < 6){
-                       headerLineCount++;
-                       strTok = new StringTokenizer(line, "\t");
-                       String desc = strTok.nextToken();
-                       int nstat = strTok.countTokens();
-                       
-                       if(desc.compareTo("name") == 0){
-                           name = new String[nstat];
-                           for(int j = 0; j < nstat; j++)
-                               name[j] = strTok.nextToken();
-                       }else if(desc.compareTo("ID") == 0){
-                           id = new String[nstat];
-                           for(int j = 0; j < nstat; j++)
-                               id[j] = strTok.nextToken();
-                       }else if(desc.compareTo("elevation") == 0){
-                           statelev = new double[nstat];
-                           for(int j = 0; j < nstat; j++)
-                               statelev[j] = Double.parseDouble(strTok.nextToken());
-                       }else if(desc.compareTo("x") == 0){
-                           statx = new double[nstat];
-                           for(int j = 0; j < nstat; j++)
-                               statx[j] = Double.parseDouble(strTok.nextToken());
-                       }else if(desc.compareTo("y") == 0){
-                           staty = new double[nstat];
-                           for(int j = 0; j < nstat; j++)
-                               staty[j] = Double.parseDouble(strTok.nextToken());
-                       }else if(desc.compareTo("dataColumn")==0){
-                           //do nothing for the moment just counting
-                           headerLineCount++;
-                           headerLineCount++;
-                       }
-                       i++;
-                       line = reader.readLine();
-                       strTok = new StringTokenizer(line, "\t");
-                       token = strTok.nextToken();
+                        headerLineCount++;
+                        strTok = new StringTokenizer(line, "\t");
+                        String desc = strTok.nextToken();
+                        int nstat = strTok.countTokens();
+                        
+                        if(desc.compareTo("name") == 0){
+                            name = new String[nstat];
+                            for(int j = 0; j < nstat; j++)
+                                name[j] = strTok.nextToken();
+                        }else if(desc.compareTo("ID") == 0){
+                            id = new String[nstat];
+                            for(int j = 0; j < nstat; j++)
+                                id[j] = strTok.nextToken();
+                        }else if(desc.compareTo("elevation") == 0){
+                            statelev = new double[nstat];
+                            for(int j = 0; j < nstat; j++)
+                                statelev[j] = Double.parseDouble(strTok.nextToken());
+                        }else if(desc.compareTo("x") == 0){
+                            statx = new double[nstat];
+                            for(int j = 0; j < nstat; j++)
+                                statx[j] = Double.parseDouble(strTok.nextToken());
+                        }else if(desc.compareTo("y") == 0){
+                            staty = new double[nstat];
+                            for(int j = 0; j < nstat; j++)
+                                staty[j] = Double.parseDouble(strTok.nextToken());
+                        }else if(desc.compareTo("dataColumn")==0){
+                            //do nothing for the moment just counting
+                            headerLineCount++;
+                            headerLineCount++;
+                        }
+                        i++;
+                        line = reader.readLine();
+                        strTok = new StringTokenizer(line, "\t");
+                        token = strTok.nextToken();
                     }
-                }   
+                }
             }
             
             
         } catch (IOException ioe) {
-            model.handle(ioe);
+            model.getRuntime().handle(ioe);
         }
         return entityList;
     }

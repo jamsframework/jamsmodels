@@ -699,7 +699,7 @@ public class Matrix {
       p = j;
       for (i = j+1; i < rows; i++) {
 	if (Math.abs(U.element[i][j]) > d) {
-	  // System.out.println(U.element[i][j] +", "+i);
+	  // System.out.getRuntime().println(U.element[i][j] +", "+i);
 	  d = Math.abs(U.element[i][j]);
 	  p = i;
 	}
@@ -850,7 +850,7 @@ public class Matrix {
     Matrix S = this.sort();
     Matrix y = new Matrix(S.rows, 1);
     double[] v = new double[S.rows];
-    // the only trick here is to handle ties!
+    // the only trick here is to getRuntime().handle ties!
     int i = 0, k, j, l;
     while (i<S.rows){
       j = 0; l = 0;

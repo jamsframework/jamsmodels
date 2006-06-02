@@ -105,10 +105,10 @@ public class StandardEntityWriter extends JAMSComponent {
             Object ob = entitySet.getCurrent().getObject(this.attributeName.getValue());
             int length = 0;
             if(ob.getClass().getName().contains("DoubleArray")){
-                //System.out.println("JAMSArray");
+                //System.out.getRuntime().println("JAMSArray");
                 length = ((JAMSDoubleArray)entitySet.getCurrent().getObject(this.attributeName.getValue())).getValue().length;
             } else{
-                //System.out.println("Primitive");
+                //System.out.getRuntime().println("Primitive");
             }
             JAMSEntityEnumerator enEnum = entitySet.getEntityEnumerator();
             enEnum.reset();
@@ -141,12 +141,12 @@ public class StandardEntityWriter extends JAMSComponent {
         while(cont){
             Object ob = entitySet.getCurrent().getObject(this.attributeName.getValue());
             if(ob.getClass().getName().contains("DoubleArray")){
-                //System.out.println("HRUNo: " +((JAMSDouble)entitySet.getCurrent().getObject("ID")).getValue());
+                //System.out.getRuntime().println("HRUNo: " +((JAMSDouble)entitySet.getCurrent().getObject("ID")).getValue());
                 double[] da = ((JAMSDoubleArray)entitySet.getCurrent().getObject(this.attributeName.getValue())).getValue();
                 for(int i = 0; i < da.length; i++)
                     writer.addData(""+da[i]);
             } else{
-                //System.out.println("Primitive");
+                //System.out.getRuntime().println("Primitive");
                 double da = ((JAMSDouble)entitySet.getCurrent().getObject(this.attributeName.getValue())).getValue();
                 writer.addData(""+da);
             }
@@ -161,7 +161,7 @@ public class StandardEntityWriter extends JAMSComponent {
         try {
             writer.writeData();
         } catch (org.unijena.jams.runtime.JAMSRuntimeException jre) {
-            getModel().handle(jre);
+            getModel().getRuntime().handle(jre);
         }
     }
     

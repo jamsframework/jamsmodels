@@ -105,7 +105,7 @@ public class Regression {
 			result[j] = 0;
 		}
 		for (j = 0; j < x.rows; j++) {
-//			System.out.println(x.element[j][0]);
+//			System.out.getRuntime().println(x.element[j][0]);
 			result[j] = x.element[j][0];
 		}
 

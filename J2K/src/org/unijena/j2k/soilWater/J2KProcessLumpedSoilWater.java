@@ -505,7 +505,7 @@ import org.unijena.jams.model.*;
             this.run_inRD2 = this.calcMPSInflow(this.run_inRD2);
             this.run_inRD2 = this.calcLPSInflow(this.run_inRD2);
             if(this.run_inRD2 > 0){
-                getModel().sendInfoMsg("RD2 is not null");
+                getModel().getRuntime().println("RD2 is not null");
             }
         }
         return true;

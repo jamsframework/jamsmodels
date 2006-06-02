@@ -145,9 +145,9 @@ import org.unijena.jams.model.*;
         
         if(toPoly != null){
             int id = (int)((JAMSDouble)entity.getObject("ID")).getValue();
-            //System.out.println("to poly ID: " + entity.getObject("ID"));
+            //System.out.getRuntime().println("to poly ID: " + entity.getObject("ID"));
             //if(id == 36)
-            //    System.out.println("stop");
+            //    System.out.getRuntime().println("stop");
             double[] srcDepth = ((JAMSDoubleArray)entity.getObject("depth_h")).getValue(); 
             double[] recDepth = ((JAMSDoubleArray)toPoly.getObject("depth_h")).getValue();
             int srcHors = srcDepth.length;
@@ -155,7 +155,7 @@ import org.unijena.jams.model.*;
             double[] RD2in = new double[recHors];
             this.calcParts(srcDepth, recDepth);
             
-            //System.out.println("to Poly ID: " + toPoly.getDouble("ID"));
+            //System.out.getRuntime().println("to Poly ID: " + toPoly.getDouble("ID"));
             double[] rdAr = ((JAMSDoubleArray)toPoly.getObject("inRD2_h")).getValue();
             /*for(int i = 0; i < RD2out.length; i++){
                 RD2in[i] = RD2in[i] + RD2out[i];
@@ -230,7 +230,7 @@ import org.unijena.jams.model.*;
             inGWExcess.setValue(0);
             
         } else{
-            getModel().sendInfoMsg("Current entity ID: " + entity.getDouble("elevation") + " has no receiver.");
+            getModel().getRuntime().println("Current entity ID: " + entity.getDouble("elevation") + " has no receiver.");
         }
         
     }
@@ -252,7 +252,7 @@ import org.unijena.jams.model.*;
             up = low - depthSrc[i];
             upBoundSrc[i] = up;
             lowBoundSrc[i] = low;
-            //System.out.println("Src --> up: "+up+", low: "+low);
+            //System.out.getRuntime().println("Src --> up: "+up+", low: "+low);
             
         }
         double[] upBoundRec = new double[recHorizons];
@@ -264,7 +264,7 @@ import org.unijena.jams.model.*;
             up = low - depthRec[i];
             upBoundRec[i] = up;
             lowBoundRec[i] = low;
-            //System.out.println("Rec --> up: "+up+", low: "+low);
+            //System.out.getRuntime().println("Rec --> up: "+up+", low: "+low);
         }
 
         

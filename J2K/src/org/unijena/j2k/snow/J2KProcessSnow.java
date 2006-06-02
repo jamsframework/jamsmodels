@@ -270,7 +270,7 @@ import org.unijena.jams.model.*;
     public void run() throws JAMSEntity.NoSuchAttributeException {
         
         //if(time.get(time.DAY_OF_MONTH) == 7 && entity.getDouble("ID") == 3607)
-        //    System.out.println("stop!");
+        //    System.out.getRuntime().println("stop!");
         this.run_area = this.area.getValue();
         
         
@@ -344,17 +344,17 @@ import org.unijena.jams.model.*;
         double balOut = this.run_snowMelt + this.in_rain + this.in_snow;
         double balance = balIn  + (balStorStart - balStorEnd) - balOut;
         if(Math.abs(balance) > 0.0001){
-            getModel().sendInfoMsg("balance error in snow module: "+balance);
-            getModel().sendInfoMsg("balIn: " + balIn);
-            getModel().sendInfoMsg("balStorStart: " + balStorStart);
-            getModel().sendInfoMsg("balStorEnd: " + balStorEnd);
-            getModel().sendInfoMsg("balOut: " + balOut);
-            getModel().sendInfoMsg("shit!");
+            getModel().getRuntime().println("balance error in snow module: "+balance);
+            getModel().getRuntime().println("balIn: " + balIn);
+            getModel().getRuntime().println("balStorStart: " + balStorStart);
+            getModel().getRuntime().println("balStorEnd: " + balStorEnd);
+            getModel().getRuntime().println("balOut: " + balOut);
+            getModel().getRuntime().println("shit!");
         }
         //if(this.run_drySWE > this.run_totSWE)
-        //    System.out.println("dry is larger than tot at end at time: " + time.toString() + " in entity: " + entity.getDouble("ID"));
+        //    System.out.getRuntime().println("dry is larger than tot at end at time: " + time.toString() + " in entity: " + entity.getDouble("ID"));
         if(this.run_snowMelt < 0)
-            getModel().sendInfoMsg("negative snowmelt!!");
+            getModel().getRuntime().println("negative snowmelt!!");
     }
     
     public void cleanup() {
@@ -415,13 +415,13 @@ import org.unijena.jams.model.*;
         if(this.run_totDens > critDens){
             this.run_snowMelt = this.run_snowMelt + calcSnowMeltRunoff(critDens, area);
             //if(this.run_snowMelt < 0)
-            //System.out.println("negative SM a");
+            //System.out.getRuntime().println("negative SM a");
         } else{
             double pRO = this.calcPotRunoff(critDens, this.run_totDens, this.run_totSWE - this.run_drySWE);
             this.run_snowMelt = this.run_snowMelt + pRO;
             this.run_totSWE = this.run_totSWE - pRO;
             //if(this.run_snowMelt < 0)
-            //System.out.println("negative SM b because of: " + pRO);
+            //System.out.getRuntime().println("negative SM b because of: " + pRO);
         }
         
         //Calculation of new snow densities
@@ -488,7 +488,7 @@ import org.unijena.jams.model.*;
             this.run_dryDens = 0;
             this.run_snowAge = 0;
             //if(this.run_snowMelt < 0)
-            //    System.out.println("negative SM 0");
+            //    System.out.getRuntime().println("negative SM 0");
         }
         
     }
@@ -505,7 +505,7 @@ import org.unijena.jams.model.*;
     
     private double calcPotRunoff(double crit_dens, double tot_dens, double liq_water){
         if(Math.abs(liq_water) > 0.00001 && liq_water < 0)
-            getModel().sendInfoMsg("liq_water is negative: "+liq_water);
+            getModel().getRuntime().println("liq_water is negative: "+liq_water);
         double potRunoff = (1 - Math.exp(-1 * Math.pow((crit_dens/tot_dens), 4))) * liq_water;
         if(potRunoff < 0)
             potRunoff = 0;
@@ -536,7 +536,7 @@ import org.unijena.jams.model.*;
         double deltaSnowDepth = potMeltrate / (this.run_dryDens * area);
         
         //if(this.run_snowMelt < 0)
-        //    System.out.println("negative SM 1");
+        //    System.out.getRuntime().println("negative SM 1");
         /** depletion of whole snow pack */
         if(deltaSnowDepth >= this.run_snowDepth){
             deltaSnowDepth = this.run_snowDepth;
@@ -548,12 +548,12 @@ import org.unijena.jams.model.*;
             this.run_drySWE = 0;
             this.run_snowAge = 0;
             //if(this.run_snowMelt < 0)
-            //System.out.println("negative SM 1.5");
+            //System.out.getRuntime().println("negative SM 1.5");
             //nothing more to do -- no snow left
             return true;
         }
         //if(this.run_snowMelt < 0)
-        //    System.out.println("negative SM 2");
+        //    System.out.getRuntime().println("negative SM 2");
         
         /** decrease of snow pack due to snow melt */
         this.run_snowDepth = this.run_snowDepth - deltaSnowDepth;
@@ -566,18 +566,18 @@ import org.unijena.jams.model.*;
         this.calcSnowDensities(area);
         
         //if(this.run_snowMelt < 0)
-        //    System.out.println("negative SM 3");
+        //    System.out.getRuntime().println("negative SM 3");
         /** potential water from snow pack */
         if(this.run_totDens >= critDens){
             this.run_snowMelt = this.run_snowMelt + calcSnowMeltRunoff(critDens, area);
             //if(this.run_snowMelt < 0)
-            //System.out.println("negative SM 4");
+            //System.out.getRuntime().println("negative SM 4");
         } else{
             double pRO = this.calcPotRunoff(critDens, this.run_totDens, this.run_totSWE - this.run_drySWE);
             this.run_snowMelt = this.run_snowMelt + pRO;
             this.run_totSWE = this.run_totSWE - pRO;
             //if(this.run_snowMelt < 0)
-            //System.out.println("negative SM 5");
+            //System.out.getRuntime().println("negative SM 5");
         }
         //Calculation of new snow densities
         this.calcSnowDensities(area);
@@ -597,13 +597,13 @@ import org.unijena.jams.model.*;
         if(this.run_totDens >= critDens){
             this.run_snowMelt = this.run_snowMelt + calcSnowMeltRunoff(critDens, area);
             //if(this.run_snowMelt < 0)
-            //System.out.println("negative SM 6");
+            //System.out.getRuntime().println("negative SM 6");
         } else{
             double pRO = this.calcPotRunoff(critDens, this.run_totDens, this.run_totSWE - this.run_drySWE);
             this.run_snowMelt = this.run_snowMelt + pRO;
             this.run_totSWE = this.run_totSWE - pRO;
             //if(this.run_snowMelt < 0)
-            //System.out.println("negative SM 7");
+            //System.out.getRuntime().println("negative SM 7");
         }
         
         this.calcSnowDensities(area);

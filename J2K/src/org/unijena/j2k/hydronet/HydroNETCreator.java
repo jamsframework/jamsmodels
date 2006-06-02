@@ -79,7 +79,7 @@ public class HydroNETCreator extends JAMSComponent {
         DistNeuron dist_neuron;
         Neuron downstream_neuron;
         
-        getModel().sendInfoMsg("Setup HydroNET");
+        getModel().getRuntime().println("Setup HydroNET");
          
         //setup out neurons
         NitrogenOutNeuron.setSizeOfArea(1);
@@ -119,7 +119,7 @@ public class HydroNETCreator extends JAMSComponent {
             else {
                 downstream_neuron = (Neuron)downstreamPoly.getObject("NITROGEN_NEURON");
                 if (downstream_neuron == null)
-                    getModel().sendInfoMsg("WARNING: Downstream Neuron Null");
+                    getModel().getRuntime().println("WARNING: Downstream Neuron Null");
                 nitr_neuron.setDownstreamNeuron(downstream_neuron,0.5);
                 nitr_neuron.setOutputNeuron(NitrogenOutNeuron,0.5);
             }
@@ -175,7 +175,7 @@ public class HydroNETCreator extends JAMSComponent {
         NitrogenOutNeuron.calc();
         CostOutNeuron.calc();
         
-        getModel().sendInfoMsg("NO - Output:" + new Double(NitrogenOutNeuron.getActivation()).toString() + 
+        getModel().getRuntime().println("NO - Output:" + new Double(NitrogenOutNeuron.getActivation()).toString() + 
                          " Cost - Output:" + new Double(CostOutNeuron.getActivation()).toString() );
         
         //second step backpropagate        

@@ -486,10 +486,10 @@ import org.unijena.jams.model.*;
         double balOut = 0;
         double balET = 0;
 
-        //System.out.println("Processing HRU: " + entity.getDouble("ID"));
+        //System.out.getRuntime().println("Processing HRU: " + entity.getDouble("ID"));
         //if(this.time.get(time.DATE) == 23 && this.time.get(time.MONTH)==10 && this.time.get(time.YEAR)==1989){
         //    if(entity.getDouble("ID") == 1027.0)
-        //        System.out.println("stop!");
+        //        System.out.getRuntime().println("stop!");
         // }
         this.run_area = area.getValue();
         this.run_slope = slope.getValue();
@@ -555,11 +555,11 @@ import org.unijena.jams.model.*;
                 + this.run_actDPS;
         
         /*if(this.run_infiltration < 0){
-            System.out.println("negative infiltration!");
-            System.out.println("inRain: " + this.run_inRain);
-            System.out.println("inSnow: " + this.run_inSnow);
-            System.out.println("inSnowMelt: " + this.run_snowMelt);
-            System.out.println("inDPS: " + this.run_actDPS);
+            System.out.getRuntime().println("negative infiltration!");
+            System.out.getRuntime().println("inRain: " + this.run_inRain);
+            System.out.getRuntime().println("inSnow: " + this.run_inSnow);
+            System.out.getRuntime().println("inSnowMelt: " + this.run_snowMelt);
+            System.out.getRuntime().println("inDPS: " + this.run_actDPS);
         }*/
         //balance
         balIn += this.run_inRain;
@@ -580,7 +580,7 @@ import org.unijena.jams.model.*;
         /** determining maximal infiltration rate */
         double maxInf = this.calcMaxInfiltration(time.get(time.MONTH)+1);
         if(maxInf < this.run_infiltration){
-            //System.out.println("maxInf:");
+            //System.out.getRuntime().println("maxInf:");
             double deltaInf = this.run_infiltration - maxInf;
             this.run_actDPS = this.run_actDPS + deltaInf;
             this.run_infiltration = maxInf;
@@ -598,7 +598,7 @@ import org.unijena.jams.model.*;
         }
         
         if(this.run_infiltration > 0){
-            //System.out.println("Infiltration after: " +  this.run_infiltration);
+            //System.out.getRuntime().println("Infiltration after: " +  this.run_infiltration);
             this.run_actDPS += this.run_infiltration;
             this.run_infiltration = 0;
         }
@@ -622,7 +622,7 @@ import org.unijena.jams.model.*;
             this.run_vertComp = this.calcLPSInflow(this.run_vertComp, h);
             
             if(this.run_vertComp > 0){
-                //System.out.println("VertIn is not zero!");
+                //System.out.getRuntime().println("VertIn is not zero!");
                 //we put it back where it came from, the horizon above!
                 this.run_vertComp = this.calcMPSInflow(this.run_vertComp, h-1);
                 this.run_vertComp = this.calcLPSInflow(this.run_vertComp, h-1);
@@ -655,7 +655,7 @@ import org.unijena.jams.model.*;
             
             /** updating saturations */
             this.calcSoilSaturations(false);
-            //System.out.println("end of horizon loop");
+            //System.out.getRuntime().println("end of horizon loop");
         }
         if(this.run_overlandflow < 0)
             System.out.println("overlandflow is negative! --> " + this.run_overlandflow);
@@ -705,7 +705,7 @@ import org.unijena.jams.model.*;
         infiltration_hor.setValue(infilhor);
         perco_hor.setValue(perchor);
         actETP_h.setValue(actETP_hor);
-        //System.out.println("RD2_out: " + this.run_outRD2[0] + "\t" + this.run_outRD2[1] + "\t" + this.run_outRD2[2]);
+        //System.out.getRuntime().println("RD2_out: " + this.run_outRD2[0] + "\t" + this.run_outRD2[1] + "\t" + this.run_outRD2[2]);
     }
     
     public void cleanup() {
@@ -763,7 +763,7 @@ import org.unijena.jams.model.*;
                 this.run_inRD2[h] = this.calcMPSInflow(this.run_inRD2[h], h);
                 this.run_inRD2[h] = this.calcLPSInflow(this.run_inRD2[h], h);
                 if(this.run_inRD2[h] > 0){
-                    //System.out.println("RD2 of entity " + entity.getDouble("ID") + " and horizon " + h +  " is routed through RD2out: "+this.run_inRD2[h]);
+                    //System.out.getRuntime().println("RD2 of entity " + entity.getDouble("ID") + " and horizon " + h +  " is routed through RD2out: "+this.run_inRD2[h]);
                     this.run_outRD2[h] = this.run_outRD2[h] + this.run_inRD2[h];
                     this.run_inRD2[h] = 0;
                 }

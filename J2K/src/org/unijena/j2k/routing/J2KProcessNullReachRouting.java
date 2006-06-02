@@ -191,7 +191,7 @@ import org.unijena.jams.model.*;
  /*       double q_act_tot = RD1act + RD2act + RG1act + RG2act;
         
        //int ID = (int)entity.getDouble("ID");
-       // System.out.println("Processing reach: " + ID);
+       // System.out.getRuntime().println("Processing reach: " + ID);
         if(q_act_tot == 0){
             outRD1.setValue(0);
             outRD2.setValue(0);

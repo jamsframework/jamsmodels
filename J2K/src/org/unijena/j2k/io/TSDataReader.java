@@ -119,7 +119,7 @@ public class TSDataReader extends JAMSComponent {
     private JAMSTableDataArray da;
     
     public void init() {
-        //handle the j2k metadata descriptions
+        //getRuntime().handle the j2k metadata descriptions
         int headerLineCount = 0;
         String dataName = null;
         String tres = null;
@@ -223,7 +223,7 @@ public class TSDataReader extends JAMSComponent {
             
             
         } catch (IOException ioe) {
-            getModel().handle(ioe);
+            getModel().getRuntime().handle(ioe);
         }
         
         store = new GenericDataReader(dirName.getValue()+"/"+dataFileName.getValue(), false, headerLineCount+1);
@@ -237,7 +237,7 @@ public class TSDataReader extends JAMSComponent {
         if(timeInterval != null){
             //check if the time series start and end date match the temporal context's time interval
             if (timeInterval.getStart().before(startTime) || timeInterval.getEnd().after(endTime)) {
-                getModel().sendHalt("TSData start and end time do not match current temporal context!");
+                getModel().getRuntime().sendHalt("TSData start and end time do not match current temporal context!");
             }
         }
                 

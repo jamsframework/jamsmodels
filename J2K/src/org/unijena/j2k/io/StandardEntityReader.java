@@ -84,11 +84,11 @@ public class StandardEntityReader extends JAMSComponent {
         createTopology();
         
         //create total order on hrus and reaches that allows processing them subsequently
-        getModel().sendInfoMsg("Create ordered hru-list");
+        getModel().getRuntime().println("Create ordered hru-list");
         createOrderedList(hrus, "to_poly");
-        getModel().sendInfoMsg("Create ordered reach-list");
+        getModel().getRuntime().println("Create ordered reach-list");
         createOrderedList(reaches, "to_reach");
-        getModel().sendInfoMsg("Entities read successfull!");
+        getModel().getRuntime().println("Entities read successfull!");
     }
     
     private void createTopology() throws JAMSEntity.NoSuchAttributeException {

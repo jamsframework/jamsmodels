@@ -100,7 +100,7 @@ public class LayeredSoilParaReader extends JAMSComponent {
             }
             e.setDouble("horizons", horizon);
         }
-        getModel().sendInfoMsg("Layered soil parameter file processed ...");
+        getModel().getRuntime().println("Layered soil parameter file processed ...");
     }
     
     

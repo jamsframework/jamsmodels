@@ -165,7 +165,7 @@ public class Regionalisation extends JAMSComponent {
         cacheFile = new File(dirName.getValue() + "/$" + this.getInstanceName() + ".cache");
 
         if (!cacheFile.exists() && dataCaching.getValue()) {
-            getModel().sendHalt(this.getInstanceName() + ": data caching is switched on but no cache file available!");
+            getModel().getRuntime().sendHalt(this.getInstanceName() + ": data caching is switched on but no cache file available!");
         } 
         
         if (dataCaching.getValue()) {
@@ -177,7 +177,7 @@ public class Regionalisation extends JAMSComponent {
             //checking validity of input information
             //int nstat = statX.getValue().length;
             //if(nidw.getValue() > nstat){
-            //    System.out.println("Number of stations is smaller than parameter nidw");
+            //    System.out.getRuntime().println("Number of stations is smaller than parameter nidw");
             //}
             useCache = false;
             writer = new ObjectOutputStream(new BufferedOutputStream(new FileOutputStream(cacheFile)));
@@ -216,7 +216,7 @@ public class Regionalisation extends JAMSComponent {
                 }
             }
             dataValue.setValue(value);
-            //System.out.println("R2 entity: "+ targetElevation + "weights: " + sourceWeights[0] + ", "+ sourceWeights[1] + ", "+ sourceWeights[2] + ", ");
+            //System.out.getRuntime().println("R2 entity: "+ targetElevation + "weights: " + sourceWeights[0] + ", "+ sourceWeights[1] + ", "+ sourceWeights[2] + ", ");
             writer.writeDouble(value);
             
             
