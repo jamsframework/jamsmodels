@@ -4,13 +4,14 @@
 
 <model name="abc model" author="D. Boyle and P. Krause" date="18.05.2006">
     <contextcomponent class="org.unijena.jams.tools.JAMSParaSampler" name="Sampler">
-        <var name="parameterIDs" value="abcModel.a;abcModel.b;abcModel.c"/>
+        <var name="parameterIDs" value="abcModel.b"/><!--abcModel.c"/-->
         <!--var name="parameterIDs" value="abcModel.b;abcModel.c"/-->
-        <!--var name="boundaries" value="[0.0>0.97852];[0.0>1.0]"/-->
-        <var name="boundaries" value="[0.0>1.0];[0.0>1.0];[0.0>1.0]"/>
+        <!--var name="boundaries" value="[0.0>1.0];[0.0>1.0]"/-->
+        <var name="boundaries" value="[0.0>1.0]"/>
         <!--var name="boundaries" value="[0>0.97852]"/-->
         <var name="sampleCount" value="1000"/>
-        <var name="goodness" attribute="e2"/>
+        <var name="effMethod" attribute="e2;le2"/>
+        <!--var name="goodness" attribute="e2"/-->
         <var name="disable" value="false"/>
         <var name="fileName" value="D:\Development\AbcModel\abc.par"/>
         
