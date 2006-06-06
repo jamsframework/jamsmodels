@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <!--<!DOCTYPE JAMSModel SYSTEM "jamsmodel.dtd">-->
 <model name="J2K" author="Peter Krause" date="30.01.2006">
-    <globvar name="workspaceDir" value="D:\java\jamsmodels\JAMS-Application\JAMS-Gehlberg"/>
+    <globvar name="workspaceDir" value="D:\jamsmodels\JAMS-Application\JAMS-Gehlberg"/>
     <globvar name="snow_trs" value="0.5"/>
     <globvar name="snow_trans" value="2.0"/>
     <globvar name="data_caching" value="1"/>
@@ -224,7 +224,7 @@
     </contextcomponent>
 
     <contextcomponent class="org.unijena.jams.model.JAMSTemporalContext" name="TemporalContext">
-        <var name="timeInterval" value="1989-11-01 7:30 1989-11-03 7:30 6 1"/>
+        <var name="timeInterval" value="1989-11-01 7:30 1990-11-03 7:30 6 1"/>
         
         <component class="org.unijena.jams.gui.JAMSProgress" name="JAMSProgress">
             <var name="title" value="J2K model execution"/>
