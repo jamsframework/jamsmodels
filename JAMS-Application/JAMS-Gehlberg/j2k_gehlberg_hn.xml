@@ -87,8 +87,11 @@
             <jamsvar name="hrus" provider="ParaReader" providervar="hrus" />
         </component>
 
-	<contextcomponent class="org.unijena.jams.model.JAMSTemporalContext" name="TemporalContext">
-            <jamsvar name="timeInterval" value="1989-11-01 7:30 2020-10-31 7:30 7 1"/>
+	<contextcomponent class="org.unijena.j2k.hydronet.HydroNETControl" name="HNControl">
+            <jamsvar name="NitrogenOutEntity" provider="HNCreator" providervar="NitrogenOutEntity" />
+            <jamsvar name="CostOutEntity"     provider="HNCreator" providervar="CostOutEntity" />
+            <jamsvar name="learningrate"     value="0.000005" />
+            <jamsvar name="delta_min"     value="0.5" />
 
             <contextcomponent class="org.unijena.jams.model.JAMSSpatialContext" name="MainContext">
                 <jamsvar name="entities" provider="HNCreator" providervar="hrus"/>
@@ -100,7 +103,7 @@
 
 	    <component class="org.unijena.j2k.hydronet.HydroNETCalc" name="HNCalc">
                 <jamsvar name="NitrogenOutEntity" provider="HNCreator" providervar="NitrogenOutEntity" />
-                <jamsvar name="CostOutEntity"     provider="HNCreator" providervar="CostOutEntity" />
+                <jamsvar name="CostOutEntity"     provider="HNCreator" providervar="CostOutEntity" />	    
             </component>
 
     	    <contextcomponent class="org.unijena.jams.model.JAMSSpatialContext" name="MainContext_back">
