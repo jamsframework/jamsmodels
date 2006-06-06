@@ -52,19 +52,16 @@ public class HydroNETCalc extends JAMSComponent {
             description = "Collection of hru objects"
             )
             public JAMSEntity CostOutEntity;    
-    
+        
     public void run() throws JAMSEntity.NoSuchAttributeException {            
 	DistNeuron NitrogenOutNeuron = (DistNeuron)NitrogenOutEntity.getObject("NEURON");
 	DistNeuron CostOutNeuron = (DistNeuron)CostOutEntity.getObject("NEURON");
 	
         NitrogenOutNeuron.calc();
-        CostOutNeuron.calc();
-        
+        CostOutNeuron.calc();        	
+		
 	NitrogenOutNeuron.reset();
-	CostOutNeuron.reset();
-	
-        getModel().getRuntime().println("NO - Output:" + new Double(NitrogenOutNeuron.getActivation()).toString() + 
-                         "  Cost - Output:" + new Double(CostOutNeuron.getActivation()).toString() );
+	CostOutNeuron.reset();	        
         
         //second step backpropagate        
         NitrogenOutNeuron.setDelta(-NitrogenOutNeuron.getActivation());
