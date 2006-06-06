@@ -99,7 +99,7 @@ public class ManageLanduse extends JAMSComponent {
 //            System.out.println("da" + nextDay + time.get(JAMSCalendar.DAY_OF_YEAR));
         
         if ((nextDay-1) == time.get(JAMSCalendar.DAY_OF_YEAR)) {
-            if (currentManagement.harvest != -1) {
+            if (currentManagement.harvest != 1) {
                 //do harvesting here!!
                 this.doHarvest.setValue(true);
             }
