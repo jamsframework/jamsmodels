@@ -1,9 +1,10 @@
-#FMINN fertminN: Fraction of mineral nitrogen in the fertilizer fert.dat
+#FMINN fertminN: Faction of mineral N (NO3 and NH4) in fertilizer (kg min-N/kg fertilizer).
 #FMINP fertminP: Fraction of mineral P in the fertilizer fert.dat
-#FORGN fertorgN: Fraction of organic N in the fertilizer fert.dat
+#FORGN fertorgN: Fraction of organic N in fertilizer (kg org-N/kg fertilizer). 
 #FORGP fertorgP: Fraction of organic P in the fertilizer fert.dat
-#FNH3N fertNH4: Fraction of mineral N in the fertilizer that is ammonium
-FID	fertnm	fminn	fminp	forgn	forgp	fnh3n	bactpdb	bactldb	bactddb	desc	
+#FNH4N fertNH4: Fraction of mineral N in the fertilizer that is ammonium
+#Fraction values should be between 0.0 and 1.0.
+FID	fertnm	fminn	fminp	forgn	forgp	fnh4n	bactpdb	bactldb	bactddb	desc	
 1	Elem-N	1.00	0.00	0.00	0.00	0.00	0.00	0.00	0	Elemental Nitrogen
 2	Elem-P	0.00	1.00	0.00	0.00	0.00	0.00	0.00	0	Elemental Phosphorous
 3	ANH-NH3	0.82	0.00	0.00	0.00	1.00	0.00	0.00	0	Anhydrous Ammonia
