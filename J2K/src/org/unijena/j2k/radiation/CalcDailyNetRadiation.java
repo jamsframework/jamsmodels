@@ -76,6 +76,13 @@ import org.unijena.jams.model.*;
             update = JAMSVarDescription.UpdateType.RUN,
             description = "state variable solar radiation"
             )
+            public JAMSDouble extRad;
+    
+    @JAMSVarDescription(
+            access = JAMSVarDescription.AccessType.READ,
+            update = JAMSVarDescription.UpdateType.RUN,
+            description = "state variable solar radiation"
+            )
             public JAMSDouble solRad;
     
     @JAMSVarDescription(
@@ -156,19 +163,20 @@ import org.unijena.jams.model.*;
             double sh   = sunh.getValue();
             double sR   = solRad.getValue();
             double alb  = albedo.getValue();
-            
+            double extraTerrestialRad = extRad.getValue();
+                    
             double radLat = org.unijena.j2k.mathematicalCalculations.MathematicalCalculations.deg2rad(lati);
             double declination = org.unijena.j2k.physicalCalculations.SolarRadiationCalculationMethods.calc_SunDeclination(julDay);
             
             double sat_vapour_pressure = org.unijena.j2k.physicalCalculations.ClimatologicalVariables.calc_saturationVapourPressure(temp);
             double act_vapour_pressure = org.unijena.j2k.physicalCalculations.ClimatologicalVariables.calc_vapourPressure(rh, sat_vapour_pressure);
             
-            double extraTerrestialRad = sR /(0.25 + 0.5 * sh);
+            
             double sunsetHourAngle = org.unijena.j2k.physicalCalculations.DailySolarRadiationCalculationMethods.calc_SunsetHourAngle(radLat, declination);
             double maxSunshine = org.unijena.j2k.physicalCalculations.DailySolarRadiationCalculationMethods.calc_maximumSunshineHours(sunsetHourAngle);
             double clearSkyRad = org.unijena.j2k.physicalCalculations.SolarRadiationCalculationMethods.calc_ClearSkySolarRadiation(elev, extraTerrestialRad);
             double netSWRadiation = org.unijena.j2k.physicalCalculations.SolarRadiationCalculationMethods.calc_NetShortwaveRadiation(alb, sR);
-            double netLWRadiation = org.unijena.j2k.physicalCalculations.DailySolarRadiationCalculationMethods.calc_DailyNetLongwaveRadiation(temp, act_vapour_pressure, sh, maxSunshine, false);
+            double netLWRadiation = org.unijena.j2k.physicalCalculations.DailySolarRadiationCalculationMethods.calc_DailyNetLongwaveRadiation(temp, act_vapour_pressure, sR, clearSkyRad, false);
             
             double nR = org.unijena.j2k.physicalCalculations.SolarRadiationCalculationMethods.calc_NetRadiation(netSWRadiation, netLWRadiation);
             
