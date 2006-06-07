@@ -224,7 +224,7 @@
     </contextcomponent>
 
     <contextcomponent class="org.unijena.jams.model.JAMSTemporalContext" name="TemporalContext">
-        <var name="timeInterval" value="1989-11-01 7:30 1990-11-03 7:30 6 1"/>
+        <var name="timeInterval" value="1989-11-01 7:30 1993-10-31 7:30 6 1"/>
         
         <component class="org.unijena.jams.gui.JAMSProgress" name="JAMSProgress">
             <var name="title" value="J2K model execution"/>

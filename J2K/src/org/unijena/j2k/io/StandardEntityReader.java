@@ -142,6 +142,8 @@ public class StandardEntityReader extends JAMSComponent {
             depthMap.put(hruIterator.next(), new Integer(0));
         }
         
+        int numHRUs = col.getEntities().size();
+        
         //put all collection elements (keys) and their depth (values) into a HashMap
         int maxDepth = 0;
         while (mapChanged) {
@@ -155,8 +157,13 @@ public class StandardEntityReader extends JAMSComponent {
                     eDepth = depthMap.get(e);
                     fDepth = depthMap.get(f);
                     if (fDepth.intValue() <= eDepth.intValue()) {
+                        if (eDepth.intValue() >= numHRUs) {
+                            getModel().getRuntime().sendHalt("Found circle in entity parameter file!");
+                            return;
+                        }
                         depthMap.put(f, new Integer(fDepth.intValue()+1));
                         mapChanged = true;
+                        
                     }
                 }
             }
