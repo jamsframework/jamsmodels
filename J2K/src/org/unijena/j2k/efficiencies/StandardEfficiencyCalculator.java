@@ -73,84 +73,84 @@ import org.unijena.jams.model.*;
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
             update = JAMSVarDescription.UpdateType.RUN,
-            description = ""
+            description = "Nash-Sutcliffe-efficiency with power 1.0"
             )
             public JAMSDouble e1;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
             update = JAMSVarDescription.UpdateType.RUN,
-            description = ""
+            description = "Nash-Sutcliffe-efficiency with power 2.0"
             )
             public JAMSDouble e2;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
             update = JAMSVarDescription.UpdateType.RUN,
-            description = ""
+            description = "logarithmic Nash-Sutcliffe-efficiency with power 1.0"
             )
             public JAMSDouble le1;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
             update = JAMSVarDescription.UpdateType.RUN,
-            description = ""
+            description = "logarithmic Nash-Sutcliffe-efficiency with power 2.0"
             )
             public JAMSDouble le2;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
             update = JAMSVarDescription.UpdateType.RUN,
-            description = ""
+            description = "Willmot's index of agreement with power 1.0"
             )
             public JAMSDouble ioa1;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
             update = JAMSVarDescription.UpdateType.RUN,
-            description = ""
+            description = "Willmot's index of agreement with power 2.0"
             )
             public JAMSDouble ioa2;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
             update = JAMSVarDescription.UpdateType.RUN,
-            description = ""
+            description = "coefficient of determination r²"
             )
             public JAMSDouble rsq;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
             update = JAMSVarDescription.UpdateType.RUN,
-            description = ""
+            description = "gradient of linear regression"
             )
             public JAMSDouble grad;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
             update = JAMSVarDescription.UpdateType.RUN,
-            description = ""
+            description = "weighted r²"
             )
             public JAMSDouble wrsq;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
             update = JAMSVarDescription.UpdateType.RUN,
-            description = ""
+            description = "gradient of double sum regression"
             )
             public JAMSDouble dsGrad;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
             update = JAMSVarDescription.UpdateType.RUN,
-            description = ""
+            description = "absolute volume error"
             )
             public JAMSDouble absVolErr;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
             update = JAMSVarDescription.UpdateType.RUN,
-            description = ""
+            description = "root mean square error"
             )
             public JAMSDouble rmse;
     
@@ -213,6 +213,7 @@ import org.unijena.jams.model.*;
     }
     
     public void cleanup() {
+        //System.out.println("cleanup eff");
         //eff calculations
         getModel().getRuntime().println("Counter is:\t " + counter);
         JAMSIntegerArray method = new JAMSIntegerArray();
@@ -321,11 +322,19 @@ import org.unijena.jams.model.*;
             }else if(effMethod.getValue()[i] == this.ABSVOLERROR){
                 double volErr = VolumeError.absVolumeError(valData, preData);
                 this.absVolErr.setValue(volErr);
+
+                JAMS.sendInfoMsg("absVolumeError:\t" + volErr);
+
                 getModel().getRuntime().println("absVolumeError a-1:\t" + volErr);
+
             }else if(effMethod.getValue()[i] == this.RMSE){
                 double rmse = PredictionErrors.rootMeanSquareError(valData, preData);
                 this.rmse.setValue(rmse);
+
+                JAMS.sendInfoMsg("RMSE:\t" + rmse);
+
                 getModel().getRuntime().println("RMSE a-1:\t" + rmse);
+
             }
             
         }
