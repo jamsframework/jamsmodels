@@ -1,6 +1,6 @@
 #ahum.dat absolute Humidity				
 @dataValueAttribs				
-rhum	0	100.00	%
+ahum	0.0	100.0	g/cm3
 @dataSetAttribs				
 missingDataVal	-9999			
 dataStart	01.02.1993 07:30			
