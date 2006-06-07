@@ -323,7 +323,7 @@ import org.unijena.jams.model.*;
                 double volErr = VolumeError.absVolumeError(valData, preData);
                 this.absVolErr.setValue(volErr);
 
-                JAMS.sendInfoMsg("absVolumeError:\t" + volErr);
+                getModel().getRuntime().sendInfoMsg("absVolumeError:\t" + volErr);
 
                 getModel().getRuntime().println("absVolumeError a-1:\t" + volErr);
 
@@ -331,7 +331,7 @@ import org.unijena.jams.model.*;
                 double rmse = PredictionErrors.rootMeanSquareError(valData, preData);
                 this.rmse.setValue(rmse);
 
-                JAMS.sendInfoMsg("RMSE:\t" + rmse);
+                getModel().getRuntime().sendInfoMsg("RMSE:\t" + rmse);
 
                 getModel().getRuntime().println("RMSE a-1:\t" + rmse);
 

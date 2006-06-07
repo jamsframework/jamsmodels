@@ -175,7 +175,7 @@ public class HydroNETControl extends JAMSContext {
 	    }while (hasNext());
 	}
 	catch (JAMSEntity.NoSuchAttributeException e) {
-		JAMS.sendInfoMsg("No such attribute Exception: " + e.getMessage());		    
+		getModel().getRuntime().sendInfoMsg("No such attribute Exception: " + e.getMessage());		    
 	}
     }
     
