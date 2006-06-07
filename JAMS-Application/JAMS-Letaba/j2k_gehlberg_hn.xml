@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--<!DOCTYPE JAMSModel SYSTEM "jamsmodel.dtd">-->
+<model name="J2K" author="Peter Krause" date="30.01.2006">
+    <globvar name="workspaceDir" value="E:\JAMS\MODELS\JAMS-Application\JAMS-Gehlberg"/>
+    <globvar name="snow_trs" value="0.5"/>
+    <globvar name="snow_trans" value="2.0"/>
+    <globvar name="data_caching" value="0"/>
+	
+    <contextcomponent class="org.unijena.jams.model.JAMSSpatialContext" name="InitCatchmentContext">
+      
+     <contextcomponent class="org.unijena.jams.model.JAMSSpatialContext" name="CatchmentContext">
+        
+        <component class="org.unijena.j2k.io.StandardEntityReader" name="ParaReader">
+            <jamsvar name="dirName" globvar="workspaceDir"/>
+            <jamsvar name="hruFileName" value="parameter\hrus_new.par"/>
+            <jamsvar name="reachFileName" value="parameter\reach.par"/>
+        </component>
+    
+        <component class="org.unijena.j2k.io.StandardLUReader" name="LUReader">
+            <jamsvar name="dirName" globvar="workspaceDir"/>
+            <jamsvar name="luFileName" value="parameter\landuse.par"/>
+            <jamsvar name="hrus" provider="ParaReader" providervar="hrus"/>
+        </component>
+    
+        <component class="org.unijena.j2k.io.StandardSoilParaReader" name="STReader">
+            <jamsvar name="dirName" globvar="workspaceDir"/>
+            <jamsvar name="stFileName" value="parameter\soil.par"/>
+            <jamsvar name="hrus" provider="ParaReader" providervar="hrus"/>
+        </component>
+    
+        <component class="org.unijena.j2k.io.StandardGroundwaterParaReader" name="GWReader">
+            <jamsvar name="dirName" globvar="workspaceDir"/>
+            <jamsvar name="gwFileName" value="parameter\hgeo.par"/>
+            <jamsvar name="hrus" provider="ParaReader" providervar="hrus"/>
+        </component>
+    
+        <component class="org.unijena.j2k.io.TSDataReader" name="InitTmeanDataReader">
+            <jamsvar name="dirName" globvar="workspaceDir"/>
+            <jamsvar name="skipRegression" globvar="data_caching"/>
+            <jamsvar name="dataFileName" value="data\tmean.dat"/>
+            <jamsvar name="startColumn" value="3"/>
+        </component>
+    
+        <component class="org.unijena.j2k.io.TSDataReader" name="InitTminDataReader">
+            <jamsvar name="dirName" globvar="workspaceDir"/>
+            <jamsvar name="skipRegression" globvar="data_caching"/>
+            <jamsvar name="dataFileName" value="data\tmin.dat"/>
+            <jamsvar name="startColumn" value="3"/>
+        </component>
+    
+        <component class="org.unijena.j2k.io.TSDataReader" name="InitTmaxDataReader">
+            <jamsvar name="dirName" globvar="workspaceDir"/>
+            <jamsvar name="skipRegression" globvar="data_caching"/>
+            <jamsvar name="dataFileName" value="data\tmax.dat"/>
+            <jamsvar name="startColumn" value="3"/>
+        </component>
+    
+        <component class="org.unijena.j2k.io.TSDataReader" name="InitAhumDataReader">
+            <jamsvar name="dirName" globvar="workspaceDir"/>
+            <jamsvar name="skipRegression" globvar="data_caching"/>
+            <jamsvar name="dataFileName" value="data\ahum.dat"/>
+            <jamsvar name="startColumn" value="3"/>
+        </component>
+    
+        <component class="org.unijena.j2k.io.TSDataReader" name="InitPrecipDataReader">
+            <jamsvar name="dirName" globvar="workspaceDir"/>
+            <jamsvar name="skipRegression" globvar="data_caching"/>
+            <jamsvar name="dataFileName" value="data\rcorr2.dat"/>
+            <jamsvar name="startColumn" value="3"/>
+        </component>
+    
+        <component class="org.unijena.j2k.io.TSDataReader" name="InitSunhDataReader">
+            <jamsvar name="dirName" globvar="workspaceDir"/>
+            <jamsvar name="skipRegression" globvar="data_caching"/>
+            <jamsvar name="dataFileName" value="data\sunh.dat"/>
+            <jamsvar name="startColumn" value="3"/>
+        </component>
+    
+        <component class="org.unijena.j2k.io.TSDataReader" name="InitWindDataReader">
+            <jamsvar name="dirName" globvar="workspaceDir"/>
+            <jamsvar name="skipRegression" globvar="data_caching"/>
+            <jamsvar name="dataFileName" value="data\wind.dat"/>
+            <jamsvar name="startColumn" value="3"/>
+        </component>
+
+	<component class="org.unijena.j2k.hydronet.HydroNETCreator" name="HNCreator">
+            <jamsvar name="hrus" provider="ParaReader" providervar="hrus" />
+        </component>
+
+	<contextcomponent class="org.unijena.j2k.hydronet.HydroNETControl" name="HNControl">
+            <jamsvar name="NitrogenOutEntity" provider="HNCreator" providervar="NitrogenOutEntity" />
+            <jamsvar name="CostOutEntity"     provider="HNCreator" providervar="CostOutEntity" />
+            <jamsvar name="learningrate"     value="0.000005" />
+            <jamsvar name="delta_min"     value="0.5" />
+
+            <contextcomponent class="org.unijena.jams.model.JAMSSpatialContext" name="MainContext">
+                <jamsvar name="entities" provider="HNCreator" providervar="hrus"/>
+
+	        <component class="org.unijena.j2k.hydronet.HydroNETPropagate" name="HNPropagate">
+		    <jamsvar name="entity" provider="MainContext" providervar="currentEntity"/>
+  	        </component>
+            </contextcomponent>
+
+	    <component class="org.unijena.j2k.hydronet.HydroNETCalc" name="HNCalc">
+                <jamsvar name="NitrogenOutEntity" provider="HNCreator" providervar="NitrogenOutEntity" />
+                <jamsvar name="CostOutEntity"     provider="HNCreator" providervar="CostOutEntity" />	    
+            </component>
+
+    	    <contextcomponent class="org.unijena.jams.model.JAMSSpatialContext" name="MainContext_back">
+                <jamsvar name="entities" provider="HNCreator" providervar="reverse_hrus"/>
+
+	        <component class="org.unijena.j2k.hydronet.HydroNETBackPropagate" name="HNBackPropagate">
+		    <jamsvar name="entity" provider="MainContext_back" providervar="currentEntity"/>
+  	        </component>
+            </contextcomponent>
+
+	    <contextcomponent class="org.unijena.jams.model.JAMSSpatialContext" name="AnotherContext">
+                <jamsvar name="entities" provider="HNCreator" providervar="hrus"/>
+
+	        <component class="org.unijena.j2k.hydronet.HydroNETWeightModify" name="HNWeightModify">
+		    <jamsvar name="entity" provider="AnotherContext" providervar="currentEntity"/>
+  	        </component>
+            </contextcomponent>
+        </contextcomponent>
+    </contextcomponent>
+</contextcomponent>
+
+</model>

@@ -1,0 +1,7 @@
+#simple hru.par														
+ID	x	y	elevation	area	type	to_poly	to_reach	slope	aspect	flowlength	soilID	landuseID	hgeoID	albedo
+0	0	0	0	0	0	0	0	0	0	0	0	0	0	0
+9999	9999999	9999999	10000	9999999999	3	9999	9999	90	360	999999	9999	9999	9999	1
+n/a	m	m	m	m2	n/a	n/a	n/a	deg	deg	m	n/a	n/a	n/a	n/a
+1	4412785	5613300	937	1	2	0	4	0	180	0	7	999	1	0.23
+#end of hru.par
