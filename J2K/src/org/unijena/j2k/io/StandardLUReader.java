@@ -91,7 +91,7 @@ public class StandardLUReader extends JAMSComponent {
             }
             
         }
-        getModel().getRuntime().println("Landuse parameter file processed ...");
+        getModel().getRuntime().println("Landuse parameter file processed ...", JAMS.STANDARD);
     }
     
     

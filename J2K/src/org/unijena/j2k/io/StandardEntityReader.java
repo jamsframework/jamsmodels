@@ -84,11 +84,11 @@ public class StandardEntityReader extends JAMSComponent {
         createTopology();
         
         //create total order on hrus and reaches that allows processing them subsequently
-        getModel().getRuntime().println("Create ordered hru-list");
+        getModel().getRuntime().println("Create ordered hru-list", JAMS.STANDARD);
         createOrderedList(hrus, "to_poly");
-        getModel().getRuntime().println("Create ordered reach-list");
+        getModel().getRuntime().println("Create ordered reach-list", JAMS.STANDARD);
         createOrderedList(reaches, "to_reach");
-        getModel().getRuntime().println("Entities read successfull!");
+        getModel().getRuntime().println("Entities read successfull!", JAMS.STANDARD);
     }
     
     private void createTopology() throws JAMSEntity.NoSuchAttributeException {
@@ -157,11 +157,12 @@ public class StandardEntityReader extends JAMSComponent {
                     eDepth = depthMap.get(e);
                     fDepth = depthMap.get(f);
                     if (fDepth.intValue() <= eDepth.intValue()) {
+                        /*
                         if (eDepth.intValue() >= numHRUs) {
                             getModel().getRuntime().sendHalt("Found circle in entity parameter file!");
                             return;
                             //System.out.println(e.getDouble("ID") + " -> " + f.getDouble("ID"));
-                        }
+                        }*/
                         depthMap.put(f, new Integer(fDepth.intValue()+1));
                         mapChanged = true;
                         
