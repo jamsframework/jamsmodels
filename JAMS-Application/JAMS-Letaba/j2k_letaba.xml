@@ -98,7 +98,7 @@
         </component>
 
         <component class="org.unijena.j2k.geographicalCalculations.CalcLatLong" name="CalcLatLong">
-            <var name="projection" value="GK" />
+            <var name="projection" value="UTM36Z"/>
             <var name="x" context="InitHRUContext" attribute="x"/>
             <var name="y" context="InitHRUContext" attribute="y"/>
             <var name="slope" context="InitHRUContext" attribute="slope"/>
@@ -224,7 +224,7 @@
     </contextcomponent>
 
     <contextcomponent class="org.unijena.jams.model.JAMSTemporalContext" name="TemporalContext">
-        <var name="timeInterval" value="1993-03-01 7:30 1994-03-01 7:30 6 1"/>
+        <var name="timeInterval" value="1993-02-01 7:30 1995-02-01 7:30 6 1"/>
         
         <component class="org.unijena.jams.gui.JAMSProgress" name="JAMSProgress">
             <var name="title" value="Letaba model execution"/>
@@ -455,6 +455,7 @@
                 <var name="rhum" context="HRUContext" attribute="rhum"/>
                 <var name="solRad" context="HRUContext" attribute="solRad"/>
                 <var name="latitude" context="HRUContext" attribute="latitude"/>
+                <var name="extRad" context="HRUContext" attribute="actExtRad"/>
                 <var name="elevation" context="HRUContext" attribute="elevation"/>
                 <var name="albedo" context="HRUContext" attribute="albedo"/>
                 <var name="netRad" context="HRUContext" attribute="netRad"/>
