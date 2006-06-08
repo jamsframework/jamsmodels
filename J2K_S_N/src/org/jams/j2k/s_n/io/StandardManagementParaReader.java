@@ -134,7 +134,7 @@ public class StandardManagementParaReader extends JAMSComponent {
             }
             
         } catch (IOException ioe) {
-            getModel().handle(ioe);
+            getModel().getRuntime().handle(ioe);
         }
         
         return map;
@@ -177,7 +177,7 @@ public class StandardManagementParaReader extends JAMSComponent {
             }
             
         } catch (IOException ioe) {
-            getModel().handle(ioe);
+            getModel().getRuntime().handle(ioe);
         }
         
         return map;
@@ -229,7 +229,7 @@ public class StandardManagementParaReader extends JAMSComponent {
             map.put(cid, managements);
             
         } catch (IOException ioe) {
-            getModel().handle(ioe);
+            getModel().getRuntime().handle(ioe);
         }
         
         return map;
@@ -277,7 +277,7 @@ public class StandardManagementParaReader extends JAMSComponent {
             
             
         } catch (IOException ioe) {
-            getModel().handle(ioe);
+            getModel().getRuntime().handle(ioe);
         }
         
         return map;
@@ -330,7 +330,7 @@ public class StandardManagementParaReader extends JAMSComponent {
             
             
         } catch (IOException ioe) {
-            getModel().handle(ioe);
+            getModel().getRuntime().handle(ioe);
         }
         
         return map;
@@ -389,7 +389,7 @@ public class StandardManagementParaReader extends JAMSComponent {
             
             
         } catch (IOException ioe) {
-            getModel().handle(ioe);
+            getModel().getRuntime().handle(ioe);
         }
         
     }
