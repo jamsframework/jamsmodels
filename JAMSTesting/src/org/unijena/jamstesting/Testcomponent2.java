@@ -34,7 +34,7 @@ import org.unijena.jams.data.*;
 public class Testcomponent2 extends JAMSComponent {
     
     @JAMSVarDescription(
-            access = JAMSVarDescription.AccessType.READWRITE,
+            access = JAMSVarDescription.AccessType.READ,
             update = JAMSVarDescription.UpdateType.RUN,
             lowerBound = 0,
             upperBound = 1000,
@@ -48,7 +48,6 @@ public class Testcomponent2 extends JAMSComponent {
     }
     
     public void run() {
-        value.setValue(value.getValue()-9);
         System.out.println(value);
     }
     

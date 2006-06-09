@@ -53,16 +53,9 @@ import java.util.*;
             )
             public JAMSLong max;
     
-    
-    @JAMSVarDescription(
-            access = JAMSVarDescription.AccessType.WRITE,
-            update = JAMSVarDescription.UpdateType.RUN
-            )
-            public JAMSDouble test;
-    
     public void init(){
         
-        System.out.println("SEProvider: ");
+        System.out.println("SEProvider init");
         
         JAMSEntity e;
         
@@ -80,7 +73,6 @@ import java.util.*;
     }
     
     public void run(){
-        test.setValue(test.getValue()+112);
     }
     
     public void cleanup(){

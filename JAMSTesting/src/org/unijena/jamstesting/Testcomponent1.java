@@ -45,19 +45,19 @@ public class Testcomponent1  extends JAMSComponent {
             public JAMSDouble[] length;
     
     @JAMSVarDescription(
-            access = JAMSVarDescription.AccessType.READ,
+            access = JAMSVarDescription.AccessType.WRITE,
             update = JAMSVarDescription.UpdateType.RUN
             )
             public JAMSDouble test;
     
     
     public void init() {
+        test.setValue(0);
 //        length.setValue(0);
     }
     
     public void run(){
-        length[0].setValue(length[0].getValue() + 15);
-        System.out.println("test: " + test);
+        test.setValue(test.getValue()+1);
     }
     
     public void cleanup() {

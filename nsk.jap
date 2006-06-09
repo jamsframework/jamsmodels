@@ -1,7 +1,7 @@
 #JAMS configuration file
 #Mon May 08 11:36:39 CEST 2006
 verbose=1
-debug=1
+debug=3
 errorlog=D:/jamserror.log
 libs=D:/jamsprojects/J2K/dist/J2K.jar?D:/jamsprojects/JAMS/dist/JAMS.jar?D:/jamsprojects/J2K_SN/dist/J2K_SN.jar
 infolog=D:/jamsinfo.log
