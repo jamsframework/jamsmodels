@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <!--<!DOCTYPE JAMSModel SYSTEM "jamsmodel.dtd">-->
 <model name="J2K" author="Peter Krause" date="30.01.2006">
-    <globvar name="workspaceDir" value="C:\jamsmodels\JAMS-Application\JAMS-Letaba"/>
+    <globvar name="workspaceDir" value="C:\jamsmodels\devel\JAMS-Application\JAMS-Letaba"/>
     <globvar name="snow_trs" value="0.5"/>
     <globvar name="snow_trans" value="2.0"/>
     <globvar name="data_caching" value="0"/>
@@ -98,7 +98,7 @@
         </component>
 
         <component class="org.unijena.j2k.geographicalCalculations.CalcLatLong" name="CalcLatLong">
-            <var name="projection" value="UTM36Z"/>
+            <var name="projection" value="UTM36J"/>
             <var name="x" context="InitHRUContext" attribute="x"/>
             <var name="y" context="InitHRUContext" attribute="y"/>
             <var name="slope" context="InitHRUContext" attribute="slope"/>
@@ -107,7 +107,7 @@
             <var name="longitude" context="InitHRUContext" attribute="longitude"/>
             <var name="slAsCfArray" context="InitHRUContext" attribute="slAsCfArray"/>
         </component> 
-                   
+         
         <component class="org.unijena.j2k.inputData.CalcLanduseStateVars" name="CalcLanduseStateVars">
             <var name="entity" context="InitHRUContext" cvar="currentEntity"/>
             <var name="LAIArray" context="InitHRUContext" attribute="LAIArray"/>
@@ -224,7 +224,7 @@
     </contextcomponent>
 
     <contextcomponent class="org.unijena.jams.model.JAMSTemporalContext" name="TemporalContext">
-        <var name="timeInterval" value="1993-02-01 7:30 1995-02-01 7:30 6 1"/>
+        <var name="timeInterval" value="1993-02-01 7:30 1993-03-31 7:30 6 1"/>
         
         <component class="org.unijena.jams.gui.JAMSProgress" name="JAMSProgress">
             <var name="title" value="Letaba model execution"/>
@@ -375,7 +375,7 @@
                 <var name="entityElevation" context="HRUContext" attribute="elevation"/>
                 <var name="statWeights" context="HRUContext" attribute="ahumWeights"/>
                 <var name="elevationCorrection" value="1"/>
-                <var name="rsqThreshold" value="0.75"/>
+                <var name="rsqThreshold" value="1"/>
                 <var name="dataValue" context="HRUContext" attribute="ahum"/>
             </component>
             

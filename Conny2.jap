@@ -1,0 +1,8 @@
+#JAMS configuration file
+#Mon May 08 11:36:39 CEST 2006
+verbose=1
+debug=3
+model=C\:\\jamsmodels\\devel\\JAMS-Application\\JAMS-Letaba\\j2k_letaba.xml
+errorlog=E\:\\j2k\\jamserror.log
+infolog=E\:\\j2k\\jamsinfo.log
+libs=C\:\\jamsprojects\\J2K\\dist\\J2K.jar?C\:\\jamsprojects\\JAMS\\dist\\JAMS.jar
