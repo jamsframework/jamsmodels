@@ -122,10 +122,11 @@ import org.unijena.jams.model.*;
         if(proj.equals("GK")){
             latLong = org.unijena.j2k.geographicalCalculations.GKConversion.GK2LatLon(x.getValue(), y.getValue());
         }
-        else if(proj.substring(0,2).equals("UTM")){
+        else if(proj.substring(0,3).equals("UTM")){
             int len = proj.length();
-            String zoneStr = proj.substring(3, len-1);
+            String zoneStr = proj.substring(3, len);
             latLong = org.unijena.j2k.geographicalCalculations.UTMConversion.utm2LatLong(x.getValue(), y.getValue(), zoneStr);
+            
         }
         latitude.setValue(latLong[0]);
         longitude.setValue(latLong[1]);
