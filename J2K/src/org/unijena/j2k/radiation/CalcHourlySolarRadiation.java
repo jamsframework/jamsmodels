@@ -96,7 +96,7 @@ import org.unijena.jams.model.*;
             update = JAMSVarDescription.UpdateType.RUN,
             description = "state variable slope aspect correction factor"
             )
-            public JAMSDoubleArray slAsCf = new JAMSDoubleArray();
+            public JAMSDouble actSlAsCf;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
@@ -145,7 +145,7 @@ import org.unijena.jams.model.*;
             update = JAMSVarDescription.UpdateType.RUN,
             description = "extraterrestic radiation [MJ/m²]"
             )
-            public JAMSDouble extRad;
+            public JAMSDouble actExtRad;
     
     
     
@@ -178,7 +178,7 @@ import org.unijena.jams.model.*;
             int oldjulDay = 0;
             int julDay = time.get(time.DAY_OF_YEAR);
             int idx = (julDay - 1) * 24 + time.get(time.HOUR_OF_DAY);
-            double extraterrRadiation = this.extraRad.getValue()[idx];
+            
             double lat = latitude.getValue();
             double radLat = org.unijena.j2k.mathematicalCalculations.MathematicalCalculations.deg2rad(lat);
             double longi = longitude.getValue();
@@ -186,7 +186,7 @@ import org.unijena.jams.model.*;
             double elev = elevation.getValue();
             double slo = slope.getValue();
             double asp = aspect.getValue();
-            double SAC = slAsCf.getValue()[julDay-1];
+            double SAC = actSlAsCf.getValue();
             double declination = 0;
             double invRelDistEarthSun = 0;
             double solarConstant = 0;
@@ -203,17 +203,15 @@ import org.unijena.jams.model.*;
                 oldjulDay = julDay;
             }
             double longTZ = 15;
-            double maximumSunshine = org.unijena.j2k.physicalCalculations.HourlySolarRadiationCalculationMethods.calc_HourlyMaxSunshine(extraterrRadiation);
-            double solRadiation = org.unijena.j2k.physicalCalculations.SolarRadiationCalculationMethods.calc_SolarRadiation(sun_frac, maximumSunshine, extraterrRadiation, angstrom_a.getValue(), angstrom_b.getValue());
+            double maximumSunshine = org.unijena.j2k.physicalCalculations.HourlySolarRadiationCalculationMethods.calc_HourlyMaxSunshine(this.actExtRad.getValue());
+            double solRadiation = org.unijena.j2k.physicalCalculations.SolarRadiationCalculationMethods.calc_SolarRadiation(sun_frac, maximumSunshine, this.actExtRad.getValue(), angstrom_a.getValue(), angstrom_b.getValue());
             
             solRadiation = solRadiation * SAC;
             
             solRad.setValue(solRadiation);
-            extRad.setValue(extraterrRadiation);
             
         } else {
             solRad.setValue(reader.readDouble());//entity.setDouble(aNameSolRad.getValue(), reader.readDouble());
-            extRad.setValue(-9999);
         }
     }
     

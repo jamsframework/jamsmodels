@@ -339,6 +339,9 @@ import org.unijena.jams.model.*;
         this.snowDepth.setValue(this.run_snowDepth);
         this.snowAge.setValue(this.run_snowAge);
         this.snowColdContent.setValue(this.run_coldContent);
+        if(this.run_snowMelt > 0){
+            int i = 0;
+        }
         this.snowMelt.setValue(this.run_snowMelt);
         double balStorEnd = this.run_totSWE;
         double balOut = this.run_snowMelt + this.in_rain + this.in_snow;
@@ -358,7 +361,13 @@ import org.unijena.jams.model.*;
     }
     
     public void cleanup() {
-        
+        this.snowDepth.setValue(0.0);
+        this.snowTotSWE.setValue(0.0);
+        this.drySWE.setValue(0.0);
+        this.totDens.setValue(0.0);
+        this.dryDens.setValue(0.0);
+        this.snowAge.setValue(0);
+        this.snowColdContent.setValue(0.0);
     }
     
     private double calcColdContent(double temperature, double coldContentFactor){

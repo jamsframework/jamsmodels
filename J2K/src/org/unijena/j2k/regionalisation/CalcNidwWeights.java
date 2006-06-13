@@ -108,6 +108,12 @@ import org.unijena.jams.model.*;
     }
     
     public void cleanup() throws JAMSEntity.NoSuchAttributeException{
+        int nstat = statWeights.getValue().length;
+        double[] sw = new double[nstat];
+        for(int i = 0; i < nstat; i++)
+            sw[i] = 0;
+        
+        statWeights.setValue(sw);
         
     }
 }

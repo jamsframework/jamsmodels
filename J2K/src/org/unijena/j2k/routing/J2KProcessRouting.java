@@ -174,6 +174,9 @@ import org.unijena.jams.model.*;
             double RG1in = toReach.getDouble("inRG1");
             double RG2in = toReach.getDouble("inRG2");
             
+            if(RD2out > 0){
+                int junk = 1;
+            }
             RD1in = RD1in + RD1out;
             RD2in = RD2in + RD2out;
             RG1in = RG1in + RG1out;

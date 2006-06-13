@@ -58,4 +58,12 @@ public class WeightedSumAggregator extends JAMSComponent {
         }
     }
     
+    public void cleanup(){
+        for (int i = 0; i < value.length; i++) {
+            sum[i].setValue(0);
+            value[i].setValue(0);
+            weight.setValue(0);
+        }
+    }
+    
 }

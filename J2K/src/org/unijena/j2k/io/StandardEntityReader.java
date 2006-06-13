@@ -70,25 +70,31 @@ public class StandardEntityReader extends JAMSComponent {
             )
             public JAMSEntityCollection reaches;
     
+    boolean firstRun = true;
+    
     public void init() throws JAMSEntity.NoSuchAttributeException {
         
-        //read hru parameter
-        hrus = new JAMSEntityCollection();
-        hrus.setEntities(J2KFunctions.readParas(dirName.getValue() + "/" + hruFileName.getValue(), getModel()));
-        
-        //read reach parameter
-        reaches = new JAMSEntityCollection();
-        reaches.setEntities(J2KFunctions.readParas(dirName.getValue() + "/" + reachFileName.getValue(), getModel()));
-        
-        //create object associations from id attributes for hrus and reaches
-        createTopology();
-        
-        //create total order on hrus and reaches that allows processing them subsequently
-        getModel().getRuntime().println("Create ordered hru-list", JAMS.STANDARD);
-        createOrderedList(hrus, "to_poly");
-        getModel().getRuntime().println("Create ordered reach-list", JAMS.STANDARD);
-        createOrderedList(reaches, "to_reach");
-        getModel().getRuntime().println("Entities read successfull!", JAMS.STANDARD);
+        if (firstRun) {
+            //read hru parameter
+            hrus = new JAMSEntityCollection();
+            hrus.setEntities(J2KFunctions.readParas(dirName.getValue() + "/" + hruFileName.getValue(), getModel()));
+            
+            //read reach parameter
+            reaches = new JAMSEntityCollection();
+            reaches.setEntities(J2KFunctions.readParas(dirName.getValue() + "/" + reachFileName.getValue(), getModel()));
+            
+            //create object associations from id attributes for hrus and reaches
+            createTopology();
+            
+            //create total order on hrus and reaches that allows processing them subsequently
+            getModel().getRuntime().println("Create ordered hru-list", JAMS.STANDARD);
+            createOrderedList(hrus, "to_poly");
+            getModel().getRuntime().println("Create ordered reach-list", JAMS.STANDARD);
+            createOrderedList(reaches, "to_reach");
+            getModel().getRuntime().println("Entities read successfull!", JAMS.STANDARD);
+            
+            firstRun = false;
+        }
     }
     
     private void createTopology() throws JAMSEntity.NoSuchAttributeException {

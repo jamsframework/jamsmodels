@@ -88,9 +88,9 @@ import org.unijena.jams.model.*;
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
             update = JAMSVarDescription.UpdateType.RUN,
-            description = "state variable extraterrestric radiation"
+            description = "state variable solar radiation"
             )
-            public JAMSDoubleArray extraRad = new JAMSDoubleArray();
+            public JAMSDouble extRad;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
@@ -164,7 +164,7 @@ import org.unijena.jams.model.*;
         if (!useCache) {
             int julDay = time.get(time.DAY_OF_YEAR);
             int idx = (julDay - 1) * 24 + time.get(time.HOUR_OF_DAY);
-            double extraterrRadiation = extraRad.getValue()[idx];
+            double extraterrRadiation = extRad.getValue();
             double elev = elevation.getValue();
             double alb;
             if(refET.getValue())

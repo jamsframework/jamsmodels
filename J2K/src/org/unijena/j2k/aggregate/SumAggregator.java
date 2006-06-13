@@ -52,4 +52,9 @@ public class SumAggregator extends JAMSComponent {
         }
     }
     
+    public void cleanup(){
+        
+        
+    }
+    
 }

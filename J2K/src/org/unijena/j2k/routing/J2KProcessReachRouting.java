@@ -225,6 +225,9 @@ import org.unijena.jams.model.*;
     
     public void run() throws JAMSEntity.NoSuchAttributeException {
         
+        if(entity.getDouble("ID") == 100){
+            int junk = 0;
+        }
         JAMSEntity DestReach = (JAMSEntity) entity.getObject("to_reach");
         
         double width = this.width.getValue();
