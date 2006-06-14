@@ -96,6 +96,65 @@ public class StandardEntityReader extends JAMSComponent {
             firstRun = false;
         }
     }
+    //do depth first search to find cycles
+    private boolean cycleCheck(JAMSEntity node,Stack<JAMSEntity> searchStack,HashSet<JAMSDouble> closedList) throws JAMSEntity.NoSuchAttributeException {
+	JAMSEntity child_node;
+
+	//current node allready in search stack -> circle found
+	if ( searchStack.indexOf(node) != -1) {
+	    int index = searchStack.indexOf(node);
+	    
+	    String cyc_output = new String();
+	    for (int i = index; i < searchStack.size(); i++) {
+		cyc_output += ((JAMSEntity)searchStack.get(i)).getDouble("ID") + " ";		
+	    }
+	    getModel().getRuntime().println("Found circle with ids:" + cyc_output);
+
+	    return true;
+	}
+	//add node to closed list
+	if (closedList.contains(node.getObject("ID")) == false)
+	    closedList.add((JAMSDouble)node.getObject("ID"));
+	else
+	    return false;
+		
+	child_node = (JAMSEntity)node.getObject("to_poly");
+	   
+	if (child_node != null) {	   
+	    //push current node to search stack
+	    searchStack.push(node);
+	
+	    boolean result = cycleCheck(child_node,searchStack,closedList);
+	    
+	    searchStack.pop();
+	    
+	    return result;
+	   }	
+	return false;	
+    }
+    
+    private boolean cycleCheck() throws JAMSEntity.NoSuchAttributeException {
+	Iterator<JAMSEntity> hruIterator;	
+	
+	HashSet<JAMSDouble> closedList = new HashSet<JAMSDouble>();
+	
+	JAMSEntity start_node;
+	
+	getModel().getRuntime().println("Cycle checking...");
+	
+	hruIterator = hrus.getEntities().iterator();
+	
+	boolean result = false;
+		
+	while (hruIterator.hasNext()) {
+	    start_node = hruIterator.next();
+	    //connected component of start_node allready processed?
+	    if (closedList.contains(start_node.getObject("ID")) == false)
+		if ( cycleCheck(start_node,new Stack<JAMSEntity>(),closedList) == true)
+		    result = true;
+	}
+	return result;
+    }
     
     private void createTopology() throws JAMSEntity.NoSuchAttributeException {
         
@@ -131,6 +190,12 @@ public class StandardEntityReader extends JAMSComponent {
             e = reachIterator.next();
             e.setObject("to_reach", reachMap.get(e.getDouble("to-reach")));
         }
+	
+	//check for cycles
+	if (cycleCheck() == true)
+	    getModel().getRuntime().println("HRUs --> cycle found ... :( ");
+	else
+	    getModel().getRuntime().println("HRUs --> no cycle found");
         
     }
     
