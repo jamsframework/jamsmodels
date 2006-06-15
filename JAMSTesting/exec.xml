@@ -4,7 +4,7 @@
 <model name="The smallmodel testmodel" author="Sven Kralisch" date="10.06.2005">
 
     <component class="org.unijena.jamstesting.SEProvider" name="SEProvider">
-        <var name="max" value="2"/>
+        <var name="max" value="5"/>
         <var name="entities" attribute="hrus"/>
     </component>
 
@@ -22,12 +22,17 @@
                 <var name="test" context="SpatialContext" attribute="attr"/>
             </component>
             
-            <component class="org.unijena.jamstesting.Testcomponent2" name="Test2">
+            <!--component class="org.unijena.jamstesting.Testcomponent2" name="Test2">
                 <var name="value" context="SpatialContext" attribute="attr"/>
+            </component-->
+            
+            <component class="org.unijena.jamstesting.Testcomponent3" name="Test3">
+                <var name="entities" attribute="hrus"/>
             </component>
-            <component class="org.unijena.jamstesting.Testcomponent2" name="Test3">
+
+            <!--component class="org.unijena.jamstesting.Testcomponent2" name="Test3">
                 <var name="value" context="SpatialContext" attribute="landuse"/>
-            </component>
+            </component-->
     
         </contextcomponent>
     </contextcomponent>

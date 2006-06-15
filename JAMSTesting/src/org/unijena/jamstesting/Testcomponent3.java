@@ -42,15 +42,15 @@ public class Testcomponent3 extends JAMSComponent {
             unit = "L/min",
             description = "This is a short description"
             )
-            public JAMSDouble dValue;
+            public JAMSEntityCollection entities;
 
 
     public void run() throws Exception {
-
+        JAMSEntity current = entities.getCurrent();
+        System.out.println(current.getDouble("attr"));
     }
     
     public void cleanup() {
-        System.out.println("Testcomponent3: " + dValue);
     }
         
 }

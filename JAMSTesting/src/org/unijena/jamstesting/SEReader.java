@@ -54,7 +54,7 @@ import java.util.*;
         
         JAMSEntity[] ea = entities.getEntityArray();
         for (int i = 0; i < ea.length; i++) {
-            System.out.println(ea[i].getDouble("attr"));
+            //System.out.println(ea[i].getDouble("attr"));
             ea[i].setDouble("landuse", 47);
         }
         
