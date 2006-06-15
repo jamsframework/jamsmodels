@@ -50,30 +50,44 @@ public class HydroNETControl extends JAMSContext {
    @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
             update = JAMSVarDescription.UpdateType.INIT,
-            description = "Collection of hru objects"
+            description = "Nitrongen Output Neuron"
             )
             public JAMSEntity NitrogenOutEntity;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
             update = JAMSVarDescription.UpdateType.INIT,
-            description = "Collection of hru objects"
+            description = "Cost Output Neuron"
             )
             public JAMSEntity CostOutEntity;    
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
             update = JAMSVarDescription.UpdateType.INIT,
-            description = "Collection of hru objects"
+            description = "smallest improvement which is accepted"
             )
             public JAMSDouble delta_min;  
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
             update = JAMSVarDescription.UpdateType.INIT,
-            description = "Collection of hru objects"
+            description = "learning rate"
             )
             public JAMSDouble learningrate;  
+    
+    @JAMSVarDescription(
+            access = JAMSVarDescription.AccessType.READWRITE,
+            update = JAMSVarDescription.UpdateType.INIT,
+            description = "momentum"
+            )
+            public JAMSDouble momentum = new JAMSDouble(0.9);  
+    
+    @JAMSVarDescription(
+            access = JAMSVarDescription.AccessType.READWRITE,
+            update = JAMSVarDescription.UpdateType.INIT,
+            description = "largest accepted nitrogen value"
+            )
+            public JAMSDouble nitrogen_goal;
     
     private double errorNO,errorCost;   
     private double avgperformance=1000,performance;
@@ -88,8 +102,8 @@ public class HydroNETControl extends JAMSContext {
     public boolean hasNext() throws JAMSEntity.NoSuchAttributeException {
 	DistNeuron NitrogenOutNeuron = (DistNeuron)NitrogenOutEntity.getObject("NEURON");
 	DistNeuron CostOutNeuron = (DistNeuron)CostOutEntity.getObject("NEURON");
-	
-	errorNO = NitrogenOutNeuron.getActivation();
+			
+	errorNO = NitrogenOutNeuron.getActivation() - nitrogen_goal.getValue();
 	errorCost = CostOutNeuron.getActivation();
 	
 	if (firstiteration) {
@@ -128,12 +142,14 @@ public class HydroNETControl extends JAMSContext {
                          "  Cost - Output:" + new Double(CostOutNeuron.getActivation()).toString() + 
 		         "  AvgPerf:" + new Double(avgperformance).toString());
 	
-	return (breakcount >= 0 /*&& learningrate > 0.000000000001*/ && avgperformance >= delta_min.getValue() );
+	return true;//(breakcount >= 0 /*&& learningrate > 0.000000000001*/ && avgperformance >= delta_min.getValue() );
     }
     
     public void init () {
 	
 	firstiteration = true;
+	
+	DistNeuron.alpha = momentum.getValue();
 	
 	if (runEnumerator == null) {
             runEnumerator = super.getChildrenEnumerator();

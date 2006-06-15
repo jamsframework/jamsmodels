@@ -22,9 +22,6 @@
  */
 package org.unijena.hydronet;
 
-import org.unijena.hydronet.Matrix;
-import org.unijena.hydronet.Regression;
-
 /**
  *
  * @author Christian Fischer

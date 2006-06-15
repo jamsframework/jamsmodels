@@ -23,8 +23,6 @@
 
 package org.unijena.hydronet;
 
-import org.unijena.hydronet.Matrix;
-
 /**
  *
  * @author Christian Fischer
