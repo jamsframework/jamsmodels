@@ -52,7 +52,7 @@ public class Testcomponent2 extends JAMSComponent {
     }
     
     public void cleanup() {
-        System.out.println("Testcomponent2: " + value);
+        System.out.println(this.getInstanceName() + ": " + value);
     }
     
 }

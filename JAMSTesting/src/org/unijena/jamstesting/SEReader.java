@@ -38,38 +38,26 @@ import java.util.*;
         author = "Sven Kralisch",
         description= ""
         )
-        public class SEProvider extends JAMSComponent {
+        public class SEReader extends JAMSComponent {
     
-    
-    @JAMSVarDescription(
-            access = JAMSVarDescription.AccessType.WRITE,
-            update = JAMSVarDescription.UpdateType.INIT
-            )
-            public JAMSEntityCollection entities;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
             update = JAMSVarDescription.UpdateType.INIT
             )
-            public JAMSLong max;
+            public JAMSEntityCollection entities;
     
-    public void init(){
+    
+    public void init() throws Exception {
         
-        System.out.println("SEProvider init");
+        System.out.println("SEReader init");
         
-        JAMSEntity e;
-        
-        ArrayList <JAMSEntity> entityList = new ArrayList<JAMSEntity>();
-        JAMSDouble l;
-        
-        for (long i = 1; i <= max.getValue(); i++) {
-            e = JAMSDataFactory.newEntity();
-            e.setDouble("attr",  Math.pow(10,i));
-            entityList.add(e);            
+        JAMSEntity[] ea = entities.getEntityArray();
+        for (int i = 0; i < ea.length; i++) {
+            System.out.println(ea[i].getDouble("attr"));
+            ea[i].setDouble("landuse", 47);
         }
         
-        //entities = new JAMSEntityCollection();
-        entities.setEntities(entityList);
     }
     
     public void run(){

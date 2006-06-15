@@ -45,7 +45,7 @@ public class Testcomponent1  extends JAMSComponent {
             public JAMSDouble[] length;
     
     @JAMSVarDescription(
-            access = JAMSVarDescription.AccessType.WRITE,
+            access = JAMSVarDescription.AccessType.READWRITE,
             update = JAMSVarDescription.UpdateType.RUN
             )
             public JAMSDouble test;
