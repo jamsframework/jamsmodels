@@ -97,7 +97,7 @@ public class StandardEntityReader extends JAMSComponent {
         }
     }
     //do depth first search to find cycles
-    private boolean cycleCheck(JAMSEntity node,Stack<JAMSEntity> searchStack,HashSet<JAMSDouble> closedList) throws JAMSEntity.NoSuchAttributeException {
+    private boolean cycleCheck(JAMSEntity node,Stack<JAMSEntity> searchStack,HashSet<JAMSDouble> closedList,HashSet<JAMSDouble> visitedList) throws JAMSEntity.NoSuchAttributeException {
 	JAMSEntity child_node;
 
 	//current node allready in search stack -> circle found
@@ -112,11 +112,11 @@ public class StandardEntityReader extends JAMSComponent {
 
 	    return true;
 	}
-	//add node to closed list
-	if (closedList.contains(node.getObject("ID")) == false)
-	    closedList.add((JAMSDouble)node.getObject("ID"));
-	else
+	//node in closed list? -> then skip it
+	if (closedList.contains(node.getObject("ID")) == true)
 	    return false;
+	//now this node is visited
+	visitedList.add((JAMSDouble)node.getObject("ID"));
 		
 	child_node = (JAMSEntity)node.getObject("to_poly");
 	   
@@ -124,7 +124,7 @@ public class StandardEntityReader extends JAMSComponent {
 	    //push current node to search stack
 	    searchStack.push(node);
 	
-	    boolean result = cycleCheck(child_node,searchStack,closedList);
+	    boolean result = cycleCheck(child_node,searchStack,closedList,visitedList);
 	    
 	    searchStack.pop();
 	    
@@ -137,6 +137,7 @@ public class StandardEntityReader extends JAMSComponent {
 	Iterator<JAMSEntity> hruIterator;	
 	
 	HashSet<JAMSDouble> closedList = new HashSet<JAMSDouble>();
+	HashSet<JAMSDouble> visitedList = new HashSet<JAMSDouble>();
 	
 	JAMSEntity start_node;
 	
@@ -149,9 +150,14 @@ public class StandardEntityReader extends JAMSComponent {
 	while (hruIterator.hasNext()) {
 	    start_node = hruIterator.next();
 	    //connected component of start_node allready processed?
-	    if (closedList.contains(start_node.getObject("ID")) == false)
-		if ( cycleCheck(start_node,new Stack<JAMSEntity>(),closedList) == true)
+	    if (closedList.contains(start_node.getObject("ID")) == false) {
+		if ( cycleCheck(start_node,new Stack<JAMSEntity>(),closedList,visitedList) == true) {
 		    result = true;
+		}
+		closedList.addAll(visitedList);
+		visitedList.clear();
+	    }
+	    
 	}
 	return result;
     }
@@ -192,10 +198,12 @@ public class StandardEntityReader extends JAMSComponent {
         }
 	
 	//check for cycles
-	if (cycleCheck() == true)
-	    getModel().getRuntime().println("HRUs --> cycle found ... :( ");
-	else
-	    getModel().getRuntime().println("HRUs --> no cycle found");
+	if (this.getModel().getRuntime().getDebugLevel() >= 4) {
+	    if (cycleCheck() == true)
+		getModel().getRuntime().println("HRUs --> cycle found ... :( ");
+	    else
+		getModel().getRuntime().println("HRUs --> no cycle found");
+	}
         
     }
     
