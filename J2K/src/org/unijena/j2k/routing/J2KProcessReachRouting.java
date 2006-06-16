@@ -46,7 +46,7 @@ import org.unijena.jams.model.*;
             update = JAMSVarDescription.UpdateType.RUN,
             description = "The current hru entity"
             )
-            public JAMSEntity entity;
+            public JAMSEntityCollection entities;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
@@ -224,6 +224,8 @@ import org.unijena.jams.model.*;
     }
     
     public void run() throws JAMSEntity.NoSuchAttributeException {
+        
+        JAMSEntity entity = entities.getCurrent();
         
         if(entity.getDouble("ID") == 100){
             int junk = 0;

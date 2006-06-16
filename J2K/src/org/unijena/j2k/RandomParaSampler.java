@@ -142,7 +142,7 @@ import org.unijena.jams.model.*;
         runEnumerator.reset();
         while(runEnumerator.hasNext() && doRun) {
             JAMSComponent comp = runEnumerator.next();
-            comp.updateInit();
+            //comp.updateInit();
             try {
                 comp.init();
             } catch (Exception e) {
@@ -154,7 +154,7 @@ import org.unijena.jams.model.*;
         runEnumerator.reset();
         while(runEnumerator.hasNext() && doRun) {
             JAMSComponent comp = runEnumerator.next();
-            comp.updateRun();
+            //comp.updateRun();
             try {
                 comp.run();
             } catch (Exception e) {
