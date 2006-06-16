@@ -279,6 +279,12 @@
             <var name="timeInterval" globvar="timeInterval"/>
             <var name="dataFileName" value="data\tmean.dat"/>
             <var name="startColumn" value="3"/>
+            <var name="dataArray" attribute="dataArrayTmean"/>
+            <var name="regCoeff" attribute="regCoeffTmean"/>
+            <var name="elevation" attribute="elevationTmean"/>
+            <var name="xCoord" attribute="xCoordTmean"/>
+            <var name="yCoord" attribute="yCoordTmean"/>
+            <var name="dataSetName" attribute="dataSetNameTmean"/>
         </component>
         
         <component class="org.unijena.j2k.io.TSDataReader" name="TminDataReader">
@@ -287,6 +293,13 @@
             <var name="timeInterval" globvar="timeInterval"/>
             <var name="dataFileName" value="data\tmin.dat"/>
             <var name="startColumn" value="3"/>
+            <var name="dataArray" attribute="dataArrayTmin"/>
+            <var name="regCoeff" attribute="regCoeffTmin"/>
+            <var name="elevation" attribute="elevationTmin"/>
+            <var name="xCoord" attribute="xCoordTmin"/>
+            <var name="yCoord" attribute="yCoordTmin"/>
+            <var name="dataSetName" attribute="dataSetNameTmin"/>
+
         </component>
         
         <component class="org.unijena.j2k.io.TSDataReader" name="TmaxDataReader">
@@ -295,6 +308,12 @@
             <var name="timeInterval" globvar="timeInterval"/>
             <var name="dataFileName" value="data\tmax.dat"/>
             <var name="startColumn" value="3"/>
+            <var name="dataArray" attribute="dataArrayTmax"/>
+            <var name="regCoeff" attribute="regCoeffTmax"/>
+            <var name="elevation" attribute="elevationTmax"/>
+            <var name="xCoord" attribute="xCoordTmax"/>
+            <var name="yCoord" attribute="yCoordTmax"/>
+            <var name="dataSetName" attribute="dataSetNameTmax"/>            
         </component>
         
         <component class="org.unijena.j2k.io.TSDataReader" name="AhumDataReader">
@@ -303,6 +322,12 @@
             <var name="timeInterval" globvar="timeInterval"/>
             <var name="dataFileName" value="data\ahum.dat"/>
             <var name="startColumn" value="3"/>
+            <var name="dataArray" attribute="dataArrayAhum"/>
+            <var name="regCoeff" attribute="regCoeffAhum"/>
+            <var name="elevation" attribute="elevationAhum"/>
+            <var name="xCoord" attribute="xCoordAhum"/>
+            <var name="yCoord" attribute="yCoordAhum"/>
+            <var name="dataSetName" attribute="dataSetNameAhum"/>            
         </component>
         
         <component class="org.unijena.j2k.io.TSDataReader" name="PrecipDataReader">
@@ -311,6 +336,12 @@
             <var name="timeInterval" globvar="timeInterval"/>
             <var name="dataFileName" value="data\rcorr2.dat"/>
             <var name="startColumn" value="3"/>
+            <var name="dataArray" attribute="dataArrayPrecip"/>
+            <var name="regCoeff" attribute="regCoeffPrecip"/>
+            <var name="elevation" attribute="elevationPrecip"/>
+            <var name="xCoord" attribute="xCoordPrecip"/>
+            <var name="yCoord" attribute="yCoordPrecip"/>
+            <var name="dataSetName" attribute="dataSetNamePrecip"/>            
         </component>
         
         <component class="org.unijena.j2k.io.TSDataReader" name="SunhDataReader">
@@ -319,6 +350,12 @@
             <var name="timeInterval" globvar="timeInterval"/>
             <var name="dataFileName" value="data\sunh.dat"/>
             <var name="startColumn" value="3"/>
+            <var name="dataArray" attribute="dataArraySunh"/>
+            <var name="regCoeff" attribute="regCoeffSunh"/>
+            <var name="elevation" attribute="elevationSunh"/>
+            <var name="xCoord" attribute="xCoordSunh"/>
+            <var name="yCoord" attribute="yCoordSunh"/>
+            <var name="dataSetName" attribute="dataSetNameSunh"/>            
         </component>
         
         <component class="org.unijena.j2k.io.TSDataReader" name="WindDataReader">
@@ -327,6 +364,12 @@
             <var name="timeInterval" globvar="timeInterval"/>
             <var name="dataFileName" value="data\wind.dat"/>
             <var name="startColumn" value="3"/>
+            <var name="dataArray" attribute="dataArrayWind"/>
+            <var name="regCoeff" attribute="regCoeffWind"/>
+            <var name="elevation" attribute="elevationWind"/>
+            <var name="xCoord" attribute="xCoordWind"/>
+            <var name="yCoord" attribute="yCoordWind"/>
+            <var name="dataSetName" attribute="dataSetNameWind"/>            
         </component>
         
         <component class="org.unijena.j2k.io.TSDataReader" name="ObsRunoffDataReader">
@@ -335,6 +378,12 @@
             <var name="timeInterval" globvar="timeInterval"/>
             <var name="dataFileName" value="data\orun.dat"/>
             <var name="startColumn" value="3"/>
+            <var name="dataArray" attribute="dataArrayObsRunoff"/>
+            <var name="regCoeff" attribute="regCoeffObsRunoff"/>
+            <var name="elevation" attribute="elevationObsRunoff"/>
+            <var name="xCoord" attribute="xCoordObsRunoff"/>
+            <var name="yCoord" attribute="yCoordObsRunoff"/>
+            <var name="dataSetName" attribute="dataSetNameObsRunoff"/>            
         </component>
         
         <contextcomponent class="org.unijena.jams.model.JAMSSpatialContext" name="HRUContext">
@@ -360,12 +409,18 @@
             <component class="org.unijena.j2k.regionalisation.Regionalisation" name="TmeanRegionaliser">
                 <var name="dirName" globvar="workspaceDir"/>
                 <var name="dataCaching" globvar="data_caching"/>
-                <var name="dataArray" context="TmeanDataReader" cvar="dataArray"/>
+                <var name="dataArray" attribute="dataArrayTmean"/>
+                <var name="regCoeff" attribute="regCoeffTmean"/>
+                <var name="statElevation" attribute="elevationTmean"/>
+                <var name="statX" attribute="xCoordTmean"/>
+                <var name="statY" attribute="yCoordTmean"/>
+                <var name="dataSetName" attribute="dataSetNameTmean"/>                
+                <!--var name="dataArray" context="TmeanDataReader" cvar="dataArray"/>
                 <var name="regCoeff" context="TmeanDataReader" cvar="regCoeff"/>
                 <var name="statElevation" context="TmeanDataReader" cvar="elevation"/>
                 <var name="statX" context="TmeanDataReader" cvar="xCoord"/>
                 <var name="statY" context="TmeanDataReader" cvar="yCoord"/>
-                <var name="dataSetName" context="TmeanDataReader" cvar="dataSetName"/>
+                <var name="dataSetName" context="TmeanDataReader" cvar="dataSetName"/-->
                 <var name="entityElevation" context="HRUContext" attribute="elevation"/>
                 <var name="statWeights" context="HRUContext" attribute="tmeanWeights"/>
                 <var name="elevationCorrection" value="1"/>
