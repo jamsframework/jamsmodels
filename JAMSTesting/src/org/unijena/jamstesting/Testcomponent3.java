@@ -44,10 +44,15 @@ public class Testcomponent3 extends JAMSComponent {
             )
             public JAMSEntityCollection entities;
 
+    @JAMSVarDescription(
+            access = JAMSVarDescription.AccessType.READ,
+            update = JAMSVarDescription.UpdateType.RUN
+            )
+            public JAMSCalendar time;
 
     public void run() throws Exception {
         JAMSEntity current = entities.getCurrent();
-        System.out.println(current.getDouble("attr"));
+        System.out.println(current.getDouble("attr") + " - " + time);
     }
     
     public void cleanup() {

@@ -41,7 +41,7 @@ public class StandardLUReader extends JAMSComponent {
             description = "Data file directory name"
             )
             public JAMSString dirName;
-
+    
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
             update = JAMSVarDescription.UpdateType.INIT,

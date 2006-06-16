@@ -14,6 +14,7 @@
 
     <contextcomponent class="org.unijena.jams.model.JAMSTemporalContext" name="TemporalContext">
         <var name="timeInterval" value="1989-11-01 7:30 1989-11-03 7:30 6 1"/>
+        <var name="current" attribute="time"/>
     
         <contextcomponent class="org.unijena.jams.model.JAMSSpatialContext" name="SpatialContext">
             <var name="entities" attribute="hrus"/>
@@ -23,15 +24,16 @@
             </component>
             
             <!--component class="org.unijena.jamstesting.Testcomponent2" name="Test2">
-                <var name="value" context="SpatialContext" attribute="attr"/>
+            <var name="value" context="SpatialContext" attribute="attr"/>
             </component-->
             
             <component class="org.unijena.jamstesting.Testcomponent3" name="Test3">
                 <var name="entities" attribute="hrus"/>
+                <var name="time" attribute="time"/>
             </component>
 
             <!--component class="org.unijena.jamstesting.Testcomponent2" name="Test3">
-                <var name="value" context="SpatialContext" attribute="landuse"/>
+            <var name="value" context="SpatialContext" attribute="landuse"/>
             </component-->
     
         </contextcomponent>

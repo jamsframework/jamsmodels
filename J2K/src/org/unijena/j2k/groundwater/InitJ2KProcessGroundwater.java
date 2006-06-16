@@ -46,7 +46,7 @@ import org.unijena.jams.model.*;
             update = JAMSVarDescription.UpdateType.RUN,
             description = "The current hru entity"
             )
-            public JAMSEntity entity;
+            public JAMSEntityCollection entities;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
@@ -106,6 +106,9 @@ import org.unijena.jams.model.*;
     }
     
     public void run() throws JAMSEntity.NoSuchAttributeException {
+        
+        JAMSEntity entity = entities.getCurrent();
+        
         maxRG1.setValue(entity.getDouble("RG1_max") * area.getValue());
         maxRG2.setValue(entity.getDouble("RG2_max") * area.getValue());
 

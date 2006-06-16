@@ -53,7 +53,7 @@ import org.unijena.jams.model.*;
             update = JAMSVarDescription.UpdateType.RUN,
             description = "The current hru entity"
             )
-            public JAMSEntity entity;
+            public JAMSEntityCollection entities;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
@@ -97,6 +97,9 @@ import org.unijena.jams.model.*;
     }
     
     public void run() throws JAMSEntity.NoSuchAttributeException {
+        
+        JAMSEntity entity = entities.getCurrent();
+        
         double[] lai_vals = new double[366];
         double[] effH_vals = new double[366];
         

@@ -46,7 +46,7 @@ import org.unijena.jams.model.*;
             update = JAMSVarDescription.UpdateType.RUN,
             description = "The current hru entity"
             )
-            public JAMSEntity entity;
+            public JAMSEntityCollection entities;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
@@ -139,6 +139,9 @@ import org.unijena.jams.model.*;
     }
     
     public void run() throws JAMSEntity.NoSuchAttributeException {
+        
+        JAMSEntity entity = entities.getCurrent();
+        
         double rootDepth = this.rootDepth.getValue();
         double mxMPS = 0;
         String aNameFC = "fc_";

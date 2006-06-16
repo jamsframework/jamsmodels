@@ -110,7 +110,7 @@ public class TSDataReader extends JAMSComponent {
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
             update = JAMSVarDescription.UpdateType.INIT,
-            description = "Calculate regression coefficients? If not, regCoeff array stays emtpy!"
+            description = "Calculate regression coefficients? If not, regCoeff array stays empty!"
             )
             public JAMSBoolean skipRegression;
     
@@ -119,7 +119,8 @@ public class TSDataReader extends JAMSComponent {
     private JAMSTableDataArray da;
     
     public void init() {
-        //getRuntime().handle the j2k metadata descriptions
+        
+        //handle the j2k metadata descriptions
         int headerLineCount = 0;
         String dataName = null;
         String tres = null;

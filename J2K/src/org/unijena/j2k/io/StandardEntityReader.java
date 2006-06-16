@@ -76,11 +76,11 @@ public class StandardEntityReader extends JAMSComponent {
         
         if (firstRun) {
             //read hru parameter
-            hrus = new JAMSEntityCollection();
+            //hrus = new JAMSEntityCollection();
             hrus.setEntities(J2KFunctions.readParas(dirName.getValue() + "/" + hruFileName.getValue(), getModel()));
             
             //read reach parameter
-            reaches = new JAMSEntityCollection();
+            //reaches = new JAMSEntityCollection();
             reaches.setEntities(J2KFunctions.readParas(dirName.getValue() + "/" + reachFileName.getValue(), getModel()));
             
             //create object associations from id attributes for hrus and reaches
@@ -198,7 +198,7 @@ public class StandardEntityReader extends JAMSComponent {
         }
 	
 	//check for cycles
-	if (this.getModel().getRuntime().getDebugLevel() >= 4) {
+	if (this.getModel().getRuntime().getDebugLevel() >= JAMS.VVERBOSE) {
 	    if (cycleCheck() == true)
 		getModel().getRuntime().println("HRUs --> cycle found ... :( ");
 	    else
@@ -236,12 +236,6 @@ public class StandardEntityReader extends JAMSComponent {
                     eDepth = depthMap.get(e);
                     fDepth = depthMap.get(f);
                     if (fDepth.intValue() <= eDepth.intValue()) {
-                        /*
-                        if (eDepth.intValue() >= numHRUs) {
-                            getModel().getRuntime().sendHalt("Found circle in entity parameter file!");
-                            return;
-                            //System.out.println(e.getDouble("ID") + " -> " + f.getDouble("ID"));
-                        }*/
                         depthMap.put(f, new Integer(fDepth.intValue()+1));
                         mapChanged = true;
                         
