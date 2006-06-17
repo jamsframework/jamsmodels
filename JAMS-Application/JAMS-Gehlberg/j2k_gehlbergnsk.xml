@@ -244,9 +244,9 @@
         <var name="timeInterval" globvar="timeInterval"/>        
         <var name="current" attribute="time"/>
         
-        <component class="org.unijena.jams.gui.JAMSProgress" name="JAMSProgress">
+        <component class="org.unijena.jams.gui.JAMSExecInfo" name="JAMSProgress">
             <var name="title" value="J2K model execution"/>
-            <var name="height" value="20"/>
+            <var name="height" value="400"/>
             <var name="width" value="600"/>
             <var name="ontop" value="false"/>
         </component>

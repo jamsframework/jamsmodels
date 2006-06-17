@@ -1,7 +1,8 @@
 #JAMS configuration file
-#Mon May 08 11:36:39 CEST 2006
-verbose=1
+#Sat Jun 17 13:52:42 CEST 2006
+verbose=0
 debug=1
-errorlog=D:/jamserror.log
-libs=D:/java/nbprojects/J2K/dist/J2K.jar?D:/java/nbprojects/JAMS/dist/JAMS.jar?D:/java/nbprojects/J2K_SN/dist/J2K_SN.jar
-infolog=D:/jamsinfo.log
+model=D\:\\java\\jamsmodels\\JAMS-Application\\JAMS-Gehlberg\\j2k_gehlbergnsk.xml
+errorlog=D\:/jamserror.log
+libs=D\:\\java\\nbprojects\\J2K\\dist\\J2K.jar
+infolog=D\:/jamsinfo.log
