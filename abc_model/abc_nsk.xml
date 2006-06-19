@@ -36,16 +36,16 @@
                 <var name="compQbas" attribute="compQbas"/>
             </component>
             
-            <!--component class="org.unijena.abc.ABCSnowModule" name="snowModule">
-            <var name="precip" context="DataReader" cvar="precip"/>
-            <var name="temperature" context="DataReader" cvar="temperature"/>
-            <var name="t_thres" value="-4.3154" />
-            <var name="ddf" value="65.3876" />
-            </component-->
+            <component class="org.unijena.abc.ABCSnowModule" name="snowModule">
+                <var name="precip" attribute="precip"/>
+                <var name="temperature" attribute="temperature"/>
+                <var name="t_thres" value="-4.3154" />
+                <var name="ddf" value="65.3876" />
+            </component>
 
             <component class="org.unijena.abc.ABCModel" name="abcModel">
-                <!--var name="precip" context="snowModule" cvar="total_output"/-->
-                <var name="precip" attribute="precip" />
+                <var name="precip" context="snowModule" cvar="total_output"/>
+                <!--var name="precip" attribute="precip" /-->
                 <var name="a" value="0.3504" />
                 <var name="b" value="0.5693" />
                 <var name="c" value="0.2953" />
