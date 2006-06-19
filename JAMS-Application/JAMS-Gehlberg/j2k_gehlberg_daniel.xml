@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--<!DOCTYPE JAMSModel SYSTEM "jamsmodel.dtd">-->
 <model name="J2K" author="Peter Krause" date="30.01.2006">
-    <globvar name="workspaceDir" value="C:\jamsmodels\JAMS-Application\JAMS-Gehlberg"/>
+    <globvar name="workspaceDir" value="c:\jamsmodels\JAMS-Application\JAMS-Gehlberg"/>
     <globvar name="snow_trs" value="0.5"/>
     <globvar name="snow_trans" value="2.0"/>
-    <globvar name="data_caching" value="1"/>
+    <globvar name="data_caching" value="0"/>
     <globvar name="timeInterval" value="1989-11-01 7:30 1993-10-31 7:30 6 1"/>
     
     <component class="org.unijena.j2k.io.StandardEntityReader" name="ParaReader">
@@ -304,7 +304,7 @@
         </component>
         
         <component class="org.unijena.j2k.io.TSDataReader" name="PrecipDataReader">
-            <var name="dirName" globvar="workspaceDir"/>           
+            <var name="dirName" globvar="workspaceDir"/>
             <var name="skipRegression" globvar="data_caching"/>
             <var name="timeInterval" globvar="timeInterval"/>
             <var name="dataFileName" value="data\rcorr2.dat"/>
@@ -373,7 +373,7 @@
                 <var name="actEffH" context="HRUContext" attribute="actEffH"/>
                 <var name="actSlAsCf" context="HRUContext" attribute="actSlAsCf"/>
                 <var name="actRsc0" context="HRUContext" attribute="actRsc0"/>
-               <var name="actExtRad" context="HRUContext" attribute="actExtRad"/>
+                <var name="actExtRad" context="HRUContext" attribute="actExtRad"/>
                 <var name="tempRes" value="d"/>
             </component>
             
@@ -500,7 +500,7 @@
                 <var name="dataCaching" globvar="data_caching"/>
                 <var name="time" attribute="time"/>
                 <var name="actSlAsCf" context="HRUContext" attribute="actSlAsCf"/>
-               <var name="latitude" context="HRUContext" attribute="latitude"/>
+                <var name="latitude" context="HRUContext" attribute="latitude"/>
                 <var name="actExtRad" context="HRUContext" attribute="actExtRad"/>
                 <var name="sunh" context="HRUContext" attribute="sunh"/>
                 <var name="angstrom_a" value="0.25"/>
@@ -519,6 +519,7 @@
                 <var name="latitude" context="HRUContext" attribute="latitude"/>
                 <var name="elevation" context="HRUContext" attribute="elevation"/>
                 <var name="albedo" context="HRUContext" attribute="albedo"/>
+                <var name="extRad" context="HRUContext" attribute="actExtRad"/>
                 <var name="netRad" context="HRUContext" attribute="netRad"/>
             </component>
 
@@ -621,7 +622,7 @@
                 <var name="actET" context="HRUContext" attribute="actET"/>
                 <var name="snowDepth" context="HRUContext" attribute="snowDepth"/>
                 <var name="snowMelt" context="HRUContext" attribute="snowMelt"/>
-               <var name="maxMPS" context="HRUContext" attribute="maxMPS"/>
+                <var name="maxMPS" context="HRUContext" attribute="maxMPS"/>
                 <var name="maxLPS" context="HRUContext" attribute="maxLPS"/>
                 <var name="actDPS" context="HRUContext" attribute="actDPS"/>
                 <var name="actMPS" context="HRUContext" attribute="actMPS"/>
@@ -682,7 +683,7 @@
 
             <component class="org.unijena.j2k.routing.J2KProcessRouting" name="J2KProcessRouting">
                 <var name="reaches" attribute="reaches"/>
-               <var name="entities" attribute="hrus"/>
+                <var name="entities" attribute="hrus"/>
                 <var name="inRD1" context="HRUContext" attribute="inRD1"/>
                 <var name="inRD2" context="HRUContext" attribute="inRD2"/>
                 <var name="inRG1" context="HRUContext" attribute="inRG1"/>
