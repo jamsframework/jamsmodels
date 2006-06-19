@@ -180,6 +180,13 @@ import org.unijena.jams.model.*;
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
             update = JAMSVarDescription.UpdateType.INIT,
+            description = "PET reduction factor?"
+            )
+            public JAMSDouble et_reduction;
+    
+    @JAMSVarDescription(
+            access = JAMSVarDescription.AccessType.READ,
+            update = JAMSVarDescription.UpdateType.INIT,
             description = "Use caching of regionalised data?"
             )
             public JAMSBoolean dataCaching;
@@ -261,6 +268,8 @@ import org.unijena.jams.model.*;
             if(pET < 0){
                 pET = 0;
             }
+            pET = pET * this.et_reduction.getValue();
+            
             this.potET.setValue(pET);
             this.ra.setValue(ra);
             this.rs.setValue(rs);
@@ -311,11 +320,12 @@ import org.unijena.jams.model.*;
             wind_speed = 0.5;
         if(eff_height < 10){
             //old equation, don't use this one
-            ra = (1.5 * Math.pow(Math.log(2/(0.125 * eff_height)),2)) / (Math.pow(0.41,2) * wind_speed);
+            //ra = (1.5 * Math.pow(Math.log(2/(0.125 * eff_height)),2)) / (Math.pow(0.41,2) * wind_speed);
             //J2K equation
             //ra = (4.72 * Math.pow(Math.log(2.0 / (0.125 * eff_height)),2)) / (1 + 0.54 * wind_speed);
             //LARSIM equation
-            //ra = (6.25 / wind_speed) * Math.pow(Math.log(2 / 0.1 * eff_height), 2);
+            //ra = (6.25 / wind_speed) * Math.pow(Math.log(2 / (0.1 * eff_height)), 2);
+            ra = (9.5 / wind_speed) * Math.pow(Math.log(2 / (0.1 * eff_height)), 2);
         } else{
             //ra = 64 / (1+0.54*wind_speed);//(Math.pow(0.41,2) * wind_speed);
             ra = 20 / (Math.pow(0.41,2) * wind_speed);

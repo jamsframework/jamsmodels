@@ -160,6 +160,7 @@ import org.unijena.jams.model.*;
     }
     
     public void run() throws JAMSEntity.NoSuchAttributeException {
+        System.out.println("in init soil water");
         int horizons = (int)this.horizons.getValue();
         double rootDepth = this.rootDepth.getValue() * 10;
         double remRD = rootDepth;

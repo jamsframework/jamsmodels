@@ -133,6 +133,7 @@ public class TSDataReader extends JAMSComponent {
         double[] staty = null;
         double[] statelev = null;
         
+        
         String fileName = dirName.getValue()+"/"+dataFileName.getValue();
         String line = "#";
         try {
@@ -272,6 +273,7 @@ public class TSDataReader extends JAMSComponent {
     }
     
     public void run() {
+        
         dataArray.setValue(JAMSTableDataConverter.toDouble(store.getNext(), startColumn.getValue()));
         if (!skipRegression.getValue()) {
             regCoeff.setValue(Regression.calcLinReg(elevation.getValue(), dataArray.getValue()));

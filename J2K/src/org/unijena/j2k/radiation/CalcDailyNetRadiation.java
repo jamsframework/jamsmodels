@@ -121,16 +121,23 @@ import org.unijena.jams.model.*;
             public JAMSDouble netRad;
     
     @JAMSVarDescription(
+            access = JAMSVarDescription.AccessType.WRITE,
+            update = JAMSVarDescription.UpdateType.RUN,
+            description = "daily net radiation for refET [MJ/m²]"
+            )
+            public JAMSDouble refETNetRad;
+    
+    @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
             update = JAMSVarDescription.UpdateType.INIT,
             description = "Use caching of regionalised data?"
             )
             public JAMSBoolean dataCaching; 
     
-    private File cacheFile;
+    private File cacheFile_n, cacheFile_refET;
     private boolean useCache = false;
-    private ObjectOutputStream writer;
-    private ObjectInputStream reader;
+    private ObjectOutputStream writer_norm, writer_refET;
+    private ObjectInputStream reader_norm, reader_refET;
     
     
     /*
@@ -139,16 +146,22 @@ import org.unijena.jams.model.*;
     
     public void init() throws JAMSEntity.NoSuchAttributeException, IOException {
         //first, check if cached data are available
-        cacheFile = new File(dirName.getValue() + "/$" + this.getInstanceName() + ".cache");
-        if (!cacheFile.exists() && dataCaching.getValue()) {
+        cacheFile_n = new File(dirName.getValue() + "/$" + this.getInstanceName() + "_norm.cache");
+        cacheFile_refET = new File(dirName.getValue() + "/$" + this.getInstanceName() + "_refET.cache");
+        if (!cacheFile_n.exists() && dataCaching.getValue()) {
+            getModel().getRuntime().sendHalt(this.getInstanceName() + ": dataCaching is true but no cache file available!");
+        }
+        if (!cacheFile_refET.exists() && dataCaching.getValue()) {
             getModel().getRuntime().sendHalt(this.getInstanceName() + ": dataCaching is true but no cache file available!");
         }
         if(dataCaching.getValue()){               
             useCache = true;
-            reader = new ObjectInputStream(new BufferedInputStream(new FileInputStream(cacheFile)));
+            reader_norm = new ObjectInputStream(new BufferedInputStream(new FileInputStream(cacheFile_n)));
+            reader_refET = new ObjectInputStream(new BufferedInputStream(new FileInputStream(cacheFile_refET)));
         } else {
             useCache = false;
-            writer = new ObjectOutputStream(new BufferedOutputStream(new FileOutputStream(cacheFile)));
+            writer_norm = new ObjectOutputStream(new BufferedOutputStream(new FileOutputStream(cacheFile_n)));
+            writer_refET = new ObjectOutputStream(new BufferedOutputStream(new FileOutputStream(cacheFile_refET)));
         }
     }
     
@@ -176,25 +189,33 @@ import org.unijena.jams.model.*;
             double maxSunshine = org.unijena.j2k.physicalCalculations.DailySolarRadiationCalculationMethods.calc_maximumSunshineHours(sunsetHourAngle);
             double clearSkyRad = org.unijena.j2k.physicalCalculations.SolarRadiationCalculationMethods.calc_ClearSkySolarRadiation(elev, extraTerrestialRad);
             double netSWRadiation = org.unijena.j2k.physicalCalculations.SolarRadiationCalculationMethods.calc_NetShortwaveRadiation(alb, sR);
+            double netRefETSWRadiation = org.unijena.j2k.physicalCalculations.SolarRadiationCalculationMethods.calc_NetShortwaveRadiation(0.23, sR);
             double netLWRadiation = org.unijena.j2k.physicalCalculations.DailySolarRadiationCalculationMethods.calc_DailyNetLongwaveRadiation(temp, act_vapour_pressure, sR, clearSkyRad, false);
             
-            double nR = org.unijena.j2k.physicalCalculations.SolarRadiationCalculationMethods.calc_NetRadiation(netSWRadiation, netLWRadiation);
-            
-            netRad.setValue(nR);
-            writer.writeDouble(nR);
+            double nR_norm = org.unijena.j2k.physicalCalculations.SolarRadiationCalculationMethods.calc_NetRadiation(netSWRadiation, netLWRadiation);
+            double nR_refET = org.unijena.j2k.physicalCalculations.SolarRadiationCalculationMethods.calc_NetRadiation(netRefETSWRadiation, netLWRadiation);
+            netRad.setValue(nR_norm);
+            refETNetRad.setValue(nR_refET);
+            writer_norm.writeDouble(nR_norm);
+            writer_refET.writeDouble(nR_refET);
         }
         else {
-            netRad.setValue(reader.readDouble());
+            netRad.setValue(reader_norm.readDouble());
+            refETNetRad.setValue(reader_refET.readDouble());
         }
         
     }
     
     public void cleanup() throws IOException {
         if (!useCache) {
-            writer.flush();
-            writer.close();
+            writer_norm.flush();
+            writer_norm.close();
+            
+            writer_refET.flush();
+            writer_refET.close();
         } else {
-            reader.close();
+            reader_norm.close();
+            reader_refET.close();
         }
     }
 }

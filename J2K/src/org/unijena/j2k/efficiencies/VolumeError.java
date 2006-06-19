@@ -19,7 +19,7 @@ public class VolumeError {
     public VolumeError() {
     }
     
-    public static double absVolumeError(double[] prediction, double[] validation){
+    public static double absVolumeError(double[] validation, double[] prediction){
         double volError = 0;
         for(int i = 0; i < prediction.length; i++){
             volError += (prediction[i] - validation[i]);

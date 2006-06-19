@@ -143,7 +143,7 @@ import org.unijena.jams.model.*;
         
         
         if(toPoly != null){
-            
+            double elev = toPoly.getDouble("slope");
             double RD1in = toPoly.getDouble("inRD1");
             double RD2in = toPoly.getDouble("inRD2");
             double RG1in = toPoly.getDouble("inRG1");

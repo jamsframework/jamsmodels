@@ -325,15 +325,11 @@ import org.unijena.jams.model.*;
 
                 getModel().getRuntime().println("absVolumeError:\t" + volErr, JAMS.STANDARD);
 
-                getModel().getRuntime().println("absVolumeError a-1:\t" + volErr, JAMS.STANDARD);
-
             }else if(effMethod.getValue()[i] == this.RMSE){
                 double rmse = PredictionErrors.rootMeanSquareError(valData, preData);
                 this.rmse.setValue(rmse);
 
                 getModel().getRuntime().println("RMSE:\t" + rmse, JAMS.STANDARD);
-
-                getModel().getRuntime().println("RMSE a-1:\t" + rmse, JAMS.STANDARD);
 
             }
             
