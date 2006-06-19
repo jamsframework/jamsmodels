@@ -79,7 +79,7 @@ import org.unijena.jams.model.*;
             public JAMSDouble precip;
     
     @JAMSVarDescription(
-            access = JAMSVarDescription.AccessType.READ,
+            access = JAMSVarDescription.AccessType.WRITE,
             update = JAMSVarDescription.UpdateType.RUN,
             description = "the runoff output"
             )
