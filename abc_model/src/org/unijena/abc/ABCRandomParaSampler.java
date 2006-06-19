@@ -106,7 +106,8 @@ import org.unijena.jams.model.*;
         System.out.println("Run No. " + this.currentCount + " of " + this.sampleCount.getValue());
         //set parameter values to corresponding lower boundaries
         double[] sample = null;
-        if(parameters.length == 1){
+        sample = abcRandomSampler();
+        /*if(parameters.length == 1){
            sample = new double[1];
            double d = generator.nextDouble();
             //parameter a
@@ -122,9 +123,9 @@ import org.unijena.jams.model.*;
             else
                 sample = xcRandomSampler();
         }
-        else if(parameters.length == 3)
+        else if(parameters.length >= 3)
             sample = abcRandomSampler();
-        
+        */
         for (int i = 0; i < parameters.length; i++) {
             //System.out.println("Parameter: " + this.parameterIDs.getValue());
             //double d = generator.nextDouble();
@@ -164,34 +165,34 @@ import org.unijena.jams.model.*;
         return sample;
     }
     private double[] abcRandomSampler(){
-        double[] sample = new double[3];
-        double d = generator.nextDouble();
-        //parameter b
-        sample[1] = (lowBound[1] + d * (upBound[1]-lowBound[1]));
-        //parameter b
+        int paras = this.parameterNames.length;
+        boolean criticalPara = false;
+        double criticalParaValue = 0; 
+        double[] sample = new double[paras];
         
-        d = generator.nextDouble();
-        sample[0] = (lowBound[0] + d * (upBound[0]-lowBound[0]-sample[1]));
-        /*
-        do {
-            d = generator.nextDouble();
-            sample[1] = (lowBound[1] + d * (upBound[1]-lowBound[1]));
-        } while (sample[0] + sample[1] > 1);
-         */
-        
-        // parameter c
-        d = generator.nextDouble();
-        sample[2] = (lowBound[2] + d * (upBound[2]-lowBound[2]));
-        
-        if((sample[0] + sample[1]) > 1.0){
-            System.out.println("a + b > 1");
+        for(int i = 0; i < paras; i++){
+            if(parameterNames[i].equals("abcModel.a") || parameterNames[i].equals("abcModel.b")){
+                //either a or b has already been sampled!
+                if(criticalPara){
+                    double d = generator.nextDouble();
+                    double upperBound = 1.0 - criticalParaValue;
+                    sample[i] = (lowBound[i] + d * (upperBound-lowBound[i]));
+                }
+                else{
+                    //first criticalPara
+                    double d = generator.nextDouble();
+                    sample[i] = (lowBound[i] + d * (upBound[i]-lowBound[i]));
+                    criticalPara = true;
+                    criticalParaValue = sample[i];
+                }
+            }else{
+                double d = generator.nextDouble();
+                // all other parameters
+                sample[i] = (lowBound[i] + d * (upBound[i]-lowBound[i]));
+            }
+            getModel().getRuntime().sendInfoMsg("Para: " + parameterNames[i] + " = " + sample[i]);
         }
-        System.out.println("Para: " + parameterNames[0] + " = " + sample[0]);
-        System.out.println("Para: " + parameterNames[1] + " = " + sample[1]);
-        System.out.println("Para: " + parameterNames[2] + " = "  + sample[2]);
-        getModel().getRuntime().sendInfoMsg("Para: " + parameterNames[0] + " = " + sample[0]);
-        getModel().getRuntime().sendInfoMsg("Para: " + parameterNames[1] + " = " + sample[1]);
-        getModel().getRuntime().sendInfoMsg("Para: " + parameterNames[2] + " = "  + sample[2]);
+        
         return sample;
     }
     
@@ -318,7 +319,8 @@ import org.unijena.jams.model.*;
         while (tok.hasMoreTokens()) {
             key = tok.nextToken();
             parameterNames[i] = key;
-            parameters[i++] = (JAMSDouble) getModel().getRuntime().getDataHandles().get(key);
+            parameters[i] = (JAMSDouble) getModel().getRuntime().getDataHandles().get(key);
+            i++;
         }
         
         tok = new StringTokenizer(boundaries.getValue(), ";");
@@ -354,7 +356,7 @@ import org.unijena.jams.model.*;
         writer.addColumn("Run");
         
         for(int j = 0; j < this.parameters.length; j++)
-            writer.addColumn("para_" + j);
+            writer.addColumn(this.parameterNames[j]);
         
         writer.addColumn("e2");
         writer.addColumn("le2");
