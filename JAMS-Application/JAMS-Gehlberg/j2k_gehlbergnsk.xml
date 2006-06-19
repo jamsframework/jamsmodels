@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <!--<!DOCTYPE JAMSModel SYSTEM "jamsmodel.dtd">-->
 <model name="J2K" author="Peter Krause" date="30.01.2006">
     <globvar name="workspaceDir" value="D:\jamsmodels\JAMS-Application\JAMS-Gehlberg"/>
@@ -519,6 +519,7 @@
                 <var name="latitude" context="HRUContext" attribute="latitude"/>
                 <var name="elevation" context="HRUContext" attribute="elevation"/>
                 <var name="albedo" context="HRUContext" attribute="albedo"/>
+                <var name="extRad" context="HRUContext" attribute="actExtRad"/>
                 <var name="netRad" context="HRUContext" attribute="netRad"/>
             </component>
 
