@@ -81,7 +81,7 @@ public class Output extends JAMSComponent {
         writer.addData(simRunoff);
         writer.addData(obsRunoff);
         try {
-        writer.writeData();
+            writer.writeData();
         } catch (org.unijena.jams.runtime.JAMSRuntimeException jre) {
             System.out.println(jre.getMessage());
         }

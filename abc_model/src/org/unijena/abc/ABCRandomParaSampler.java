@@ -67,11 +67,18 @@ import org.unijena.jams.model.*;
             public JAMSInteger sampleCount;
     
     @JAMSVarDescription(
+            access = JAMSVarDescription.AccessType.READ,
+            update = JAMSVarDescription.UpdateType.INIT,
+            description = "efficiency methods"
+            )
+            public JAMSString effMethodNames;
+    
+    @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
             update = JAMSVarDescription.UpdateType.RUN,
-            description = "efficiency criteria"
+            description = "efficiency values"
             )
-            public JAMSDouble[] effMethod;
+            public JAMSDouble[] effValues;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
@@ -92,11 +99,81 @@ import org.unijena.jams.model.*;
     double[] upBound;
     int currentCount;
     Random generator;
-    double bestGoodness = Double.MAX_VALUE;
-    double bestMinimum = Double.MAX_VALUE;
-    double[] bestValues;
     GenericDataWriter writer;
     
+    
+    public void init() {
+        
+//add more checks!!!
+        //retreiving parameter names
+        int i;
+        StringTokenizer tok = new StringTokenizer(parameterIDs.getValue(), ";");
+        String key;
+        parameters = new JAMSDouble[tok.countTokens()];
+        parameterNames = new String[tok.countTokens()];
+        
+        i = 0;
+        while (tok.hasMoreTokens()) {
+            key = tok.nextToken();
+            parameterNames[i] = key;
+            parameters[i] = (JAMSDouble) getModel().getRuntime().getDataHandles().get(key);
+            i++;
+        }
+        
+        //retreiving boundaries
+        tok = new StringTokenizer(boundaries.getValue(), ";");
+        int n = tok.countTokens();
+        lowBound = new double[n];
+        upBound = new double[n];
+        
+        //check if number of parameter ids and boundaries match
+        if (n != i) {
+            getModel().getRuntime().sendHalt("Component " + this.getInstanceName() + ": Different number of parameterIDs and boundaries!");
+        }
+        
+        i = 0;
+        while (tok.hasMoreTokens()) {
+            key = tok.nextToken();
+            key = key.substring(1, key.length()-1);
+            
+            StringTokenizer boundTok = new StringTokenizer(key, ">");
+            lowBound[i] = Double.parseDouble(boundTok.nextToken());
+            upBound[i] = Double.parseDouble(boundTok.nextToken());
+            
+            //check if upBound is higher than lowBound
+            if (upBound[i] <= lowBound[i]) {
+                getModel().getRuntime().sendHalt("Component " + this.getInstanceName() + ": upBound must be higher than lowBound!");
+            }
+            
+            i++;
+        }
+        
+        //retreiving effMethodNames
+        i = 0;
+        tok = new StringTokenizer(effMethodNames.getValue(), ";");
+        String[] effNames = new String[tok.countTokens()];
+        i = 0;
+        while (tok.hasMoreTokens()) {
+            key = tok.nextToken();
+            effNames[i] = key;
+            i++;
+        }
+        
+        //create output file
+        writer = new GenericDataWriter(this.fileName.getValue());
+        writer.addColumn("Run");
+        
+        for(int j = 0; j < this.parameters.length; j++)
+            writer.addColumn(this.parameterNames[j]);
+        
+        for(int e = 0; e < effNames.length; e++){
+            writer.addColumn(effNames[e]);
+        }
+        
+        
+        writer.writeHeader();
+        
+    }
     
     private boolean hasNext() {
         return currentCount < sampleCount.getValue();
@@ -104,66 +181,17 @@ import org.unijena.jams.model.*;
     
     private void updateValues() {
         System.out.println("Run No. " + this.currentCount + " of " + this.sampleCount.getValue());
-        //set parameter values to corresponding lower boundaries
         double[] sample = null;
         sample = abcRandomSampler();
-        /*if(parameters.length == 1){
-           sample = new double[1];
-           double d = generator.nextDouble();
-            //parameter a
-            sample[0] = (lowBound[0] + d * (upBound[0]-lowBound[0])); 
-        }
-        if(parameters.length == 2){
-            if(parameterNames[0].equals("abcModel.a") && parameterNames[1].equals("abcModel.b")){
-                sample = abRandomSampler();
-            }
-            else if(parameterNames[0].equals("abcModel.b") && parameterNames[1].equals("abcModel.a")){
-                sample = abRandomSampler();
-            }
-            else
-                sample = xcRandomSampler();
-        }
-        else if(parameters.length >= 3)
-            sample = abcRandomSampler();
-        */
+        
         for (int i = 0; i < parameters.length; i++) {
-            //System.out.println("Parameter: " + this.parameterIDs.getValue());
-            //double d = generator.nextDouble();
-            parameters[i].setValue(sample[i]);//lowBound[i] + d * (upBound[i]-lowBound[i]));
+            parameters[i].setValue(sample[i]);
         }
         
         currentCount++;
     }
-    private double[] xcRandomSampler(){
-        double[] sample = new double[2];
-        //sample value x
-        double d = generator.nextDouble();
-        //parameter x
-        sample[0] = (lowBound[0] + d * (upBound[0]-lowBound[0]));
-        //parameter c
-        d = generator.nextDouble();
-        sample[1] = (lowBound[1] + d * (upBound[1]-lowBound[1]));
-        
-        getModel().getRuntime().sendInfoMsg("Para: " + parameterNames[0] + " = " + sample[0]);
-        getModel().getRuntime().sendInfoMsg("Para: " + parameterNames[1] + " = " + sample[1]);
-        
-        return sample;
-    }
-    private double[] abRandomSampler(){
-        double[] sample = new double[2];
-        //sample value a
-        double d = generator.nextDouble();
-        //parameter a
-        sample[0] = (lowBound[0] + d * (upBound[0]-lowBound[0]));
-        //parameter b
-        d = generator.nextDouble();
-        sample[1] = (lowBound[1] + d * (upBound[1]-lowBound[1]-sample[0]));
-        
-        getModel().getRuntime().sendInfoMsg("Para: " + parameterNames[0] + " = " + sample[0]);
-        getModel().getRuntime().sendInfoMsg("Para: " + parameterNames[1] + " = " + sample[1]);
-        
-        return sample;
-    }
+    
+    
     private double[] abcRandomSampler(){
         int paras = this.parameterNames.length;
         boolean criticalPara = false;
@@ -241,127 +269,41 @@ import org.unijena.jams.model.*;
     }
     
     public void run() {
-        /*double[] effValues = new double[this.effMethod.length];//
-        for(int i = 0; i < effValues.length; i++)
-            effValues[i] = this.effMethod[i].getValue();*/
         if (runEnumerator == null) {
             runEnumerator = getChildrenEnumerator();
         }
         
-        if (disable.getValue()) {
-            
+        if (disable.getValue()) {    
             singleRun();
-            
-        } else {
-            
+        } 
+        else {
             resetValues();
-            
-            while (hasNext()) {
-                
+            while (hasNext()) {             
                 updateValues();
-                
                 singleRun();
                 
-                //JAMS.sendInfoMsg("Goodness: " + goodness);
-                //write outputFile
                 writer.addData(currentCount);
                 for(int i = 0; i < this.parameters.length; i++)
                     writer.addData(this.parameters[i].getValue());
-                for(int e = 0; e < effMethod.length; e++)
-                    writer.addData(this.effMethod[e].getValue());
+                for(int e = 0; e < effValues.length; e++)
+                    writer.addData(this.effValues[e].getValue());
                 try{
                     writer.writeData();
                 }catch(org.unijena.jams.runtime.JAMSRuntimeException e){
                     
                 }
-                /*
-                double minimumCrit = Math.abs(1 - goodness.getValue());
-                
-                if(minimumCrit < bestMinimum){
-                    //if (goodness.getValue() > bestGoodness) {
-                    bestMinimum = Math.abs(1 - goodness.getValue());
-                    bestGoodness = goodness.getValue();
-                    for (int i = 0; i < parameters.length; i++) {
-                        bestValues[i] = parameters[i].getValue();
-                    }
-                    
-                }*/
+               
             }
             
             runEnumerator.reset();
             while(runEnumerator.hasNext() && doRun) {
                 JAMSComponent comp = runEnumerator.next();
-                try {
-                    System.out.println("comp cleanup from parasampler");
-                    //comp.cleanup();
-                } catch (Exception e) {
-                    //JAMS.handle(e, comp.getInstanceName());
-                }
             }
-            
-            //System.out.println("Goodness: " + goodness);
         }
     }
     
     
-    public void init() {
-        
-//add more checks!!!
-        int i;
-        StringTokenizer tok = new StringTokenizer(parameterIDs.getValue(), ";");
-        String key;
-        parameters = new JAMSDouble[tok.countTokens()];
-        parameterNames = new String[tok.countTokens()];
-        
-        i = 0;
-        while (tok.hasMoreTokens()) {
-            key = tok.nextToken();
-            parameterNames[i] = key;
-            parameters[i] = (JAMSDouble) getModel().getRuntime().getDataHandles().get(key);
-            i++;
-        }
-        
-        tok = new StringTokenizer(boundaries.getValue(), ";");
-        int n = tok.countTokens();
-        lowBound = new double[n];
-        upBound = new double[n];
-        bestValues = new double[n];
-        
-        //check if number of parameter ids and boundaries match
-        if (n != i) {
-            getModel().getRuntime().sendHalt("Component " + this.getInstanceName() + ": Different number of parameterIDs and boundaries!");
-        }
-        
-        i = 0;
-        while (tok.hasMoreTokens()) {
-            key = tok.nextToken();
-            key = key.substring(1, key.length()-1);
-            
-            StringTokenizer boundTok = new StringTokenizer(key, ">");
-            lowBound[i] = Double.parseDouble(boundTok.nextToken());
-            upBound[i] = Double.parseDouble(boundTok.nextToken());
-            
-            //check if upBound is higher than lowBound
-            if (upBound[i] <= lowBound[i]) {
-                getModel().getRuntime().sendHalt("Component " + this.getInstanceName() + ": upBound must be higher than lowBound!");
-            }
-            
-            i++;
-        }
-        
-        //create output file
-        writer = new GenericDataWriter(this.fileName.getValue());
-        writer.addColumn("Run");
-        
-        for(int j = 0; j < this.parameters.length; j++)
-            writer.addColumn(this.parameterNames[j]);
-        
-        writer.addColumn("e2");
-        writer.addColumn("le2");
-        
-        writer.writeHeader();
-        
-    }
+    
     
     public void cleanup() {
         if (!disable.getValue()) {

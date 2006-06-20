@@ -126,6 +126,7 @@ import org.unijena.jams.model.*;
     }
     
     public void cleanup() {
+        this.snowStorage.setValue(0.0);
         
     }
     
