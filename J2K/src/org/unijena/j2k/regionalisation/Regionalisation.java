@@ -189,9 +189,8 @@ public class Regionalisation extends JAMSComponent {
             
         }
     }
-    
     public void run() throws JAMSEntity.NoSuchAttributeException, IOException {
-        
+
         if (!useCache) {
             double[] regCoeff = this.regCoeff.getValue();
             double gradient = regCoeff[1];
