@@ -176,11 +176,11 @@ import org.unijena.jams.model.*;
     }
     
     private boolean hasNext() {
-        return currentCount < sampleCount.getValue();
+        return (currentCount < sampleCount.getValue()) && doRun;
     }
     
     private void updateValues() {
-        System.out.println("Run No. " + this.currentCount + " of " + this.sampleCount.getValue());
+        getModel().getRuntime().println("Run No. " + this.currentCount + " of " + this.sampleCount.getValue());
         double[] sample = null;
         sample = abcRandomSampler();
         

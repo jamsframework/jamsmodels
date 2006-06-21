@@ -45,6 +45,7 @@ import org.unijena.jams.model.*;
             description = "Parameter ddf"
             )
             public JAMSDouble ddf;
+    
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
             update = JAMSVarDescription.UpdateType.INIT,

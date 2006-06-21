@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--<!DOCTYPE JAMSModel SYSTEM "jamsmodel.dtd">-->
 <model name="J2K" author="Peter Krause" date="30.01.2006">
-    <globvar name="workspaceDir" value="D:\java\jamsmodels\JAMS-Application\JAMS-Gehlberg"/>
+    <globvar name="workspaceDir" value="D:\jamsmodels\JAMS-Application\JAMS-Gehlberg"/>
     <globvar name="snow_trs" value="0.5"/>
     <globvar name="snow_trans" value="2.0"/>
-    <globvar name="data_caching" value="1"/>
+    <globvar name="data_caching" value="0"/>
     <globvar name="timeInterval" value="1989-11-01 7:30 1993-10-31 7:30 6 1"/>
     
     <component class="org.unijena.j2k.io.StandardEntityReader" name="ParaReader">

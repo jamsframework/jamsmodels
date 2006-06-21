@@ -176,14 +176,7 @@ import org.unijena.jams.model.*;
             description = "ra"
             )
             public JAMSDouble ra;
-    
-    @JAMSVarDescription(
-            access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.INIT,
-            description = "PET reduction factor?"
-            )
-            public JAMSDouble et_reduction;
-    
+        
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
             update = JAMSVarDescription.UpdateType.INIT,
@@ -268,7 +261,6 @@ import org.unijena.jams.model.*;
             if(pET < 0){
                 pET = 0;
             }
-            pET = pET * this.et_reduction.getValue();
             
             this.potET.setValue(pET);
             this.ra.setValue(ra);

@@ -262,7 +262,6 @@ import org.unijena.jams.model.*;
             while(runEnumerator.hasNext() && doRun) {
                 JAMSComponent comp = runEnumerator.next();
                 try {
-                    System.out.println("comp cleanup from parasampler");
                     //comp.cleanup();
                 } catch (Exception e) {
                     //JAMS.handle(e, comp.getInstanceName());
