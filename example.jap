@@ -1,8 +1,12 @@
 #JAMS configuration file
 #Mon May 08 11:36:39 CEST 2006
-verbose=1
-debug=3
+debug=1
+verbose=0
 model=D\:\\jamsmodels\\JAMS-Application\\JAMS-Gehlberg\\j2k_gehlbergnsk.xml
-errorlog=D\:\\jamserror.log
 libs=D\:\\jamsprojects\\J2K\\dist\\J2K.jar?D\:\\jamsprojects\\JAMS\\dist\\JAMS.jar?D\:\\jamsprojects\\J2K_SN\\dist\\J2K_SN.jar
-infolog=D\:\\jamsinfo.log
+#infolog=D\:\\jamsinfo.log
+#errorlog=D\:\\jamserror.log
+windowenable=1
+windowontop=0
+windowwidth=600
+windowheight=400
