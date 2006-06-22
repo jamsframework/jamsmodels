@@ -776,14 +776,15 @@
         </component>            
 
         <component class="org.unijena.jams.gui.DualAxisTSPlot" name="Runoff Plot" >
-            <var name="graphTitle" value="Simulated Runoff;Observed Runoff"/>
+            <var name="graphLeftTitle" value="Simulated Runoff;Observed Runoff"/>
+            <var name="graphRightTitle" value="Precip"/>
             <var name="xAxisTitle" value="Time"/>
             <var name="yAxisLeftTitle" value="Runoff [m³/s]"/>
-            <var name="yAxisRightTitle" value="ET [mm]"/>
+            <var name="yAxisRightTitle" value="Precip [mm]"/>
             <var name="dateFormat" value="dd-MM-yyyy"/>
             <var name="time" attribute="time"/>
             <var name="valueLeft" attribute="catchmentSimRunoff_qm;catchmentObsRunoff"/>
-            <var name="valueRight" attribute="potET;actET"/>
+            <var name="valueRight" attribute="precip"/>
         </component>
 
         <component class="org.unijena.j2k.DoubleSetter" name="CatchmentResetter">
