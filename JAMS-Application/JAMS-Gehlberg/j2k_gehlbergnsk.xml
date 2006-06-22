@@ -4,7 +4,7 @@
     <globvar name="workspaceDir" value="D:\jamsmodels\JAMS-Application\JAMS-Gehlberg"/>
     <globvar name="snow_trs" value="0.5"/>
     <globvar name="snow_trans" value="2.0"/>
-    <globvar name="data_caching" value="0"/>
+    <globvar name="data_caching" value="1"/>
     <globvar name="timeInterval" value="1989-11-01 7:30 1993-10-31 7:30 6 1"/>
     
     <component class="org.unijena.j2k.io.StandardEntityReader" name="ParaReader">
@@ -775,14 +775,14 @@
             <var name="value" attribute="precip;tmean;rhum;wind;rain;snow;solRad;netRad;refET;potET;actET;netRain;netSnow;throughfall;interception;intercStorage;snowDepth;snowTotSWE;snowMelt;satMPS;satLPS;actMPS;actLPS;percolation;actRG1;actRG2;catchmentRD1_w;catchmentRD2_w;catchmentRG1_w;catchmentRG2_w;channelStorage_w;catchmentSimRunoff_qm;catchmentObsRunoff;rs;ra"/>
         </component>            
 
-        <component class="org.unijena.jams.gui.TSPlot" name="Runoff Plot" >
+        <component class="org.unijena.jams.gui.SingleAxisTSPlot" name="Runoff Plot" >
             <var name="plotTitle" value="Runoff Plot"/>
-            <var name="graphTitle" value="Observed Runoff"/>
+            <var name="graphTitle" value="Simulated Runoff;Observed Runoff"/>
             <var name="xAxisTitle" value="Time"/>
             <var name="yAxisTitle" value="Runoff [m³/s]"/>
             <var name="dateFormat" value="dd-MM-yyyy"/>
             <var name="time" attribute="time"/>
-            <var name="value" attribute="catchmentSimRunoff_qm"/>
+            <var name="value" attribute="catchmentSimRunoff_qm;catchmentObsRunoff"/>
         </component>
 
         <component class="org.unijena.j2k.DoubleSetter" name="CatchmentResetter">
