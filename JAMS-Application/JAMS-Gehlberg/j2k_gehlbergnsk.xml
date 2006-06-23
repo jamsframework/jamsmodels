@@ -791,10 +791,9 @@
             <var name="valueLeft" attribute="catchmentSimRunoff_qm;catchmentObsRunoff"/>
             <var name="valueRight" attribute="precip"/>
         </component>
-        
 
         <component class="org.unijena.jams.gui.TSPlot" name="ETP Plot" >
-            <var name="titleLeft" value="Simulated Runoff;Observed Runoff"/>
+            <var name="titleLeft" value="pot. ET;act. ET"/>
             <var name="colorLeft" value="magenta;cyan"/>
             <var name="typeLeft" value="0"/>
             <var name="xAxisTitle" value="Time"/>
