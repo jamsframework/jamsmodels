@@ -8,5 +8,5 @@ errorlog=D\:/jamserror.log
 infolog=D\:/jamsinfo.log
 windowenable=1
 windowontop=0
-windowwidth=600
-windowheight=400
+windowwidth=800
+windowheight=600
