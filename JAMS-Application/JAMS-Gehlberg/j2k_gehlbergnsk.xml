@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--<!DOCTYPE JAMSModel SYSTEM "jamsmodel.dtd">-->
 <model name="J2K" author="Peter Krause" date="30.01.2006">
-    <globvar name="workspaceDir" value="D:\jamsmodels\JAMS-Application\JAMS-Gehlberg"/>
+    <globvar name="workspaceDir" value="D:\java\jamsmodels\JAMS-Application\JAMS-Gehlberg"/>
     <globvar name="snow_trs" value="0.5"/>
     <globvar name="snow_trans" value="2.0"/>
     <globvar name="data_caching" value="1"/>
@@ -786,22 +786,40 @@
             <var name="leftAxisTitle" value="Runoff [m³/s]"/>
             <var name="rightAxisTitle" value="Precip [mm]"/>
             <var name="rightAxisInverted" value="true"/>
-            <var name="dateFormat" value="dd-MM-yyyy hh:mm"/>
+            <var name="dateFormat" value="dd-MM-yyyy"/>
             <var name="time" attribute="time"/>
             <var name="valueLeft" attribute="catchmentSimRunoff_qm;catchmentObsRunoff"/>
             <var name="valueRight" attribute="precip"/>
         </component>
+        
 
         <component class="org.unijena.jams.gui.TSPlot" name="ETP Plot" >
-            <var name="titleLeft" value="pot. ET;act. ET"/>
-            <var name="colorLeft" value="magenta;cyan"/>
+            <var name="titleLeft" value="pot. ET;act. ET;Temp"/>
+            <var name="titleRight" value="Temp"/>
+            <var name="colorLeft" value="magenta;cyan;"/>
+            <var name="colorRight" value="blue"/>            
+            <var name="typeLeft" value="0"/>
+            <var name="typeRight" value="0"/>            
+            <var name="xAxisTitle" value="Time"/>
+            <var name="leftAxisTitle" value="ETP [mm]"/>
+            <var name="rightAxisTitle" value="Temp [°C]"/>
+            <var name="rightAxisInverted" value="false"/>
+            <var name="dateFormat" value="dd-MM-yyyy"/>
+            <var name="time" attribute="time"/>
+            <var name="valueLeft" attribute="potET;actET"/>
+            <var name="valueRight" attribute="tmean"/>
+        </component>        
+
+        <!--component class="org.unijena.jams.gui.TSPlot" name="ETP Plot" >
+            <var name="titleLeft" value="pot. ET;act. ET;Temp"/>
+            <var name="colorLeft" value="magenta;cyan;blue"/>
             <var name="typeLeft" value="0"/>
             <var name="xAxisTitle" value="Time"/>
             <var name="leftAxisTitle" value="ETP [mm]"/>
             <var name="dateFormat" value="dd-MM-yyyy hh:mm"/>
             <var name="time" attribute="time"/>
-            <var name="valueLeft" attribute="potET;actET"/>
-        </component>        
+            <var name="valueLeft" attribute="potET;actET;tmean"/>
+        </component-->        
 
         <component class="org.unijena.j2k.DoubleSetter" name="CatchmentResetter">
             <var name="attributes" attribute="precip;tmean;rhum;wind;rain;snow;solRad;netRad;refET;potET;actET;netRain;netSnow;throughfall;interception;intercStorage;snowDepth;snowTotSWE;snowMelt;satMPS;satLPS;actMPS;actLPS;percolation;actRG1;actRG2;catchmentRD1_w;catchmentRD2_w;catchmentRG1_w;catchmentRG2_w;channelStorage_w;channelStorage;rs;ra"/>
