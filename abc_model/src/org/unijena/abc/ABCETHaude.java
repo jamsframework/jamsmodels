@@ -79,7 +79,7 @@ import org.unijena.jams.model.*;
             update = JAMSVarDescription.UpdateType.RUN,
             description = "daily potential ET [mm/d]"
             )
-            public JAMSDouble potET;
+            public JAMSDouble pET;
     
     
     
@@ -117,7 +117,7 @@ import org.unijena.jams.model.*;
            //conversion from daily to hourly values
            pETP = pETP * days;
            
-           this.potET.setValue(pETP);
+           this.pET.setValue(pETP);
         
     }
     
