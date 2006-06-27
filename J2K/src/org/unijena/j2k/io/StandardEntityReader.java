@@ -97,7 +97,7 @@ public class StandardEntityReader extends JAMSComponent {
         }
     }
     //do depth first search to find cycles
-    private boolean cycleCheck(JAMSEntity node,Stack<JAMSEntity> searchStack,HashSet<JAMSDouble> closedList,HashSet<JAMSDouble> visitedList) throws JAMSEntity.NoSuchAttributeException {
+    protected boolean cycleCheck(JAMSEntity node,Stack<JAMSEntity> searchStack,HashSet<JAMSDouble> closedList,HashSet<JAMSDouble> visitedList) throws JAMSEntity.NoSuchAttributeException {
 	JAMSEntity child_node;
 
 	//current node allready in search stack -> circle found
@@ -133,7 +133,7 @@ public class StandardEntityReader extends JAMSComponent {
 	return false;	
     }
     
-    private boolean cycleCheck() throws JAMSEntity.NoSuchAttributeException {
+    protected boolean cycleCheck() throws JAMSEntity.NoSuchAttributeException {
 	Iterator<JAMSEntity> hruIterator;	
 	
 	HashSet<JAMSDouble> closedList = new HashSet<JAMSDouble>();
@@ -162,7 +162,7 @@ public class StandardEntityReader extends JAMSComponent {
 	return result;
     }
     
-    private void createTopology() throws JAMSEntity.NoSuchAttributeException {
+    protected void createTopology() throws JAMSEntity.NoSuchAttributeException {
         
         HashMap<Double, JAMSEntity> hruMap = new HashMap<Double, JAMSEntity>();
         HashMap<Double, JAMSEntity> reachMap = new HashMap<Double, JAMSEntity>();
@@ -207,7 +207,7 @@ public class StandardEntityReader extends JAMSComponent {
         
     }
     
-    private void createOrderedList(JAMSEntityCollection col, String asso) throws JAMSEntity.NoSuchAttributeException {
+    protected void createOrderedList(JAMSEntityCollection col, String asso) throws JAMSEntity.NoSuchAttributeException {
         
         Iterator<JAMSEntity> hruIterator;
         JAMSEntity e, f;
