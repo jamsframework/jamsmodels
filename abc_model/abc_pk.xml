@@ -35,7 +35,7 @@
                 <var name="temperature" attribute="temperature"/>
                 <var name="rhum" attribute="rhum"/>
                 <var name="et_adaptation" value="4.9001"/>
-                <var name="potET" attribute="pET"/>
+                <var name="pET" attribute="pET"/>
             </component>
             
             <component class="org.unijena.abc.ABCSnowModule" name="snowModule">
