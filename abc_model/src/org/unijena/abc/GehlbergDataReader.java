@@ -42,6 +42,20 @@ public class GehlbergDataReader extends JAMSComponent {
             public JAMSString fileName;
     
     @JAMSVarDescription(
+            access = JAMSVarDescription.AccessType.READ,
+            update = JAMSVarDescription.UpdateType.INIT,
+            description = "Time interval of current temporal context"
+            )
+            public JAMSTimeInterval timeInterval;
+    
+    @JAMSVarDescription(
+            access = JAMSVarDescription.AccessType.READ,
+            update = JAMSVarDescription.UpdateType.RUN,
+            description = "Current time"
+            )
+            public JAMSCalendar time;
+    
+    @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
             update = JAMSVarDescription.UpdateType.RUN
             )
@@ -57,68 +71,90 @@ public class GehlbergDataReader extends JAMSComponent {
             access = JAMSVarDescription.AccessType.WRITE,
             update = JAMSVarDescription.UpdateType.RUN
             )
+            public JAMSDouble rhum;
+    
+    @JAMSVarDescription(
+            access = JAMSVarDescription.AccessType.WRITE,
+            update = JAMSVarDescription.UpdateType.RUN
+            )
             public JAMSDouble obsRunoff;
     
-    @JAMSVarDescription(
-            access = JAMSVarDescription.AccessType.WRITE,
-            update = JAMSVarDescription.UpdateType.RUN
-            )
-            public JAMSDouble compRD1;
-    
-    @JAMSVarDescription(
-            access = JAMSVarDescription.AccessType.WRITE,
-            update = JAMSVarDescription.UpdateType.RUN
-            )
-            public JAMSDouble compRD2;
-    
-    @JAMSVarDescription(
-            access = JAMSVarDescription.AccessType.WRITE,
-            update = JAMSVarDescription.UpdateType.RUN
-            )
-            public JAMSDouble compRG1;
-    
-    @JAMSVarDescription(
-            access = JAMSVarDescription.AccessType.WRITE,
-            update = JAMSVarDescription.UpdateType.RUN
-            )
-            public JAMSDouble compRG2;
-    
-    @JAMSVarDescription(
-            access = JAMSVarDescription.AccessType.WRITE,
-            update = JAMSVarDescription.UpdateType.RUN
-            )
-            public JAMSDouble compQdir;
-    
-    @JAMSVarDescription(
-            access = JAMSVarDescription.AccessType.WRITE,
-            update = JAMSVarDescription.UpdateType.RUN
-            )
-            public JAMSDouble compQbas;
     
     private JAMSTableDataStore store;
+    
     public void init(){
+        String startEntry = null;
+        String endEntry = null;
+        try {
+            BufferedReader reader = new BufferedReader(new FileReader(fileName.getValue()));
+            
+            //read start and end date
+            String line = reader.readLine();
+            StringTokenizer tok = new StringTokenizer(line, "\t");
+            tok.nextToken();
+            startEntry = tok.nextToken();
+            
+            line = reader.readLine();
+            tok = new StringTokenizer(line, "\t");
+            tok.nextToken();
+            endEntry = tok.nextToken();
+            
+        } catch (IOException ioe) {
+            getModel().getRuntime().handle(ioe);
+        }
+        JAMSCalendar startTime = parseTime(startEntry);
+        JAMSCalendar endTime = parseTime(endEntry);
+        store = new GenericDataReader(fileName.getValue(), true, 1, 4);
+        //calc offset if start date of time series and temporal context do not match
+        if(timeInterval != null){
+            int timeUnit = timeInterval.getTimeUnit();
+            JAMSCalendar tiStart = timeInterval.getStart();
+            JAMSCalendar date = new JAMSCalendar(tiStart.get(Calendar.YEAR), tiStart.get(Calendar.MONTH), tiStart.get(Calendar.DAY_OF_MONTH), startTime.get(Calendar.HOUR_OF_DAY), startTime.get(Calendar.MINUTE));
+            while (startTime.before(date) && store.hasNext()) {
+                JAMSTableDataArray da = store.getNext();
+                if(timeUnit == JAMSCalendar.MONTH)
+                    startTime.add(JAMSCalendar.MONTH, 1);
+                else if(timeUnit == JAMSCalendar.YEAR)
+                    startTime.add(JAMSCalendar.YEAR, 1);
+            }
+        }
         
-        store = new GenericDataReader(fileName.getValue(), true, 1, 2);
     }
     
     public void run(){
-        
+        //if(store.hasNext())
         JAMSTableDataArray da = store.getNext();
         double[] vals = JAMSTableDataConverter.toDouble(da);
-        
         this.precip.setValue(vals[0]);
         this.temperature.setValue(vals[1]);
-        this.obsRunoff.setValue(vals[2]);
-        this.compRD1.setValue(vals[3]);
-        this.compRD2.setValue(vals[4]);
-        this.compRG1.setValue(vals[5]);
-        this.compRG2.setValue(vals[6]);
-        this.compQdir.setValue(vals[7]);
-        this.compQbas.setValue(vals[8]);
+        this.rhum.setValue(vals[2]);
+        this.obsRunoff.setValue(vals[3]);
     }
     
     public void cleanup(){
         store.close();
+    }
+    
+    private JAMSCalendar parseTime(String timeString) {
+        
+        //Array keeping values for year, month, day, hour, minute
+        String[] timeArray = new String[5];
+        timeArray[0] = "1";
+        timeArray[1] = "1";
+        timeArray[2] = "0";
+        timeArray[3] = "0";
+        timeArray[4] = "0";
+        
+        StringTokenizer st = new StringTokenizer(timeString, ".-/ :");
+        int n = st.countTokens();
+        
+        for (int i = 0; i < n; i++) {
+            timeArray[i] = st.nextToken();
+        }
+        
+        JAMSCalendar cal = new JAMSCalendar();
+        cal.setValue(timeArray[0]+"-"+timeArray[1]+"-"+timeArray[2]+" "+timeArray[3]+":"+timeArray[4]);
+        return cal;
     }
     
 }

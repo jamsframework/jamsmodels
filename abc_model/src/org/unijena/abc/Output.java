@@ -43,6 +43,42 @@ public class Output extends JAMSComponent {
             access = JAMSVarDescription.AccessType.READ,
             update = JAMSVarDescription.UpdateType.RUN
             )
+            public JAMSDouble precip;
+    
+    @JAMSVarDescription(
+            access = JAMSVarDescription.AccessType.READ,
+            update = JAMSVarDescription.UpdateType.RUN
+            )
+            public JAMSDouble simDirectFlow;
+    
+    @JAMSVarDescription(
+            access = JAMSVarDescription.AccessType.READ,
+            update = JAMSVarDescription.UpdateType.RUN
+            )
+            public JAMSDouble simBaseFlow;
+    
+    @JAMSVarDescription(
+            access = JAMSVarDescription.AccessType.READ,
+            update = JAMSVarDescription.UpdateType.RUN
+            )
+            public JAMSDouble simET;
+    
+    @JAMSVarDescription(
+            access = JAMSVarDescription.AccessType.READ,
+            update = JAMSVarDescription.UpdateType.RUN
+            )
+            public JAMSDouble pET;
+    
+    @JAMSVarDescription(
+            access = JAMSVarDescription.AccessType.READ,
+            update = JAMSVarDescription.UpdateType.RUN
+            )
+            public JAMSDouble storage;
+    
+    @JAMSVarDescription(
+            access = JAMSVarDescription.AccessType.READ,
+            update = JAMSVarDescription.UpdateType.RUN
+            )
             public JAMSCalendar time;
     
     @JAMSVarDescription(
@@ -67,8 +103,14 @@ public class Output extends JAMSComponent {
         writer.addComment("abc model output");
         writer.addComment("");
         writer.addColumn("time");
-        writer.addColumn("simRunoff");
+        writer.addColumn("precip");
         writer.addColumn("obsRunoff");
+        writer.addColumn("simRunoff");
+        writer.addColumn("simDirectFlow");
+        writer.addColumn("simBaseFlow");
+        writer.addColumn("simET");
+        writer.addColumn("pET");
+        writer.addColumn("storage");
         writer.writeHeader();
         
     }
@@ -77,9 +119,15 @@ public class Output extends JAMSComponent {
     public void run(){
         
         writer.addData(time);
-        //System.out.println("time:" + time.toString());
-        writer.addData(simRunoff);
+        writer.addData(precip);
         writer.addData(obsRunoff);
+        writer.addData(simRunoff);
+        writer.addData(simDirectFlow);
+        writer.addData(simBaseFlow);
+        writer.addData(simET);
+        writer.addData(pET);
+        writer.addData(storage);
+        
         try {
             writer.writeData();
         } catch (org.unijena.jams.runtime.JAMSRuntimeException jre) {

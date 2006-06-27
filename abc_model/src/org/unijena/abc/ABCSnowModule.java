@@ -18,24 +18,10 @@ import org.unijena.jams.model.*;
  * @author c0krpe
  */
 @JAMSComponentDescription(
-        title="ABCModel",
+        title="ABCSnowModule",
         author="Peter Krause",
-        description="The abc model is a simple linear model relating precipitation to streamflow on an annual basis. It " +
-                    "was developed by Fiering (1967), purely for educational purposes. The model is a simple water " +
-                    "balance calculation assuming that losses to evaporation and transpiration can simply be described " +
-                    "by a constant factor, while the watershed generally is assumed to behave like a linear reservoir. " +
-                    "The abc model has the following form: Qt = (1 – a – b)Pt + cSt-1 " +
-                    "where Q is the streamflow, P is the precipitation, a is a parameter describing the fraction of" +
-                    "precipitation that percolates through the soil to the groundwater, b is a parameter describing the" +
-                    "fraction of precipitation directly lost to the atmosphere through evapotranspiration, and c is a" +
-                    "parameter describing the amount of groundwater that leaves the aquifer storage S and drains into" +
-                    "the stream. The index t describes the year (t=1,2,…,N). Streamflow, precipitation and storage are" +
-                    "measured in volume units so that the additive relations derived are dimensionally homogeneous. " +
-                    "The groundwater storage at the end of the year t is: St = aPt + (1 – c)St-1" +
-                    "The following constraints are required:" +
-                    "0 ? a,b,c ? 1 ," +
-                    "0 ? a + b ? 1 ," +
-                    "Pt, St ? 0"
+        description="Simple day-degree-approach to account for snow storage and snowmelt."+
+                    "Depends on a temperature threshold and a day-degree-factor"
         )
         public class ABCSnowModule extends JAMSComponent {
     
@@ -120,7 +106,7 @@ import org.unijena.jams.model.*;
             }
         }
         
-        this.precip.setValue(precip);
+        //this.precip.setValue(precip);
         this.snowStorage.setValue(snowStorage);
         this.snowMelt.setValue(snowMelt);
         this.total_output.setValue(precip + snowMelt);

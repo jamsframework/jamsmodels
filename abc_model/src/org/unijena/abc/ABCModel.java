@@ -33,9 +33,13 @@ import org.unijena.jams.model.*;
                     "measured in volume units so that the additive relations derived are dimensionally homogeneous. " +
                     "The groundwater storage at the end of the year t is: St = aPt + (1 – c)St-1" +
                     "The following constraints are required:" +
-                    "0 ? a,b,c ? 1 ," +
-                    "0 ? a + b ? 1 ," +
-                    "Pt, St ? 0"
+                    "0 < a,b,c < 1 ," +
+                    "0 < a + b < 1 ," +
+                    "Pt, St > 0"+
+                    "Adaptation of original model:"+
+                    "The actual adaptation allows to read in a potential ET rate. If this is the case this ET rate will be"+
+                    "used to calculate the actual ET. In this case the parameter b will have no influence any longer."+
+                    "If no ET is read in the original equation [et = b * precip] will be used."
         )
         public class ABCModel extends JAMSComponent {
     
@@ -79,9 +83,37 @@ import org.unijena.jams.model.*;
             public JAMSDouble precip;
     
     @JAMSVarDescription(
+            access = JAMSVarDescription.AccessType.READ,
+            update = JAMSVarDescription.UpdateType.RUN,
+            description = "the potential ET"
+            )
+            public JAMSDouble pET;
+    
+    @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
             update = JAMSVarDescription.UpdateType.RUN,
-            description = "the runoff output"
+            description = "the base flow output"
+            )
+            public JAMSDouble simBaseFlow;
+    
+    @JAMSVarDescription(
+            access = JAMSVarDescription.AccessType.WRITE,
+            update = JAMSVarDescription.UpdateType.RUN,
+            description = "the direct flow output"
+            )
+            public JAMSDouble simDirectFlow;
+    
+    @JAMSVarDescription(
+            access = JAMSVarDescription.AccessType.WRITE,
+            update = JAMSVarDescription.UpdateType.RUN,
+            description = "the et output"
+            )
+            public JAMSDouble simET;
+    
+    @JAMSVarDescription(
+            access = JAMSVarDescription.AccessType.WRITE,
+            update = JAMSVarDescription.UpdateType.RUN,
+            description = "the baseflow + directflow output"
             )
             public JAMSDouble simRunoff;
     
@@ -100,6 +132,7 @@ import org.unijena.jams.model.*;
         double precip = this.precip.getValue();
         double runoff = 0;
         
+        
         double a = this.a.getValue();
         double b = this.b.getValue();
         double c = this.c.getValue();
@@ -108,11 +141,35 @@ import org.unijena.jams.model.*;
             System.out.println("Constraint violated: a + b is larger than 1.0");
             return;
         }
+        //new et
+        double precipIn = precip;
+        double aET = 0;
         
-        runoff = ( 1 - a - b) * precip + c * storageTm1;
-        storageTm1 = a * precip + (1-c) * storageTm1;
+        double pET = this.pET.getValue();
+        if(pET > 0){
+            if(precip > pET){
+                aET = pET;
+                precip = precip - pET;
+            } else{
+                aET = precip;
+                precip = 0;
+            }
+        }
+        else{
+            aET = b * precip;
+        }
+        double infiltration = a * precip;
+        double q_dir = precipIn - aET - infiltration;
+        double q_bas = c * storageTm1;
+        storageTm1 = infiltration + storageTm1 - q_bas;
         
-        this.simRunoff.setValue(runoff);
+        //runoff = ( 1 - a - b) * precip + c * storageTm1;
+        //storageTm1 = a * precip + (1-c) * storageTm1;
+        
+        this.simET.setValue(aET);
+        this.simBaseFlow.setValue(q_bas);
+        this.simDirectFlow.setValue(q_dir);
+        this.simRunoff.setValue(q_dir + q_bas);
         this.storageTm1.setValue(storageTm1);
     }
     
