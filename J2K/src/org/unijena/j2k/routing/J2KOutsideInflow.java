@@ -58,37 +58,37 @@ import org.unijena.jams.model.*;
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
             update = JAMSVarDescription.UpdateType.RUN,
-            description = "the inflow"
+            description = "the inflow from the data file or another model"
             )
             public JAMSDouble inflow;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
             update = JAMSVarDescription.UpdateType.RUN,
-            description = "Reach statevar RD1 storage"
+            description = "additional inflow to the specific reach"
             )
-            public JAMSDouble actRD1;
+            public JAMSDouble inAddIn;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
             update = JAMSVarDescription.UpdateType.RUN,
-            description = "Reach statevar RD2 storage"
+            description = "outflow of the additional inflow from the specific reach"
             )
-            public JAMSDouble actRD2;
+            public JAMSDouble outAddIn;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
             update = JAMSVarDescription.UpdateType.RUN,
-            description = "Reach statevar RG1 storage"
+            description = "the actual channel storage of the additional inflow of the specific reach"
             )
-            public JAMSDouble actRG1;
+            public JAMSDouble actAddIn;
     
     @JAMSVarDescription(
-            access = JAMSVarDescription.AccessType.READWRITE,
+            access = JAMSVarDescription.AccessType.WRITE,
             update = JAMSVarDescription.UpdateType.RUN,
-            description = "Reach statevar RG2 storage"
+            description = "Catchment additional input outlet storage"
             )
-            public JAMSDouble actRG2;
+            public JAMSDouble catchmentAddIn;
     
       
     /*
@@ -106,33 +106,11 @@ import org.unijena.jams.model.*;
         
         //only active for receiver reach
         if(entity.getDouble("ID") == reachID.getValue()){
-            double RD1act = actRD1.getValue();
-            double RD2act = actRD2.getValue();
-            double RG1act = actRG1.getValue();
-            double RG2act = actRG2.getValue();
+            double actAddIn = this.actAddIn.getValue();
             
-            double totalStorage = RD1act + RD2act + RG1act + RG2act;
+            this.actAddIn.setValue(actAddIn + inflow);
             
-            if(totalStorage > 0){
-                double pRD1 = RD1act / totalStorage;
-                double pRD2 = RD2act / totalStorage;
-                double pRG1 = RG1act / totalStorage;
-                double pRG2 = RG2act / totalStorage;
-                
-                RD1act = RD1act + inflow * pRD1;
-                RD2act = RD2act + inflow * pRD2;
-                RG1act = RG1act + inflow * pRG1;
-                RG2act = RG2act + inflow * pRG2;
-            }
-            else{ //everything is treated as RD1
-                RD1act = RD1act + inflow;
-            }
-            
-            actRD1.setValue(RD1act);
-            actRD2.setValue(RD2act);
-            actRG1.setValue(RG1act);
-            actRG2.setValue(RG2act);
-        }
+        }    
         
         
         

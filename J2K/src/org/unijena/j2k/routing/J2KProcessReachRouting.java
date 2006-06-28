@@ -105,6 +105,13 @@ import org.unijena.jams.model.*;
             public JAMSDouble inRG2;
     
     @JAMSVarDescription(
+            access = JAMSVarDescription.AccessType.READWRITE,
+            update = JAMSVarDescription.UpdateType.RUN,
+            description = "Reach statevar additional inflow"
+            )
+            public JAMSDouble inAddIn;
+    
+    @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
             update = JAMSVarDescription.UpdateType.RUN,
             description = "Reach statevar RD1 outflow"
@@ -131,6 +138,13 @@ import org.unijena.jams.model.*;
             description = "Reach statevar RG2 outflow"
             )
             public JAMSDouble outRG2;
+    
+    @JAMSVarDescription(
+            access = JAMSVarDescription.AccessType.WRITE,
+            update = JAMSVarDescription.UpdateType.RUN,
+            description = "Reach statevar additional outflow"
+            )
+            public JAMSDouble outAddIn;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
@@ -166,6 +180,13 @@ import org.unijena.jams.model.*;
             description = "Reach statevar RG2 storage"
             )
             public JAMSDouble actRG2;
+    
+    @JAMSVarDescription(
+            access = JAMSVarDescription.AccessType.READWRITE,
+            update = JAMSVarDescription.UpdateType.RUN,
+            description = "Reach statevar additional inflow storage"
+            )
+            public JAMSDouble actAddIn;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
@@ -212,6 +233,13 @@ import org.unijena.jams.model.*;
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
             update = JAMSVarDescription.UpdateType.RUN,
+            description = "Catchment additional input outlet storage"
+            )
+            public JAMSDouble catchmentAddIn;
+    
+    @JAMSVarDescription(
+            access = JAMSVarDescription.AccessType.WRITE,
+            update = JAMSVarDescription.UpdateType.RUN,
             description = "Catchment outlet RG2 storage"
             )
             public JAMSDouble catchmentSimRunoff;    
@@ -242,30 +270,44 @@ import org.unijena.jams.model.*;
         double RG1act = actRG1.getValue() + inRG1.getValue();
         double RG2act = actRG2.getValue() + inRG2.getValue();
         
+        double addInAct = actAddIn.getValue() + this.inAddIn.getValue();
+        
         inRD1.setValue(0);
         inRD2.setValue(0);
         inRG1.setValue(0);
         inRG2.setValue(0);
+        
+        inAddIn.setValue(0);
         
         actRD1.setValue(0);
         actRD2.setValue(0);
         actRG1.setValue(0);
         actRG2.setValue(0);
         
-        double RD1DestIn, RD2DestIn, RG1DestIn, RG2DestIn;
+        actAddIn.setValue(0);
+        
+        double RD1DestIn, RD2DestIn, RG1DestIn, RG2DestIn, addInDestIn;
         if(entity.getObject("to_reach") == null){
             RD1DestIn = 0;//entity.getDouble(aNameCatchmentOutRD1.getValue());
             RD2DestIn = 0;//entity.getDouble(aNameCatchmentOutRD2.getValue());
             RG1DestIn = 0;//entity.getDouble(aNameCatchmentOutRG1.getValue());
             RG2DestIn = 0;//entity.getDouble(aNameCatchmentOutRG2.getValue());
+            
+            addInDestIn = 0;
         } else{
             RD1DestIn = DestReach.getDouble("inRD1");
             RD2DestIn = DestReach.getDouble("inRD2");
             RG1DestIn = DestReach.getDouble("inRG1");
             RG2DestIn = DestReach.getDouble("inRG2");
+            
+            try{
+                addInDestIn = DestReach.getDouble("inAddIn");
+            }catch(org.unijena.jams.data.JAMSEntity.NoSuchAttributeException e){
+                addInDestIn = 0;
+            }
         }
         
-        double q_act_tot = RD1act + RD2act + RG1act + RG2act;
+        double q_act_tot = RD1act + RD2act + RG1act + RG2act + addInAct;
         
         //int ID = (int)entity.getDouble("ID");
         // System.out.getRuntime().println("Processing reach: " + ID);
@@ -274,6 +316,8 @@ import org.unijena.jams.model.*;
             outRD2.setValue(0);
             outRG1.setValue(0);
             outRG2.setValue(0);
+            
+            this.outAddIn.setValue(0);
             
             //nothing more to do here
             return;
@@ -284,6 +328,8 @@ import org.unijena.jams.model.*;
         double RD2_part = RD2act / q_act_tot;
         double RG1_part = RG1act / q_act_tot;
         double RG2_part = RG2act / q_act_tot;
+        
+        double addInPart = addInAct / q_act_tot;
         
         //calculation of flow velocity
         double flow_veloc = this.calcFlowVelocity(q_act_tot, width, slope, rough, 86400);
@@ -304,11 +350,15 @@ import org.unijena.jams.model.*;
         double RG1out = q_act_out * RG1_part;
         double RG2out = q_act_out * RG2_part;
         
+        double addInOut = q_act_out * addInPart;
+        
         //transferring runoff from this reach to the next one
         RD1DestIn = RD1DestIn + RD1out;
         RD2DestIn = RD2DestIn + RD2out;
         RG1DestIn = RG1DestIn + RG1out;
         RG2DestIn = RG2DestIn + RG2out;
+        
+        addInDestIn = addInDestIn + addInOut;
         
         //reducing the actual storages
         RD1act = RD1act - q_act_out * RD1_part;
@@ -316,8 +366,11 @@ import org.unijena.jams.model.*;
         RG1act = RG1act - q_act_out * RG1_part;
         RG2act = RG2act - q_act_out * RG2_part;
         
-        double channelStorage = RD1act + RD2act + RG1act + RG2act;
-        double cumOutflow = RD1out + RD2out + RG1out + RG2out;
+        addInAct = addInAct - q_act_out * addInPart;
+        
+        double channelStorage = RD1act + RD2act + RG1act + RG2act + addInAct;
+        
+        double cumOutflow = RD1out + RD2out + RG1out + RG2out + addInOut;
         
         simRunoff.setValue(cumOutflow);
         this.channelStorage.setValue(channelStorage);
@@ -326,26 +379,37 @@ import org.unijena.jams.model.*;
         inRG1.setValue(0);
         inRG2.setValue(0);
         
+        inAddIn.setValue(0);
+        
         actRD1.setValue(RD1act);
         actRD2.setValue(RD2act);
         actRG1.setValue(RG1act);
         actRG2.setValue(RG2act);
+        
+        actAddIn.setValue(addInAct);
         
         outRD1.setValue(RD1out);
         outRD2.setValue(RD2out);
         outRG1.setValue(RG1out);
         outRG2.setValue(RG2out);
         
+        outAddIn.setValue(addInOut);
+        
         if(entity.getObject("to_reach") != null){
             DestReach.setDouble("inRD1",RD1DestIn);
             DestReach.setDouble("inRD2",RD2DestIn);
             DestReach.setDouble("inRG1",RG1DestIn);
             DestReach.setDouble("inRG2",RG2DestIn);
+            
+            DestReach.setDouble("inAddIn", addInDestIn);
+            
         } else {
             catchmentRD1.setValue(RD1out);
             catchmentRD2.setValue(RD2out);
             catchmentRG1.setValue(RG1out);
             catchmentRG2.setValue(RG2out);
+            
+            this.catchmentAddIn.setValue(addInOut);
             catchmentSimRunoff.setValue(cumOutflow);
         }
         

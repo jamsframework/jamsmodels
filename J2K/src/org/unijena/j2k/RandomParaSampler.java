@@ -103,14 +103,14 @@ import org.unijena.jams.model.*;
     }
     
     private void updateValues() {
-        System.out.println("Run No. " + this.currentCount + " of " + this.sampleCount.getValue());
+        getModel().getRuntime().println("Run No. " + this.currentCount + " of " + this.sampleCount.getValue());
         double[] sample = this.randomSampler(parameters.length);
                 
         for (int i = 0; i < parameters.length; i++) {
             //System.out.println("Parameter: " + this.parameterIDs.getValue());
             //double d = generator.nextDouble();
             parameters[i].setValue(sample[i]);//lowBound[i] + d * (upBound[i]-lowBound[i]));
-            System.out.println("Para: " + parameterNames[i] + " = " + sample[i]);
+            getModel().getRuntime().println("Para: " + parameterNames[i] + " = " + sample[i]);
         }
         
         currentCount++;
