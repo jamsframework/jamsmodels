@@ -67,11 +67,18 @@ import org.unijena.jams.model.*;
             public JAMSInteger sampleCount;
     
     @JAMSVarDescription(
+            access = JAMSVarDescription.AccessType.READ,
+            update = JAMSVarDescription.UpdateType.INIT,
+            description = "efficiency methods"
+            )
+            public JAMSString effMethodNames;
+    
+    @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
             update = JAMSVarDescription.UpdateType.RUN,
-            description = "efficiency criteria"
+            description = "efficiency values"
             )
-            public JAMSDouble[] effMethod;
+            public JAMSDouble[] effValues;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
@@ -92,9 +99,6 @@ import org.unijena.jams.model.*;
     double[] upBound;
     int currentCount;
     Random generator;
-    double bestGoodness = Double.MAX_VALUE;
-    double bestMinimum = Double.MAX_VALUE;
-    double[] bestValues;
     GenericDataWriter writer;
     
     
@@ -103,7 +107,8 @@ import org.unijena.jams.model.*;
     }
     
     private void updateValues() {
-        getModel().getRuntime().println("Run No. " + this.currentCount + " of " + this.sampleCount.getValue());
+        int count = this.currentCount + 1;
+        getModel().getRuntime().println("Run No. " + count + " of " + this.sampleCount.getValue());
         double[] sample = this.randomSampler(parameters.length);
                 
         for (int i = 0; i < parameters.length; i++) {
@@ -174,65 +179,37 @@ import org.unijena.jams.model.*;
     }
     
     public void run() {
-        /*double[] effValues = new double[this.effMethod.length];//
-        for(int i = 0; i < effValues.length; i++)
-            effValues[i] = this.effMethod[i].getValue();*/
         if (runEnumerator == null) {
             runEnumerator = getChildrenEnumerator();
         }
         
-        if (disable.getValue()) {
-            
+        if (disable.getValue()) {    
             singleRun();
-            
-        } else {
-            
+        } 
+        else {
             resetValues();
-            
-            while (hasNext()) {
-                
+            while (hasNext()) {             
                 updateValues();
-                
                 singleRun();
                 
-                //JAMS.sendInfoMsg("Goodness: " + goodness);
-                //write outputFile
                 writer.addData(currentCount);
                 for(int i = 0; i < this.parameters.length; i++)
                     writer.addData(this.parameters[i].getValue());
-                for(int e = 0; e < effMethod.length; e++)
-                    writer.addData(this.effMethod[e].getValue());
+                for(int e = 0; e < effValues.length; e++)
+                    writer.addData(this.effValues[e].getValue());
                 try{
                     writer.writeData();
+                    writer.flush();
                 }catch(org.unijena.jams.runtime.JAMSRuntimeException e){
                     
                 }
-                /*
-                double minimumCrit = Math.abs(1 - goodness.getValue());
-                
-                if(minimumCrit < bestMinimum){
-                    //if (goodness.getValue() > bestGoodness) {
-                    bestMinimum = Math.abs(1 - goodness.getValue());
-                    bestGoodness = goodness.getValue();
-                    for (int i = 0; i < parameters.length; i++) {
-                        bestValues[i] = parameters[i].getValue();
-                    }
-                    
-                }*/
+               
             }
             
             runEnumerator.reset();
             while(runEnumerator.hasNext() && doRun) {
                 JAMSComponent comp = runEnumerator.next();
-                try {
-                    System.out.println("comp cleanup from parasampler");
-                    //comp.cleanup();
-                } catch (Exception e) {
-                    //JAMS.handle(e, comp.getInstanceName());
-                }
             }
-            
-            //System.out.println("Goodness: " + goodness);
         }
     }
     
@@ -240,6 +217,7 @@ import org.unijena.jams.model.*;
     public void init() {
         
 //add more checks!!!
+        //retreiving parameter names
         int i;
         StringTokenizer tok = new StringTokenizer(parameterIDs.getValue(), ";");
         String key;
@@ -250,14 +228,15 @@ import org.unijena.jams.model.*;
         while (tok.hasMoreTokens()) {
             key = tok.nextToken();
             parameterNames[i] = key;
-            parameters[i++] = (JAMSDouble) getModel().getRuntime().getDataHandles().get(key);
+            parameters[i] = (JAMSDouble) getModel().getRuntime().getDataHandles().get(key);
+            i++;
         }
         
+        //retreiving boundaries
         tok = new StringTokenizer(boundaries.getValue(), ";");
         int n = tok.countTokens();
         lowBound = new double[n];
         upBound = new double[n];
-        bestValues = new double[n];
         
         //check if number of parameter ids and boundaries match
         if (n != i) {
@@ -281,15 +260,28 @@ import org.unijena.jams.model.*;
             i++;
         }
         
+        //retreiving effMethodNames
+        i = 0;
+        tok = new StringTokenizer(effMethodNames.getValue(), ";");
+        String[] effNames = new String[tok.countTokens()];
+        i = 0;
+        while (tok.hasMoreTokens()) {
+            key = tok.nextToken();
+            effNames[i] = key;
+            i++;
+        }
+        
         //create output file
         writer = new GenericDataWriter(this.fileName.getValue());
         writer.addColumn("Run");
         
         for(int j = 0; j < this.parameters.length; j++)
-            writer.addColumn("para_" + j);
+            writer.addColumn(this.parameterNames[j]);
         
-        writer.addColumn("e2");
-        writer.addColumn("le2");
+        for(int e = 0; e < effNames.length; e++){
+            writer.addColumn(effNames[e]);
+        }
+        
         
         writer.writeHeader();
         
