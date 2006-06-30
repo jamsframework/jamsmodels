@@ -1,0 +1,7 @@
+#JAMS configuration file
+#Mon May 12 13:14:39 CEST 2006
+verbose=1
+debug=3
+errorlog=C\:\\jamsmodels\\JAMS-Application\\JAMS-Laewitz\\jamserror.log
+libs=C\:\\jamsprojects\\JAMS\\dist\\JAMS.jar?C\:\\jamsprojects\\JAMS_J2K\\dist\\JAMS_J2K.jar?C\:\\jamsprojects\\JAMS_J2K_S_N\\dist\\JAMS_J2K_S_N.jar
+infolog=C:\\jamsmodels\\JAMS-Application\\JAMS-Laewitz\\jamsinfo.log

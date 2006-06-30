@@ -1,0 +1,1441 @@
+INFO: The model definition in "C:\jamsmodels\JAMS-Application\JAMS-Laewitz\j2k_laewitz_hor_N_neu.xml" has been adapted in order to meet modifications of the JAMS model DTD.
+The new definition has been stored in "C:\jamsmodels\JAMS-Application\JAMS-Laewitz\_j2k_laewitz_hor_N_neu.xml" while your original file was left untouched.
+INFO: Loading model from "C:\jamsmodels\JAMS-Application\JAMS-Laewitz\_j2k_laewitz_hor_N_neu.xml"...
+INFO: created class loader using [file:/C:/jamsprojects/JAMS_J2K_S_N/dist/JAMS_J2K_S_N.jar, file:/C:/jamsprojects/JAMS_J2K/dist/JAMS_J2K.jar, file:/C:/jamsprojects/JAMS/dist/JAMS.jar]
+INFO: ************* "J2K" *************
+INFO: author  : Peter Krause
+INFO: creation: 30.01.2006
+INFO: **************************
+INFO: Adding: ParaReader (org.unijena.j2k.io.StandardEntityReader)
+INFO: org.unijena.j2k.io.StandardEntityReader
+INFO:      ParaReader var declaration: dirName (org.unijena.jams.data.JAMSString)
+INFO:           Access: READ Update: INIT
+INFO:      ParaReader var declaration: hruFileName (org.unijena.jams.data.JAMSString)
+INFO:           Access: READ Update: INIT
+INFO:      ParaReader var declaration: reachFileName (org.unijena.jams.data.JAMSString)
+INFO:           Access: READ Update: INIT
+INFO:      ParaReader var declaration: hrus (org.unijena.jams.data.JAMSEntityCollection)
+INFO:           Access: WRITE Update: INIT
+INFO:      ParaReader var declaration: reaches (org.unijena.jams.data.JAMSEntityCollection)
+INFO:           Access: WRITE Update: INIT
+INFO: Adding: LUReader (org.unijena.j2k.io.StandardLUReader)
+INFO: org.unijena.j2k.io.StandardLUReader
+INFO:      LUReader var declaration: dirName (org.unijena.jams.data.JAMSString)
+INFO:           Access: READ Update: INIT
+INFO:      LUReader var declaration: luFileName (org.unijena.jams.data.JAMSString)
+INFO:           Access: READ Update: INIT
+INFO:      LUReader var declaration: hrus (org.unijena.jams.data.JAMSEntityCollection)
+INFO:           Access: READ Update: INIT
+INFO: Adding: STReader (org.unijena.j2k.io.StandardSoilParaReader)
+INFO: org.unijena.j2k.io.StandardSoilParaReader
+INFO:      STReader var declaration: dirName (org.unijena.jams.data.JAMSString)
+INFO:           Access: READ Update: INIT
+INFO:      STReader var declaration: stFileName (org.unijena.jams.data.JAMSString)
+INFO:           Access: READ Update: INIT
+INFO:      STReader var declaration: hrus (org.unijena.jams.data.JAMSEntityCollection)
+INFO:           Access: READ Update: INIT
+INFO: Adding: LayReader (org.unijena.j2k.io.LayeredSoilParaReader)
+INFO: org.unijena.j2k.io.LayeredSoilParaReader
+INFO:      LayReader var declaration: dirName (org.unijena.jams.data.JAMSString)
+INFO:           Access: READ Update: INIT
+INFO:      LayReader var declaration: stFileName (org.unijena.jams.data.JAMSString)
+INFO:           Access: READ Update: INIT
+INFO:      LayReader var declaration: hrus (org.unijena.jams.data.JAMSEntityCollection)
+INFO:           Access: READ Update: INIT
+INFO: Adding: GWReader (org.unijena.j2k.io.StandardGroundwaterParaReader)
+INFO: org.unijena.j2k.io.StandardGroundwaterParaReader
+INFO:      GWReader var declaration: dirName (org.unijena.jams.data.JAMSString)
+INFO:           Access: READ Update: INIT
+INFO:      GWReader var declaration: gwFileName (org.unijena.jams.data.JAMSString)
+INFO:           Access: READ Update: INIT
+INFO:      GWReader var declaration: hrus (org.unijena.jams.data.JAMSEntityCollection)
+INFO:           Access: READ Update: INIT
+INFO: Adding: InitTmeanDataReader (org.unijena.j2k.io.TSDataReader)
+INFO: org.unijena.j2k.io.TSDataReader
+INFO:      InitTmeanDataReader var declaration: dirName (org.unijena.jams.data.JAMSString)
+INFO:           Access: READ Update: INIT
+INFO:      InitTmeanDataReader var declaration: skipRegression (org.unijena.jams.data.JAMSBoolean)
+INFO:           Access: READ Update: INIT
+INFO:      InitTmeanDataReader var declaration: dataFileName (org.unijena.jams.data.JAMSString)
+INFO:           Access: READ Update: INIT
+INFO:      InitTmeanDataReader var declaration: startColumn (org.unijena.jams.data.JAMSInteger)
+INFO:           Access: READ Update: INIT
+INFO:      InitTmeanDataReader var declaration: xCoord (org.unijena.jams.data.JAMSDoubleArray)
+INFO:           Access: WRITE Update: INIT
+INFO:      InitTmeanDataReader var declaration: yCoord (org.unijena.jams.data.JAMSDoubleArray)
+INFO:           Access: WRITE Update: INIT
+INFO: Adding: InitTminDataReader (org.unijena.j2k.io.TSDataReader)
+INFO: org.unijena.j2k.io.TSDataReader
+INFO:      InitTminDataReader var declaration: dirName (org.unijena.jams.data.JAMSString)
+INFO:           Access: READ Update: INIT
+INFO:      InitTminDataReader var declaration: skipRegression (org.unijena.jams.data.JAMSBoolean)
+INFO:           Access: READ Update: INIT
+INFO:      InitTminDataReader var declaration: dataFileName (org.unijena.jams.data.JAMSString)
+INFO:           Access: READ Update: INIT
+INFO:      InitTminDataReader var declaration: startColumn (org.unijena.jams.data.JAMSInteger)
+INFO:           Access: READ Update: INIT
+INFO:      InitTminDataReader var declaration: xCoord (org.unijena.jams.data.JAMSDoubleArray)
+INFO:           Access: WRITE Update: INIT
+INFO:      InitTminDataReader var declaration: yCoord (org.unijena.jams.data.JAMSDoubleArray)
+INFO:           Access: WRITE Update: INIT
+INFO: Adding: InitTmaxDataReader (org.unijena.j2k.io.TSDataReader)
+INFO: org.unijena.j2k.io.TSDataReader
+INFO:      InitTmaxDataReader var declaration: dirName (org.unijena.jams.data.JAMSString)
+INFO:           Access: READ Update: INIT
+INFO:      InitTmaxDataReader var declaration: skipRegression (org.unijena.jams.data.JAMSBoolean)
+INFO:           Access: READ Update: INIT
+INFO:      InitTmaxDataReader var declaration: dataFileName (org.unijena.jams.data.JAMSString)
+INFO:           Access: READ Update: INIT
+INFO:      InitTmaxDataReader var declaration: startColumn (org.unijena.jams.data.JAMSInteger)
+INFO:           Access: READ Update: INIT
+INFO:      InitTmaxDataReader var declaration: xCoord (org.unijena.jams.data.JAMSDoubleArray)
+INFO:           Access: WRITE Update: INIT
+INFO:      InitTmaxDataReader var declaration: yCoord (org.unijena.jams.data.JAMSDoubleArray)
+INFO:           Access: WRITE Update: INIT
+INFO: Adding: InitAhumDataReader (org.unijena.j2k.io.TSDataReader)
+INFO: org.unijena.j2k.io.TSDataReader
+INFO:      InitAhumDataReader var declaration: dirName (org.unijena.jams.data.JAMSString)
+INFO:           Access: READ Update: INIT
+INFO:      InitAhumDataReader var declaration: skipRegression (org.unijena.jams.data.JAMSBoolean)
+INFO:           Access: READ Update: INIT
+INFO:      InitAhumDataReader var declaration: dataFileName (org.unijena.jams.data.JAMSString)
+INFO:           Access: READ Update: INIT
+INFO:      InitAhumDataReader var declaration: startColumn (org.unijena.jams.data.JAMSInteger)
+INFO:           Access: READ Update: INIT
+INFO:      InitAhumDataReader var declaration: xCoord (org.unijena.jams.data.JAMSDoubleArray)
+INFO:           Access: WRITE Update: INIT
+INFO:      InitAhumDataReader var declaration: yCoord (org.unijena.jams.data.JAMSDoubleArray)
+INFO:           Access: WRITE Update: INIT
+INFO: Adding: InitPrecipDataReader (org.unijena.j2k.io.TSDataReader)
+INFO: org.unijena.j2k.io.TSDataReader
+INFO:      InitPrecipDataReader var declaration: dirName (org.unijena.jams.data.JAMSString)
+INFO:           Access: READ Update: INIT
+INFO:      InitPrecipDataReader var declaration: skipRegression (org.unijena.jams.data.JAMSBoolean)
+INFO:           Access: READ Update: INIT
+INFO:      InitPrecipDataReader var declaration: dataFileName (org.unijena.jams.data.JAMSString)
+INFO:           Access: READ Update: INIT
+INFO:      InitPrecipDataReader var declaration: startColumn (org.unijena.jams.data.JAMSInteger)
+INFO:           Access: READ Update: INIT
+INFO:      InitPrecipDataReader var declaration: xCoord (org.unijena.jams.data.JAMSDoubleArray)
+INFO:           Access: WRITE Update: INIT
+INFO:      InitPrecipDataReader var declaration: yCoord (org.unijena.jams.data.JAMSDoubleArray)
+INFO:           Access: WRITE Update: INIT
+INFO: Adding: InitSunhDataReader (org.unijena.j2k.io.TSDataReader)
+INFO: org.unijena.j2k.io.TSDataReader
+INFO:      InitSunhDataReader var declaration: dirName (org.unijena.jams.data.JAMSString)
+INFO:           Access: READ Update: INIT
+INFO:      InitSunhDataReader var declaration: skipRegression (org.unijena.jams.data.JAMSBoolean)
+INFO:           Access: READ Update: INIT
+INFO:      InitSunhDataReader var declaration: dataFileName (org.unijena.jams.data.JAMSString)
+INFO:           Access: READ Update: INIT
+INFO:      InitSunhDataReader var declaration: startColumn (org.unijena.jams.data.JAMSInteger)
+INFO:           Access: READ Update: INIT
+INFO:      InitSunhDataReader var declaration: xCoord (org.unijena.jams.data.JAMSDoubleArray)
+INFO:           Access: WRITE Update: INIT
+INFO:      InitSunhDataReader var declaration: yCoord (org.unijena.jams.data.JAMSDoubleArray)
+INFO:           Access: WRITE Update: INIT
+INFO: Adding: InitWindDataReader (org.unijena.j2k.io.TSDataReader)
+INFO: org.unijena.j2k.io.TSDataReader
+INFO:      InitWindDataReader var declaration: dirName (org.unijena.jams.data.JAMSString)
+INFO:           Access: READ Update: INIT
+INFO:      InitWindDataReader var declaration: skipRegression (org.unijena.jams.data.JAMSBoolean)
+INFO:           Access: READ Update: INIT
+INFO:      InitWindDataReader var declaration: dataFileName (org.unijena.jams.data.JAMSString)
+INFO:           Access: READ Update: INIT
+INFO:      InitWindDataReader var declaration: startColumn (org.unijena.jams.data.JAMSInteger)
+INFO:           Access: READ Update: INIT
+INFO:      InitWindDataReader var declaration: xCoord (org.unijena.jams.data.JAMSDoubleArray)
+INFO:           Access: WRITE Update: INIT
+INFO:      InitWindDataReader var declaration: yCoord (org.unijena.jams.data.JAMSDoubleArray)
+INFO:           Access: WRITE Update: INIT
+INFO: Adding: InitCatchmentContext (org.unijena.jams.model.JAMSSpatialContext)
+INFO: org.unijena.jams.model.JAMSSpatialContext
+INFO:      InitCatchmentContext var declaration: entities (org.unijena.jams.data.JAMSEntityCollection)
+INFO:           Access: READ Update: INIT
+INFO: Adding: AreaCalculator (org.unijena.j2k.aggregate.SumAggregator)
+INFO: org.unijena.j2k.aggregate.SumAggregator
+INFO:      AreaCalculator var declaration: value ([Lorg.unijena.jams.data.JAMSDouble;)
+INFO:           Access: READ Update: RUN
+INFO:      AreaCalculator var declaration: sum ([Lorg.unijena.jams.data.JAMSDouble;)
+INFO:           Access: READWRITE Update: RUN
+INFO: Adding: InitHRUContext (org.unijena.jams.model.JAMSSpatialContext)
+INFO: org.unijena.jams.model.JAMSSpatialContext
+INFO:      InitHRUContext var declaration: entities (org.unijena.jams.data.JAMSEntityCollection)
+INFO:           Access: READ Update: INIT
+INFO: Adding: AreaWeight (org.unijena.j2k.CalcAreaWeight)
+INFO: org.unijena.j2k.CalcAreaWeight
+INFO:      AreaWeight var declaration: entityArea (org.unijena.jams.data.JAMSDouble)
+INFO:           Access: READ Update: RUN
+INFO:      AreaWeight var declaration: catchmentArea (org.unijena.jams.data.JAMSDouble)
+INFO:           Access: READ Update: RUN
+INFO:      AreaWeight var declaration: areaWeight (org.unijena.jams.data.JAMSDouble)
+INFO:           Access: WRITE Update: RUN
+INFO: Adding: CalcLatLong (org.unijena.j2k.geographicalCalculations.CalcLatLong)
+INFO: org.unijena.j2k.geographicalCalculations.CalcLatLong
+INFO:      CalcLatLong var declaration: projection (org.unijena.jams.data.JAMSString)
+INFO:           Access: READ Update: INIT
+INFO:      CalcLatLong var declaration: x (org.unijena.jams.data.JAMSDouble)
+INFO:           Access: READ Update: RUN
+INFO:      CalcLatLong var declaration: y (org.unijena.jams.data.JAMSDouble)
+INFO:           Access: READ Update: RUN
+INFO:      CalcLatLong var declaration: slope (org.unijena.jams.data.JAMSDouble)
+INFO:           Access: READ Update: RUN
+INFO:      CalcLatLong var declaration: aspect (org.unijena.jams.data.JAMSDouble)
+INFO:           Access: READ Update: RUN
+INFO:      CalcLatLong var declaration: latitude (org.unijena.jams.data.JAMSDouble)
+INFO:           Access: WRITE Update: RUN
+INFO:      CalcLatLong var declaration: longitude (org.unijena.jams.data.JAMSDouble)
+INFO:           Access: WRITE Update: RUN
+INFO:      CalcLatLong var declaration: slAsCfArray (org.unijena.jams.data.JAMSDoubleArray)
+INFO:           Access: WRITE Update: RUN
+INFO: Adding: CalcLanduseStateVars (org.unijena.j2k.inputData.CalcLanduseStateVars)
+INFO: org.unijena.j2k.inputData.CalcLanduseStateVars
+INFO:      CalcLanduseStateVars var declaration: entities (org.unijena.jams.data.JAMSEntityCollection)
+INFO:           Access: READ Update: RUN
+INFO:      CalcLanduseStateVars var declaration: LAIArray (org.unijena.jams.data.JAMSDoubleArray)
+INFO:           Access: WRITE Update: RUN
+INFO:      CalcLanduseStateVars var declaration: effHArray (org.unijena.jams.data.JAMSDoubleArray)
+INFO:           Access: WRITE Update: RUN
+INFO:      CalcLanduseStateVars var declaration: rsc0Array (org.unijena.jams.data.JAMSDoubleArray)
+INFO:           Access: WRITE Update: RUN
+INFO:      CalcLanduseStateVars var declaration: elevation (org.unijena.jams.data.JAMSDouble)
+INFO:           Access: READ Update: RUN
+INFO: Adding: ExtRad (org.unijena.j2k.radiation.CalcExtraterrRadiation)
+INFO: org.unijena.j2k.radiation.CalcExtraterrRadiation
+INFO:      ExtRad var declaration: latitude (org.unijena.jams.data.JAMSDouble)
+INFO:           Access: READ Update: RUN
+INFO:      ExtRad var declaration: longitude (org.unijena.jams.data.JAMSDouble)
+INFO:           Access: READ Update: RUN
+INFO:      ExtRad var declaration: longTZ (org.unijena.jams.data.JAMSDouble)
+INFO:           Access: READ Update: INIT
+INFO:      ExtRad var declaration: locGrw (org.unijena.jams.data.JAMSString)
+INFO:           Access: READ Update: INIT
+INFO:      ExtRad var declaration: tempRes (org.unijena.jams.data.JAMSString)
+INFO:           Access: READ Update: INIT
+INFO:      ExtRad var declaration: extRadArray (org.unijena.jams.data.JAMSDoubleArray)
+INFO:           Access: WRITE Update: RUN
+INFO: Adding: InitSoilWater (org.unijena.j2k.soilWater.InitJ2KProcessLumpedSoilWaterStates)
+INFO: org.unijena.j2k.soilWater.InitJ2KProcessLumpedSoilWaterStates
+INFO:      InitSoilWater var declaration: entities (org.unijena.jams.data.JAMSEntityCollection)
+INFO:           Access: READ Update: RUN
+INFO:      InitSoilWater var declaration: area (org.unijena.jams.data.JAMSDouble)
+INFO:           Access: READ Update: RUN
+INFO:      InitSoilWater var declaration: rootDepth (org.unijena.jams.data.JAMSDouble)
+INFO:           Access: READ Update: RUN
+INFO:      InitSoilWater var declaration: maxMPS (org.unijena.jams.data.JAMSDouble)
+INFO:           Access: WRITE Update: RUN
+INFO:      InitSoilWater var declaration: maxLPS (org.unijena.jams.data.JAMSDouble)
+INFO:           Access: WRITE Update: RUN
+INFO:      InitSoilWater var declaration: actMPS (org.unijena.jams.data.JAMSDouble)
+INFO:           Access: WRITE Update: RUN
+INFO:      InitSoilWater var declaration: actLPS (org.unijena.jams.data.JAMSDouble)
+INFO:           Access: WRITE Update: RUN
+INFO:      InitSoilWater var declaration: satMPS (org.unijena.jams.data.JAMSDouble)
+INFO:           Access: WRITE Update: RUN
+INFO:      InitSoilWater var declaration: satLPS (org.unijena.jams.data.JAMSDouble)
+INFO:           Access: WRITE Update: RUN
+INFO:      InitSoilWater var declaration: satSoil (org.unijena.jams.data.JAMSDouble)
+INFO:           Access: WRITE Update: RUN
+INFO:      InitSoilWater var declaration: FCAdaptation (org.unijena.jams.data.JAMSDouble)
+INFO:           Access: WRITE Update: INIT
+INFO:      InitSoilWater var declaration: ACAdaptation (org.unijena.jams.data.JAMSDouble)
+INFO:           Access: WRITE Update: INIT
+INFO: Adding: InitLaySoilWater (org.unijena.j2k.soilWater.InitJ2KProcessLayeredSoilWaterStates)
+INFO: org.unijena.j2k.soilWater.InitJ2KProcessLayeredSoilWaterStates
+INFO:      InitLaySoilWater var declaration: entities (org.unijena.jams.data.JAMSEntityCollection)
+INFO:           Access: READ Update: RUN
+INFO:      InitLaySoilWater var declaration: area (org.unijena.jams.data.JAMSDouble)
+INFO:           Access: READ Update: RUN
+INFO:      InitLaySoilWater var declaration: horizons (org.unijena.jams.data.JAMSDouble)
+INFO:           Access: READ Update: RUN
+INFO:      InitLaySoilWater var declaration: depth_h (org.unijena.jams.data.JAMSDoubleArray)
+INFO:           Access: WRITE Update: RUN
+INFO:      InitLaySoilWater var declaration: rootDepth (org.unijena.jams.data.JAMSDouble)
+INFO:           Access: READ Update: RUN
+INFO:      InitLaySoilWater var declaration: maxMPS_h (org.unijena.jams.data.JAMSDoubleArray)
+INFO:           Access: WRITE Update: RUN
+INFO:      InitLaySoilWater var declaration: maxLPS_h (org.unijena.jams.data.JAMSDoubleArray)
+INFO:           Access: WRITE Update: RUN
+INFO:      InitLaySoilWater var declaration: maxMPS_h (org.unijena.jams.data.JAMSDoubleArray)
+INFO:           Access: WRITE Update: RUN
+INFO:      InitLaySoilWater var declaration: actMPS_h (org.unijena.jams.data.JAMSDoubleArray)
+INFO:           Access: WRITE Update: RUN
+INFO:      InitLaySoilWater var declaration: actLPS_h (org.unijena.jams.data.JAMSDoubleArray)
+INFO:           Access: WRITE Update: RUN
+INFO:      InitLaySoilWater var declaration: satMPS_h (org.unijena.jams.data.JAMSDoubleArray)
+INFO:           Access: WRITE Update: RUN
+INFO:      InitLaySoilWater var declaration: satLPS_h (org.unijena.jams.data.JAMSDoubleArray)
+INFO:           Access: WRITE Update: RUN
+INFO:      InitLaySoilWater var declaration: satSoil_h (org.unijena.jams.data.JAMSDouble)
+INFO:           Access: WRITE Update: RUN
+INFO:      InitLaySoilWater var declaration: inRD2_h (org.unijena.jams.data.JAMSDoubleArray)
+INFO:           Access: WRITE Update: RUN
+INFO: Adding: InitGroundWater (org.unijena.j2k.groundwater.InitJ2KProcessGroundwater)
+INFO: org.unijena.j2k.groundwater.InitJ2KProcessGroundwater
+INFO:      InitGroundWater var declaration: entities (org.unijena.jams.data.JAMSEntityCollection)
+INFO:           Access: READ Update: RUN
+INFO:      InitGroundWater var declaration: area (org.unijena.jams.data.JAMSDouble)
+INFO:           Access: READ Update: RUN
+INFO:      InitGroundWater var declaration: maxRG1 (org.unijena.jams.data.JAMSDouble)
+INFO:           Access: WRITE Update: RUN
+INFO:      InitGroundWater var declaration: maxRG2 (org.unijena.jams.data.JAMSDouble)
+INFO:           Access: WRITE Update: RUN
+INFO:      InitGroundWater var declaration: actRG1 (org.unijena.jams.data.JAMSDouble)
+INFO:           Access: WRITE Update: RUN
+INFO:      InitGroundWater var declaration: actRG2 (org.unijena.jams.data.JAMSDouble)
+INFO:           Access: WRITE Update: RUN
+INFO:      InitGroundWater var declaration: initRG1 (org.unijena.jams.data.JAMSDouble)
+INFO:           Access: READ Update: INIT
+INFO:      InitGroundWater var declaration: initRG2 (org.unijena.jams.data.JAMSDouble)
+INFO:           Access: READ Update: INIT
+INFO: Adding: tminWeights (org.unijena.j2k.regionalisation.CalcNidwWeights)
+INFO: org.unijena.j2k.regionalisation.CalcNidwWeights
+INFO:      tminWeights var declaration: entityX (org.unijena.jams.data.JAMSDouble)
+INFO:           Access: READ Update: RUN
+INFO:      tminWeights var declaration: entityY (org.unijena.jams.data.JAMSDouble)
+INFO:           Access: READ Update: RUN
+INFO:      tminWeights var declaration: statX (org.unijena.jams.data.JAMSDoubleArray)
+INFO:           Access: READ Update: RUN
+INFO:      tminWeights var declaration: statY (org.unijena.jams.data.JAMSDoubleArray)
+INFO:           Access: READ Update: RUN
+INFO:      tminWeights var declaration: nidw (org.unijena.jams.data.JAMSInteger)
+INFO:           Access: READ Update: INIT
+INFO:      tminWeights var declaration: pidw (org.unijena.jams.data.JAMSDouble)
+INFO:           Access: READ Update: INIT
+INFO:      tminWeights var declaration: statWeights (org.unijena.jams.data.JAMSDoubleArray)
+INFO:           Access: WRITE Update: INIT
+INFO: Adding: tmeanWeights (org.unijena.j2k.regionalisation.CalcNidwWeights)
+INFO: org.unijena.j2k.regionalisation.CalcNidwWeights
+INFO:      tmeanWeights var declaration: entityX (org.unijena.jams.data.JAMSDouble)
+INFO:           Access: READ Update: RUN
+INFO:      tmeanWeights var declaration: entityY (org.unijena.jams.data.JAMSDouble)
+INFO:           Access: READ Update: RUN
+INFO:      tmeanWeights var declaration: statX (org.unijena.jams.data.JAMSDoubleArray)
+INFO:           Access: READ Update: RUN
+INFO:      tmeanWeights var declaration: statY (org.unijena.jams.data.JAMSDoubleArray)
+INFO:           Access: READ Update: RUN
+INFO:      tmeanWeights var declaration: nidw (org.unijena.jams.data.JAMSInteger)
+INFO:           Access: READ Update: INIT
+INFO:      tmeanWeights var declaration: pidw (org.unijena.jams.data.JAMSDouble)
+INFO:           Access: READ Update: INIT
+INFO:      tmeanWeights var declaration: statWeights (org.unijena.jams.data.JAMSDoubleArray)
+INFO:           Access: WRITE Update: INIT
+INFO: Adding: tmaxWeights (org.unijena.j2k.regionalisation.CalcNidwWeights)
+INFO: org.unijena.j2k.regionalisation.CalcNidwWeights
+INFO:      tmaxWeights var declaration: entityX (org.unijena.jams.data.JAMSDouble)
+INFO:           Access: READ Update: RUN
+INFO:      tmaxWeights var declaration: entityY (org.unijena.jams.data.JAMSDouble)
+INFO:           Access: READ Update: RUN
+INFO:      tmaxWeights var declaration: statX (org.unijena.jams.data.JAMSDoubleArray)
+INFO:           Access: READ Update: RUN
+INFO:      tmaxWeights var declaration: statY (org.unijena.jams.data.JAMSDoubleArray)
+INFO:           Access: READ Update: RUN
+INFO:      tmaxWeights var declaration: nidw (org.unijena.jams.data.JAMSInteger)
+INFO:           Access: READ Update: INIT
+INFO:      tmaxWeights var declaration: pidw (org.unijena.jams.data.JAMSDouble)
+INFO:           Access: READ Update: INIT
+INFO:      tmaxWeights var declaration: statWeights (org.unijena.jams.data.JAMSDoubleArray)
+INFO:           Access: WRITE Update: INIT
+INFO: Adding: ahumWeights (org.unijena.j2k.regionalisation.CalcNidwWeights)
+INFO: org.unijena.j2k.regionalisation.CalcNidwWeights
+INFO:      ahumWeights var declaration: entityX (org.unijena.jams.data.JAMSDouble)
+INFO:           Access: READ Update: RUN
+INFO:      ahumWeights var declaration: entityY (org.unijena.jams.data.JAMSDouble)
+INFO:           Access: READ Update: RUN
+INFO:      ahumWeights var declaration: statX (org.unijena.jams.data.JAMSDoubleArray)
+INFO:           Access: READ Update: RUN
+INFO:      ahumWeights var declaration: statY (org.unijena.jams.data.JAMSDoubleArray)
+INFO:           Access: READ Update: RUN
+INFO:      ahumWeights var declaration: nidw (org.unijena.jams.data.JAMSInteger)
+INFO:           Access: READ Update: INIT
+INFO:      ahumWeights var declaration: pidw (org.unijena.jams.data.JAMSDouble)
+INFO:           Access: READ Update: INIT
+INFO:      ahumWeights var declaration: statWeights (org.unijena.jams.data.JAMSDoubleArray)
+INFO:           Access: WRITE Update: INIT
+INFO: Adding: sunhWeights (org.unijena.j2k.regionalisation.CalcNidwWeights)
+INFO: org.unijena.j2k.regionalisation.CalcNidwWeights
+INFO:      sunhWeights var declaration: entityX (org.unijena.jams.data.JAMSDouble)
+INFO:           Access: READ Update: RUN
+INFO:      sunhWeights var declaration: entityY (org.unijena.jams.data.JAMSDouble)
+INFO:           Access: READ Update: RUN
+INFO:      sunhWeights var declaration: statX (org.unijena.jams.data.JAMSDoubleArray)
+INFO:           Access: READ Update: RUN
+INFO:      sunhWeights var declaration: statY (org.unijena.jams.data.JAMSDoubleArray)
+INFO:           Access: READ Update: RUN
+INFO:      sunhWeights var declaration: nidw (org.unijena.jams.data.JAMSInteger)
+INFO:           Access: READ Update: INIT
+INFO:      sunhWeights var declaration: pidw (org.unijena.jams.data.JAMSDouble)
+INFO:           Access: READ Update: INIT
+INFO:      sunhWeights var declaration: statWeights (org.unijena.jams.data.JAMSDoubleArray)
+INFO:           Access: WRITE Update: INIT
+INFO: Adding: windWeights (org.unijena.j2k.regionalisation.CalcNidwWeights)
+INFO: org.unijena.j2k.regionalisation.CalcNidwWeights
+INFO:      windWeights var declaration: entityX (org.unijena.jams.data.JAMSDouble)
+INFO:           Access: READ Update: RUN
+INFO:      windWeights var declaration: entityY (org.unijena.jams.data.JAMSDouble)
+INFO:           Access: READ Update: RUN
+INFO:      windWeights var declaration: statX (org.unijena.jams.data.JAMSDoubleArray)
+INFO:           Access: READ Update: RUN
+INFO:      windWeights var declaration: statY (org.unijena.jams.data.JAMSDoubleArray)
+INFO:           Access: READ Update: RUN
+INFO:      windWeights var declaration: nidw (org.unijena.jams.data.JAMSInteger)
+INFO:           Access: READ Update: INIT
+INFO:      windWeights var declaration: pidw (org.unijena.jams.data.JAMSDouble)
+INFO:           Access: READ Update: INIT
+INFO:      windWeights var declaration: statWeights (org.unijena.jams.data.JAMSDoubleArray)
+INFO:           Access: WRITE Update: INIT
+INFO: Adding: precipWeights (org.unijena.j2k.regionalisation.CalcNidwWeights)
+INFO: org.unijena.j2k.regionalisation.CalcNidwWeights
+INFO:      precipWeights var declaration: entityX (org.unijena.jams.data.JAMSDouble)
+INFO:           Access: READ Update: RUN
+INFO:      precipWeights var declaration: entityY (org.unijena.jams.data.JAMSDouble)
+INFO:           Access: READ Update: RUN
+INFO:      precipWeights var declaration: statX (org.unijena.jams.data.JAMSDoubleArray)
+INFO:           Access: READ Update: RUN
+INFO:      precipWeights var declaration: statY (org.unijena.jams.data.JAMSDoubleArray)
+INFO:           Access: READ Update: RUN
+INFO:      precipWeights var declaration: nidw (org.unijena.jams.data.JAMSInteger)
+INFO:           Access: READ Update: INIT
+INFO:      precipWeights var declaration: pidw (org.unijena.jams.data.JAMSDouble)
+INFO:           Access: READ Update: INIT
+INFO:      precipWeights var declaration: statWeights (org.unijena.jams.data.JAMSDoubleArray)
+INFO:           Access: WRITE Update: INIT
+INFO: Adding: TemporalContext (org.unijena.jams.model.JAMSTemporalContext)
+INFO: org.unijena.jams.model.JAMSTemporalContext
+INFO:      TemporalContext var declaration: timeInterval (org.unijena.jams.data.JAMSTimeInterval)
+INFO:           Access: READ Update: INIT
+INFO:      TemporalContext var declaration: current (org.unijena.jams.data.JAMSCalendar)
+INFO:           Access: WRITE Update: RUN
+INFO: Adding: JAMSProgress (org.unijena.jams.gui.JAMSExecInfo)
+INFO: org.unijena.jams.gui.JAMSExecInfo
+INFO: Adding: TmeanDataReader (org.unijena.j2k.io.TSDataReader)
+INFO: org.unijena.j2k.io.TSDataReader
+INFO:      TmeanDataReader var declaration: dirName (org.unijena.jams.data.JAMSString)
+INFO:           Access: READ Update: INIT
+INFO:      TmeanDataReader var declaration: skipRegression (org.unijena.jams.data.JAMSBoolean)
+INFO:           Access: READ Update: INIT
+INFO:      TmeanDataReader var declaration: timeInterval (org.unijena.jams.data.JAMSTimeInterval)
+INFO:           Access: READ Update: INIT
+INFO:      TmeanDataReader var declaration: dataFileName (org.unijena.jams.data.JAMSString)
+INFO:           Access: READ Update: INIT
+INFO:      TmeanDataReader var declaration: startColumn (org.unijena.jams.data.JAMSInteger)
+INFO:           Access: READ Update: INIT
+INFO:      TmeanDataReader var declaration: dataArray (org.unijena.jams.data.JAMSDoubleArray)
+INFO:           Access: WRITE Update: RUN
+INFO:      TmeanDataReader var declaration: regCoeff (org.unijena.jams.data.JAMSDoubleArray)
+INFO:           Access: WRITE Update: RUN
+INFO:      TmeanDataReader var declaration: elevation (org.unijena.jams.data.JAMSDoubleArray)
+INFO:           Access: WRITE Update: INIT
+INFO:      TmeanDataReader var declaration: xCoord (org.unijena.jams.data.JAMSDoubleArray)
+INFO:           Access: WRITE Update: INIT
+INFO:      TmeanDataReader var declaration: yCoord (org.unijena.jams.data.JAMSDoubleArray)
+INFO:           Access: WRITE Update: INIT
+INFO:      TmeanDataReader var declaration: dataSetName (org.unijena.jams.data.JAMSString)
+INFO:           Access: WRITE Update: RUN
+INFO: Adding: TminDataReader (org.unijena.j2k.io.TSDataReader)
+INFO: org.unijena.j2k.io.TSDataReader
+INFO:      TminDataReader var declaration: dirName (org.unijena.jams.data.JAMSString)
+INFO:           Access: READ Update: INIT
+INFO:      TminDataReader var declaration: skipRegression (org.unijena.jams.data.JAMSBoolean)
+INFO:           Access: READ Update: INIT
+INFO:      TminDataReader var declaration: timeInterval (org.unijena.jams.data.JAMSTimeInterval)
+INFO:           Access: READ Update: INIT
+INFO:      TminDataReader var declaration: dataFileName (org.unijena.jams.data.JAMSString)
+INFO:           Access: READ Update: INIT
+INFO:      TminDataReader var declaration: startColumn (org.unijena.jams.data.JAMSInteger)
+INFO:           Access: READ Update: INIT
+INFO:      TminDataReader var declaration: dataArray (org.unijena.jams.data.JAMSDoubleArray)
+INFO:           Access: WRITE Update: RUN
+INFO:      TminDataReader var declaration: regCoeff (org.unijena.jams.data.JAMSDoubleArray)
+INFO:           Access: WRITE Update: RUN
+INFO:      TminDataReader var declaration: elevation (org.unijena.jams.data.JAMSDoubleArray)
+INFO:           Access: WRITE Update: INIT
+INFO:      TminDataReader var declaration: xCoord (org.unijena.jams.data.JAMSDoubleArray)
+INFO:           Access: WRITE Update: INIT
+INFO:      TminDataReader var declaration: yCoord (org.unijena.jams.data.JAMSDoubleArray)
+INFO:           Access: WRITE Update: INIT
+INFO:      TminDataReader var declaration: dataSetName (org.unijena.jams.data.JAMSString)
+INFO:           Access: WRITE Update: RUN
+INFO: Adding: TmaxDataReader (org.unijena.j2k.io.TSDataReader)
+INFO: org.unijena.j2k.io.TSDataReader
+INFO:      TmaxDataReader var declaration: dirName (org.unijena.jams.data.JAMSString)
+INFO:           Access: READ Update: INIT
+INFO:      TmaxDataReader var declaration: skipRegression (org.unijena.jams.data.JAMSBoolean)
+INFO:           Access: READ Update: INIT
+INFO:      TmaxDataReader var declaration: timeInterval (org.unijena.jams.data.JAMSTimeInterval)
+INFO:           Access: READ Update: INIT
+INFO:      TmaxDataReader var declaration: dataFileName (org.unijena.jams.data.JAMSString)
+INFO:           Access: READ Update: INIT
+INFO:      TmaxDataReader var declaration: startColumn (org.unijena.jams.data.JAMSInteger)
+INFO:           Access: READ Update: INIT
+INFO:      TmaxDataReader var declaration: dataArray (org.unijena.jams.data.JAMSDoubleArray)
+INFO:           Access: WRITE Update: RUN
+INFO:      TmaxDataReader var declaration: regCoeff (org.unijena.jams.data.JAMSDoubleArray)
+INFO:           Access: WRITE Update: RUN
+INFO:      TmaxDataReader var declaration: elevation (org.unijena.jams.data.JAMSDoubleArray)
+INFO:           Access: WRITE Update: INIT
+INFO:      TmaxDataReader var declaration: xCoord (org.unijena.jams.data.JAMSDoubleArray)
+INFO:           Access: WRITE Update: INIT
+INFO:      TmaxDataReader var declaration: yCoord (org.unijena.jams.data.JAMSDoubleArray)
+INFO:           Access: WRITE Update: INIT
+INFO:      TmaxDataReader var declaration: dataSetName (org.unijena.jams.data.JAMSString)
+INFO:           Access: WRITE Update: RUN
+INFO: Adding: AhumDataReader (org.unijena.j2k.io.TSDataReader)
+INFO: org.unijena.j2k.io.TSDataReader
+INFO:      AhumDataReader var declaration: dirName (org.unijena.jams.data.JAMSString)
+INFO:           Access: READ Update: INIT
+INFO:      AhumDataReader var declaration: skipRegression (org.unijena.jams.data.JAMSBoolean)
+INFO:           Access: READ Update: INIT
+INFO:      AhumDataReader var declaration: timeInterval (org.unijena.jams.data.JAMSTimeInterval)
+INFO:           Access: READ Update: INIT
+INFO:      AhumDataReader var declaration: dataFileName (org.unijena.jams.data.JAMSString)
+INFO:           Access: READ Update: INIT
+INFO:      AhumDataReader var declaration: startColumn (org.unijena.jams.data.JAMSInteger)
+INFO:           Access: READ Update: INIT
+INFO:      AhumDataReader var declaration: dataArray (org.unijena.jams.data.JAMSDoubleArray)
+INFO:           Access: WRITE Update: RUN
+INFO:      AhumDataReader var declaration: regCoeff (org.unijena.jams.data.JAMSDoubleArray)
+INFO:           Access: WRITE Update: RUN
+INFO:      AhumDataReader var declaration: elevation (org.unijena.jams.data.JAMSDoubleArray)
+INFO:           Access: WRITE Update: INIT
+INFO:      AhumDataReader var declaration: xCoord (org.unijena.jams.data.JAMSDoubleArray)
+INFO:           Access: WRITE Update: INIT
+INFO:      AhumDataReader var declaration: yCoord (org.unijena.jams.data.JAMSDoubleArray)
+INFO:           Access: WRITE Update: INIT
+INFO:      AhumDataReader var declaration: dataSetName (org.unijena.jams.data.JAMSString)
+INFO:           Access: WRITE Update: RUN
+INFO: Adding: PrecipDataReader (org.unijena.j2k.io.TSDataReader)
+INFO: org.unijena.j2k.io.TSDataReader
+INFO:      PrecipDataReader var declaration: dirName (org.unijena.jams.data.JAMSString)
+INFO:           Access: READ Update: INIT
+INFO:      PrecipDataReader var declaration: skipRegression (org.unijena.jams.data.JAMSBoolean)
+INFO:           Access: READ Update: INIT
+INFO:      PrecipDataReader var declaration: timeInterval (org.unijena.jams.data.JAMSTimeInterval)
+INFO:           Access: READ Update: INIT
+INFO:      PrecipDataReader var declaration: dataFileName (org.unijena.jams.data.JAMSString)
+INFO:           Access: READ Update: INIT
+INFO:      PrecipDataReader var declaration: startColumn (org.unijena.jams.data.JAMSInteger)
+INFO:           Access: READ Update: INIT
+INFO:      PrecipDataReader var declaration: dataArray (org.unijena.jams.data.JAMSDoubleArray)
+INFO:           Access: WRITE Update: RUN
+INFO:      PrecipDataReader var declaration: regCoeff (org.unijena.jams.data.JAMSDoubleArray)
+INFO:           Access: WRITE Update: RUN
+INFO:      PrecipDataReader var declaration: elevation (org.unijena.jams.data.JAMSDoubleArray)
+INFO:           Access: WRITE Update: INIT
+INFO:      PrecipDataReader var declaration: xCoord (org.unijena.jams.data.JAMSDoubleArray)
+INFO:           Access: WRITE Update: INIT
+INFO:      PrecipDataReader var declaration: yCoord (org.unijena.jams.data.JAMSDoubleArray)
+INFO:           Access: WRITE Update: INIT
+INFO:      PrecipDataReader var declaration: dataSetName (org.unijena.jams.data.JAMSString)
+INFO:           Access: WRITE Update: RUN
+INFO: Adding: SunhDataReader (org.unijena.j2k.io.TSDataReader)
+INFO: org.unijena.j2k.io.TSDataReader
+INFO:      SunhDataReader var declaration: dirName (org.unijena.jams.data.JAMSString)
+INFO:           Access: READ Update: INIT
+INFO:      SunhDataReader var declaration: skipRegression (org.unijena.jams.data.JAMSBoolean)
+INFO:           Access: READ Update: INIT
+INFO:      SunhDataReader var declaration: timeInterval (org.unijena.jams.data.JAMSTimeInterval)
+INFO:           Access: READ Update: INIT
+INFO:      SunhDataReader var declaration: dataFileName (org.unijena.jams.data.JAMSString)
+INFO:           Access: READ Update: INIT
+INFO:      SunhDataReader var declaration: startColumn (org.unijena.jams.data.JAMSInteger)
+INFO:           Access: READ Update: INIT
+INFO:      SunhDataReader var declaration: dataArray (org.unijena.jams.data.JAMSDoubleArray)
+INFO:           Access: WRITE Update: RUN
+INFO:      SunhDataReader var declaration: regCoeff (org.unijena.jams.data.JAMSDoubleArray)
+INFO:           Access: WRITE Update: RUN
+INFO:      SunhDataReader var declaration: elevation (org.unijena.jams.data.JAMSDoubleArray)
+INFO:           Access: WRITE Update: INIT
+INFO:      SunhDataReader var declaration: xCoord (org.unijena.jams.data.JAMSDoubleArray)
+INFO:           Access: WRITE Update: INIT
+INFO:      SunhDataReader var declaration: yCoord (org.unijena.jams.data.JAMSDoubleArray)
+INFO:           Access: WRITE Update: INIT
+INFO:      SunhDataReader var declaration: dataSetName (org.unijena.jams.data.JAMSString)
+INFO:           Access: WRITE Update: RUN
+INFO: Adding: WindDataReader (org.unijena.j2k.io.TSDataReader)
+INFO: org.unijena.j2k.io.TSDataReader
+INFO:      WindDataReader var declaration: dirName (org.unijena.jams.data.JAMSString)
+INFO:           Access: READ Update: INIT
+INFO:      WindDataReader var declaration: skipRegression (org.unijena.jams.data.JAMSBoolean)
+INFO:           Access: READ Update: INIT
+INFO:      WindDataReader var declaration: timeInterval (org.unijena.jams.data.JAMSTimeInterval)
+INFO:           Access: READ Update: INIT
+INFO:      WindDataReader var declaration: dataFileName (org.unijena.jams.data.JAMSString)
+INFO:           Access: READ Update: INIT
+INFO:      WindDataReader var declaration: startColumn (org.unijena.jams.data.JAMSInteger)
+INFO:           Access: READ Update: INIT
+INFO:      WindDataReader var declaration: dataArray (org.unijena.jams.data.JAMSDoubleArray)
+INFO:           Access: WRITE Update: RUN
+INFO:      WindDataReader var declaration: regCoeff (org.unijena.jams.data.JAMSDoubleArray)
+INFO:           Access: WRITE Update: RUN
+INFO:      WindDataReader var declaration: elevation (org.unijena.jams.data.JAMSDoubleArray)
+INFO:           Access: WRITE Update: INIT
+INFO:      WindDataReader var declaration: xCoord (org.unijena.jams.data.JAMSDoubleArray)
+INFO:           Access: WRITE Update: INIT
+INFO:      WindDataReader var declaration: yCoord (org.unijena.jams.data.JAMSDoubleArray)
+INFO:           Access: WRITE Update: INIT
+INFO:      WindDataReader var declaration: dataSetName (org.unijena.jams.data.JAMSString)
+INFO:           Access: WRITE Update: RUN
+INFO: Adding: ObsRunoffDataReader (org.unijena.j2k.io.TSDataReader)
+INFO: org.unijena.j2k.io.TSDataReader
+INFO:      ObsRunoffDataReader var declaration: dirName (org.unijena.jams.data.JAMSString)
+INFO:           Access: READ Update: INIT
+INFO:      ObsRunoffDataReader var declaration: skipRegression (org.unijena.jams.data.JAMSBoolean)
+INFO:           Access: READ Update: INIT
+INFO:      ObsRunoffDataReader var declaration: timeInterval (org.unijena.jams.data.JAMSTimeInterval)
+INFO:           Access: READ Update: INIT
+INFO:      ObsRunoffDataReader var declaration: dataFileName (org.unijena.jams.data.JAMSString)
+INFO:           Access: READ Update: INIT
+INFO:      ObsRunoffDataReader var declaration: startColumn (org.unijena.jams.data.JAMSInteger)
+INFO:           Access: READ Update: INIT
+INFO:      ObsRunoffDataReader var declaration: dataArray (org.unijena.jams.data.JAMSDoubleArray)
+INFO:           Access: WRITE Update: RUN
+INFO:      ObsRunoffDataReader var declaration: regCoeff (org.unijena.jams.data.JAMSDoubleArray)
+INFO:           Access: WRITE Update: RUN
+INFO:      ObsRunoffDataReader var declaration: elevation (org.unijena.jams.data.JAMSDoubleArray)
+INFO:           Access: WRITE Update: INIT
+INFO:      ObsRunoffDataReader var declaration: xCoord (org.unijena.jams.data.JAMSDoubleArray)
+INFO:           Access: WRITE Update: INIT
+INFO:      ObsRunoffDataReader var declaration: yCoord (org.unijena.jams.data.JAMSDoubleArray)
+INFO:           Access: WRITE Update: INIT
+INFO:      ObsRunoffDataReader var declaration: dataSetName (org.unijena.jams.data.JAMSString)
+INFO:           Access: WRITE Update: RUN
+INFO: Adding: HRUContext (org.unijena.jams.model.JAMSSpatialContext)
+INFO: org.unijena.jams.model.JAMSSpatialContext
+INFO:      HRUContext var declaration: entities (org.unijena.jams.data.JAMSEntityCollection)
+INFO:           Access: READ Update: INIT
+INFO: Adding: j2kArrayGrabber (org.unijena.j2k.J2KArrayGrabber)
+INFO: org.unijena.j2k.J2KArrayGrabber
+INFO:      j2kArrayGrabber var declaration: time (org.unijena.jams.data.JAMSCalendar)
+INFO:           Access: READ Update: RUN
+INFO:      j2kArrayGrabber var declaration: LAIArray (org.unijena.jams.data.JAMSDoubleArray)
+INFO:           Access: READ Update: RUN
+INFO:      j2kArrayGrabber var declaration: effHArray (org.unijena.jams.data.JAMSDoubleArray)
+INFO:           Access: READ Update: RUN
+INFO:      j2kArrayGrabber var declaration: slAsCfArray (org.unijena.jams.data.JAMSDoubleArray)
+INFO:           Access: READ Update: RUN
+INFO:      j2kArrayGrabber var declaration: rsc0Array (org.unijena.jams.data.JAMSDoubleArray)
+INFO:           Access: READ Update: RUN
+INFO:      j2kArrayGrabber var declaration: extRadArray (org.unijena.jams.data.JAMSDoubleArray)
+INFO:           Access: READ Update: RUN
+INFO:      j2kArrayGrabber var declaration: actLAI (org.unijena.jams.data.JAMSDouble)
+INFO:           Access: WRITE Update: RUN
+INFO:      j2kArrayGrabber var declaration: actEffH (org.unijena.jams.data.JAMSDouble)
+INFO:           Access: WRITE Update: RUN
+INFO:      j2kArrayGrabber var declaration: actSlAsCf (org.unijena.jams.data.JAMSDouble)
+INFO:           Access: WRITE Update: RUN
+INFO:      j2kArrayGrabber var declaration: actRsc0 (org.unijena.jams.data.JAMSDouble)
+INFO:           Access: WRITE Update: RUN
+INFO:      j2kArrayGrabber var declaration: actExtRad (org.unijena.jams.data.JAMSDouble)
+INFO:           Access: WRITE Update: RUN
+INFO:      j2kArrayGrabber var declaration: tempRes (org.unijena.jams.data.JAMSString)
+INFO:           Access: READ Update: INIT
+INFO: Adding: TmeanRegionaliser (org.unijena.j2k.regionalisation.Regionalisation)
+INFO: org.unijena.j2k.regionalisation.Regionalisation
+INFO:      TmeanRegionaliser var declaration: dirName (org.unijena.jams.data.JAMSString)
+INFO:           Access: READ Update: INIT
+INFO:      TmeanRegionaliser var declaration: dataCaching (org.unijena.jams.data.JAMSBoolean)
+INFO:           Access: READ Update: INIT
+INFO:      TmeanRegionaliser var declaration: dataArray (org.unijena.jams.data.JAMSDoubleArray)
+INFO:           Access: READ Update: RUN
+INFO:      TmeanRegionaliser var declaration: regCoeff (org.unijena.jams.data.JAMSDoubleArray)
+INFO:           Access: READ Update: RUN
+INFO:      TmeanRegionaliser var declaration: statElevation (org.unijena.jams.data.JAMSDoubleArray)
+INFO:           Access: READ Update: RUN
+INFO:      TmeanRegionaliser var declaration: statX (org.unijena.jams.data.JAMSDoubleArray)
+INFO:           Access: READ Update: RUN
+INFO:      TmeanRegionaliser var declaration: statY (org.unijena.jams.data.JAMSDoubleArray)
+INFO:           Access: READ Update: RUN
+INFO:      TmeanRegionaliser var declaration: dataSetName (org.unijena.jams.data.JAMSString)
+INFO:           Access: READ Update: RUN
+INFO:      TmeanRegionaliser var declaration: entityElevation (org.unijena.jams.data.JAMSDouble)
+INFO:           Access: READ Update: INIT
+INFO:      TmeanRegionaliser var declaration: statWeights (org.unijena.jams.data.JAMSDoubleArray)
+INFO:           Access: READ Update: RUN
+INFO:      TmeanRegionaliser var declaration: elevationCorrection (org.unijena.jams.data.JAMSInteger)
+INFO:           Access: READ Update: INIT
+INFO:      TmeanRegionaliser var declaration: rsqThreshold (org.unijena.jams.data.JAMSDouble)
+INFO:           Access: READ Update: INIT
+INFO:      TmeanRegionaliser var declaration: dataValue (org.unijena.jams.data.JAMSDouble)
+INFO:           Access: WRITE Update: RUN
+INFO: Adding: TminRegionaliser (org.unijena.j2k.regionalisation.Regionalisation)
+INFO: org.unijena.j2k.regionalisation.Regionalisation
+INFO:      TminRegionaliser var declaration: dirName (org.unijena.jams.data.JAMSString)
+INFO:           Access: READ Update: INIT
+INFO:      TminRegionaliser var declaration: dataCaching (org.unijena.jams.data.JAMSBoolean)
+INFO:           Access: READ Update: INIT
+INFO:      TminRegionaliser var declaration: dataArray (org.unijena.jams.data.JAMSDoubleArray)
+INFO:           Access: READ Update: RUN
+INFO:      TminRegionaliser var declaration: regCoeff (org.unijena.jams.data.JAMSDoubleArray)
+INFO:           Access: READ Update: RUN
+INFO:      TminRegionaliser var declaration: statElevation (org.unijena.jams.data.JAMSDoubleArray)
+INFO:           Access: READ Update: RUN
+INFO:      TminRegionaliser var declaration: statX (org.unijena.jams.data.JAMSDoubleArray)
+INFO:           Access: READ Update: RUN
+INFO:      TminRegionaliser var declaration: statY (org.unijena.jams.data.JAMSDoubleArray)
+INFO:           Access: READ Update: RUN
+INFO:      TminRegionaliser var declaration: dataSetName (org.unijena.jams.data.JAMSString)
+INFO:           Access: READ Update: RUN
+INFO:      TminRegionaliser var declaration: entityElevation (org.unijena.jams.data.JAMSDouble)
+INFO:           Access: READ Update: INIT
+INFO:      TminRegionaliser var declaration: statWeights (org.unijena.jams.data.JAMSDoubleArray)
+INFO:           Access: READ Update: RUN
+INFO:      TminRegionaliser var declaration: elevationCorrection (org.unijena.jams.data.JAMSInteger)
+INFO:           Access: READ Update: INIT
+INFO:      TminRegionaliser var declaration: rsqThreshold (org.unijena.jams.data.JAMSDouble)
+INFO:           Access: READ Update: INIT
+INFO:      TminRegionaliser var declaration: dataValue (org.unijena.jams.data.JAMSDouble)
+INFO:           Access: WRITE Update: RUN
+INFO: Adding: TmaxRegionaliser (org.unijena.j2k.regionalisation.Regionalisation)
+INFO: org.unijena.j2k.regionalisation.Regionalisation
+INFO:      TmaxRegionaliser var declaration: dirName (org.unijena.jams.data.JAMSString)
+INFO:           Access: READ Update: INIT
+INFO:      TmaxRegionaliser var declaration: dataCaching (org.unijena.jams.data.JAMSBoolean)
+INFO:           Access: READ Update: INIT
+INFO:      TmaxRegionaliser var declaration: dataArray (org.unijena.jams.data.JAMSDoubleArray)
+INFO:           Access: READ Update: RUN
+INFO:      TmaxRegionaliser var declaration: regCoeff (org.unijena.jams.data.JAMSDoubleArray)
+INFO:           Access: READ Update: RUN
+INFO:      TmaxRegionaliser var declaration: statElevation (org.unijena.jams.data.JAMSDoubleArray)
+INFO:           Access: READ Update: RUN
+INFO:      TmaxRegionaliser var declaration: statX (org.unijena.jams.data.JAMSDoubleArray)
+INFO:           Access: READ Update: RUN
+INFO:      TmaxRegionaliser var declaration: statY (org.unijena.jams.data.JAMSDoubleArray)
+INFO:           Access: READ Update: RUN
+INFO:      TmaxRegionaliser var declaration: dataSetName (org.unijena.jams.data.JAMSString)
+INFO:           Access: READ Update: RUN
+INFO:      TmaxRegionaliser var declaration: entityElevation (org.unijena.jams.data.JAMSDouble)
+INFO:           Access: READ Update: INIT
+INFO:      TmaxRegionaliser var declaration: statWeights (org.unijena.jams.data.JAMSDoubleArray)
+INFO:           Access: READ Update: RUN
+INFO:      TmaxRegionaliser var declaration: elevationCorrection (org.unijena.jams.data.JAMSInteger)
+INFO:           Access: READ Update: INIT
+INFO:      TmaxRegionaliser var declaration: rsqThreshold (org.unijena.jams.data.JAMSDouble)
+INFO:           Access: READ Update: INIT
+INFO:      TmaxRegionaliser var declaration: dataValue (org.unijena.jams.data.JAMSDouble)
+INFO:           Access: WRITE Update: RUN
+INFO: Adding: AhumRegionaliser (org.unijena.j2k.regionalisation.Regionalisation)
+INFO: org.unijena.j2k.regionalisation.Regionalisation
+INFO:      AhumRegionaliser var declaration: dirName (org.unijena.jams.data.JAMSString)
+INFO:           Access: READ Update: INIT
+INFO:      AhumRegionaliser var declaration: dataCaching (org.unijena.jams.data.JAMSBoolean)
+INFO:           Access: READ Update: INIT
+INFO:      AhumRegionaliser var declaration: dataArray (org.unijena.jams.data.JAMSDoubleArray)
+INFO:           Access: READ Update: RUN
+INFO:      AhumRegionaliser var declaration: regCoeff (org.unijena.jams.data.JAMSDoubleArray)
+INFO:           Access: READ Update: RUN
+INFO:      AhumRegionaliser var declaration: statElevation (org.unijena.jams.data.JAMSDoubleArray)
+INFO:           Access: READ Update: RUN
+INFO:      AhumRegionaliser var declaration: statX (org.unijena.jams.data.JAMSDoubleArray)
+INFO:           Access: READ Update: RUN
+INFO:      AhumRegionaliser var declaration: statY (org.unijena.jams.data.JAMSDoubleArray)
+INFO:           Access: READ Update: RUN
+INFO:      AhumRegionaliser var declaration: dataSetName (org.unijena.jams.data.JAMSString)
+INFO:           Access: READ Update: RUN
+INFO:      AhumRegionaliser var declaration: entityElevation (org.unijena.jams.data.JAMSDouble)
+INFO:           Access: READ Update: INIT
+INFO:      AhumRegionaliser var declaration: statWeights (org.unijena.jams.data.JAMSDoubleArray)
+INFO:           Access: READ Update: RUN
+INFO:      AhumRegionaliser var declaration: elevationCorrection (org.unijena.jams.data.JAMSInteger)
+INFO:           Access: READ Update: INIT
+INFO:      AhumRegionaliser var declaration: rsqThreshold (org.unijena.jams.data.JAMSDouble)
+INFO:           Access: READ Update: INIT
+INFO:      AhumRegionaliser var declaration: dataValue (org.unijena.jams.data.JAMSDouble)
+INFO:           Access: WRITE Update: RUN
+INFO: Adding: PrecipRegionaliser (org.unijena.j2k.regionalisation.Regionalisation)
+INFO: org.unijena.j2k.regionalisation.Regionalisation
+INFO:      PrecipRegionaliser var declaration: dirName (org.unijena.jams.data.JAMSString)
+INFO:           Access: READ Update: INIT
+INFO:      PrecipRegionaliser var declaration: dataCaching (org.unijena.jams.data.JAMSBoolean)
+INFO:           Access: READ Update: INIT
+INFO:      PrecipRegionaliser var declaration: dataArray (org.unijena.jams.data.JAMSDoubleArray)
+INFO:           Access: READ Update: RUN
+INFO:      PrecipRegionaliser var declaration: regCoeff (org.unijena.jams.data.JAMSDoubleArray)
+INFO:           Access: READ Update: RUN
+INFO:      PrecipRegionaliser var declaration: statElevation (org.unijena.jams.data.JAMSDoubleArray)
+INFO:           Access: READ Update: RUN
+INFO:      PrecipRegionaliser var declaration: statX (org.unijena.jams.data.JAMSDoubleArray)
+INFO:           Access: READ Update: RUN
+INFO:      PrecipRegionaliser var declaration: statY (org.unijena.jams.data.JAMSDoubleArray)
+INFO:           Access: READ Update: RUN
+INFO:      PrecipRegionaliser var declaration: dataSetName (org.unijena.jams.data.JAMSString)
+INFO:           Access: READ Update: RUN
+INFO:      PrecipRegionaliser var declaration: entityElevation (org.unijena.jams.data.JAMSDouble)
+INFO:           Access: READ Update: INIT
+INFO:      PrecipRegionaliser var declaration: statWeights (org.unijena.jams.data.JAMSDoubleArray)
+INFO:           Access: READ Update: RUN
+INFO:      PrecipRegionaliser var declaration: elevationCorrection (org.unijena.jams.data.JAMSInteger)
+INFO:           Access: READ Update: INIT
+INFO:      PrecipRegionaliser var declaration: rsqThreshold (org.unijena.jams.data.JAMSDouble)
+INFO:           Access: READ Update: INIT
+INFO:      PrecipRegionaliser var declaration: dataValue (org.unijena.jams.data.JAMSDouble)
+INFO:           Access: WRITE Update: RUN
+INFO: Adding: SunhRegionaliser (org.unijena.j2k.regionalisation.Regionalisation)
+INFO: org.unijena.j2k.regionalisation.Regionalisation
+INFO:      SunhRegionaliser var declaration: dirName (org.unijena.jams.data.JAMSString)
+INFO:           Access: READ Update: INIT
+INFO:      SunhRegionaliser var declaration: dataCaching (org.unijena.jams.data.JAMSBoolean)
+INFO:           Access: READ Update: INIT
+INFO:      SunhRegionaliser var declaration: dataArray (org.unijena.jams.data.JAMSDoubleArray)
+INFO:           Access: READ Update: RUN
+INFO:      SunhRegionaliser var declaration: regCoeff (org.unijena.jams.data.JAMSDoubleArray)
+INFO:           Access: READ Update: RUN
+INFO:      SunhRegionaliser var declaration: statElevation (org.unijena.jams.data.JAMSDoubleArray)
+INFO:           Access: READ Update: RUN
+INFO:      SunhRegionaliser var declaration: statX (org.unijena.jams.data.JAMSDoubleArray)
+INFO:           Access: READ Update: RUN
+INFO:      SunhRegionaliser var declaration: statY (org.unijena.jams.data.JAMSDoubleArray)
+INFO:           Access: READ Update: RUN
+INFO:      SunhRegionaliser var declaration: dataSetName (org.unijena.jams.data.JAMSString)
+INFO:           Access: READ Update: RUN
+INFO:      SunhRegionaliser var declaration: entityElevation (org.unijena.jams.data.JAMSDouble)
+INFO:           Access: READ Update: INIT
+INFO:      SunhRegionaliser var declaration: statWeights (org.unijena.jams.data.JAMSDoubleArray)
+INFO:           Access: READ Update: RUN
+INFO:      SunhRegionaliser var declaration: elevationCorrection (org.unijena.jams.data.JAMSInteger)
+INFO:           Access: READ Update: INIT
+INFO:      SunhRegionaliser var declaration: rsqThreshold (org.unijena.jams.data.JAMSDouble)
+INFO:           Access: READ Update: INIT
+INFO:      SunhRegionaliser var declaration: dataValue (org.unijena.jams.data.JAMSDouble)
+INFO:           Access: WRITE Update: RUN
+INFO: Adding: WindRegionaliser (org.unijena.j2k.regionalisation.Regionalisation)
+INFO: org.unijena.j2k.regionalisation.Regionalisation
+INFO:      WindRegionaliser var declaration: dirName (org.unijena.jams.data.JAMSString)
+INFO:           Access: READ Update: INIT
+INFO:      WindRegionaliser var declaration: dataCaching (org.unijena.jams.data.JAMSBoolean)
+INFO:           Access: READ Update: INIT
+INFO:      WindRegionaliser var declaration: dataArray (org.unijena.jams.data.JAMSDoubleArray)
+INFO:           Access: READ Update: RUN
+INFO:      WindRegionaliser var declaration: regCoeff (org.unijena.jams.data.JAMSDoubleArray)
+INFO:           Access: READ Update: RUN
+INFO:      WindRegionaliser var declaration: statElevation (org.unijena.jams.data.JAMSDoubleArray)
+INFO:           Access: READ Update: RUN
+INFO:      WindRegionaliser var declaration: statX (org.unijena.jams.data.JAMSDoubleArray)
+INFO:           Access: READ Update: RUN
+INFO:      WindRegionaliser var declaration: statY (org.unijena.jams.data.JAMSDoubleArray)
+INFO:           Access: READ Update: RUN
+INFO:      WindRegionaliser var declaration: dataSetName (org.unijena.jams.data.JAMSString)
+INFO:           Access: READ Update: RUN
+INFO:      WindRegionaliser var declaration: entityElevation (org.unijena.jams.data.JAMSDouble)
+INFO:           Access: READ Update: INIT
+INFO:      WindRegionaliser var declaration: statWeights (org.unijena.jams.data.JAMSDoubleArray)
+INFO:           Access: READ Update: RUN
+INFO:      WindRegionaliser var declaration: elevationCorrection (org.unijena.jams.data.JAMSInteger)
+INFO:           Access: READ Update: INIT
+INFO:      WindRegionaliser var declaration: rsqThreshold (org.unijena.jams.data.JAMSDouble)
+INFO:           Access: READ Update: INIT
+INFO:      WindRegionaliser var declaration: dataValue (org.unijena.jams.data.JAMSDouble)
+INFO:           Access: WRITE Update: RUN
+INFO: Adding: CalcRelativeHumidity (org.unijena.j2k.inputData.CalcRelativeHumidity)
+INFO: org.unijena.j2k.inputData.CalcRelativeHumidity
+INFO:      CalcRelativeHumidity var declaration: tmean (org.unijena.jams.data.JAMSDouble)
+INFO:           Access: READ Update: RUN
+INFO:      CalcRelativeHumidity var declaration: ahum (org.unijena.jams.data.JAMSDouble)
+INFO:           Access: READ Update: RUN
+INFO:      CalcRelativeHumidity var declaration: rhum (org.unijena.jams.data.JAMSDouble)
+INFO:           Access: WRITE Update: RUN
+INFO: Adding: CalcDailySolarRadiation (org.unijena.j2k.radiation.CalcDailySolarRadiation)
+INFO: org.unijena.j2k.radiation.CalcDailySolarRadiation
+INFO:      CalcDailySolarRadiation var declaration: dirName (org.unijena.jams.data.JAMSString)
+INFO:           Access: READ Update: INIT
+INFO:      CalcDailySolarRadiation var declaration: dataCaching (org.unijena.jams.data.JAMSBoolean)
+INFO:           Access: READ Update: INIT
+INFO:      CalcDailySolarRadiation var declaration: time (org.unijena.jams.data.JAMSCalendar)
+INFO:           Access: READ Update: RUN
+INFO:      CalcDailySolarRadiation var declaration: actSlAsCf (org.unijena.jams.data.JAMSDouble)
+INFO:           Access: READ Update: RUN
+INFO:      CalcDailySolarRadiation var declaration: latitude (org.unijena.jams.data.JAMSDouble)
+INFO:           Access: READ Update: RUN
+INFO:      CalcDailySolarRadiation var declaration: actExtRad (org.unijena.jams.data.JAMSDouble)
+INFO:           Access: READ Update: RUN
+INFO:      CalcDailySolarRadiation var declaration: sunh (org.unijena.jams.data.JAMSDouble)
+INFO:           Access: READ Update: RUN
+INFO:      CalcDailySolarRadiation var declaration: angstrom_a (org.unijena.jams.data.JAMSDouble)
+INFO:           Access: READ Update: INIT
+INFO:      CalcDailySolarRadiation var declaration: angstrom_b (org.unijena.jams.data.JAMSDouble)
+INFO:           Access: READ Update: INIT
+INFO:      CalcDailySolarRadiation var declaration: solRad (org.unijena.jams.data.JAMSDouble)
+INFO:           Access: WRITE Update: RUN
+INFO: Adding: CalcDailyNetRadiation (org.unijena.j2k.radiation.CalcDailyNetRadiation)
+INFO: org.unijena.j2k.radiation.CalcDailyNetRadiation
+INFO:      CalcDailyNetRadiation var declaration: dirName (org.unijena.jams.data.JAMSString)
+INFO:           Access: READ Update: INIT
+INFO:      CalcDailyNetRadiation var declaration: dataCaching (org.unijena.jams.data.JAMSBoolean)
+INFO:           Access: READ Update: INIT
+INFO:      CalcDailyNetRadiation var declaration: time (org.unijena.jams.data.JAMSCalendar)
+INFO:           Access: READ Update: RUN
+INFO:      CalcDailyNetRadiation var declaration: tmean (org.unijena.jams.data.JAMSDouble)
+INFO:           Access: READ Update: RUN
+INFO:      CalcDailyNetRadiation var declaration: sunh (org.unijena.jams.data.JAMSDouble)
+INFO:           Access: READ Update: RUN
+INFO:      CalcDailyNetRadiation var declaration: rhum (org.unijena.jams.data.JAMSDouble)
+INFO:           Access: READ Update: RUN
+INFO:      CalcDailyNetRadiation var declaration: solRad (org.unijena.jams.data.JAMSDouble)
+INFO:           Access: READ Update: RUN
+INFO:      CalcDailyNetRadiation var declaration: latitude (org.unijena.jams.data.JAMSDouble)
+INFO:           Access: READ Update: RUN
+INFO:      CalcDailyNetRadiation var declaration: elevation (org.unijena.jams.data.JAMSDouble)
+INFO:           Access: READ Update: RUN
+INFO:      CalcDailyNetRadiation var declaration: albedo (org.unijena.jams.data.JAMSDouble)
+INFO:           Access: READ Update: RUN
+INFO:      CalcDailyNetRadiation var declaration: extRad (org.unijena.jams.data.JAMSDouble)
+INFO:           Access: READ Update: RUN
+INFO:      CalcDailyNetRadiation var declaration: netRad (org.unijena.jams.data.JAMSDouble)
+INFO:           Access: WRITE Update: RUN
+INFO: Adding: CalcRefET (org.unijena.j2k.potET.RefET)
+INFO: org.unijena.j2k.potET.RefET
+INFO:      CalcRefET var declaration: dirName (org.unijena.jams.data.JAMSString)
+INFO:           Access: READ Update: INIT
+INFO:      CalcRefET var declaration: dataCaching (org.unijena.jams.data.JAMSBoolean)
+INFO:           Access: READ Update: INIT
+INFO:      CalcRefET var declaration: netRad (org.unijena.jams.data.JAMSDouble)
+INFO:           Access: READ Update: RUN
+INFO:      CalcRefET var declaration: tmean (org.unijena.jams.data.JAMSDouble)
+INFO:           Access: READ Update: RUN
+INFO:      CalcRefET var declaration: rhum (org.unijena.jams.data.JAMSDouble)
+INFO:           Access: READ Update: RUN
+INFO:      CalcRefET var declaration: wind (org.unijena.jams.data.JAMSDouble)
+INFO:           Access: READ Update: RUN
+INFO:      CalcRefET var declaration: elevation (org.unijena.jams.data.JAMSDouble)
+INFO:           Access: READ Update: RUN
+INFO:      CalcRefET var declaration: area (org.unijena.jams.data.JAMSDouble)
+INFO:           Access: READ Update: RUN
+INFO:      CalcRefET var declaration: refET (org.unijena.jams.data.JAMSDouble)
+INFO:           Access: WRITE Update: RUN
+INFO:      CalcRefET var declaration: actET (org.unijena.jams.data.JAMSDouble)
+INFO:           Access: WRITE Update: RUN
+INFO:      CalcRefET var declaration: tempRes (org.unijena.jams.data.JAMSString)
+INFO:           Access: READ Update: INIT
+INFO: Adding: CalcPotentialET (org.unijena.j2k.potET.PenmanMonteith_1)
+INFO: org.unijena.j2k.potET.PenmanMonteith_1
+INFO:      CalcPotentialET var declaration: dirName (org.unijena.jams.data.JAMSString)
+INFO:           Access: READ Update: INIT
+INFO:      CalcPotentialET var declaration: dataCaching (org.unijena.jams.data.JAMSBoolean)
+INFO:           Access: READ Update: INIT
+INFO:      CalcPotentialET var declaration: netRad (org.unijena.jams.data.JAMSDouble)
+INFO:           Access: READ Update: RUN
+INFO:      CalcPotentialET var declaration: tmean (org.unijena.jams.data.JAMSDouble)
+INFO:           Access: READ Update: RUN
+INFO:      CalcPotentialET var declaration: rhum (org.unijena.jams.data.JAMSDouble)
+INFO:           Access: READ Update: RUN
+INFO:      CalcPotentialET var declaration: wind (org.unijena.jams.data.JAMSDouble)
+INFO:           Access: READ Update: RUN
+INFO:      CalcPotentialET var declaration: actRsc0 (org.unijena.jams.data.JAMSDouble)
+INFO:           Access: READ Update: RUN
+INFO:      CalcPotentialET var declaration: actLAI (org.unijena.jams.data.JAMSDouble)
+INFO:           Access: READ Update: RUN
+INFO:      CalcPotentialET var declaration: actEffH (org.unijena.jams.data.JAMSDouble)
+INFO:           Access: READ Update: RUN
+INFO:      CalcPotentialET var declaration: elevation (org.unijena.jams.data.JAMSDouble)
+INFO:           Access: READ Update: RUN
+INFO:      CalcPotentialET var declaration: area (org.unijena.jams.data.JAMSDouble)
+INFO:           Access: READ Update: RUN
+INFO:      CalcPotentialET var declaration: potET (org.unijena.jams.data.JAMSDouble)
+INFO:           Access: WRITE Update: RUN
+INFO:      CalcPotentialET var declaration: actET (org.unijena.jams.data.JAMSDouble)
+INFO:           Access: WRITE Update: RUN
+INFO:      CalcPotentialET var declaration: rs (org.unijena.jams.data.JAMSDouble)
+INFO:           Access: WRITE Update: RUN
+INFO:      CalcPotentialET var declaration: ra (org.unijena.jams.data.JAMSDouble)
+INFO:           Access: WRITE Update: RUN
+INFO:      CalcPotentialET var declaration: tempRes (org.unijena.jams.data.JAMSString)
+INFO:           Access: READ Update: INIT
+INFO:      CalcPotentialET var declaration: calpet (org.unijena.jams.data.JAMSDouble)
+INFO:           Access: READ Update: INIT
+INFO: Adding: CalcRainSnowParts (org.unijena.j2k.snow.CalcRainSnowParts)
+INFO: org.unijena.j2k.snow.CalcRainSnowParts
+INFO:      CalcRainSnowParts var declaration: precip (org.unijena.jams.data.JAMSDouble)
+INFO:           Access: READ Update: RUN
+INFO:      CalcRainSnowParts var declaration: tmin (org.unijena.jams.data.JAMSDouble)
+INFO:           Access: READ Update: RUN
+INFO:      CalcRainSnowParts var declaration: tmean (org.unijena.jams.data.JAMSDouble)
+INFO:           Access: READ Update: RUN
+INFO:      CalcRainSnowParts var declaration: area (org.unijena.jams.data.JAMSDouble)
+INFO:           Access: READ Update: RUN
+INFO:      CalcRainSnowParts var declaration: snow_trs (org.unijena.jams.data.JAMSDouble)
+INFO:           Access: READ Update: INIT
+INFO:      CalcRainSnowParts var declaration: snow_trans (org.unijena.jams.data.JAMSDouble)
+INFO:           Access: READ Update: INIT
+INFO:      CalcRainSnowParts var declaration: rain (org.unijena.jams.data.JAMSDouble)
+INFO:           Access: WRITE Update: RUN
+INFO:      CalcRainSnowParts var declaration: snow (org.unijena.jams.data.JAMSDouble)
+INFO:           Access: WRITE Update: RUN
+INFO: Adding: J2KProcessInterception (org.unijena.j2k.interception.J2KProcessInterception)
+INFO: org.unijena.j2k.interception.J2KProcessInterception
+INFO:      J2KProcessInterception var declaration: area (org.unijena.jams.data.JAMSDouble)
+INFO:           Access: READ Update: RUN
+INFO:      J2KProcessInterception var declaration: tmean (org.unijena.jams.data.JAMSDouble)
+INFO:           Access: READ Update: RUN
+INFO:      J2KProcessInterception var declaration: rain (org.unijena.jams.data.JAMSDouble)
+INFO:           Access: READ Update: RUN
+INFO:      J2KProcessInterception var declaration: snow (org.unijena.jams.data.JAMSDouble)
+INFO:           Access: READ Update: RUN
+INFO:      J2KProcessInterception var declaration: potET (org.unijena.jams.data.JAMSDouble)
+INFO:           Access: READ Update: RUN
+INFO:      J2KProcessInterception var declaration: actET (org.unijena.jams.data.JAMSDouble)
+INFO:           Access: READWRITE Update: RUN
+INFO:      J2KProcessInterception var declaration: actLAI (org.unijena.jams.data.JAMSDouble)
+INFO:           Access: READ Update: RUN
+INFO:      J2KProcessInterception var declaration: snow_trs (org.unijena.jams.data.JAMSDouble)
+INFO:           Access: READ Update: INIT
+INFO:      J2KProcessInterception var declaration: snow_trans (org.unijena.jams.data.JAMSDouble)
+INFO:           Access: READ Update: INIT
+INFO:      J2KProcessInterception var declaration: a_rain (org.unijena.jams.data.JAMSDouble)
+INFO:           Access: READ Update: INIT
+INFO:      J2KProcessInterception var declaration: a_snow (org.unijena.jams.data.JAMSDouble)
+INFO:           Access: READ Update: INIT
+INFO:      J2KProcessInterception var declaration: netRain (org.unijena.jams.data.JAMSDouble)
+INFO:           Access: WRITE Update: RUN
+INFO:      J2KProcessInterception var declaration: netSnow (org.unijena.jams.data.JAMSDouble)
+INFO:           Access: WRITE Update: RUN
+INFO:      J2KProcessInterception var declaration: throughfall (org.unijena.jams.data.JAMSDouble)
+INFO:           Access: WRITE Update: RUN
+INFO:      J2KProcessInterception var declaration: interception (org.unijena.jams.data.JAMSDouble)
+INFO:           Access: WRITE Update: RUN
+INFO:      J2KProcessInterception var declaration: intercStorage (org.unijena.jams.data.JAMSDouble)
+INFO:           Access: READWRITE Update: RUN
+INFO: Adding: J2KProcessSnow (org.unijena.j2k.snow.J2KProcessSnow)
+INFO: org.unijena.j2k.snow.J2KProcessSnow
+INFO:      J2KProcessSnow var declaration: area (org.unijena.jams.data.JAMSDouble)
+INFO:           Access: READ Update: RUN
+INFO:      J2KProcessSnow var declaration: actSlAsCf (org.unijena.jams.data.JAMSDouble)
+INFO:           Access: READ Update: RUN
+INFO:      J2KProcessSnow var declaration: minTemp (org.unijena.jams.data.JAMSDouble)
+INFO:           Access: READ Update: RUN
+INFO:      J2KProcessSnow var declaration: meanTemp (org.unijena.jams.data.JAMSDouble)
+INFO:           Access: READ Update: RUN
+INFO:      J2KProcessSnow var declaration: maxTemp (org.unijena.jams.data.JAMSDouble)
+INFO:           Access: READ Update: RUN
+INFO:      J2KProcessSnow var declaration: netRain (org.unijena.jams.data.JAMSDouble)
+INFO:           Access: READWRITE Update: RUN
+INFO:      J2KProcessSnow var declaration: netSnow (org.unijena.jams.data.JAMSDouble)
+INFO:           Access: READWRITE Update: RUN
+INFO:      J2KProcessSnow var declaration: snowTotSWE (org.unijena.jams.data.JAMSDouble)
+INFO:           Access: READWRITE Update: RUN
+INFO:      J2KProcessSnow var declaration: drySWE (org.unijena.jams.data.JAMSDouble)
+INFO:           Access: READWRITE Update: RUN
+INFO:      J2KProcessSnow var declaration: totDens (org.unijena.jams.data.JAMSDouble)
+INFO:           Access: READWRITE Update: RUN
+INFO:      J2KProcessSnow var declaration: dryDens (org.unijena.jams.data.JAMSDouble)
+INFO:           Access: READWRITE Update: RUN
+INFO:      J2KProcessSnow var declaration: snowDepth (org.unijena.jams.data.JAMSDouble)
+INFO:           Access: READWRITE Update: RUN
+INFO:      J2KProcessSnow var declaration: snowAge (org.unijena.jams.data.JAMSDouble)
+INFO:           Access: READWRITE Update: RUN
+INFO:      J2KProcessSnow var declaration: snowColdContent (org.unijena.jams.data.JAMSDouble)
+INFO:           Access: READWRITE Update: RUN
+INFO:      J2KProcessSnow var declaration: snowMelt (org.unijena.jams.data.JAMSDouble)
+INFO:           Access: WRITE Update: RUN
+INFO:      J2KProcessSnow var declaration: snow_trs (org.unijena.jams.data.JAMSDouble)
+INFO:           Access: READ Update: INIT
+INFO:      J2KProcessSnow var declaration: snow_trans (org.unijena.jams.data.JAMSDouble)
+INFO:           Access: READ Update: INIT
+INFO:      J2KProcessSnow var declaration: t_factor (org.unijena.jams.data.JAMSDouble)
+INFO:           Access: READ Update: INIT
+INFO:      J2KProcessSnow var declaration: r_factor (org.unijena.jams.data.JAMSDouble)
+INFO:           Access: READ Update: INIT
+INFO:      J2KProcessSnow var declaration: g_factor (org.unijena.jams.data.JAMSDouble)
+INFO:           Access: READ Update: INIT
+INFO:      J2KProcessSnow var declaration: snowCritDens (org.unijena.jams.data.JAMSDouble)
+INFO:           Access: READ Update: INIT
+INFO:      J2KProcessSnow var declaration: ccf_factor (org.unijena.jams.data.JAMSDouble)
+INFO:           Access: READ Update: INIT
+INFO: Adding: J2KProcessLayeredSoilWater (org.unijena.j2k.soilWater.J2KProcessLayeredSoilWater)
+INFO: org.unijena.j2k.soilWater.J2KProcessLayeredSoilWater
+INFO:      J2KProcessLayeredSoilWater var declaration: time (org.unijena.jams.data.JAMSCalendar)
+INFO:           Access: READ Update: RUN
+INFO:      J2KProcessLayeredSoilWater var declaration: area (org.unijena.jams.data.JAMSDouble)
+INFO:           Access: READ Update: RUN
+INFO:      J2KProcessLayeredSoilWater var declaration: slope (org.unijena.jams.data.JAMSDouble)
+INFO:           Access: READ Update: RUN
+INFO:      J2KProcessLayeredSoilWater var declaration: sealedGrade (org.unijena.jams.data.JAMSDouble)
+INFO:           Access: READ Update: RUN
+INFO:      J2KProcessLayeredSoilWater var declaration: netRain (org.unijena.jams.data.JAMSDouble)
+INFO:           Access: READWRITE Update: RUN
+INFO:      J2KProcessLayeredSoilWater var declaration: netSnow (org.unijena.jams.data.JAMSDouble)
+INFO:           Access: READWRITE Update: RUN
+INFO:      J2KProcessLayeredSoilWater var declaration: potET (org.unijena.jams.data.JAMSDouble)
+INFO:           Access: READ Update: RUN
+INFO:      J2KProcessLayeredSoilWater var declaration: actET (org.unijena.jams.data.JAMSDouble)
+INFO:           Access: READWRITE Update: RUN
+INFO:      J2KProcessLayeredSoilWater var declaration: snowDepth (org.unijena.jams.data.JAMSDouble)
+INFO:           Access: READ Update: RUN
+INFO:      J2KProcessLayeredSoilWater var declaration: snowMelt (org.unijena.jams.data.JAMSDouble)
+INFO:           Access: READ Update: RUN
+INFO:      J2KProcessLayeredSoilWater var declaration: horizons (org.unijena.jams.data.JAMSDouble)
+INFO:           Access: READ Update: RUN
+INFO:      J2KProcessLayeredSoilWater var declaration: maxMPS (org.unijena.jams.data.JAMSDoubleArray)
+INFO:           Access: READ Update: RUN
+INFO:      J2KProcessLayeredSoilWater var declaration: maxLPS (org.unijena.jams.data.JAMSDoubleArray)
+INFO:           Access: READ Update: RUN
+INFO:      J2KProcessLayeredSoilWater var declaration: actDPS (org.unijena.jams.data.JAMSDouble)
+INFO:           Access: READWRITE Update: RUN
+INFO:      J2KProcessLayeredSoilWater var declaration: actMPS (org.unijena.jams.data.JAMSDoubleArray)
+INFO:           Access: READWRITE Update: RUN
+INFO:      J2KProcessLayeredSoilWater var declaration: actLPS (org.unijena.jams.data.JAMSDoubleArray)
+INFO:           Access: READWRITE Update: RUN
+INFO:      J2KProcessLayeredSoilWater var declaration: satMPS (org.unijena.jams.data.JAMSDoubleArray)
+INFO:           Access: READWRITE Update: RUN
+INFO:      J2KProcessLayeredSoilWater var declaration: satLPS (org.unijena.jams.data.JAMSDoubleArray)
+INFO:           Access: READWRITE Update: RUN
+INFO:      J2KProcessLayeredSoilWater var declaration: soilMaxMPS (org.unijena.jams.data.JAMSDouble)
+INFO:           Access: WRITE Update: RUN
+INFO:      J2KProcessLayeredSoilWater var declaration: soilMaxLPS (org.unijena.jams.data.JAMSDouble)
+INFO:           Access: WRITE Update: RUN
+INFO:      J2KProcessLayeredSoilWater var declaration: soilActMPS (org.unijena.jams.data.JAMSDouble)
+INFO:           Access: WRITE Update: RUN
+INFO:      J2KProcessLayeredSoilWater var declaration: soilActLPS (org.unijena.jams.data.JAMSDouble)
+INFO:           Access: WRITE Update: RUN
+INFO:      J2KProcessLayeredSoilWater var declaration: soilSatMPS (org.unijena.jams.data.JAMSDouble)
+INFO:           Access: WRITE Update: RUN
+INFO:      J2KProcessLayeredSoilWater var declaration: soilSatLPS (org.unijena.jams.data.JAMSDouble)
+INFO:           Access: WRITE Update: RUN
+INFO:      J2KProcessLayeredSoilWater var declaration: satSoil (org.unijena.jams.data.JAMSDouble)
+INFO:           Access: READWRITE Update: RUN
+INFO:      J2KProcessLayeredSoilWater var declaration: infiltration (org.unijena.jams.data.JAMSDouble)
+INFO:           Access: WRITE Update: RUN
+INFO:      J2KProcessLayeredSoilWater var declaration: interflow (org.unijena.jams.data.JAMSDouble)
+INFO:           Access: WRITE Update: RUN
+INFO:      J2KProcessLayeredSoilWater var declaration: percolation (org.unijena.jams.data.JAMSDouble)
+INFO:           Access: WRITE Update: RUN
+INFO:      J2KProcessLayeredSoilWater var declaration: inRD1 (org.unijena.jams.data.JAMSDouble)
+INFO:           Access: READWRITE Update: RUN
+INFO:      J2KProcessLayeredSoilWater var declaration: inRD2 (org.unijena.jams.data.JAMSDoubleArray)
+INFO:           Access: READWRITE Update: RUN
+INFO:      J2KProcessLayeredSoilWater var declaration: genRD1 (org.unijena.jams.data.JAMSDouble)
+INFO:           Access: WRITE Update: RUN
+INFO:      J2KProcessLayeredSoilWater var declaration: genRD2 (org.unijena.jams.data.JAMSDoubleArray)
+INFO:           Access: WRITE Update: RUN
+INFO:      J2KProcessLayeredSoilWater var declaration: outRD1 (org.unijena.jams.data.JAMSDouble)
+INFO:           Access: WRITE Update: RUN
+INFO:      J2KProcessLayeredSoilWater var declaration: outRD2 (org.unijena.jams.data.JAMSDoubleArray)
+INFO:           Access: WRITE Update: RUN
+INFO:      J2KProcessLayeredSoilWater var declaration: infiltration_hor (org.unijena.jams.data.JAMSDoubleArray)
+INFO:           Access: WRITE Update: RUN
+INFO:      J2KProcessLayeredSoilWater var declaration: perco_hor (org.unijena.jams.data.JAMSDoubleArray)
+INFO:           Access: WRITE Update: RUN
+INFO:      J2KProcessLayeredSoilWater var declaration: actETP_h (org.unijena.jams.data.JAMSDoubleArray)
+INFO:           Access: WRITE Update: RUN
+INFO:      J2KProcessLayeredSoilWater var declaration: soilMaxDPS (org.unijena.jams.data.JAMSDouble)
+INFO:           Access: READ Update: INIT
+INFO:      J2KProcessLayeredSoilWater var declaration: soilPolRed (org.unijena.jams.data.JAMSDouble)
+INFO:           Access: READ Update: INIT
+INFO:      J2KProcessLayeredSoilWater var declaration: soilLinRed (org.unijena.jams.data.JAMSDouble)
+INFO:           Access: READ Update: INIT
+INFO:      J2KProcessLayeredSoilWater var declaration: soilMaxInfSummer (org.unijena.jams.data.JAMSDouble)
+INFO:           Access: READ Update: INIT
+INFO:      J2KProcessLayeredSoilWater var declaration: soilMaxInfWinter (org.unijena.jams.data.JAMSDouble)
+INFO:           Access: READ Update: INIT
+INFO:      J2KProcessLayeredSoilWater var declaration: soilMaxInfSnow (org.unijena.jams.data.JAMSDouble)
+INFO:           Access: READ Update: INIT
+INFO:      J2KProcessLayeredSoilWater var declaration: soilImpGT80 (org.unijena.jams.data.JAMSDouble)
+INFO:           Access: READ Update: INIT
+INFO:      J2KProcessLayeredSoilWater var declaration: soilImpLT80 (org.unijena.jams.data.JAMSDouble)
+INFO:           Access: READ Update: INIT
+INFO:      J2KProcessLayeredSoilWater var declaration: soilDistMPSLPS (org.unijena.jams.data.JAMSDouble)
+INFO:           Access: READ Update: INIT
+INFO:      J2KProcessLayeredSoilWater var declaration: soilDiffMPSLPS (org.unijena.jams.data.JAMSDouble)
+INFO:           Access: READ Update: INIT
+INFO:      J2KProcessLayeredSoilWater var declaration: soilOutLPS (org.unijena.jams.data.JAMSDouble)
+INFO:           Access: READ Update: INIT
+INFO:      J2KProcessLayeredSoilWater var declaration: soilLatVertLPS (org.unijena.jams.data.JAMSDouble)
+INFO:           Access: READ Update: INIT
+INFO:      J2KProcessLayeredSoilWater var declaration: soilMaxPerc (org.unijena.jams.data.JAMSDouble)
+INFO:           Access: READ Update: INIT
+INFO:      J2KProcessLayeredSoilWater var declaration: soilConcRD1 (org.unijena.jams.data.JAMSDouble)
+INFO:           Access: READ Update: INIT
+INFO:      J2KProcessLayeredSoilWater var declaration: soilConcRD2 (org.unijena.jams.data.JAMSDouble)
+INFO:           Access: READ Update: INIT
+INFO: Adding: J2KProcessGroundwater (org.unijena.j2k.groundwater.J2KProcessGroundwater)
+INFO: org.unijena.j2k.groundwater.J2KProcessGroundwater
+INFO:      J2KProcessGroundwater var declaration: area (org.unijena.jams.data.JAMSDouble)
+INFO:           Access: READ Update: RUN
+INFO:      J2KProcessGroundwater var declaration: slope (org.unijena.jams.data.JAMSDouble)
+INFO:           Access: READ Update: RUN
+INFO:      J2KProcessGroundwater var declaration: maxRG1 (org.unijena.jams.data.JAMSDouble)
+INFO:           Access: READ Update: RUN
+INFO:      J2KProcessGroundwater var declaration: maxRG2 (org.unijena.jams.data.JAMSDouble)
+INFO:           Access: READ Update: RUN
+INFO:      J2KProcessGroundwater var declaration: kRG1 (org.unijena.jams.data.JAMSDouble)
+INFO:           Access: READ Update: RUN
+INFO:      J2KProcessGroundwater var declaration: kRG2 (org.unijena.jams.data.JAMSDouble)
+INFO:           Access: READ Update: RUN
+INFO:      J2KProcessGroundwater var declaration: actRG1 (org.unijena.jams.data.JAMSDouble)
+INFO:           Access: READWRITE Update: RUN
+INFO:      J2KProcessGroundwater var declaration: actRG2 (org.unijena.jams.data.JAMSDouble)
+INFO:           Access: READWRITE Update: RUN
+INFO:      J2KProcessGroundwater var declaration: inRG1 (org.unijena.jams.data.JAMSDouble)
+INFO:           Access: READWRITE Update: RUN
+INFO:      J2KProcessGroundwater var declaration: inRG2 (org.unijena.jams.data.JAMSDouble)
+INFO:           Access: READWRITE Update: RUN
+INFO:      J2KProcessGroundwater var declaration: outRG1 (org.unijena.jams.data.JAMSDouble)
+INFO:           Access: WRITE Update: RUN
+INFO:      J2KProcessGroundwater var declaration: outRG2 (org.unijena.jams.data.JAMSDouble)
+INFO:           Access: WRITE Update: RUN
+INFO:      J2KProcessGroundwater var declaration: genRG1 (org.unijena.jams.data.JAMSDouble)
+INFO:           Access: WRITE Update: RUN
+INFO:      J2KProcessGroundwater var declaration: genRG2 (org.unijena.jams.data.JAMSDouble)
+INFO:           Access: WRITE Update: RUN
+INFO:      J2KProcessGroundwater var declaration: percolation (org.unijena.jams.data.JAMSDouble)
+INFO:           Access: READ Update: RUN
+INFO:      J2KProcessGroundwater var declaration: gwExcess (org.unijena.jams.data.JAMSDouble)
+INFO:           Access: READWRITE Update: RUN
+INFO:      J2KProcessGroundwater var declaration: maxSoilStorage (org.unijena.jams.data.JAMSDouble)
+INFO:           Access: READ Update: RUN
+INFO:      J2KProcessGroundwater var declaration: actSoilStorage (org.unijena.jams.data.JAMSDouble)
+INFO:           Access: READ Update: RUN
+INFO:      J2KProcessGroundwater var declaration: gwRG1RG2dist (org.unijena.jams.data.JAMSDouble)
+INFO:           Access: READ Update: INIT
+INFO:      J2KProcessGroundwater var declaration: gwRG1Fact (org.unijena.jams.data.JAMSDouble)
+INFO:           Access: READ Update: INIT
+INFO:      J2KProcessGroundwater var declaration: gwRG2Fact (org.unijena.jams.data.JAMSDouble)
+INFO:           Access: READ Update: INIT
+INFO:      J2KProcessGroundwater var declaration: gwCapRise (org.unijena.jams.data.JAMSDouble)
+INFO:           Access: READ Update: INIT
+INFO: Adding: J2KProcessHorizonRouting (org.unijena.j2k.routing.J2KProcessHorizonRouting)
+INFO: org.unijena.j2k.routing.J2KProcessHorizonRouting
+INFO:      J2KProcessHorizonRouting var declaration: reaches (org.unijena.jams.data.JAMSEntityCollection)
+INFO:           Access: READ Update: RUN
+INFO:      J2KProcessHorizonRouting var declaration: entities (org.unijena.jams.data.JAMSEntityCollection)
+INFO:           Access: READ Update: RUN
+INFO:      J2KProcessHorizonRouting var declaration: inRD1 (org.unijena.jams.data.JAMSDouble)
+INFO:           Access: READWRITE Update: RUN
+INFO:      J2KProcessHorizonRouting var declaration: inRD2_h (org.unijena.jams.data.JAMSDoubleArray)
+INFO:           Access: READWRITE Update: RUN
+INFO:      J2KProcessHorizonRouting var declaration: inRG1 (org.unijena.jams.data.JAMSDouble)
+INFO:           Access: READWRITE Update: RUN
+INFO:      J2KProcessHorizonRouting var declaration: inRG2 (org.unijena.jams.data.JAMSDouble)
+INFO:           Access: READWRITE Update: RUN
+INFO:      J2KProcessHorizonRouting var declaration: outRD1 (org.unijena.jams.data.JAMSDouble)
+INFO:           Access: READWRITE Update: RUN
+INFO:      J2KProcessHorizonRouting var declaration: outRD2_h (org.unijena.jams.data.JAMSDoubleArray)
+INFO:           Access: READWRITE Update: RUN
+INFO:      J2KProcessHorizonRouting var declaration: outRG1 (org.unijena.jams.data.JAMSDouble)
+INFO:           Access: READWRITE Update: RUN
+INFO:      J2KProcessHorizonRouting var declaration: outRG2 (org.unijena.jams.data.JAMSDouble)
+INFO:           Access: READWRITE Update: RUN
+INFO:      J2KProcessHorizonRouting var declaration: inGWExcess (org.unijena.jams.data.JAMSDouble)
+INFO:           Access: READWRITE Update: RUN
+INFO: Adding: SpatialWeightedSumAggregator1 (org.unijena.j2k.aggregate.WeightedSumAggregator)
+INFO: org.unijena.j2k.aggregate.WeightedSumAggregator
+INFO:      SpatialWeightedSumAggregator1 var declaration: value ([Lorg.unijena.jams.data.JAMSDouble;)
+INFO:           Access: READ Update: RUN
+INFO:      SpatialWeightedSumAggregator1 var declaration: weight (org.unijena.jams.data.JAMSDouble)
+INFO:           Access: READ Update: RUN
+INFO:      SpatialWeightedSumAggregator1 var declaration: sum ([Lorg.unijena.jams.data.JAMSDouble;)
+INFO:           Access: READWRITE Update: RUN
+INFO: Adding: SpatialWeightedSumAggregator2 (org.unijena.j2k.aggregate.WeightedSumAggregator)
+INFO: org.unijena.j2k.aggregate.WeightedSumAggregator
+INFO:      SpatialWeightedSumAggregator2 var declaration: value ([Lorg.unijena.jams.data.JAMSDouble;)
+INFO:           Access: READ Update: RUN
+INFO:      SpatialWeightedSumAggregator2 var declaration: weight (org.unijena.jams.data.JAMSDouble)
+INFO:           Access: READ Update: RUN
+INFO:      SpatialWeightedSumAggregator2 var declaration: sum ([Lorg.unijena.jams.data.JAMSDouble;)
+INFO:           Access: READWRITE Update: RUN
+INFO: Adding: ReachContext (org.unijena.jams.model.JAMSSpatialContext)
+INFO: org.unijena.jams.model.JAMSSpatialContext
+INFO:      ReachContext var declaration: entities (org.unijena.jams.data.JAMSEntityCollection)
+INFO:           Access: READ Update: INIT
+INFO: Adding: J2KProcessReachRouting (org.unijena.j2k.routing.J2KProcessReachRouting)
+INFO: org.unijena.j2k.routing.J2KProcessReachRouting
+INFO:      J2KProcessReachRouting var declaration: entities (org.unijena.jams.data.JAMSEntityCollection)
+INFO:           Access: READ Update: RUN
+INFO:      J2KProcessReachRouting var declaration: length (org.unijena.jams.data.JAMSDouble)
+INFO:           Access: READ Update: INIT
+INFO:      J2KProcessReachRouting var declaration: slope (org.unijena.jams.data.JAMSDouble)
+INFO:           Access: READ Update: INIT
+INFO:      J2KProcessReachRouting var declaration: width (org.unijena.jams.data.JAMSDouble)
+INFO:           Access: READ Update: INIT
+INFO:      J2KProcessReachRouting var declaration: roughness (org.unijena.jams.data.JAMSDouble)
+INFO:           Access: READ Update: INIT
+INFO:      J2KProcessReachRouting var declaration: inRD1 (org.unijena.jams.data.JAMSDouble)
+INFO:           Access: READWRITE Update: RUN
+INFO:      J2KProcessReachRouting var declaration: inRD2 (org.unijena.jams.data.JAMSDouble)
+INFO:           Access: READWRITE Update: RUN
+INFO:      J2KProcessReachRouting var declaration: inRG1 (org.unijena.jams.data.JAMSDouble)
+INFO:           Access: READWRITE Update: RUN
+INFO:      J2KProcessReachRouting var declaration: inRG2 (org.unijena.jams.data.JAMSDouble)
+INFO:           Access: READWRITE Update: RUN
+INFO:      J2KProcessReachRouting var declaration: actRD1 (org.unijena.jams.data.JAMSDouble)
+INFO:           Access: READWRITE Update: RUN
+INFO:      J2KProcessReachRouting var declaration: actRD2 (org.unijena.jams.data.JAMSDouble)
+INFO:           Access: READWRITE Update: RUN
+INFO:      J2KProcessReachRouting var declaration: actRG1 (org.unijena.jams.data.JAMSDouble)
+INFO:           Access: READWRITE Update: RUN
+INFO:      J2KProcessReachRouting var declaration: actRG2 (org.unijena.jams.data.JAMSDouble)
+INFO:           Access: READWRITE Update: RUN
+INFO:      J2KProcessReachRouting var declaration: outRD1 (org.unijena.jams.data.JAMSDouble)
+INFO:           Access: WRITE Update: RUN
+INFO:      J2KProcessReachRouting var declaration: outRD2 (org.unijena.jams.data.JAMSDouble)
+INFO:           Access: WRITE Update: RUN
+INFO:      J2KProcessReachRouting var declaration: outRG1 (org.unijena.jams.data.JAMSDouble)
+INFO:           Access: WRITE Update: RUN
+INFO:      J2KProcessReachRouting var declaration: outRG2 (org.unijena.jams.data.JAMSDouble)
+INFO:           Access: WRITE Update: RUN
+INFO:      J2KProcessReachRouting var declaration: catchmentRD1 (org.unijena.jams.data.JAMSDouble)
+INFO:           Access: WRITE Update: RUN
+INFO:      J2KProcessReachRouting var declaration: catchmentRD2 (org.unijena.jams.data.JAMSDouble)
+INFO:           Access: WRITE Update: RUN
+INFO:      J2KProcessReachRouting var declaration: catchmentRG1 (org.unijena.jams.data.JAMSDouble)
+INFO:           Access: WRITE Update: RUN
+INFO:      J2KProcessReachRouting var declaration: catchmentRG2 (org.unijena.jams.data.JAMSDouble)
+INFO:           Access: WRITE Update: RUN
+INFO:      J2KProcessReachRouting var declaration: catchmentSimRunoff (org.unijena.jams.data.JAMSDouble)
+INFO:           Access: WRITE Update: RUN
+INFO:      J2KProcessReachRouting var declaration: simRunoff (org.unijena.jams.data.JAMSDouble)
+INFO:           Access: WRITE Update: RUN
+INFO:      J2KProcessReachRouting var declaration: channelStorage (org.unijena.jams.data.JAMSDouble)
+INFO:           Access: READWRITE Update: RUN
+INFO:      J2KProcessReachRouting var declaration: flowRouteTA (org.unijena.jams.data.JAMSDouble)
+INFO:           Access: READ Update: INIT
+INFO: Adding: ChannelStorageAggregator (org.unijena.j2k.aggregate.SumAggregator)
+INFO: org.unijena.j2k.aggregate.SumAggregator
+INFO:      ChannelStorageAggregator var declaration: value ([Lorg.unijena.jams.data.JAMSDouble;)
+INFO:           Access: READ Update: RUN
+INFO:      ChannelStorageAggregator var declaration: sum ([Lorg.unijena.jams.data.JAMSDouble;)
+INFO:           Access: READWRITE Update: RUN
+INFO: Adding: FlowWeightedSumAggregator (org.unijena.j2k.aggregate.WeightedSumAggregator)
+INFO: org.unijena.j2k.aggregate.WeightedSumAggregator
+INFO:      FlowWeightedSumAggregator var declaration: value ([Lorg.unijena.jams.data.JAMSDouble;)
+INFO:           Access: READ Update: RUN
+INFO:      FlowWeightedSumAggregator var declaration: weight (org.unijena.jams.data.JAMSDouble)
+INFO:           Access: READ Update: RUN
+INFO:      FlowWeightedSumAggregator var declaration: sum ([Lorg.unijena.jams.data.JAMSDouble;)
+INFO:           Access: READWRITE Update: RUN
+INFO: Adding: SimRunoffConverter (org.unijena.jams.tools.JAMSUnitConverter)
+INFO: org.unijena.jams.tools.JAMSUnitConverter
+INFO:      SimRunoffConverter var declaration: inUnit (org.unijena.jams.data.JAMSString)
+INFO:           Access: READ Update: INIT
+INFO:      SimRunoffConverter var declaration: outUnit (org.unijena.jams.data.JAMSString)
+INFO:           Access: READ Update: INIT
+INFO:      SimRunoffConverter var declaration: inValue (org.unijena.jams.data.JAMSDouble)
+INFO:           Access: READ Update: RUN
+INFO:      SimRunoffConverter var declaration: outValue (org.unijena.jams.data.JAMSDouble)
+INFO:           Access: WRITE Update: RUN
+INFO: Adding: ObsRunoff (org.unijena.j2k.io.StandardTSDataProvider)
+INFO: org.unijena.j2k.io.StandardTSDataProvider
+INFO:      ObsRunoff var declaration: dataArray (org.unijena.jams.data.JAMSDoubleArray)
+INFO:           Access: READ Update: RUN
+INFO:      ObsRunoff var declaration: attribute (org.unijena.jams.data.JAMSDouble)
+INFO:           Access: WRITE Update: RUN
+INFO:      ObsRunoff var declaration: column (org.unijena.jams.data.JAMSInteger)
+INFO:           Access: READ Update: INIT
+INFO: Adding: CatchmentWriter (org.unijena.j2k.io.StandardDataWriter)
+INFO: org.unijena.j2k.io.StandardDataWriter
+INFO:      CatchmentWriter var declaration: dirName (org.unijena.jams.data.JAMSString)
+INFO:           Access: READ Update: INIT
+INFO:      CatchmentWriter var declaration: fileName (org.unijena.jams.data.JAMSString)
+INFO:           Access: READ Update: INIT
+INFO:      CatchmentWriter var declaration: time (org.unijena.jams.data.JAMSCalendar)
+INFO:           Access: READ Update: RUN
+INFO:      CatchmentWriter var declaration: headers (org.unijena.jams.data.JAMSStringArray)
+INFO:           Access: READ Update: INIT
+INFO:      CatchmentWriter var declaration: value ([Lorg.unijena.jams.data.JAMSDouble;)
+INFO:           Access: READ Update: INIT
+INFO: Adding: Runoff Plot (org.unijena.jams.gui.TSPlot)
+INFO: org.unijena.jams.gui.TSPlot
+INFO:      Runoff Plot var declaration: titleLeft (org.unijena.jams.data.JAMSStringArray)
+INFO:           Access: READ Update: INIT
+INFO:      Runoff Plot var declaration: titleRight (org.unijena.jams.data.JAMSStringArray)
+INFO:           Access: READ Update: INIT
+INFO:      Runoff Plot var declaration: colorLeft (org.unijena.jams.data.JAMSStringArray)
+INFO:           Access: READ Update: INIT
+INFO:      Runoff Plot var declaration: colorRight (org.unijena.jams.data.JAMSStringArray)
+INFO:           Access: READ Update: INIT
+INFO:      Runoff Plot var declaration: typeLeft (org.unijena.jams.data.JAMSInteger)
+INFO:           Access: READ Update: INIT
+INFO:      Runoff Plot var declaration: typeRight (org.unijena.jams.data.JAMSInteger)
+INFO:           Access: READ Update: INIT
+INFO:      Runoff Plot var declaration: xAxisTitle (org.unijena.jams.data.JAMSString)
+INFO:           Access: READ Update: INIT
+INFO:      Runoff Plot var declaration: leftAxisTitle (org.unijena.jams.data.JAMSString)
+INFO:           Access: READ Update: INIT
+INFO:      Runoff Plot var declaration: rightAxisTitle (org.unijena.jams.data.JAMSString)
+INFO:           Access: READ Update: INIT
+INFO:      Runoff Plot var declaration: rightAxisInverted (org.unijena.jams.data.JAMSBoolean)
+INFO:           Access: READ Update: INIT
+INFO:      Runoff Plot var declaration: dateFormat (org.unijena.jams.data.JAMSString)
+INFO:           Access: READ Update: INIT
+INFO:      Runoff Plot var declaration: time (org.unijena.jams.data.JAMSCalendar)
+INFO:           Access: READ Update: RUN
+INFO:      Runoff Plot var declaration: valueLeft ([Lorg.unijena.jams.data.JAMSDouble;)
+INFO:           Access: READ Update: RUN
+INFO:      Runoff Plot var declaration: valueRight ([Lorg.unijena.jams.data.JAMSDouble;)
+INFO:           Access: READ Update: RUN
+INFO: Adding: ETP Plot (org.unijena.jams.gui.TSPlot)
+INFO: org.unijena.jams.gui.TSPlot
+INFO:      ETP Plot var declaration: titleLeft (org.unijena.jams.data.JAMSStringArray)
+INFO:           Access: READ Update: INIT
+INFO:      ETP Plot var declaration: titleRight (org.unijena.jams.data.JAMSStringArray)
+INFO:           Access: READ Update: INIT
+INFO:      ETP Plot var declaration: colorLeft (org.unijena.jams.data.JAMSStringArray)
+INFO:           Access: READ Update: INIT
+INFO:      ETP Plot var declaration: colorRight (org.unijena.jams.data.JAMSStringArray)
+INFO:           Access: READ Update: INIT
+INFO:      ETP Plot var declaration: typeLeft (org.unijena.jams.data.JAMSInteger)
+INFO:           Access: READ Update: INIT
+INFO:      ETP Plot var declaration: typeRight (org.unijena.jams.data.JAMSInteger)
+INFO:           Access: READ Update: INIT
+INFO:      ETP Plot var declaration: xAxisTitle (org.unijena.jams.data.JAMSString)
+INFO:           Access: READ Update: INIT
+INFO:      ETP Plot var declaration: leftAxisTitle (org.unijena.jams.data.JAMSString)
+INFO:           Access: READ Update: INIT
+INFO:      ETP Plot var declaration: rightAxisTitle (org.unijena.jams.data.JAMSString)
+INFO:           Access: READ Update: INIT
+INFO:      ETP Plot var declaration: rightAxisInverted (org.unijena.jams.data.JAMSBoolean)
+INFO:           Access: READ Update: INIT
+INFO:      ETP Plot var declaration: dateFormat (org.unijena.jams.data.JAMSString)
+INFO:           Access: READ Update: INIT
+INFO:      ETP Plot var declaration: time (org.unijena.jams.data.JAMSCalendar)
+INFO:           Access: READ Update: RUN
+INFO:      ETP Plot var declaration: valueLeft ([Lorg.unijena.jams.data.JAMSDouble;)
+INFO:           Access: READ Update: RUN
+INFO:      ETP Plot var declaration: valueRight ([Lorg.unijena.jams.data.JAMSDouble;)
+INFO:           Access: READ Update: RUN
+INFO: Adding: CatchmentResetter (org.unijena.j2k.DoubleSetter)
+INFO: org.unijena.j2k.DoubleSetter
+INFO:      CatchmentResetter var declaration: attributes ([Lorg.unijena.jams.data.JAMSDouble;)
+INFO:           Access: WRITE Update: RUN
+INFO:      CatchmentResetter var declaration: value (org.unijena.jams.data.JAMSDouble)
+INFO:           Access: READ Update: INIT
+INFO: Adding: EfficiencyCalculator (org.unijena.j2k.efficiencies.StandardEfficiencyCalculator)
+INFO: org.unijena.j2k.efficiencies.StandardEfficiencyCalculator
+INFO:      EfficiencyCalculator var declaration: timeInterval (org.unijena.jams.data.JAMSTimeInterval)
+INFO:           Access: READ Update: INIT
+INFO:      EfficiencyCalculator var declaration: effMethod (org.unijena.jams.data.JAMSIntegerArray)
+INFO:           Access: READ Update: INIT
+INFO:      EfficiencyCalculator var declaration: validation (org.unijena.jams.data.JAMSDouble)
+INFO:           Access: READ Update: RUN
+INFO:      EfficiencyCalculator var declaration: prediction (org.unijena.jams.data.JAMSDouble)
+INFO:           Access: READ Update: RUN
+INFO: JAMS model setup time: 2922 ms
+INFO: Cycle checking...
+INFO: HRUs --> no cycle found
+INFO: Create ordered hru-list
+INFO: Create ordered reach-list
+INFO: Entities read successfull!
+INFO: Landuse parameter file processed ...
+INFO: Layered soil parameter file processed ...
+INFO: Startdate:	1974-11-01 07:30
+INFO: Enddate:	2000-10-31 07:30
+INFO: Tsteps:	9497
+INFO: Counter is:	 9497
+INFO: e1 a-1:	 0.41682983207382596
+INFO: e2 a-1:	 0.48681378616187454
+INFO: log e1 a-1:	 0.3787590515013134
+INFO: log e2 a-1:	 0.5779651082955064
+INFO: ioa1 a-1:	 0.7114238842039358
+INFO: ioa2 a-1:	 0.8429656777322748
+INFO: r² a-1:	 0.527853590518693
+INFO: grad a-1:	0.67492844272681
+INFO: wr² a-1:	 0.35626340183653665
+INFO: e1:	 0.41245602449985785
+INFO: e2:	0.47935763663277053
+INFO: log e1:	 0.3077507096303784
+INFO: log e2:	 -5.044792744070542
+INFO: ioa1:	 0.7080689477557169
+INFO: ioa2:	 0.8368217171373721
+INFO: r²:	 0.5155481695629309
+INFO: grad:	0.6519785031191871
+INFO: wr²:	 0.3361263238774766
+INFO: JAMS model execution time: 7904131 ms
