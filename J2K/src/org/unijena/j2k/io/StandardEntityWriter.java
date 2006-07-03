@@ -43,7 +43,7 @@ public class StandardEntityWriter extends JAMSComponent {
             update = JAMSVarDescription.UpdateType.INIT,
             description = "EntitySet"
             )
-            public JAMSEntityCollection entitySet;
+            public JAMSEntityCollection entities;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
@@ -102,23 +102,23 @@ public class StandardEntityWriter extends JAMSComponent {
         if(!this.headerWritten){
             //always write time
             writer.addColumn("date/time");
-            Object ob = entitySet.getCurrent().getObject(this.attributeName.getValue());
+            Object ob = entities.getCurrent().getObject(this.attributeName.getValue());
             int length = 0;
             if(ob.getClass().getName().contains("DoubleArray")){
                 //System.out.getRuntime().println("JAMSArray");
-                length = ((JAMSDoubleArray)entitySet.getCurrent().getObject(this.attributeName.getValue())).getValue().length;
+                length = ((JAMSDoubleArray)entities.getCurrent().getObject(this.attributeName.getValue())).getValue().length;
             } else{
                 //System.out.getRuntime().println("Primitive");
             }
-            JAMSEntityEnumerator enEnum = entitySet.getEntityEnumerator();
+            JAMSEntityEnumerator enEnum = entities.getEntityEnumerator();
             enEnum.reset();
             boolean cont = true;
             while(cont){
                 for(int i = 0; i < length; i++){
-                    writer.addColumn("HRU_"+(int)entitySet.getCurrent().getDouble("ID")+"["+i+"]");
+                    writer.addColumn("HRU_"+(int)entities.getCurrent().getDouble("ID")+"["+i+"]");
                 }
                 if(length == 0){
-                    writer.addColumn("HRU_"+(int)entitySet.getCurrent().getDouble("ID"));
+                    writer.addColumn("HRU_"+(int)entities.getCurrent().getDouble("ID"));
                 }
                 if(enEnum.hasNext()){
                     enEnum.next();
@@ -135,19 +135,19 @@ public class StandardEntityWriter extends JAMSComponent {
         //e.g. time.toString("%1$tY-%1$tm-%1$td %1$tH:%1$tM")
         writer.addData(time);
         
-        JAMSEntityEnumerator ee = entitySet.getEntityEnumerator();
+        JAMSEntityEnumerator ee = entities.getEntityEnumerator();
         ee.reset();
         boolean cont = true;
         while(cont){
-            Object ob = entitySet.getCurrent().getObject(this.attributeName.getValue());
+            Object ob = entities.getCurrent().getObject(this.attributeName.getValue());
             if(ob.getClass().getName().contains("DoubleArray")){
                 //System.out.getRuntime().println("HRUNo: " +((JAMSDouble)entitySet.getCurrent().getObject("ID")).getValue());
-                double[] da = ((JAMSDoubleArray)entitySet.getCurrent().getObject(this.attributeName.getValue())).getValue();
+                double[] da = ((JAMSDoubleArray)entities.getCurrent().getObject(this.attributeName.getValue())).getValue();
                 for(int i = 0; i < da.length; i++)
                     writer.addData(""+da[i]);
             } else{
                 //System.out.getRuntime().println("Primitive");
-                double da = ((JAMSDouble)entitySet.getCurrent().getObject(this.attributeName.getValue())).getValue();
+                double da = ((JAMSDouble)entities.getCurrent().getObject(this.attributeName.getValue())).getValue();
                 writer.addData(""+da);
             }
             //writer.addData(""+entitySet.getCurrent().getDouble(this.attributeName.getValue()));
