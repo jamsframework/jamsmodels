@@ -1,8 +1,0 @@
-# hrus.par created 09-05-2006 Läwitz													
-ID	x	y	elevation	area	type	to_poly	to_reach	slope	aspect	flowlength	soilID	landuseID	hgeoID
-0	0	0	0	0	0	0	0	0	0	0	0	0	0
-9999	9999999	9999999	10000	9999999999	3	9999	9999	90	360	999999	9999	9999	9999
-n/a	m	m	m	m2	n/a	n/a	n/a	deg	deg	m	n/a	n/a	n/a
-4009	4489412.500	5612733.000	457.4656	190000.00000	3.000	0.000	213.000	4.2530	180	0	62	3	8
-4010	4489700.000	5613104.000	473.8747	13750.00000	2.000	4009.000	0.000	3.7719	180	0	75	3	8
-#end of hrus.par													

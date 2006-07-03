@@ -1,9 +1,0 @@
-#reach.par - Gehlberg					
-ID	length	to-reach	slope	rough	width
-0	0	0	0	0	0
-99999999	99999999	99999999	90	9999	99999999
-n/a	m	n/a	%	n/a	m
-100	1379	200	0.0969	30	0.841
-200	1916	900	0.0333	30	3.403
-#end of reach.par
-																							

@@ -1,8 +1,0 @@
-#hgeo.par created by Frank Baese and Cornelia Scheffler 06/2006					
-GID	RG1_max	RG2_max	RG1_k	RG2_k	RG1_active
-1	0	0	0	0	0
--9999	-9999	-9999	-9999	-9999	1
-n/a	mm	mm	d	d	n/a
-1	90	220	8	300	1
-2	80	525	14	180	1
-#end of hgeo.par					

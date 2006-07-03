@@ -1,8 +1,0 @@
-<component class="org.unijena.j2k.io.StandardEntityWriter" name="HRUWriter">
-            <var name="dirName" globvar="workspaceDir"/>
-            <var name="fileName" value="data\result-hru.dat"/>
-            <var name="entitySet" provider="HRUContext" cvar="entities"/>
-            <var name="time" context="TemporalContext" cvar="current"/>
-            <var name="header" value="satMPS"/>
-            <var name="attributeName" value="satMPS"/>
-        </component> 

@@ -1,8 +1,0 @@
-#reachtest.par - testLaewitz 
-ID	length	to-reach	slope	rough	width
-0	0	0	0	0	0
-99999999	99999999	99999999	90	9999	99999999
-n/a	m	n/a	%	n/a	m
-213	135.35534	215	0.051	30	0.657660753
-215	220.71068	0	0.044	30	0.697668195
-#end of testLaewitz

@@ -1,3 +1,0 @@
-# J2K model output
-# 
-date/time	precip	tmean	rhum	wind	rain	snow	solRad	netRad	refET	potET	actET	netRain	netSnow	throughfall	interception	intercStorage	snowDepth	snowTotSWE	snowMelt	satMPS	satLPS	actDPS	actMPS	actLPS	percolation	actRG1	actRG2	catchmentRD1_w	catchmentRD2_w	catchmentRG1_w	catchmentRG2_w	channelStorage_w	catchmentSimRunoff_qm	catchmentObsRunoff	actRsc0	actLAI

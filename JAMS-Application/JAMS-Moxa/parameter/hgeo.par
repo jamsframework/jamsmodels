@@ -1,7 +1,0 @@
-#hgeo.par - Moxa						
-ID	description	RG1_max	RG2_max	RG1_k	RG2_k	RG1_active
-1	-9999	0	0	0	0	0
--9999	-9999	-9999	-9999	-9999	-9999	1
-n/a	n/a	mm	mm	d	d	n/a
-1	Schiefergesteine	500	3500	40	80	1
-#end of hydrogeo.par				
