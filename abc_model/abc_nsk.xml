@@ -76,7 +76,8 @@
             </component>
             
             <component class="org.unijena.j2k.efficiencies.StandardEfficiencyCalculator" name="EfficiencyCalculator">
-                <var name="timeInterval" globvar="timeInterval"/>
+                <var name="modelTimeInterval" globvar="timeInterval"/>
+                <var name="effTimeInterval" globvar="timeInterval"/>
                 <var name="effMethod" value="1,2,3,4,5,6,7,8,9,10,11"/>
                 <var name="validation" attribute="obsRunoff"/>
                 <var name="prediction" attribute="simRunoff"/>
