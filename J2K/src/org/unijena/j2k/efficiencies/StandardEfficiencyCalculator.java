@@ -245,8 +245,8 @@ import org.unijena.jams.model.*;
     }
     
     public void cleanup() {
-        
-        getModel().getRuntime().println("\n*************************************************************", JAMS.STANDARD);
+        getModel().getRuntime().println("\n", JAMS.STANDARD);
+        getModel().getRuntime().println("*************************************************************", JAMS.STANDARD);
         getModel().getRuntime().println("Efficiencies for period:\t " + this.effTimeInterval.toString(), JAMS.STANDARD);
         getModel().getRuntime().println("*************************************************************", JAMS.STANDARD);
         JAMSIntegerArray method = new JAMSIntegerArray();
