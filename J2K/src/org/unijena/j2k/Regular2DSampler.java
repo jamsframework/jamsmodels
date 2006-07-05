@@ -239,6 +239,9 @@ import org.unijena.jams.model.*;
     
     private void singleRun() {
         
+        System.gc();
+        long start = System.currentTimeMillis();
+        
         runEnumerator.reset();
         while(runEnumerator.hasNext() && doRun) {
             JAMSComponent comp = runEnumerator.next();
@@ -271,6 +274,8 @@ import org.unijena.jams.model.*;
                 
             }
         }
+        long end = System.currentTimeMillis();
+        getModel().getRuntime().println("Exec time: " + (end-start) + " ms", JAMS.STANDARD);
     }
     
     public void run() {
