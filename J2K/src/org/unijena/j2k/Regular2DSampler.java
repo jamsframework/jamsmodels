@@ -44,6 +44,12 @@ import org.unijena.jams.model.*;
     /*
      *  Component variables
      */
+    @JAMSVarDescription(
+            access = JAMSVarDescription.AccessType.READ,
+            update = JAMSVarDescription.UpdateType.INIT,
+            description = "Data file directory name"
+            )
+            public JAMSString dirName;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
@@ -98,7 +104,34 @@ import org.unijena.jams.model.*;
             access = JAMSVarDescription.AccessType.READ,
             update = JAMSVarDescription.UpdateType.INIT
             )
-            public JAMSString fileName;
+            public JAMSString paraFileName;
+    
+    @JAMSVarDescription(
+            access = JAMSVarDescription.AccessType.READ,
+            update = JAMSVarDescription.UpdateType.INIT
+            )
+            public JAMSString attribFileName;
+    
+    @JAMSVarDescription(
+            access = JAMSVarDescription.AccessType.READ,
+            update = JAMSVarDescription.UpdateType.INIT,
+            description = "The model time interval"
+            )
+            public JAMSTimeInterval modelTimeInterval;
+    
+    @JAMSVarDescription(
+            access = JAMSVarDescription.AccessType.READ,
+            update = JAMSVarDescription.UpdateType.INIT,
+            description = "Output file header descriptions"
+            )
+            public JAMSString attribHeader;
+    
+    @JAMSVarDescription(
+            access = JAMSVarDescription.AccessType.READWRITE,
+            update = JAMSVarDescription.UpdateType.RUN,
+            description = "Output file attribute"
+            )
+            public JAMSDoubleArray targetValue;
     
     JAMSDouble[] parameters;
     String[] parameterNames;
@@ -106,12 +139,18 @@ import org.unijena.jams.model.*;
     double[] upBound;
     int currentCount;
     Random generator;
-    GenericDataWriter writer;
+    GenericDataWriter paraWriter;
+    GenericDataWriter attribWriter;
+    double[][] valueArray;
+    int timeStepCounter = 0;
+    int runCounter = 0;
+    int timeSteps = 0;
+    
     double[] stepSize;
     int[] currentStep;
     //double[] currentVal;
     int currentXStep = 0;
-    
+    int sampleCount = 0;
     
     private boolean hasNext() {
         int sampleCount = resX.getValue() * resY.getValue();
@@ -119,7 +158,7 @@ import org.unijena.jams.model.*;
     }
     public void init() {
         if(!this.disable.getValue()){
-//add more checks!!!
+            //add more checks!!!
             //retreiving parameter names
             int i;
             StringTokenizer tok = new StringTokenizer(parameterIDs.getValue(), ";");
@@ -174,20 +213,42 @@ import org.unijena.jams.model.*;
                 i++;
             }
             
-            //create output file
-            writer = new GenericDataWriter(this.fileName.getValue());
-            writer.addColumn("Run");
+            //create para output file
+            paraWriter = new GenericDataWriter(dirName.getValue()+"/"+this.paraFileName.getValue());
+            paraWriter.addColumn("Run");
             
             for(int j = 0; j < this.parameters.length; j++)
-                writer.addColumn(this.parameterNames[j]);
+                paraWriter.addColumn(this.parameterNames[j]);
             
             for(int e = 0; e < effNames.length; e++){
-                writer.addColumn(effNames[e]);
+                paraWriter.addColumn(effNames[e]);
             }
             
             
-            writer.writeHeader();
+            paraWriter.writeHeader();
             
+            //the attribute output file
+            attribWriter = new GenericDataWriter(dirName.getValue()+"/"+attribFileName.getValue());
+            
+            attribWriter.addComment("J2K model output");
+            attribWriter.addComment("");
+            
+            //always write time
+            attribWriter.addColumn("date/time");
+            sampleCount = this.resX.getValue() * this.resY.getValue();
+            for(int s = 0; s < this.sampleCount; s++){
+                int counter = s + 1;
+                attribWriter.addColumn(attribHeader.getValue() + "_run_" + counter);
+            }
+            
+            
+            attribWriter.writeHeader();
+            
+            //setting up the dataArray
+            this.timeSteps = (int)modelTimeInterval.getNumberOfTimesteps();
+            this.valueArray = new double[sampleCount][timeSteps];
+            this.timeStepCounter = 0;
+            this.runCounter = 0;
             
             //determine x and y stepSize
             this.stepSize = new double[this.parameters.length];
@@ -295,17 +356,20 @@ import org.unijena.jams.model.*;
                 updateValues();
                 singleRun();
                 
-                writer.addData(currentCount);
+                paraWriter.addData(currentCount);
                 for(int i = 0; i < this.parameters.length; i++)
-                    writer.addData(this.parameters[i].getValue());
+                    paraWriter.addData(this.parameters[i].getValue());
                 for(int e = 0; e < effValues.length; e++)
-                    writer.addData(this.effValues[e].getValue());
+                    paraWriter.addData(this.effValues[e].getValue());
                 try{
-                    writer.writeData();
-                    writer.flush();
+                    paraWriter.writeData();
+                    paraWriter.flush();
                 }catch(org.unijena.jams.runtime.JAMSRuntimeException e){
                     
                 }
+                
+                this.valueArray[runCounter] = this.targetValue.getValue();
+                this.runCounter++;
                 
             }
             
@@ -322,11 +386,22 @@ import org.unijena.jams.model.*;
     
     public void cleanup() {
         if (!disable.getValue()) {
-            /*System.out.println("overall max. goodness: " + bestGoodness);
-            for (int i = 0; i < parameters.length; i++) {
-                System.out.println("value["+i+"]: " + bestValues[i]);
-            }*/
-            writer.close();
+            int sampleCount = this.resX.getValue() * this.resY.getValue();
+            JAMSCalendar timeStamp = this.modelTimeInterval.getStart();
+            for(int t = 0; t <= this.timeSteps; t++){
+                attribWriter.addData(timeStamp.toString("%1$tY-%1$tm-%1$td %1$tH:%1$tM"));
+                timeStamp.add(modelTimeInterval.getTimeUnit(), 1);
+                for(int r = 0; r < sampleCount; r++){
+                    attribWriter.addData(this.valueArray[r][t]);
+                }
+                try {
+                    attribWriter.writeData();
+                } catch (org.unijena.jams.runtime.JAMSRuntimeException jre) {
+                    getModel().getRuntime().println(jre.getMessage());
+                }
+            }
+            attribWriter.close();
+            paraWriter.close();
         }
     }
     

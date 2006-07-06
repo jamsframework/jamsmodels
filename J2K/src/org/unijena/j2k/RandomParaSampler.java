@@ -118,7 +118,7 @@ import org.unijena.jams.model.*;
             update = JAMSVarDescription.UpdateType.INIT,
             description = "Output file header descriptions"
             )
-            public JAMSString header;
+            public JAMSString attribHeader;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
@@ -226,7 +226,7 @@ import org.unijena.jams.model.*;
             
             for(int s = 0; s < this.sampleCount.getValue(); s++){
                 int counter = s + 1;
-                attribWriter.addColumn(header.getValue() + "_run_" + counter);
+                attribWriter.addColumn(attribHeader.getValue() + "_run_" + counter);
             }
             
             
