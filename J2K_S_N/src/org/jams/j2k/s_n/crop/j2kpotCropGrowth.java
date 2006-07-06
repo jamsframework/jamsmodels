@@ -45,12 +45,12 @@ import java.util.ArrayList;
      */
     
     
-    @JAMSVarDescription(
+     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
             update = JAMSVarDescription.UpdateType.RUN,
             description = "Current hru object"
             )
-            public JAMSEntity entity;
+            public JAMSEntityCollection entities;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
@@ -491,7 +491,7 @@ import java.util.ArrayList;
     }
     
     public void run() throws JAMSEntity.NoSuchAttributeException{
-        
+        JAMSEntity entity = entities.getCurrent();
         /* this.bp1 = crop.bp1; // Phosphate uptake parameter not used at the moment
         this.bp2 = crop.bp2;
         this.bp3 = crop.bp3;*/
