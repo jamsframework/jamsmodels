@@ -48,6 +48,13 @@ import org.unijena.jams.model.*;
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
             update = JAMSVarDescription.UpdateType.INIT,
+            description = "Data file directory name"
+            )
+            public JAMSString dirName;
+    
+    @JAMSVarDescription(
+            access = JAMSVarDescription.AccessType.READ,
+            update = JAMSVarDescription.UpdateType.INIT,
             description = "List of parameter identifiers to be sampled"
             )
             public JAMSString parameterIDs;
@@ -91,7 +98,34 @@ import org.unijena.jams.model.*;
             access = JAMSVarDescription.AccessType.READ,
             update = JAMSVarDescription.UpdateType.INIT
             )
-            public JAMSString fileName;
+            public JAMSString paraFileName;
+    
+    @JAMSVarDescription(
+            access = JAMSVarDescription.AccessType.READ,
+            update = JAMSVarDescription.UpdateType.INIT
+            )
+            public JAMSString attribFileName;
+    
+    @JAMSVarDescription(
+            access = JAMSVarDescription.AccessType.READ,
+            update = JAMSVarDescription.UpdateType.INIT,
+            description = "The model time interval"
+            )
+            public JAMSTimeInterval modelTimeInterval;
+    
+    @JAMSVarDescription(
+            access = JAMSVarDescription.AccessType.READ,
+            update = JAMSVarDescription.UpdateType.INIT,
+            description = "Output file header descriptions"
+            )
+            public JAMSString header;
+    
+    @JAMSVarDescription(
+            access = JAMSVarDescription.AccessType.READWRITE,
+            update = JAMSVarDescription.UpdateType.RUN,
+            description = "Output file attribute"
+            )
+            public JAMSDoubleArray targetValue;
     
     JAMSDouble[] parameters;
     String[] parameterNames;
@@ -99,12 +133,183 @@ import org.unijena.jams.model.*;
     double[] upBound;
     int currentCount;
     Random generator;
-    GenericDataWriter writer;
+    GenericDataWriter paraWriter;
+    
+    GenericDataWriter attribWriter;
+    double[][] valueArray;
+    int timeStepCounter = 0;
+    int runCounter = 0;
+    int timeSteps = 0;
     
     
-    private boolean hasNext() {
-        return currentCount < sampleCount.getValue();
+    
+    
+    public void init() {
+        
+//add more checks!!!
+        //retreiving parameter names
+        int i;
+        StringTokenizer tok = new StringTokenizer(parameterIDs.getValue(), ";");
+        String key;
+        parameters = new JAMSDouble[tok.countTokens()];
+        parameterNames = new String[tok.countTokens()];
+        
+        i = 0;
+        while (tok.hasMoreTokens()) {
+            key = tok.nextToken();
+            parameterNames[i] = key;
+            parameters[i] = (JAMSDouble) getModel().getRuntime().getDataHandles().get(key);
+            i++;
+        }
+        
+        //retreiving boundaries
+        tok = new StringTokenizer(boundaries.getValue(), ";");
+        int n = tok.countTokens();
+        lowBound = new double[n];
+        upBound = new double[n];
+        
+        //check if number of parameter ids and boundaries match
+        if (n != i) {
+            getModel().getRuntime().sendHalt("Component " + this.getInstanceName() + ": Different number of parameterIDs and boundaries!");
+        }
+        
+        i = 0;
+        while (tok.hasMoreTokens()) {
+            key = tok.nextToken();
+            key = key.substring(1, key.length()-1);
+            
+            StringTokenizer boundTok = new StringTokenizer(key, ">");
+            lowBound[i] = Double.parseDouble(boundTok.nextToken());
+            upBound[i] = Double.parseDouble(boundTok.nextToken());
+            
+            //check if upBound is higher than lowBound
+            if (upBound[i] <= lowBound[i]) {
+                getModel().getRuntime().sendHalt("Component " + this.getInstanceName() + ": upBound must be higher than lowBound!");
+            }
+            
+            i++;
+        }
+        
+        //retreiving effMethodNames
+        i = 0;
+        tok = new StringTokenizer(effMethodNames.getValue(), ";");
+        String[] effNames = new String[tok.countTokens()];
+        i = 0;
+        while (tok.hasMoreTokens()) {
+            key = tok.nextToken();
+            effNames[i] = key;
+            i++;
+        }
+        
+        //create parameter output file
+        paraWriter = new GenericDataWriter(dirName.getValue()+"/"+this.paraFileName.getValue());
+        paraWriter.addColumn("Run");
+        
+        for(int j = 0; j < this.parameters.length; j++)
+            paraWriter.addColumn(this.parameterNames[j]);
+        
+        for(int e = 0; e < effNames.length; e++){
+            paraWriter.addColumn(effNames[e]);
+        }
+        
+        
+        paraWriter.writeHeader();
+        
+        //the attribute output file
+        attribWriter = new GenericDataWriter(dirName.getValue()+"/"+attribFileName.getValue());
+            
+            attribWriter.addComment("J2K model output");
+            attribWriter.addComment("");
+            
+            //always write time
+            attribWriter.addColumn("date/time");
+            
+            for(int s = 0; s < this.sampleCount.getValue(); s++){
+                int counter = s + 1;
+                attribWriter.addColumn(header.getValue() + "_run_" + counter);
+            }
+            
+            
+            attribWriter.writeHeader();
+            
+            //setting up the dataArray
+            this.timeSteps = (int)modelTimeInterval.getNumberOfTimesteps();
+            this.valueArray = new double[this.sampleCount.getValue()][timeSteps];
+            this.timeStepCounter = 0;
+            this.runCounter = 0;
+            
+        
     }
+    
+    public void run() {
+        if (runEnumerator == null) {
+            runEnumerator = getChildrenEnumerator();
+        }
+        
+        if (disable.getValue()) {    
+            singleRun();
+        } 
+        else {
+            resetValues();
+            while (hasNext()) {             
+                updateValues();
+                singleRun();
+                
+                paraWriter.addData(currentCount);
+                for(int i = 0; i < this.parameters.length; i++)
+                    paraWriter.addData(this.parameters[i].getValue());
+                for(int e = 0; e < effValues.length; e++)
+                    paraWriter.addData(this.effValues[e].getValue());
+                try{
+                    paraWriter.writeData();
+                    paraWriter.flush();
+                }catch(org.unijena.jams.runtime.JAMSRuntimeException e){
+                    
+                }
+                
+                
+                this.valueArray[runCounter] = this.targetValue.getValue();
+                this.runCounter++;
+            }
+            
+            runEnumerator.reset();
+            while(runEnumerator.hasNext() && doRun) {
+                JAMSComponent comp = runEnumerator.next();
+            }
+        }
+    }
+    
+    
+    
+    
+    public void cleanup() {
+        if (!disable.getValue()) {
+            //always write time
+            //the time also knows a toString() method with additional formatting parameters
+            //e.g. time.toString("%1$tY-%1$tm-%1$td %1$tH:%1$tM")
+            JAMSCalendar timeStamp = this.modelTimeInterval.getStart();
+            for(int t = 0; t <= this.timeSteps; t++){
+                attribWriter.addData(timeStamp.toString("%1$tY-%1$tm-%1$td %1$tH:%1$tM"));
+                timeStamp.add(modelTimeInterval.getTimeUnit(), 1);
+                for(int r = 0; r < this.sampleCount.getValue(); r++){
+                    attribWriter.addData(this.valueArray[r][t]);
+                }
+                try {
+                    attribWriter.writeData();
+                } catch (org.unijena.jams.runtime.JAMSRuntimeException jre) {
+                    getModel().getRuntime().println(jre.getMessage());
+                }
+            }
+            attribWriter.close();
+            
+            /*System.out.println("overall max. goodness: " + bestGoodness);
+            for (int i = 0; i < parameters.length; i++) {
+                System.out.println("value["+i+"]: " + bestValues[i]);
+            }*/
+            paraWriter.close();
+        }
+    }
+    
     
     private void updateValues() {
         int count = this.currentCount + 1;
@@ -178,123 +383,7 @@ import org.unijena.jams.model.*;
         }
     }
     
-    public void run() {
-        if (runEnumerator == null) {
-            runEnumerator = getChildrenEnumerator();
-        }
-        
-        if (disable.getValue()) {    
-            singleRun();
-        } 
-        else {
-            resetValues();
-            while (hasNext()) {             
-                updateValues();
-                singleRun();
-                
-                writer.addData(currentCount);
-                for(int i = 0; i < this.parameters.length; i++)
-                    writer.addData(this.parameters[i].getValue());
-                for(int e = 0; e < effValues.length; e++)
-                    writer.addData(this.effValues[e].getValue());
-                try{
-                    writer.writeData();
-                    writer.flush();
-                }catch(org.unijena.jams.runtime.JAMSRuntimeException e){
-                    
-                }
-               
-            }
-            
-            runEnumerator.reset();
-            while(runEnumerator.hasNext() && doRun) {
-                JAMSComponent comp = runEnumerator.next();
-            }
-        }
+    private boolean hasNext() {
+        return currentCount < sampleCount.getValue();
     }
-    
-    
-    public void init() {
-        
-//add more checks!!!
-        //retreiving parameter names
-        int i;
-        StringTokenizer tok = new StringTokenizer(parameterIDs.getValue(), ";");
-        String key;
-        parameters = new JAMSDouble[tok.countTokens()];
-        parameterNames = new String[tok.countTokens()];
-        
-        i = 0;
-        while (tok.hasMoreTokens()) {
-            key = tok.nextToken();
-            parameterNames[i] = key;
-            parameters[i] = (JAMSDouble) getModel().getRuntime().getDataHandles().get(key);
-            i++;
-        }
-        
-        //retreiving boundaries
-        tok = new StringTokenizer(boundaries.getValue(), ";");
-        int n = tok.countTokens();
-        lowBound = new double[n];
-        upBound = new double[n];
-        
-        //check if number of parameter ids and boundaries match
-        if (n != i) {
-            getModel().getRuntime().sendHalt("Component " + this.getInstanceName() + ": Different number of parameterIDs and boundaries!");
-        }
-        
-        i = 0;
-        while (tok.hasMoreTokens()) {
-            key = tok.nextToken();
-            key = key.substring(1, key.length()-1);
-            
-            StringTokenizer boundTok = new StringTokenizer(key, ">");
-            lowBound[i] = Double.parseDouble(boundTok.nextToken());
-            upBound[i] = Double.parseDouble(boundTok.nextToken());
-            
-            //check if upBound is higher than lowBound
-            if (upBound[i] <= lowBound[i]) {
-                getModel().getRuntime().sendHalt("Component " + this.getInstanceName() + ": upBound must be higher than lowBound!");
-            }
-            
-            i++;
-        }
-        
-        //retreiving effMethodNames
-        i = 0;
-        tok = new StringTokenizer(effMethodNames.getValue(), ";");
-        String[] effNames = new String[tok.countTokens()];
-        i = 0;
-        while (tok.hasMoreTokens()) {
-            key = tok.nextToken();
-            effNames[i] = key;
-            i++;
-        }
-        
-        //create output file
-        writer = new GenericDataWriter(this.fileName.getValue());
-        writer.addColumn("Run");
-        
-        for(int j = 0; j < this.parameters.length; j++)
-            writer.addColumn(this.parameterNames[j]);
-        
-        for(int e = 0; e < effNames.length; e++){
-            writer.addColumn(effNames[e]);
-        }
-        
-        
-        writer.writeHeader();
-        
-    }
-    
-    public void cleanup() {
-        if (!disable.getValue()) {
-            /*System.out.println("overall max. goodness: " + bestGoodness);
-            for (int i = 0; i < parameters.length; i++) {
-                System.out.println("value["+i+"]: " + bestValues[i]);
-            }*/
-            writer.close();
-        }
-    }
-    
 }

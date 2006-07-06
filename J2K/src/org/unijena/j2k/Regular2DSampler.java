@@ -110,6 +110,7 @@ import org.unijena.jams.model.*;
     double[] stepSize;
     int[] currentStep;
     //double[] currentVal;
+    int currentXStep = 0;
     
     
     private boolean hasNext() {
@@ -209,16 +210,18 @@ import org.unijena.jams.model.*;
         getModel().getRuntime().println("Run No. " + count + " of " + sampleCount);
         //double[] sample = this.regularSampler();
         if(currentCount > 0){
-            if(this.parameters[0].getValue() < this.upBound[0]){
+            if(this.currentXStep < resX.getValue()){
                 this.parameters[0].setValue(parameters[0].getValue() + stepSize[0]);
             } else{
                 this.parameters[1].setValue(parameters[1].getValue() + stepSize[1]);
                 this.parameters[0].setValue(this.lowBound[0]);
+                this.currentXStep = 0;
             }
         }
         getModel().getRuntime().println("Para: " + parameterNames[0] + " = " + parameters[0]);
         getModel().getRuntime().println("Para: " + parameterNames[1] + " = " + parameters[1]);
         currentCount++;
+        this.currentXStep++;
     }
     
     

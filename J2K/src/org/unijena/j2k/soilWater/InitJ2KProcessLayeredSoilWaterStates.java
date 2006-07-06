@@ -146,9 +146,7 @@ import org.unijena.jams.model.*;
             )
             public JAMSDoubleArray inRD2_h = new JAMSDoubleArray();
     
-    
-    
-    
+   
     /*
      *  Component run stages
      */
@@ -191,8 +189,8 @@ import org.unijena.jams.model.*;
 */            
             acMPS[h] = 0;
             
-            mxMPS[h] = entity.getDouble(aNameFC+h) * area.getValue();    
-            mxLPS[h] = entity.getDouble(aNameAC+h) * area.getValue();
+            mxMPS[h] = entity.getDouble(aNameFC+h) * area.getValue() * this.FCAdaptation.getValue();    
+            mxLPS[h] = entity.getDouble(aNameAC+h) * area.getValue() * this.ACAdaptation.getValue();
             acLPS[h] = 0;
             stMPS[h] = 0;
             stLPS[h] = 0;

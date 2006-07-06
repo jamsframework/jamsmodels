@@ -242,7 +242,14 @@ import org.unijena.jams.model.*;
             update = JAMSVarDescription.UpdateType.RUN,
             description = "Catchment outlet RG2 storage"
             )
-            public JAMSDouble catchmentSimRunoff;    
+            public JAMSDouble catchmentSimRunoff;
+    
+    @JAMSVarDescription(
+            access = JAMSVarDescription.AccessType.READ,
+            update = JAMSVarDescription.UpdateType.INIT,
+            description = "temporal resolution [d or h]"
+            )
+            public JAMSString tempRes;
     /*
      *  Component run stages
      */
@@ -332,7 +339,13 @@ import org.unijena.jams.model.*;
         double addInPart = addInAct / q_act_tot;
         
         //calculation of flow velocity
-        double flow_veloc = this.calcFlowVelocity(q_act_tot, width, slope, rough, 86400);
+        int sec_inTStep = 0;
+        if(this.tempRes.getValue().equals("d"))
+            sec_inTStep = 86400;
+        else if(this.tempRes.getValue().equals("h"))
+            sec_inTStep = 3600;
+        double flow_veloc = this.calcFlowVelocity(q_act_tot, width, slope, rough, sec_inTStep);
+        
         
         //recession coefficient
         double Rk = (flow_veloc / length) * this.flowRouteTA.getValue() * 3600;

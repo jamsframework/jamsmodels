@@ -161,6 +161,13 @@ import org.unijena.jams.model.*;
             )
             public JAMSDouble rmse;
     
+    @JAMSVarDescription(
+            access = JAMSVarDescription.AccessType.WRITE,
+            update = JAMSVarDescription.UpdateType.RUN,
+            description = "full set of predicted values"
+            )
+            public JAMSDoubleArray predictionValues = new JAMSDoubleArray();
+    
     private final int E1 = 1;
     private final int E2 = 2;
     private final int LOG_E1 = 3;
@@ -251,7 +258,7 @@ import org.unijena.jams.model.*;
         getModel().getRuntime().println("*************************************************************", JAMS.STANDARD);
         JAMSIntegerArray method = new JAMSIntegerArray();
         double[] valData_1, preData_1;
-        
+        this.predictionValues.setValue(preData);
         valData_1 = new double[this.effTsteps];
         preData_1 = new double[this.effTsteps];
         int count = 0;

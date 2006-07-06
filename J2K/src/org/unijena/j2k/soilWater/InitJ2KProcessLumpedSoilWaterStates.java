@@ -56,14 +56,14 @@ import org.unijena.jams.model.*;
             public JAMSDouble area;
     
     @JAMSVarDescription(
-            access = JAMSVarDescription.AccessType.WRITE,
+            access = JAMSVarDescription.AccessType.READ,
             update = JAMSVarDescription.UpdateType.INIT,
             description = "field capacity adaptation factor"
             )
             public JAMSDouble FCAdaptation;
     
     @JAMSVarDescription(
-            access = JAMSVarDescription.AccessType.WRITE,
+            access = JAMSVarDescription.AccessType.READ,
             update = JAMSVarDescription.UpdateType.INIT,
             description = "air capacity adaptation factor"
             )
