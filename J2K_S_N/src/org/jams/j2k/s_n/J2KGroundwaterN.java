@@ -99,14 +99,14 @@ import org.unijena.jams.model.*;
     
     
     @JAMSVarDescription(
-            access = JAMSVarDescription.AccessType.READ,
+            access = JAMSVarDescription.AccessType.READWRITE,
             update = JAMSVarDescription.UpdateType.RUN,
             description = "RG1 N inflow in kgN"
             )
             public JAMSDouble N_RG1_in;
     
     @JAMSVarDescription(
-            access = JAMSVarDescription.AccessType.READ,
+            access = JAMSVarDescription.AccessType.READWRITE,
             update = JAMSVarDescription.UpdateType.RUN,
             description = "RG2 N inflow in kgN"
             )

@@ -321,7 +321,7 @@ import java.io.*;
             public JAMSDouble PercoNabs;
     
     @JAMSVarDescription(
-            access = JAMSVarDescription.AccessType.READ,
+            access = JAMSVarDescription.AccessType.READWRITE,
             update = JAMSVarDescription.UpdateType.RUN,
             description = " Nitrate in surface runoff added to HRU layer in in kgN"
             )
@@ -571,11 +571,11 @@ import java.io.*;
     }
     
     public void run() throws JAMSEntity.NoSuchAttributeException{
-        JAMSCalendar testtime = new JAMSCalendar();
-        testtime.setValue("1993-10-12 07:30");
-        if (time.equals(testtime)){
+/*         JAMSCalendar testtime = new JAMSCalendar();
+       testtime.setValue("1993-10-12 07:30");
+       if (time.equals(testtime)){
             System.out.println(time.getValue()) ;
-        }
+        }*/
         
         
         int i = 0;

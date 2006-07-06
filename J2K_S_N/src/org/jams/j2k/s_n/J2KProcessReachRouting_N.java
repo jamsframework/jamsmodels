@@ -41,12 +41,12 @@ import org.unijena.jams.model.*;
      *  Component variables
      */
     
-    @JAMSVarDescription(
+   @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
             update = JAMSVarDescription.UpdateType.RUN,
-            description = "The current hru entity"
+            description = "The reach collection"
             )
-            public JAMSEntity entity;
+            public JAMSEntityCollection entities;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
@@ -365,7 +365,7 @@ import org.unijena.jams.model.*;
     }
     
     public void run() throws JAMSEntity.NoSuchAttributeException {
-        
+        JAMSEntity entity = entities.getCurrent();
         JAMSEntity DestReach = (JAMSEntity) entity.getObject("to_reach");
 //        int datumjul = time.get(time.DAY_OF_YEAR);
         double width = this.width.getValue();

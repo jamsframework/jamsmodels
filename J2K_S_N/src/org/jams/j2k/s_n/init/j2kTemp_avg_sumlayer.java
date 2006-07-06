@@ -95,12 +95,7 @@ import org.unijena.jams.model.*;
             )
             public JAMSDouble Layer;
     
-    @JAMSVarDescription(
-            access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.RUN,
-            description = "time"
-            )
-            public JAMSCalendar time;
+ 
     
     /*
      *  Component run stages
@@ -116,8 +111,7 @@ import org.unijena.jams.model.*;
     }
     
     public void run() throws JAMSEntity.NoSuchAttributeException{
-        int day = time.DAY_OF_YEAR;
-        int year = time.YEAR;
+        
         double tempmean = tmeanpre.getValue();
         double tempmeanavg = tmeanavg.getValue();
         double tempmeansum = tmeansum.getValue();

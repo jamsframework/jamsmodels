@@ -73,7 +73,7 @@ import org.unijena.jams.model.*;
             public JAMSDouble aETP;
     
     @JAMSVarDescription(
-            access = JAMSVarDescription.AccessType.READ,
+            access = JAMSVarDescription.AccessType.WRITE,
             update = JAMSVarDescription.UpdateType.RUN,
             description = "HRU actual Evaporation in mm"
             )

@@ -41,12 +41,12 @@ import org.unijena.jams.model.*;
      *  Component variables
      */
     
-    @JAMSVarDescription(
+   @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
             update = JAMSVarDescription.UpdateType.RUN,
-            description = "The current hru entity"
+            description = "The hru entities"
             )
-            public JAMSEntity entity;
+            public JAMSEntityCollection entities;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
@@ -179,6 +179,7 @@ import org.unijena.jams.model.*;
     }
     
     public void run() throws JAMSEntity.NoSuchAttributeException {
+        JAMSEntity entity = entities.getCurrent();
         int horizons = (int)this.horizons.getValue();
         double rootDepth = this.rootDepth.getValue() * 10;
         double remRD = rootDepth;
