@@ -81,7 +81,6 @@ public class EntityProvider extends JAMSComponent {
             
         }
         
-        entities = new JAMSEntityCollection();
         entities.setEntities(entityList);
         
     }
