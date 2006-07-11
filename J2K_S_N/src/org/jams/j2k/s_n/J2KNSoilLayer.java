@@ -70,14 +70,14 @@ import java.io.*;
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
             update = JAMSVarDescription.UpdateType.RUN,
-            description = "in mm depth of soil profile"
+            description = "in cm depth of soil profile"
             )
             public JAMSDouble totaldepth;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
             update = JAMSVarDescription.UpdateType.RUN,
-            description = "in mm actual depth of roots"
+            description = "in dm actual depth of roots"
             )
             public JAMSDouble rootdepth;
     
@@ -957,6 +957,7 @@ import java.io.*;
                 }
             }else{
                partroot[i] = runrootdepth /  runlayerdepth[0];
+               rootlayer = i;
             }
             i++;
             

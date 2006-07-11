@@ -143,7 +143,7 @@ public class ManageLanduse extends JAMSComponent {
         
         double fertN_total = famount * fert.fminn;
         double fertNH4N = fertN_total * fert.fnh4n;
-        double fertNO3N = fert.fminn * (1- fertNH4N * famount);
+        double fertNO3N = fertN_total - fertNH4N;
         double fertorgNfresh = 0.5 * fert.forgn * famount; // amount of nitrogen in the fresh organic pool added to the soil
         double fertorgNactive = 0.5 * famount * fert.forgn; //orgNact is the amount of nitrogen in the active organic pool added to the soil
         
