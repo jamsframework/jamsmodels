@@ -514,7 +514,6 @@ import java.io.*;
     private double act_MPS;
     
     private double runnetPrecip;
-    private double runLAI;
     private double runC_org;
     private double runNO3_Pool;
     private double runNH4_Pool;
@@ -920,7 +919,7 @@ import java.io.*;
     }
     private double[] calc_plantuptake(){
         double upNO3_Pool = 0;
-        double runrootdepth =rootdepth.getValue() * 10;
+        double runrootdepth =rootdepth.getValue() * 100;
         double[] partroot = new double[layer];
         double runpotN_up = potN_up.getValue();
         runpotN_up = 0.3;
