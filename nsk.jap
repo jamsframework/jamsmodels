@@ -3,7 +3,7 @@
 debug=1
 verbose=0
 model=D\:\\jamsmodels\\JAMS-Application\\JAMS-Gehlberg\\j2k_gehlbergnsk.xml
-libs=D\:\\jamsprojects\\J2K\\dist\\J2K.jar
+libs=e\:\\jamsprojects\\J2K\\dist\\J2K.jar;e\:\\jamsprojects\\Thornthwaite\\dist\\Thornthwaite.jar
 #errorlog=D\:/jamserror.log
 #infolog=D\:/jamsinfo.log
 windowenable=1
