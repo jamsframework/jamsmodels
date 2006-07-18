@@ -118,19 +118,38 @@ public class ParallelStorageCascade extends JAMSComponent {
             )
             public JAMSDouble volume;
     
+    @JAMSVarDescription(
+            access = JAMSVarDescription.AccessType.WRITE,
+            update = JAMSVarDescription.UpdateType.RUN,
+            unit = "m³/s",
+            description = "runoff_arr"
+            )
+            public JAMSDoubleArray runoff_arr;
+    
+    @JAMSVarDescription(
+            access = JAMSVarDescription.AccessType.WRITE,
+            update = JAMSVarDescription.UpdateType.RUN,
+            unit = "mm",
+            description = "volume_arr"
+            )
+            public JAMSDoubleArray volume_arr;
+    
     
     double hNe1, hNe2, hNe;
-    double[] u1_arr, u2_arr;
+    double[] u1_arr, u2_arr, vol_arr, run_arr;
     int timeStepCounter = 0;
     int start = 0;
     
     public void init() throws JAMSEntity.NoSuchAttributeException {
+        this.timeStepCounter = 0;
         int nStor = 2;
                 
-        int timeSteps = (int)timeInterval.getNumberOfTimesteps();
+        int timeSteps = (int)timeInterval.getNumberOfTimesteps()+1;
         
         u1_arr = new double[timeSteps]; 
         u2_arr = new double[timeSteps];
+        vol_arr = new double[timeSteps]; 
+        run_arr = new double[timeSteps];
         
         System.out.println("timeSteps: " + timeSteps);
         System.out.println("timeSize: " + this.timeInterval.getTimeUnitCount());
@@ -183,7 +202,16 @@ public class ParallelStorageCascade extends JAMSComponent {
         
         this.runoff.setValue(runoff);
         this.volume.setValue(volume);
+
+        try{
+        this.run_arr[this.timeStepCounter] = runoff;
+        } catch (Exception e) {
+            System.out.println("");
+        }
+        this.vol_arr[this.timeStepCounter] = volume;
         
+        this.runoff_arr.setValue(run_arr);
+        this.volume_arr.setValue(vol_arr);
         runoff = 0;
         this.timeStepCounter++;
         

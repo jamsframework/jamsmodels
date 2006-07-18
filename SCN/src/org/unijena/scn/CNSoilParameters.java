@@ -47,7 +47,7 @@ public class CNSoilParameters extends JAMSComponent {
     } 
     
     public void run() throws JAMSEntity.NoSuchAttributeException {
-        cnValue.setValue(78.0);
+        
     }
     
 }

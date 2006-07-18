@@ -124,7 +124,8 @@ public class SCNInput extends JAMSComponent {
         double effPrec = termA / termB * 25.4;
         
         this.effectivePrecip.setValue(effPrec);
-        System.out.println("input precip: " + this.inputPrecip.getValue() + "eff. precip: " + effPrec);
+        System.out.println("input precip: " + this.inputPrecip.getValue());
+        System.out.println("eff. precip: " + effPrec);
     } 
     public void run() throws JAMSEntity.NoSuchAttributeException {
         
