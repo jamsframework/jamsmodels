@@ -168,6 +168,12 @@ import org.unijena.jams.model.*;
             )
             public JAMSDoubleArray corg_h = new JAMSDoubleArray();
     
+      @JAMSVarDescription(
+            access = JAMSVarDescription.AccessType.WRITE,
+            update = JAMSVarDescription.UpdateType.RUN,
+            description = "saturated water condutivity of soil layer in cm/d"
+            )
+            public JAMSDoubleArray kf_h = new JAMSDoubleArray();
     
     /*
      *  Component run stages
@@ -195,10 +201,12 @@ import org.unijena.jams.model.*;
         double[] depth = new double[horizons];
         double[] bulk_density = new double[horizons];
         double[] corg = new double[horizons];
+        double[] Kf_val = new double[horizons];
         
         String aNameFC = "fieldcapacity_h";
         String aNameAC = "aircapacity_h";
         String aNameDC = "deadcapacity_h";
+        String KfName = "kf_h";
         String depthName = "depth_h";
         String bulkdensityName = "bulk_density_h";
         String corgName = "corg_h";
@@ -223,6 +231,7 @@ import org.unijena.jams.model.*;
             mxLPS[h] = entity.getDouble(aNameAC+h) * area.getValue();
             corg[h] = entity.getDouble(corgName+h);
             bulk_density[h] = entity.getDouble(bulkdensityName+h);
+            Kf_val[h] = entity.getDouble(KfName+h);
             acLPS[h] = 0;
             stMPS[h] = 0;
             stLPS[h] = 0;
@@ -242,6 +251,7 @@ import org.unijena.jams.model.*;
         this.inRD2_h.setValue(inRD2);
         this.depth_h.setValue(depth);
         this.satSoil_h.setValue(0);
+        this.kf_h.setValue(Kf_val);
         
        /* System.out.print("mxLPS: ");
         for(int h = 0; h < horizons; h++){
