@@ -77,7 +77,7 @@ import org.unijena.jams.model.*;
         double run_pTP = pTP.getValue();
         
      
-        run_wstrs = 1 - (run_aTP / run_pTP);
+        run_wstrs = 1 - ((run_aTP + 0.00001) / (run_pTP + 0.00001) );
         
         wstrs.setValue(run_wstrs);
     
