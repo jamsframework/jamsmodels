@@ -58,7 +58,7 @@ public class EntityProvider extends JAMSComponent {
         
         while (store.hasNext()) {
             
-            JAMSEntity e = JAMSDataFactory.newEntity();
+            JAMSEntity e = JAMSDataFactory.createEntity();
             
             JAMSTableDataArray da = store.getNext();
             double[] vals = JAMSTableDataConverter.toDouble(da);

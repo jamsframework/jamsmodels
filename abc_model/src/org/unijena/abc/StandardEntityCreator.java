@@ -75,7 +75,7 @@ public class StandardEntityCreator extends JAMSComponent {
         spObj = new JAMSEntityCollection();
         ArrayList <JAMSEntity> entityList = new ArrayList<JAMSEntity>();
         for(int i = 0; i < 3; i++){
-            JAMSEntity e = JAMSDataFactory.newEntity();
+            JAMSEntity e = JAMSDataFactory.createEntity();
             entityList.add(e);
         }
         spObj.setEntities(entityList);

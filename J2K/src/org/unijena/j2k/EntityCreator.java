@@ -63,7 +63,7 @@ public class EntityCreator extends JAMSComponent {
      */
         
     public void init() throws JAMSEntity.NoSuchAttributeException {
-        entity = JAMSDataFactory.newEntity();
+        entity = JAMSDataFactory.createEntity();
         if(sourceObjects != null){
             JAMSEntityEnumerator eEnum = sourceObjects.getEntityEnumerator();
             JAMSEntity[] entities = sourceObjects.getEntityArray();

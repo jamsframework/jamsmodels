@@ -63,7 +63,7 @@ import java.util.*;
         JAMSDouble l;
         
         for (long i = 1; i <= max.getValue(); i++) {
-            e = JAMSDataFactory.newEntity();
+            e = JAMSDataFactory.createEntity();
             e.setDouble("attr",  Math.pow(10,i));
             entityList.add(e);            
         }

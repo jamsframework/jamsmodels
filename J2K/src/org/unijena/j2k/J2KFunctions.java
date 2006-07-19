@@ -73,7 +73,7 @@ public class J2KFunctions {
             
             while ((s != null) && !s.startsWith("#"))  {
                 
-                JAMSEntity e = JAMSDataFactory.newEntity();
+                JAMSEntity e = JAMSDataFactory.createEntity();
                 tokenizer = new StringTokenizer(s, "\t");
                 
                 String token;

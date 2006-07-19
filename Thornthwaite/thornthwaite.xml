@@ -4,7 +4,7 @@
 
 <model name="Thornthwaite model" author="S. Markstrom (?)" date="30.09.2005">
 
-    <globvar name="timeInterval" value="1989-11-01 7:30 1990-10-31 7:30 6 1"/>
+    <globvar name="timeInterval" value="1989-11-01 7:30:00 1990-10-31 7:30 6 1"/>
 
     <component class="gov.usgs.thornthwaite.EntityProvider" name="EntityProvider">
         <var name="fileName" value="D:/jamsmodels/Thornthwaite/data/entities.dat"/>
@@ -72,9 +72,29 @@
                 <var name="snowMelt" context="SpatialContext" attribute="snowMelt"/>		            
                 <var name="soilMoistStor" context="SpatialContext" attribute="soilMoistStor"/>		            
             </component>
+            
 
+            <component class="org.unijena.jams.gui.TSPlot" name="Runoff Plot" >
+                <var name="titleLeft" value="potET;runoff"/>
+                <var name="titleRight" value="Precip"/>
+                <var name="colorLeft" value="red;blue"/>
+                <var name="colorRight" value="lightgray"/>            
+                <var name="typeLeft" value="0"/>
+                <var name="typeRight" value="1"/>            
+                <var name="xAxisTitle" value="Time"/>
+                <var name="leftAxisTitle" value="???"/>
+                <var name="rightAxisTitle" value="Precip [mm]"/>
+                <var name="rightAxisInverted" value="true"/>
+                <var name="dateFormat" value="dd-MM-yyyy hh:mm"/>
+                <var name="time" attribute="current"/>
+                <var name="valueLeft" context="SpatialContext" attribute="potET;runoff"/>
+                <var name="valueRight" attribute="precip"/>
+            </component>
+            
         </contextcomponent>
 
     </contextcomponent>
+
+    <component class="org.unijena.jams.gui.JAMSExecInfo" name="JAMSProgress" />
     
 </model>
