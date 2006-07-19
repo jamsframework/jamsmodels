@@ -109,8 +109,7 @@ public class GehlbergDataReader extends JAMSComponent {
         if(timeInterval != null){
             int timeUnit = timeInterval.getTimeUnit();
             JAMSCalendar tiStart = timeInterval.getStart();
-            JAMSCalendar date = new JAMSCalendar();
-	    new JAMSCalendar(tiStart.get(Calendar.YEAR), tiStart.get(Calendar.MONTH), tiStart.get(Calendar.DAY_OF_MONTH), startTime.get(Calendar.HOUR_OF_DAY), startTime.get(Calendar.MINUTE),startTime.get(Calendar.SECOND));
+            JAMSCalendar date = new JAMSCalendar(tiStart.get(Calendar.YEAR), tiStart.get(Calendar.MONTH), tiStart.get(Calendar.DAY_OF_MONTH), startTime.get(Calendar.HOUR_OF_DAY), startTime.get(Calendar.MINUTE),startTime.get(Calendar.SECOND));
             while (startTime.before(date) && store.hasNext()) {
                 JAMSTableDataArray da = store.getNext();
                 if(timeUnit == JAMSCalendar.MONTH)
@@ -119,7 +118,6 @@ public class GehlbergDataReader extends JAMSComponent {
                     startTime.add(JAMSCalendar.YEAR, 1);
             }
         }
-        
     }
     
     public void run(){
@@ -129,7 +127,7 @@ public class GehlbergDataReader extends JAMSComponent {
         this.precip.setValue(vals[0]);
         this.temperature.setValue(vals[1]);
         this.rhum.setValue(vals[2]);
-        this.obsRunoff.setValue(vals[3]);
+        this.obsRunoff.setValue(vals[3]);	
     }
     
     public void cleanup(){
