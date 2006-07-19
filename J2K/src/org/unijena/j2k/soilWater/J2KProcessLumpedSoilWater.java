@@ -453,6 +453,7 @@ import org.unijena.jams.model.*;
         /** updating saturations */
         this.calcSoilSaturations(false);
         
+        satSoil.setValue(this.run_satSoil);
         satMPS.setValue(this.run_satMPS);
         satLPS.setValue(this.run_satLPS);
         actMPS.setValue(this.run_actMPS);
