@@ -85,7 +85,7 @@ import org.unijena.jams.model.*;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
-            update = JAMSVarDescription.UpdateType.INIT,
+            update = JAMSVarDescription.UpdateType.RUN,
             description = "weights for IDW part of regionalisation"
             )
             public JAMSDoubleArray statWeights = new JAMSDoubleArray();

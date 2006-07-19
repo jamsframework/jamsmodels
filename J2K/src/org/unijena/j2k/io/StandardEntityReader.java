@@ -58,14 +58,14 @@ public class StandardEntityReader extends JAMSComponent {
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
-            update = JAMSVarDescription.UpdateType.INIT,
+            update = JAMSVarDescription.UpdateType.RUN,
             description = "Collection of hru objects"
             )
             public JAMSEntityCollection hrus;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
-            update = JAMSVarDescription.UpdateType.INIT,
+            update = JAMSVarDescription.UpdateType.RUN,
             description = "Collection of reach objects"
             )
             public JAMSEntityCollection reaches;

@@ -81,21 +81,21 @@ public class TSDataReader extends JAMSComponent {
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
-            update = JAMSVarDescription.UpdateType.INIT,
+            update = JAMSVarDescription.UpdateType.RUN,
             description = "Array of station elevations"
             )
             public JAMSDoubleArray elevation = new JAMSDoubleArray();
 
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
-            update = JAMSVarDescription.UpdateType.INIT,
+            update = JAMSVarDescription.UpdateType.RUN,
             description = "Array of station's x coordinate"
             )
             public JAMSDoubleArray xCoord = new JAMSDoubleArray();
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
-            update = JAMSVarDescription.UpdateType.INIT,
+            update = JAMSVarDescription.UpdateType.RUN,
             description = "Array of station's y coordinate"
             )
             public JAMSDoubleArray yCoord = new JAMSDoubleArray();

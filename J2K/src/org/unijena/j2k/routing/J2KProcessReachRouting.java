@@ -50,28 +50,28 @@ import org.unijena.jams.model.*;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.INIT,
+            update = JAMSVarDescription.UpdateType.RUN,
             description = "attribute length"
             )
             public JAMSDouble length;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.INIT,
+            update = JAMSVarDescription.UpdateType.RUN,
             description = "attribute slope"
             )
             public JAMSDouble slope;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.INIT,
+            update = JAMSVarDescription.UpdateType.RUN,
             description = "attribute width"
             )
             public JAMSDouble width;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.INIT,
+            update = JAMSVarDescription.UpdateType.RUN,
             description = "attribute roughness"
             )
             public JAMSDouble roughness;

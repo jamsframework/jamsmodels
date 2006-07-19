@@ -68,7 +68,7 @@ public class StandardDataWriter extends JAMSComponent {
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.INIT,
+            update = JAMSVarDescription.UpdateType.RUN,
             description = "Output file attributes"
             )
             public JAMSDouble[] value;

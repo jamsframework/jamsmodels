@@ -70,21 +70,21 @@ import org.unijena.jams.model.*;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
-            update = JAMSVarDescription.UpdateType.INIT,
+            update = JAMSVarDescription.UpdateType.RUN,
             description = "Array of temperature station elevations"
             )
             public JAMSDoubleArray tempElevation = new JAMSDoubleArray();
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
-            update = JAMSVarDescription.UpdateType.INIT,
+            update = JAMSVarDescription.UpdateType.RUN,
             description = "Array of temperature station's x coordinate"
             )
             public JAMSDoubleArray tempXCoord = new JAMSDoubleArray();
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
-            update = JAMSVarDescription.UpdateType.INIT,
+            update = JAMSVarDescription.UpdateType.RUN,
             description = "Array of temperature station's y coordinate"
             )
             public JAMSDoubleArray tempYCoord = new JAMSDoubleArray();
@@ -98,63 +98,63 @@ import org.unijena.jams.model.*;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
-            update = JAMSVarDescription.UpdateType.INIT,
+            update = JAMSVarDescription.UpdateType.RUN,
             description = "Array of precip station elevations"
             )
             public JAMSDoubleArray rainElevation = new JAMSDoubleArray();
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
-            update = JAMSVarDescription.UpdateType.INIT,
+            update = JAMSVarDescription.UpdateType.RUN,
             description = "Array of precip station's x coordinate"
             )
             public JAMSDoubleArray rainXCoord = new JAMSDoubleArray();
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
-            update = JAMSVarDescription.UpdateType.INIT,
+            update = JAMSVarDescription.UpdateType.RUN,
             description = "Array of precip station's y coordinate"
             )
             public JAMSDoubleArray rainYCoord = new JAMSDoubleArray();
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
-            update = JAMSVarDescription.UpdateType.INIT,
+            update = JAMSVarDescription.UpdateType.RUN,
             description = "number of temperature station for IDW"
             )
             public JAMSInteger tempNIDW;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
-            update = JAMSVarDescription.UpdateType.INIT,
+            update = JAMSVarDescription.UpdateType.RUN,
             description = "power for IDW function"
             )
             public JAMSDouble pIDW;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
-            update = JAMSVarDescription.UpdateType.INIT,
+            update = JAMSVarDescription.UpdateType.RUN,
             description = "regression threshold"
             )
             public JAMSDouble regThres;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
-            update = JAMSVarDescription.UpdateType.INIT,
+            update = JAMSVarDescription.UpdateType.RUN,
             description = "snow_trs"
             )
             public JAMSDouble snow_trs;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
-            update = JAMSVarDescription.UpdateType.INIT,
+            update = JAMSVarDescription.UpdateType.RUN,
             description = "snow_trans"
             )
             public JAMSDouble snow_trans;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.INIT,
+            update = JAMSVarDescription.UpdateType.RUN,
             description = "Use caching of regionalised data?"
             )
             public JAMSBoolean dataCaching;
