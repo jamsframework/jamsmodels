@@ -210,10 +210,11 @@ import org.unijena.jams.model.*;
         long sdMod = model_sd.getTimeInMillis();
         long edMod = model_ed.getTimeInMillis();
         long model_tsteps = 0;
-        if(model_tres == model_sd.DAY_OF_YEAR){
+        /*if(model_tres == model_sd.DAY_OF_YEAR){
             model_tsteps = (edMod - sdMod) / (1000 * 60 * 60 * 24);
             model_tsteps = model_tsteps + 1 + 1;
-        }
+        }*/
+        model_tsteps = modelTimeInterval.getNumberOfTimesteps();
         
         JAMSCalendar eff_sd = this.effTimeInterval.getStart();
         JAMSCalendar eff_ed = this.effTimeInterval.getEnd();
@@ -221,10 +222,12 @@ import org.unijena.jams.model.*;
         long sdEff = eff_sd.getTimeInMillis();
         long edEff = eff_ed.getTimeInMillis();
         
-        if(eff_tres == eff_sd.DAY_OF_YEAR){
+        /*if(eff_tres == eff_sd.DAY_OF_YEAR){
             this.effTsteps = (int)((edEff - sdEff) / (1000 * 60 * 60 * 24));
             this.effTsteps = this.effTsteps + 1;
-        }
+        }*/
+        effTsteps = (int) effTimeInterval.getNumberOfTimesteps();
+        
         //int ts = (int)tsteps;
         int ts = (int) this.getContext().getNumberOfIterations();
         getModel().getRuntime().println("effStartdate:\t" + eff_sd.toString(), JAMS.STANDARD);

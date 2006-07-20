@@ -8,14 +8,12 @@
     <globvar name="dataInputFile" value="D:\jamsexec\abcmodel\data\gb_monthly_data.txt"/>
     <globvar name="dataOutputFile" value="D:\jamsexec\abcmodel\data\abc_gb.out"/>
     
-    <contextcomponent class="org.unijena.abc.ABCRandomParaSampler" name="Sampler">
+    <contextcomponent class="org.unijena.abc.ABC_SCEM_UA" name="Sampler">
         <var name="parameterIDs" value="abcModel.b;abcModel.a;abcModel.c;snowModule.t_thres;snowModule.ddf;ETHaude.et_adaptation"/>
         <var name="boundaries" value="[0.0>1.0];[0.0>1.0];[0.0>1.0];[-10.0>10.0];[0.0>100.0];[0.1>5.0]"/>
         <var name="sampleCount" value="500"/>
         <var name="effMethodNames" value="e2;le2;rmse;absVolErr;rsq"/>
         <var name="effValues" attribute="e2;le2;rmse;absVolErr;rsq"/>
-        <var name="disable" value="false"/>
-        <var name="fileName" globvar="parameterFile"/>
         
         <contextcomponent class="org.unijena.jams.model.JAMSTemporalContext" name="TemporalContext">
             <var name="timeInterval" globvar="timeInterval"/>        
