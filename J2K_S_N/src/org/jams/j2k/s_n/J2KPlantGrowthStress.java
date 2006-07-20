@@ -70,6 +70,13 @@ import org.unijena.jams.model.*;
             )
             public JAMSDouble BioAct;
     
+    @JAMSVarDescription(
+            access = JAMSVarDescription.AccessType.READ,
+            update = JAMSVarDescription.UpdateType.RUN,
+            description = "Plants daily biomass increase [kg/ha]"
+            )
+            public JAMSDouble BioOpt_delta;
+    
     
     
     /*
@@ -84,10 +91,20 @@ import org.unijena.jams.model.*;
         
         
         double stressfactor = 1 - Math.max(wstrs.getValue(),(Math.max(tstrs.getValue(),nstrs.getValue())));
+        
         if (stressfactor > 1){
             System.out.println("Stress "+  stressfactor);
+            stressfactor = 1;
         }
-        double bioact = stressfactor * BioAct.getValue();    
+        
+        if (stressfactor < 0){
+            System.out.println("Stress "+  stressfactor);
+            stressfactor = 0;
+        }
+        
+        double bioact = (stressfactor * BioOpt_delta.getValue()) + BioAct.getValue();    
+            
+        
         BioAct.setValue(bioact);
         
         

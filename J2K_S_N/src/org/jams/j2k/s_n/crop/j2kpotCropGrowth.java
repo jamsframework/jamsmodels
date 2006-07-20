@@ -582,8 +582,8 @@ import java.util.ArrayList;
             PHUdelta.setValue(phu_delta);
             //PHUdeltaold.setValue(phu_deltaold);
             PHUact.setValue(phu_daily);
-            //tbase.setValue(Tbase);
-            //topt.setValue(Topt);
+            tbase.setValue(Tbase);
+            topt.setValue(Topt);
             frLAImxAct.setValue(frLAImx_act); /*actual fraction of max LAI for a given day */
             LAIdelta.setValue(LAI_delta);
             LAI.setValue(lai_act);
@@ -596,7 +596,7 @@ import java.util.ArrayList;
             ZRootOld.setValue(zrootd_old); 
             FNPlant.setValue(fnplant_act); /* daily fraction of N in plant biomass */
             BioNoptAct.setValue(bioNopt_act);
-            BioAct.setValue(bio_opt); /*Plants optimal biomass */
+            //BioAct.setValue(bio_opt); /*Plants optimal biomass */
             BioOld.setValue(bio_old);
             PlantNDemAct.setValue(Ndemand_act);
             BioOpt_delta.setValue(bio_opt_delta);
