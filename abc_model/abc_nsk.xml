@@ -19,7 +19,7 @@
             <var name="timeInterval" globvar="timeInterval"/>        
             <var name="current" attribute="time"/>
             
-            <component class="org.unijena.jams.gui.JAMSExecInfo" name="ABCProgress" />
+            <component class="org.unijena.jamscomponents.gui.JAMSExecInfo" name="ABCProgress" />
 
             <component class="org.unijena.abc.GehlbergDataReader" name="DataReader">
                 <var name="timeInterval" globvar="timeInterval"/> 
