@@ -235,6 +235,7 @@ import org.unijena.jams.model.*;
             double rs = this.calcRs(LAI, rsc0, RSS);
             double ra = this.calcRa(effHeight, wind);
             
+            
             double G = this.calc_groundHeatFlux(netRad);
             double vT = org.unijena.j2k.physicalCalculations.ClimatologicalVariables.calc_VirtualTemperature(abs_temp, pz, ea);
             double pa = org.unijena.j2k.physicalCalculations.ClimatologicalVariables.calc_AirDensityAtConstantPressure(vT, pz);
