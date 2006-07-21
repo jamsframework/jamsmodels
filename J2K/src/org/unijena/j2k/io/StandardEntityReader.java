@@ -229,14 +229,15 @@ public class StandardEntityReader extends JAMSComponent {
             mapChanged = false;
             hruIterator = col.getEntities().iterator();
             while (hruIterator.hasNext()) {
-                
                 e = hruIterator.next();
+                
                 f = (JAMSEntity) e.getObject(asso);
                 if (f != null) {
                     eDepth = depthMap.get(e);
                     fDepth = depthMap.get(f);
                     if (fDepth.intValue() <= eDepth.intValue()) {
                         depthMap.put(f, new Integer(fDepth.intValue()+1));
+                        //System.out.println("Processing entity: " + e.getDouble("ID"));
                         mapChanged = true;
                         
                     }

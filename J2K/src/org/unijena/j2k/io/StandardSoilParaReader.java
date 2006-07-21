@@ -80,7 +80,7 @@ public class StandardSoilParaReader extends JAMSComponent {
             e = hruIterator.next();
             st = stMap.get(e.getDouble("soilID"));
             e.setObject("soilType", st);
-            
+            //System.out.println("st: " + st.getDouble("SID"));
             attrs = st.getKeys();
             
             for (int i = 0; i < attrs.length; i++) {

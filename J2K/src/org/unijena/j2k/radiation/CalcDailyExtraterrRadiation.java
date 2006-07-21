@@ -84,7 +84,6 @@ import org.unijena.jams.model.*;
     public void run() throws JAMSEntity.NoSuchAttributeException{
         double extRadiation = 0;
         double lati = this.latitude.getValue();
-        
         double latRad = org.unijena.j2k.mathematicalCalculations.MathematicalCalculations.deg2rad(lati);
         int julDay = time.get(time.DAY_OF_YEAR);
         double declination = org.unijena.j2k.physicalCalculations.SolarRadiationCalculationMethods.calc_SunDeclination(julDay);

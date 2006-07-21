@@ -232,13 +232,12 @@ public class TSDataReader extends JAMSComponent {
         
 
         String stepSize = tres;
-        
         JAMSCalendar startTime = parseJ2KTime(start);
         JAMSCalendar endTime = parseJ2KTime(end);
         
         if(timeInterval != null){
             //check if the time series start and end date match the temporal context's time interval
-            if (timeInterval.getStart().before(startTime) || timeInterval.getEnd().after(endTime)) {
+            if ((timeInterval.getStart().before(startTime) || timeInterval.getEnd().after(endTime))) {
                 getModel().getRuntime().sendHalt("TSData start and end time do not match current temporal context!");
             }
         }

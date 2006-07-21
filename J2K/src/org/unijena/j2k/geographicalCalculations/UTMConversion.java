@@ -31,12 +31,12 @@ public class UTMConversion {
                 
                 //for(int i = 0; i < 10; i++){
                     xy = latLong2UTM(latLong[0], latLong[1]);
-                    System.out.println("X: " + xy[0] + " Y: " + xy[1]);
+                    //System.out.println("X: " + xy[0] + " Y: " + xy[1]);
 
                     String zoneStr = getZoneStr(latLong[0], latLong[1]);
                     int zone = getZoneNumber(latLong[0], latLong[1]);
                     latLong = utm2LatLong(xy[0], xy[1], zoneStr);
-                    System.out.println("Lat: " + latLong[0] + " Long: " + latLong[1]);
+                    //System.out.println("Lat: " + latLong[0] + " Long: " + latLong[1]);
                 //}
             }
         });
@@ -48,7 +48,7 @@ public class UTMConversion {
         int zsIdx = len - 1;
         char zoneChr = zone.charAt(len - 1);
         String zoneStr = "" + zoneChr;
-        System.out.println("zoneStr:  " + zoneStr);
+        //System.out.println("zoneStr:  " + zoneStr);
         
         String numberPart = zone.substring(0, zsIdx);
         int zoneNumber = Integer.parseInt(numberPart);
@@ -62,11 +62,11 @@ public class UTMConversion {
         int nmIdx = zsIdx - 1;
         char zoneChr = zoneStr.charAt(len - 1);
         
-        System.out.println("zoneStr:  " + zoneStr);
+        //System.out.println("zoneStr:  " + zoneStr);
         
         String numberPart = zoneStr.substring(0, zsIdx);
         int zoneNumber = Integer.parseInt(numberPart);
-        System.out.println("zoneNumber: " + zoneNumber);
+        //System.out.println("zoneNumber: " + zoneNumber);
         return zoneNumber;
     }
     
@@ -120,7 +120,7 @@ public class UTMConversion {
             zoneNumber = 32;
         
         String zone = "" + zoneNumber + LetterDesignator;
-        System.out.println("ZoneNumber: " + zone);
+        //System.out.println("ZoneNumber: " + zone);
         return zone;
     }
     
@@ -141,7 +141,7 @@ public class UTMConversion {
 	double longOriginRad;
 	int    zoneNumber = getZoneNumber(lat, lon);
         
-        System.out.println("zoneNumber in latLong2UTM: "  + zoneNumber);
+        //System.out.println("zoneNumber in latLong2UTM: "  + zoneNumber);
 
         longOrigin = (zoneNumber - 1) * 6 - 180 + 3;  //+3 puts origin in middle of zone
 	longOriginRad = org.unijena.j2k.mathematicalCalculations.MathematicalCalculations.deg2rad(longOrigin);
