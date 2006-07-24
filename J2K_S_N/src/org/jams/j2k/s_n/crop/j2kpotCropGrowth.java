@@ -596,7 +596,7 @@ import java.util.ArrayList;
             ZRootOld.setValue(zrootd_old); 
             FNPlant.setValue(fnplant_act); /* daily fraction of N in plant biomass */
             BioNoptAct.setValue(bioNopt_act);
-            //BioAct.setValue(bio_opt); /*Plants optimal biomass */
+            BioAct.setValue(bio_opt); /*Plants optimal biomass */
             BioOld.setValue(bio_old);
             PlantNDemAct.setValue(Ndemand_act);
             BioOpt_delta.setValue(bio_opt_delta);

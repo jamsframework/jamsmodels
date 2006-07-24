@@ -120,7 +120,15 @@ import org.unijena.jams.model.*;
             description = " actual evaporation in mm"
             )
             public JAMSDoubleArray aEP_h = new JAMSDoubleArray();
-    /*
+     
+     @JAMSVarDescription(
+            access = JAMSVarDescription.AccessType.WRITE,
+            update = JAMSVarDescription.UpdateType.RUN,
+            description = " actual evaporation in mm"
+            )
+            public JAMSDoubleArray aTP_h = new JAMSDoubleArray();
+     
+     /*
      *  Component run stages
      */
     
@@ -138,6 +146,7 @@ import org.unijena.jams.model.*;
         double pEvap = 0; /*potential evaporation in mm*/
         double runLAI = LAI.getValue(); /*Leaf area index*/
         double[] actet_h = new double[layer];
+        double[] acttran_h = new double[layer];
         
         if (runLAI <= 3){
             aTransp = (runaETP * runLAI) / 3;
@@ -166,9 +175,11 @@ import org.unijena.jams.model.*;
             actTran = actETP;
         }
          
+         acttran_h[i] = actTran;
          actet_h[i] = actETP - actTran;
          i++;   
         } 
+        aTP_h.setValue(acttran_h);
         aEP_h.setValue(actet_h); 
     }
     

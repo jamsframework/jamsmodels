@@ -38,7 +38,7 @@ import java.util.ArrayList;
         description="Module for calculation of crop growth according to the algorithms of SWAT"
         )
         
-        public class j2kpotCropGrowth extends JAMSComponent {
+        public class j2kpotCropGrowth_uli extends JAMSComponent {
     
     /*
      *  Component variables
