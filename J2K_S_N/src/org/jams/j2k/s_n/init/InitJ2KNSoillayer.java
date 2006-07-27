@@ -171,6 +171,20 @@ import org.unijena.jams.model.*;
             description = "flag plant existing yes or no " // attention its a boolean!
             )
             public JAMSBoolean plantExisting = new JAMSBoolean();
+     
+      @JAMSVarDescription(
+            access = JAMSVarDescription.AccessType.WRITE,
+            update = JAMSVarDescription.UpdateType.RUN,
+            description = " state variable LAI in [-]"
+            )
+            public JAMSDouble LAI;
+         
+       @JAMSVarDescription(
+            access = JAMSVarDescription.AccessType.WRITE,
+            update = JAMSVarDescription.UpdateType.RUN,
+            description = "Actual rooting depth [dm]"
+            )
+            public JAMSDouble ZRootD;
     
     
     /*
@@ -262,6 +276,8 @@ import org.unijena.jams.model.*;
         fertactivorg.setValue(0);
         inp_biomass.setValue(0);
         inpN_biomass.setValue(0);
+        LAI.setValue(0);
+        ZRootD.setValue(0);
     }
     
     

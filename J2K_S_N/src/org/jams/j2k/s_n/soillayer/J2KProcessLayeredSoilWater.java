@@ -28,7 +28,7 @@ import org.unijena.jams.model.*;
 
 /**
  *
- * @author Peter Krause modification by Manfred Fink
+ * @author Peter Krause modifications by Manfred Fink
  */
 /*
 <component class="org.unijena.j2k.soilWater.J2KProcessLumpedSoilWater" name="J2KProcessLumpedSoilWater">
@@ -516,6 +516,7 @@ import org.unijena.jams.model.*;
         double balIn = 0;
         double balOut = 0;
         double balET = 0;
+        double sumactETP = 0;
         
         //System.out.getRuntime().println("Processing HRU: " + entity.getDouble("ID"));
         //if(this.time.get(time.DATE) == 23 && this.time.get(time.MONTH)==10 && this.time.get(time.YEAR)==1989){
@@ -580,7 +581,7 @@ import org.unijena.jams.model.*;
         
         /** calculation of ETP from dep. Storage and open water bodies */
         this.calcPreInfEvaporation();
-        
+        double preinfep = this.run_actETP;
         
         /** determining available water for infiltration */
         this.run_infiltration = this.run_inRain + this.run_inSnow
@@ -702,17 +703,19 @@ import org.unijena.jams.model.*;
             balMPSend += this.run_actMPS[h];
             balLPSend += this.run_actLPS[h];
             balOut += this.run_outRD2[h];
+            sumactETP += actETP_hor[h];
         }
         balDPSend = this.run_actDPS;
-        balET = this.run_actETP - balET;
+        balET =  sumactETP + preinfep - balET; 
         balOut += balET;
         balOut += this.run_outRD1;
         balOut += this.run_vertComp;
-        
+        balET =  sumactETP + preinfep;
         
         double balance = balIn + (balMPSstart - balMPSend)+(balLPSstart - balLPSend)+(balDPSstart - balDPSend) - balOut;
         if(Math.abs(balance) > 0.00001)
             System.out.println("balance error at : " + time.toString() + " --> "+ balance);
+        
         satMPS.setValue(this.run_satMPS);
         satLPS.setValue(this.run_satLPS);
         actMPS.setValue(this.run_actMPS);
@@ -720,7 +723,7 @@ import org.unijena.jams.model.*;
         actDPS.setValue(this.run_actDPS);
         netRain.setValue(this.run_inRain);
         netSnow.setValue(this.run_inSnow);
-        actET.setValue(this.run_actETP);
+        actET.setValue(balET);
         inRD1.setValue(this.run_inRD1);
         inRD2.setValue(this.run_inRD2);
         outRD1.setValue(this.run_outRD1);
@@ -866,7 +869,7 @@ import org.unijena.jams.model.*;
         double[] horETP = new double[nhor];
         double sumlayer = 0;
         int i = 0;
-        double runrootdepth =rootdepth.getValue() * 100;
+        double runrootdepth = (rootdepth.getValue() * 100) + 100;
         double[] partroot = new double[nhor];
         double rootlayer = 0;
         double runLAI = LAI.getValue();
@@ -903,7 +906,7 @@ import org.unijena.jams.model.*;
                 }else {
                     partroot[i] = 0;
                 }
-            }else{
+            }else if (i == 0){
                 partroot[i] = runrootdepth /  runlayerdepth[0];
                 rootlayer = i;
             }
@@ -917,17 +920,19 @@ import org.unijena.jams.model.*;
         
         i = 0;
         while (i < nhor) {
-            if (runlayerdepth[i] <= runrootdepth){
+            
                 // Transpiration loop 2: calculating transpiration distribution function with depth in layers
-                transp_hord[i] = (pTransp  * (1 - Math.exp(-BetaW.getValue()*(runlayerdepth[i]/runrootdepth)))) / (1 - Math.exp(-BetaW.getValue()));
-                
+            transp_hord[i] = (pTransp  * (1 - Math.exp(-BetaW.getValue()*(runlayerdepth[i]/runrootdepth)))) / (1 - Math.exp(-BetaW.getValue()));
+            if  (transp_hord[i] >  pTransp){
+            transp_hord[i] = pTransp;
             }
+            
             
             // Evaporation loop 2: calculating evaporation distribution function with depth in layers
             evapo_hord[i] = pEvap * (runlayerdepth[i] / (runlayerdepth[i] + (Math.exp(2.374 -(0.00713 * runlayerdepth[i])))));
             
             
-            //allocation of the rest Evap to the lowest horizon
+            //allocation of the rest Evap to the lowest horizon ............ time
             if (i == nhor -1){
                 evapo_hord[i] =  pEvap;
                 transp_hord[i] =  pTransp;
@@ -963,7 +968,7 @@ import org.unijena.jams.model.*;
             
             i++;
         }
-        if (test != 0 && debug){
+        if ((test > 0.0000001 || test < -0.0000001) && debug){
             System.out.println("evaporation balance error = " + test);
         }
         

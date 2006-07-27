@@ -111,7 +111,7 @@ import java.util.ArrayList;
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
             update = JAMSVarDescription.UpdateType.RUN,
-            description = "Actual rooting depth [mm]"
+            description = "Actual rooting depth [dm]"
             )
             public JAMSDouble ZRootD;
     
@@ -578,7 +578,78 @@ import java.util.ArrayList;
             calc_cropyield();
             calc_cropyield_ha();
             calc_residues ();
+                      
+        } else if (plantStateReset.getValue()) {
             
+            phu_delta = 0;
+            phu_deltaold = 0;
+            phu_daily = 0;
+            Tbase = 0;
+            Topt = 0;
+            frLAImx_act = 0; /*actual fraction of max LAI for a given day */
+            LAI_delta = 0;
+            lai_act = 0;
+            lai_old = 0;
+            // bio_opt = 0;
+            // BioOpt.setValue(bio_opt * area_ha); /*Plants optimal biomass */
+            hc_act = 0; /*Actual canopy height */
+            frroot_act = 0;  /* daily fraction of root development [mm] */
+            zrootd_act = 0;  /* daily root development [mm] */
+            zrootd_old = 0; 
+            fnplant_act = 0; /* daily fraction of N in plant biomass */
+            bioNopt_act = 0;
+            bio_opt = 0; /*Plants optimal biomass */
+            bio_old = 0;
+            Ndemand_act = 0;
+            bio_opt_delta = 0;
+            hi_act = 0;
+            bioag_act = 0;
+            yield = 0;
+            yldN = 0; /* N Content from the above biomass */
+            yldN_ha = 0;
+            fphu_act = 0;
+            bioN_act = 0; /*actual biomass in kg/ha adapted by stress*/
+            frLAImx_Xi = 0;
+            residue_pool = 0;
+            plantStateReset.setValue(false);
+            test = 0;
+            
+            //System.out.println("########################## resetting values ##########################");
+            /*PHUdelta.setValue(0);
+            PHUdeltaold.setValue(0);
+            LAIdelta.setValue(0);
+            frLAImxAct.setValue(0); //actual fraction of max LAI for a given day 
+            frLAImx_xi.setValue(0);
+            LAI.setValue(0);
+            LAIold.setValue(0);
+            // BioOpt.setValue(bio_opt);
+            // BioOpt.setValue(bio_opt * area_ha); //Plants optimal biomass 
+            CanHeightAct.setValue(0); //Actual canopy height 
+            frRootAct.setValue(0);  // daily fraction of root development [mm] 
+            ZRootD.setValue(0);  // daily root development [mm] 
+            ZRootOld.setValue(0);
+            FNPlant.setValue(0); // daily fraction of N in plant biomass 
+            BioNoptAct.setValue(0);
+            BioAct.setValue(0); //Plants optimal biomass 
+            PlantNDemAct.setValue(0);
+            HarvIndex.setValue(0);
+            BioagAct.setValue(0);
+            BioOld.setValue(0);
+            BioYield.setValue(0);
+            BioOpt_delta.setValue(0);
+            NYield.setValue(0); // N Content from the above biomass 
+            NYield_ha.setValue(0);
+            FPHUact.setValue(0);
+            BioNAct.setValue(0); //actual biomass in kg/ha adapted by stress
+            PHUact.setValue(0);
+            PlantNDemAct.setValue(0);
+            plantStateReset.setValue(false);
+            PlantNDemAct.setValue(0);
+            Residue_pool.setValue(0);
+            Test.setValue(0);
+            time.getValue();*/
+        }
+         
             PHUdelta.setValue(phu_delta);
             //PHUdeltaold.setValue(phu_deltaold);
             PHUact.setValue(phu_daily);
@@ -611,44 +682,6 @@ import java.util.ArrayList;
             Residue_pool.setValue(residue_pool);
             plantStateReset.setValue(true);
             Test.setValue(test);
-            
-        } else if (plantStateReset.getValue()) {
-            
-            //System.out.println("########################## resetting values ##########################");
-            PHUdelta.setValue(0);
-            PHUdeltaold.setValue(0);
-            LAIdelta.setValue(0);
-            frLAImxAct.setValue(0); /*actual fraction of max LAI for a given day */
-            frLAImx_xi.setValue(0);
-            LAI.setValue(0);
-            LAIold.setValue(0);
-            // BioOpt.setValue(bio_opt);
-            // BioOpt.setValue(bio_opt * area_ha); /*Plants optimal biomass */
-            CanHeightAct.setValue(0); /*Actual canopy height */
-            frRootAct.setValue(0);  /* daily fraction of root development [mm] */
-            ZRootD.setValue(0);  /* daily root development [mm] */
-            ZRootOld.setValue(0);
-            FNPlant.setValue(0); /* daily fraction of N in plant biomass */
-            BioNoptAct.setValue(0);
-            BioAct.setValue(0); /*Plants optimal biomass */
-            PlantNDemAct.setValue(0);
-            HarvIndex.setValue(0);
-            BioagAct.setValue(0);
-            BioOld.setValue(0);
-            BioYield.setValue(0);
-            BioOpt_delta.setValue(0);
-            NYield.setValue(0); /* N Content from the above biomass */
-            NYield_ha.setValue(0);
-            FPHUact.setValue(0);
-            BioNAct.setValue(0); /*actual biomass in kg/ha adapted by stress*/
-            PHUact.setValue(0);
-            PlantNDemAct.setValue(0);
-            plantStateReset.setValue(false);
-            PlantNDemAct.setValue(0);
-            Residue_pool.setValue(0);
-            Test.setValue(0);
-            
-        }
     }
 //        idc = idc+1;
 //        cropClass.setValue(idc);
@@ -872,8 +905,8 @@ import java.util.ArrayList;
         if
                 (this.idc ==  1 || this.idc == 2 || this.idc == 4 || this.idc == 5 && this.fphu_act <= 0.40) {
             
-            double zrootd = 2.5 * this.fphu_act * this.rdmx;
-            zrootd_act = zrootd_act + zrootd;
+             zrootd_act = 2.5 * this.fphu_act * this.rdmx;
+         //  zrootd_act = zrootd_act + zrootd;
         }
         if
                 (this.fphu_act > 0.40) {

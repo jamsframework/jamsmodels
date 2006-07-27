@@ -919,10 +919,10 @@ import java.io.*;
     }
     private double[] calc_plantuptake(){
         double upNO3_Pool = 0;
-        double runrootdepth =rootdepth.getValue() * 100;
+        double runrootdepth =(rootdepth.getValue() * 100) + 100;
         double[] partroot = new double[layer];
         double runpotN_up = potN_up.getValue();
-        runpotN_up = 0.3;
+//        runpotN_up = 0.3;
         double[] NO3_Poolvals = new double[layer];
         double[] potN_up_z = new double[layer];
         double[] demandN_up_z = new double[layer];
@@ -954,7 +954,7 @@ import java.io.*;
                 }else {
                     partroot[i] = 0;
                 }
-            }else{
+            }else if (i == 0){
                partroot[i] = runrootdepth /  runlayerdepth[0];
                rootlayer = i;
             }
