@@ -119,7 +119,9 @@ import org.unijena.jams.model.*;
         
         //converting mm/m² to absolute litres
         double precip = this.precip.getValue() * this.area.getValue();
-        
+        if (precip < 0){
+           precip = 0; 
+        }
         //dividing input precip into rain and snow
         double rain = (1 - pSnow) * precip;
         double snow = pSnow * precip;

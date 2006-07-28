@@ -81,6 +81,15 @@ import org.unijena.jams.model.*;
             description = "actual RG2 storage"
             )
             public JAMSDouble actRG2;
+  
+    @JAMSVarDescription(
+            access = JAMSVarDescription.AccessType.WRITE,
+            update = JAMSVarDescription.UpdateType.RUN,
+            description = "estimated hydraulicconductivity in cm/d"
+            )
+            public JAMSDouble Kf_geo;
+    
+    
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
@@ -111,7 +120,7 @@ import org.unijena.jams.model.*;
         
         maxRG1.setValue(entity.getDouble("RG1_max") * area.getValue());
         maxRG2.setValue(entity.getDouble("RG2_max") * area.getValue());
-
+        Kf_geo.setValue(entity.getDouble("Kf_geo"));
         actRG1.setValue(maxRG1.getValue() * initRG1.getValue());
         actRG2.setValue(maxRG2.getValue() * initRG2.getValue());       
     }
