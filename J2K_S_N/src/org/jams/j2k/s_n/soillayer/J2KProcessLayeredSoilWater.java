@@ -488,12 +488,26 @@ import org.unijena.jams.model.*;
             )
             public JAMSDouble LAI;
     
+     @JAMSVarDescription(
+            access = JAMSVarDescription.AccessType.READ,
+            update = JAMSVarDescription.UpdateType.RUN,
+            description = "estimated hydraulicconductivity in cm/d"
+            )
+            public JAMSDouble Kf_geo;
+     
+   @JAMSVarDescription(
+            access = JAMSVarDescription.AccessType.READ,
+            update = JAMSVarDescription.UpdateType.INIT,
+            description = "in cm/d soil hydraulic conductivity"
+            )
+            public JAMSDoubleArray kf_h = new JAMSDoubleArray();
+    
     //internal state variables
     double  run_actDPS, run_satSoil, run_inRain, run_inSnow,
             run_snowMelt, run_infiltration, run_latComp, run_vertComp, run_overlandflow, run_potETP, run_actETP, run_snowDepth, run_area, run_slope,
             run_inRD1, soilSatMps, soilSatLps, soilActMps, soilActLps, soilMaxMps, soilMaxLps, run_outRD1, run_genRD1;
     double[] run_maxMPS, run_maxLPS, run_actMPS, run_actLPS, run_satMPS, run_satLPS, run_inRD2, run_satHor, run_outRD2, run_genRD2;
-    double[] runlayerdepth, horETP;
+    double[] runlayerdepth, horETP, runkf_h;
     int nhor;
     
     /*
@@ -544,6 +558,7 @@ import org.unijena.jams.model.*;
         
         this.run_inRD1 = inRD1.getValue();
         this.run_inRD2 = inRD2.getValue();
+        this.runkf_h = kf_h.getValue();
         
         balIn += this.run_inRD1;
         this.run_inRain = netRain.getValue();
@@ -588,13 +603,13 @@ import org.unijena.jams.model.*;
                 + this.run_snowMelt
                 + this.run_actDPS;
         
-        /*if(this.run_infiltration < 0){
-            System.out.getRuntime().println("negative infiltration!");
-            System.out.getRuntime().println("inRain: " + this.run_inRain);
-            System.out.getRuntime().println("inSnow: " + this.run_inSnow);
-            System.out.getRuntime().println("inSnowMelt: " + this.run_snowMelt);
-            System.out.getRuntime().println("inDPS: " + this.run_actDPS);
-        }*/
+        if(this.run_infiltration < 0){
+            System.out.println("negative infiltration!");
+            System.out.println("inRain: " + this.run_inRain);
+            System.out.println("inSnow: " + this.run_inSnow);
+            System.out.println("inSnowMelt: " + this.run_snowMelt);
+            System.out.println("inDPS: " + this.run_actDPS);
+        }
         //balance
         balIn += this.run_inRain;
         balIn += this.run_inSnow;
@@ -721,8 +736,8 @@ import org.unijena.jams.model.*;
         actMPS.setValue(this.run_actMPS);
         actLPS.setValue(this.run_actLPS);
         actDPS.setValue(this.run_actDPS);
-        netRain.setValue(this.run_inRain);
-        netSnow.setValue(this.run_inSnow);
+//        netRain.setValue(this.run_inRain);
+//        netSnow.setValue(this.run_inSnow);
         actET.setValue(balET);
         inRD1.setValue(this.run_inRD1);
         inRD2.setValue(this.run_inRD2);
@@ -1139,15 +1154,25 @@ import org.unijena.jams.model.*;
             
             this.run_latComp += MobileWater * part_intf;
             this.run_vertComp += MobileWater * part_perc;
-            
+            double maxPerc = 0;
             /** checking if percolation rate is limited by parameter */
             if (hor == nhor - 1){
-                double maxPerc = this.soilMaxPerc.getValue() * this.run_area;
+                maxPerc = this.soilMaxPerc.getValue() * this.run_area * this.Kf_geo.getValue() / 86.4;
+                // 86.4 cm/d "normal" hydraulic conductivity in geology (1 E-5 m/s)
+                if(this.run_vertComp > maxPerc){
+                    double rest = this.run_vertComp - maxPerc;
+                    this.run_vertComp = maxPerc;
+                    this.run_latComp = this.run_latComp + rest;
+                }  else {
+                maxPerc = this.soilMaxPerc.getValue() * this.run_area * this.runkf_h[hor + 1] / 86.4;
+                // 86.4 cm/d "normal" hydraulic conductivity in geology (1 E-5 m/s)
                 if(this.run_vertComp > maxPerc){
                     double rest = this.run_vertComp - maxPerc;
                     this.run_vertComp = maxPerc;
                     this.run_latComp = this.run_latComp + rest;
                 }
+                
+            }
             }
         }
         /** no MobileWater available */

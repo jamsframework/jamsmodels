@@ -98,7 +98,7 @@ import org.unijena.jams.model.*;
         }
         
         if (stressfactor < 0){
-            System.out.println("Stress "+  stressfactor);
+//            System.out.println("Stress "+  stressfactor);
             stressfactor = 0;
         }
         
