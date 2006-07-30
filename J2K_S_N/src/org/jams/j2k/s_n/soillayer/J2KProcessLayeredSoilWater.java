@@ -497,13 +497,13 @@ import org.unijena.jams.model.*;
      
    @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.INIT,
+            update = JAMSVarDescription.UpdateType.RUN,
             description = "in cm/d soil hydraulic conductivity"
             )
             public JAMSDoubleArray kf_h = new JAMSDoubleArray();
     
     //internal state variables
-    double  run_actDPS, run_satSoil, run_inRain, run_inSnow,
+    double  run_actDPS, run_satSoil1, run_inRain, run_inSnow,
             run_snowMelt, run_infiltration, run_latComp, run_vertComp, run_overlandflow, run_potETP, run_actETP, run_snowDepth, run_area, run_slope,
             run_inRD1, soilSatMps, soilSatLps, soilActMps, soilActLps, soilMaxMps, soilMaxLps, run_outRD1, run_genRD1;
     double[] run_maxMPS, run_maxLPS, run_actMPS, run_actLPS, run_satMPS, run_satLPS, run_inRD2, run_satHor, run_outRD2, run_genRD2;
@@ -785,19 +785,20 @@ import org.unijena.jams.model.*;
             if(((this.run_maxLPS[h] > 0) | (this.run_maxMPS[h] > 0)) & ((this.run_actLPS[h] > 0) | (this.run_actMPS[h] > 0))){
                 this.run_satHor[h] = ((this.run_actLPS[h] + this.run_actMPS[h]) / (this.run_maxLPS[h] + this.run_maxMPS[h]));
             } else{
-                this.run_satSoil = 0;
+                this.run_satSoil1 = 0;
             }
-            soilMaxMps += this.run_maxMPS[h];
-            soilActMps += this.run_actMPS[h];
-            soilMaxLps += this.run_maxLPS[h];
-            soilActLps += this.run_actLPS[h];
+            
         }
+            soilMaxMps = this.run_maxMPS[0];
+            soilActMps = this.run_actMPS[0];
+            soilMaxLps = this.run_maxLPS[0];
+            soilActLps = this.run_actLPS[0];
         if(((soilMaxLps > 0) | (soilMaxMps > 0)) & ((soilActLps > 0) | (soilActMps > 0))){
-            this.run_satSoil = ((soilActLps + soilActMps) / (soilMaxLps + soilMaxMps));
+            this.run_satSoil1 = ((soilActLps + soilActMps) / (soilMaxLps + soilMaxMps));
             soilSatMps = (soilActMps / soilMaxMps);
             soilSatLps = (soilActLps / soilMaxLps);
         } else{
-            this.run_satSoil = 0;
+            this.run_satSoil1 = 0;
         }
         
         return true;
@@ -858,7 +859,7 @@ import org.unijena.jams.model.*;
         double maxInf = 0;
         this.calcSoilSaturations(false);
         if(this.run_snowDepth > 0)
-            maxInf = this.soilMaxInfSnow.getValue() * this.run_area;
+            maxInf = this.soilMaxInfSnow.getValue()  * this.run_area;
         else if((nowmonth >= 5) & (nowmonth <=10))
             maxInf = (1 - this.run_satHor[horizon]) * soilMaxInfSummer.getValue() * this.run_area;
         else
@@ -871,11 +872,11 @@ import org.unijena.jams.model.*;
         double maxInf = 0;
         this.calcSoilSaturations(false);
         if(this.run_snowDepth > 0)
-            maxInf = this.soilMaxInfSnow.getValue() * this.run_area;
+            maxInf = this.soilMaxInfSnow.getValue() * this.runkf_h[0] * this.run_area;
         else if((nowmonth >= 5) & (nowmonth <=10))
-            maxInf = (1 - this.run_satSoil) * soilMaxInfSummer.getValue() * this.run_area;
+            maxInf = (1 - this.run_satSoil1) * soilMaxInfSummer.getValue() * this.runkf_h[0] * this.run_area;
         else
-            maxInf = (1 - this.run_satSoil) * soilMaxInfWinter.getValue() * this.run_area;
+            maxInf = (1 - this.run_satSoil1) * soilMaxInfWinter.getValue() * this.runkf_h[0] * this.run_area;
         
         return maxInf;
     }

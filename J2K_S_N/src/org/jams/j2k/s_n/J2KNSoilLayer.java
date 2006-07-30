@@ -54,7 +54,7 @@ import java.io.*;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.INIT,
+            update = JAMSVarDescription.UpdateType.RUN,
             description = " number of soil layers [-]"
             )
             public JAMSDouble Layer;
@@ -83,7 +83,7 @@ import java.io.*;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.INIT,
+            update = JAMSVarDescription.UpdateType.RUN,
             description = "in kg/dm³ soil bulk density"
             )
             public JAMSDoubleArray soil_bulk_density = new JAMSDoubleArray();
@@ -132,7 +132,7 @@ import java.io.*;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.INIT,
+            update = JAMSVarDescription.UpdateType.RUN,
             description = " in % organic Carbon in soil"
             )
             public JAMSDoubleArray C_org  = new JAMSDoubleArray();
@@ -306,6 +306,7 @@ import java.io.*;
             description = " Nitrate in surface runoff in kgN"
             )
             public JAMSDouble SurfaceNabs;
+    
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
             update = JAMSVarDescription.UpdateType.RUN,
@@ -485,12 +486,6 @@ import java.io.*;
             )
             public JAMSCalendar time;
     
-    @JAMSVarDescription(
-            access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.RUN,
-            description = " actual Transpiration in mm"
-            )
-            public JAMSDouble aTransp;
     
     /*
      *  Component run stages
@@ -546,7 +541,6 @@ import java.io.*;
     private double runBeta_min;
     private double runBeta_rsd;
     private double runBeta_NO3;
-    private double runaTransp;
     private boolean precalc_nit_vol;
     
     private double theta_nit = 0.05; /*fraction of anion excluded soil water. depended from clay content min. 0.01  max. 1*/
@@ -563,6 +557,7 @@ import java.io.*;
     private int datumjul = 0;
     double[] hor_by_infilt;
     double[] NO3_Poolvals;
+    double[] plantup_hor;
     
     public void init() throws JAMSEntity.NoSuchAttributeException{
         
@@ -615,6 +610,13 @@ import java.io.*;
         
         NO3_Poolvals = calc_plantuptake();
 //       NO3_Poolvals = NO3_Pool.getValue();
+        i = 0;
+        
+        while (i < layer){
+        plantup_hor[i] = NO3_Pool.getValue()[i] - NO3_Poolvals[i]; 
+        i++;
+        }
+        
         /*        calculation of infiltration water that bypasses the horizonts   loop */
         
         i = layer - 1;
@@ -1043,11 +1045,13 @@ import java.io.*;
                     
                     demand2 = 0;
                 }
+                
                 jj++;
             }
         }
         
         double runactN_up = runpotN_up + demand2;
+        
         
         actN_up.setValue(runactN_up);
         

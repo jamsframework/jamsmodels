@@ -88,7 +88,7 @@ public class StandardManagementParaReader extends JAMSComponent {
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.INIT,
+            update = JAMSVarDescription.UpdateType.RUN,
             description = "Collection of hru objects"
             )
             public JAMSEntityCollection hrus;
