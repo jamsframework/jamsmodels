@@ -557,7 +557,7 @@ import java.io.*;
     private int datumjul = 0;
     double[] hor_by_infilt;
     double[] NO3_Poolvals;
-    double[] plantup_hor;
+    
     
     public void init() throws JAMSEntity.NoSuchAttributeException{
         
@@ -593,6 +593,9 @@ import java.io.*;
         double Sumnitri_trans = 0;
         double sumh_infilt_mm = 0;
         double sum_Nupmove = 0;
+        double a_deposition = 0;
+        double NO3respool = 0;
+        double Nactiverespool = 0;
 //        double[] NO3_Poolvals = new double[layer];
         runlayerdepth = new double[layer];
         double[] NH4_Poolvals = new double[layer];
@@ -604,17 +607,27 @@ import java.io.*;
         double[] percoNvals = new double[layer];
         double[] interflowNabsvals = new double[layer];
         double[] percoNabsvals = new double[layer];
+        double[] plantup_hor = new double[layer];
+        double[] NO3balance = new double[layer];
+        double[] NH4balance = new double[layer];
+        double[] Nbalance = new double[layer];
+        double[] N_upmove_h = new double[layer];
+        double[] NO3_Poolalt = new double[layer];
         
         hor_by_infilt = new double[layer];
-        
-        
+        i = 0;
+        while (i < layer){
+            NO3_Poolalt[i] = NO3_Pool.getValue()[i];
+            i++;
+        }
         NO3_Poolvals = calc_plantuptake();
 //       NO3_Poolvals = NO3_Pool.getValue();
         i = 0;
         
         while (i < layer){
-        plantup_hor[i] = NO3_Pool.getValue()[i] - NO3_Poolvals[i]; 
-        i++;
+            
+            plantup_hor[i] = NO3_Poolalt[i] - NO3_Poolvals[i];
+            i++;
         }
         
         /*        calculation of infiltration water that bypasses the horizonts   loop */
@@ -695,8 +708,8 @@ import java.io.*;
                 
                 
                 
-                double N_upmove_h = calc_nitrateupmove(j);
-                sum_Nupmove = sum_Nupmove + N_upmove_h;
+                N_upmove_h[j] = calc_nitrateupmove(j);
+                sum_Nupmove = sum_Nupmove + N_upmove_h[j];
                 
                 j ++;
             }
@@ -754,7 +767,7 @@ import java.io.*;
                 runN_residue_pool_fresh = runN_residue_pool_fresh + inpN_biomass.getValue();
                 runNH4_Pool = runNH4_Pool + fertNH4.getValue();
                 delta_ntr = this.calc_Res_N_trans();
-                double a_deposition = deposition_factor.getValue() * runprecip;
+                a_deposition = deposition_factor.getValue() * runprecip;
                 
                 
                 runResidue_pool = runResidue_pool - (delta_ntr * runResidue_pool);
@@ -763,31 +776,32 @@ import java.io.*;
                     runResidue_pool = 0;
                 }
                 
-                runsum_Ninput =  fertactivorg.getValue() + fertNH4.getValue() + fertNO3.getValue() + a_deposition + runinterflowN_in;
+                runsum_Ninput =  fertactivorg.getValue() + fertNH4.getValue() + fertNO3.getValue() + a_deposition + runinterflowN_in + runsurfaceN_in;
                 
                 
                 
                 runN_stabel_pool = runN_stabel_pool + fertstableorg.getValue();
                 
-                runN_activ_pool = runN_activ_pool + fertactivorg.getValue() + (0.2 * (delta_ntr * runN_residue_pool_fresh));
+                Nactiverespool = 0.2 * (delta_ntr * runN_residue_pool_fresh);
+                runN_activ_pool = runN_activ_pool + fertactivorg.getValue() + Nactiverespool;
                 
                 if (runN_activ_pool < 0){
                     runN_activ_pool = 0;
                 }
+                NO3respool = 0.8 * (delta_ntr * runN_residue_pool_fresh);
+                runNO3_Pool = runNO3_Pool + sum_Nupmove + fertNO3.getValue() + a_deposition + runnitri_trans + Hum_act_min +  runinterflowN_in + runsurfaceN_in + NO3respool;
                 
-                runNO3_Pool = runNO3_Pool + sum_Nupmove + fertNO3.getValue() + a_deposition + runnitri_trans + Hum_act_min +  runinterflowN_in + runsurfaceN_in +(0.8 * (delta_ntr * runN_residue_pool_fresh));
-                
-                if (runNO3_Pool > runplantupN){
-                    
+/*                if (runNO3_Pool > runplantupN){
+ 
                     runNO3_Pool = runNO3_Pool - runplantupN;
-                    
+ 
                 }else if (runNO3_Pool <= runplantupN){
-                    
+ 
                     runplantupN = runNO3_Pool;
                     runNO3_Pool = 0;
-                    
-                    
-                }
+ 
+ 
+                } */
                 
                 rundenit_trans = calc_denitrification();
                 runNO3_Pool = runNO3_Pool -  rundenit_trans;
@@ -806,19 +820,19 @@ import java.io.*;
                 
                 runsum_Ninput = runsum_Ninput + runinterflowN_in;
                 
-                runNO3_Pool = runNO3_Pool + runnitri_trans + runinterflowN_in + percoNvals[i-1];
+                runNO3_Pool = runNO3_Pool + runnitri_trans + runinterflowN_in + percoNvals[i-1] + Hum_act_min;
                 
-                if (runNO3_Pool > runplantupN){
-                    
+/*                if (runNO3_Pool > runplantupN){
+ 
                     runNO3_Pool = runNO3_Pool - runplantupN;
-                    
+ 
                 }else {
-                    
+ 
                     runplantupN = runNO3_Pool;
                     runNO3_Pool = 0;
-                    
-                    
-                }
+ 
+ 
+                }*/
                 
                 rundenit_trans = calc_denitrification();
                 runNO3_Pool = runNO3_Pool -  rundenit_trans;
@@ -853,6 +867,8 @@ import java.io.*;
             
             
             
+            
+            
             runinterflowNabs = runinterflowN * runarea / 10000;
             runpercoNabs = runpercoN * runarea / 10000;
             
@@ -882,6 +898,50 @@ import java.io.*;
            if (NH4test1 > NH4test2){
                 System.out.println("Wundersame NH4 vermehrung");
             }*/
+            
+/*            if (i == 0){
+                
+                NO3balance[i] = NO3_Poolalt[i] + a_deposition + runsurfaceN_in + runnitri_trans + Hum_act_min + sum_Nupmove + runinterflowN_in + fertNO3.getValue() + NO3respool
+                        - (runNO3_Pool + plantup_hor[i] + rundenit_trans + runsurfaceN + percoNvals[i] + runinterflowN);
+                
+                NH4balance[i] = NH4_Pool.getValue()[i] + fertNH4.getValue()
+                - (runNH4_Pool + runvolati_trans + runnitri_trans);
+                
+                Nbalance[i] = NO3_Poolalt[i] + a_deposition + runsurfaceN_in + runnitri_trans + Hum_act_min + sum_Nupmove + runinterflowN_in + fertNO3.getValue() + NO3respool +
+                        + NH4_Pool.getValue()[i] + fertNH4.getValue() 
+                        + N_stabel_pool.getValue()[i] + N_activ_pool.getValue()[i] + N_residue_pool_fresh.getValue()[i] + fertactivorg.getValue() + fertstableorg.getValue() + Nactiverespool
+                        - (runNO3_Pool + plantup_hor[i] + rundenit_trans + runsurfaceN + percoNvals[i] + runinterflowN
+                        + runNH4_Pool + runvolati_trans + runnitri_trans +
+                        runN_activ_pool + runN_stabel_pool + runN_residue_pool_fresh);
+                        
+            }else{
+                
+                NO3balance[i] = NO3_Poolalt[i]  + runinterflowN_in + percoNvals[i-1] + runnitri_trans + Hum_act_min
+                        - (runNO3_Pool + plantup_hor[i] + N_upmove_h[i] + rundenit_trans + percoNvals[i] + runinterflowN);
+                
+            }
+            
+            if (NO3balance[i] < -0.00001 || NO3balance[i] > 0.00001){
+                String zeit = new String();
+                zeit = time.toString();
+                System.out.println(zeit +  " Horizont = "  + i + " NO3 Balance " + NO3balance[i]);
+                
+            }
+            
+            if (NH4balance[i] < -0.00001 || NH4balance[i] > 0.00001){
+                String zeit = new String();
+                zeit = time.toString();
+                System.out.println(zeit +  " Horizont = "  + i + " NH4 Balance " + NH4balance[i]);
+                
+            }
+            
+            if (Nbalance[i] < -0.00001 || Nbalance[i] > 0.00001){
+                String zeit = new String();
+                zeit = time.toString();
+                System.out.println(zeit +  " Horizont = "  + i + " N Balance " + Nbalance[i]);
+                
+            }*/
+            
             
             i++;
         }
@@ -925,7 +985,7 @@ import java.io.*;
         double[] partroot = new double[layer];
         double runpotN_up = potN_up.getValue();
 //        runpotN_up = 0.3;
-        double[] NO3_Poolvals = new double[layer];
+        double[] NO3_Poolvals1 = new double[layer];
         double[] potN_up_z = new double[layer];
         double[] demandN_up_z = new double[layer];
         double rootlayer = 0;
@@ -939,6 +999,7 @@ import java.io.*;
         int j = 0;
         int i = 0;
         
+        NO3_Poolvals1 = NO3_Pool.getValue();
         
         
         
@@ -957,8 +1018,8 @@ import java.io.*;
                     partroot[i] = 0;
                 }
             }else if (i == 0){
-               partroot[i] = runrootdepth /  runlayerdepth[0];
-               rootlayer = i;
+                partroot[i] = runrootdepth /  runlayerdepth[0];
+                rootlayer = i;
             }
             i++;
             
@@ -984,13 +1045,13 @@ import java.io.*;
                 potN_up_z[j] = ((runpotN_up /(1 - Math.exp(-runBeta_Ndist)))*(1 - Math.exp(-runBeta_Ndist))) - uptake1;
                 demand1 = (upNO3_Pool * partroot[j]) - potN_up_z[j];
                 uptake1 = uptake1 + potN_up_z[j];
-            /*    
+            /*
                 if (uptake1 == runpotN_up){
                     System.out.println("good");
                 }else{
                     System.out.println("bad");
                 }
-              */  
+             */
             }
             
             
@@ -1011,7 +1072,7 @@ import java.io.*;
                 
             }
             
-            NO3_Poolvals[j] = upNO3_Pool;
+            NO3_Poolvals1[j] = upNO3_Pool;
             
             j++;
         }
@@ -1030,12 +1091,12 @@ import java.io.*;
             while (jj < rootlayer) {
                 demand3 = demand2;
                 
-                demand3 = demand3 + NO3_Poolvals[jj];
+                demand3 = demand3 + NO3_Poolvals1[jj];
                 
-                NO3_Poolvals[jj]  = NO3_Poolvals[jj] + demand2;
+                NO3_Poolvals1[jj]  = NO3_Poolvals1[jj] + demand2;
                 
-                if (NO3_Poolvals[jj] < 0){
-                    NO3_Poolvals[jj] = 0;
+                if (NO3_Poolvals1[jj] < 0){
+                    NO3_Poolvals1[jj] = 0;
                 }
                 if (demand3 < 0){
                     
@@ -1055,7 +1116,7 @@ import java.io.*;
         
         actN_up.setValue(runactN_up);
         
-        return NO3_Poolvals;
+        return NO3_Poolvals1;
     }
     private boolean calc_nit_volati(int i){/*precalculations for nitrification and volatlisation */
         double eta_water = 0;
