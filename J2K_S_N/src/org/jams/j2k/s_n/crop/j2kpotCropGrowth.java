@@ -121,14 +121,8 @@ import java.util.ArrayList;
             description = "Fraction of nitrogen in the plant optimal biomass at the current growth's stage"
             )
             public JAMSDouble FNPlant;
-    
-    
-    @JAMSVarDescription(
-            access = JAMSVarDescription.AccessType.READWRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
-            description = "Actual nitrogen stored in the plants biomass for a given day"
-            )
-            public JAMSDouble BioNact;
+
+
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
@@ -257,7 +251,7 @@ import java.util.ArrayList;
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
             update = JAMSVarDescription.UpdateType.RUN,
-            description = "Actual N in Biomass (after Stress)"
+            description = "Actual N in Biomass "
             )
             public JAMSDouble BioNAct;
     
@@ -570,7 +564,7 @@ import java.util.ArrayList;
         if (plantExisting.getValue()) {
             calc_phu();
             calc_lai();
-            bio_opt = calc_biomass();
+            calc_biomass();
             hc_act = calc_canopy();
             calc_root();
             calc_maturity();
@@ -814,14 +808,14 @@ import java.util.ArrayList;
 // radiation-use efficiency declared in the crop growth database by parameter 'rue' in crop.par
 // whereas the total biomass on a given day is summed up
     
-    private double calc_biomass() throws JAMSEntity.NoSuchAttributeException {
+    private void calc_biomass() throws JAMSEntity.NoSuchAttributeException {
         
         double Hphosyn = 0.5 * this.solrad * (1 - Math.exp(this.leco*this.lai_act)); // Intercepted photosynthetically active radiation [MJ/m²]
         
         this.bio_opt_delta = this.rue * Hphosyn;
-        this.bio_opt = bio_opt_delta +  this.bio_opt;
+ //       this.bio_opt = bio_opt_delta +  this.bio_opt;
         
-        return bio_opt;
+  //      return bio_opt;
     }
     
 //

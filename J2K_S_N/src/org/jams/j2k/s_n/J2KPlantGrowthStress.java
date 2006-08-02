@@ -103,7 +103,8 @@ import org.unijena.jams.model.*;
         }
         
         double bioact = (stressfactor * BioOpt_delta.getValue()) + BioAct.getValue();    
-            
+        
+         
         
         BioAct.setValue(bioact);
         
