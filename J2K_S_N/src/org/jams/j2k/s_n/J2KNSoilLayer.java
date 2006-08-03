@@ -339,16 +339,16 @@ import java.io.*;
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
             update = JAMSVarDescription.UpdateType.RUN,
-            description = "potential nitrate uptake by plants in kgN/ha"
+            description = "potential nitrogen content of plants in kgN/ha"
             )
-            public JAMSDouble potN_up;
+            public JAMSDouble BioNoptAct;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
             update = JAMSVarDescription.UpdateType.RUN,
-            description = "actual nitrate uptake by plants in kgN/ha"
+            description = "actual nitrate nitrogen content of plants in kgN/ha"
             )
-            public JAMSDouble actN_up;
+            public JAMSDouble BioNAct;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
@@ -886,7 +886,9 @@ import java.io.*;
             sumN_stabel_pool = runN_stabel_pool + sumN_stabel_pool;
             sumN_activ_pool = runN_activ_pool + sumN_activ_pool;
             sumNH4_Pool = runNH4_Pool + sumNH4_Pool;
-            sumNO3_Pool = runNO3_Pool + sumNO3_Pool;
+            if (i == 0){
+                sumNO3_Pool = runNO3_Pool + sumNO3_Pool;
+            }
             suminterflowNabs = runinterflowNabs + suminterflowNabs;
             suminterflowN = runinterflowN + suminterflowN;
             Sumvolati_trans = Sumvolati_trans + runvolati_trans;
@@ -900,46 +902,46 @@ import java.io.*;
             }*/
             
 /*            if (i == 0){
-                
+ 
                 NO3balance[i] = NO3_Poolalt[i] + a_deposition + runsurfaceN_in + runnitri_trans + Hum_act_min + sum_Nupmove + runinterflowN_in + fertNO3.getValue() + NO3respool
                         - (runNO3_Pool + plantup_hor[i] + rundenit_trans + runsurfaceN + percoNvals[i] + runinterflowN);
-                
+ 
                 NH4balance[i] = NH4_Pool.getValue()[i] + fertNH4.getValue()
                 - (runNH4_Pool + runvolati_trans + runnitri_trans);
-                
+ 
                 Nbalance[i] = NO3_Poolalt[i] + a_deposition + runsurfaceN_in + runnitri_trans + Hum_act_min + sum_Nupmove + runinterflowN_in + fertNO3.getValue() + NO3respool +
-                        + NH4_Pool.getValue()[i] + fertNH4.getValue() 
+                        + NH4_Pool.getValue()[i] + fertNH4.getValue()
                         + N_stabel_pool.getValue()[i] + N_activ_pool.getValue()[i] + N_residue_pool_fresh.getValue()[i] + fertactivorg.getValue() + fertstableorg.getValue() + Nactiverespool
                         - (runNO3_Pool + plantup_hor[i] + rundenit_trans + runsurfaceN + percoNvals[i] + runinterflowN
                         + runNH4_Pool + runvolati_trans + runnitri_trans +
                         runN_activ_pool + runN_stabel_pool + runN_residue_pool_fresh);
-                        
+ 
             }else{
-                
+ 
                 NO3balance[i] = NO3_Poolalt[i]  + runinterflowN_in + percoNvals[i-1] + runnitri_trans + Hum_act_min
                         - (runNO3_Pool + plantup_hor[i] + N_upmove_h[i] + rundenit_trans + percoNvals[i] + runinterflowN);
-                
+ 
             }
-            
+ 
             if (NO3balance[i] < -0.00001 || NO3balance[i] > 0.00001){
                 String zeit = new String();
                 zeit = time.toString();
                 System.out.println(zeit +  " Horizont = "  + i + " NO3 Balance " + NO3balance[i]);
-                
+ 
             }
-            
+ 
             if (NH4balance[i] < -0.00001 || NH4balance[i] > 0.00001){
                 String zeit = new String();
                 zeit = time.toString();
                 System.out.println(zeit +  " Horizont = "  + i + " NH4 Balance " + NH4balance[i]);
-                
+ 
             }
-            
+ 
             if (Nbalance[i] < -0.00001 || Nbalance[i] > 0.00001){
                 String zeit = new String();
                 zeit = time.toString();
                 System.out.println(zeit +  " Horizont = "  + i + " N Balance " + Nbalance[i]);
-                
+ 
             }*/
             
             
@@ -983,8 +985,12 @@ import java.io.*;
         double upNO3_Pool = 0;
         double runrootdepth =(rootdepth.getValue() * 100) + 100;
         double[] partroot = new double[layer];
-        double runpotN_up = potN_up.getValue();
-//        runpotN_up = 0.3;
+        
+        
+        double runpotN_up = BioNoptAct.getValue() - BioNAct.getValue();
+        
+        
+        //        runpotN_up = 0.3;
         double[] NO3_Poolvals1 = new double[layer];
         double[] potN_up_z = new double[layer];
         double[] demandN_up_z = new double[layer];
@@ -1032,6 +1038,9 @@ import java.io.*;
             if (j == 0){
                 potN_up_z[j] = (runpotN_up /(1 - Math.exp(-runBeta_Ndist)))*(1 - Math.exp(-runBeta_Ndist * (runlayerdepth[j] / runrootdepth)));
                 demand1 = upNO3_Pool - potN_up_z[j];
+                if (runlayerdepth[j] > runrootdepth){ 
+                    demand1 = runpotN_up;
+                }
                 uptake1 = potN_up_z[j];
                 
             } else if (j > 0 && j < rootlayer){
@@ -1113,8 +1122,10 @@ import java.io.*;
         
         double runactN_up = runpotN_up + demand2;
         
-        
-        actN_up.setValue(runactN_up);
+        double bioNact = 0;
+        bioNact = BioNAct.getValue() + runactN_up;
+        System.out.println(bioNact);
+        BioNAct.setValue(bioNact);
         
         return NO3_Poolvals1;
     }

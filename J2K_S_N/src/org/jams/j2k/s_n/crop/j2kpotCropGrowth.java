@@ -1003,14 +1003,14 @@ import java.util.ArrayList;
         // of the optimal plants biomass and the actual N content of the plants biomass
         
        // double bioN_act;
-        bioN_act = bioN_act + actN_uprun; //
+       // bioN_act = bioN_act + actN_uprun; //
         Ndemand_act = bioNopt_act - bioN_act; //@todo: declare the actual N content according to the
         
               
         // @todo should we take depth distribution into account? probably not as this point
         // N uptake within the soil profile
         
-        if (this.betaN == 1) {
+        /*if (this.betaN == 1) {
             
             double Nup_layer = zrootd_act;
             
@@ -1023,7 +1023,7 @@ import java.util.ArrayList;
             double Nup_layer = 0.1;
             
             double Nup_depth = Ndemand_act / (1 - Math.exp(-betaN)) * (1-Math.exp(-betaN * this.rdmx / zrootd_act));
-        }
+        }*/
         return true;
         
     }
