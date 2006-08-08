@@ -35,13 +35,13 @@ import org.unijena.jams.data.*;
         )
 public class SCNInput extends JAMSComponent {
     
-    @JAMSVarDescription(
+    /*@JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
             update = JAMSVarDescription.UpdateType.INIT,
             unit = "km^2",
             description = "the entire area of the catchment"
             )
-            public JAMSDouble catchmentArea;
+            public JAMSDouble catchmentArea;*/
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
@@ -49,11 +49,11 @@ public class SCNInput extends JAMSComponent {
             unit = "mm",
             description = "the input precip"
             )
-            public JAMSDouble inputPrecip; 
+            public JAMSDouble inputPrecip;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
-            update = JAMSVarDescription.UpdateType.INIT,
+            update = JAMSVarDescription.UpdateType.RUN,
             unit = "mm",
             description = "the effective precip"
             )
@@ -66,14 +66,6 @@ public class SCNInput extends JAMSComponent {
             description = "duration of precip event"
             )
             public JAMSInteger precipDuration;
-    
-    @JAMSVarDescription(
-            access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.INIT,
-            unit = "s",
-            description = "temporal resolution"
-            )
-            public JAMSInteger tempRes;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
@@ -101,7 +93,7 @@ public class SCNInput extends JAMSComponent {
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
-            update = JAMSVarDescription.UpdateType.INIT,
+            update = JAMSVarDescription.UpdateType.RUN,
             unit = "%",
             description = "slope of stream"
             )
@@ -109,26 +101,34 @@ public class SCNInput extends JAMSComponent {
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.INIT,
+            update = JAMSVarDescription.UpdateType.RUN,
             description = "catchment CN value"
             )
             public JAMSDouble cnValue;
     
     public void init() throws JAMSEntity.NoSuchAttributeException {
+                
+        
+    } 
+    public void run() throws JAMSEntity.NoSuchAttributeException {
         double slope =(this.maxElevation.getValue() - this.minElevation.getValue()) / (this.streamLength.getValue()*1000);
         this.streamSlope.setValue(slope);
-                
+        
+        //calc effective precip
+        double precipBoundary = ((200 - 2 * this.cnValue.getValue()) * 25.4)/ this.cnValue.getValue();
+        
         double termA = Math.pow((inputPrecip.getValue()/25.4) - (200.0/cnValue.getValue())+2.0, 2);
         double termB = (inputPrecip.getValue() / 25.4) + (800 / cnValue.getValue()) - 8.0;
         
         double effPrec = termA / termB * 25.4;
         
+        if(this.inputPrecip.getValue() <= precipBoundary){
+            effPrec = 0;
+        }
+        
         this.effectivePrecip.setValue(effPrec);
         System.out.println("input precip: " + this.inputPrecip.getValue());
         System.out.println("eff. precip: " + effPrec);
-    } 
-    public void run() throws JAMSEntity.NoSuchAttributeException {
-        
     }
     
 }

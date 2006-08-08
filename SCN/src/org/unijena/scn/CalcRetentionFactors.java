@@ -37,40 +37,44 @@ public class CalcRetentionFactors extends JAMSComponent {
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
-            update = JAMSVarDescription.UpdateType.INIT,
+            update = JAMSVarDescription.UpdateType.RUN,
             description = "retention factor beta"
             )
             public JAMSDouble beta;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
-            update = JAMSVarDescription.UpdateType.INIT,
+            update = JAMSVarDescription.UpdateType.RUN,
             description = "retention factor k1"
             )
             public JAMSDouble k1;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
-            update = JAMSVarDescription.UpdateType.INIT,
+            update = JAMSVarDescription.UpdateType.RUN,
             description = "retention factor k2"
             )
             public JAMSDouble k2;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.INIT,
+            update = JAMSVarDescription.UpdateType.RUN,
             description = "stream slope"
             )
             public JAMSDouble streamSlope;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.INIT,
+            update = JAMSVarDescription.UpdateType.RUN,
             description = "stream length"
             )
             public JAMSDouble streamLength;
     
     public void init() throws JAMSEntity.NoSuchAttributeException {
+        
+    } 
+    
+    public void run() throws JAMSEntity.NoSuchAttributeException {
         double lengthSlope = this.streamLength.getValue() / Math.sqrt(this.streamSlope.getValue());
         double beta = 0;
         if(lengthSlope < 10.0){
@@ -85,10 +89,6 @@ public class CalcRetentionFactors extends JAMSComponent {
         this.beta.setValue(beta);
         this.k1.setValue(k1);
         this.k2.setValue(k2);
-    } 
-    
-    public void run() throws JAMSEntity.NoSuchAttributeException {
-        
     }
     
 }

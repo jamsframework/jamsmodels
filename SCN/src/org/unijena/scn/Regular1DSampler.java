@@ -309,8 +309,8 @@ import org.unijena.jams.model.*;
             int sampleCount = this.resolution.getValue();
             JAMSCalendar timeStamp = this.modelTimeInterval.getStart();
             for(int t = 0; t < this.timeSteps; t++){
-                attribWriter.addData(timeStamp.toString("%1$tY-%1$tm-%1$td %1$tH:%1$tM:%1$tS"));
-                timeStamp.add(modelTimeInterval.getTimeUnit(), 1);
+                attribWriter.addData(timeStamp.toString("%1$tH:%1$tM:%1$tS"));
+                timeStamp.add(modelTimeInterval.getTimeUnit(), modelTimeInterval.getTimeUnitCount());
                 for(int r = 0; r < sampleCount; r++){
                     attribWriter.addData(this.valueArray[r][t]);
                 }

@@ -51,7 +51,7 @@ public class ParallelStorageCascade extends JAMSComponent {
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.INIT,
+            update = JAMSVarDescription.UpdateType.RUN,
             unit = "km^2",
             description = "the entire area of the catchment"
             )
@@ -65,15 +65,7 @@ public class ParallelStorageCascade extends JAMSComponent {
             )
             public JAMSInteger precipDuration;
     
-    @JAMSVarDescription(
-            access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.INIT,
-            unit = "s",
-            description = "temporal resolution"
-            )
-            public JAMSInteger tempRes;
-    
-    @JAMSVarDescription(
+    /*@JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
             update = JAMSVarDescription.UpdateType.INIT,
             unit = "mm",
@@ -100,7 +92,7 @@ public class ParallelStorageCascade extends JAMSComponent {
             update = JAMSVarDescription.UpdateType.INIT,
             description = "retention factor k2"
             )
-            public JAMSDouble k2;
+            public JAMSDouble k2;*/
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
@@ -134,51 +126,42 @@ public class ParallelStorageCascade extends JAMSComponent {
             )
             public JAMSDoubleArray volume_arr;
     
+    @JAMSVarDescription(
+            access = JAMSVarDescription.AccessType.READ,
+            update = JAMSVarDescription.UpdateType.RUN,
+            description = "unit hydrograph 1"
+            )
+            public JAMSDoubleArray uh1;
+    
+    @JAMSVarDescription(
+            access = JAMSVarDescription.AccessType.READ,
+            update = JAMSVarDescription.UpdateType.RUN,
+            description = "unit hydrograph 2"
+            )
+            public JAMSDoubleArray uh2;
+    
     
     double hNe1, hNe2, hNe;
-    double[] u1_arr, u2_arr, vol_arr, run_arr;
+    //double[] u1_arr, u2_arr, 
+    double[] vol_arr, run_arr;
     int timeStepCounter = 0;
     int start = 0;
     
     public void init() throws JAMSEntity.NoSuchAttributeException {
         this.timeStepCounter = 0;
-        int nStor = 2;
                 
         int timeSteps = (int)timeInterval.getNumberOfTimesteps()+1;
         
-        u1_arr = new double[timeSteps]; 
-        u2_arr = new double[timeSteps];
         vol_arr = new double[timeSteps]; 
         run_arr = new double[timeSteps];
         
-        System.out.println("timeSteps: " + timeSteps);
-        System.out.println("timeSize: " + this.timeInterval.getTimeUnitCount());
-        
-        int arrayLength = (int)(this.precipDuration.getValue() / this.tempRes.getValue());
-        hNe = effectivePrecip.getValue() / arrayLength;
-        hNe1 = hNe * beta.getValue();
-        hNe2 = hNe * (1 - beta.getValue());
-        
-        int faculty = 1;
-        double tInterval = (double)this.timeInterval.getTimeUnitCount() / (double)this.precipDuration.getValue();
-        double tStep = 0;
-        
-        boolean cont = true;
-        int counter = 0;
-        
-        double count2 = 0;
-        //calculate the unit hydrograph for both cascades
-        for(int i = 0; i < timeSteps; i++){
-            u1_arr[i] = hNe1 * (this.catchmentArea.getValue() / 3.6) * (1/(this.k1.getValue() * faculty) * Math.pow(count2/this.k1.getValue(), nStor-1) * Math.exp(-count2/this.k1.getValue()));
-            u2_arr[i] = hNe2 * (this.catchmentArea.getValue() / 3.6) * (1/(this.k2.getValue() * faculty) * Math.pow(count2/this.k2.getValue(), nStor-1) * Math.exp(-count2/this.k2.getValue()));
-            //System.out.println(u1_arr[i]);
-            count2 = count2 + tInterval;
-        }
     } 
     
     public void run() throws JAMSEntity.NoSuchAttributeException {
         //let it run until no relevant outflow occurs
         double runoff = 0;
+        double[] u1_arr = this.uh1.getValue();
+        double[] u2_arr = this.uh2.getValue();
         int timeInSeconds = 0;
         int arrayLength = (int)(this.precipDuration.getValue() / this.timeInterval.getTimeUnitCount());
         
@@ -193,22 +176,17 @@ public class ParallelStorageCascade extends JAMSComponent {
         } else{
             start++;
         }
-        for(int j = start; j < this.timeStepCounter; j++){
-            runoff = runoff + u1_arr[j];//((Double)this.u1.get(j)).doubleValue();
-            runoff = runoff + u2_arr[j];//((Double)this.u2.get(j)).doubleValue();
+        for(int j = start; j <= this.timeStepCounter; j++){
+            runoff = runoff + u1_arr[j];
+            runoff = runoff + u2_arr[j];
         }
-        double volume = (runoff * this.tempRes.getValue() * 1000) / (this.catchmentArea.getValue() * 1000000);
+        double volume = (runoff * this.timeInterval.getTimeUnitCount() * 1000) / (this.catchmentArea.getValue() * 1000000);
         String ts = String.format("%1$tH:%1$tM:%1$tS", this.time);
         
+        this.run_arr[this.timeStepCounter] = runoff;
+        this.vol_arr[this.timeStepCounter] = volume;
         this.runoff.setValue(runoff);
         this.volume.setValue(volume);
-
-        try{
-        this.run_arr[this.timeStepCounter] = runoff;
-        } catch (Exception e) {
-            System.out.println("");
-        }
-        this.vol_arr[this.timeStepCounter] = volume;
         
         this.runoff_arr.setValue(run_arr);
         this.volume_arr.setValue(vol_arr);
