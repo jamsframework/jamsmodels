@@ -987,10 +987,16 @@ import java.io.*;
         double[] partroot = new double[layer];
         
         
+        if (BioNoptAct.getValue() == 0){
+            BioNAct.setValue(0);
+        }
         double runpotN_up = BioNoptAct.getValue() - BioNAct.getValue();
         
+        if (runpotN_up < 0){
+            runpotN_up  = 0;
+        }
         
-        //        runpotN_up = 0.3;
+//                runpotN_up = 0.3;
         double[] NO3_Poolvals1 = new double[layer];
         double[] potN_up_z = new double[layer];
         double[] demandN_up_z = new double[layer];
@@ -1037,10 +1043,11 @@ import java.io.*;
             
             if (j == 0){
                 potN_up_z[j] = (runpotN_up /(1 - Math.exp(-runBeta_Ndist)))*(1 - Math.exp(-runBeta_Ndist * (runlayerdepth[j] / runrootdepth)));
-                demand1 = upNO3_Pool - potN_up_z[j];
                 if (runlayerdepth[j] > runrootdepth){ 
-                    demand1 = runpotN_up;
+                    potN_up_z[j] = runpotN_up;
                 }
+                demand1 = upNO3_Pool - potN_up_z[j];
+                
                 uptake1 = potN_up_z[j];
                 
             } else if (j > 0 && j < rootlayer){
@@ -1124,7 +1131,11 @@ import java.io.*;
         
         double bioNact = 0;
         bioNact = BioNAct.getValue() + runactN_up;
-        System.out.println(bioNact);
+        
+//        System.out.println("bioNact = " + bioNact);
+//        if (runpotN_up > runactN_up){
+        System.out.println("runpotN_up = " + runpotN_up + " runactN_up = " + runactN_up);
+//        }
         BioNAct.setValue(bioNact);
         
         return NO3_Poolvals1;

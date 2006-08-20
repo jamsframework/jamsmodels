@@ -994,7 +994,9 @@ import java.util.ArrayList;
         /* Mass N stored in the optimal plant biomass on a given day */
         
         bioNopt_act = this.fnplant_act * this.bio_opt;
-               
+//         System.out.println("bioNopt_act = " + bioNopt_act);
+        
+        
       //  if (idValue.getValue() == 6) {       
         //    System.out.println (" bioNopt_act: " + bioNopt_act + " - ");
         // }
@@ -1004,7 +1006,7 @@ import java.util.ArrayList;
         
        // double bioN_act;
        // bioN_act = bioN_act + actN_uprun; //
-        Ndemand_act = bioNopt_act - bioN_act; //@todo: declare the actual N content according to the
+        //Ndemand_act = bioNopt_act - bioN_act; //@todo: declare the actual N content according to the
         
               
         // @todo should we take depth distribution into account? probably not as this point
