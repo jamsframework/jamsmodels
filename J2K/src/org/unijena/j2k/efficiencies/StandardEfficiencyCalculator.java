@@ -245,6 +245,25 @@ import org.unijena.jams.model.*;
             this.interValStart =(int)((sdEff - sdMod) / (1000 * 60 * 60 * 24));
             this.interValEnd = this.interValStart + this.effTsteps;
         }
+	
+	
+/*	else {*/
+	JAMSCalendar tmp = eff_sd;
+	long t1 = tmp.getTimeInMillis();
+	tmp.add(effTimeInterval.getTimeUnit(),effTimeInterval.getTimeUnitCount());
+	long t2 = tmp.getTimeInMillis();
+	
+	this.interValStart = (int)(sdEff - sdMod) / (int)(t2 - t1);
+	this.interValEnd = this.interValStart + this.effTsteps;
+	    
+/*	    getModel().getRuntime().println("Possible wrong start index!", JAMS.STANDARD);
+	    this.interValStart =(int)((sdEff - sdMod) / (1000 * 60 * 60 * 24));
+            this.interValEnd = this.interValStart + this.effTsteps;*/
+
+	
+/*	 this.interValStart =0;
+         this.interValEnd = model_tsteps;*/
+	    
         int junk = 0;
     }
     
