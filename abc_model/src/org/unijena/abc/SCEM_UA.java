@@ -21,7 +21,7 @@
  *
  */
 
-package org.unijena.abc;
+package src.org.unijena.abc;
 
 import java.util.Random;
 import java.util.Vector;
@@ -31,8 +31,8 @@ import java.util.Collections;
 import org.unijena.jams.data.*;
 import org.unijena.jams.io.GenericDataWriter;
 import org.unijena.jams.model.*;
-import org.unijena.abc.ABCEvoluAlgComparator;
-import org.unijena.abc.SCEM_UA_Comparator;
+import org.unijena.jams.tools.*;
+import src.org.unijena.abc.SCEM_UA_Comparator;
 import Jama.*;
 /**
  *
@@ -43,7 +43,7 @@ import Jama.*;
         author="Author",
         description="Description"
         )
-        public class ABC_SCEM_UA extends JAMSContext {
+        public class SCEM_UA extends JAMSContext {
     
     /*
      *  Component variables
@@ -84,6 +84,13 @@ import Jama.*;
             )
             public JAMSDouble[] effValues;        
     
+    @JAMSVarDescription(
+            access = JAMSVarDescription.AccessType.READ,
+            update = JAMSVarDescription.UpdateType.RUN,
+            description = "The current hru entity"
+            )
+            public JAMSEntityCollection entities;
+    
     JAMSDouble[] parameters;
     String[] parameterNames;
     String[] effNames;
@@ -96,13 +103,18 @@ import Jama.*;
     GenericDataWriter writer;
     
     int N; //parameter dimension
-    int M; //objective dimension
+    int M;
     int q; //number of complexes
     int s; //population size
     int m; //complex size; floor(s/q)
     int L; //number of offspring generated per iteration
+    double gamma; //Kurtosis parameter Bayesian Inference Scheme (Thiemann et al., 2001)
+    double ndraw; //Number of accepted draws to infer posterior distribution on (?)
            
-    public void init() {	
+    public void init() {
+//generalise this!!
+	
+	
 //add more checks!!!
         //retreiving parameter names
         int i;
@@ -119,6 +131,8 @@ import Jama.*;
             i++;
         }
         
+	entities = (JAMSEntityCollection)getModel().getRuntime().getDataHandles().get("hrus");
+	
         //retreiving boundaries
         tok = new StringTokenizer(boundaries.getValue(), ";");
         int n = tok.countTokens();
@@ -162,31 +176,12 @@ import Jama.*;
             
     private double[] abcRandomSampler(){
         int paras = this.parameterNames.length;
-        boolean criticalPara = false;
-        double criticalParaValue = 0; 
         double[] sample = new double[paras];
         	
         for(int i = 0; i < paras; i++){
-            if(parameterNames[i].equals("abcModel.a") || parameterNames[i].equals("abcModel.b")){
-                //either a or b has already been sampled!
-                if(criticalPara){
-                    double d = generator.nextDouble();
-                    double upperBound = 1.0 - criticalParaValue;
-                    sample[i] = (lowBound[i] + d * (upperBound-lowBound[i]));
-                }
-                else{
-                    //first criticalPara
-                    double d = generator.nextDouble();
-                    sample[i] = (lowBound[i] + d * (upBound[i]-lowBound[i]));
-                    criticalPara = true;
-                    criticalParaValue = sample[i];
-                }
-            }else{
-                double d = generator.nextDouble();
-                // all other parameters
-                sample[i] = (lowBound[i] + d * (upBound[i]-lowBound[i]));
-            }
-            getModel().getRuntime().sendInfoMsg("Para: " + parameterNames[i] + " = " + sample[i]);
+	    double d = generator.nextDouble();
+	    
+	    sample[i] = 1.0;//(lowBound[i] + d * (upBound[i]-lowBound[i]));
         }     
         return sample;
     }
@@ -240,25 +235,8 @@ import Jama.*;
         double criticalParaValue = 0; 
         	
         for(int i = 0; i < paras; i++){
-            if(parameterNames[i].equals("abcModel.a") || parameterNames[i].equals("abcModel.b")){
-                //either a or b has already been sampled!
-                if(criticalPara){                    
-                    double upperBound = 1.0 - criticalParaValue;
-		    if (sample[i].getValue() < lowBound[i] || sample[i].getValue() > upperBound )
-			return false;
-                }
-                else{
-                    //first criticalPara
-		    if (sample[i].getValue() < lowBound[i] || sample[i].getValue() > upBound[i] )
-			return false;
-                    criticalPara = true;
-                    criticalParaValue = sample[i].getValue();
-                }
-            }else{
-                // all other parameters
-		if (sample[i].getValue() < lowBound[i] || sample[i].getValue() > upBound[i] )
-		    return false;
-            }
+	    if (sample[i].getValue() < lowBound[i] || sample[i].getValue() > upBound[i] )
+		return false;
         }     
         return true;
     }
@@ -286,11 +264,18 @@ import Jama.*;
 	double[][] coV = new double[N][N];	
 	double[] mean = getMean(data);
 	double vecLength = data.length;
-
+		
 	for (int i=0;i<N;i++) {
 	    java.util.Arrays.fill(coV[i],0);
 	}
-		
+
+	if (vecLength == 1) {
+	    for (int i=0;i<N;i++) {
+		coV[i][i] = 1.0;
+	    }
+	    return coV;
+	}
+	
 	for (int i=0;i<N;i++) {
 	    for (int j=0;j<N;j++) {
 		for (int k=0;k<vecLength;k++) {
@@ -468,8 +453,7 @@ import Jama.*;
 	    for (int j=0;j<M;j++) {
 		System.out.print(effNames[j] + ":" + D[i][N+j] + " ,");
 	    }
-	    System.out.println("Fitness" + ":" + D[i][N+M]);
-	    
+	    System.out.println("Fitness" + ":" + D[i][N+M]);	    
 	}		   
     }
     
@@ -632,8 +616,8 @@ import Jama.*;
 	// Step 1. Complete the initialization of the process by calculating the number 
 	// of points in each complex, m and the number of offspring generated per iteration, L
 	N = parameters.length;
-	s = 20; //get from outside ...
-	q = 2; //get from outside ...
+	s = 1; //get from outside ...
+	q = 1; //get from outside ...
 	m = s/q;
 	L = Math.max(1,m/5); 
 				
@@ -646,14 +630,12 @@ import Jama.*;
 
 	// Calculate densities pset associated with the sampled parameter set
 	// pset will be an array with the probability in the first column and the index of 
-	// the sample in the second column;
-	
+	// the sample in the second column;	
 	D = ComputeDensity(x);
 	ComputeFitness(D);
 		
 	// Step 3: Sort the points in order of increasing fitness
 	sort(D,M+N,false);	
-	
 	// Step 4: Initialize starting points of sequences which the Metropolis Hastings algorithm will use...
 	for (int i = 0; i<q; i++) {
 	    Vector<double[]> Sequence_k = new Vector<double[]>();
