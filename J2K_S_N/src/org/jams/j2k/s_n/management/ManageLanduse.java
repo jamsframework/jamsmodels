@@ -64,18 +64,32 @@ public class ManageLanduse extends JAMSComponent {
             public JAMSDouble fertorgNfresh;
     
     @JAMSVarDescription(
+            access = JAMSVarDescription.AccessType.READWRITE,
+            update = JAMSVarDescription.UpdateType.RUN,
+            description = "Current organic fertilizer amount"
+            )
+            public JAMSInteger RotPos;
+    
+     @JAMSVarDescription(
+            access = JAMSVarDescription.AccessType.READWRITE,
+            update = JAMSVarDescription.UpdateType.RUN,
+            description = "Current organic fertilizer amount"
+            )
+            public JAMSInteger ManagementPos;
+    
+    @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
             update = JAMSVarDescription.UpdateType.RUN,
             description = "Plant exisiting or not"
             )
-            public JAMSBoolean plantExisting = new JAMSBoolean();
+            public JAMSBoolean plantExisting;
 
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
             update = JAMSVarDescription.UpdateType.RUN,
             description = "Indicator for harvesting"
             )
-            public JAMSBoolean doHarvest = new JAMSBoolean();
+            public JAMSBoolean doHarvest;
     
     
     public void run() throws JAMSEntity.NoSuchAttributeException {
@@ -86,11 +100,11 @@ public class ManageLanduse extends JAMSComponent {
         this.fertorgNfresh.setValue(0);
         
         ArrayList<J2KSNCrop> rotation = (ArrayList<J2KSNCrop>) entity.getObject("landuseRotation");
-        int rotPos = entity.getInt("rotPos");
+        int rotPos = RotPos.getValue();
         J2KSNCrop currentCrop = rotation.get(rotPos);
         
         ArrayList<J2KSNLMArable> managementList = currentCrop.managementList;
-        int managementPos = entity.getInt("managementPos");
+        int managementPos = ManagementPos.getValue();
         J2KSNLMArable currentManagement = managementList.get(managementPos);
         
         int nextDay = currentManagement.jDay;
@@ -108,11 +122,12 @@ public class ManageLanduse extends JAMSComponent {
         if (nextDay == time.get(JAMSCalendar.DAY_OF_YEAR)) {
             
             if ((managementPos+1) ==  managementList.size()) {
-                entity.setInt("managementPos", 0);
+                ManagementPos.setValue(0);
                 int rotCount = rotation.size();
                 rotPos = (rotPos+1) % rotCount;
+                RotPos.setValue(rotPos);
             } else {
-                entity.setInt("managementPos", managementPos+1);
+                ManagementPos.setValue(managementPos+1);
             }
             
             if (currentManagement.till != null) {

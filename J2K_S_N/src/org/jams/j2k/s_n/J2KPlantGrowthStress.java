@@ -45,21 +45,21 @@ import org.unijena.jams.model.*;
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
             update = JAMSVarDescription.UpdateType.RUN,
-            description = "in [-] plant groth nitrogen stress factor"
+            description = "in [-] plant growth nitrogen stress factor"
             )
             public JAMSDouble nstrs;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
             update = JAMSVarDescription.UpdateType.RUN,
-            description = "in [-] plant groth temperature stress factor"
+            description = "in [-] plant growth temperature stress factor"
             )
             public JAMSDouble tstrs;
     
      @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
             update = JAMSVarDescription.UpdateType.RUN,
-            description = "in [-] plant groth water stress factor"
+            description = "in [-] plant growth water stress factor"
             )
             public JAMSDouble wstrs;
 

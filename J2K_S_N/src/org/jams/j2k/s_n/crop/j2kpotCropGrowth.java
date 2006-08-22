@@ -329,7 +329,7 @@ import java.util.ArrayList;
             update = JAMSVarDescription.UpdateType.RUN,
             description = "flag plant existing yes or no " // attention its a boolean!
             )
-            public JAMSBoolean plantExisting = new JAMSBoolean();
+            public JAMSBoolean plantExisting;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
@@ -375,7 +375,14 @@ import java.util.ArrayList;
             update = JAMSVarDescription.UpdateType.RUN,
             description = "Reset plant state variables?"
             )
-            public JAMSBoolean plantStateReset = new JAMSBoolean();
+            public JAMSBoolean plantStateReset;
+   
+   @JAMSVarDescription(
+            access = JAMSVarDescription.AccessType.WRITE,
+            update = JAMSVarDescription.UpdateType.RUN,
+            description = "Indicator for harvesting"
+            )
+            public JAMSBoolean doHarvest;
     
     
      /*
@@ -569,9 +576,13 @@ import java.util.ArrayList;
             calc_root();
             calc_maturity();
             calc_nuptake();
+            
+            
+            if (doHarvest.getValue()){
             calc_cropyield();
             calc_cropyield_ha();
             calc_residues ();
+            }
                       
         } else if (plantStateReset.getValue()) {
             
@@ -604,7 +615,7 @@ import java.util.ArrayList;
             fphu_act = 0;
             bioN_act = 0; /*actual biomass in kg/ha adapted by stress*/
             frLAImx_Xi = 0;
-            residue_pool = 0;
+            //residue_pool = 0;
             plantStateReset.setValue(false);
             test = 0;
             
