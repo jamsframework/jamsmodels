@@ -21,7 +21,7 @@
  *
  */
 
-package src.org.unijena.abc;
+package org.unijena.abc;
 
 import java.util.Random;
 import java.util.Vector;
@@ -32,7 +32,7 @@ import org.unijena.jams.data.*;
 import org.unijena.jams.io.GenericDataWriter;
 import org.unijena.jams.model.*;
 import org.unijena.jams.tools.*;
-import src.org.unijena.abc.SCEM_UA_Comparator;
+import org.unijena.abc.SCEM_UA_Comparator;
 import Jama.*;
 /**
  *

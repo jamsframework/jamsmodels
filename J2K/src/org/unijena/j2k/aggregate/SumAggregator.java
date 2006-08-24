@@ -46,15 +46,24 @@ public class SumAggregator extends JAMSComponent {
             )
             public JAMSDouble[] sum;
     
-    public void run() throws JAMSEntity.NoSuchAttributeException {
+
+    
+    public void init() {
+        for (int i = 0; i < value.length; i++) {
+            sum[i].setValue(0);
+        }
+    }
+
+    public void run() {
         for (int i = 0; i < value.length; i++) {
             sum[i].setValue(sum[i].getValue()+ (value[i].getValue()));
         }
     }
     
     public void cleanup(){
-        
-        
+        for (int i = 0; i < value.length; i++) {
+            sum[i].setValue(0);
+        }
     }
     
 }

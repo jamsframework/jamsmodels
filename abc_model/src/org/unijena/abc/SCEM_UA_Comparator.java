@@ -21,7 +21,7 @@
  *
  */
 
-package src.org.unijena.abc;
+package org.unijena.abc;
 
 import java.util.Comparator;
 import java.util.Vector;

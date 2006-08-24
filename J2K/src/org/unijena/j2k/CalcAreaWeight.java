@@ -58,8 +58,7 @@ public class CalcAreaWeight extends JAMSComponent {
             )
             public JAMSDouble areaWeight;
     
-    public void run() throws JAMSEntity.NoSuchAttributeException {
+    public void run() {
         areaWeight.setValue(catchmentArea.getValue()/entityArea.getValue());
     }
-    
 }
