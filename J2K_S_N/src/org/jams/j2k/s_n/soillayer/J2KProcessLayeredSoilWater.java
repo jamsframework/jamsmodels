@@ -79,8 +79,8 @@ import org.unijena.jams.model.*;
  */
 @JAMSComponentDescription(
         title="J2KProcessLayerdSoilWater",
-        author="Peter Krause",
-        description="Calculates soil water balance for each HRU without vertical layers"
+        author="Peter Krause, modifications by Manfred Fink",
+        description="Calculates soil water balance for each HRU with vertical layers"
         )
         public class J2KProcessLayeredSoilWater extends JAMSComponent {
     
@@ -505,8 +505,8 @@ import org.unijena.jams.model.*;
     //internal state variables
     double  run_actDPS, run_satSoil1, run_inRain, run_inSnow,
             run_snowMelt, run_infiltration, run_latComp, run_vertComp, run_overlandflow, run_potETP, run_actETP, run_snowDepth, run_area, run_slope,
-            run_inRD1, soilSatMps, soilSatLps, soilActMps, soilActLps, soilMaxMps, soilMaxLps, run_outRD1, run_genRD1;
-    double[] run_maxMPS, run_maxLPS, run_actMPS, run_actLPS, run_satMPS, run_satLPS, run_inRD2, run_satHor, run_outRD2, run_genRD2;
+            run_inRD1, soilSatMps, soilSatLps, soilActMps, soilActLps, soilMaxMps, soilMaxLps, run_outRD1, run_genRD1, lowpart, top_satsoil;
+    double[] run_maxMPS, run_maxLPS, run_actMPS, run_actLPS, run_satMPS, run_satLPS, run_inRD2, run_satHor, run_outRD2, run_genRD2 ;
     double[] runlayerdepth, horETP, runkf_h;
     int nhor;
     
@@ -575,6 +575,8 @@ import org.unijena.jams.model.*;
         this.run_vertComp = 0;
         this.run_genRD1 = 0;
         this.run_outRD1 = 0;
+        this.lowpart = 0;
+        this.top_satsoil = 0;
         
         balET = this.run_actETP;
         balDPSstart = this.run_actDPS;
@@ -771,6 +773,14 @@ import org.unijena.jams.model.*;
         soilActLps = 0;
         soilSatMps = 0;
         soilSatLps = 0;
+        double upperMaxMps = 0;
+        double upperActMps = 0;
+        double upperMaxLps = 0;
+        double upperActLps = 0;    
+        double[] infil_depth = new double[nhor];
+        double partdepth = 0;
+        double soilinfil = 50;
+        
         for(int h = 0; h < nhor; h++){
             if((this.run_actLPS[h] > 0) && (this.run_maxLPS[h] > 0)){
                 this.run_satLPS[h] = this.run_actLPS[h] / this.run_maxLPS[h];
@@ -788,15 +798,35 @@ import org.unijena.jams.model.*;
                 this.run_satSoil1 = 0;
             }
             
+            infil_depth[h]  += layerdepth.getValue()[h];
+            if (infil_depth[h] <= soilinfil || h == 0) {
+               upperMaxMps += this.run_maxMPS[h] * layerdepth.getValue()[h];
+               upperActMps += this.run_actMPS[h] * layerdepth.getValue()[h];
+               upperMaxLps += this.run_maxLPS[h] * layerdepth.getValue()[h];
+               upperActLps += this.run_actLPS[h] * layerdepth.getValue()[h];
+               partdepth += layerdepth.getValue()[h];
+               
+            } else if (infil_depth[h - 1] <= soilinfil) {
+               lowpart = soilinfil - partdepth;
+               upperMaxMps += this.run_maxMPS[h] * lowpart;
+               upperActMps += this.run_actMPS[h] * lowpart;
+               upperMaxLps += this.run_maxLPS[h] * lowpart;
+               upperActMps += this.run_actLPS[h] * lowpart;
+              
+            }
+            
+            soilMaxMps += this.run_maxMPS[h];
+            soilActMps += this.run_actMPS[h];
+            soilMaxLps += this.run_maxLPS[h];
+            soilActLps += this.run_actLPS[h];
         }
-            soilMaxMps = this.run_maxMPS[0];
-            soilActMps = this.run_actMPS[0];
-            soilMaxLps = this.run_maxLPS[0];
-            soilActLps = this.run_actLPS[0];
+            
         if(((soilMaxLps > 0) | (soilMaxMps > 0)) & ((soilActLps > 0) | (soilActMps > 0))){
             this.run_satSoil1 = ((soilActLps + soilActMps) / (soilMaxLps + soilMaxMps));
+            this.top_satsoil = ((upperActLps + upperActMps) / (upperMaxLps + upperMaxMps));
             soilSatMps = (soilActMps / soilMaxMps);
             soilSatLps = (soilActLps / soilMaxLps);
+            
         } else{
             this.run_satSoil1 = 0;
         }
@@ -1159,14 +1189,15 @@ import org.unijena.jams.model.*;
             /** checking if percolation rate is limited by parameter */
             if (hor == nhor - 1){
                 maxPerc = this.soilMaxPerc.getValue() * this.run_area * this.Kf_geo.getValue() / 86.4;
-                // 86.4 cm/d "normal" hydraulic conductivity in geology (1 E-5 m/s)
+                // 86.4 cm/d "middle" hydraulic conductivity in geology (1 E-5 m/s)
                 if(this.run_vertComp > maxPerc){
                     double rest = this.run_vertComp - maxPerc;
                     this.run_vertComp = maxPerc;
                     this.run_latComp = this.run_latComp + rest;
-                }  else {
+                }  
+                }else {
                 maxPerc = this.soilMaxPerc.getValue() * this.run_area * this.runkf_h[hor + 1] / 86.4;
-                // 86.4 cm/d "normal" hydraulic conductivity in geology (1 E-5 m/s)
+                // 86.4 cm/d "middle" hydraulic conductivity in geology (1 E-5 m/s)
                 if(this.run_vertComp > maxPerc){
                     double rest = this.run_vertComp - maxPerc;
                     this.run_vertComp = maxPerc;
@@ -1175,7 +1206,7 @@ import org.unijena.jams.model.*;
                 
             }
             }
-        }
+        
         /** no MobileWater available */
         else{
             this.run_latComp = 0;

@@ -1134,7 +1134,7 @@ import java.io.*;
         
 //        System.out.println("bioNact = " + bioNact);
 //        if (runpotN_up > runactN_up){
-        System.out.println("runpotN_up = " + runpotN_up + " runactN_up = " + runactN_up);
+//        System.out.println("runpotN_up = " + runpotN_up + " runactN_up = " + runactN_up);
 //        }
         BioNAct.setValue(bioNact);
         

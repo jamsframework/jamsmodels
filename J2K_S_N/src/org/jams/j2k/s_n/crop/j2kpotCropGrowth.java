@@ -578,11 +578,11 @@ import java.util.ArrayList;
             calc_nuptake();
             
             
-            if (doHarvest.getValue()){
+    //        if (doHarvest.getValue()){
             calc_cropyield();
             calc_cropyield_ha();
             calc_residues ();
-            }
+      //      }
                       
         } else if (plantStateReset.getValue()) {
             
@@ -1070,7 +1070,7 @@ import java.util.ArrayList;
         // above ground biomass
         
         double bio_ag = (1- frroot_act) * this.bio_opt; // actual aboveground biomass on the day of harvest
-        bioag_act = bio_ag + bioag_act;
+        bioag_act = bio_ag;
         /* if (idValue.getValue() == 6) {       
             System.out.println (" frroot_act: " + frroot_act + " - ");
         } */
@@ -1095,14 +1095,13 @@ import java.util.ArrayList;
             this.yield = bio_opt * (1 - (1/(1+ hi_act)));
         }
         if (idValue.getValue() == 6) {
-        System.out.println (" hi_act: " + hi_act +  " hvsti: " + hvsti +  " fphu: " + fphu_act
-                + " - ");
+        System.out.println (" hi_act: " + hi_act +  " hvsti: " + hvsti +  " fphu: " + fphu_act + " - ");
         }
         // Amounts of nitrogen [kg N/ha](and who wants P) to be removed from the field
         // whereas cnyld is the fraction of N being removed by the field crop
         
         this.yldN = this.cnyld * this.yield;
-                
+        System.out.println (" hi_act: " + hi_act +  " hvsti: " + hvsti +  " fphu: " + fphu_act + " yldN " + yldN + " yield " + yield);        
         //double yldP = this.cpyld * yield;
         return true;
     }
@@ -1116,6 +1115,8 @@ import java.util.ArrayList;
     private boolean calc_residues () throws JAMSEntity.NoSuchAttributeException { 
         
         this.residue_pool = this.yield * (1 - this.fracharvest) ;
+        
+        
         return true;
     
     }
