@@ -248,7 +248,8 @@ import org.unijena.jams.model.*;
 	
 	
 /*	else {*/
-	JAMSCalendar tmp = eff_sd;
+	JAMSCalendar tmp = new JAMSCalendar(); 
+	tmp.setValue(eff_sd);
 	long t1 = tmp.getTimeInMillis();
 	tmp.add(effTimeInterval.getTimeUnit(),effTimeInterval.getTimeUnitCount());
 	long t2 = tmp.getTimeInMillis();
