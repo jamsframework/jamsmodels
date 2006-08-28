@@ -183,6 +183,14 @@ import java.io.*;
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
             update = JAMSVarDescription.UpdateType.RUN,
+            description = " sum of NResiduePool in kgN/ha"
+            )
+            public JAMSDouble sNResiduePool;
+    
+    
+    @JAMSVarDescription(
+            access = JAMSVarDescription.AccessType.WRITE,
+            update = JAMSVarDescription.UpdateType.RUN,
             description = " sum of interflowNabs in kgN/ha"
             )
             public JAMSDouble sinterflowNabs;
@@ -208,7 +216,6 @@ import java.io.*;
             )
             public JAMSDouble sN_stabel_pool;
     
-    
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
             update = JAMSVarDescription.UpdateType.RUN,
@@ -222,6 +229,7 @@ import java.io.*;
             description = " N-Organic fresh Pool from Residue in kgN/ha"
             )
             public JAMSDoubleArray N_residue_pool_fresh = new JAMSDoubleArray();
+    
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
@@ -585,6 +593,7 @@ import java.io.*;
         double sumNH4_Pool = 0;
         double suminterflowNabs = 0;
         double suminterflowN = 0;
+        double sumN_residue_pool = 0;
         double sumN_activ_pool = 0;
         double sumN_stabel_pool = 0;
         double h_infilt_mm_sum = 0;
@@ -886,6 +895,7 @@ import java.io.*;
             sumN_stabel_pool = runN_stabel_pool + sumN_stabel_pool;
             sumN_activ_pool = runN_activ_pool + sumN_activ_pool;
             sumNH4_Pool = runNH4_Pool + sumNH4_Pool;
+            sumN_residue_pool = sumN_residue_pool + runN_residue_pool_fresh;
             if (i == 0){
                 sumNO3_Pool = runNO3_Pool + sumNO3_Pool;
             }
@@ -973,6 +983,7 @@ import java.io.*;
         sN_activ_pool.setValue(sumN_activ_pool);
         sNH4_Pool.setValue(sumNH4_Pool);
         sNO3_Pool.setValue(sumNO3_Pool);
+        sNResiduePool.setValue(sumN_residue_pool);
         
         
         

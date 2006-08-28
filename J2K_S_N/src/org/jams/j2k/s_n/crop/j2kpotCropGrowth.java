@@ -148,12 +148,19 @@ import java.util.ArrayList;
     
     
    @JAMSVarDescription(
-            access = JAMSVarDescription.AccessType.READWRITE,
+            access = JAMSVarDescription.AccessType.WRITE,
             update = JAMSVarDescription.UpdateType.RUN,
-            description = "added residue pool after harvesting [kg N ha]"
+            description = "Biomass added residue pool after harvesting [kg/ha]"
             )
-            public JAMSDouble Residue_pool;
+            public JAMSDouble Addresidue_pool;
     
+   @JAMSVarDescription(
+            access = JAMSVarDescription.AccessType.WRITE,
+            update = JAMSVarDescription.UpdateType.RUN,
+            description = "Nitrogen added residue pool after harvesting [kg N/ha]"
+            )
+            public JAMSDouble Addresidue_pooln;
+   
 /*    @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
             update = JAMSVarDescription.UpdateType.RUN,
@@ -402,7 +409,8 @@ import java.util.ArrayList;
     private double lai_old;
     private double fnplant_act;
     
-    private double residue_pool;
+    private double addresidue_pool;
+    private double addresidue_pooln;
     private double hc_act;
     
     private double idc;
@@ -468,7 +476,7 @@ import java.util.ArrayList;
     public boolean plant;
     public int harvest;
     public double fracharvest;
-    
+    public double fracharvestn;
     
     private double LAI_delta;
     private double frLAImx_delta;
@@ -537,7 +545,7 @@ import java.util.ArrayList;
         this.yield =  BioYield.getValue();
         this.yldN =  NYield.getValue();
         this.yldN_ha = NYield_ha.getValue();
-        this.residue_pool = Residue_pool.getValue();
+        
                
         
         ArrayList<J2KSNCrop> rotation = (ArrayList<J2KSNCrop>) entity.getObject("landuseRotation");
@@ -577,12 +585,16 @@ import java.util.ArrayList;
             calc_maturity();
             calc_nuptake();
             
-            
-    //        if (doHarvest.getValue()){
+    // time  
+            this.addresidue_pool = 0;
+            this.addresidue_pooln = 0;
+            System.out.println(doHarvest.getValue()); 
+            if (doHarvest.getValue()){
             calc_cropyield();
             calc_cropyield_ha();
             calc_residues ();
-      //      }
+            doHarvest.setValue(false);
+            }
                       
         } else if (plantStateReset.getValue()) {
             
@@ -684,7 +696,8 @@ import java.util.ArrayList;
             FPHUact.setValue(fphu_act);
             BioNAct.setValue(bioN_act); /*actual biomass in kg/ha adapted by stress*/
             frLAImx_xi.setValue(frLAImx_Xi);
-            Residue_pool.setValue(residue_pool);
+            Addresidue_pool.setValue(addresidue_pool);
+            Addresidue_pooln.setValue(addresidue_pooln);
             plantStateReset.setValue(true);
             Test.setValue(test);
     }
@@ -1042,7 +1055,7 @@ import java.util.ArrayList;
     }
 // Nitrogen fixation
 // used when nitrate levels in the root zone are insufficient to meet the demand
-    
+ 
 // Phosphorus uptake
     
 // Crop Yield
@@ -1101,8 +1114,15 @@ import java.util.ArrayList;
         // whereas cnyld is the fraction of N being removed by the field crop
         
         this.yldN = this.cnyld * this.yield;
-        System.out.println (" hi_act: " + hi_act +  " hvsti: " + hvsti +  " fphu: " + fphu_act + " yldN " + yldN + " yield " + yield);        
+        if (this.yldN > BioNAct.getValue()){
+            yldN = BioNAct.getValue();
+        }
+        System.out.println (" Julianischer Tag "+ JAMSCalendar.DAY_OF_YEAR + " hi_act: " + hi_act +  " hvsti: " + hvsti +  " fphu: " + fphu_act + " yldN " + yldN + " yield " + yield);        
         //double yldP = this.cpyld * yield;
+        
+        fracharvest = 1 - (yield / bio_opt);
+        fracharvestn = 1 - (yldN / BioNAct.getValue());
+        
         return true;
     }
     private double calc_cropyield_ha() throws JAMSEntity.NoSuchAttributeException {
@@ -1114,8 +1134,8 @@ import java.util.ArrayList;
     
     private boolean calc_residues () throws JAMSEntity.NoSuchAttributeException { 
         
-        this.residue_pool = this.yield * (1 - this.fracharvest) ;
-        
+        this.addresidue_pool =  bio_opt - this.yield  ;
+        this.addresidue_pooln = BioNAct.getValue() - this.yldN;
         
         return true;
     

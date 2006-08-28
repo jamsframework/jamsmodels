@@ -108,18 +108,19 @@ public class ManageLanduse extends JAMSComponent {
         J2KSNLMArable currentManagement = managementList.get(managementPos);
         
         int nextDay = currentManagement.jDay;
-        this.doHarvest.setValue(false);
+        doHarvest.setValue(false);
         
 //            System.out.println("da" + nextDay + time.get(JAMSCalendar.DAY_OF_YEAR));
         
-        if ((nextDay-1) == time.get(JAMSCalendar.DAY_OF_YEAR)) {
-            if (currentManagement.harvest != 1) {
+        if ((nextDay-1) == time.get(time.DAY_OF_YEAR)) {
+            if (currentManagement.harvest != -1) {
                 //do harvesting here!!
-                this.doHarvest.setValue(true);
+                System.out.println(" Julianischer Tag  "+ time.get(time.DAY_OF_YEAR));
+                doHarvest.setValue(true);
             }
         }
         
-        if (nextDay == time.get(JAMSCalendar.DAY_OF_YEAR)) {
+        if (nextDay == time.get(time.DAY_OF_YEAR)) {
             
             if ((managementPos+1) ==  managementList.size()) {
                 ManagementPos.setValue(0);
@@ -144,7 +145,7 @@ public class ManageLanduse extends JAMSComponent {
                 
             }
         }
-        
+       System.out.println(doHarvest.getValue()); 
     }
     
     private void processFertilization(J2KSNLMArable currentManagement) {
