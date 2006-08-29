@@ -774,6 +774,9 @@ import java.io.*;
             if (i < 1){
                 runResidue_pool = runResidue_pool + inp_biomass.getValue();
                 runN_residue_pool_fresh = runN_residue_pool_fresh + inpN_biomass.getValue();
+                if (inpN_biomass.getValue() > 0){
+                    System.out.println(time.get(time.DAY_OF_YEAR) + " resisuenadd " + inpN_biomass.getValue());
+                }
                 runNH4_Pool = runNH4_Pool + fertNH4.getValue();
                 delta_ntr = this.calc_Res_N_trans();
                 a_deposition = deposition_factor.getValue() * runprecip;

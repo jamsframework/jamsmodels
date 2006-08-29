@@ -91,7 +91,7 @@ import org.unijena.jams.model.*;
         
         
         double stressfactor = 1 - Math.max(wstrs.getValue(),(Math.max(tstrs.getValue(),nstrs.getValue())));
-        
+//        double stressfactor = 1 - Math.max(wstrs.getValue(),tstrs.getValue());
         if (stressfactor > 1){
             System.out.println("Stress "+  stressfactor);
             stressfactor = 1;

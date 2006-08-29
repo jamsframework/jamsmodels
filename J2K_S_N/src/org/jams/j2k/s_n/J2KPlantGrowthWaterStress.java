@@ -76,8 +76,9 @@ import org.unijena.jams.model.*;
         double run_aTP = aTP.getValue();
         double run_pTP = pTP.getValue();
         
-     
-        run_wstrs = 1 - ((run_aTP + 0.00001) / (run_pTP + 0.00001) );
+//        run_wstrs = 1 - ((run_aTP + 0.000001) / (run_pTP + 0.000001)); orginal SWAT
+        
+        run_wstrs = 1 - (Math.sqrt((run_aTP + 0.000001) / (run_pTP + 0.000001)) );
         
         wstrs.setValue(run_wstrs);
     

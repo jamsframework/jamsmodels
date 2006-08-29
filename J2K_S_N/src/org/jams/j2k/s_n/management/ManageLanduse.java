@@ -145,7 +145,7 @@ public class ManageLanduse extends JAMSComponent {
                 
             }
         }
-       System.out.println(doHarvest.getValue()); 
+       
     }
     
     private void processFertilization(J2KSNLMArable currentManagement) {

@@ -588,7 +588,6 @@ import java.util.ArrayList;
     // time  
             this.addresidue_pool = 0;
             this.addresidue_pooln = 0;
-            System.out.println(doHarvest.getValue()); 
             if (doHarvest.getValue()){
             calc_cropyield();
             calc_cropyield_ha();
@@ -628,6 +627,8 @@ import java.util.ArrayList;
             bioN_act = 0; /*actual biomass in kg/ha adapted by stress*/
             frLAImx_Xi = 0;
             //residue_pool = 0;
+            this.addresidue_pool = 0;
+            this.addresidue_pooln = 0;
             plantStateReset.setValue(false);
             test = 0;
             
@@ -1078,7 +1079,7 @@ import java.util.ArrayList;
         
         double u1 = 100 * this.fphu_act; 
         hi_act = this.hvsti * (u1)/(u1 + Math.exp(11.1 - 10.0 * this.fphu_act));
-                
+        hi_act = Math.max(hi_act,this.hvsti * 0.75);        
         // crop yield (kg/ha)is calculated as
         // above ground biomass
         
@@ -1117,7 +1118,7 @@ import java.util.ArrayList;
         if (this.yldN > BioNAct.getValue()){
             yldN = BioNAct.getValue();
         }
-        System.out.println (" Julianischer Tag "+ JAMSCalendar.DAY_OF_YEAR + " hi_act: " + hi_act +  " hvsti: " + hvsti +  " fphu: " + fphu_act + " yldN " + yldN + " yield " + yield);        
+        //System.out.println (" Julianischer Tag "+ JAMSCalendar.DAY_OF_YEAR + " hi_act: " + hi_act +  " hvsti: " + hvsti +  " fphu: " + fphu_act + " yldN " + yldN + " yield " + yield);        
         //double yldP = this.cpyld * yield;
         
         fracharvest = 1 - (yield / bio_opt);
