@@ -38,8 +38,8 @@ public class CatchmentCreator extends JAMSComponent {
      */
     
     @JAMSVarDescription(
-            access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.INIT,
+            access = JAMSVarDescription.AccessType.WRITE,
+            update = JAMSVarDescription.UpdateType.RUN,
             description = "Collection with one (catchment) entity object"
             )
             public JAMSEntityCollection catchment;
@@ -52,7 +52,6 @@ public class CatchmentCreator extends JAMSComponent {
     public void init() throws JAMSEntity.NoSuchAttributeException {
         ArrayList<JAMSEntity> list = new ArrayList<JAMSEntity>();
         list.add(JAMSDataFactory.createEntity());
-        catchment = new JAMSEntityCollection();
         catchment.setEntities(list);
     }
     
