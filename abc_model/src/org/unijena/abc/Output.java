@@ -73,6 +73,18 @@ public class Output extends JAMSComponent {
             access = JAMSVarDescription.AccessType.READ,
             update = JAMSVarDescription.UpdateType.RUN
             )
+            public JAMSDouble snowStorage;
+    
+    @JAMSVarDescription(
+            access = JAMSVarDescription.AccessType.READ,
+            update = JAMSVarDescription.UpdateType.RUN
+            )
+            public JAMSDouble snowMelt;
+    
+    @JAMSVarDescription(
+            access = JAMSVarDescription.AccessType.READ,
+            update = JAMSVarDescription.UpdateType.RUN
+            )
             public JAMSDouble storage;
     
     @JAMSVarDescription(
@@ -111,6 +123,8 @@ public class Output extends JAMSComponent {
         writer.addColumn("simET");
         writer.addColumn("pET");
         writer.addColumn("storage");
+        writer.addColumn("snowStorage");
+        writer.addColumn("snowMelt");
         writer.writeHeader();
         
     }
@@ -127,6 +141,8 @@ public class Output extends JAMSComponent {
         writer.addData(simET);
         writer.addData(pET);
         writer.addData(storage);
+        writer.addData(snowStorage);
+        writer.addData(snowMelt);
         
         try {
             writer.writeData();
