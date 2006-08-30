@@ -76,6 +76,13 @@ import org.unijena.jams.model.*;
             public JAMSDouble storageTm1;
     
     @JAMSVarDescription(
+            access = JAMSVarDescription.AccessType.WRITE,
+            update = JAMSVarDescription.UpdateType.RUN,
+            description = "sonnenschein tage"
+            )
+            public JAMSDouble sunh;
+    
+    @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
             update = JAMSVarDescription.UpdateType.RUN,
             description = "the precip input"
@@ -124,6 +131,11 @@ import org.unijena.jams.model.*;
     public void init() throws JAMSEntity.NoSuchAttributeException {
         //System.out.println("INIT ABCModel");
         this.storageTm1.setValue(this.initStor.getValue());
+        this.pET.setValue(0);
+        if(a.getValue()+b.getValue() > 1.0){
+            System.out.println("Constraint violated: a + b is larger than 1.0");
+            return;
+        }
     }
     
     public void run() throws JAMSEntity.NoSuchAttributeException{
@@ -137,10 +149,6 @@ import org.unijena.jams.model.*;
         double b = this.b.getValue();
         double c = this.c.getValue();
         
-        if(a+b > 1.0){
-            System.out.println("Constraint violated: a + b is larger than 1.0");
-            return;
-        }
         //new et
         double precipIn = precip;
         double aET = 0;
@@ -160,9 +168,14 @@ import org.unijena.jams.model.*;
         }
         double infiltration = a * precip;
         double q_dir = precipIn - aET - infiltration;
-        double q_bas = c * storageTm1;
-        storageTm1 = infiltration + storageTm1 - q_bas;
         
+        //storageTm1 = infiltration + storageTm1;
+        
+        double q_bas = c * storageTm1;
+        
+        //storageTm1 = storageTm1 - q_bas;
+        
+        storageTm1 = infiltration + storageTm1 - q_bas;
         //runoff = ( 1 - a - b) * precip + c * storageTm1;
         //storageTm1 = a * precip + (1-c) * storageTm1;
         
