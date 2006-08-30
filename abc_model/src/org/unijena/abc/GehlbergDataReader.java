@@ -48,12 +48,12 @@ public class GehlbergDataReader extends JAMSComponent {
             )
             public JAMSTimeInterval timeInterval;
     
-    @JAMSVarDescription(
+    /*@JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
             update = JAMSVarDescription.UpdateType.RUN,
             description = "Current time"
             )
-            public JAMSCalendar time;
+            public JAMSCalendar time;*/
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
@@ -63,9 +63,24 @@ public class GehlbergDataReader extends JAMSComponent {
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
-            update = JAMSVarDescription.UpdateType.RUN
+            update = JAMSVarDescription.UpdateType.RUN,
+            description = "the tmin input"
             )
-            public JAMSDouble temperature;
+            public JAMSDouble tmin;
+    
+    @JAMSVarDescription(
+            access = JAMSVarDescription.AccessType.WRITE,
+            update = JAMSVarDescription.UpdateType.RUN,
+            description = "the tmean input"
+            )
+            public JAMSDouble tmean;
+    
+    @JAMSVarDescription(
+            access = JAMSVarDescription.AccessType.WRITE,
+            update = JAMSVarDescription.UpdateType.RUN,
+            description = "the tmax input"
+            )
+            public JAMSDouble tmax;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
@@ -125,9 +140,11 @@ public class GehlbergDataReader extends JAMSComponent {
         JAMSTableDataArray da = store.getNext();
         double[] vals = JAMSTableDataConverter.toDouble(da);
         this.precip.setValue(vals[0]);
-        this.temperature.setValue(vals[1]);
-        this.rhum.setValue(vals[2]);
-        this.obsRunoff.setValue(vals[3]);	
+        this.tmin.setValue(vals[1]);
+        this.tmean.setValue(vals[2]);
+        this.tmax.setValue(vals[3]);
+        this.obsRunoff.setValue(vals[16]);
+        this.rhum.setValue(vals[4]);
     }
     
     public void cleanup(){
