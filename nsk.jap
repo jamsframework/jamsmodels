@@ -6,6 +6,7 @@ model=D\:\\jamsmodels\\JAMS-Application\\JAMS-Gehlberg\\j2k_gehlbergnsk.xml
 libs=d\:\\nbprojects\\J2K\\dist\\J2K.jar;d\:\\nbprojects\\JAMS\\dist\\JAMS.jar
 #errorlog=D\:/jamserror.log
 #infolog=D\:/jamsinfo.log
+modelconfig=0
 windowenable=1
 windowontop=0
 windowwidth=800
