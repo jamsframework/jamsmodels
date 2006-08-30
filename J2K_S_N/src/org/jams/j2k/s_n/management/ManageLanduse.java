@@ -91,6 +91,13 @@ public class ManageLanduse extends JAMSComponent {
             )
             public JAMSBoolean doHarvest;
     
+/*    @JAMSVarDescription(
+            access = JAMSVarDescription.AccessType.WRITE,
+            update = JAMSVarDescription.UpdateType.RUN,
+            description = "actual potential heat units sum [-]"
+            )
+            public JAMSDouble PHUact; */
+    
     
     public void run() throws JAMSEntity.NoSuchAttributeException {
         JAMSEntity entity = entities.getCurrent();
@@ -138,6 +145,7 @@ public class ManageLanduse extends JAMSComponent {
                 processFertilization(currentManagement);
             } else if (currentManagement.plant == true) {
                 //do planting here!!
+                //PHUact.setValue(0);
                 this.plantExisting.setValue(true);
             } else if (currentManagement.harvest != -1) {
                 //do harvesting here!!
