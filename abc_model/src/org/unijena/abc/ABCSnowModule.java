@@ -56,9 +56,23 @@ import org.unijena.jams.model.*;
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
             update = JAMSVarDescription.UpdateType.RUN,
-            description = "the temperature input"
+            description = "the tmin input"
             )
-            public JAMSDouble temperature;
+            public JAMSDouble tmin;
+    
+    @JAMSVarDescription(
+            access = JAMSVarDescription.AccessType.READ,
+            update = JAMSVarDescription.UpdateType.RUN,
+            description = "the tmean input"
+            )
+            public JAMSDouble tmean;
+    
+    @JAMSVarDescription(
+            access = JAMSVarDescription.AccessType.READ,
+            update = JAMSVarDescription.UpdateType.RUN,
+            description = "the tmax input"
+            )
+            public JAMSDouble tmax;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
@@ -86,16 +100,23 @@ import org.unijena.jams.model.*;
         //System.out.println("RUN ABCModel");
         double snowStorage = this.snowStorage.getValue();
         double precip = this.precip.getValue();
-        double temperature = this.temperature.getValue();
+        double tmin = this.tmin.getValue();
+        double tmean = this.tmean.getValue();
+        double tmax = this.tmax.getValue();
         double snowMelt = 0;
         
-        if(temperature < this.t_thres.getValue()){
+        double accuTemp = (tmin + tmean) / 2;
+        double meltTemp = (tmax + tmean) / 2;
+        
+        //accumulation
+        if(accuTemp <= this.t_thres.getValue()){
             snowStorage = snowStorage + precip;
             precip = 0;
         }
-        else if(temperature >= this.t_thres.getValue() && snowStorage > 0){
-            double meltTemp = temperature - this.t_thres.getValue();
-            double potMelt = meltTemp * this.ddf.getValue();
+        //snow melt
+        if(meltTemp > this.t_thres.getValue() && snowStorage > 0){
+            double mt = meltTemp - this.t_thres.getValue();
+            double potMelt = mt * this.ddf.getValue();
             if(snowStorage < potMelt){
                 snowMelt = snowStorage;
                 snowStorage = 0;
