@@ -84,6 +84,27 @@ import Jama.*;
             )
             public JAMSDouble[] effValues;        
     
+    @JAMSVarDescription(
+            access = JAMSVarDescription.AccessType.READWRITE,
+            update = JAMSVarDescription.UpdateType.RUN,
+            description = "maximize efficiency?"
+            )
+            public JAMSIntegerArray MaximizeEff;
+    
+     @JAMSVarDescription(
+            access = JAMSVarDescription.AccessType.READWRITE,
+            update = JAMSVarDescription.UpdateType.RUN,
+            description = "maximize efficiency?"
+            )
+            public JAMSInteger Population;
+    
+    @JAMSVarDescription(
+            access = JAMSVarDescription.AccessType.READWRITE,
+            update = JAMSVarDescription.UpdateType.RUN,
+            description = "maximize efficiency?"
+            )
+            public JAMSInteger Complexes;
+    
     JAMSDouble[] parameters;
     String[] parameterNames;
     String[] effNames;
@@ -277,6 +298,9 @@ import Jama.*;
 	    for (int i=0;i<data.length;i++) {
 		mean[j] += data[i][j];
 	    }
+	    if (data.length == 0)
+		getModel().getRuntime().sendInfoMsg("Complex in SCEM_UA ist leer! - Kritischer Fehler!!");
+		
 	    mean[j] /= data.length;
 	}
 	return mean;
@@ -287,6 +311,9 @@ import Jama.*;
 	double[] mean = getMean(data);
 	double vecLength = data.length;
 
+	if (data.length == 0)
+		getModel().getRuntime().sendInfoMsg("Complex in SCEM_UA hat nur die Größe von 1! - Kritischer Fehler!!");
+	
 	for (int i=0;i<N;i++) {
 	    java.util.Arrays.fill(coV[i],0);
 	}
@@ -297,7 +324,7 @@ import Jama.*;
 		    coV[i][j] += data[k][i]*data[k][j];
 		}
 		coV[i][j] -= vecLength*mean[i]*mean[j];
-		coV[i][j] /= (vecLength - 1);				
+		coV[i][j] /= (vecLength - 1);			
 	    }
 	}
 		
@@ -323,8 +350,12 @@ import Jama.*;
 	
 	singleRun();
 	
-	for (int i=0;i<M;i++)
-	    pset[N+i] = this.effValues[i].getValue();
+	for (int i=0;i<M;i++) {	    
+	    if (MaximizeEff.getValue()[i] == 1)
+		pset[N+i] = this.effValues[i].getValue();
+	    else
+		pset[N+i] = -this.effValues[i].getValue();
+	}
 
     return pset;
     }
@@ -384,17 +415,16 @@ import Jama.*;
 	//draw point from sequence 
 	s = generator.nextInt(s);
 	b = Seq.get(s);	
-		
-	//Sort the m points in Ckk in ascending fitness
-//	sort(C,N+M,false);
-			
+					
 	//Compute the covariance of complex k 
 	double coV[][] = getCoVarMatrix(C);
 	double mean[]  = getMean(C);
 	//convert to matrix
 	Matrix MatrixCoV = new Matrix(coV);		
 	CholeskyDecomposition sqrtCoV = new CholeskyDecomposition(MatrixCoV);
-					
+
+/*	if ( sqrtCoV.isSPD() == false)
+	    getModel().getRuntime().sendInfoMsg("Covarianzmatrix NICHT Cholesky - Zerlegbar. Das ist sehr schlecht und sollte nicht passieren!!");*/
 	//Step 4b, compute new candidate point		
 	JAMSDouble tmpArray[] = new JAMSDouble[N];
 	
@@ -407,9 +437,11 @@ import Jama.*;
 	    
 	    Matrix ru = new Matrix(randn(N),N);
 	    //generate new point
-	    offspring = sqrtCoV.getL().times(ru).getColumnPackedCopy();	    	    	    	    
+	    offspring = sqrtCoV.getL().times(ru).getColumnPackedCopy();	   	    
 	    for (int i=0;i<N;i++) {
 		offspring[i] += b[i];
+		if (Double.isNaN(offspring[i]))
+		    System.out.println("Fehler -> Parameter ist NaN!!");
 	    }
 	    for (int i=0;i<N;i++) {
 		tmpArray[i] = new JAMSDouble(offspring[i]);
@@ -434,6 +466,16 @@ import Jama.*;
 	//METROPOLIS HASTINGS selection step
 	double Z = generator.nextDouble();		
 	
+	System.out.println("newgen:");
+
+	    for (int j=0;j<N;j++) {
+		System.out.print(parameterNames[j] + ":" + newgen[j] + " ,");
+	    }
+	    for (int j=0;j<M;j++) {
+		System.out.print(effNames[j] + ":" + newgen[N+j] + " ,");
+	    }
+	    System.out.println("Fitness" + ":" + newgen[N+M]);
+	    
 	if (Z < ratio) {
 	    Seq.add(newgen);
 
@@ -466,7 +508,13 @@ import Jama.*;
 		System.out.print(parameterNames[j] + ":" + D[i][j] + " ,");
 	    }
 	    for (int j=0;j<M;j++) {
-		System.out.print(effNames[j] + ":" + D[i][N+j] + " ,");
+		if (MaximizeEff.getValue()[j] == 1) {
+		    System.out.print(effNames[j] + ":" + D[i][N+j] + " ,");
+		}
+		else {
+		    double outdata = -D[i][N+j];
+		    System.out.print(effNames[j] + ":" + outdata + " ,");
+		}
 	    }
 	    System.out.println("Fitness" + ":" + D[i][N+M]);
 	    
@@ -616,7 +664,7 @@ import Jama.*;
 	}
 	
 	for (int i=0;i<D.length;i++) {	    
-	    if (D[i][M+N] < 1)
+	    if (D[i][M+N] == -1)
 		D[i][M+N] = 1.0;
 	}
     }
@@ -632,8 +680,12 @@ import Jama.*;
 	// Step 1. Complete the initialization of the process by calculating the number 
 	// of points in each complex, m and the number of offspring generated per iteration, L
 	N = parameters.length;
-	s = 20; //get from outside ...
-	q = 2; //get from outside ...
+		
+	q = Complexes.getValue();
+	s = Population.getValue();
+	
+	s = (s/q)*q;
+	
 	m = s/q;
 	L = Math.max(1,m/5); 
 				
@@ -670,7 +722,7 @@ import Jama.*;
 	int converged = -1,convergence = 2;
 	int iter = 0;
 	
-	while (iter < 250) {
+	while (iter < sampleCount.getValue()) {
 	    double C[][][] = PartComplexes(D);
 	    
 	    SEM(D,C,Sequences,x);
