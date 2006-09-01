@@ -1,12 +1,12 @@
 #JAMS configuration file
-#Mon May 08 11:36:39 CEST 2006
+#Mon Jun 19 09:09:28 CEST 2006
 debug=1
 verbose=0
-model=D\:\\jamsmodels\\JAMS-Application\\JAMS-Gehlberg\\j2k_gehlbergnsk.xml
-libs=D\:\\jamsprojects\\J2K\\dist\\J2K.jar;D\:\\jamsprojects\\JAMS\\dist\\JAMS.jar;D\:\\jamsprojects\\J2K_SN\\dist\\J2K_SN.jar
-#infolog=D\:\\jamsinfo.log
-#errorlog=D\:\\jamserror.log
+libs=d\:\\nbprojects\\J2K\\dist\\J2K.jar;d\:\\nbprojects\\JAMS\\dist\\JAMS.jar
+#errorlog=D\:/jamserror.log
+#infolog=D\:/jamsinfo.log
+guiconfig=1
 windowenable=1
 windowontop=0
-windowwidth=600
-windowheight=400
+windowwidth=800
+windowheight=600
