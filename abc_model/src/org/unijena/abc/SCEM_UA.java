@@ -331,7 +331,11 @@ import Jama.*;
 	for (int i=0;i<M;i++) {	    
 	    if (MaximizeEff.getValue()[i] == 1)
 		pset[N+i] = this.effValues[i].getValue();
-	    else
+	    else if (MaximizeEff.getValue()[i] == 2)
+		pset[N+i] = Math.abs(this.effValues[i].getValue());
+	    else if (MaximizeEff.getValue()[i] == 3)
+		pset[N+i] = -Math.abs(this.effValues[i].getValue());
+	    else 
 		pset[N+i] = -this.effValues[i].getValue();
 	}
 
@@ -486,7 +490,7 @@ import Jama.*;
 		System.out.print(parameterNames[j] + ":" + D[i][j] + " ,");
 	    }
 	    for (int j=0;j<M;j++) {
-		if (MaximizeEff.getValue()[j] == 1) {
+		if (MaximizeEff.getValue()[j] % 2 == 1) {
 		    System.out.print(effNames[j] + ":" + D[i][N+j] + " ,");
 		}
 		else {
