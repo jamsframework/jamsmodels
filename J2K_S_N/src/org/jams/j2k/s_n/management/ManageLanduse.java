@@ -100,16 +100,23 @@ public class ManageLanduse extends JAMSComponent {
     
     
     public void run() throws JAMSEntity.NoSuchAttributeException {
+        
         JAMSEntity entity = entities.getCurrent();
         this.fertNO3N.setValue(0);
         this.fertNH4N.setValue(0);
         this.fertorgNactive.setValue(0);
         this.fertorgNfresh.setValue(0);
         
+        
         ArrayList<J2KSNCrop> rotation = (ArrayList<J2KSNCrop>) entity.getObject("landuseRotation");
         int rotPos = RotPos.getValue();
         J2KSNCrop currentCrop = rotation.get(rotPos);
+        int idc = currentCrop.idc;
         
+        if (idc != 1 && idc != 2 && idc != 4 && idc != 5){
+          this.plantExisting.setValue(true);  
+        }
+            
         ArrayList<J2KSNLMArable> managementList = currentCrop.managementList;
         int managementPos = ManagementPos.getValue();
         J2KSNLMArable currentManagement = managementList.get(managementPos);
@@ -147,7 +154,7 @@ public class ManageLanduse extends JAMSComponent {
                 //do planting here!!
                 //PHUact.setValue(0);
                 this.plantExisting.setValue(true);
-            } else if (currentManagement.harvest != -1) {
+            } else if (currentManagement.harvest != -1 && (idc == 1 || idc == 2 || idc == 4 || idc == 5 ) ) {
                 //do harvesting here!!
                 this.plantExisting.setValue(false);
                 

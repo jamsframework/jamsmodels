@@ -431,6 +431,14 @@ import org.unijena.jams.model.*;
             )
             public JAMSDouble soilLatVertLPS;
     
+     @JAMSVarDescription(
+            access = JAMSVarDescription.AccessType.READ,
+            update = JAMSVarDescription.UpdateType.INIT,
+            description = "Factor of rootdepth 1 - 10 default 1"
+            )
+            public JAMSDouble rootfactor;
+    
+    
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
             update = JAMSVarDescription.UpdateType.INIT,
@@ -915,7 +923,7 @@ import org.unijena.jams.model.*;
         double[] horETP = new double[nhor];
         double sumlayer = 0;
         int i = 0;
-        double runrootdepth = (rootdepth.getValue() * 100) + 100;
+        double runrootdepth = (rootdepth.getValue()* rootfactor.getValue() * 100) + 100;
         double[] partroot = new double[nhor];
         double rootlayer = 0;
         double runLAI = LAI.getValue();

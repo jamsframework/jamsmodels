@@ -428,6 +428,7 @@ import java.util.ArrayList;
     private double mlai1;
     private double mlai;
     private double mlai2;
+    private double lai_min;
     
     private double frgrw1;
     private double frgrw2;
@@ -558,6 +559,7 @@ import java.util.ArrayList;
         this.hvsti = crop.hvsti;
         this.frgrw1 = crop.frgrw1; //Fraction of growing season corresponding to the first point of the optimal LAI development*/
         this.frgrw2 = crop.frgrw2; //Fraction of growing season corresponding to the second point of the optimal LAI development*/
+        this.lai_min = crop.lai_min;
         this.mlai = crop.mlai;
         this.mlai1 = crop.laimx1;
         this.mlai2 = crop.laimx2;
@@ -807,26 +809,38 @@ import java.util.ArrayList;
         this.lai_act = this.lai_act + this.LAI_delta;
         //this.lai_act = this.lai_old + this.LAI_delta;
         if
-                (this.lai_act == this.mlai){
+                (this.lai_act > this.mlai){
             this.lai_act = this.mlai;
         }
         
+        if (doHarvest.getValue() && (this.idc == 3 || this.idc == 6 || this.idc == 7)){
+            frLAImx_act = 0; 
+            LAI_delta = 0;
+            lai_act = lai_min;
+            lai_old = lai_min;
+            frLAImx_Xi = 0;
+            
+        }
+        
+       
+        
         //System.out.println("factors LAI: " + this.lai_act +" "+  this.LAI_delta +" "+  u1 +" ");
         
-//        System.out.println(lai_act);
+//        System.out.println(lai_act); time
         
         // LAI will remain constant until leaf senescence begins to exceed leaf growth
         // this. phu_sense is the fphu when senescence becomes dominant
         // @todo declare what is fphu_sense; here assumed by phu 0.99 for forests determined by idc;
         // @todo declare when and what happens to the residues
-        
+      
+        /*
         double fphu_sense = 0.99;
         
         if
-                (this.idc == 7 || this.fphu_act > fphu_sense) {
+                (this.idc == 7 && this.fphu_act > fphu_sense) {
             lai_act = 16 * this.mlai * Math.pow(1 - this.fphu_act,2);
             
-        }
+        }*/
         return true;
     }
 // Second the amount of daily solar radiation intercepted by the leaf area of the plant is calculated
@@ -876,7 +890,10 @@ import java.util.ArrayList;
 //
     private boolean calc_root() throws JAMSEntity.NoSuchAttributeException {
         
-        frroot_act = 0.40 - 0.20 * this.fphu_act;
+        
+        double rootpartmodi = 0.20 * this.fphu_act;
+        rootpartmodi = Math.min(rootpartmodi,0.2);
+        frroot_act = 0.40 - rootpartmodi;
         
        //frroot_act = frroot + frroot_act;
         
@@ -1109,23 +1126,29 @@ import java.util.ArrayList;
             // Amounts of nitrogen [kg N/ha](and who wants P) to be removed from the field
             // whereas cnyld is the fraction of N being removed by the field crop
             
+            this.yldN = bioN_act * (this.yield/bio_opt);
+            /*
             this.yldN = this.cnyld * this.yield;
-            if (this.yldN > BioNAct.getValue()){
-                yldN = BioNAct.getValue();
-            }
+            if (this.yldN > bioN_act){
+                yldN = bioN_act;
+            }*/
             //System.out.println (" Julianischer Tag "+ JAMSCalendar.DAY_OF_YEAR + " hi_act: " + hi_act +  " hvsti: " + hvsti +  " fphu: " + fphu_act + " yldN " + yldN + " yield " + yield);
-            //double yldP = this.cpyld * yield;
-            
-            this.fphu_act = this.fphu_act * (this.yield / this.bio_opt);
-            
+            //double yldP = this.cpyld * yield; time
+            if (this.idc == 7){
+            this.fphu_act = 0; 
+            }else{
+            this.fphu_act = Math.min(fphu_act, 1);
+            this.fphu_act = (this.fphu_act * (1 - (this.yield / this.bio_opt)))/8;
+            }
+            this.phu_daily = this.phu * this.fphu_act;
             bio_opt = bio_opt - this.yield;
             if (bio_opt < 0){
                 bio_opt = 0;
             }
-            BioNAct.setValue(BioNAct.getValue() - this.yldN);
+            bioN_act = bioN_act - this.yldN;
             
             fracharvest = 1 - (yield / bio_opt);
-            fracharvestn = 1 - (yldN / BioNAct.getValue());
+            fracharvestn = 1 - (yldN / bioN_act);
             
             
             
@@ -1185,14 +1208,14 @@ import java.util.ArrayList;
             // whereas cnyld is the fraction of N being removed by the field crop
             
             this.yldN = this.cnyld * this.yield;
-            if (this.yldN > BioNAct.getValue()){
-                yldN = BioNAct.getValue();
+            if (this.yldN > bioN_act){
+                yldN = bioN_act;
             }
             //System.out.println (" Julianischer Tag "+ JAMSCalendar.DAY_OF_YEAR + " hi_act: " + hi_act +  " hvsti: " + hvsti +  " fphu: " + fphu_act + " yldN " + yldN + " yield " + yield);
             //double yldP = this.cpyld * yield;
             
             fracharvest = 1 - (yield / bio_opt);
-            fracharvestn = 1 - (yldN / BioNAct.getValue());
+            fracharvestn = 1 - (yldN / bioN_act);
         }
         return true;
     }
@@ -1204,11 +1227,12 @@ import java.util.ArrayList;
     }
     
     private boolean calc_residues() throws JAMSEntity.NoSuchAttributeException {
-        if (this.idc == 3 || this.idc == 6 || this.idc == 7) {
-            
-        }else{
+        if ( this.idc == 7) {
+            this.addresidue_pool =  this.yield;
+            this.addresidue_pooln = this.yldN;
+        }else if ( this.idc == 1 || this.idc == 2 || this.idc == 4 || this.idc == 5) {
             this.addresidue_pool =  bio_opt - this.yield  ;
-            this.addresidue_pooln = BioNAct.getValue() - this.yldN;
+            this.addresidue_pooln = bioN_act - this.yldN;
         }
         return true;
         
