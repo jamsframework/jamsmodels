@@ -12,9 +12,9 @@
         <var name="parameterIDs" value="abcModel.a;abcModel.b;abcModel.c;snowModule.t_thres;snowModule.ddf;ETHaude.et_adaptation"/>
         <var name="boundaries" value="[0.0>1.0];[0.0>1.0];[0.0>1.0];[-10.0>10.0];[0.0>100.0];[0.1>5.0]"/>
         <var name="sampleCount" value="50"/>
-        <var name="effMethodNames" value="e2;le2;rmse"/>
-        <var name="effValues" attribute="e2;le2;rmse"/>
-	<var name="MaximizeEff" value="1,1,0"/>
+        <var name="effMethodNames" value="e2;le2;absVolErr;rmse"/>
+        <var name="effValues" attribute="e2;le2;absVolErr;rmse"/>
+	<var name="MaximizeEff" value="1,1,2,0"/>
 	<var name="Population" value="40"/>
 	<var name="Complexes" value="5"/>
         
@@ -28,14 +28,14 @@
                 <var name="timeInterval" globvar="timeInterval"/> 
                 <var name="fileName" globvar="dataInputFile"/>
                 <var name="precip" attribute="precip"/>
-                <var name="temperature" attribute="temperature"/>
+                <var name="tmean" attribute="tmean"/>
                 <var name="rhum" attribute="rhum"/>
                 <var name="obsRunoff" attribute="obsRunoff"/>
             </component>
             
             <component class="org.unijena.abc.ABCETHaude" name="ETHaude">
                 <var name="time" attribute="time"/>
-                <var name="temperature" attribute="temperature"/>
+                <var name="temperature" attribute="tmean"/>
                 <var name="rhum" attribute="rhum"/>
                 <var name="et_adaptation" value="0"/>
                 <var name="pET" attribute="pET"/>
@@ -43,7 +43,7 @@
             
             <component class="org.unijena.abc.ABCSnowModule" name="snowModule">
                 <var name="precip" attribute="precip"/>
-                <var name="temperature" attribute="temperature"/>
+                <var name="tmean" attribute="tmean"/>
                 <var name="t_thres" value="0" />
                 <var name="ddf" value="0" />
                 <var name="total_output" attribute="total_output"/>
