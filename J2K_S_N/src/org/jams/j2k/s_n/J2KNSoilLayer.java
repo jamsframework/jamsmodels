@@ -622,6 +622,7 @@ import java.io.*;
         double[] Nbalance = new double[layer];
         double[] N_upmove_h = new double[layer];
         double[] NO3_Poolalt = new double[layer];
+        this.runsurfaceN = 0;
         
         hor_by_infilt = new double[layer];
         i = 0;
@@ -693,7 +694,7 @@ import java.io.*;
             this.runvolati_trans = 0;
             
             this.rundenit_trans = 0;
-            this.runsurfaceN = 0;
+            
             this.runinterflowN = 0;
             this.runpercoN = 0;
             this.runsurfaceN_in = SurfaceN_in.getValue() * 10000 / runarea;
@@ -1323,7 +1324,8 @@ import java.io.*;
     private double calc_surfaceN(){
         double surfaceN = 0;
         
-        surfaceN = runBeta_NO3 * RD1_out_mm * concN_mobile;
+//        surfaceN = runBeta_NO3 * RD1_out_mm * concN_mobile;  SWAT orginal
+        surfaceN = RD1_out_mm * concN_mobile;
         surfaceN = Math.min(surfaceN,runNO3_Pool);
         
         return surfaceN;
@@ -1332,13 +1334,13 @@ import java.io.*;
     private double calc_interflowN(int i){
         double interflowN = 0;
         
-        if (i == 0) {
+/*        if (i == 0) {
             interflowN = (1 - runBeta_NO3) * RD2_out_mm * concN_mobile;
             interflowN = Math.min(interflowN,runNO3_Pool);
-        } else if (i > 0) {
+        } else if (i > 0) {*/
             interflowN = RD2_out_mm * concN_mobile;
             interflowN = Math.min(interflowN,runNO3_Pool);
-        }
+        
 /*        if (interflowN > 0){
         System.out.println(RD2_out_mm + " = RD2_out_mm " + interflowN +" = interflowN");
         }*/
