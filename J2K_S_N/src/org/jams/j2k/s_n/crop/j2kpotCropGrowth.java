@@ -1230,10 +1230,12 @@ import java.util.ArrayList;
         if ( this.idc == 7) {
             this.addresidue_pool =  this.yield;
             this.addresidue_pooln = this.yldN;
-        }else if ( this.idc == 1 || this.idc == 2 || this.idc == 4 || this.idc == 5) {
+        }
+        else if ( this.idc == 1 || this.idc == 2 || this.idc == 4 || this.idc == 5) {
             this.addresidue_pool =  this.bio_opt - this.yield  ;
             this.addresidue_pooln = this.bioN_act - this.yldN;
-        }else if ( this.idc == 6 || this.idc == 3){
+        }
+        else if ( this.idc == 6 || this.idc == 3){
             this.addresidue_pool =  this.yield * 0.1;
             this.addresidue_pooln = this.yldN * 0.1;
             this.addresidue_pool = Math.min(this.addresidue_pool, this.bio_opt);
