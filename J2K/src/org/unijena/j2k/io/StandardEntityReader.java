@@ -93,6 +93,7 @@ public class StandardEntityReader extends JAMSComponent {
             createOrderedList(reaches, "to_reach");
             getModel().getRuntime().println("Entities read successfull!", JAMS.STANDARD);
             
+            
             //firstRun = false;
         }
     }
