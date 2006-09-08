@@ -49,7 +49,7 @@ import org.unijena.jams.model.*;
             public JAMSDouble optibioN;
     
      @JAMSVarDescription(
-            access = JAMSVarDescription.AccessType.READWRITE,
+            access = JAMSVarDescription.AccessType.READ,
             update = JAMSVarDescription.UpdateType.RUN,
             description = "actual nitrogen content in Biomass in (kgN/ha)"
             )
@@ -84,7 +84,7 @@ import org.unijena.jams.model.*;
         phi_nit = 200 * (((run_actbioN + 0.1) / (run_optibioN + 0.1)) - 0.5);
         
         run_nstrs = 1 - (phi_nit / (phi_nit * Math.exp(3.535 - (0.02597 * phi_nit))));
-        actbioN.setValue(run_actbioN);
+        //actbioN.setValue(run_actbioN);
         nstrs.setValue(run_nstrs);
        
     

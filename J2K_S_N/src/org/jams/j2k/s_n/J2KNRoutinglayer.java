@@ -92,14 +92,14 @@ import org.unijena.jams.model.*;
     
     
     @JAMSVarDescription(
-            access = JAMSVarDescription.AccessType.READ,
+            access = JAMSVarDescription.AccessType.READWRITE,
             update = JAMSVarDescription.UpdateType.RUN,
             description = "RD1 N outflow in kgN"
             )
             public JAMSDouble SurfaceNabs;
     
     @JAMSVarDescription(
-            access = JAMSVarDescription.AccessType.READ,
+            access = JAMSVarDescription.AccessType.READWRITE,
             update = JAMSVarDescription.UpdateType.RUN,
             description = "RD2 N outflow in kgN"
             )
@@ -153,9 +153,7 @@ import org.unijena.jams.model.*;
         double reachNRD2in = 0;
 //        System.out.println("NRD2out: " + NRD2out);
         
-        if(toPoly != null){
-            
-        }else if(toPoly != null){
+       if(toPoly != null){
             double[] srcDepth = ((JAMSDoubleArray)entity.getObject("depth_h")).getValue();
             double[] recDepth = ((JAMSDoubleArray)toPoly.getObject("depth_h")).getValue();
             int srcHors = srcDepth.length;
@@ -213,6 +211,7 @@ import org.unijena.jams.model.*;
             NExcess.setValue(0);
             
             JAMSDoubleArray rdAN = (JAMSDoubleArray)toPoly.getObject("InterflowN_in");
+            rdAN.setValue(NRD2in_h);
             toPoly.setDouble("SurfaceN_in",NRD1in);
             toPoly.setObject("InterflowN_in", rdAN);
             toPoly.setDouble("N_RG1_in", NRG1in);
@@ -250,7 +249,7 @@ import org.unijena.jams.model.*;
             
             
             NExcess.setValue(0);
-            SurfaceNabs.setValue(NRD1out);
+            SurfaceNabs.setValue(0);
             toReach.setDouble("SurfaceN_in", NRD1in);
             InterflowNabs.setValue(NRD2out_h);
             toReach.setDouble("InterflowN_sum", reachNRD2in);

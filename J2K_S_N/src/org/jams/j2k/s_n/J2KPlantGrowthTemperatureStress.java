@@ -92,11 +92,15 @@ import org.unijena.jams.model.*;
          
             run_tstrs = ((Math.exp((-0.1054 * Math.pow((run_topti - run_tmean) , 2)))) / Math.pow((run_tmean - run_tbase) , 2));
             
+   //         run_tstrs = 0;
+            
         }else if (run_tmean > run_topti && run_tmean <= ((2 * run_topti) - run_tbase)){
             
             
            run_tstrs = ((Math.exp((-0.1054 * Math.pow((run_topti - run_tmean) , 2)))) / Math.pow(((2 * run_topti) - run_tmean - run_tbase) , 2));
         
+     //      run_tstrs = 0;
+           
         }else if (run_tmean > ((2 * run_topti) - run_tbase)){
             
            run_tstrs = 1; 

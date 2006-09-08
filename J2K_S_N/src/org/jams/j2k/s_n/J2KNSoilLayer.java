@@ -699,7 +699,7 @@ import java.io.*;
             this.runpercoN = 0;
             this.runsurfaceN_in = SurfaceN_in.getValue() * 10000 / runarea;
             this.runinterflowN_in = InterflowN_in.getValue()[i] * 10000 / runarea;
-            
+            SurfaceN_in.setValue(0);
             
             
             
@@ -775,9 +775,9 @@ import java.io.*;
             if (i < 1){
                 runResidue_pool = runResidue_pool + inp_biomass.getValue();
                 runN_residue_pool_fresh = runN_residue_pool_fresh + inpN_biomass.getValue();
-                if (inpN_biomass.getValue() > 0){
+/*                if (inpN_biomass.getValue() > 0){
                     System.out.println(time.get(time.DAY_OF_YEAR) + " resisuenadd " + inpN_biomass.getValue());
-                }
+                }*/
                 runNH4_Pool = runNH4_Pool + fertNH4.getValue();
                 delta_ntr = this.calc_Res_N_trans();
                 a_deposition = deposition_factor.getValue() * runprecip;
@@ -789,7 +789,8 @@ import java.io.*;
                     runResidue_pool = 0;
                 }
                 
-                runsum_Ninput =  fertactivorg.getValue() + fertNH4.getValue() + fertNO3.getValue() + a_deposition + runinterflowN_in + runsurfaceN_in;
+               // runsum_Ninput =  fertactivorg.getValue() + fertNH4.getValue() + fertNO3.getValue() + a_deposition + runinterflowN_in + runsurfaceN_in;
+                runsum_Ninput =   runinterflowN_in + runsurfaceN_in;
                 
                 
                 
@@ -803,6 +804,9 @@ import java.io.*;
                 }
                 NO3respool = 0.8 * (delta_ntr * runN_residue_pool_fresh);
                 runNO3_Pool = runNO3_Pool + sum_Nupmove + fertNO3.getValue() + a_deposition + runnitri_trans + Hum_act_min +  runinterflowN_in + runsurfaceN_in + NO3respool;
+                
+                
+//                System.out.println(time.get(time.DAY_OF_YEAR) + " runNO3_Pool " + runNO3_Pool + " sum_Nupmove "+ sum_Nupmove + " fertNO3 "+ fertNO3.getValue() + " a_deposition "+ a_deposition + " runnitri_trans "+ runnitri_trans +" runinterflowN_in "+ runinterflowN_in +" runsurfaceN_in "+ runsurfaceN_in +" NO3respool "+ NO3respool);
                 
 /*                if (runNO3_Pool > runplantupN){
  
@@ -962,6 +966,12 @@ import java.io.*;
             i++;
         }
         // writing of pools
+        double[] zerosetter = new double[layer];
+        i = 0;
+        while (i < layer){
+           zerosetter[i] = 0;
+           i++;
+        }
         NO3_Pool.setValue(NO3_Poolvals);
         NH4_Pool.setValue(NH4_Poolvals);
         N_activ_pool.setValue(N_activ_poolvals);
@@ -974,7 +984,7 @@ import java.io.*;
         PercoN.setValue(percoNvals[layer -1]);
         PercoNabs.setValue(percoNabsvals[layer -1]);
         SurfaceN.setValue(runsurfaceN);
-        runsurfaceNabs = runsurfaceN * runarea / 1000;
+        runsurfaceNabs = runsurfaceN * runarea / 10000;
         SurfaceNabs.setValue(runsurfaceNabs);
         sum_Ninput.setValue(runsum_Ninput);
         sinterflowNabs.setValue(suminterflowNabs);
@@ -988,7 +998,7 @@ import java.io.*;
         sNH4_Pool.setValue(sumNH4_Pool);
         sNO3_Pool.setValue(sumNO3_Pool);
         sNResiduePool.setValue(sumN_residue_pool);
-        
+        InterflowN_in.setValue(zerosetter);
         
         
 //        System.out.println("percoN = " + percoN +" percoNabs =  "+ percoNabs);
@@ -1324,8 +1334,8 @@ import java.io.*;
     private double calc_surfaceN(){
         double surfaceN = 0;
         
-//        surfaceN = runBeta_NO3 * RD1_out_mm * concN_mobile;  SWAT orginal
-        surfaceN = RD1_out_mm * concN_mobile;
+        surfaceN = runBeta_NO3 * RD1_out_mm * concN_mobile;  //SWAT orginal
+//        surfaceN = RD1_out_mm * concN_mobile;
         surfaceN = Math.min(surfaceN,runNO3_Pool);
         
         return surfaceN;
@@ -1334,13 +1344,13 @@ import java.io.*;
     private double calc_interflowN(int i){
         double interflowN = 0;
         
-/*        if (i == 0) {
+        if (i == 0) {
             interflowN = (1 - runBeta_NO3) * RD2_out_mm * concN_mobile;
             interflowN = Math.min(interflowN,runNO3_Pool);
-        } else if (i > 0) {*/
+        } else if (i > 0) {
             interflowN = RD2_out_mm * concN_mobile;
             interflowN = Math.min(interflowN,runNO3_Pool);
-        
+        }
 /*        if (interflowN > 0){
         System.out.println(RD2_out_mm + " = RD2_out_mm " + interflowN +" = interflowN");
         }*/

@@ -226,10 +226,11 @@ import org.unijena.jams.model.*;
         double rungwExcess = gwExcess.getValue();
         double runN_RG1_in = N_RG1_in.getValue();
         double runN_RG2_in = N_RG2_in.getValue();
+        
         double runNActRG1 = NActRG1.getValue();
         double runNActRG2 = NActRG2.getValue();
-        double runN_concRG1 = N_concRG1.getValue();
-        double runN_concRG2 = N_concRG2.getValue();
+        double runN_concRG1 = 0;
+        double runN_concRG2 = 0;
         double runpot_RG1 = pot_RG1.getValue();
         double runpot_RG2 = pot_RG1.getValue();
         double percoN = PercoNabs.getValue();
@@ -283,7 +284,8 @@ import org.unijena.jams.model.*;
 //       System.out.println("N_RG2_out = " + N_RG2_out +" RG2_out =  "+ RG2_out);
         
         
-        
+        N_RG1_in.setValue(0);
+        N_RG2_in.setValue(0);
         N_RG1_out.setValue(runN_RG1_out);
         N_RG2_out.setValue(runN_RG2_out);
         NActRG1.setValue(runNActRG1);

@@ -80,6 +80,8 @@ import org.unijena.jams.model.*;
         
         run_wstrs = 1 - (Math.sqrt((run_aTP + 0.000001) / (run_pTP + 0.000001)) );
         
+        //run_wstrs = 0;
+        
         wstrs.setValue(run_wstrs);
     
     }

@@ -91,7 +91,8 @@ import org.unijena.jams.model.*;
         
         
         double stressfactor = 1 - Math.max(wstrs.getValue(),(Math.max(tstrs.getValue(),nstrs.getValue())));
-//        double stressfactor = 1 - Math.max(wstrs.getValue(),tstrs.getValue());
+       // stressfactor = 1 - Math.max(wstrs.getValue(),tstrs.getValue());
+       // stressfactor = 1 - nstrs.getValue();
         if (stressfactor > 1){
             System.out.println("Stress "+  stressfactor);
             stressfactor = 1;
@@ -101,6 +102,7 @@ import org.unijena.jams.model.*;
 //            System.out.println("Stress "+  stressfactor);
             stressfactor = 0;
         }
+        
         
         double bioact = (stressfactor * BioOpt_delta.getValue()) + BioAct.getValue();    
         
