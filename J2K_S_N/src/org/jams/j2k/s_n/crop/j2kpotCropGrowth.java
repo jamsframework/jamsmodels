@@ -992,10 +992,10 @@ import java.util.ArrayList;
         
         // First calculation of shape coefficients n1 and n2 is needed
         
-        phu_50 = this.phu / 2;
+        //phu_50 = this.phu / 2;
         //double frn_sub1 = this.bn1 - this.bn3;
-        double b1 = this.bn1 - this.bn3;
-        double t1 = Math.log(phu_50/( 1- (bn2 - bn3)/(bn1 - bn3) ) - phu_50);
+        //double b1 = this.bn1 - this.bn3;
+        //double t1 = Math.log(phu_50/( 1- (bn2 - bn3)/(bn1 - bn3) ) - phu_50);
         
         // ACHTUNG : bug! Scaling factors
         // double sc2_Nbio = (t1 - Math.log(phu   /( 1- (0.00001)  /(bn1 - bn3) ) - phu)) / (phu - phu_50);
@@ -1003,17 +1003,37 @@ import java.util.ArrayList;
         
         // scaling factors adopted manually by hand
         
-        double sc2_Nbio = 30;
-        double sc1_Nbio = 12;
+        //double sc2_Nbio = 30;
+        //double sc1_Nbio = 12;
         /* Fraction of N in plant biomass as a function of growth stage given optimal conditions */
         
         //  double x = this.fphu_act / (this.fphu_act + Math.exp(sc1_Nbio - sc2_Nbio * this.fphu_act))    ;
         //double y = 1 - this.fphu_act / (this.fphu_act + Math.exp(sc1_Nbio - sc2_Nbio * this.fphu_act))    ;
-        double y = this.fphu_act / (this.fphu_act + Math.exp(sc1_Nbio - sc2_Nbio * this.fphu_act))    ;
+        //double y = this.fphu_act / (this.fphu_act + Math.exp(sc1_Nbio - sc2_Nbio * this.fphu_act))    ;
         // this.fnplant_act = b1 * (1.0 - x) + this.bn3;
-        this.fnplant_act = b1 * (1- y) + this.bn3;
+        //this.fnplant_act = b1 * (1- y) + this.bn3;
         
-// this.test = b1 * y + this.bn3;
+        //new Implementation by Manfred Fink
+        
+        if (this.bn1 > this.bn2 && this.bn2 > this.bn3 && this.bn3 > 0){
+        
+            double s1 = 0;
+            double s2 = 0; 
+            double n1 = 0;
+            double n2 = 0;
+        
+        s1 = Math.log((0.5/(1-((this.bn2 - this.bn3)/(this.bn1 - this.bn3))))-0.5);
+        s2 = Math.log((1/(1-((0.0001)/(this.bn1 - this.bn3))))-1);
+        n2 = (s1 - s2)/0.5;
+        n1 = Math.log((0.5/(1-((this.bn2 - this.bn3)/(this.bn1 - this.bn3))))-0.5) + (n2 * 0.5);
+        
+        this.fnplant_act = ((this.bn1 - this.bn3) * (1 - (this.fphu_act/(this.fphu_act + Math.exp(n1 - n2 * this.fphu_act)))))  +  this.bn3;
+
+        }else{
+         fnplant_act = 0;   
+        }
+
+         // this.test = b1 * y + this.bn3;
         //System.out.println(" sc1_Nbio: " +sc1_Nbio + " sc2_Nbio: " + sc2_Nbio +  "test" + test + " - ");
         /*
          *
