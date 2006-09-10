@@ -44,6 +44,13 @@ import java.util.ArrayList;
      *  Component variables
      */
     
+  
+    @JAMSVarDescription(
+            access = JAMSVarDescription.AccessType.READWRITE,
+            update = JAMSVarDescription.UpdateType.RUN,
+            description = "Current organic fertilizer amount"
+            )
+            public JAMSInteger RotPos;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
@@ -550,7 +557,7 @@ import java.util.ArrayList;
         
         
         ArrayList<J2KSNCrop> rotation = (ArrayList<J2KSNCrop>) entity.getObject("landuseRotation");
-        int rotPos = entity.getInt("rotPos");
+        int rotPos = RotPos.getValue();
         J2KSNCrop crop = rotation.get(rotPos);
         
         this.phu = crop.phu; /* total heat units required to reach maturity */
