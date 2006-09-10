@@ -196,7 +196,7 @@ import org.unijena.jams.model.*;
      */
     
     public void init() throws JAMSEntity.NoSuchAttributeException{
-        
+        intercStorage.setValue(0);
     }
     
     public void run() throws JAMSEntity.NoSuchAttributeException{

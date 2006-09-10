@@ -70,97 +70,92 @@ public class StandardEntityReader extends JAMSComponent {
             )
             public JAMSEntityCollection reaches;
     
-    boolean firstRun = true;
-    
     public void init() throws JAMSEntity.NoSuchAttributeException {
         
-        if (firstRun) {
-            //read hru parameter
-            //hrus = new JAMSEntityCollection();
-            hrus.setEntities(J2KFunctions.readParas(dirName.getValue() + "/" + hruFileName.getValue(), getModel()));
-            
-            //read reach parameter
-            //reaches = new JAMSEntityCollection();
-            reaches.setEntities(J2KFunctions.readParas(dirName.getValue() + "/" + reachFileName.getValue(), getModel()));
-            
-            //create object associations from id attributes for hrus and reaches
-            createTopology();
-            
-            //create total order on hrus and reaches that allows processing them subsequently
-            getModel().getRuntime().println("Create ordered hru-list", JAMS.STANDARD);
-            createOrderedList(hrus, "to_poly");
-            getModel().getRuntime().println("Create ordered reach-list", JAMS.STANDARD);
-            createOrderedList(reaches, "to_reach");
-            getModel().getRuntime().println("Entities read successfull!", JAMS.STANDARD);
-            
-            
-            //firstRun = false;
-        }
+        //read hru parameter
+        //hrus = new JAMSEntityCollection();
+        hrus.setEntities(J2KFunctions.readParas(dirName.getValue() + "/" + hruFileName.getValue(), getModel()));
+        
+        //read reach parameter
+        //reaches = new JAMSEntityCollection();
+        reaches.setEntities(J2KFunctions.readParas(dirName.getValue() + "/" + reachFileName.getValue(), getModel()));
+        
+        //create object associations from id attributes for hrus and reaches
+        createTopology();
+        
+        //create total order on hrus and reaches that allows processing them subsequently
+        getModel().getRuntime().println("Create ordered hru-list", JAMS.STANDARD);
+        createOrderedList(hrus, "to_poly");
+        getModel().getRuntime().println("Create ordered reach-list", JAMS.STANDARD);
+        createOrderedList(reaches, "to_reach");
+        getModel().getRuntime().println("Entities read successfull!", JAMS.STANDARD);
+        
     }
+    
     //do depth first search to find cycles
     protected boolean cycleCheck(JAMSEntity node,Stack<JAMSEntity> searchStack,HashSet<JAMSDouble> closedList,HashSet<JAMSDouble> visitedList) throws JAMSEntity.NoSuchAttributeException {
-	JAMSEntity child_node;
-
-	//current node allready in search stack -> circle found
-	if ( searchStack.indexOf(node) != -1) {
-	    int index = searchStack.indexOf(node);
-	    
-	    String cyc_output = new String();
-	    for (int i = index; i < searchStack.size(); i++) {
-		cyc_output += ((JAMSEntity)searchStack.get(i)).getDouble("ID") + " ";		
-	    }
-	    getModel().getRuntime().println("Found circle with ids:" + cyc_output);
-
-	    return true;
-	}
-	//node in closed list? -> then skip it
-	if (closedList.contains(node.getObject("ID")) == true)
-	    return false;
-	//now this node is visited
-	visitedList.add((JAMSDouble)node.getObject("ID"));
-		
-	child_node = (JAMSEntity)node.getObject("to_poly");
-	   
-	if (child_node != null) {	   
-	    //push current node to search stack
-	    searchStack.push(node);
-	
-	    boolean result = cycleCheck(child_node,searchStack,closedList,visitedList);
-	    
-	    searchStack.pop();
-	    
-	    return result;
-	   }	
-	return false;	
+        JAMSEntity child_node;
+        
+        //current node allready in search stack -> circle found
+        if ( searchStack.indexOf(node) != -1) {
+            int index = searchStack.indexOf(node);
+            
+            String cyc_output = new String();
+            for (int i = index; i < searchStack.size(); i++) {
+                cyc_output += ((JAMSEntity)searchStack.get(i)).getDouble("ID") + " ";
+            }
+            getModel().getRuntime().println("Found circle with ids:" + cyc_output);
+            
+            return true;
+        }
+        //node in closed list? -> then skip it
+        if (closedList.contains(node.getObject("ID")) == true)
+            return false;
+        //now this node is visited
+        visitedList.add((JAMSDouble)node.getObject("ID"));
+        
+        child_node = (JAMSEntity)node.getObject("to_poly");
+        
+        if (child_node != null) {
+            //push current node to search stack
+            searchStack.push(node);
+            
+            boolean result = cycleCheck(child_node,searchStack,closedList,visitedList);
+            
+            searchStack.pop();
+            
+            return result;
+        }
+        return false;
     }
     
     protected boolean cycleCheck() throws JAMSEntity.NoSuchAttributeException {
-	Iterator<JAMSEntity> hruIterator;	
-	
-	HashSet<JAMSDouble> closedList = new HashSet<JAMSDouble>();
-	HashSet<JAMSDouble> visitedList = new HashSet<JAMSDouble>();
-	
-	JAMSEntity start_node;
-	
-	getModel().getRuntime().println("Cycle checking...");
-	
-	hruIterator = hrus.getEntities().iterator();
-	
-	boolean result = false;
-		
-	while (hruIterator.hasNext()) {
-	    start_node = hruIterator.next();
-	    //connected component of start_node allready processed?
-	    if (closedList.contains(start_node.getObject("ID")) == false) {
-		if ( cycleCheck(start_node,new Stack<JAMSEntity>(),closedList,visitedList) == true) {
-		    result = true;
-		}
-		closedList.addAll(visitedList);
-		visitedList.clear();
-	    }
-	    
-	}
-	return result;
+        Iterator<JAMSEntity> hruIterator;
+        
+        HashSet<JAMSDouble> closedList = new HashSet<JAMSDouble>();
+        HashSet<JAMSDouble> visitedList = new HashSet<JAMSDouble>();
+        
+        JAMSEntity start_node;
+        
+        getModel().getRuntime().println("Cycle checking...");
+        
+        hruIterator = hrus.getEntities().iterator();
+        
+        boolean result = false;
+        
+        while (hruIterator.hasNext()) {
+            start_node = hruIterator.next();
+            //connected component of start_node allready processed?
+            if (closedList.contains(start_node.getObject("ID")) == false) {
+                if ( cycleCheck(start_node,new Stack<JAMSEntity>(),closedList,visitedList) == true) {
+                    result = true;
+                }
+                closedList.addAll(visitedList);
+                visitedList.clear();
+            }
+            
+        }
+        return result;
     }
     
     protected void createTopology() throws JAMSEntity.NoSuchAttributeException {
@@ -197,14 +192,14 @@ public class StandardEntityReader extends JAMSComponent {
             e = reachIterator.next();
             e.setObject("to_reach", reachMap.get(e.getDouble("to-reach")));
         }
-	
-	//check for cycles
-	if (this.getModel().getRuntime().getDebugLevel() >= JAMS.VVERBOSE) {
-	    if (cycleCheck() == true)
-		getModel().getRuntime().println("HRUs --> cycle found ... :( ");
-	    else
-		getModel().getRuntime().println("HRUs --> no cycle found");
-	}
+        
+        //check for cycles
+        if (this.getModel().getRuntime().getDebugLevel() >= JAMS.VVERBOSE) {
+            if (cycleCheck() == true)
+                getModel().getRuntime().println("HRUs --> cycle found ... :( ");
+            else
+                getModel().getRuntime().println("HRUs --> no cycle found");
+        }
         
     }
     

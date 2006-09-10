@@ -124,7 +124,6 @@ import org.unijena.jams.model.*;
      */
     
     public void init() throws JAMSEntity.NoSuchAttributeException {
-        
     }
     
     public void run() throws JAMSEntity.NoSuchAttributeException {
