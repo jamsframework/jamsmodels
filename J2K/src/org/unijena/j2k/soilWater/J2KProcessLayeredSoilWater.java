@@ -641,11 +641,11 @@ import org.unijena.jams.model.*;
             } else
                 MobileWater = 0;
             
+            
             /** Distribution of MobileWater to the lateral (interflow) and
              * vertical (percolation) flowpaths  */
             this.calcIntfPercRates(MobileWater);
             perchor[h] = run_vertComp;
-            
             
             /** determining internal area routing **/
             this.calcRD2_out(h);
@@ -949,7 +949,7 @@ import org.unijena.jams.model.*;
         if(this.run_satLPS[hor] == 1.0)
             this.run_satLPS[hor] = 0.999999;
         //original function
-        //double potLPSoutflow = this.act_LPS * (1. - Math.exp(-1*alpha/(1-this.sat_LPS)));
+        //double potLPSoutflow = this.run_actLPS[hor] * (1. - Math.exp(-1*alpha/(1-this.run_satLPS[hor])));
         double potLPSoutflow = Math.pow(this.run_satHor[hor], alpha) * this.run_actLPS[hor];
         
         //testing a simple function function out = 1/k * sto

@@ -214,7 +214,7 @@ import org.unijena.jams.model.*;
             model_tsteps = (edMod - sdMod) / (1000 * 60 * 60 * 24);
             model_tsteps = model_tsteps + 1 + 1;
         }*/
-        model_tsteps = modelTimeInterval.getNumberOfTimesteps();
+        model_tsteps = modelTimeInterval.getNumberOfTimesteps() + 1;
         
         JAMSCalendar eff_sd = this.effTimeInterval.getStart();
         JAMSCalendar eff_ed = this.effTimeInterval.getEnd();
@@ -226,7 +226,9 @@ import org.unijena.jams.model.*;
             this.effTsteps = (int)((edEff - sdEff) / (1000 * 60 * 60 * 24));
             this.effTsteps = this.effTsteps + 1;
         }*/
-        effTsteps = (int) effTimeInterval.getNumberOfTimesteps();
+        effTsteps = (int) effTimeInterval.getNumberOfTimesteps() + 1;
+        
+        System.out.println("effTsteps: " + effTsteps + ", modTsteps: " + model_tsteps);
         
         //int ts = (int)tsteps;
         int ts = (int) this.getContext().getNumberOfIterations();
