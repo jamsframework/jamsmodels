@@ -164,15 +164,8 @@ public class ParallelStorageCascade extends JAMSComponent {
         
         //let it run until no relevant outflow occurs
         double runoff = 0;
-        int timeInSeconds = 0;
         int arrayLength = (int)(this.precipDuration.getValue() / this.timeInterval.getTimeUnitCount());
-        
-        boolean cont = true;
-        int rainCounter = 0;
-        int uhCounter = 0;
-        
-        double precip1, precip2;
-        
+       
         if(this.timeStepCounter < arrayLength){
             start = 0;
         } else{
@@ -183,20 +176,15 @@ public class ParallelStorageCascade extends JAMSComponent {
             runoff = runoff + u2_arr[j];//((Double)this.u2.get(j)).doubleValue();
         }
         double volume = (runoff * this.timeInterval.getTimeUnitCount() * 1000) / (this.catchmentArea.getValue() * 1000000);
-        String ts = String.format("%1$tH:%1$tM:%1$tS", this.time);
         
         this.runoff.setValue(runoff);
         this.volume.setValue(volume);
 
         try{
-        //this.run_arr[this.timeStepCounter] = runoff;
+        
         } catch (Exception e) {
             System.out.println("");
         }
-        //this.vol_arr[this.timeStepCounter] = volume;
-        
-        //this.runoff_arr.setValue(run_arr);
-        //this.volume_arr.setValue(vol_arr);
         runoff = 0;
         this.timeStepCounter++;
         

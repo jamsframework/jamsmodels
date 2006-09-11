@@ -104,7 +104,6 @@ import org.unijena.jams.data.*;
             
             //get first line of hru data
             s = reader.readLine();
-            double areaSum = 0;
             
             while ((s != null) && !s.startsWith("#"))  {
                 tokenizer = new StringTokenizer(s, "\t");

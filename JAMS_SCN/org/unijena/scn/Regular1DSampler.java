@@ -139,7 +139,6 @@ import org.unijena.jams.model.*;
         if(this.enable.getValue()){
             //add more checks!!!
             //retreiving parameter names
-            int i;
             parameterName = this.parameterID.getValue();
             parameter = (JAMSDouble) getModel().getRuntime().getDataHandles().get(parameterName);
                         
@@ -295,7 +294,7 @@ import org.unijena.jams.model.*;
             
             runEnumerator.reset();
             while(runEnumerator.hasNext() && doRun) {
-                JAMSComponent comp = runEnumerator.next();
+                runEnumerator.next();
             }
         }
         

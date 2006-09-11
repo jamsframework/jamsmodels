@@ -23,7 +23,6 @@
 
 package org.unijena.scn;
 
-import org.unijena.jams.JAMS;
 import org.unijena.jams.data.*;
 import org.unijena.jams.model.*;
 import org.unijena.jams.io.*;

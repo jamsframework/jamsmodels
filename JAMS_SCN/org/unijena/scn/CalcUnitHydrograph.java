@@ -123,18 +123,14 @@ public class CalcUnitHydrograph extends JAMSComponent {
         
         int faculty = 1;
         double tInterval = (double)this.timeInterval.getTimeUnitCount() / (double)this.precipDuration.getValue();
-        double tStep = 0;
         
-        boolean cont = true;
-        int counter = 0;
-        
-        double count2 = 0;
+        double counter = 0;
         //calculate the unit hydrograph for both cascades
         for(int i = 0; i < timeSteps; i++){
-            u1_arr[i] = hNe1 * (this.catchmentArea.getValue() / 3.6) * (1/(this.k1.getValue() * faculty) * Math.pow(count2/this.k1.getValue(), nStor-1) * Math.exp(-count2/this.k1.getValue()));
-            u2_arr[i] = hNe2 * (this.catchmentArea.getValue() / 3.6) * (1/(this.k2.getValue() * faculty) * Math.pow(count2/this.k2.getValue(), nStor-1) * Math.exp(-count2/this.k2.getValue()));
+            u1_arr[i] = hNe1 * (this.catchmentArea.getValue() / 3.6) * (1/(this.k1.getValue() * faculty) * Math.pow(counter/this.k1.getValue(), nStor-1) * Math.exp(-counter/this.k1.getValue()));
+            u2_arr[i] = hNe2 * (this.catchmentArea.getValue() / 3.6) * (1/(this.k2.getValue() * faculty) * Math.pow(counter/this.k2.getValue(), nStor-1) * Math.exp(-counter/this.k2.getValue()));
             //System.out.println(u1_arr[i]);
-            count2 = count2 + tInterval;
+            counter = counter + tInterval;
         }
         
         this.uh1.setValue(u1_arr);
