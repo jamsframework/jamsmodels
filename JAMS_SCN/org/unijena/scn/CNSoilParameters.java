@@ -100,14 +100,10 @@ public class CNSoilParameters extends JAMSComponent {
         
          //cnValue.setValue(cnSetter.getValue());
     	String cnFN = this.dirName.getValue() + this.cnFileName.getValue();
-    	System.out.println(cnFN);
     	String hruFN = this.dirName.getValue() + this.hruFileName.getValue();
-    	System.out.println(hruFN);
     	readParameters(cnFN, hruFN, this.getModel());
     	
-    	System.out.println("Area: " + this.catchmentArea.getValue());
-    	System.out.println("CN-Value: " + this.cnValue.getValue());
-    	
+    	getModel().getRuntime().println("Einzugsgebietsgröße [km²]: " + this.catchmentArea.getValue());
     }
     
     public void readParameters(String cnFileName, String hruFileName, JAMSModel model){
@@ -235,7 +231,6 @@ public class CNSoilParameters extends JAMSComponent {
         //compute catchment area
         for(int i = 0; i < hruEntries; i++){
         	this.catchmentArea.setValue(this.catchmentArea.getValue() + new Double(hruMatrix[i][1]).doubleValue());
-        	System.out.println(this.catchmentArea.getValue());
         }
         
         //compute catchment cn-value
@@ -264,7 +259,7 @@ public class CNSoilParameters extends JAMSComponent {
         				break;
         			}
         			else{
-        				System.out.println("Soil entry of HRU " + hruMatrix[i][0] + " is not valid");
+        				getModel().getRuntime().println("Soil entry of HRU " + hruMatrix[i][0] + " is not valid");
         				break;
         			}
         		}

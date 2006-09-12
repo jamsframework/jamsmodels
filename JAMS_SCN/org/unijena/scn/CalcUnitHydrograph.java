@@ -113,9 +113,6 @@ public class CalcUnitHydrograph extends JAMSComponent {
         double[] u1_arr = new double[timeSteps]; 
         double[] u2_arr = new double[timeSteps];
         
-        System.out.println("timeSteps: " + timeSteps);
-        System.out.println("timeSize: " + this.timeInterval.getTimeUnitCount());
-        
         int arrayLength = (int)(this.precipDuration.getValue() / this.timeInterval.getTimeUnitCount());
         double hNe = effectivePrecip.getValue() / arrayLength;
         double hNe1 = hNe * beta.getValue();
@@ -129,7 +126,6 @@ public class CalcUnitHydrograph extends JAMSComponent {
         for(int i = 0; i < timeSteps; i++){
             u1_arr[i] = hNe1 * (this.catchmentArea.getValue() / 3.6) * (1/(this.k1.getValue() * faculty) * Math.pow(counter/this.k1.getValue(), nStor-1) * Math.exp(-counter/this.k1.getValue()));
             u2_arr[i] = hNe2 * (this.catchmentArea.getValue() / 3.6) * (1/(this.k2.getValue() * faculty) * Math.pow(counter/this.k2.getValue(), nStor-1) * Math.exp(-counter/this.k2.getValue()));
-            //System.out.println(u1_arr[i]);
             counter = counter + tInterval;
         }
         

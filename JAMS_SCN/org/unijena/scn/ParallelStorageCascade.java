@@ -160,7 +160,7 @@ public class ParallelStorageCascade extends JAMSComponent {
         try{
         
         } catch (Exception e) {
-            System.out.println("");
+            System.out.println("Error somewhere ...");
         }
         runoff = 0;
         this.timeStepCounter++;
