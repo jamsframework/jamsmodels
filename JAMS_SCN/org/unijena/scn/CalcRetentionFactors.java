@@ -21,13 +21,17 @@
  *
  */
 package org.unijena.scn;
-import org.unijena.jams.model.*;
-import org.unijena.jams.data.*;
+import org.unijena.jams.data.JAMSDouble;
+import org.unijena.jams.data.JAMSEntity;
+import org.unijena.jams.model.JAMSComponent;
+import org.unijena.jams.model.JAMSComponentDescription;
+import org.unijena.jams.model.JAMSVarDescription;
 
 /**
  *
  * @author P. Krause
  */
+
 @JAMSComponentDescription(
         title="Calc retention factors",
         author="Peter Krause",
@@ -70,10 +74,16 @@ public class CalcRetentionFactors extends JAMSComponent {
             )
             public JAMSDouble streamLength;
     
+    /* (non-Javadoc)
+     * @see org.unijena.jams.model.JAMSComponent#init()
+     */
     public void init() throws JAMSEntity.NoSuchAttributeException {
         
     } 
     
+    /* (non-Javadoc)
+     * @see org.unijena.jams.model.JAMSComponent#run()
+     */
     public void run() throws JAMSEntity.NoSuchAttributeException {
         double lengthSlope = this.streamLength.getValue() / Math.sqrt(this.streamSlope.getValue());
         double beta = 0;
