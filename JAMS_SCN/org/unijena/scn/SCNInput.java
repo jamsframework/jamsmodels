@@ -119,8 +119,10 @@ public class SCNInput extends JAMSComponent {
         }
         
         this.effectivePrecip.setValue(effPrec);
-        System.out.println("input precip: " + this.inputPrecip.getValue());
-        System.out.println("eff. precip: " + effPrec);
+        getModel().getRuntime().println("Eingangsniederschlag: " + this.inputPrecip.getValue());
+        getModel().getRuntime().println("Effektivniederschlag: " + effPrec);
+        getModel().getRuntime().println("CN-Wert: " + this.cnValue.getValue());
+        
     }
     
 }
