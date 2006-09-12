@@ -65,35 +65,6 @@ public class ParallelStorageCascade extends JAMSComponent {
             )
             public JAMSInteger precipDuration;
     
-    /*@JAMSVarDescription(
-            access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.INIT,
-            unit = "mm",
-            description = "effective rainfall"
-            )
-            public JAMSDouble effectivePrecip;
-    
-    @JAMSVarDescription(
-            access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.INIT,
-            description = "retention factor beta"
-            )
-            public JAMSDouble beta;
-    
-    @JAMSVarDescription(
-            access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.INIT,
-            description = "retention factor k1"
-            )
-            public JAMSDouble k1;
-    
-    @JAMSVarDescription(
-            access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.INIT,
-            description = "retention factor k2"
-            )
-            public JAMSDouble k2;*/
-    
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
             update = JAMSVarDescription.UpdateType.RUN,
@@ -177,8 +148,14 @@ public class ParallelStorageCascade extends JAMSComponent {
         }
         double volume = (runoff * this.timeInterval.getTimeUnitCount() * 1000) / (this.catchmentArea.getValue() * 1000000);
         
+        run_arr[this.timeStepCounter] = runoff;
+        vol_arr[this.timeStepCounter] = volume;
+        
         this.runoff.setValue(runoff);
         this.volume.setValue(volume);
+        
+        this.runoff_arr.setValue(run_arr);
+        //this.volume_arr.setValue(vol_arr);
 
         try{
         
