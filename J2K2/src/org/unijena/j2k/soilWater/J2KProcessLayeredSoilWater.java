@@ -1,0 +1,1103 @@
+/*
+ * J2KProcessLumpedSoilWater.java
+ * Created on 25. November 2005, 13:21
+ *
+ * This file is part of JAMS
+ * Copyright (C) 2005 FSU Jena, c0krpe
+ *
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License
+ * as published by the Free Software Foundation; either version 2
+ * of the License, or (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
+ *
+ */
+
+package org.unijena.j2k.soilWater;
+
+import org.unijena.jams.data.*;
+import org.unijena.jams.model.*;
+
+/**
+ *
+ * @author Peter Krause
+ */
+/*
+<component class="org.unijena.j2k.soilWater.J2KProcessLumpedSoilWater" name="J2KProcessLumpedSoilWater">
+    <jamsvar name="time" provider="TemporalContext" providervar="current"/>
+    <jamsvar name="area" provider="HRUContext" providervar="currentEntity.area"/>
+    <jamsvar name="slope" provider="HRUContext" providervar="currentEntity.slope"/>
+    <jamsvar name="sealedGrade" provider="HRUContext" providervar="currentEntity.sealedGrade"/>
+    <jamsvar name="netRain" provider="HRUContext" providervar="currentEntity.netRain"/>
+    <jamsvar name="netSnow" provider="HRUContext" providervar="currentEntity.netSnow"/>
+    <jamsvar name="potET" provider="HRUContext" providervar="currentEntity.potET"/>
+    <jamsvar name="actET" provider="HRUContext" providervar="currentEntity.actET"/>
+    <jamsvar name="snowDepth" provider="HRUContext" providervar="currentEntity.snowDepth"/>
+    <jamsvar name="snowMelt" provider="HRUContext" providervar="currentEntity.snowMelt"/>
+    <jamsvar name="maxMPS" provider="HRUContext" providervar="currentEntity.horizons"/>
+    <jamsvar name="maxMPS" provider="HRUContext" providervar="currentEntity.maxMPS"/>
+    <jamsvar name="maxLPS" provider="HRUContext" providervar="currentEntity.maxLPS"/>
+    <jamsvar name="actDPS" provider="HRUContext" providervar="currentEntity.actDPS"/>
+    <jamsvar name="actMPS" provider="HRUContext" providervar="currentEntity.actMPS"/>
+    <jamsvar name="actLPS" provider="HRUContext" providervar="currentEntity.actLPS"/>
+    <jamsvar name="satMPS" provider="HRUContext" providervar="currentEntity.satMPS"/>
+    <jamsvar name="satLPS" provider="HRUContext" providervar="currentEntity.satLPS"/>
+    <jamsvar name="satSoil" provider="HRUContext" providervar="currentEntity.satSoil"/>
+    <jamsvar name="infiltration" provider="HRUContext" providervar="currentEntity.infiltration"/>
+    <jamsvar name="interflow" provider="HRUContext" providervar="currentEntity.interflow"/>
+    <jamsvar name="percolation" provider="HRUContext" providervar="currentEntity.percolation"/>
+    <jamsvar name="inRD1" provider="HRUContext" providervar="currentEntity.inRD1"/>
+    <jamsvar name="inRD2" provider="HRUContext" providervar="currentEntity.inRD2"/>
+    <jamsvar name="genRD1" provider="HRUContext" providervar="currentEntity.genRD1"/>
+    <jamsvar name="genRD2" provider="HRUContext" providervar="currentEntity.genRD2"/>
+    <jamsvar name="outRD1" provider="HRUContext" providervar="currentEntity.outRD1"/>
+    <jamsvar name="outRD2" provider="HRUContext" providervar="currentEntity.outRD2"/>
+    <jamsvar name="soilMaxDPS" value="2.0"/>
+    <jamsvar name="soilPolRed" value="5.0"/>
+    <jamsvar name="soilLinRed" value="0.0"/>
+    <jamsvar name="soilMaxInfSummer" value="80.0"/>
+    <jamsvar name="soilMaxInfWinter" value="100.0"/>
+    <jamsvar name="soilMaxInfSnow" value="50.0"/>
+    <jamsvar name="soilImpGT80" value="0.25"/>
+    <jamsvar name="soilImpLT80" value="0.6"/>
+    <jamsvar name="soilDistMPSLPS" value="0.1"/>
+    <jamsvar name="soilDiffMPSLPS" value="0.68"/>
+    <jamsvar name="soilOutLPS" value="0.9"/>
+    <jamsvar name="soilLatVertLPS" value="0.5"/>
+    <jamsvar name="soilMaxPerc" value="5.0"/>
+    <jamsvar name="soilConcRD1" value="1.0"/>
+    <jamsvar name="soilConcRD2" value="1.8"/>
+</component>
+ */
+@JAMSComponentDescription(
+        title="J2KProcessLumpedSoilWater",
+        author="Peter Krause",
+        description="Calculates soil water balance for each HRU without vertical layers"
+        )
+        public class J2KProcessLayeredSoilWater extends JAMSComponent {
+    
+    /*
+     *  Component variables
+     */
+    @JAMSVarDescription(
+            access = JAMSVarDescription.AccessType.READ,
+            update = JAMSVarDescription.UpdateType.RUN,
+            description = "time"
+            )
+            public JAMSCalendar time;
+    
+    @JAMSVarDescription(
+            access = JAMSVarDescription.AccessType.READ,
+            update = JAMSVarDescription.UpdateType.RUN,
+            description = "The current hru entity"
+            )
+            public JAMSEntity entity;
+    
+    @JAMSVarDescription(
+            access = JAMSVarDescription.AccessType.READ,
+            update = JAMSVarDescription.UpdateType.RUN,
+            description = "attribute area"
+            )
+            public JAMSDouble area;
+    
+    @JAMSVarDescription(
+            access = JAMSVarDescription.AccessType.READ,
+            update = JAMSVarDescription.UpdateType.RUN,
+            description = "attribute slope"
+            )
+            public JAMSDouble slope;
+    
+    @JAMSVarDescription(
+            access = JAMSVarDescription.AccessType.READ,
+            update = JAMSVarDescription.UpdateType.RUN,
+            description = "sealed grade"
+            )
+            public JAMSDouble sealedGrade;
+    
+    @JAMSVarDescription(
+            access = JAMSVarDescription.AccessType.READWRITE,
+            update = JAMSVarDescription.UpdateType.RUN,
+            description = "state variable net rain"
+            )
+            public JAMSDouble netRain;
+    
+    @JAMSVarDescription(
+            access = JAMSVarDescription.AccessType.READWRITE,
+            update = JAMSVarDescription.UpdateType.RUN,
+            description = "state variable net snow"
+            )
+            public JAMSDouble netSnow;
+    
+    @JAMSVarDescription(
+            access = JAMSVarDescription.AccessType.READ,
+            update = JAMSVarDescription.UpdateType.RUN,
+            description = "state variable potET"
+            )
+            public JAMSDouble potET;
+    
+    @JAMSVarDescription(
+            access = JAMSVarDescription.AccessType.READWRITE,
+            update = JAMSVarDescription.UpdateType.RUN,
+            description = "state variable actET"
+            )
+            public JAMSDouble actET;
+    
+    @JAMSVarDescription(
+            access = JAMSVarDescription.AccessType.READ,
+            update = JAMSVarDescription.UpdateType.RUN,
+            description = "snow depth"
+            )
+            public JAMSDouble snowDepth;
+    
+    @JAMSVarDescription(
+            access = JAMSVarDescription.AccessType.READ,
+            update = JAMSVarDescription.UpdateType.RUN,
+            description = "daily snow melt"
+            )
+            public JAMSDouble snowMelt;
+    
+    @JAMSVarDescription(
+            access = JAMSVarDescription.AccessType.READ,
+            update = JAMSVarDescription.UpdateType.RUN,
+            description = "horizons"
+            )
+            public JAMSDouble horizons;
+    
+    @JAMSVarDescription(
+            access = JAMSVarDescription.AccessType.READ,
+            update = JAMSVarDescription.UpdateType.RUN,
+            description = "HRU attribute maximum MPS"
+            )
+            public JAMSDoubleArray maxMPS = new JAMSDoubleArray();
+    
+    @JAMSVarDescription(
+            access = JAMSVarDescription.AccessType.READ,
+            update = JAMSVarDescription.UpdateType.RUN,
+            description = "HRU attribute maximum LPS"
+            )
+            public JAMSDoubleArray maxLPS = new JAMSDoubleArray();
+    
+    @JAMSVarDescription(
+            access = JAMSVarDescription.AccessType.READWRITE,
+            update = JAMSVarDescription.UpdateType.RUN,
+            description = "HRU state var actual MPS"
+            )
+            public JAMSDoubleArray actMPS = new JAMSDoubleArray();
+    
+    @JAMSVarDescription(
+            access = JAMSVarDescription.AccessType.READWRITE,
+            update = JAMSVarDescription.UpdateType.RUN,
+            description = "HRU state var actual LPS"
+            )
+            public JAMSDoubleArray actLPS = new JAMSDoubleArray();
+    
+    @JAMSVarDescription(
+            access = JAMSVarDescription.AccessType.READWRITE,
+            update = JAMSVarDescription.UpdateType.RUN,
+            description = "HRU state var actual depression storage"
+            )
+            public JAMSDouble actDPS;
+    
+    @JAMSVarDescription(
+            access = JAMSVarDescription.AccessType.READWRITE,
+            update = JAMSVarDescription.UpdateType.RUN,
+            description = "HRU state var saturation of MPS"
+            )
+            public JAMSDoubleArray satMPS = new JAMSDoubleArray();
+    
+    @JAMSVarDescription(
+            access = JAMSVarDescription.AccessType.READWRITE,
+            update = JAMSVarDescription.UpdateType.RUN,
+            description = "HRU state var saturation of LPS"
+            )
+            public JAMSDoubleArray satLPS = new JAMSDoubleArray();
+    
+    @JAMSVarDescription(
+            access = JAMSVarDescription.AccessType.WRITE,
+            update = JAMSVarDescription.UpdateType.RUN,
+            description = "HRU attribute maximum MPS of soil"
+            )
+            public JAMSDouble soilMaxMPS;
+    
+    @JAMSVarDescription(
+            access = JAMSVarDescription.AccessType.WRITE,
+            update = JAMSVarDescription.UpdateType.RUN,
+            description = "HRU attribute maximum LPS of soil"
+            )
+            public JAMSDouble soilMaxLPS;
+    
+    @JAMSVarDescription(
+            access = JAMSVarDescription.AccessType.WRITE,
+            update = JAMSVarDescription.UpdateType.RUN,
+            description = "HRU state var actual MPS of soil"
+            )
+            public JAMSDouble soilActMPS;
+    
+    @JAMSVarDescription(
+            access = JAMSVarDescription.AccessType.WRITE,
+            update = JAMSVarDescription.UpdateType.RUN,
+            description = "HRU state var actual LPS of soil"
+            )
+            public JAMSDouble soilActLPS;
+    
+    @JAMSVarDescription(
+            access = JAMSVarDescription.AccessType.WRITE,
+            update = JAMSVarDescription.UpdateType.RUN,
+            description = "HRU state var saturation of MPS of soil"
+            )
+            public JAMSDouble soilSatMPS;
+    
+    @JAMSVarDescription(
+            access = JAMSVarDescription.AccessType.WRITE,
+            update = JAMSVarDescription.UpdateType.RUN,
+            description = "HRU state var saturation of LPS of soil"
+            )
+            public JAMSDouble soilSatLPS;
+    
+    @JAMSVarDescription(
+            access = JAMSVarDescription.AccessType.READWRITE,
+            update = JAMSVarDescription.UpdateType.RUN,
+            description = "HRU state var saturation of whole soil"
+            )
+            public JAMSDouble satSoil;
+    
+    @JAMSVarDescription(
+            access = JAMSVarDescription.AccessType.WRITE,
+            update = JAMSVarDescription.UpdateType.RUN,
+            description = "HRU statevar infiltration"
+            )
+            public JAMSDouble infiltration;
+    
+    @JAMSVarDescription(
+            access = JAMSVarDescription.AccessType.WRITE,
+            update = JAMSVarDescription.UpdateType.RUN,
+            description = "HRU statevar interflow"
+            )
+            public JAMSDouble interflow;
+    
+    @JAMSVarDescription(
+            access = JAMSVarDescription.AccessType.WRITE,
+            update = JAMSVarDescription.UpdateType.RUN,
+            description = "HRU statevar percolation"
+            )
+            public JAMSDouble percolation;
+    
+    @JAMSVarDescription(
+            access = JAMSVarDescription.AccessType.READWRITE,
+            update = JAMSVarDescription.UpdateType.RUN,
+            description = "HRU statevar RD1 inflow"
+            )
+            public JAMSDouble inRD1;
+    
+    @JAMSVarDescription(
+            access = JAMSVarDescription.AccessType.WRITE,
+            update = JAMSVarDescription.UpdateType.RUN,
+            description = "HRU statevar RD1 outflow"
+            )
+            public JAMSDouble outRD1;
+    
+    @JAMSVarDescription(
+            access = JAMSVarDescription.AccessType.WRITE,
+            update = JAMSVarDescription.UpdateType.RUN,
+            description = "HRU statevar RD1 generation"
+            )
+            public JAMSDouble genRD1;
+    
+    @JAMSVarDescription(
+            access = JAMSVarDescription.AccessType.READWRITE,
+            update = JAMSVarDescription.UpdateType.RUN,
+            description = "HRU statevar RD2 inflow"
+            )
+            public JAMSDoubleArray inRD2 = new JAMSDoubleArray();
+    
+    @JAMSVarDescription(
+            access = JAMSVarDescription.AccessType.WRITE,
+            update = JAMSVarDescription.UpdateType.RUN,
+            description = "HRU statevar RD2 outflow"
+            )
+            public JAMSDoubleArray outRD2 = new JAMSDoubleArray();
+    
+    @JAMSVarDescription(
+            access = JAMSVarDescription.AccessType.WRITE,
+            update = JAMSVarDescription.UpdateType.RUN,
+            description = "HRU statevar RD2 generation"
+            )
+            public JAMSDoubleArray genRD2 = new JAMSDoubleArray();
+    
+    @JAMSVarDescription(
+            access = JAMSVarDescription.AccessType.READ,
+            update = JAMSVarDescription.UpdateType.INIT,
+            description = "maximum depression storage [mm]"
+            )
+            public JAMSDouble soilMaxDPS;
+    
+    @JAMSVarDescription(
+            access = JAMSVarDescription.AccessType.READ,
+            update = JAMSVarDescription.UpdateType.INIT,
+            description = "poly reduction of ETP"
+            )
+            public JAMSDouble soilPolRed;
+    
+    @JAMSVarDescription(
+            access = JAMSVarDescription.AccessType.READ,
+            update = JAMSVarDescription.UpdateType.INIT,
+            description = "linear reduction of ETP"
+            )
+            public JAMSDouble soilLinRed;
+    
+    @JAMSVarDescription(
+            access = JAMSVarDescription.AccessType.READ,
+            update = JAMSVarDescription.UpdateType.INIT,
+            description = "maximum infiltration rate in summer [mm/d]"
+            )
+            public JAMSDouble soilMaxInfSummer;
+    
+    @JAMSVarDescription(
+            access = JAMSVarDescription.AccessType.READ,
+            update = JAMSVarDescription.UpdateType.INIT,
+            description = "maximum infiltration rate in winter [mm/d]"
+            )
+            public JAMSDouble soilMaxInfWinter;
+    
+    @JAMSVarDescription(
+            access = JAMSVarDescription.AccessType.READ,
+            update = JAMSVarDescription.UpdateType.INIT,
+            description = "maximum infiltration rate on snow [mm/d]"
+            )
+            public JAMSDouble soilMaxInfSnow;
+    
+    @JAMSVarDescription(
+            access = JAMSVarDescription.AccessType.READ,
+            update = JAMSVarDescription.UpdateType.INIT,
+            description = "maximum infiltration part on sealed areas (gt 80%)"
+            )
+            public JAMSDouble soilImpGT80;
+    
+    @JAMSVarDescription(
+            access = JAMSVarDescription.AccessType.READ,
+            update = JAMSVarDescription.UpdateType.INIT,
+            description = "maximum infiltration part on sealed areas (lt 80%)"
+            )
+            public JAMSDouble soilImpLT80;
+    
+    @JAMSVarDescription(
+            access = JAMSVarDescription.AccessType.READ,
+            update = JAMSVarDescription.UpdateType.INIT,
+            description = "MPS/LPS distribution coefficient for inflow"
+            )
+            public JAMSDouble soilDistMPSLPS;
+    
+    @JAMSVarDescription(
+            access = JAMSVarDescription.AccessType.READ,
+            update = JAMSVarDescription.UpdateType.INIT,
+            description = "MPS/LPS diffusion coefficient"
+            )
+            public JAMSDouble soilDiffMPSLPS;
+    
+    @JAMSVarDescription(
+            access = JAMSVarDescription.AccessType.READ,
+            update = JAMSVarDescription.UpdateType.INIT,
+            description = "LPS outflow coefficient"
+            )
+            public JAMSDouble soilOutLPS;
+    
+    @JAMSVarDescription(
+            access = JAMSVarDescription.AccessType.READ,
+            update = JAMSVarDescription.UpdateType.INIT,
+            description = "LPS lateral-vertical distribution coefficient"
+            )
+            public JAMSDouble soilLatVertLPS;
+    
+    @JAMSVarDescription(
+            access = JAMSVarDescription.AccessType.READ,
+            update = JAMSVarDescription.UpdateType.INIT,
+            description = "maximum percolation rate [mm/d]"
+            )
+            public JAMSDouble soilMaxPerc;
+    
+    @JAMSVarDescription(
+            access = JAMSVarDescription.AccessType.READ,
+            update = JAMSVarDescription.UpdateType.INIT,
+            description = "concentration coefficient for RD1"
+            )
+            public JAMSDouble soilConcRD1;
+    
+    @JAMSVarDescription(
+            access = JAMSVarDescription.AccessType.READ,
+            update = JAMSVarDescription.UpdateType.INIT,
+            description = "concentration coefficient for RD2"
+            )
+            public JAMSDouble soilConcRD2;
+    
+    @JAMSVarDescription(
+            access = JAMSVarDescription.AccessType.WRITE,
+            update = JAMSVarDescription.UpdateType.RUN,
+            description = "intfiltration poritions for the single horizonts"
+            )
+            public JAMSDoubleArray infiltration_hor = new JAMSDoubleArray();
+    
+    @JAMSVarDescription(
+            access = JAMSVarDescription.AccessType.WRITE,
+            update = JAMSVarDescription.UpdateType.RUN,
+            description = "percolation out of the single horizonts"
+            )
+            public JAMSDoubleArray perco_hor = new JAMSDoubleArray();
+    
+    @JAMSVarDescription(
+            access = JAMSVarDescription.AccessType.WRITE,
+            update = JAMSVarDescription.UpdateType.RUN,
+            description = "evapotranspiration out of the single horizonts"
+            )
+            public JAMSDoubleArray actETP_h = new JAMSDoubleArray();
+    
+    //internal state variables
+    double  run_actDPS, run_satSoil, run_inRain, run_inSnow,
+            run_snowMelt, run_infiltration, run_latComp, run_vertComp, run_overlandflow, run_potETP, run_actETP, run_snowDepth, run_area, run_slope,
+            run_inRD1, soilSatMps, soilSatLps, soilActMps, soilActLps, soilMaxMps, soilMaxLps, run_outRD1, run_genRD1;
+    double[] run_maxMPS, run_maxLPS, run_actMPS, run_actLPS, run_satMPS, run_satLPS, run_inRD2, run_satHor, run_outRD2, run_genRD2;
+    int nhor;
+    
+    /*
+     *  Component run stages
+     */
+    
+    public void init() throws JAMSEntity.NoSuchAttributeException {
+        
+        
+        
+    }
+    
+    public void run() throws JAMSEntity.NoSuchAttributeException {
+        double balMPSstart = 0;
+        double balMPSend = 0;
+        double balLPSstart = 0;
+        double balLPSend = 0;
+        double balDPSstart = 0;
+        double balDPSend = 0;
+        double balIn = 0;
+        double balOut = 0;
+        double balET = 0;
+
+        //System.out.getRuntime().println("Processing HRU: " + entity.getDouble("ID"));
+        //if(this.time.get(time.DATE) == 23 && this.time.get(time.MONTH)==10 && this.time.get(time.YEAR)==1989){
+        //    if(entity.getDouble("ID") == 1027.0)
+        //        System.out.getRuntime().println("stop!");
+        // }
+        this.run_area = area.getValue();
+        this.run_slope = slope.getValue();
+        
+        this.nhor = (int)horizons.getValue();
+        double[] infilhor = new double[nhor];
+        double[] perchor = new double[nhor];
+        double[] actETP_hor = new double[nhor];
+        
+        this.run_satHor = new double[nhor];
+        
+        this.run_maxMPS = maxMPS.getValue();
+        this.run_maxLPS = maxLPS.getValue();
+        this.run_actMPS = actMPS.getValue();
+        this.run_actLPS = actLPS.getValue();
+        this.run_satMPS = satMPS.getValue();
+        this.run_satLPS = satLPS.getValue();
+        this.run_actDPS = actDPS.getValue();
+        
+        this.run_inRD1 = inRD1.getValue();
+        this.run_inRD2 = inRD2.getValue();
+        
+        balIn += this.run_inRD1;
+        this.run_inRain = netRain.getValue();
+        this.run_inSnow = netSnow.getValue();
+        this.run_potETP = potET.getValue();
+        this.run_actETP = actET.getValue();
+        this.run_snowDepth = snowDepth.getValue();
+        this.run_snowMelt = snowMelt.getValue();
+        
+        this.run_genRD2 = new double[nhor];
+        this.run_outRD2 = new double[nhor];
+        this.run_latComp = 0;
+        this.run_vertComp = 0;
+        this.run_genRD1 = 0;
+        this.run_outRD1 = 0;
+        
+        balET = this.run_actETP;
+        balDPSstart = this.run_actDPS;
+        for(int h = 0; h < nhor; h++){
+            /** determining inflow of infiltration to MPS */
+            balIn += this.run_inRD2[h];
+            balMPSstart += this.run_actMPS[h];
+            balLPSstart += this.run_actLPS[h];
+            this.run_genRD2[h] = 0;
+            this.run_outRD2[h] = 0;
+        }
+        
+        
+        //calculation of saturations first
+        this.calcSoilSaturations(false);
+        
+        /** redistributing RD1 and RD2 inflow of antecedent unit */
+        this.redistRD1_RD2_in();
+        
+        /** calculation of ETP from dep. Storage and open water bodies */
+        this.calcPreInfEvaporation();
+        
+        
+        /** determining available water for infiltration */
+        this.run_infiltration = this.run_inRain + this.run_inSnow
+                + this.run_snowMelt
+                + this.run_actDPS;
+        
+        /*if(this.run_infiltration < 0){
+            System.out.getRuntime().println("negative infiltration!");
+            System.out.getRuntime().println("inRain: " + this.run_inRain);
+            System.out.getRuntime().println("inSnow: " + this.run_inSnow);
+            System.out.getRuntime().println("inSnowMelt: " + this.run_snowMelt);
+            System.out.getRuntime().println("inDPS: " + this.run_actDPS);
+        }*/
+        //balance
+        balIn += this.run_inRain;
+        balIn += this.run_inSnow;
+        balIn += this.run_snowMelt;
+        
+        
+        this.run_actDPS = 0;
+        this.run_inRain = 0;
+        this.run_inSnow = 0;
+        this.run_snowMelt = 0;
+        
+        /** infiltration on impervious areas and water bodies
+         *  is directly routed as DirectRunoff to the next polygon
+         *  a better implementation would be the next river reach */
+        this.calcInfImperv(sealedGrade.getValue());
+        this.calcSoilSaturations(false);
+        /** determining maximal infiltration rate */
+        double maxInf = this.calcMaxInfiltration(time.get(time.MONTH)+1);
+        if(maxInf < this.run_infiltration){
+            //System.out.getRuntime().println("maxInf:");
+            double deltaInf = this.run_infiltration - maxInf;
+            this.run_actDPS = this.run_actDPS + deltaInf;
+            this.run_infiltration = maxInf;
+        }
+        
+        
+        for(int h = 0; h < nhor; h++){
+            /** determining inflow of infiltration to MPS */
+            //balMPSstart += this.run_actMPS[h];
+            //balLPSstart += this.run_actLPS[h];
+            double bak_infiltration = run_infiltration;
+            this.run_infiltration = this.calcMPSInflow(this.run_infiltration, h);
+            this.run_infiltration = this.calcLPSInflow(this.run_infiltration, h);
+            infilhor[h] = (bak_infiltration - run_infiltration);
+        }
+        
+        if(this.run_infiltration > 0){
+            //System.out.getRuntime().println("Infiltration after: " +  this.run_infiltration);
+            this.run_actDPS += this.run_infiltration;
+            this.run_infiltration = 0;
+        }
+        //balDPSstart = this.run_actDPS;
+        for(int h = 0; h < this.nhor; h++){
+            
+            
+            
+            
+            /** determining inflow of infiltration to MPS */
+            //this.run_infiltration = this.calcMPSInflow(this.run_infiltration, h);
+            
+            //distributing vertComp from antecedent horzion
+            this.run_vertComp = this.calcMPSInflow(this.run_vertComp, h);
+            //this.run_vertComp = this.calcLPSInflow(this.run_vertComp, h);
+            /** determining transpiration from MPS */
+            this.calcMPSTranspiration(false, h);
+            actETP_hor[h] = run_actETP;
+            /** inflow to LPS */
+            //this.run_infiltration = this.calcLPSInflow(this.run_infiltration, h);
+            this.run_vertComp = this.calcLPSInflow(this.run_vertComp, h);
+            
+            if(this.run_vertComp > 0){
+                //System.out.getRuntime().println("VertIn is not zero!");
+                //we put it back where it came from, the horizon above!
+                this.run_vertComp = this.calcMPSInflow(this.run_vertComp, h-1);
+                this.run_vertComp = this.calcLPSInflow(this.run_vertComp, h-1);
+                if(this.run_vertComp > 0){
+                    System.out.println("VertIn is still not zero!");
+                }
+                
+            }
+            /** updating saturations */
+            this.calcSoilSaturations(false);
+            
+            /** determining outflow from LPS */
+            double MobileWater = 0;
+            if(this.run_actLPS[h] > 0){
+                MobileWater = this.calcLPSoutflow(h);
+            } else
+                MobileWater = 0;
+            
+            
+            /** Distribution of MobileWater to the lateral (interflow) and
+             * vertical (percolation) flowpaths  */
+            this.calcIntfPercRates(MobileWater);
+            perchor[h] = run_vertComp;
+            
+            /** determining internal area routing **/
+            this.calcRD2_out(h);
+            
+            /** determining diffusion from LPS to MPS */
+            this.calcDiffusion(h);
+            
+            /** updating saturations */
+            this.calcSoilSaturations(false);
+            //System.out.getRuntime().println("end of horizon loop");
+        }
+        if(this.run_overlandflow < 0)
+            System.out.println("overlandflow is negative! --> " + this.run_overlandflow);
+        /** determining direct runoff from depression storage */
+        this.run_overlandflow = this.run_overlandflow + this.calcDirectRunoff();
+        
+        this.calcRD1_out();
+        
+        for(int h = 0; h < nhor; h++){
+            balMPSend += this.run_actMPS[h];
+            balLPSend += this.run_actLPS[h];
+            balOut += this.run_outRD2[h];
+        }
+        balDPSend = this.run_actDPS;
+        balET = this.run_actETP - balET;
+        balOut += balET;
+        balOut += this.run_outRD1;
+        balOut += this.run_vertComp;
+        
+        
+        double balance = balIn + (balMPSstart - balMPSend)+(balLPSstart - balLPSend)+(balDPSstart - balDPSend) - balOut;
+        if(Math.abs(balance) > 0.00001)
+            System.out.println("balance error at : " + time.toString() +", entity: "+entity.getDouble("ID")+ " --> "+ balance);
+        satMPS.setValue(this.run_satMPS);
+        satLPS.setValue(this.run_satLPS);
+        actMPS.setValue(this.run_actMPS);
+        actLPS.setValue(this.run_actLPS);
+        actDPS.setValue(this.run_actDPS);
+        netRain.setValue(this.run_inRain);
+        netSnow.setValue(this.run_inSnow);
+        actET.setValue(this.run_actETP);
+        inRD1.setValue(this.run_inRD1);
+        inRD2.setValue(this.run_inRD2);
+        outRD1.setValue(this.run_outRD1);
+        outRD2.setValue(this.run_outRD2);
+        genRD1.setValue(this.run_genRD1);
+        genRD2.setValue(this.run_genRD2);
+        percolation.setValue(this.run_vertComp);
+        interflow.setValue(this.run_latComp);
+        
+        soilActMPS.setValue(soilActMps);
+        soilMaxMPS.setValue(soilMaxMps);
+        soilSatMPS.setValue(soilSatMps);
+        soilActLPS.setValue(soilActLps);
+        soilMaxLPS.setValue(soilMaxLps);
+        soilSatLPS.setValue(soilSatLps);
+        infiltration_hor.setValue(infilhor);
+        perco_hor.setValue(perchor);
+        actETP_h.setValue(actETP_hor);
+        //System.out.getRuntime().println("RD2_out: " + this.run_outRD2[0] + "\t" + this.run_outRD2[1] + "\t" + this.run_outRD2[2]);
+    }
+    
+    public void cleanup() {
+        
+    }
+    
+    private boolean calcSoilSaturations(boolean debug){
+        soilMaxMps = 0;
+        soilActMps = 0;
+        soilMaxLps = 0;
+        soilActLps = 0;
+        soilSatMps = 0;
+        soilSatLps = 0;
+        for(int h = 0; h < nhor; h++){
+            if((this.run_actLPS[h] > 0) && (this.run_maxLPS[h] > 0)){
+                this.run_satLPS[h] = this.run_actLPS[h] / this.run_maxLPS[h];
+            } else
+                this.run_satLPS[h] = 0;
+            
+            if((this.run_actMPS[h] > 0) && (this.run_maxMPS[h] > 0)){
+                this.run_satMPS[h] = this.run_actMPS[h] / this.run_maxMPS[h];
+            } else
+                this.run_satMPS[h] = 0;
+            
+            if(((this.run_maxLPS[h] > 0) | (this.run_maxMPS[h] > 0)) & ((this.run_actLPS[h] > 0) | (this.run_actMPS[h] > 0))){
+                this.run_satHor[h] = ((this.run_actLPS[h] + this.run_actMPS[h]) / (this.run_maxLPS[h] + this.run_maxMPS[h]));
+            } else{
+                this.run_satSoil = 0;
+            }
+            soilMaxMps += this.run_maxMPS[h];
+            soilActMps += this.run_actMPS[h];
+            soilMaxLps += this.run_maxLPS[h];
+            soilActLps += this.run_actLPS[h];
+        }
+        if(((soilMaxLps > 0) | (soilMaxMps > 0)) & ((soilActLps > 0) | (soilActMps > 0))){
+            this.run_satSoil = ((soilActLps + soilActMps) / (soilMaxLps + soilMaxMps));
+            soilSatMps = (soilActMps / soilMaxMps);
+            soilSatLps = (soilActLps / soilMaxLps);
+        } else{
+            this.run_satSoil = 0;
+        }
+        
+        return true;
+    }
+    
+    private boolean redistRD1_RD2_in()throws JAMSEntity.NoSuchAttributeException{
+        //RD1 is put to DPS first
+        if(this.run_inRD1 > 0){
+            this.run_actDPS = this.run_actDPS + this.run_inRD1;
+            this.run_inRD1 = 0;
+        }
+        
+        for(int h = 0; h < this.nhor; h++){
+            if(this.run_inRD2[h] > 0){
+                this.run_inRD2[h] = this.calcMPSInflow(this.run_inRD2[h], h);
+                this.run_inRD2[h] = this.calcLPSInflow(this.run_inRD2[h], h);
+                if(this.run_inRD2[h] > 0){
+                    //System.out.getRuntime().println("RD2 of entity " + entity.getDouble("ID") + " and horizon " + h +  " is routed through RD2out: "+this.run_inRD2[h]);
+                    this.run_outRD2[h] = this.run_outRD2[h] + this.run_inRD2[h];
+                    this.run_inRD2[h] = 0;
+                }
+            }
+        }
+        return true;
+    }
+    
+    private boolean calcPreInfEvaporation(){
+        double deltaETP = this.run_potETP - this.run_actETP;
+        if(this.run_actDPS > 0){
+            if(this.run_actDPS >= deltaETP){
+                this.run_actDPS = this.run_actDPS - deltaETP;
+                deltaETP = 0;
+                this.run_actETP = this.run_potETP;
+            } else{
+                deltaETP = deltaETP - this.run_actDPS;
+                this.run_actDPS = 0;
+                this.run_actETP = this.run_potETP - deltaETP;
+            }
+        }
+        /** @todo implementation for open water bodies has to be implemented here */
+        return true;
+    }
+    
+    private boolean calcInfImperv(double sealedGrade){
+        if(sealedGrade > 0.8){
+            this.run_overlandflow = this.run_overlandflow + (1 - soilImpGT80.getValue()) * this.run_infiltration;
+            this.run_infiltration = this.run_infiltration * soilImpGT80.getValue();
+        } else if(sealedGrade > 0 && sealedGrade <= 0.8){
+            this.run_overlandflow = this.run_overlandflow +  (1 - soilImpLT80.getValue()) * this.run_infiltration;
+            this.run_infiltration = this.run_infiltration * soilImpLT80.getValue();
+        }
+        if(this.run_overlandflow < 0)
+            System.out.println("overlandflow gets negative because of sealing! " + soilImpGT80.getValue() +", "+ soilImpLT80.getValue()+", "+this.run_infiltration);
+        return true;
+    }
+    
+    private double calcMaxInfiltration(int nowmonth, int horizon){
+        double maxInf = 0;
+        this.calcSoilSaturations(false);
+        if(this.run_snowDepth > 0)
+            maxInf = this.soilMaxInfSnow.getValue() * this.run_area;
+        else if((nowmonth >= 5) & (nowmonth <=10))
+            maxInf = (1 - this.run_satHor[horizon]) * soilMaxInfSummer.getValue() * this.run_area;
+        else
+            maxInf = (1 - this.run_satHor[horizon]) * soilMaxInfWinter.getValue() * this.run_area;
+        
+        return maxInf;
+    }
+    
+    private double calcMaxInfiltration(int nowmonth){
+        double maxInf = 0;
+        this.calcSoilSaturations(false);
+        if(this.run_snowDepth > 0)
+            maxInf = this.soilMaxInfSnow.getValue() * this.run_area;
+        else if((nowmonth >= 5) & (nowmonth <=10))
+            maxInf = (1 - this.run_satSoil) * soilMaxInfSummer.getValue() * this.run_area;
+        else
+            maxInf = (1 - this.run_satSoil) * soilMaxInfWinter.getValue() * this.run_area;
+        
+        return maxInf;
+    }
+    
+    
+    private boolean calcMPSTranspiration(boolean debug, int hor){
+        double maxTrans = 0;
+        /** updating saturations */
+        this.calcSoilSaturations(debug);
+        
+        /** delta ETP */
+        double deltaETP = this.run_potETP - this.run_actETP;
+        
+        /**linear reduction after MENZEL 1997 was chosen*/
+        //if(this.etp_reduction == 0){
+        if(this.soilLinRed.getValue() > 0){
+            /** reduction if actual saturation is smaller than linear factor */
+            if(this.run_satMPS[hor] < soilLinRed.getValue()){
+                //if(this.sat_MPS < this.etp_linRed){
+                double reductionFactor = this.run_satMPS[hor] / soilLinRed.getValue();
+                
+                //double reductionFactor = this.sat_MPS / etp_linRed;
+                maxTrans = deltaETP * reductionFactor;
+                
+            } else{
+                maxTrans = deltaETP;
+            }
+        }
+        /** polynomial reduction after KRAUSE 2001 was chosen */
+        else if(soilPolRed.getValue() > 0){
+            //else if(this.etp_reduction == 1){
+            double sat_factor = -10. * Math.pow((1 - this.run_satMPS[hor]), soilPolRed.getValue());
+            //double sat_factor = Math.pow((1 - this.sat_MPS), etp_polRed);
+            double reductionFactor = Math.pow(10, sat_factor);
+            maxTrans = deltaETP * reductionFactor;
+            if(maxTrans > deltaETP)
+                maxTrans = deltaETP;
+        }
+        
+        /** Transpiration from MPS */
+        if(deltaETP > 0){
+            
+            /** if enough water is available */
+            if(this.run_actMPS[hor] > maxTrans){
+                this.run_actMPS[hor] = this.run_actMPS[hor] - maxTrans;
+                deltaETP = deltaETP - maxTrans;
+            }
+            /** storage is limiting ETP */
+            else{
+                deltaETP = deltaETP - this.run_actMPS[hor];
+                this.run_actMPS[hor] = 0;
+            }
+        }
+        
+        /** recalculation actual ETP */
+        this.run_actETP = this.run_potETP - deltaETP;
+        this.calcSoilSaturations(debug);
+        
+        /* @todo: ETP from water bodies has to be implemented here */
+        return true;
+    }
+    
+    private double calcMPSInflow(double infiltration, int hor){
+        double inflow = infiltration;
+        
+        /** updating saturations */
+        this.calcSoilSaturations(false);
+        
+        /**checking if MPS can take all the water */
+        if(inflow < (this.run_maxMPS[hor] - this.run_actMPS[hor])){
+            /** if MPS is empty it takes all the water */
+            if(this.run_actMPS[hor] == 0){
+                this.run_actMPS[hor] = this.run_actMPS[hor] + inflow;
+                inflow = 0;
+            }
+            /** MPS is partly filled and gets part of the water */
+            else{
+                double alpha = this.soilDistMPSLPS.getValue();
+                //if sat_MPS is 0 the next equation would produce an error,
+                //therefore it is set to MPS_sat is set to 0.0000001 in that case
+                if(this.run_satMPS[hor] == 0)
+                    this.run_satMPS[hor] = 0.0000001;
+                double inMPS = (inflow) * (1. - Math.exp(-1*alpha / this.run_satMPS[hor]));
+                this.run_actMPS[hor] = this.run_actMPS[hor] + inMPS;
+                inflow = inflow - inMPS;
+            }
+        }
+        /** infiltration exceeds storage capacity of MPS */
+        else{
+            double deltaMPS = this.run_maxMPS[hor] - this.run_actMPS[hor];
+            this.run_actMPS[hor] = this.run_maxMPS[hor];
+            inflow = inflow - deltaMPS;
+        }
+        /** updating saturations */
+        this.calcSoilSaturations(false);
+        return inflow;
+    }
+    /*
+     *problem overflow is put to DPS, we have to deal with that problem
+     */
+    private double calcLPSInflow(double infiltration, int hor){
+        /** updating saturations */
+        this.calcSoilSaturations(false);
+        this.run_actLPS[hor] = this.run_actLPS[hor] + infiltration;
+        infiltration = 0;
+        /** if LPS is saturated depression Storage occurs */
+        if(this.run_actLPS[hor] > this.run_maxLPS[hor]){
+            infiltration = (this.run_actLPS[hor] - this.run_maxLPS[hor]);
+            //this.run_actDPS = this.run_actDPS + (this.run_actLPS[hor] - this.run_maxLPS[hor]);
+            this.run_actLPS[hor] = this.run_maxLPS[hor];
+        }
+        /** updating saturations */
+        this.calcSoilSaturations(false);
+        return infiltration;
+    }
+    
+    private double calcLPSoutflow(int hor){
+        double alpha = this.soilOutLPS.getValue();
+        //if soilSat is 1 the outflow equation would produce an error,
+        //for this (unlikely) case soilSat is set to 0.999999
+        
+        //testing if LPSsat might give a better behaviour
+        if(this.run_satLPS[hor] == 1.0)
+            this.run_satLPS[hor] = 0.999999;
+        //original function
+        //double potLPSoutflow = this.run_actLPS[hor] * (1. - Math.exp(-1*alpha/(1-this.run_satLPS[hor])));
+        double potLPSoutflow = Math.pow(this.run_satHor[hor], alpha) * this.run_actLPS[hor];
+        
+        //testing a simple function function out = 1/k * sto
+        //double potLPSoutflow = 1 / alpha * this.act_LPS;//Math.pow(this.act_LPS, alpha);
+        if(potLPSoutflow > this.run_actLPS[hor])
+            potLPSoutflow = this.run_actLPS[hor];
+        
+        double LPSoutflow = potLPSoutflow;// * ( 1 / this.parameter.getDouble("lps_kfForm"));
+        if(LPSoutflow > this.run_actLPS[hor])
+            LPSoutflow = this.run_actLPS[hor];
+        
+        this.run_actLPS[hor] = this.run_actLPS[hor] - LPSoutflow;
+        
+        return LPSoutflow;
+    }
+    
+    private boolean calcIntfPercRates(double MobileWater){
+        if(MobileWater > 0){
+            double slope_weight = (Math.tan(this.run_slope * (Math.PI / 180.))) * this.soilLatVertLPS.getValue();
+            
+            /** potential part of percolation */
+            double part_perc = (1 - slope_weight);
+            if(part_perc > 1)
+                part_perc = 1;
+            else if(part_perc < 0)
+                part_perc = 0;
+            
+            /** potential part of interflow */
+            double part_intf = (1 - part_perc);
+            
+            this.run_latComp += MobileWater * part_intf;
+            this.run_vertComp += MobileWater * part_perc;
+            
+            /** checking if percolation rate is limited by parameter */
+            double maxPerc = this.soilMaxPerc.getValue() * this.run_area;
+            if(this.run_vertComp > maxPerc){
+                double rest = this.run_vertComp - maxPerc;
+                this.run_vertComp = maxPerc;
+                this.run_latComp = this.run_latComp + rest;
+            }
+        }
+        /** no MobileWater available */
+        else{
+            this.run_latComp = 0;
+            this.run_vertComp = 0;
+        }
+        return true;
+    }
+    
+    private double calcDirectRunoff(){
+        double directRunoff = 0;
+        if(this.run_actDPS > 0){
+            double maxDep = 0;
+            
+            /** depression storage on slopes is half the normal dep. storage */
+            if(this.run_slope > 5.0){
+                maxDep = (this.soilMaxDPS.getValue() * this.run_area) / 2;
+            } else
+                maxDep = this.soilMaxDPS.getValue() * this.run_area;
+            
+            if(this.run_actDPS > maxDep){
+                directRunoff = this.run_actDPS - maxDep;
+                this.run_actDPS = maxDep;
+            }
+        }
+        if(directRunoff < 0)
+            System.out.println("directRunoff is negative! --> " + directRunoff );
+        return directRunoff;
+    }
+    
+    private boolean calcRD2_out(int h){
+        
+        
+        /** lateral interflow */
+        //switched of 15-03-2004
+        //double RD2_output_factor = this.conc_index / this.parameter.getDouble("conc_recRD2");
+        double RD2_output_factor = 1. / this.soilConcRD2.getValue();
+        if(RD2_output_factor > 1)
+            RD2_output_factor = 1;
+        else if(RD2_output_factor < 0)
+            RD2_output_factor = 0;
+        
+        /** real RD2 output */
+        double RD2_output = this.run_latComp * RD2_output_factor;
+        /** rest is put back to LPS Storage */
+        this.run_actLPS[h] = this.run_actLPS[h] + (this.run_latComp - RD2_output);
+        this.run_outRD2[h] = this.run_outRD2[h] + RD2_output;
+        this.run_genRD2[h] = this.run_outRD2[h];// - this.in_RD2;
+        if(this.run_genRD2[h] < 0)
+            this.run_genRD2[h] = 0;
+        //this.in_RD2 = 0;
+        this.run_latComp = 0;
+        return true;
+    }
+    
+    private boolean calcRD1_out(){
+        /** DIRECT OVERLANDFLOW */
+        //switched off 15-03-2004
+        //double RD1_output_factor = this.conc_index / this.parameter.getDouble("conc_recRD1");
+        double RD1_output_factor = 1. / this.soilConcRD1.getValue();
+        if(RD1_output_factor > 1)
+            RD1_output_factor = 1;
+        else if(RD1_output_factor < 0)
+            RD1_output_factor = 0;
+        
+        /** real RD1 output */
+        double RD1_output = this.run_overlandflow * RD1_output_factor;
+        /** rest is put back to dep. Storage */
+        this.run_actDPS = this.run_actDPS + (this.run_overlandflow - RD1_output);
+        this.run_outRD1 = this.run_outRD1 + RD1_output;
+        this.run_genRD1 = this.run_outRD1;// - this.in_RD1;
+        //this.in_RD1 = 0;
+        
+        this.run_overlandflow = 0;
+        return true;
+    }
+    
+    private boolean calcDiffusion(int h){
+        double diffusion = 0;
+        /** updating saturations */
+        this.calcSoilSaturations(false);
+        double deltaMPS = this.run_maxMPS[h] - this.run_actMPS[h];
+        //if sat_MPS is 0 the diffusion equation would produce an error,
+        //for this (unlikely) case diffusion is set to zero
+        if(this.run_satMPS[h] == 0.0){
+            diffusion = 0;
+        } else{
+            double diff = this.soilDiffMPSLPS.getValue();
+            
+            //new equation like all other exps 04.03.04
+            diffusion = this.run_actLPS[h] * (1. - Math.exp((-1. * diff) / this.run_satMPS[h]));
+        }
+        
+        if(diffusion > this.run_actLPS[h])
+            diffusion = this.run_actLPS[h];
+        
+        
+        /** MPS can take all the water from diffusion */
+        if(diffusion < deltaMPS){
+            this.run_actMPS[h] = this.run_actMPS[h] + diffusion;
+            this.run_actLPS[h] = this.run_actLPS[h] - diffusion;
+        }
+        /** MPS can take only part of the water */
+        else{
+            double rest = this.run_maxMPS[h] - this.run_actMPS[h];
+            this.run_actMPS[h] = this.run_maxMPS[h];
+            this.run_actLPS[h] = this.run_actLPS[h] - rest;
+        }
+        return true;
+    }
+}
