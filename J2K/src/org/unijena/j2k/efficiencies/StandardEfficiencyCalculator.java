@@ -228,7 +228,7 @@ import org.unijena.jams.model.*;
         }*/
         effTsteps = (int) effTimeInterval.getNumberOfTimesteps() + 1;
         
-        System.out.println("effTsteps: " + effTsteps + ", modTsteps: " + model_tsteps);
+//        System.out.println("effTsteps: " + effTsteps + ", modTsteps: " + model_tsteps);
         
         //int ts = (int)tsteps;
         int ts = (int) this.getContext().getNumberOfIterations();
