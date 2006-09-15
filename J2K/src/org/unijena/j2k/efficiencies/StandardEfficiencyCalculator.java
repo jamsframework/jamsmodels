@@ -23,6 +23,8 @@
 
 package org.unijena.j2k.efficiencies;
 
+import java.util.Vector;
+
 import org.unijena.j2k.statistics.Regression;
 import org.unijena.jams.JAMS;
 import org.unijena.jams.data.*;
@@ -214,7 +216,7 @@ import org.unijena.jams.model.*;
             model_tsteps = (edMod - sdMod) / (1000 * 60 * 60 * 24);
             model_tsteps = model_tsteps + 1 + 1;
         }*/
-        model_tsteps = modelTimeInterval.getNumberOfTimesteps() + 1;
+        model_tsteps = modelTimeInterval.getNumberOfTimesteps();
         
         JAMSCalendar eff_sd = this.effTimeInterval.getStart();
         JAMSCalendar eff_ed = this.effTimeInterval.getEnd();
@@ -226,9 +228,7 @@ import org.unijena.jams.model.*;
             this.effTsteps = (int)((edEff - sdEff) / (1000 * 60 * 60 * 24));
             this.effTsteps = this.effTsteps + 1;
         }*/
-        effTsteps = (int) effTimeInterval.getNumberOfTimesteps() + 1;
-        
-//        System.out.println("effTsteps: " + effTsteps + ", modTsteps: " + model_tsteps);
+        effTsteps = (int) effTimeInterval.getNumberOfTimesteps();
         
         //int ts = (int)tsteps;
         int ts = (int) this.getContext().getNumberOfIterations();
@@ -247,26 +247,6 @@ import org.unijena.jams.model.*;
             this.interValStart =(int)((sdEff - sdMod) / (1000 * 60 * 60 * 24));
             this.interValEnd = this.interValStart + this.effTsteps;
         }
-	
-	
-/*	else {*/
-	JAMSCalendar tmp = new JAMSCalendar(); 
-	tmp.setValue(eff_sd);
-	long t1 = tmp.getTimeInMillis();
-	tmp.add(effTimeInterval.getTimeUnit(),effTimeInterval.getTimeUnitCount());
-	long t2 = tmp.getTimeInMillis();
-	
-	this.interValStart = (int)(sdEff - sdMod) / (int)(t2 - t1);
-	this.interValEnd = this.interValStart + this.effTsteps;
-	    
-/*	    getModel().getRuntime().println("Possible wrong start index!", JAMS.STANDARD);
-	    this.interValStart =(int)((sdEff - sdMod) / (1000 * 60 * 60 * 24));
-            this.interValEnd = this.interValStart + this.effTsteps;*/
-
-	
-/*	 this.interValStart =0;
-         this.interValEnd = model_tsteps;*/
-	    
         int junk = 0;
     }
     
@@ -281,17 +261,30 @@ import org.unijena.jams.model.*;
         getModel().getRuntime().println("*************************************************************", JAMS.STANDARD);
         getModel().getRuntime().println("Efficiencies for period:\t " + this.effTimeInterval.toString(), JAMS.STANDARD);
         getModel().getRuntime().println("*************************************************************", JAMS.STANDARD);
-        JAMSIntegerArray method = new JAMSIntegerArray();
-        double[] valData_1, preData_1;
+        
+        Vector<Double> valVector = new Vector<Double>();
+        Vector<Double> preVector = new Vector<Double>();
+        
         this.predictionValues.setValue(preData);
-        valData_1 = new double[this.effTsteps];
-        preData_1 = new double[this.effTsteps];
-        int count = 0;
+        
         for(int i = this.interValStart; i < this.interValEnd; i++){
-            valData_1[count] = valData[i];
-            preData_1[count] = preData[i];
-            count++;
+        	//consider valid values only
+            if(valData[i] > -9999 && preData[i] > -9999){
+            	valVector.add(valData[i]);
+            	preVector.add(preData[i]);
+            }
         }
+        
+        int dataCount = valVector.size();
+        double[] valData_1 = new double[dataCount];
+        double[] preData_1 = new double[dataCount];
+        
+        //converting Vectors to arrays
+        for(int i = 0; i < dataCount; i++){
+        	valData_1[i] = valVector.get(i).doubleValue();
+        	preData_1[i] = preVector.get(i).doubleValue();
+        }
+        
         for(int i = 0; i < effMethod.getValue().length; i++){
             if(effMethod.getValue()[i] == this.E1){
                 double e1 = NashSutcliffe.efficiency(preData_1, valData_1, 1);
