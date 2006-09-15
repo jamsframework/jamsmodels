@@ -473,6 +473,14 @@ import java.io.*;
             )
             public JAMSDouble infil_conc_factor;
     
+     @JAMSVarDescription(
+            access = JAMSVarDescription.AccessType.READ,
+            update = JAMSVarDescription.UpdateType.INIT,
+            description = "denitrfcation saturation factor normally at 0.95 to calibrate 0 - 1"
+            )
+            public JAMSDouble denitfac;
+    
+    
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
             update = JAMSVarDescription.UpdateType.INIT,
@@ -1180,7 +1188,7 @@ import java.io.*;
             eta_water = 1;
         }
         
-        eta_volz = 1 -(runlayerdepth[i] / (runlayerdepth[i] + Math.exp(4.706 - (0.305 * runlayerdepth[i]))));
+        eta_volz = 1 -(runlayerdepth[i] / (runlayerdepth[i] + Math.exp(4.706 - (0.305 * runlayerdepth[i]/20))));
         
         eta_nitri = eta_water * eta_temp;
         
@@ -1254,10 +1262,11 @@ import java.io.*;
     
     private double calc_denitrification(){
         double denit_trans = 0;
-        if (gamma_water > 0.95){
+         
+        if (gamma_water > denitfac.getValue()){
             denit_trans = runNO3_Pool * (1 - Math.exp(-1.4 * gamma_temp * runC_org));
             
-        } else if (gamma_water <= 0.95){
+        } else if (gamma_water <= denitfac.getValue()){
             denit_trans = 0;
             
         }

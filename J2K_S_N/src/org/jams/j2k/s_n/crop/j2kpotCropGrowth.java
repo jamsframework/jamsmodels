@@ -398,6 +398,13 @@ import java.util.ArrayList;
             )
             public JAMSBoolean doHarvest;
     
+     @JAMSVarDescription(
+            access = JAMSVarDescription.AccessType.READ,
+            update = JAMSVarDescription.UpdateType.INIT,
+            description = "Factor of rootdepth 1 - 10 default 1"
+            )
+            public JAMSDouble rootfactor;
+    
     
      /*
       
@@ -413,7 +420,6 @@ import java.util.ArrayList;
     
     private double frLAImx_act;
     private double lai_act;
-    private double lai_old;
     private double fnplant_act;
     
     private double addresidue_pool;
@@ -536,7 +542,6 @@ import java.util.ArrayList;
         this.frLAImx_Xi = frLAImx_xi.getValue();
         this.lai_act = LAI.getValue();
         this.LAI_delta = LAIdelta.getValue();
-        this.lai_old = LAIold.getValue();
         this.hc_act = CanHeightAct.getValue(); /*actual Canopy height [m] on a given day */
         this.frroot_act = frRootAct.getValue();
         this.zrootd_act = ZRootD.getValue();
@@ -614,7 +619,6 @@ import java.util.ArrayList;
             frLAImx_act = 0; /*actual fraction of max LAI for a given day */
             LAI_delta = 0;
             lai_act = 0;
-            lai_old = 0;
             // bio_opt = 0;
             // BioOpt.setValue(bio_opt * area_ha); /*Plants optimal biomass */
             hc_act = 0; /*Actual canopy height */
@@ -685,12 +689,11 @@ import java.util.ArrayList;
         frLAImxAct.setValue(frLAImx_act); /*actual fraction of max LAI for a given day */
         LAIdelta.setValue(LAI_delta);
         LAI.setValue(lai_act);
-        LAIold.setValue(lai_old);
         // BioOpt.setValue(bio_opt);
         // BioOpt.setValue(bio_opt * area_ha); /*Plants optimal biomass */
         CanHeightAct.setValue(hc_act); /*Actual canopy height */
         frRootAct.setValue(frroot_act);  /* daily fraction of root development [mm] */
-        ZRootD.setValue(zrootd_act);  /* daily root development [mm] */
+        ZRootD.setValue(zrootd_act * rootfactor.getValue());  /* daily root development [mm] */
         ZRootOld.setValue(zrootd_old);
         FNPlant.setValue(fnplant_act); /* daily fraction of N in plant biomass */
         BioNoptAct.setValue(bioNopt_act);
@@ -809,10 +812,13 @@ import java.util.ArrayList;
         
         // Total leaf area index is calculated by frLAImx added on a day
         //lai_old = LAI_delta;
-        double u1 = lai_old - this.mlai;
+        double u1 = lai_act - this.mlai;
         double u2 = 5.0 * u1;
         double u3 = frLAImx_delta;
         this.LAI_delta = u3 * this.mlai *(1 - Math.exp(u2));
+ /*       if (this.LAI_delta < 0){
+            this.LAI_delta = 0;
+        }*/ 
         this.lai_act = this.lai_act + this.LAI_delta;
         //this.lai_act = this.lai_old + this.LAI_delta;
         if
@@ -824,7 +830,6 @@ import java.util.ArrayList;
             frLAImx_act = 0; 
             LAI_delta = 0;
             lai_act = lai_min;
-            lai_old = lai_min;
             frLAImx_Xi = 0;
             
         }
