@@ -2,7 +2,7 @@
 #Mon Jun 19 09:09:28 CEST 2006
 debug=1
 verbose=0
-libs=d\:\\nbprojects\\J2K\\dist\\J2K.jar;d\:\\nbprojects\\JAMS\\dist\\JAMS.jar
+libs=d\:\\nbprojects\\J2K\\dist\\J2K.jar;d\:\\nbprojects\\JAMS\\dist\\JAMS.jar;D\:\\jams\\JAMS\\libs\\jfreechart-1.0.1.jar;D\:\\jams\\JAMS\\libs\\jcommon-1.0.0.jar
 #errorlog=D\:/jamserror.log
 #infolog=D\:/jamsinfo.log
 guiconfigwidth=600
