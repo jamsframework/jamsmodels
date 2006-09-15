@@ -159,6 +159,9 @@ import org.unijena.jams.model.*;
             key = tok.nextToken();
             parameterNames[i] = key;
             parameters[i] = (JAMSDouble) getModel().getRuntime().getDataHandles().get(key);
+            if(parameters[i] == null){
+            	System.out.println("Problem in Sampler: parameter: " + key + "does not exist!");
+            }
             i++;
         }
         
@@ -288,7 +291,7 @@ import org.unijena.jams.model.*;
             //the time also knows a toString() method with additional formatting parameters
             //e.g. time.toString("%1$tY-%1$tm-%1$td %1$tH:%1$tM")
             JAMSCalendar timeStamp = this.modelTimeInterval.getStart();
-            for(int t = 0; t <= this.timeSteps; t++){
+            for(int t = 0; t < this.timeSteps; t++){
                 attribWriter.addData(timeStamp.toString("%1$tY-%1$tm-%1$td %1$tH:%1$tM"));
                 timeStamp.add(modelTimeInterval.getTimeUnit(), 1);
                 for(int r = 0; r < this.sampleCount.getValue(); r++){

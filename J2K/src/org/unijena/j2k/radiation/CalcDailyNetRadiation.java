@@ -24,7 +24,7 @@
 package org.unijena.j2k.radiation;
 
 import java.io.*;
-import org.unijena.jams.JAMS;
+//import org.unijena.jams.JAMS;
 import org.unijena.jams.data.*;
 import org.unijena.jams.model.*;
 
@@ -50,13 +50,13 @@ import org.unijena.jams.model.*;
             )
             public JAMSString dirName;
     
-    @JAMSVarDescription(
+    /*@JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
             update = JAMSVarDescription.UpdateType.RUN,
             description = "state variable sunshine hours"
             )
             public JAMSDouble sunh;
-    
+    */
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
             update = JAMSVarDescription.UpdateType.RUN,
@@ -99,7 +99,7 @@ import org.unijena.jams.model.*;
             )
             public JAMSDouble elevation;
     
-    @JAMSVarDescription(
+    /*@JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
             update = JAMSVarDescription.UpdateType.RUN,
             description = "attribute latitude"
@@ -112,7 +112,7 @@ import org.unijena.jams.model.*;
             description = "Current time"
             )
             public JAMSCalendar time;
-    
+    */
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
             update = JAMSVarDescription.UpdateType.RUN,
@@ -145,6 +145,7 @@ import org.unijena.jams.model.*;
      */
     
     public void init() throws JAMSEntity.NoSuchAttributeException, IOException {
+    	System.out.println("init in netRad");
         //first, check if cached data are available
         cacheFile_n = new File(dirName.getValue() + "/$" + this.getInstanceName() + "_norm.cache");
         cacheFile_refET = new File(dirName.getValue() + "/$" + this.getInstanceName() + "_refET.cache");
@@ -167,26 +168,26 @@ import org.unijena.jams.model.*;
     
     public void run() throws JAMSEntity.NoSuchAttributeException, IOException{
         if (!useCache) {
-            int julDay = time.get(time.DAY_OF_YEAR);
+            //int julDay = time.get(time.DAY_OF_YEAR);
         
             double elev = elevation.getValue();
-            double lati = latitude.getValue();
+            //double lati = latitude.getValue();
             double temp = tmean.getValue();
             double rh   = rhum.getValue();
-            double sh   = sunh.getValue();
+            //double sh   = sunh.getValue();
             double sR   = solRad.getValue();
             double alb  = albedo.getValue();
             double extraTerrestialRad = extRad.getValue();
                     
-            double radLat = org.unijena.j2k.mathematicalCalculations.MathematicalCalculations.deg2rad(lati);
-            double declination = org.unijena.j2k.physicalCalculations.SolarRadiationCalculationMethods.calc_SunDeclination(julDay);
+            //double radLat = org.unijena.j2k.mathematicalCalculations.MathematicalCalculations.deg2rad(lati);
+            //double declination = org.unijena.j2k.physicalCalculations.SolarRadiationCalculationMethods.calc_SunDeclination(julDay);
             
             double sat_vapour_pressure = org.unijena.j2k.physicalCalculations.ClimatologicalVariables.calc_saturationVapourPressure(temp);
             double act_vapour_pressure = org.unijena.j2k.physicalCalculations.ClimatologicalVariables.calc_vapourPressure(rh, sat_vapour_pressure);
             
             
-            double sunsetHourAngle = org.unijena.j2k.physicalCalculations.DailySolarRadiationCalculationMethods.calc_SunsetHourAngle(radLat, declination);
-            double maxSunshine = org.unijena.j2k.physicalCalculations.DailySolarRadiationCalculationMethods.calc_maximumSunshineHours(sunsetHourAngle);
+            //double sunsetHourAngle = org.unijena.j2k.physicalCalculations.DailySolarRadiationCalculationMethods.calc_SunsetHourAngle(radLat, declination);
+            //double maxSunshine = org.unijena.j2k.physicalCalculations.DailySolarRadiationCalculationMethods.calc_maximumSunshineHours(sunsetHourAngle);
             double clearSkyRad = org.unijena.j2k.physicalCalculations.SolarRadiationCalculationMethods.calc_ClearSkySolarRadiation(elev, extraTerrestialRad);
             double netSWRadiation = org.unijena.j2k.physicalCalculations.SolarRadiationCalculationMethods.calc_NetShortwaveRadiation(alb, sR);
             double netRefETSWRadiation = org.unijena.j2k.physicalCalculations.SolarRadiationCalculationMethods.calc_NetShortwaveRadiation(0.23, sR);

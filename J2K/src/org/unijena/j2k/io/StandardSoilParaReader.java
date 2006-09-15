@@ -24,6 +24,7 @@
 package org.unijena.j2k.io;
 
 import org.unijena.j2k.*;
+import org.unijena.jams.JAMS;
 import org.unijena.jams.data.*;
 import org.unijena.jams.model.*;
 import java.util.*;
@@ -77,7 +78,9 @@ public class StandardSoilParaReader extends JAMSComponent {
         
         Iterator<JAMSEntity> hruIterator = hrus.getEntities().iterator();
         while (hruIterator.hasNext()) {
+        	
             e = hruIterator.next();
+            //System.out.println("Processing hruNO: " + e.getDouble("ID"));
             st = stMap.get(e.getDouble("soilID"));
             e.setObject("soilType", st);
             //System.out.println("st: " + st.getDouble("SID"));
@@ -91,6 +94,8 @@ public class StandardSoilParaReader extends JAMSComponent {
             }
             
         }
+        
+        getModel().getRuntime().println("Soil parameter file processed ...", JAMS.STANDARD);
         
     }
     

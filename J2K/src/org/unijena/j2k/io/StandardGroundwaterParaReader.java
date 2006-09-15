@@ -24,6 +24,7 @@
 package org.unijena.j2k.io;
 
 import org.unijena.j2k.*;
+import org.unijena.jams.JAMS;
 import org.unijena.jams.data.*;
 import org.unijena.jams.model.*;
 import java.util.*;
@@ -78,6 +79,7 @@ public class StandardGroundwaterParaReader extends JAMSComponent {
         Iterator<JAMSEntity> hruIterator = hrus.getEntities().iterator();
         while (hruIterator.hasNext()) {
             e = hruIterator.next();
+            //System.out.println("proc hru " + e.getDouble("ID"));
             gw = gwMap.get(e.getDouble("hgeoID"));
             e.setObject("hgeoType", gw);
             
@@ -90,6 +92,7 @@ public class StandardGroundwaterParaReader extends JAMSComponent {
                     e.setObject((String)attrs[i], o);
             }
         }
+        getModel().getRuntime().println("Groundwater parameter file processed ...", JAMS.STANDARD);
     }
     
     

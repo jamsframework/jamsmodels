@@ -149,6 +149,7 @@ import org.unijena.jams.model.*;
     }
     
     public void run() throws JAMSEntity.NoSuchAttributeException{
+    	
         int monthCount = time.get(time.MONTH);
         int dayCount = time.get(time.DAY_OF_YEAR) - 1;
         int hourCount = time.get(time.HOUR_OF_DAY) + (24 * dayCount);
@@ -177,6 +178,7 @@ import org.unijena.jams.model.*;
         this.actSlAsCf.setValue(in_scf);
         this.actExtRad.setValue(in_extRad);
         
+        System.out.println("array grabber processed");
     }
     
     public void cleanup() {

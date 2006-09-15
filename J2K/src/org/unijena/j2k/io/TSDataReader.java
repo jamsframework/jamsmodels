@@ -269,6 +269,8 @@ public class TSDataReader extends JAMSComponent {
                     startTime.add(JAMSCalendar.HOUR_OF_DAY, 1);
             }
         }
+        
+        getModel().getRuntime().println(dataSetName.getValue() + " data file initalised ... ", JAMS.STANDARD);
     }
     
     public void run() {

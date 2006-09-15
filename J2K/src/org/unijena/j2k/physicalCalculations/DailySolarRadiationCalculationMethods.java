@@ -104,4 +104,27 @@ public class DailySolarRadiationCalculationMethods {
         return G = Gd + Gn;
     }
     
+    /**
+     * @param lat - the latitude in decimal degree
+     * @param julDay - the julian day count
+     * @return dayFraction - bright decimal part of the day
+     */
+    public static double calcDayFraction(double lat, int julDay){
+    	double declination = org.unijena.j2k.physicalCalculations.SolarRadiationCalculationMethods.calc_SunDeclination(julDay);
+        double latRad = org.unijena.j2k.mathematicalCalculations.MathematicalCalculations.deg2rad(lat);
+        double sunsetHourAngle = org.unijena.j2k.physicalCalculations.DailySolarRadiationCalculationMethods.calc_SunsetHourAngle(latRad, declination);
+        double maximumSunshine = org.unijena.j2k.physicalCalculations.DailySolarRadiationCalculationMethods.calc_maximumSunshineHours(sunsetHourAngle);
+        double dayFraction = maximumSunshine / 24.0;
+        if(dayFraction > 1){
+        	System.out.println("Problem in DailySolarRadiationCalculationMethods: Day fraction is larger than 24");
+        	dayFraction = 1;
+        }
+        if(dayFraction < 0){
+        	System.out.println("Problem in DailySolarRadiationCalculationMethods: Day fraction is smaller than 24");
+        	dayFraction = 0;
+        }
+        
+        return dayFraction;
+    }
+    
 }

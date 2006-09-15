@@ -136,7 +136,7 @@ public class Regionalisation extends JAMSComponent {
             update = JAMSVarDescription.UpdateType.INIT,
             description = "Apply elevation correction to measured data"
             )
-            public JAMSInteger elevationCorrection;
+            public JAMSBoolean elevationCorrection;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
@@ -190,8 +190,9 @@ public class Regionalisation extends JAMSComponent {
         }
     }
     public void run() throws JAMSEntity.NoSuchAttributeException, IOException {
-
+    	
         if (!useCache) {
+        	System.out.println("Regionalising " + dataSetName.getValue());
             double[] regCoeff = this.regCoeff.getValue();
             double gradient = regCoeff[1];
             double rsq = regCoeff[2];
@@ -207,7 +208,7 @@ public class Regionalisation extends JAMSComponent {
             
             double value = 0;
             for (int i = 0; i < sourceElevations.length; i++) {
-                if((rsq >= rsqThreshold.getValue()) && (elevationCorrection.getValue()==1)) {  //Elevation correction is applied
+                if((rsq >= rsqThreshold.getValue()) && (elevationCorrection.getValue())) {  //Elevation correction is applied
                     double deltaElev = targetElevation - sourceElevations[i];  //Elevation difference between unit and Station
                     value += ((deltaElev * gradient + sourceData[i]) * sourceWeights[i]);
                 } else{ //No elevation correction
