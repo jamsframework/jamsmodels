@@ -340,7 +340,7 @@ public class StandardManagementParaReader extends JAMSComponent {
         
         BufferedReader reader;
         StringTokenizer tokenizer;
-        Double hid;
+        Double hid, redu_fac;
         Integer rid;
         ArrayList<J2KSNCrop> rotation;
         JAMSEntity hru;
@@ -375,10 +375,12 @@ public class StandardManagementParaReader extends JAMSComponent {
                 
                 hid = Double.parseDouble(tokenizer.nextToken());
                 rid = Integer.parseInt(tokenizer.nextToken());
+                redu_fac = Double.parseDouble(tokenizer.nextToken());
                 
                 rotation = rotations.get(rid);
                 hru = hruMap.get(hid);
                 
+                hru.setDouble("ReductionFactor",  redu_fac);
                 hru.setObject("landuseRotation",  rotation);
                 hru.setInt("rotPos", 0);
                 hru.setInt("managementPos", 0);

@@ -66,6 +66,13 @@ public class ManageLanduse extends JAMSComponent {
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
             update = JAMSVarDescription.UpdateType.RUN,
+            description = "Reduction Factor for Fertilisation 0 - 10 [-]"
+            )
+            public JAMSDouble ReductionFactor;
+    
+    @JAMSVarDescription(
+            access = JAMSVarDescription.AccessType.READWRITE,
+            update = JAMSVarDescription.UpdateType.RUN,
             description = "Current organic fertilizer amount"
             )
             public JAMSInteger RotPos;
@@ -90,6 +97,8 @@ public class ManageLanduse extends JAMSComponent {
             description = "Indicator for harvesting"
             )
             public JAMSBoolean doHarvest;
+    
+    
     
 /*    @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
@@ -166,7 +175,11 @@ public class ManageLanduse extends JAMSComponent {
     private void processFertilization(J2KSNLMArable currentManagement) {
         J2KSNFertilizer fert = currentManagement.fert;
         
-        double famount = currentManagement.famount;
+        double redu = ReductionFactor.getValue();
+         redu = Math.max(0,redu);           
+        
+        
+        double famount = currentManagement.famount * redu;
         
         /*double fertNO3_old = this.fertNO3.getValue();
         double fertNH4_old = this.fertNH4.getValue();

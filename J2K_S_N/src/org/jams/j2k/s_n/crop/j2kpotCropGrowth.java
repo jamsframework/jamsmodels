@@ -589,8 +589,41 @@ import java.util.ArrayList;
         /*ArrayList<J2KSNLMArable> managementList = currentCrop.managementList;
         int managementPos = entity.getInt("managementPos");
         J2KSNLMArable currentManagement = managementList.get(managementPos);*/
-        
-        if (plantExisting.getValue()) {
+        if (crop.idc == 11){
+        phu_delta = 0;
+            phu_deltaold = 0;
+            phu_daily = 0;
+            Tbase = 0;
+            Topt = 0;
+            frLAImx_act = 0; /*actual fraction of max LAI for a given day */
+            LAI_delta = 0;
+            lai_act = 1;
+            // bio_opt = 0;
+            // BioOpt.setValue(bio_opt * area_ha); /*Plants optimal biomass */
+            hc_act = 0; /*Actual canopy height */
+            frroot_act = 0;  /* daily fraction of root development [mm] */
+            zrootd_act = 1000;  /* daily root development [mm] */
+            zrootd_old = 0;
+            fnplant_act = 0; /* daily fraction of N in plant biomass */
+            bioNopt_act = 0;
+            bio_opt = 0; /*Plants optimal biomass */
+            bio_old = 0;
+            Ndemand_act = 0;
+            bio_opt_delta = 0;
+            hi_act = 0;
+            bioag_act = 0;
+            yield = 0;
+            yldN = 0; /* N Content from the above biomass */
+            yldN_ha = 0;
+            fphu_act = 0;
+            bioN_act = 0; /*actual biomass in kg/ha adapted by stress*/
+            frLAImx_Xi = 0;
+            //residue_pool = 0;
+            this.addresidue_pool = 0;
+            this.addresidue_pooln = 0;
+            
+                
+        }else if (plantExisting.getValue()) {
             calc_phu();
             calc_lai();
             calc_biomass();
