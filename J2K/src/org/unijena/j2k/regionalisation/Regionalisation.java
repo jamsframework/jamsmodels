@@ -192,8 +192,7 @@ public class Regionalisation extends JAMSComponent {
     public void run() throws JAMSEntity.NoSuchAttributeException, IOException {
     	
         if (!useCache) {
-        	System.out.println("Regionalising " + dataSetName.getValue());
-            double[] regCoeff = this.regCoeff.getValue();
+        	double[] regCoeff = this.regCoeff.getValue();
             double gradient = regCoeff[1];
             double rsq = regCoeff[2];
             
