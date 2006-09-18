@@ -201,7 +201,7 @@ import org.unijena.jams.model.*;
             toReach.setDouble("inRG2", RG2in);
             
         } else{
-            getModel().getRuntime().println("Current entity ID: " + entity.getDouble("elevation") + " has no receiver.");
+            getModel().getRuntime().println("Current entity ID: " + entity.getDouble("ID") + " has no receiver.");
         }
         
     }
