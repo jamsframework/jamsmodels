@@ -145,7 +145,6 @@ import org.unijena.jams.model.*;
      */
     
     public void init() throws JAMSEntity.NoSuchAttributeException, IOException {
-    	System.out.println("init in netRad");
         //first, check if cached data are available
         cacheFile_n = new File(dirName.getValue() + "/$" + this.getInstanceName() + "_norm.cache");
         cacheFile_refET = new File(dirName.getValue() + "/$" + this.getInstanceName() + "_refET.cache");

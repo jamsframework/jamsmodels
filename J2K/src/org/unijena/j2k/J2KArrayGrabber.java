@@ -178,7 +178,6 @@ import org.unijena.jams.model.*;
         this.actSlAsCf.setValue(in_scf);
         this.actExtRad.setValue(in_extRad);
         
-        System.out.println("array grabber processed");
     }
     
     public void cleanup() {
