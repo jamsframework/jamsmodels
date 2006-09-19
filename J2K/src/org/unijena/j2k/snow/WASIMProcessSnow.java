@@ -269,7 +269,12 @@ import org.unijena.jams.model.*;
             )
             public JAMSDouble pET;
     
-    
+    @JAMSVarDescription(
+            access = JAMSVarDescription.AccessType.READ,
+            update = JAMSVarDescription.UpdateType.INIT,
+            description = "module active"
+            )
+            public JAMSBoolean active;
     
     
     //run variables
@@ -285,96 +290,98 @@ import org.unijena.jams.model.*;
     
 
 	public void run() throws JAMSEntity.NoSuchAttributeException {
-		// map run variables
-		// driving vars
-		this.runRain = this.rain.getValue();
-		this.runSnow = this.snow.getValue();
-		this.runWind = this.wind.getValue();
-		this.runPrecip = this.precip.getValue();
-		
-		// state vars
-		this.runIceContent = this.iceContent.getValue();
-		this.runFreeWater = this.freeWater.getValue();
-		this.runSnowWaterEquivalent = this.snowWaterEquivalent.getValue();
-		this.runSnowMelt = 0;
-		this.runSnowAlbedo = this.snowAlbedo.getValue();
-		this.runAET = this.aET.getValue();
-		
-		// calibration pars
-		this.runMeltTemperature = this.meltTemp.getValue();
-
-		int runMeltMethod = this.meltMethod.getValue();
-
-		// day and night temperatures
-		double tempDay = (this.tmax.getValue() + this.tmean.getValue()) / 2;
-		double tempNight = (this.tmin.getValue() + this.tmean.getValue()) / 2;
-
-		if (this.runSnow > 0 || this.runSnowWaterEquivalent > 0) {
+		if(this.active == null || this.active.getValue()){
+			// map run variables
+			// driving vars
+			this.runRain = this.rain.getValue();
+			this.runSnow = this.snow.getValue();
+			this.runWind = this.wind.getValue();
+			this.runPrecip = this.precip.getValue();
 			
-			//very super simple snowET
-			double deltaET = this.pET.getValue() - this.runAET;
-			if(this.runIceContent <= deltaET){
-				this.runAET = this.runAET + this.runIceContent;
-				this.runIceContent = 0;
-			}else{
-				this.runIceContent = this.runIceContent - deltaET;
-				this.runAET = this.pET.getValue();
-			}
+			// state vars
+			this.runIceContent = this.iceContent.getValue();
+			this.runFreeWater = this.freeWater.getValue();
+			this.runSnowWaterEquivalent = this.snowWaterEquivalent.getValue();
+			this.runSnowMelt = 0;
+			this.runSnowAlbedo = this.snowAlbedo.getValue();
+			this.runAET = this.aET.getValue();
 			
-			int julDay = this.time.get(time.DAY_OF_YEAR);
-			double dayFrac = org.unijena.j2k.physicalCalculations.DailySolarRadiationCalculationMethods.calcDayFraction(this.latitude.getValue(), julDay);
-			this.runRadiationMeltFactor = this.calcRadiationMeltFactor(julDay);
-
-			//day part
-			double potMeltRate = this.calcAccumulationAndMelt(tempDay, dayFrac,	runMeltMethod);
-			//night part
-			potMeltRate = potMeltRate + this.calcAccumulationAndMelt(tempNight, (1-dayFrac), runMeltMethod);
-
-			potMeltRate = potMeltRate * this.area.getValue();
-			
-			//snow and rain has been taken care of now!!
-			this.runRain = 0;
-			this.runSnow = 0;
-			
-			// balancing potMeltRate against iceContent
-			if (potMeltRate > this.runIceContent) {
-				potMeltRate = this.runIceContent;
+			// calibration pars
+			this.runMeltTemperature = this.meltTemp.getValue();
+	
+			int runMeltMethod = this.meltMethod.getValue();
+	
+			// day and night temperatures
+			double tempDay = (this.tmax.getValue() + this.tmean.getValue()) / 2;
+			double tempNight = (this.tmin.getValue() + this.tmean.getValue()) / 2;
+	
+			if (this.runSnow > 0 || this.runSnowWaterEquivalent > 0) {
+				
+				//very super simple snowET
+				double deltaET = this.pET.getValue() - this.runAET;
+				if(this.runIceContent <= deltaET){
+					this.runAET = this.runAET + this.runIceContent;
+					this.runIceContent = 0;
+				}else{
+					this.runIceContent = this.runIceContent - deltaET;
+					this.runAET = this.pET.getValue();
+				}
+				
+				int julDay = this.time.get(time.DAY_OF_YEAR);
+				double dayFrac = org.unijena.j2k.physicalCalculations.DailySolarRadiationCalculationMethods.calcDayFraction(this.latitude.getValue(), julDay);
+				this.runRadiationMeltFactor = this.calcRadiationMeltFactor(julDay);
+	
+				//day part
+				double potMeltRate = this.calcAccumulationAndMelt(tempDay, dayFrac,	runMeltMethod);
+				//night part
+				potMeltRate = potMeltRate + this.calcAccumulationAndMelt(tempNight, (1-dayFrac), runMeltMethod);
+	
+				potMeltRate = potMeltRate * this.area.getValue();
+				
+				//snow and rain has been taken care of now!!
+				this.runRain = 0;
+				this.runSnow = 0;
+				
+				// balancing potMeltRate against iceContent
+				if (potMeltRate > this.runIceContent) {
+					potMeltRate = this.runIceContent;
+				}
+	
+				// transforming ice to liquid
+				this.runIceContent = this.runIceContent - potMeltRate;
+				this.runFreeWater = this.runFreeWater + potMeltRate;
+	
+				// computing maximum amount of free water
+				double maxFreeWater = this.runIceContent
+						* this.freeWaterCapacity.getValue();
+	
+				// balancing free water against max free water
+				if (maxFreeWater < this.runFreeWater) {
+					// snowmelt occurs
+					this.runSnowMelt = this.runFreeWater - maxFreeWater;
+					this.runFreeWater = maxFreeWater;
+				}
+	
+				// if snow water equivalent < 5 mm the albedo is set to landcover
+				// albedo
+				// otherwise to a constant(!) snow albedo
+				if (this.runIceContent + this.runFreeWater > 5.0) {
+					this.runSnowAlbedo = this.snowConstAlbedo.getValue();
+				} else {
+					this.runSnowAlbedo = this.landAlbedo.getValue();
+				}
 			}
-
-			// transforming ice to liquid
-			this.runIceContent = this.runIceContent - potMeltRate;
-			this.runFreeWater = this.runFreeWater + potMeltRate;
-
-			// computing maximum amount of free water
-			double maxFreeWater = this.runIceContent
-					* this.freeWaterCapacity.getValue();
-
-			// balancing free water against max free water
-			if (maxFreeWater < this.runFreeWater) {
-				// snowmelt occurs
-				this.runSnowMelt = this.runFreeWater - maxFreeWater;
-				this.runFreeWater = maxFreeWater;
-			}
-
-			// if snow water equivalent < 5 mm the albedo is set to landcover
-			// albedo
-			// otherwise to a constant(!) snow albedo
-			if (this.runIceContent + this.runFreeWater > 5.0) {
-				this.runSnowAlbedo = this.snowConstAlbedo.getValue();
-			} else {
-				this.runSnowAlbedo = this.landAlbedo.getValue();
-			}
+			//write vars back
+			// state vars
+			this.iceContent.setValue(this.runIceContent);
+			this.freeWater.setValue(this.runFreeWater);
+			this.snowWaterEquivalent.setValue(this.runIceContent + this.runFreeWater);
+			this.snowMelt.setValue(this.runSnowMelt);
+			this.snowAlbedo.setValue(this.runSnowAlbedo);
+			this.aET.setValue(this.runAET);
+			this.rain.setValue(this.runRain);
+			this.snow.setValue(this.runSnow);
 		}
-		//write vars back
-		// state vars
-		this.iceContent.setValue(this.runIceContent);
-		this.freeWater.setValue(this.runFreeWater);
-		this.snowWaterEquivalent.setValue(this.runIceContent + this.runFreeWater);
-		this.snowMelt.setValue(this.runSnowMelt);
-		this.snowAlbedo.setValue(this.runSnowAlbedo);
-		this.aET.setValue(this.runAET);
-		this.rain.setValue(this.runRain);
-		this.snow.setValue(this.runSnow);
 	}
 	
 	
