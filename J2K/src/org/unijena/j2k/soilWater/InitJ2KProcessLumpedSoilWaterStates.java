@@ -126,6 +126,20 @@ import org.unijena.jams.model.*;
             )
             public JAMSDouble satSoil;
     
+    @JAMSVarDescription(
+            access = JAMSVarDescription.AccessType.READ,
+            update = JAMSVarDescription.UpdateType.INIT,
+            description = "start saturation of LPS"
+            )
+            public JAMSDouble satStartLPS;
+    
+    @JAMSVarDescription(
+            access = JAMSVarDescription.AccessType.READ,
+            update = JAMSVarDescription.UpdateType.INIT,
+            description = "start saturation of MPS"
+            )
+            public JAMSDouble satStartMPS;
+    
     
     
     
@@ -156,17 +170,22 @@ import org.unijena.jams.model.*;
         
         double mxLPS = entity.getDouble("aircap") * area.getValue();
         mxLPS = mxLPS * this.ACAdaptation.getValue();    
-//can maybe be used to define start conditions
-        double acMPS = mxMPS * 0.0;
-        double acLPS = mxLPS * 0.0;
+
+        if(satStartLPS != null){
+        	this.actLPS.setValue(mxLPS * this.satStartLPS.getValue());
+        }
+        
+        if(satStartMPS != null){
+        	this.actMPS.setValue(mxMPS * this.satStartMPS.getValue());
+        }
         
         this.maxMPS.setValue(mxMPS);
         this.maxLPS.setValue(mxLPS);
-        this.actMPS.setValue(acMPS);
-        this.actLPS.setValue(acLPS);
-        this.satMPS.setValue(acMPS/mxMPS);
-        this.satLPS.setValue(acLPS/mxLPS);
-        this.satSoil.setValue((acMPS+acLPS) / (mxMPS+mxLPS));
+        //this.actMPS.setValue(acMPS);
+        //this.actLPS.setValue(acLPS);
+        this.satMPS.setValue(this.actMPS.getValue()/mxMPS);
+        this.satLPS.setValue(this.actLPS.getValue()/mxLPS);
+        this.satSoil.setValue((this.actMPS.getValue()+this.actLPS.getValue()) / (mxMPS+mxLPS));
     }
     
     public void cleanup() {
