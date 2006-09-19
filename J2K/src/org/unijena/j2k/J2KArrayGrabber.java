@@ -76,35 +76,35 @@ import org.unijena.jams.model.*;
             update = JAMSVarDescription.UpdateType.RUN,
             description = "extraTerrRadiationArray"
             )
-            public JAMSDoubleArray extRadArray = new JAMSDoubleArray();
+            public JAMSDoubleArray extRadArray;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
             update = JAMSVarDescription.UpdateType.RUN,
             description = "LeafAreaIndexArray"
             )
-            public JAMSDoubleArray LAIArray = new JAMSDoubleArray();
+            public JAMSDoubleArray LAIArray;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
             update = JAMSVarDescription.UpdateType.RUN,
             description = "EffectiveHeightArray"
             )
-            public JAMSDoubleArray effHArray = new JAMSDoubleArray();
+            public JAMSDoubleArray effHArray;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
             update = JAMSVarDescription.UpdateType.RUN,
             description = "rsc0 Array"
             )
-            public JAMSDoubleArray rsc0Array = new JAMSDoubleArray();
+            public JAMSDoubleArray rsc0Array;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
             update = JAMSVarDescription.UpdateType.RUN,
             description = "slopeAscpectCorrectionFactorArray"
             )
-            public JAMSDoubleArray slAsCfArray = new JAMSDoubleArray();
+            public JAMSDoubleArray slAsCfArray;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
@@ -154,26 +154,35 @@ import org.unijena.jams.model.*;
         int dayCount = time.get(time.DAY_OF_YEAR) - 1;
         int hourCount = time.get(time.HOUR_OF_DAY) + (24 * dayCount);
         
-        double in_LAI = 0;
-        double in_effH = 0;
-        double in_extRad = 0;
-        double in_scf = 0;
+        double in_LAI = -9999;
+        double in_effH = -9999;
+        double in_extRad = -9999;
+        double in_scf = -9999;
         double in_rsc0 = -9999;
         if(this.rsc0Array != null)
         	in_rsc0 = this.rsc0Array.getValue()[monthCount];
         
-        if(this.tempRes.getValue().equals("d")){
-            in_LAI = this.LAIArray.getValue()[dayCount];
-            in_effH = this.effHArray.getValue()[dayCount];
-            in_extRad = this.extRadArray.getValue()[dayCount];
-            in_scf = this.slAsCfArray.getValue()[dayCount];
-        }else if(this.tempRes.getValue().equals("h")){
-            in_LAI = this.LAIArray.getValue()[dayCount];
-            in_effH = this.effHArray.getValue()[dayCount];
-            in_extRad = this.extRadArray.getValue()[hourCount];
-            in_scf = this.slAsCfArray.getValue()[dayCount];
-        }
         
+        
+        if(this.tempRes.getValue().equals("d")){
+        	if(this.LAIArray != null)
+        		in_LAI = this.LAIArray.getValue()[dayCount];
+        	if(this.effHArray != null)
+        		in_effH = this.effHArray.getValue()[dayCount];
+            if(this.extRadArray != null)
+            	in_extRad = this.extRadArray.getValue()[dayCount];
+            if(this.slAsCfArray != null)
+            	in_scf = this.slAsCfArray.getValue()[dayCount];
+        }else if(this.tempRes.getValue().equals("h")){
+        	if(this.LAIArray != null)
+        		in_LAI = this.LAIArray.getValue()[dayCount];
+        	if(this.effHArray != null)
+        		in_effH = this.effHArray.getValue()[dayCount];
+        	if(this.extRadArray != null)
+        		in_extRad = this.extRadArray.getValue()[hourCount];
+        	if(this.slAsCfArray != null)
+        		in_scf = this.slAsCfArray.getValue()[dayCount];
+        }
         this.actLAI.setValue(in_LAI);
         this.actEffH.setValue(in_effH);
         this.actRsc0.setValue(in_rsc0);
