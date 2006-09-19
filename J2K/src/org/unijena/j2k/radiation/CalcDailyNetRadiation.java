@@ -123,6 +123,20 @@ import org.unijena.jams.model.*;
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
             update = JAMSVarDescription.UpdateType.RUN,
+            description = "daily shortwave radiation [MJ/m²]"
+            )
+            public JAMSDouble swRad;
+    
+    @JAMSVarDescription(
+            access = JAMSVarDescription.AccessType.WRITE,
+            update = JAMSVarDescription.UpdateType.RUN,
+            description = "daily longwave radiation [MJ/m²]"
+            )
+            public JAMSDouble lwRad;
+    
+    @JAMSVarDescription(
+            access = JAMSVarDescription.AccessType.WRITE,
+            update = JAMSVarDescription.UpdateType.RUN,
             description = "daily net radiation for refET [MJ/m²]"
             )
             public JAMSDouble refETNetRad;
@@ -196,6 +210,8 @@ import org.unijena.jams.model.*;
             double nR_refET = org.unijena.j2k.physicalCalculations.SolarRadiationCalculationMethods.calc_NetRadiation(netRefETSWRadiation, netLWRadiation);
             netRad.setValue(nR_norm);
             refETNetRad.setValue(nR_refET);
+            this.swRad.setValue(netSWRadiation);
+            this.lwRad.setValue(netLWRadiation);
             writer_norm.writeDouble(nR_norm);
             writer_refET.writeDouble(nR_refET);
         }
