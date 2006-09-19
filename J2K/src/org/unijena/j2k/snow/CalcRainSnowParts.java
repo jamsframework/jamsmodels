@@ -96,6 +96,20 @@ import org.unijena.jams.model.*;
             )
             public JAMSDouble snow;
     
+    @JAMSVarDescription(
+            access = JAMSVarDescription.AccessType.WRITE,
+            update = JAMSVarDescription.UpdateType.RUN,
+            description = "save variable rain"
+            )
+            public JAMSDouble svRain;
+    
+    @JAMSVarDescription(
+            access = JAMSVarDescription.AccessType.WRITE,
+            update = JAMSVarDescription.UpdateType.RUN,
+            description = "save variable snow"
+            )
+            public JAMSDouble svSnow;
+    
     
     /*
      *  Component run stages
@@ -128,6 +142,9 @@ import org.unijena.jams.model.*;
         
         this.snow.setValue(snow);
         this.rain.setValue(rain);
+        
+        this.svSnow.setValue(snow);
+        this.svRain.setValue(rain);
     }
     
     public void cleanup() {
