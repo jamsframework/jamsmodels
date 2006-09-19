@@ -241,6 +241,13 @@ import org.unijena.jams.model.*;
             )
             public JAMSInteger snowMeltFormula;
     
+    @JAMSVarDescription(
+            access = JAMSVarDescription.AccessType.READ,
+            update = JAMSVarDescription.UpdateType.INIT,
+            description = "module active"
+            )
+            public JAMSBoolean active;
+    
     double run_area;
     double in_snow;
     double in_rain;
@@ -258,116 +265,121 @@ import org.unijena.jams.model.*;
      */
     
     public void init() {
-        this.snowDepth.setValue(0.0);
-        this.snowTotSWE.setValue(0.0);
-        this.drySWE.setValue(0.0);
-        this.totDens.setValue(0.0);
-        this.dryDens.setValue(0.0);
-        this.snowAge.setValue(0);
-        this.snowColdContent.setValue(0.0);
+    	if(this.active == null || this.active.getValue()){
+	        this.snowDepth.setValue(0.0);
+	        this.snowTotSWE.setValue(0.0);
+	        this.drySWE.setValue(0.0);
+	        this.totDens.setValue(0.0);
+	        this.dryDens.setValue(0.0);
+	        this.snowAge.setValue(0);
+	        this.snowColdContent.setValue(0.0);
+    	}
     }
     
     public void run() throws JAMSEntity.NoSuchAttributeException {
-        
-        //if(time.get(time.DAY_OF_MONTH) == 7 && entity.getDouble("ID") == 3607)
-        //    System.out.getRuntime().println("stop!");
-        this.run_area = this.area.getValue();
-        
-        
-        double SAC = this.actSlAsCf.getValue();
-        
-        this.in_snow = this.netSnow.getValue();
-        this.in_rain = this.netRain.getValue();
-        double balIn = this.in_snow + this.in_rain;
-        
-        double in_minTemp = this.minTemp.getValue();
-        double in_meanTemp = this.meanTemp.getValue();
-        double in_maxTemp = this.maxTemp.getValue();
-        
-        this.run_snowDepth = snowDepth.getValue();
-        this.run_totSWE    = snowTotSWE.getValue();
-        double balStorStart = this.run_totSWE;
-        this.run_drySWE    = drySWE.getValue();
-        this.run_totDens   = totDens.getValue();
-        this.run_dryDens   = dryDens.getValue();
-        this.run_snowAge   = snowAge.getValue();
-        this.run_coldContent = snowColdContent.getValue();
-        
-        double critDens = snowCritDens.getValue();
-        double coldContentFactor = ccf_factor.getValue();
-        double TRS = snow_trs.getValue();
-        double TRANS = snow_trans.getValue();
-        double temp_fac = t_factor.getValue();
-        double rain_fac = r_factor.getValue();
-        double ground_fac = g_factor.getValue();
-        
-        
-        this.run_snowMelt = 0; 
-        double out_netRain = 0;
-        double out_netSnow = 0;
-        
-        double accuTemp = (in_meanTemp + in_minTemp) / 2.0;
-        double meltTemp = (in_meanTemp + in_maxTemp) / 2.0;
-        
-        run_coldContent = run_coldContent + this.calcColdContent(in_meanTemp, coldContentFactor);
-        if(run_coldContent > 0)
-            run_coldContent = 0;
-        
-        if(run_snowDepth > 0){
-            //increasing snow age by one day
-            run_snowAge += 1;
-        }
-        
-        if(in_snow > 0){
-            
-            this.calcSnowAccumulation(accuTemp, run_area, critDens);
-        }
-        
-        
-        if((meltTemp >= (TRS - TRANS)) && (this.run_snowDepth > 0)){
-            this.calcMetamorphosis(meltTemp, TRS, TRANS, temp_fac, rain_fac, ground_fac, run_area, SAC, critDens);
-        }
-        
-        this.calcSnowDensities(run_area);
-        
-        this.netRain.setValue(this.in_rain);
-        this.netSnow.setValue(this.in_snow);
-        this.snowTotSWE.setValue(this.run_totSWE);
-        this.drySWE.setValue(this.run_drySWE);
-        this.totDens.setValue(this.run_totDens);
-        this.dryDens.setValue(this.run_dryDens);
-        this.snowDepth.setValue(this.run_snowDepth);
-        this.snowAge.setValue(this.run_snowAge);
-        this.snowColdContent.setValue(this.run_coldContent);
-        if(this.run_snowMelt > 0){
-            int i = 0;
-        }
-        this.snowMelt.setValue(this.run_snowMelt);
-        double balStorEnd = this.run_totSWE;
-        double balOut = this.run_snowMelt + this.in_rain + this.in_snow;
-        double balance = balIn  + (balStorStart - balStorEnd) - balOut;
-        if(Math.abs(balance) > 0.0001){
-            getModel().getRuntime().println("balance error in snow module: "+balance);
-            getModel().getRuntime().println("balIn: " + balIn);
-            getModel().getRuntime().println("balStorStart: " + balStorStart);
-            getModel().getRuntime().println("balStorEnd: " + balStorEnd);
-            getModel().getRuntime().println("balOut: " + balOut);
-            getModel().getRuntime().println("shit!");
-        }
-        //if(this.run_drySWE > this.run_totSWE)
-        //    System.out.getRuntime().println("dry is larger than tot at end at time: " + time.toString() + " in entity: " + entity.getDouble("ID"));
-        if(this.run_snowMelt < 0)
-            getModel().getRuntime().println("negative snowmelt!!");
+    	if(this.active == null || this.active.getValue()){
+	        //if(time.get(time.DAY_OF_MONTH) == 7 && entity.getDouble("ID") == 3607)
+	        //    System.out.getRuntime().println("stop!");
+	        this.run_area = this.area.getValue();
+	        
+	        
+	        double SAC = this.actSlAsCf.getValue();
+	        
+	        this.in_snow = this.netSnow.getValue();
+	        this.in_rain = this.netRain.getValue();
+	        double balIn = this.in_snow + this.in_rain;
+	        
+	        double in_minTemp = this.minTemp.getValue();
+	        double in_meanTemp = this.meanTemp.getValue();
+	        double in_maxTemp = this.maxTemp.getValue();
+	        
+	        this.run_snowDepth = snowDepth.getValue();
+	        this.run_totSWE    = snowTotSWE.getValue();
+	        double balStorStart = this.run_totSWE;
+	        this.run_drySWE    = drySWE.getValue();
+	        this.run_totDens   = totDens.getValue();
+	        this.run_dryDens   = dryDens.getValue();
+	        this.run_snowAge   = snowAge.getValue();
+	        this.run_coldContent = snowColdContent.getValue();
+	        
+	        double critDens = snowCritDens.getValue();
+	        double coldContentFactor = ccf_factor.getValue();
+	        double TRS = snow_trs.getValue();
+	        double TRANS = snow_trans.getValue();
+	        double temp_fac = t_factor.getValue();
+	        double rain_fac = r_factor.getValue();
+	        double ground_fac = g_factor.getValue();
+	        
+	        
+	        this.run_snowMelt = 0; 
+	        double out_netRain = 0;
+	        double out_netSnow = 0;
+	        
+	        double accuTemp = (in_meanTemp + in_minTemp) / 2.0;
+	        double meltTemp = (in_meanTemp + in_maxTemp) / 2.0;
+	        
+	        run_coldContent = run_coldContent + this.calcColdContent(in_meanTemp, coldContentFactor);
+	        if(run_coldContent > 0)
+	            run_coldContent = 0;
+	        
+	        if(run_snowDepth > 0){
+	            //increasing snow age by one day
+	            run_snowAge += 1;
+	        }
+	        
+	        if(in_snow > 0){
+	            
+	            this.calcSnowAccumulation(accuTemp, run_area, critDens);
+	        }
+	        
+	        
+	        if((meltTemp >= (TRS - TRANS)) && (this.run_snowDepth > 0)){
+	            this.calcMetamorphosis(meltTemp, TRS, TRANS, temp_fac, rain_fac, ground_fac, run_area, SAC, critDens);
+	        }
+	        
+	        this.calcSnowDensities(run_area);
+	        
+	        this.netRain.setValue(this.in_rain);
+	        this.netSnow.setValue(this.in_snow);
+	        this.snowTotSWE.setValue(this.run_totSWE);
+	        this.drySWE.setValue(this.run_drySWE);
+	        this.totDens.setValue(this.run_totDens);
+	        this.dryDens.setValue(this.run_dryDens);
+	        this.snowDepth.setValue(this.run_snowDepth);
+	        this.snowAge.setValue(this.run_snowAge);
+	        this.snowColdContent.setValue(this.run_coldContent);
+	        if(this.run_snowMelt > 0){
+	            int i = 0;
+	        }
+	        this.snowMelt.setValue(this.run_snowMelt);
+	        double balStorEnd = this.run_totSWE;
+	        double balOut = this.run_snowMelt + this.in_rain + this.in_snow;
+	        double balance = balIn  + (balStorStart - balStorEnd) - balOut;
+	        if(Math.abs(balance) > 0.0001){
+	            getModel().getRuntime().println("balance error in snow module: "+balance);
+	            getModel().getRuntime().println("balIn: " + balIn);
+	            getModel().getRuntime().println("balStorStart: " + balStorStart);
+	            getModel().getRuntime().println("balStorEnd: " + balStorEnd);
+	            getModel().getRuntime().println("balOut: " + balOut);
+	            getModel().getRuntime().println("shit!");
+	        }
+	        //if(this.run_drySWE > this.run_totSWE)
+	        //    System.out.getRuntime().println("dry is larger than tot at end at time: " + time.toString() + " in entity: " + entity.getDouble("ID"));
+	        if(this.run_snowMelt < 0)
+	            getModel().getRuntime().println("negative snowmelt!!");
+    	}
     }
     
     public void cleanup() {
-        this.snowDepth.setValue(0.0);
-        this.snowTotSWE.setValue(0.0);
-        this.drySWE.setValue(0.0);
-        this.totDens.setValue(0.0);
-        this.dryDens.setValue(0.0);
-        this.snowAge.setValue(0);
-        this.snowColdContent.setValue(0.0);
+    	if(this.active == null || this.active.getValue()){
+	        this.snowDepth.setValue(0.0);
+	        this.snowTotSWE.setValue(0.0);
+	        this.drySWE.setValue(0.0);
+	        this.totDens.setValue(0.0);
+	        this.dryDens.setValue(0.0);
+	        this.snowAge.setValue(0);
+	        this.snowColdContent.setValue(0.0);
+    	}
     }
     
     private double calcColdContent(double temperature, double coldContentFactor){
