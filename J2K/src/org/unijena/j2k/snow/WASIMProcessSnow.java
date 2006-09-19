@@ -291,6 +291,7 @@ import org.unijena.jams.model.*;
 		this.runSnow = this.snow.getValue();
 		this.runWind = this.wind.getValue();
 		this.runPrecip = this.precip.getValue();
+		
 		// state vars
 		this.runIceContent = this.iceContent.getValue();
 		this.runFreeWater = this.freeWater.getValue();
@@ -329,6 +330,8 @@ import org.unijena.jams.model.*;
 			//night part
 			potMeltRate = potMeltRate + this.calcAccumulationAndMelt(tempNight, (1-dayFrac), runMeltMethod);
 
+			potMeltRate = potMeltRate * this.area.getValue();
+			
 			//snow and rain has been taken care of now!!
 			this.runRain = 0;
 			this.runSnow = 0;
@@ -424,6 +427,7 @@ import org.unijena.jams.model.*;
 			if(runMeltMethod == 3){
 				double negMelt = Math.abs(this.refCoeff.getValue() * this.runRadiationMeltFactor * (temperature - this.runMeltTemperature));
 				negMelt = negMelt * dayFraction;
+				negMelt = negMelt * this.area.getValue();
 				
 				//part of the free water is refreezing
 				if(negMelt <= this.runFreeWater){
