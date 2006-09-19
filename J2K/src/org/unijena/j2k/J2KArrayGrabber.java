@@ -158,7 +158,9 @@ import org.unijena.jams.model.*;
         double in_effH = 0;
         double in_extRad = 0;
         double in_scf = 0;
-        double in_rsc0 = this.rsc0Array.getValue()[monthCount];
+        double in_rsc0 = -9999;
+        if(this.rsc0Array != null)
+        	in_rsc0 = this.rsc0Array.getValue()[monthCount];
         
         if(this.tempRes.getValue().equals("d")){
             in_LAI = this.LAIArray.getValue()[dayCount];
