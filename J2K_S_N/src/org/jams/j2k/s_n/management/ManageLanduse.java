@@ -138,7 +138,7 @@ public class ManageLanduse extends JAMSComponent {
         if ((nextDay-1) == time.get(time.DAY_OF_YEAR)) {
             if (currentManagement.harvest != -1) {
                 //do harvesting here!!
-                System.out.println(" Julianischer Tag  "+ time.get(time.DAY_OF_YEAR));
+                //System.out.println(" Julianischer Tag  "+ time.get(time.DAY_OF_YEAR));
                 doHarvest.setValue(true);
             }
         }

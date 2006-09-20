@@ -797,8 +797,8 @@ import java.io.*;
                     runResidue_pool = 0;
                 }
                 
-               // runsum_Ninput =  fertactivorg.getValue() + fertNH4.getValue() + fertNO3.getValue() + a_deposition + runinterflowN_in + runsurfaceN_in;
-                runsum_Ninput =   runinterflowN_in + runsurfaceN_in;
+                runsum_Ninput =  fertactivorg.getValue() + fertNH4.getValue() + fertNO3.getValue() + a_deposition;
+                //runsum_Ninput =   runinterflowN_in + runsurfaceN_in;
                 
                 
                 
@@ -843,7 +843,7 @@ import java.io.*;
                 
             } else {
                 
-                runsum_Ninput = runsum_Ninput + runinterflowN_in;
+                //runsum_Ninput = runsum_Ninput + runinterflowN_in;
                 
                 runNO3_Pool = runNO3_Pool + runnitri_trans + runinterflowN_in + percoNvals[i-1] + Hum_act_min;
                 

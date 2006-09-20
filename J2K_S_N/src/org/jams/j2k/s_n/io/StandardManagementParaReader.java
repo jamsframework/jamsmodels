@@ -374,6 +374,9 @@ public class StandardManagementParaReader extends JAMSComponent {
                 tokenizer = new StringTokenizer(s, "\t");
                 
                 hid = Double.parseDouble(tokenizer.nextToken());
+                if (hid == 600){
+                    double dummy = 0;
+                }
                 rid = Integer.parseInt(tokenizer.nextToken());
                 redu_fac = Double.parseDouble(tokenizer.nextToken());
                 
