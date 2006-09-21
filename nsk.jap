@@ -6,7 +6,6 @@ windowenable=1
 verbose=0
 windowwidth=800
 guiconfigheight=600
-#libs=d\:\\nbprojects\\J2K\\dist\\J2K.jar;d\:\\nbprojects\\JAMS\\dist\\JAMS.jar;d\:\\jams\\JAMS\\libs;d\:\\nbprojects\\JAMSComponents\\dist\\JAMStandardComponents.jar
 libs=d\:\\jams\\JAMS\\libs;d\:\\nbprojects\\JAMSComponents\\dist\\JAMStandardComponents.jar;d\:\\nbprojects\\J2K\\dist\\J2K.jar
 errorlog=
 windowontop=0

@@ -1,12 +1,14 @@
 #JAMS configuration file
-#Mon Jun 19 09:09:28 CEST 2006
+#Tue Sep 19 16:27:14 CEST 2006
 debug=1
-verbose=0
-libs=d\:\\nbprojects\\J2K\\dist\\J2K.jar;d\:\\nbprojects\\JAMS\\dist\\JAMS.jar
-#errorlog=D\:/jamserror.log
-#infolog=D\:/jamsinfo.log
-guiconfig=1
+infolog=
 windowenable=1
-windowontop=0
+verbose=0
 windowwidth=800
+guiconfigheight=600
+libs=d\:\\jams\\JAMS\\libs;d\:\\nbprojects\\JAMSComponents\\dist\\JAMStandardComponents.jar;d\:\\nbprojects\\J2K\\dist\\J2K.jar
+errorlog=
+windowontop=0
 windowheight=600
+guiconfigwidth=600
+guiconfig=1
