@@ -1286,12 +1286,12 @@ import org.unijena.jams.model.*;
     }
 	
 	public void run_prms(){
-		System.out.println(time.toString());
+		/*System.out.println(time.toString());
 		int y = time.get(time.YEAR);
 		int m = time.get(time.MONTH);
 		int d = time.get(time.DATE);
 		if(y == 1996 && m == 10 && d == 9)
-        	System.out.println("stop");
+        	System.out.println("stop");*/
 		
 		int Ndepl = 0;
 		this.denInv = 1. / this.initDens.getValue();
