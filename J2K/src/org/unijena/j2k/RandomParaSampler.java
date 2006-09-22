@@ -237,7 +237,7 @@ import org.unijena.jams.model.*;
             
             //setting up the dataArray
             this.timeSteps = (int)modelTimeInterval.getNumberOfTimesteps();
-            this.valueArray = new double[this.sampleCount.getValue()][timeSteps];
+//            this.valueArray = new double[this.sampleCount.getValue()][timeSteps];
             this.timeStepCounter = 0;
             this.runCounter = 0;
             
@@ -271,7 +271,7 @@ import org.unijena.jams.model.*;
                 }
                 
                 
-                this.valueArray[runCounter] = this.targetValue.getValue();
+//                this.valueArray[runCounter] = this.targetValue.getValue();
                 this.runCounter++;
             }
             
@@ -286,7 +286,9 @@ import org.unijena.jams.model.*;
     
     
     public void cleanup() {
+        
         if (!disable.getValue()) {
+            /*
             //always write time
             //the time also knows a toString() method with additional formatting parameters
             //e.g. time.toString("%1$tY-%1$tm-%1$td %1$tH:%1$tM")
@@ -305,10 +307,8 @@ import org.unijena.jams.model.*;
             }
             attribWriter.close();
             
-            /*System.out.println("overall max. goodness: " + bestGoodness);
-            for (int i = 0; i < parameters.length; i++) {
-                System.out.println("value["+i+"]: " + bestValues[i]);
-            }*/
+            
+        */
             paraWriter.close();
         }
     }
