@@ -544,7 +544,10 @@ import org.unijena.jams.model.*;
     
     //Snow area depletion curve values, 11 values for each curve 
     //(0 to 100 percent in 10 percent increments)
-    double[] snowAreaCurve = {0.000,0.010,0.075,0.120,0.200,0.280,0.340,0.450,0.550,0.700,1.000};
+    double[] snowAreaCurve = {.05,.24,.47,.43,.56,.75,.82,.88,.93,.99,1.0}; //{0.000,0.010,0.075,0.120,0.200,0.280,0.340,0.450,0.550,0.700,1.000},
+                              
+                              //{.05,.25,.47,.48,.54,.58,.61,.64,.66,.68,.70};
+    
     
     //Convection condensation energy coefficient, varied monthly, 
     //calories per degree C above 0
@@ -556,7 +559,7 @@ import org.unijena.jams.model.*;
     int[] tStorm = {1,1,1,1,1,1,1,1,1,1,1,1};
     
     double[] aCum = {.80,.77,.75,.72,.70,.69,.68,.67,.66,.65,.64,.63,.62,.61,.60};
-	double[] aMlt = {.72,.65,.60,.58,.56,.54,.52,.50,.48,.46,.44,.43,.42,.41,.40};
+    double[] aMlt = {.72,.65,.60,.58,.56,.54,.52,.50,.48,.46,.44,.43,.42,.41,.40};
 	int MAXALB = aMlt.length - 1;
 	
 	double runSwRad = 0;
@@ -635,8 +638,8 @@ import org.unijena.jams.model.*;
 	//mapping changed variables back
 	private void mapVarsBack(double balIn, double balStorStart){
 		
-		if(runPackSwe > 0 && runSnowCovArea == 0)
-			System.out.println("stop swe > 0 and sca = 0: " + this.time.toString());
+		//if(runPackSwe > 0 && runSnowCovArea == 0)
+		//	System.out.println("stop swe > 0 and sca = 0: " + this.time.toString());
 		this.runAet = this.runAet + this.runSnowET;
 		this.snowET.setValue(this.runSnowET);
 		this.aET.setValue(this.runAet * this.area.getValue());
@@ -937,7 +940,7 @@ import org.unijena.jams.model.*;
 		 //real :: ai, pcty, difx, frac, af, dify
 		 double ai, pcty, difx, frac, af, dify;
 		 //usgs***********************************************************************
-		 runSnowCovArea = snowAreaCurve[11];//Snarea_curve[11][K];
+		 runSnowCovArea = snowAreaCurve[10];//Snarea_curve[11][K];
 
 		 if ( runPackSwe > runPst ) 
 			 runPst = runPackSwe;
@@ -992,8 +995,8 @@ import org.unijena.jams.model.*;
 			 jdx = idx - 1;
 			 af = (double)(jdx - 1);
 			 dify = (frac * 10.) - af;
-			 difx = snowAreaCurve[idx] - snowAreaCurve[jdx];
-			 runSnowCovArea = snowAreaCurve[jdx] + (dify * difx);
+			 difx = snowAreaCurve[idx-1] - snowAreaCurve[jdx-1];
+			 runSnowCovArea = snowAreaCurve[jdx-1] + (dify * difx);
 
 		 }
 
@@ -1480,13 +1483,13 @@ import org.unijena.jams.model.*;
 		 if ( runPackSwe > 0. ){
 
 //			 ******Compute snow-covered area
-			 if ( Ndepl > 0 ){
+			 //if ( Ndepl > 0 ){
 //pk				 int k = Hru_deplcrv;
 				 snowcov(0);// Iasw, Newsnow, Snowcov_area,
 				 // Pkwater_equiv, Pst, Snarea_thresh,
 				 // Net_snow, Scrv, Pksv,
 				 // Snowcov_areasv);
-			 }
+			 //}
 
 //			 call dpreal('pk_temp-scov', Pk_temp, 1, 1)
 //			 call dpreal('tcal-scov', Tcal, 1, 1)
