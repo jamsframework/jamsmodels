@@ -329,7 +329,7 @@ import org.unijena.jams.model.*;
 				
 				int julDay = this.time.get(time.DAY_OF_YEAR);
 				double dayFrac = org.unijena.j2k.physicalCalculations.DailySolarRadiationCalculationMethods.calcDayFraction(this.latitude.getValue(), julDay);
-				this.runRadiationMeltFactor = this.calcRadiationMeltFactor(julDay);
+				this.runRadiationMeltFactor = this.calcRadiationMeltFactor2(julDay);
 	
 				//day part
 				double potMeltRate = this.calcAccumulationAndMelt(tempDay, dayFrac,	runMeltMethod);
@@ -389,7 +389,7 @@ import org.unijena.jams.model.*;
         
     }
 	
-	private double calcRadiationMeltFactor(int julDay){
+	private double calcRadiationMeltFactor1(int julDay){
 		double rmf = 0;
 		
 		//calculates the actual radiation melt factor for the specific julian day
@@ -410,6 +410,29 @@ import org.unijena.jams.model.*;
 		
 		return rmf;
 	}
+        
+        private double calcRadiationMeltFactor2(int julDay){
+		double rmf = 0;
+		
+		//calculates the actual radiation melt factor for the specific julian day
+		
+		//Amplitude (absolute value only for random sampling)
+		double r_b = (this.rmf_max.getValue() - this.rmf_min.getValue()) / 2.0;
+		//double r_b = ((this.rmf_max.getValue()) / 2.0);
+		//Additative constant for shift of sin curve in x-direction
+		double r_a = this.rmf_min.getValue() + r_b;
+		//Adaptation of sin-curve period
+		double r_c = 2 * Math.PI / 365;
+		//Difference between Jan. 1. and Mar. 21 if sin(c*(d+day)) equals zero
+		double r_d = -80.0;
+		
+		rmf = r_a + r_b * Math.sin(r_c * (r_d + julDay));
+		
+		//rmf = r_a + this.rmf_max.getValue() * Math.sin(r_c * (r_d + julDay));
+		
+		return rmf;
+	}
+        
 	/**
      * calculates saturation vapour pressure over ice at the given temperature in hPa
      * @param temperature the air temperature in °C
