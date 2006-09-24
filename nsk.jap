@@ -1,14 +1,15 @@
 #JAMS configuration file
-#Tue Sep 19 16:27:14 CEST 2006
+#Sun Sep 24 18:27:16 CEST 2006
 debug=1
 infolog=
 windowenable=1
 verbose=0
-windowwidth=800
 guiconfigheight=600
+windowwidth=800
+model=
 libs=d\:\\jams\\JAMS\\libs;d\:\\nbprojects\\JAMSComponents\\dist\\JAMStandardComponents.jar;d\:\\nbprojects\\J2K\\dist\\J2K.jar
-errorlog=
 windowontop=0
-windowheight=600
+errorlog=
 guiconfigwidth=600
+windowheight=600
 guiconfig=1
