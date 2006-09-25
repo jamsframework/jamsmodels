@@ -24,7 +24,7 @@ public class VolumeError {
         for(int i = 0; i < prediction.length; i++){
             volError += (prediction[i] - validation[i]);
         }
-        return volError; 
+        return Math.abs(volError); 
     }
     
 }
