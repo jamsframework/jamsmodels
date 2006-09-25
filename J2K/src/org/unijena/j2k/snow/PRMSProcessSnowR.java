@@ -788,8 +788,8 @@ import org.unijena.jams.model.*;
 		 }
 
 		 if ( runSnow > 0. ) {
-			 if(runPackSwe == 0)
-				 this.runSnowCovArea = 1.0;
+			 //if(runPackSwe == 0)
+			//	 this.runSnowCovArea = 1.0;
 			 runPackSwe = runPackSwe + runSnow;
 			 runPackPrecip = runPackPrecip + runSnow;
 			 runPackIce = runPackIce + runSnow;
