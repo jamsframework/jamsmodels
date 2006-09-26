@@ -365,7 +365,7 @@ import org.unijena.jams.model.*;
 				// if snow water equivalent < 5 mm the albedo is set to landcover
 				// albedo
 				// otherwise to a constant(!) snow albedo
-				if (this.runIceContent + this.runFreeWater > 5.0) {
+				if ((this.runIceContent + this.runFreeWater) > (5.0 * this.area.getValue())) {
 					this.runSnowAlbedo = this.snowConstAlbedo.getValue();
 				} else {
 					this.runSnowAlbedo = this.landAlbedo.getValue();
