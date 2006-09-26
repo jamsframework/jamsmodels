@@ -48,36 +48,43 @@ import org.unijena.j2k.*;
 	
 public class HydroNETControl extends JAMSContext {
    @JAMSVarDescription(
+            access = JAMSVarDescription.AccessType.WRITE,
+            update = JAMSVarDescription.UpdateType.RUN,
+            description = "Collection of hru objects"
+            )
+            public JAMSEntityCollection hrus;
+   
+   @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
-            update = JAMSVarDescription.UpdateType.INIT,
+            update = JAMSVarDescription.UpdateType.RUN,
             description = "Nitrongen Output Neuron"
             )
             public JAMSEntity NitrogenOutEntity;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
-            update = JAMSVarDescription.UpdateType.INIT,
+            update = JAMSVarDescription.UpdateType.RUN,
             description = "Cost Output Neuron"
             )
             public JAMSEntity CostOutEntity;    
     
     @JAMSVarDescription(
-            access = JAMSVarDescription.AccessType.READWRITE,
-            update = JAMSVarDescription.UpdateType.INIT,
+            access = JAMSVarDescription.AccessType.READ,
+            update = JAMSVarDescription.UpdateType.RUN,
             description = "smallest improvement which is accepted"
             )
             public JAMSDouble delta_min;  
     
     @JAMSVarDescription(
-            access = JAMSVarDescription.AccessType.READWRITE,
-            update = JAMSVarDescription.UpdateType.INIT,
+            access = JAMSVarDescription.AccessType.READ,
+            update = JAMSVarDescription.UpdateType.RUN,
             description = "learning rate"
             )
             public JAMSDouble learningrate;  
     
     @JAMSVarDescription(
-            access = JAMSVarDescription.AccessType.READWRITE,
-            update = JAMSVarDescription.UpdateType.INIT,
+            access = JAMSVarDescription.AccessType.READ,
+            update = JAMSVarDescription.UpdateType.RUN,
             description = "momentum"
             )
             public JAMSDouble momentum = new JAMSDouble(0.9);  
@@ -142,7 +149,7 @@ public class HydroNETControl extends JAMSContext {
                          "  Cost - Output:" + new Double(CostOutNeuron.getActivation()).toString() + 
 		         "  AvgPerf:" + new Double(avgperformance).toString());
 	
-	return true;//(breakcount >= 0 /*&& learningrate > 0.000000000001*/ && avgperformance >= delta_min.getValue() );
+	return (breakcount >= 0 /*&& learningrate > 0.000000000001*/ && avgperformance >= delta_min.getValue() );
     }
     
     public void init () {
@@ -158,7 +165,7 @@ public class HydroNETControl extends JAMSContext {
 	runEnumerator.reset();
         while(runEnumerator.hasNext() && doRun) {
             JAMSComponent comp = runEnumerator.next();
-            comp.updateInit();
+            //comp.
             try {
                 comp.init();
             } catch (Exception e) {
@@ -175,7 +182,7 @@ public class HydroNETControl extends JAMSContext {
 	runEnumerator.reset();
         while(runEnumerator.hasNext() && doRun) {
             JAMSComponent comp = runEnumerator.next();
-            comp.updateRun();
+            //comp.updateRun();
             try {
                 comp.run();
             } catch (Exception e) {
@@ -186,13 +193,24 @@ public class HydroNETControl extends JAMSContext {
     
     public void run () {
 	try {
-	do {	    
-	    singleRun();
-	    }while (hasNext());
-	}
+	    do {	    
+		singleRun();
+		}while (hasNext());
+	    
+	    JAMSEntity e;
+	    for (int i=0;i<hrus.getEntities().size();i++) {
+		e = hrus.getEntities().get(i);
+	    
+		e.setDouble("new_input",((DistNeuron)e.getObject("DIST_NEURON")).getInput());
+	    }
+	    
+	    }
 	catch (JAMSEntity.NoSuchAttributeException e) {
-		getModel().getRuntime().sendInfoMsg("No such attribute Exception: " + e.getMessage());		    
+	    getModel().getRuntime().sendInfoMsg("No such attribute Exception: " + e.getMessage());		    
 	}
+
+	
+	
     }
     
     public void cleanup() {

@@ -42,14 +42,19 @@ public class HydroNETWeightModify extends JAMSComponent {
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
             update = JAMSVarDescription.UpdateType.RUN,
-            description = "Nitrogen neuron"
+            description = "List of spatial entities"
             )
-            public JAMSEntity entity;
+            public JAMSEntityCollection entities;
     
-    public void run() throws JAMSEntity.NoSuchAttributeException { 
+    public void run() throws JAMSEntity.NoSuchAttributeException { 	
 	DistNeuron dist_neuron;
-	dist_neuron = (DistNeuron)entity.getObject("DIST_NEURON");
-	dist_neuron.modifyWeight();
+	Iterator<JAMSEntity> Iterator = entities.getEntities().iterator();
+	while (Iterator.hasNext()) {
+	    JAMSEntity entity = Iterator.next();
+	    	    
+	    dist_neuron = (DistNeuron)entity.getObject("DIST_NEURON");
+	    dist_neuron.modifyWeight();
+	}
     }
 }    
 

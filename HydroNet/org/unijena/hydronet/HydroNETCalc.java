@@ -41,21 +41,21 @@ public class HydroNETCalc extends JAMSComponent {
         )    
    @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
-            update = JAMSVarDescription.UpdateType.INIT,
+            update = JAMSVarDescription.UpdateType.RUN,
             description = "Collection of hru objects"
             )
             public JAMSEntity NitrogenOutEntity;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
-            update = JAMSVarDescription.UpdateType.INIT,
+            update = JAMSVarDescription.UpdateType.RUN,
             description = "Collection of hru objects"
             )
             public JAMSEntity CostOutEntity;    
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
-            update = JAMSVarDescription.UpdateType.INIT,
+            update = JAMSVarDescription.UpdateType.RUN,
             description = "largest accepted nitrogen value"
             )
             public JAMSDouble nitrogen_goal;    

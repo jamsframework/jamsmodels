@@ -34,38 +34,26 @@ import org.unijena.jams.JAMS;
  * @author Christian Fischer
  */
 public class HydroNETCreator extends JAMSComponent {
-    @JAMSComponentDescription(
-        title="HydroNETCreator",
-        author="Christian Fischer",
-        description=""
-        )
     @JAMSVarDescription(
-            access = JAMSVarDescription.AccessType.READWRITE,
-            update = JAMSVarDescription.UpdateType.INIT,
+            access = JAMSVarDescription.AccessType.WRITE,
+            update = JAMSVarDescription.UpdateType.RUN,
             description = "Collection of hru objects"
             )
             public JAMSEntityCollection hrus;
-    
+       
     @JAMSVarDescription(
-            access = JAMSVarDescription.AccessType.READWRITE,
-            update = JAMSVarDescription.UpdateType.INIT,
+            access = JAMSVarDescription.AccessType.WRITE,
+            update = JAMSVarDescription.UpdateType.RUN,
             description = "Collection of hru objects"
             )
-            public JAMSEntityCollection reverse_hrus = new JAMSEntityCollection();
+            public JAMSEntity NitrogenOutEntity;
     
     @JAMSVarDescription(
-            access = JAMSVarDescription.AccessType.READWRITE,
-            update = JAMSVarDescription.UpdateType.INIT,
+            access = JAMSVarDescription.AccessType.WRITE,
+            update = JAMSVarDescription.UpdateType.RUN,
             description = "Collection of hru objects"
             )
-            public JAMSEntity NitrogenOutEntity = JAMSDataFactory.newEntity();
-    
-    @JAMSVarDescription(
-            access = JAMSVarDescription.AccessType.READWRITE,
-            update = JAMSVarDescription.UpdateType.INIT,
-            description = "Collection of hru objects"
-            )
-            public JAMSEntity CostOutEntity = JAMSDataFactory.newEntity();
+            public JAMSEntity CostOutEntity;
     
     
     DistNeuron NitrogenOutNeuron = new DistNeuron();
@@ -78,29 +66,21 @@ public class HydroNETCreator extends JAMSComponent {
         CostNeuron cost_neuron;
         DistNeuron dist_neuron;
         Neuron downstream_neuron;
-        
+        	
         getModel().getRuntime().println("Setup HydroNET");
          
         //setup out neurons
         NitrogenOutNeuron.setSizeOfArea(1);
         CostOutNeuron.setSizeOfArea(1.0);
         
-        //id function for testing
-        Matrix M = new Matrix(2, 2);
-        M.element[0][0] = -1000;
-        M.element[0][1] = -1000;
-        M.element[1][0] = 1000;
-        M.element[1][1] = 1000;
-        
+        //id function for testing        
 	Matrix M2 = new Matrix(2, 2);
         M2.element[0][0] = -100;
-        M2.element[0][1] = 101;
+        M2.element[0][1] = 0;
         M2.element[1][0] = 100;
-        M2.element[1][1] = -99;
+        M2.element[1][1] = 0;
 	
-        LinApprox lin_id = new LinApprox(M);
-        GenericFunction gen_id = new GenericFunction(lin_id);
-        
+       
 	LinApprox lin_id2 = new LinApprox(M2);
         GenericFunction gen_id2 = new GenericFunction(lin_id2);
         //setup net
@@ -109,19 +89,21 @@ public class HydroNETCreator extends JAMSComponent {
             //setup nitrogen neuron for each hru
             nitr_neuron = new NONeuron();
             
-            nitr_neuron.addFilter(gen_id);            
+            nitr_neuron.addFilter((GenericFunction)e.getObject("ActivationFunction"));            
+	    nitr_neuron.setID((long)e.getDouble("ID"));
+	    
             downstreamPoly = (JAMSEntity)e.getObject("to_poly");
             //look if id is in hashmap
-            if ( downstreamPoly == null ) {
+            if ( downstreamPoly == null ) {		
                 nitr_neuron.setDownstreamNeuron(null,0);
                 nitr_neuron.setOutputNeuron(NitrogenOutNeuron,1.0);
             }
             else {
                 downstream_neuron = (Neuron)downstreamPoly.getObject("NITROGEN_NEURON");
                 if (downstream_neuron == null)
-                    getModel().getRuntime().println("WARNING: Downstream Neuron Null");
-                nitr_neuron.setDownstreamNeuron(downstream_neuron,0.5);
-                nitr_neuron.setOutputNeuron(NitrogenOutNeuron,0.5);
+                    getModel().getRuntime().println("WARNING: Downstream Neuron = Null");
+                nitr_neuron.setDownstreamNeuron(downstream_neuron,e.getDouble("interflow_weight"));
+                nitr_neuron.setOutputNeuron(NitrogenOutNeuron,e.getDouble("percolation_weight"));
             }
             e.setObject("NITROGEN_NEURON",nitr_neuron);
             
@@ -132,76 +114,89 @@ public class HydroNETCreator extends JAMSComponent {
             cost_neuron.addFilter(gen_id2);
             cost_neuron.setCostFactor(1.0);
             cost_neuron.setOutputNeuron(CostOutNeuron);
-            
+            cost_neuron.setID((long)e.getDouble("ID"));
+
             e.setObject("COST_NEURON",cost_neuron);
             
             dist_neuron = new DistNeuron();
             
             dist_neuron.setCostNeuron(cost_neuron);
             dist_neuron.setNitrNeuron(nitr_neuron);
-            dist_neuron.setInitialExternInput(1);
-	    dist_neuron.setMaxInput(15.0);
-	    dist_neuron.setMinInput(0);
+            dist_neuron.setInitialExternInput(e.getDouble("ist_input"));
+	    dist_neuron.setMaxInput(e.getDouble("ist_input"));
+	    dist_neuron.setMinInput(e.getDouble("min_input"));
+	    dist_neuron.setID((long)e.getDouble("ID"));
 	    
             e.setObject("DIST_NEURON",dist_neuron);
 	    
 	    NitrogenOutEntity.setObject("NEURON",this.NitrogenOutNeuron);
-	    CostOutEntity.setObject("NEURON",this.CostOutNeuron);
-	    	   	    
-	    list.add(hrus.getEntities().get(i));	      	
+	    CostOutEntity.setObject("NEURON",this.CostOutNeuron);	    	   	    
         }
-	reverse_hrus.setEntities(list);
     }
     
-    //trash...
-    public void run_() throws JAMSEntity.NoSuchAttributeException {
+
+/*    public void run() throws JAMSEntity.NoSuchAttributeException {
         JAMSEntity e;
         
         NONeuron nitr_neuron;
         CostNeuron cost_neuron;
         DistNeuron dist_neuron;
-        //first step propagate
-        for (int i=0;i<hrus.getEntities().size();i++) {
-            e = hrus.getEntities().get(i);
+	while (true) {
+	    NitrogenOutNeuron.reset();
+	    CostOutNeuron.reset();
+	    for (int i=0;i<hrus.getEntities().size();i++) {
+	        e = hrus.getEntities().get(i);
             
-            nitr_neuron = (NONeuron)e.getObject("NITROGEN_NEURON");
-            cost_neuron = (CostNeuron)e.getObject("COST_NEURON");
-            dist_neuron = (DistNeuron)e.getObject("DIST_NEURON");
+                nitr_neuron = (NONeuron)e.getObject("NITROGEN_NEURON");
+	        cost_neuron = (CostNeuron)e.getObject("COST_NEURON");
+	        dist_neuron = (DistNeuron)e.getObject("DIST_NEURON");
+	    	    
+		nitr_neuron.reset();
+                cost_neuron.reset();	    
+	    }
+            //first step propagate
+	    for (int i=0;i<hrus.getEntities().size();i++) {
+	        e = hrus.getEntities().get(i);
             
-            dist_neuron.propagate();
-            nitr_neuron.propagate();
-            cost_neuron.propagate();
-        }
-        NitrogenOutNeuron.calc();
-        CostOutNeuron.calc();
+                nitr_neuron = (NONeuron)e.getObject("NITROGEN_NEURON");
+	        cost_neuron = (CostNeuron)e.getObject("COST_NEURON");
+	        dist_neuron = (DistNeuron)e.getObject("DIST_NEURON");
+            
+                dist_neuron.propagate();
+	        nitr_neuron.propagate();
+	        cost_neuron.propagate();
+            }
+	    NitrogenOutNeuron.calc();
+	    CostOutNeuron.calc();
         
-        getModel().getRuntime().println("NO - Output:" + new Double(NitrogenOutNeuron.getActivation()).toString() + 
-                         " Cost - Output:" + new Double(CostOutNeuron.getActivation()).toString() );
+            getModel().getRuntime().println("NO - Output:" + new Double(NitrogenOutNeuron.getActivation()).toString() + 
+	                     " Cost - Output:" + new Double(CostOutNeuron.getActivation()).toString() );
         
-        //second step backpropagate        
-        NitrogenOutNeuron.setDelta(-NitrogenOutNeuron.getActivation());
-        CostOutNeuron.setDelta(-CostOutNeuron.getActivation());
+	    //second step backpropagate        
+            NitrogenOutNeuron.setDelta(-NitrogenOutNeuron.getActivation());
+	    CostOutNeuron.setDelta(-CostOutNeuron.getActivation());
         
-        for (int i=hrus.getEntities().size()-1;i>=0;i++) {
-            e = hrus.getEntities().get(i);
+	    for (int i=hrus.getEntities().size()-1;i>=0;i--) {
+		e = hrus.getEntities().get(i);
             
-            nitr_neuron = (NONeuron)e.getObject("NITROGEN_NEURON");
-            cost_neuron = (CostNeuron)e.getObject("COST_NEURON");
-            dist_neuron = (DistNeuron)e.getObject("DIST_NEURON");
+                nitr_neuron = (NONeuron)e.getObject("NITROGEN_NEURON");
+	        cost_neuron = (CostNeuron)e.getObject("COST_NEURON");
+	        dist_neuron = (DistNeuron)e.getObject("DIST_NEURON");
             
-            nitr_neuron.backpropagate();
-            cost_neuron.backpropagate();
-            dist_neuron.backpropagate();
-        }
+                nitr_neuron.backpropagate();
+	        cost_neuron.backpropagate();
+	        dist_neuron.backpropagate();
+	    }
         
-        //third step modify weights
-        for (int i=0;i<hrus.getEntities().size();i++) {
-            e = hrus.getEntities().get(i);
+            //third step modify weights
+	    for (int i=0;i<hrus.getEntities().size();i++) {
+	        e = hrus.getEntities().get(i);
             
-            dist_neuron = (DistNeuron)e.getObject("DIST_NEURON");
-            dist_neuron.modifyWeight();
-        }
-    }
+                dist_neuron = (DistNeuron)e.getObject("DIST_NEURON");
+	        dist_neuron.modifyWeight();
+	    }
+       }
+    }*/
 }
 
 

@@ -103,7 +103,7 @@ public class LinApprox
     public ActivationFunction derive() {
         
         double increase;
-        Matrix D = new Matrix(M.rows + 1 /*-1*/, M.columns);
+        Matrix D = new Matrix(M.rows -1, M.columns);
         
         for (int i = 0; i < M.rows - 1; i++) {
             
@@ -114,19 +114,19 @@ public class LinApprox
                         (M.element[i + 1][0] - M.element[i][0]);
                 
             }
-            D.element[i + 1][0] = M.element[i][0];
-            D.element[i + 1][1] = increase;
+            D.element[i][0] = M.element[i][0];
+            D.element[i][1] = increase;
             
         }
         
-        D.element[M.rows][0] = M.element[M.rows - 1][0];
+/*        D.element[M.rows][0] = M.element[M.rows - 1][0];
         D.element[M.rows][1] = 0;
         
         D.element[0][0] = M.element[0][0] - 0.01;
         D.element[0][1] = 0;
         
         increase = (M.element[M.rows - 1][1] - M.element[0][1]) /
-                (M.element[M.rows - 1][0] - M.element[0][0]);
+                (M.element[M.rows - 1][0] - M.element[0][0]);*/
         return new DLinApprox(D);
     }
     

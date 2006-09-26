@@ -39,18 +39,21 @@ public class HydroNETPropagate extends JAMSComponent {
         author="Christian Fischer",
         description=""
         )
-    @JAMSVarDescription(
+     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
             update = JAMSVarDescription.UpdateType.RUN,
-            description = "Nitrogen neuron"
+            description = "List of spatial entities"
             )
-            public JAMSEntity entity;
+            public JAMSEntityCollection entities;
         
-    public void run() throws JAMSEntity.NoSuchAttributeException { 	
-	((DistNeuron)entity.getObject("DIST_NEURON")).propagate();
-	((NONeuron)entity.getObject("NITROGEN_NEURON")).propagate();
-	((CostNeuron)entity.getObject("COST_NEURON")).propagate();
+    public void run() throws JAMSEntity.NoSuchAttributeException { 
+	Iterator<JAMSEntity> Iterator = entities.getEntities().iterator();
+	while (Iterator.hasNext()) {
+	    JAMSEntity entity = Iterator.next();
+	    ((DistNeuron)entity.getObject("DIST_NEURON")).propagate();
+	    ((NONeuron)entity.getObject("NITROGEN_NEURON")).propagate();
+	    ((CostNeuron)entity.getObject("COST_NEURON")).propagate();
+	}
     }
 }    
-
 

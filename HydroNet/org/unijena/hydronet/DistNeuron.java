@@ -44,9 +44,9 @@ public class DistNeuron extends Neuron {
     protected double minValue = Double.MIN_VALUE,
                      maxValue = Double.MAX_VALUE;
     //lerning rate
-    static double eta = 0.0000001;
+    static double eta = 0.000001;
     //momentum
-    static double alpha = 0.00;
+    static double alpha = 0.0;
     
     public DistNeuron() {
         super();

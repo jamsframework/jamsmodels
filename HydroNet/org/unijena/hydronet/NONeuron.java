@@ -75,7 +75,7 @@ public class NONeuron extends Neuron {
         calcDelta(dsDelta+outputDelta);
     }
      
-    public double calc() {
+    public double calc() {	
         lastInput = input;
         //no activation function
         if (ActivationFunctions.size() == 0) {

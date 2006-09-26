@@ -42,14 +42,17 @@ public class HydroNETBackPropagate extends JAMSComponent {
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
             update = JAMSVarDescription.UpdateType.RUN,
-            description = "Nitrogen neuron"
+            description = "List of spatial entities"
             )
-            public JAMSEntity entity;
+            public JAMSEntityCollection entities;
     
-    public void run() throws JAMSEntity.NoSuchAttributeException { 
-	((NONeuron)entity.getObject("NITROGEN_NEURON")).backpropagate();
-	((CostNeuron)entity.getObject("COST_NEURON")).backpropagate();
-	((DistNeuron)entity.getObject("DIST_NEURON")).backpropagate();	
+    public void run() throws JAMSEntity.NoSuchAttributeException { 	
+	for (int i=entities.getEntities().size()-1;i>=0;i--) {
+	    JAMSEntity entity = entities.getEntities().get(i);
+	    ((NONeuron)entity.getObject("NITROGEN_NEURON")).backpropagate();
+	    ((CostNeuron)entity.getObject("COST_NEURON")).backpropagate();
+	    ((DistNeuron)entity.getObject("DIST_NEURON")).backpropagate();	
+	}
     }
 }    
 

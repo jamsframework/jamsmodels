@@ -41,19 +41,30 @@ public class Neuron {
     
     protected double lastInput;
     protected double input;
-            
+
+    protected long ID;
+    
     protected Vector ActivationFunctions = new Vector();
                 
     public Neuron() {
         this.initalize();
     }
     
+    public void setID(long ID) {
+	this.ID = ID;
+    }
+    
     public void initalize() {
         activation = 0;
         delta = 0;
         lastInput = 0;
+	ID = 0;
     }
-    
+    public void reset() {
+	this.activation = 0;
+	this.input = 0;
+	this.delta = 0;
+    }
     public void addToInput(double value) {
         input += value;
     }
@@ -119,7 +130,11 @@ public class Neuron {
     public void resetFunctions() {
         this.ActivationFunctions.clear();
     }
-        
+
+    public double getInput() {
+	return this.input;
+    }
+    
     public void writeData(FileWriter f) {
         //insert debug output here!!
     }
