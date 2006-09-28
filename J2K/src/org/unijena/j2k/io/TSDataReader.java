@@ -231,7 +231,6 @@ public class TSDataReader extends JAMSComponent {
         store = new GenericDataReader(dirName.getValue()+"/"+dataFileName.getValue(), false, headerLineCount+1);
         
 
-        String stepSize = tres;
         JAMSCalendar startTime = parseJ2KTime(start);
         JAMSCalendar endTime = parseJ2KTime(end);
         
