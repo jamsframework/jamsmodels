@@ -238,11 +238,10 @@ public class TSDataReader extends JAMSComponent {
         if(timeInterval != null){
             //check if the time series start and end date match the temporal context's time interval
             if ((timeInterval.getStart().before(startTime) || timeInterval.getEnd().after(endTime))) {
-                getModel().getRuntime().sendHalt("TSData start and end time do not match current temporal context!");
+                getModel().getRuntime().sendHalt("TSData start and end time of " + this.dataFileName.getValue() + " do not match current temporal context!");
             }
         }
                 
-        
         //these are the stations with fixed attribute sets --> must be extended
         dataSetName.setValue(dataName);
         //elevation.setValue(JAMSTableDataConverter.toDouble(da, 2));
