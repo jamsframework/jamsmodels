@@ -666,12 +666,12 @@ import org.unijena.jams.model.*;
 		this.packAlbedo.setValue(this.runPackAlbedo);
 		
 		//check this!!
-		this.inRain.setValue(this.runRain * this.area.getValue());
+		
 		//all snow is cared for in snow module!
 		this.inSnow.setValue(0);
 		
-		double balStorEnd = this.snowWaterEquivalent.getValue();
-        double balOut = this.snowMelt.getValue() + this.runRain + this.aET.getValue();
+		double balStorEnd = this.runPackSwe;
+        double balOut = this.runSnowMelt + this.runRain + this.runSnowET;
         double balance = balIn  + (balStorStart - balStorEnd) - balOut;
         if(Math.abs(balance) > 0.0001){
             getModel().getRuntime().println(this.time.toString() + " balance error in snow module: "+balance);
@@ -682,6 +682,9 @@ import org.unijena.jams.model.*;
             getModel().getRuntime().println("shit!");
         }
         this.snowWaterEquivalent.setValue(this.runPackSwe * this.area.getValue() * IN2MM);
+        this.snowMelt.setValue(this.runSnowMelt * this.area.getValue() * IN2MM);
+        this.aET.setValue(this.runAet * this.area.getValue() * IN2MM);
+        this.inRain.setValue(this.runRain * this.IN2MM * this.area.getValue());
 	}
 	public void ppt_to_pack(){
 //		 USE PRMS_SNOW, ONLY: NEARZERO, FIVE_NINTHS, INCH2CM, Tmax_allsnow
@@ -1313,6 +1316,7 @@ import org.unijena.jams.model.*;
         this.runSnowCovArea = this.snowCovArea.getValue();
         this.runSnowCovAreaSave = this.snowCovAreaSave.getValue();
         this.runSnowMelt = 0;
+        this.snowMelt.setValue(0);
         this.runPackDensity = this.packDensity.getValue();
         this.runPackDepth = this.packDepth.getValue();
         this.runPst = this.pst.getValue();
