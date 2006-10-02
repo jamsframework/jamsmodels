@@ -111,7 +111,8 @@ public class HydroNETControl extends JAMSContext {
 	DistNeuron CostOutNeuron = (DistNeuron)CostOutEntity.getObject("NEURON");
 			
 	errorNO = NitrogenOutNeuron.getActivation() - nitrogen_goal.getValue();
-	errorCost = CostOutNeuron.getActivation();
+	double outbefore  = NitrogenOutNeuron.getActivation();
+        errorCost = CostOutNeuron.getActivation();
 	
 	if (firstiteration) {
 	    firstiteration = false;
@@ -145,9 +146,9 @@ public class HydroNETControl extends JAMSContext {
 	
 	DistNeuron.eta = learningrate.getValue();
 	
-	System.out.println("NO - Output:" + new Double(NitrogenOutNeuron.getActivation()).toString() + "\t" + 
-                         "  Cost - Output:" + new Double(CostOutNeuron.getActivation()).toString() + 
-		         "  AvgPerf:" + new Double(avgperformance).toString());
+	System.out.println("Output before learning : " + outbefore + " NO - Output : " + new Double(NitrogenOutNeuron.getActivation()).toString() + "\t" + 
+                         "  Cost - Output : " + new Double(CostOutNeuron.getActivation()).toString() + 
+		         "  AvgPerf : " + new Double(avgperformance).toString());
 	
 	return (breakcount >= 0 /*&& learningrate > 0.000000000001*/ && avgperformance >= delta_min.getValue() );
     }
