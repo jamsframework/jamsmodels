@@ -1197,6 +1197,9 @@ import org.unijena.jams.model.*;
             /** checking if percolation rate is limited by parameter */
             if (hor == nhor - 1){
                 maxPerc = this.geoMaxPerc.getValue() * this.run_area * this.Kf_geo.getValue() / 86.4;
+                /*if (Kf_geo.getValue() < 10){
+                 maxPerc = 0;   
+                }*/
                 // 86.4 cm/d "middle" hydraulic conductivity in geology (1 E-5 m/s)
                 if(this.run_vertComp > maxPerc){
                     double rest = this.run_vertComp - maxPerc;

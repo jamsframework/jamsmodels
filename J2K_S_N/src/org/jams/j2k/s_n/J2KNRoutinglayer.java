@@ -159,7 +159,7 @@ import org.unijena.jams.model.*;
             int srcHors = srcDepth.length;
             int recHors = recDepth.length;
             double[] NRD2in_h = new double[recHors];
-            this.calcParts(srcDepth, recDepth);
+            //this.calcParts(srcDepth, recDepth);
             
             double NRD1in = toPoly.getDouble("SurfaceN_in");
             double[] rdArN = ((JAMSDoubleArray)toPoly.getObject("InterflowN_in")).getValue();
@@ -180,8 +180,9 @@ import org.unijena.jams.model.*;
             for(int j = 0; j < recHors; j++){
                 NRD2in_h[j] = rdArN[j];
                 for(int i = 0; i < srcHors; i++){
-                    NRD2in_h[j] = NRD2in_h[j] + NRD2out_h[i] * fracOut[i][j];
-                    NRG1in = NRG1in + NRD2out_h[i] * this.percNOut[i];
+                    //NRD2in_h[j] = NRD2in_h[j] + NRD2out_h[i] * fracOut[i][j];
+                    NRD2in_h[j] = NRD2in_h[j] + (NRD2out_h[i] / recHors);
+                    //NRG1in = NRG1in + NRD2out_h[i] * this.percNOut[i];
                     //RD2out[i] -= RD2out[i] * fracOut[i][j];
                 }
             }
@@ -267,7 +268,7 @@ import org.unijena.jams.model.*;
         
     }
     
-    private void calcParts(double[] depthSrc, double[] depthRec){
+  /*  private void calcParts(double[] depthSrc, double[] depthRec){
         int srcHorizons = depthSrc.length;
         int recHorizons = depthRec.length;
         
@@ -295,7 +296,7 @@ import org.unijena.jams.model.*;
             //System.out.println("Rec --> up: "+up+", low: "+low);
         }
         
-        
+      
         fracOut = new double[depthSrc.length][depthRec.length];
         percNOut = new double[depthSrc.length];
         for(int i = 0; i < depthSrc.length; i++){
@@ -310,5 +311,5 @@ import org.unijena.jams.model.*;
             }
             percNOut[i] = 1.0 - sumFrac;
         }
-    }
+    }*/
 }

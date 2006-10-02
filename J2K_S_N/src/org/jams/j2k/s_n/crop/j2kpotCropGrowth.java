@@ -1075,7 +1075,7 @@ import java.util.ArrayList;
         this.fnplant_act = ((this.bn1 - this.bn3) * (1 - (this.fphu_act/(this.fphu_act + Math.exp(n1 - n2 * this.fphu_act)))))  +  this.bn3;
 
         }else{
-         fnplant_act = 0;   
+         fnplant_act = 0.01;   
         }
 
          // this.test = b1 * y + this.bn3;

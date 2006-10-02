@@ -165,6 +165,20 @@ import java.io.*;
             )
             public JAMSDoubleArray N_stabel_pool = new JAMSDoubleArray();
     
+        @JAMSVarDescription(
+            access = JAMSVarDescription.AccessType.WRITE,
+            update = JAMSVarDescription.UpdateType.RUN,
+            description = " sum of N-Organic Pool with reactive organic matter in kgN/ha"
+            )
+            public JAMSDouble sN_activ_pool;
+    
+    @JAMSVarDescription(
+            access = JAMSVarDescription.AccessType.WRITE,
+            update = JAMSVarDescription.UpdateType.RUN,
+            description = " sum of N-Organic Pool with stable organic matter in kgN/ha"
+            )
+            public JAMSDouble sN_stabel_pool;
+    
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
             update = JAMSVarDescription.UpdateType.RUN,
@@ -201,21 +215,7 @@ import java.io.*;
             description = " sum of interflowN in kgN/ha"
             )
             public JAMSDouble sinterflowN;
-    
-    @JAMSVarDescription(
-            access = JAMSVarDescription.AccessType.WRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
-            description = " sum of N-Organic Pool with reactive organic matter in kgN/ha"
-            )
-            public JAMSDouble sN_activ_pool;
-    
-    @JAMSVarDescription(
-            access = JAMSVarDescription.AccessType.WRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
-            description = "sum of N-Organic Pool with stable organic matter in kgN/ha"
-            )
-            public JAMSDouble sN_stabel_pool;
-    
+        
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
             update = JAMSVarDescription.UpdateType.RUN,
@@ -357,6 +357,13 @@ import java.io.*;
             description = "actual nitrate nitrogen content of plants in kgN/ha"
             )
             public JAMSDouble BioNAct;
+     
+    @JAMSVarDescription(
+            access = JAMSVarDescription.AccessType.READWRITE,
+            update = JAMSVarDescription.UpdateType.RUN,
+            description = "actual nitrate uptake of plants in kgN/ha"
+            )
+            public JAMSDouble actnup;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
@@ -610,6 +617,7 @@ import java.io.*;
         double Sumnitri_trans = 0;
         double sumh_infilt_mm = 0;
         double sum_Nupmove = 0;
+        double N_upmove_h = 0;
         double a_deposition = 0;
         double NO3respool = 0;
         double Nactiverespool = 0;
@@ -628,7 +636,6 @@ import java.io.*;
         double[] NO3balance = new double[layer];
         double[] NH4balance = new double[layer];
         double[] Nbalance = new double[layer];
-        double[] N_upmove_h = new double[layer];
         double[] NO3_Poolalt = new double[layer];
         this.runsurfaceN = 0;
         
@@ -641,12 +648,20 @@ import java.io.*;
         NO3_Poolvals = calc_plantuptake();
 //       NO3_Poolvals = NO3_Pool.getValue();
         i = 0;
-        
-        while (i < layer){
+        double sumplant = 0;
+        double plantup_h = 0; 
+       /* while (i < layer){
             
-            plantup_hor[i] = NO3_Poolalt[i] - NO3_Poolvals[i];
+            plantup_h = NO3_Poolalt[i] - NO3_Poolvals[i];
+            sumplant = sumplant +  plantup_h;
             i++;
+        
         }
+        
+        if (sumplant != actnup.getValue()){
+            double plantdiff = sumplant - actnup.getValue();
+            System.out.println("Pflanzenaufnahmefehler = " + plantdiff);
+        }*/
         
         /*        calculation of infiltration water that bypasses the horizonts   loop */
         
@@ -726,8 +741,8 @@ import java.io.*;
                 
                 
                 
-                N_upmove_h[j] = calc_nitrateupmove(j);
-                sum_Nupmove = sum_Nupmove + N_upmove_h[j];
+                N_upmove_h = calc_nitrateupmove(j);
+                sum_Nupmove = sum_Nupmove + N_upmove_h;
                 
                 j ++;
             }
@@ -754,7 +769,7 @@ import java.io.*;
             
             Hum_trans = calc_Hum_trans();
             
-            Hum_act_min = calc_Hum_act_min();
+           
             
             
             
@@ -775,10 +790,18 @@ import java.io.*;
             
             runN_activ_pool = runN_activ_pool - Hum_trans;
             
+            
             if (runN_activ_pool < 0){
                 runN_activ_pool = 0;
             }
+           
+            Hum_act_min = calc_Hum_act_min();
             
+            runN_activ_pool = runN_activ_pool - Hum_act_min;
+            
+            if (runN_activ_pool < 0){
+                runN_activ_pool = 0;
+            }
             
             if (i < 1){
                 runResidue_pool = runResidue_pool + inp_biomass.getValue();
@@ -797,8 +820,8 @@ import java.io.*;
                     runResidue_pool = 0;
                 }
                 
-                runsum_Ninput =  fertactivorg.getValue() + fertNH4.getValue() + fertNO3.getValue() + a_deposition;
-                //runsum_Ninput =   runinterflowN_in + runsurfaceN_in;
+                runsum_Ninput =  fertactivorg.getValue() + fertNH4.getValue() + fertNO3.getValue() + a_deposition + inpN_biomass.getValue();
+                //runsum_Ninput =   runinterflowN_in ;
                 
                 
                 
@@ -907,14 +930,13 @@ import java.io.*;
             interflowNabsvals[i] = runinterflowNabs;
             percoNvals[i] = runpercoN;
             percoNabsvals[i] = runpercoNabs;
-            
+            // time;
             sumN_stabel_pool = runN_stabel_pool + sumN_stabel_pool;
             sumN_activ_pool = runN_activ_pool + sumN_activ_pool;
             sumNH4_Pool = runNH4_Pool + sumNH4_Pool;
             sumN_residue_pool = sumN_residue_pool + runN_residue_pool_fresh;
-            if (i == 0){
-                sumNO3_Pool = runNO3_Pool + sumNO3_Pool;
-            }
+            sumNO3_Pool = runNO3_Pool + sumNO3_Pool;
+            
             suminterflowNabs = runinterflowNabs + suminterflowNabs;
             suminterflowN = runinterflowN + suminterflowN;
             Sumvolati_trans = Sumvolati_trans + runvolati_trans;
@@ -997,7 +1019,7 @@ import java.io.*;
         sum_Ninput.setValue(runsum_Ninput);
         sinterflowNabs.setValue(suminterflowNabs);
         sinterflowN.setValue(suminterflowN);
-        // writing of transfomations
+        // writing of transfomations time
         Volati_trans.setValue(Sumvolati_trans);
         Denit_trans.setValue(Sumdenit_trans);
         Nitri_trans.setValue(Sumnitri_trans);
@@ -1163,13 +1185,16 @@ import java.io.*;
         double runactN_up = runpotN_up + demand2;
         
         double bioNact = 0;
+        //double nuptake = actnup.getValue();
         bioNact = BioNAct.getValue() + runactN_up;
-        
-//        System.out.println("bioNact = " + bioNact);
+        //nuptake = nuptake + runactN_up;
+        actnup.setValue(runactN_up);
+//        System.out.println("runactN_up = " + nuptake);
 //        if (runpotN_up > runactN_up){
 //        System.out.println("runpotN_up = " + runpotN_up + " runactN_up = " + runactN_up);
 //        }
         BioNAct.setValue(bioNact);
+        
         
         return NO3_Poolvals1;
     }
