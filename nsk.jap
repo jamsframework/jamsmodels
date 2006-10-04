@@ -1,13 +1,13 @@
 #JAMS configuration file
-#Fri Sep 29 09:17:11 CEST 2006
-debug=1
+#Tue Oct 03 23:18:24 CEST 2006
+debug=3
 infolog=
 windowenable=1
-verbose=0
+verbose=1
 guiconfigheight=600
 windowwidth=800
 model=
-libs=D\:\\jams\\lib;D\:\\jams\\JAMS\\libs
+libs=D\:\\jamsdeploy\\lib;D\:\\jams\\lib
 windowontop=0
 errorlog=
 guiconfigwidth=600
