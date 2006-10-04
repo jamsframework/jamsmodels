@@ -256,7 +256,7 @@ import Jama.*;
 	java.util.Arrays.sort(data,comparator);
     }
     
-    public double[] getMean(double data[][],int size) {	    //no error here :)
+    public double[] getMean(double data[][],int size) {	   
 	double[] mean = new double[N];
 	
 	java.util.Arrays.fill(mean,0);
@@ -299,7 +299,10 @@ import Jama.*;
 	}
 	
 	singleRun();
-		  
+//1 -> minimize
+//2 -> abs minimize
+//3 -> abs maximize
+//4 -> maximize
 	if (MaximizeEff.getValue() == 1)
 	    return this.effValue.getValue();
 	else if (MaximizeEff.getValue() == 2)
@@ -475,20 +478,25 @@ import Jama.*;
 	sort(D,N,false);
 	
 	
-	System.out.println("Current D:");
-	for (int i=0;i<D.length;i++) {
+	//System.out.println("Best Point in Population");
+	this.getModel().getRuntime().println("Best Point in Population");
+	//for (int i=0;i<D.length;i++) {
+	int i=0;
 	    for (int j=0;j<N;j++) {
-		System.out.print(parameterNames[j] + ":" + D[i][j] + " ,");
+		this.getModel().getRuntime().println(parameterNames[j] + ":" + D[i][j]);
+		//System.out.print(parameterNames[j] + ":" + D[i][j] + " ,");
 	    }
 	    if (MaximizeEff.getValue() % 2 == 1) {
-		System.out.print(effMethodName + ":" + D[i][N]);
+		this.getModel().getRuntime().println(effMethodName + ":" + D[i][N]);
+		//System.out.print(effMethodName + ":" + D[i][N]);
 	    }
 	    else {
 		double outdata = -D[i][N];
-		System.out.print(effMethodName + ":" + outdata + " ,");
+		this.getModel().getRuntime().println(effMethodName + ":" + outdata);
+		//System.out.print(effMethodName + ":" + outdata + " ,");
 	    }
-	    System.out.println("\n");
-	}		   
+	    //System.out.println("\n");
+	//}		   
     }
     
        
@@ -520,7 +528,7 @@ import Jama.*;
 
 	long iter = 0;
 	int beta = 2*N+1;
-	while (iter < sampleCount.getValue()) {
+	while (true) {
 	    // Step 4
 	    //Partition D into p Complexes C1, ..., CP each containing m pointa
 	    double C[][][] = PartComplexes(D);
@@ -535,6 +543,30 @@ import Jama.*;
 	    reshuffle(C,D);
 	    
 	    iter++;
+	    
+	    //test convergence
+	    double min[] = this.min(D);
+	    double max[] = this.max(D);
+	    double norm_mean = 0;
+	    
+	    for (int i=0;i<N;i++) {
+		norm_mean += (max[i] - min[i]) / (this.upBound[i] - this.lowBound[i]);
+	    }
+	    norm_mean /= N;
+	    
+	    if (norm_mean < 0.1) {
+		this.getModel().getRuntime().println("Optimization has stopped, because population has converged");
+		break;
+	    }
+	    else {
+		this.getModel().getRuntime().println("population variety:" + norm_mean);
+	    }
+	    
+	    if (iter > sampleCount.getValue()) {
+		this.getModel().getRuntime().println("Optimization has stopped, because maximum number of iterations has reached");
+		break;
+	    }	    
+	    
 	}	
     }               
 }
