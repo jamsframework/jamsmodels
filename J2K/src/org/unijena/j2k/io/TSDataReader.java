@@ -233,7 +233,7 @@ public class TSDataReader extends JAMSComponent {
 
         JAMSCalendar startTime = parseJ2KTime(start);
         JAMSCalendar endTime = parseJ2KTime(end);
-        
+
         if(timeInterval != null){
             //check if the time series start and end date match the temporal context's time interval
             if ((timeInterval.getStart().before(startTime) || timeInterval.getEnd().after(endTime))) {

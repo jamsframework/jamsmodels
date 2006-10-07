@@ -23,7 +23,6 @@
 
 package org.unijena.j2k.io;
 
-import org.unijena.jams.JAMS;
 import org.unijena.jams.data.*;
 import org.unijena.jams.model.*;
 import org.unijena.jams.io.*;
@@ -40,11 +39,18 @@ public class StandardEntityWriter extends JAMSComponent {
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.INIT,
+            update = JAMSVarDescription.UpdateType.RUN,
             description = "EntitySet"
             )
             public JAMSEntityCollection entities;
     
+    @JAMSVarDescription(
+            access = JAMSVarDescription.AccessType.READ,
+            update = JAMSVarDescription.UpdateType.RUN,
+            description = "Current time"
+            )
+            public JAMSCalendar time;
+
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
             update = JAMSVarDescription.UpdateType.INIT,
@@ -58,14 +64,7 @@ public class StandardEntityWriter extends JAMSComponent {
             description = "Output file name"
             )
             public JAMSString fileName;
-    
-    @JAMSVarDescription(
-            access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.RUN,
-            description = "Current time"
-            )
-            public JAMSCalendar time;
-    
+        
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
             update = JAMSVarDescription.UpdateType.INIT,
@@ -81,7 +80,6 @@ public class StandardEntityWriter extends JAMSComponent {
             public JAMSString attributeName;
     
     private GenericDataWriter writer;
-    private String[] attrs;
     private boolean headerWritten;
     /*
      *  Component runstages
