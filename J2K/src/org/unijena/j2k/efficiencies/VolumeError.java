@@ -27,4 +27,15 @@ public class VolumeError {
         return Math.abs(volError); 
     }
     
+    public static double pbias(double[] validation, double[] prediction){
+    	double sumObs = 0;
+    	double sumDif = 0;
+    	for(int i = 0; i < prediction.length; i++){
+            sumDif += (prediction[i] - validation[i]);
+            sumObs += validation[i];
+        }
+    	double pbias = (sumDif / sumObs) * 100;
+    	return pbias;
+    }
+    
 }
