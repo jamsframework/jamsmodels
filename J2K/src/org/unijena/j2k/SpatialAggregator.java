@@ -131,7 +131,6 @@ import org.unijena.jams.model.*;
             
             }
             
-            dataSum = dataSum  ;
         }
         
         
