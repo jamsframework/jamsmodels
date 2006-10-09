@@ -44,6 +44,14 @@ import org.unijena.jams.model.*;
     /*
      *  Component variables
      */
+	
+	@JAMSVarDescription(
+            access = JAMSVarDescription.AccessType.READ,
+            update = JAMSVarDescription.UpdateType.RUN,
+            description = "time"
+            )
+            public JAMSCalendar time;
+	
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
             update = JAMSVarDescription.UpdateType.INIT,
@@ -57,6 +65,13 @@ import org.unijena.jams.model.*;
             description = "The efficiency time interval"
             )
             public JAMSTimeInterval effTimeInterval;
+    
+    @JAMSVarDescription(
+            access = JAMSVarDescription.AccessType.READ,
+            update = JAMSVarDescription.UpdateType.INIT,
+            description = "The months to be evaluated interval"
+            )
+            public JAMSIntegerArray effMonthList;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
@@ -166,6 +181,13 @@ import org.unijena.jams.model.*;
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
             update = JAMSVarDescription.UpdateType.RUN,
+            description = "percent bias"
+            )
+            public JAMSDouble pbias;
+    
+    @JAMSVarDescription(
+            access = JAMSVarDescription.AccessType.WRITE,
+            update = JAMSVarDescription.UpdateType.RUN,
             description = "full set of predicted values"
             )
             public JAMSDoubleArray predictionValues = new JAMSDoubleArray();
@@ -181,6 +203,7 @@ import org.unijena.jams.model.*;
     private final int DSGRAD = 9;
     private final int ABSVOLERROR = 10;
     private final int RMSE = 11;
+    private final int PBIAS = 12;
     
     private final int TOTAL_PERIOD = 0;
     private final int HYDROLOGICAL_YEAR = 1;
@@ -196,6 +219,9 @@ import org.unijena.jams.model.*;
     
     private int effTsteps = 0;
     
+    private boolean monthly = false;
+    private int monthCount = 0;
+    
     /*
      *  Component run stages
      */
@@ -206,6 +232,7 @@ import org.unijena.jams.model.*;
         //....
         //....
         this.counter = 0;
+        this.monthCount = 0;
         JAMSCalendar model_sd = this.modelTimeInterval.getStart();
         JAMSCalendar model_ed = this.modelTimeInterval.getEnd();
         int model_tres = this.modelTimeInterval.getTimeUnit();
@@ -248,18 +275,36 @@ import org.unijena.jams.model.*;
             this.interValEnd = this.interValStart + this.effTsteps;
         }
         int junk = 0;
+        
+        if(this.effMonthList != null){
+        	this.monthly = true;
+        }
     }
     
     public void run() {
-        this.valData[counter] = validation.getValue();
-        this.preData[counter] = prediction.getValue();
-        this.counter++;
+    	if(monthly){
+    		int month = time.get(time.MONTH) + 1;
+	    	for(int i = 0; i < this.effMonthList.getValue().length; i++){
+	    		if(month == this.effMonthList.getValue()[i]){
+	    			this.valData[counter] = validation.getValue();
+	    	        this.preData[counter] = prediction.getValue();
+	    	        this.counter++;
+	    	        this.monthCount++;
+	    		}
+	    	}
+    	}
+    	else{
+	        this.valData[counter] = validation.getValue();
+	        this.preData[counter] = prediction.getValue();
+	        this.counter++;
+    	}
     }
     
     public void cleanup() {
         getModel().getRuntime().println("\n", JAMS.STANDARD);
         getModel().getRuntime().println("*************************************************************", JAMS.STANDARD);
         getModel().getRuntime().println("Efficiencies for period:\t " + this.effTimeInterval.toString(), JAMS.STANDARD);
+        getModel().getRuntime().println("Sampler: " + this.getInstanceName(), JAMS.STANDARD);
         getModel().getRuntime().println("*************************************************************", JAMS.STANDARD);
         
         Vector<Double> valVector = new Vector<Double>();
@@ -276,6 +321,9 @@ import org.unijena.jams.model.*;
         }
         
         int dataCount = valVector.size();
+        if(monthly){
+        	dataCount = this.monthCount;
+        }
         double[] valData_1 = new double[dataCount];
         double[] preData_1 = new double[dataCount];
         
@@ -337,6 +385,10 @@ import org.unijena.jams.model.*;
                 double rmse = PredictionErrors.rootMeanSquareError(valData_1, preData_1);
                 this.rmse.setValue(rmse);
                 getModel().getRuntime().println("RMSE:\t" + rmse, JAMS.STANDARD);
+            }else if(effMethod.getValue()[i] == this.PBIAS){
+                double pbias = VolumeError.pbias(valData_1, preData_1);
+                this.pbias.setValue(pbias);
+                getModel().getRuntime().println("PBIAS:\t" + pbias, JAMS.STANDARD);
             }
             
         }
