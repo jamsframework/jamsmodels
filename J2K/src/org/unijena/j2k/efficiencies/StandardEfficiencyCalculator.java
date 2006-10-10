@@ -1,6 +1,6 @@
 /*
  * StandardEfficiencyCalculator.java
- * Created on 24. November 2005, 09:\t48
+ * Created on 24. November 2005, 09:48
  *
  * This file is part of JAMS
  * Copyright (C) 2005 FSU Jena, c0krpe
@@ -259,8 +259,8 @@ import org.unijena.jams.model.*;
         
         //int ts = (int)tsteps;
         int ts = (int) this.getContext().getNumberOfIterations();
-        getModel().getRuntime().println("effStartdate:\t" + eff_sd.toString(), JAMS.STANDARD);
-        getModel().getRuntime().println("effEnddate:\t" + eff_ed.toString(), JAMS.STANDARD);
+        getModel().getRuntime().println("effStartdate:\t" + eff_sd.toString(), JAMS.VERBOSE);
+        getModel().getRuntime().println("effEnddate:\t" + eff_ed.toString(), JAMS.VERBOSE);
         
         
         valData = new double[(int)model_tsteps];
@@ -301,7 +301,7 @@ import org.unijena.jams.model.*;
     }
     
     public void cleanup() {
-        getModel().getRuntime().println("\n", JAMS.STANDARD);
+        getModel().getRuntime().println("", JAMS.STANDARD);
         getModel().getRuntime().println("*************************************************************", JAMS.STANDARD);
         getModel().getRuntime().println("Efficiencies for period:\t " + this.effTimeInterval.toString(), JAMS.STANDARD);
         getModel().getRuntime().println("Sampler: " + this.getInstanceName(), JAMS.STANDARD);
@@ -337,31 +337,31 @@ import org.unijena.jams.model.*;
             if(effMethod.getValue()[i] == this.E1){
                 double e1 = NashSutcliffe.efficiency(preData_1, valData_1, 1);
                 this.e1.setValue(e1);
-                getModel().getRuntime().println("e1:\t " + e1, JAMS.STANDARD);
+                getModel().getRuntime().println("e1:\t\t" + e1, JAMS.STANDARD);
             }else if(effMethod.getValue()[i] == this.E2){
                 double e2 = NashSutcliffe.efficiency(preData_1, valData_1, 2);
                 this.e2.setValue(e2);
-                getModel().getRuntime().println("e2:\t " + e2, JAMS.STANDARD);
+                getModel().getRuntime().println("e2:\t\t" + e2, JAMS.STANDARD);
             }else if(effMethod.getValue()[i] == this.LOG_E1){
                 double le1 = NashSutcliffe.logEfficiency(preData_1, valData_1, 1);
                 this.le1.setValue(le1);
-                getModel().getRuntime().println("log_e1:\t " + le1, JAMS.STANDARD);
+                getModel().getRuntime().println("log_e1:\t\t" + le1, JAMS.STANDARD);
             }else if(effMethod.getValue()[i] == this.LOG_E2){
                 double le2 = NashSutcliffe.logEfficiency(preData_1, valData_1, 2);
                 this.le2.setValue(le2);
-                getModel().getRuntime().println("log_e2:\t " + le2, JAMS.STANDARD);
+                getModel().getRuntime().println("log_e2:\t\t" + le2, JAMS.STANDARD);
             }else if(effMethod.getValue()[i] == this.IOA_1){
                 double ioa1 = IndexOfAgreement.calc_IOA(preData_1, valData_1, 1, getModel());
                 this.ioa1.setValue(ioa1);
-                getModel().getRuntime().println("ioa1:\t " + ioa1, JAMS.STANDARD);
+                getModel().getRuntime().println("ioa1:\t\t" + ioa1, JAMS.STANDARD);
             }else if(effMethod.getValue()[i] == this.IOA_2){
                 double ioa2 = IndexOfAgreement.calc_IOA(preData_1, valData_1, 2, getModel());
                 this.ioa2.setValue(ioa2);
-                getModel().getRuntime().println("ioa2:\t " + ioa2, JAMS.STANDARD);
+                getModel().getRuntime().println("ioa2:\t\t" + ioa2, JAMS.STANDARD);
             }else if(effMethod.getValue()[i] == this.R2){
                 double[] rCoeff = Regression.calcLinReg(valData_1, preData_1);
-                getModel().getRuntime().println("r²:\t " + rCoeff[2], JAMS.STANDARD);
-                getModel().getRuntime().println("grad:\t" + rCoeff[1], JAMS.STANDARD);
+                getModel().getRuntime().println("r²:\t\t" + rCoeff[2], JAMS.STANDARD);
+                getModel().getRuntime().println("grad:\t\t" + rCoeff[1], JAMS.STANDARD);
                 this.rsq.setValue(rCoeff[2]);
                 this.grad.setValue(rCoeff[1]);
             }else if(effMethod.getValue()[i] == this.WR2){
@@ -372,23 +372,23 @@ import org.unijena.jams.model.*;
                 else
                     wr = Math.pow(Math.abs(rCoeff[1]), -1.0) * rCoeff[2];
                 this.wrsq.setValue(wr);
-                getModel().getRuntime().println("wr²:\t " + wr, JAMS.STANDARD);
+                getModel().getRuntime().println("wr²:\t\t" + wr, JAMS.STANDARD);
             }else if(effMethod.getValue()[i] == this.DSGRAD){
                 double dsGrad = DoubleSumAnalysis.dsGrad(valData_1, preData_1);
                 this.dsGrad.setValue(dsGrad);
-                getModel().getRuntime().println("dsGrad:\t" + dsGrad, JAMS.STANDARD);
+                getModel().getRuntime().println("dsGrad:\t\t" + dsGrad, JAMS.STANDARD);
             }else if(effMethod.getValue()[i] == this.ABSVOLERROR){
                 double volErr = VolumeError.absVolumeError(valData_1, preData_1);
                 this.absVolErr.setValue(volErr);
-                getModel().getRuntime().println("absVolumeError:\t" + volErr, JAMS.STANDARD);
+                getModel().getRuntime().println("absVolumeError:\t\t" + volErr, JAMS.STANDARD);
             }else if(effMethod.getValue()[i] == this.RMSE){
                 double rmse = PredictionErrors.rootMeanSquareError(valData_1, preData_1);
                 this.rmse.setValue(rmse);
-                getModel().getRuntime().println("RMSE:\t" + rmse, JAMS.STANDARD);
+                getModel().getRuntime().println("RMSE:\t\t" + rmse, JAMS.STANDARD);
             }else if(effMethod.getValue()[i] == this.PBIAS){
                 double pbias = VolumeError.pbias(valData_1, preData_1);
                 this.pbias.setValue(pbias);
-                getModel().getRuntime().println("PBIAS:\t" + pbias, JAMS.STANDARD);
+                getModel().getRuntime().println("PBIAS:\t\t" + pbias, JAMS.STANDARD);
             }
             
         }

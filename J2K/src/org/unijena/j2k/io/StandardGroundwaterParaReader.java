@@ -92,7 +92,7 @@ public class StandardGroundwaterParaReader extends JAMSComponent {
                     e.setObject((String)attrs[i], o);
             }
         }
-        getModel().getRuntime().println("Groundwater parameter file processed ...", JAMS.STANDARD);
+        getModel().getRuntime().println("Groundwater parameter file processed ...", JAMS.VERBOSE);
     }
     
     

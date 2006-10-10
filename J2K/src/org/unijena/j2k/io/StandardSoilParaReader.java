@@ -95,7 +95,7 @@ public class StandardSoilParaReader extends JAMSComponent {
             
         }
         
-        getModel().getRuntime().println("Soil parameter file processed ...", JAMS.STANDARD);
+        getModel().getRuntime().println("Soil parameter file processed ...", JAMS.VERBOSE);
         
     }
     

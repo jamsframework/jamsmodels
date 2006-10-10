@@ -268,7 +268,7 @@ public class TSDataReader extends JAMSComponent {
             }
         }
         
-        getModel().getRuntime().println(dataSetName.getValue() + " data file initalised ... ", JAMS.STANDARD);
+        getModel().getRuntime().println(dataSetName.getValue() + " data file initalised ... ", JAMS.VERBOSE);
     }
     
     public void run() {

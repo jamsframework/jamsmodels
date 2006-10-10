@@ -82,7 +82,7 @@ import org.unijena.jams.model.*;
     }
     
     public void run() throws JAMSEntity.NoSuchAttributeException{
-    	System.out.println("run in extra rad");
+    	getModel().getRuntime().println("run in extra rad");
         double extRadiation = 0;
         double lati = this.latitude.getValue();
         double latRad = org.unijena.j2k.mathematicalCalculations.MathematicalCalculations.deg2rad(lati);

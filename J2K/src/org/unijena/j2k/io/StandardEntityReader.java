@@ -84,11 +84,11 @@ public class StandardEntityReader extends JAMSComponent {
         createTopology();
         
         //create total order on hrus and reaches that allows processing them subsequently
-        getModel().getRuntime().println("Create ordered hru-list", JAMS.STANDARD);
+        getModel().getRuntime().println("Create ordered hru-list", JAMS.VERBOSE);
         createOrderedList(hrus, "to_poly");
-        getModel().getRuntime().println("Create ordered reach-list", JAMS.STANDARD);
+        getModel().getRuntime().println("Create ordered reach-list", JAMS.VERBOSE);
         createOrderedList(reaches, "to_reach");
-        getModel().getRuntime().println("Entities read successfull!", JAMS.STANDARD);
+        getModel().getRuntime().println("Entities read successfull!", JAMS.VERBOSE);
         
     }
     
