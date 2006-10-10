@@ -1,9 +1,9 @@
 #JAMS configuration file
-#Tue Oct 03 23:18:24 CEST 2006
+#Tue Oct 10 22:28:05 CEST 2006
 debug=3
 infolog=
 windowenable=1
-verbose=1
+verbose=0
 guiconfigheight=600
 windowwidth=800
 model=
