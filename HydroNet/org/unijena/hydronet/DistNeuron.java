@@ -107,6 +107,10 @@ public class DistNeuron extends Neuron {
 	    }
     }
     
+    public double getInitalExternInput() {
+	return initialInput;
+    }
+    
     public void modifyWeight() {
         lastDelta = eta * delta * input + alpha * lastDelta;
         

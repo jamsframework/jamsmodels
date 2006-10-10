@@ -80,6 +80,14 @@ public class Neuron {
     public void addFilter(GenericFunction af) {
         ActivationFunctions.add(af);
     }
+    
+    public int getNumberOfFilters() {
+	return ActivationFunctions.size();
+    }
+    
+    public GenericFunction getFilter(int i) {	
+	return (GenericFunction)ActivationFunctions.get(i);
+    }
                  
     protected double calc(double value) {        
         GenericFunction gc;

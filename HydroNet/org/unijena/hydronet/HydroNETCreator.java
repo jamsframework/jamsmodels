@@ -86,6 +86,7 @@ public class HydroNETCreator extends JAMSComponent {
         //setup net
         for (int i=hrus.getEntities().size()-1;i>=0;i--) {
             e = hrus.getEntities().get(i);
+	    e.setDouble("reduction",0.0);
             //setup nitrogen neuron for each hru
             nitr_neuron = new NONeuron();
             

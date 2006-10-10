@@ -38,6 +38,10 @@ public class LinApprox
         this.order();
     }
     
+    public Matrix getData() {
+	return M;
+    }
+    
     protected void swap(Matrix M, int i, int j) {
         double tempx = M.element[i][0];
         double tempy = M.element[i][1];
