@@ -95,13 +95,27 @@ public class HydroNETControl extends JAMSContext {
             description = "largest accepted nitrogen value"
             )
             public JAMSDouble nitrogen_goal;
-            
+
+    @JAMSVarDescription(
+            access = JAMSVarDescription.AccessType.READWRITE,
+            update = JAMSVarDescription.UpdateType.RUN,
+            description = "largest accepted nitrogen value"
+            )
+            public JAMSDouble current_output;
+    
+    @JAMSVarDescription(
+            access = JAMSVarDescription.AccessType.READWRITE,
+            update = JAMSVarDescription.UpdateType.RUN,
+            description = "largest accepted nitrogen value"
+            )
+            public JAMSDouble current_iteration;
+    
     private double errorNO,errorCost;   
     private double avgperformance=1000,performance;
     private double minError = 1000000000000000.0;
     private double lasterror;    
     private boolean firstiteration;
-        
+    private int iteration;
     //private double delta_min = 0.5;    
     //private double learningrate = 0.000005;
     private int breakcount = 550;
@@ -113,7 +127,7 @@ public class HydroNETControl extends JAMSContext {
 	errorNO = NitrogenOutNeuron.getActivation() - nitrogen_goal.getValue();
 	double outbefore  = NitrogenOutNeuron.getActivation();
         errorCost = CostOutNeuron.getActivation();
-	
+			
 	if (firstiteration) {
 	    firstiteration = false;
 	    lasterror = Math.abs(errorNO) + Math.abs(errorCost);
@@ -158,6 +172,9 @@ public class HydroNETControl extends JAMSContext {
                          "  Cost - Output : " + new Double(CostOutNeuron.getActivation()).toString() + 
 		         "  AvgPerf : " + new Double(avgperformance).toString());
 	
+	current_output.setValue(NitrogenOutNeuron.getActivation());
+	current_iteration.setValue(iteration);
+	
 	return (breakcount >= 0 /*&& learningrate > 0.000000000001*/ && avgperformance >= delta_min.getValue() );
 	
 	
@@ -166,6 +183,8 @@ public class HydroNETControl extends JAMSContext {
     public void init () {
 	
 	firstiteration = true;
+	
+	iteration = 0;
 	
 	DistNeuron.alpha = momentum.getValue();
 	
@@ -204,9 +223,10 @@ public class HydroNETControl extends JAMSContext {
     
     public void run () {
 	try {
-	    do {	    
+	    while (hasNext()) {
 		singleRun();
-		}while (hasNext());
+		iteration++;
+		}
 	    
 	    JAMSEntity e;
 	    for (int i=0;i<hrus.getEntities().size();i++) {
