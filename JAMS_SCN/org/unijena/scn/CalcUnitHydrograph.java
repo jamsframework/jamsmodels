@@ -29,9 +29,16 @@ import org.unijena.jams.data.*;
  * @author P. Krause
  */
 @JAMSComponentDescription(
-        title="CN-SoilParameters",
+        title="SCS-UnitHydrograph",
         author="Peter Krause",
-        description="Preliminary class for estimation of soil CN values"
+        description="This components calculates the unit-hydrographs" +
+                    "for the two storages of the SCS-method, based on the " +
+                    "recession coefficients k1 and k2. The first" +
+                    "unit hydrographs represent the quick runoff component" +
+                    "the second one the delayed runoff component" +
+                    "In addition, the effective precipitation is divided into two components" +
+                    "to serve as input for the two unit hydrographs. This is done by the coefficient beta," +
+                    "which has to be provided as input for this component"
         )
 public class CalcUnitHydrograph extends JAMSComponent {
     
@@ -52,11 +59,11 @@ public class CalcUnitHydrograph extends JAMSComponent {
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.RUN,
+            update = JAMSVarDescription.UpdateType.INIT,
             unit = "s",
             description = "duration of precip event"
             )
-            public JAMSInteger precipDuration;
+            public JAMSDouble precipDuration;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
@@ -69,7 +76,7 @@ public class CalcUnitHydrograph extends JAMSComponent {
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
             update = JAMSVarDescription.UpdateType.RUN,
-            description = "retention factor beta"
+            description = "distribution factor beta"
             )
             public JAMSDouble beta;
     
@@ -101,6 +108,27 @@ public class CalcUnitHydrograph extends JAMSComponent {
             )
             public JAMSDoubleArray uh2;
     
+    @JAMSVarDescription(
+            access = JAMSVarDescription.AccessType.WRITE,
+            update = JAMSVarDescription.UpdateType.RUN,
+            description = "precip for uh1"
+            )
+            public JAMSDoubleArray hNe1;
+    
+    @JAMSVarDescription(
+            access = JAMSVarDescription.AccessType.WRITE,
+            update = JAMSVarDescription.UpdateType.RUN,
+            description = "precip for uh2"
+            )
+            public JAMSDoubleArray hNe2;
+    
+    @JAMSVarDescription(
+            access = JAMSVarDescription.AccessType.WRITE,
+            update = JAMSVarDescription.UpdateType.RUN,
+            description = "array length"
+            )
+            public JAMSInteger arrayLength;
+    
     public void init() throws JAMSEntity.NoSuchAttributeException {
         
     } 
@@ -112,25 +140,53 @@ public class CalcUnitHydrograph extends JAMSComponent {
         
         double[] u1_arr = new double[timeSteps]; 
         double[] u2_arr = new double[timeSteps];
+        double[] p1_arr = new double[timeSteps]; 
+        double[] p2_arr = new double[timeSteps];
         
         int arrayLength = (int)(this.precipDuration.getValue() / this.timeInterval.getTimeUnitCount());
-        double hNe = effectivePrecip.getValue() / arrayLength;
-        double hNe1 = hNe * beta.getValue();
-        double hNe2 = hNe * (1 - beta.getValue());
+        double hNe = 0;
+        double hNe1 = 0;
+        double hNe2 = 0;
         
         int faculty = 1;
-        double tInterval = (double)this.timeInterval.getTimeUnitCount() / (double)this.precipDuration.getValue();
+        double tInterval = (double)this.timeInterval.getTimeUnitCount() / 3600.0;
         
         double counter = 0;
         //calculate the unit hydrograph for both cascades
+        int pD = (int)this.precipDuration.getValue();
+        int tC = this.timeInterval.getTimeUnitCount();
+        
+        double restPrecip = effectivePrecip.getValue();
+        
         for(int i = 0; i < timeSteps; i++){
-            u1_arr[i] = hNe1 * (this.catchmentArea.getValue() / 3.6) * (1/(this.k1.getValue() * faculty) * Math.pow(counter/this.k1.getValue(), nStor-1) * Math.exp(-counter/this.k1.getValue()));
-            u2_arr[i] = hNe2 * (this.catchmentArea.getValue() / 3.6) * (1/(this.k2.getValue() * faculty) * Math.pow(counter/this.k2.getValue(), nStor-1) * Math.exp(-counter/this.k2.getValue()));
+            int ts = i+1;
+            if((ts * tC) <= pD){
+                hNe = effectivePrecip.getValue() / ((double)pD / (double)tC);
+                hNe1 = hNe * beta.getValue();
+                hNe2 = hNe * (1 - beta.getValue());
+                restPrecip = restPrecip - hNe;
+            }
+            else{
+                hNe = restPrecip;
+                hNe1 = hNe * beta.getValue();
+                hNe2 = hNe * (1 - beta.getValue());
+                restPrecip = restPrecip - hNe;
+            }
+            
+            u1_arr[i] = (this.catchmentArea.getValue() / 3.6) * (1/(this.k1.getValue() * faculty) * Math.pow(counter/this.k1.getValue(), nStor-1) * Math.exp(-counter/this.k1.getValue()));
+            u2_arr[i] = (this.catchmentArea.getValue() / 3.6) * (1/(this.k2.getValue() * faculty) * Math.pow(counter/this.k2.getValue(), nStor-1) * Math.exp(-counter/this.k2.getValue()));
+            p1_arr[i] = hNe1;
+            p2_arr[i] = hNe2;
             counter = counter + tInterval;
         }
         
         this.uh1.setValue(u1_arr);
         this.uh2.setValue(u2_arr);
+        this.hNe1.setValue(p1_arr);
+        this.hNe2.setValue(p2_arr);
+        
+        this.arrayLength.setValue(arrayLength);
+        
     }
     
 }
