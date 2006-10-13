@@ -35,28 +35,33 @@ import org.unijena.jams.model.JAMSVarDescription;
 @JAMSComponentDescription(
         title="Calc retention factors",
         author="Peter Krause",
-        description="Calculates the retention factors"
+        description="Calculates the recession coefficients k1 and k2" +
+        "for the unit hydrographs, based on a length-slope factor of the" +
+        "main stream in the catchment." +
+        "In addition, the factor beta for the distribution of the effective" +
+        "precipitation for the two unit-hydrographs is calculated here, also" +
+        "based on the length-slope factor"
         )
 public class CalcRetentionFactors extends JAMSComponent {
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
             update = JAMSVarDescription.UpdateType.RUN,
-            description = "retention factor beta"
+            description = "distribution factor beta"
             )
             public JAMSDouble beta;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
             update = JAMSVarDescription.UpdateType.RUN,
-            description = "retention factor k1"
+            description = "recession factor k1"
             )
             public JAMSDouble k1;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
             update = JAMSVarDescription.UpdateType.RUN,
-            description = "retention factor k2"
+            description = "recession factor k2"
             )
             public JAMSDouble k2;
     
@@ -70,22 +75,19 @@ public class CalcRetentionFactors extends JAMSComponent {
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
             update = JAMSVarDescription.UpdateType.RUN,
-            description = "stream length"
+            description = "stream length",
+            unit = "km^2"
             )
             public JAMSDouble streamLength;
-    
-    /* (non-Javadoc)
-     * @see org.unijena.jams.model.JAMSComponent#init()
-     */
-    public void init() throws JAMSEntity.NoSuchAttributeException {
-        
-    } 
     
     /* (non-Javadoc)
      * @see org.unijena.jams.model.JAMSComponent#run()
      */
     public void run() throws JAMSEntity.NoSuchAttributeException {
+        /*the length slope factor of the catchment */
         double lengthSlope = this.streamLength.getValue() / Math.sqrt(this.streamSlope.getValue());
+        
+        /*factor beta for precip distribution*/
         double beta = 0;
         if(lengthSlope < 10.0){
             beta = 1 - 0.02425 * Math.pow(Math.log(lengthSlope),3.2444);
@@ -93,6 +95,7 @@ public class CalcRetentionFactors extends JAMSComponent {
             beta = 0.1 + 3.91 / (Math.pow(lengthSlope, 0.86));
         }
         
+        /*the recession coefficients k1 and k2 */
         double k1 = 0.555 / Math.pow(lengthSlope, 0.61) + 0.511 * Math.log(lengthSlope) - 0.355;
         double k2 = 3 * Math.pow(k1, 1.3);
         
