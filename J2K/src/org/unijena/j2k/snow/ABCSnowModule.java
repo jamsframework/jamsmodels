@@ -26,6 +26,14 @@ import org.unijena.jams.model.*;
 public class ABCSnowModule extends JAMSComponent {
 
 	@JAMSVarDescription(
+            access = JAMSVarDescription.AccessType.READ,
+            update = JAMSVarDescription.UpdateType.RUN,
+            description = "Entity area",
+            unit = "m²"
+            )
+            public JAMSDouble area;
+	
+	@JAMSVarDescription(
 			access = JAMSVarDescription.AccessType.READ,
 			update = JAMSVarDescription.UpdateType.INIT,
 			description = "Parameter ddf"
@@ -47,11 +55,18 @@ public class ABCSnowModule extends JAMSComponent {
 	public JAMSDouble snowStorage;
 
 	@JAMSVarDescription(
-			access = JAMSVarDescription.AccessType.READWRITE,
-			update = JAMSVarDescription.UpdateType.RUN,
-			description = "the precip input"
-	)
-	public JAMSDouble precip;
+            access = JAMSVarDescription.AccessType.READWRITE,
+            update = JAMSVarDescription.UpdateType.RUN,
+            description = "rain amount"
+            )
+            public JAMSDouble rain;
+    
+    @JAMSVarDescription(
+            access = JAMSVarDescription.AccessType.READWRITE,
+            update = JAMSVarDescription.UpdateType.RUN,
+            description = "snow amount"
+            )
+            public JAMSDouble snow;
 
 	@JAMSVarDescription(
 			access = JAMSVarDescription.AccessType.READ,
@@ -106,7 +121,7 @@ public class ABCSnowModule extends JAMSComponent {
 		if(this.active == null || this.active.getValue()){
 			//System.out.println("RUN ABCModel");
 			double snowStorage = this.snowStorage.getValue();
-			double precip = this.precip.getValue();
+			double precip = this.rain.getValue() + this.snow.getValue();
 			double tmin = this.tmin.getValue();
 			double tmean = this.tmean.getValue();
 			double tmax = this.tmax.getValue();
@@ -123,7 +138,7 @@ public class ABCSnowModule extends JAMSComponent {
 			//snow melt
 			if(meltTemp > this.t_thres.getValue() && snowStorage > 0){
 				double mt = meltTemp - this.t_thres.getValue();
-				double potMelt = mt * this.ddf.getValue();
+				double potMelt = mt * this.ddf.getValue() * this.area.getValue();
 				if(snowStorage < potMelt){
 					snowMelt = snowStorage;
 					snowStorage = 0;
@@ -137,6 +152,11 @@ public class ABCSnowModule extends JAMSComponent {
 			//this.precip.setValue(precip);
 			this.snowStorage.setValue(snowStorage);
 			this.snowMelt.setValue(snowMelt);
+			if(precip == 0){
+				this.rain.setValue(0);
+				this.snow.setValue(0);
+			}
+			
 			this.total_output.setValue(precip + snowMelt);
 		}
 	}
