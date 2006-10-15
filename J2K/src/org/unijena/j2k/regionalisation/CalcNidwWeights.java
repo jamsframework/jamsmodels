@@ -90,6 +90,12 @@ import org.unijena.jams.model.*;
             )
             public JAMSDoubleArray statWeights = new JAMSDoubleArray();
     
+    @JAMSVarDescription(
+            access = JAMSVarDescription.AccessType.READ,
+            update = JAMSVarDescription.UpdateType.INIT,
+            description = "Doug Boyle's famous function"
+            )
+            public JAMSBoolean equalWeights;  
     
     /*
      *  Component run stages
@@ -101,8 +107,13 @@ import org.unijena.jams.model.*;
     
     public void run() throws JAMSEntity.NoSuchAttributeException{
         JAMSDoubleArray idwWeights = new JAMSDoubleArray();
-        idwWeights.setValue(org.unijena.j2k.statistics.IDW.calcNidwWeights(entityX.getValue(), entityY.getValue(), statX.getValue(), statY.getValue(), pidw.getValue(), nidw.getValue()));
-        
+        if(equalWeights == null || !equalWeights.getValue()){
+        	idwWeights.setValue(org.unijena.j2k.statistics.IDW.calcNidwWeights(entityX.getValue(), entityY.getValue(), statX.getValue(), statY.getValue(), pidw.getValue(), nidw.getValue()));
+        }
+        else if(equalWeights.getValue()){
+        	idwWeights.setValue(org.unijena.j2k.statistics.IDW.equalWeights(nidw.getValue()));
+        }
+        	
         statWeights.setValue(idwWeights.getValue());
         
     }
