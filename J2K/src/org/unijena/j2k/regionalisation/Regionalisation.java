@@ -154,6 +154,8 @@ public class Regionalisation extends JAMSComponent {
     
     
     
+    
+    
     private File cacheFile;
     private boolean useCache = false;
     private ObjectOutputStream writer;
@@ -206,14 +208,22 @@ public class Regionalisation extends JAMSComponent {
             
             
             double value = 0;
+            double deltaElev = 0;
+//@TODO: Recheck this for correct calculation, the Doug Boyle Problem!!
             for (int i = 0; i < sourceElevations.length; i++) {
                 if((rsq >= rsqThreshold.getValue()) && (elevationCorrection.getValue())) {  //Elevation correction is applied
-                    double deltaElev = targetElevation - sourceElevations[i];  //Elevation difference between unit and Station
-                    value += ((deltaElev * gradient + sourceData[i]) * sourceWeights[i]);
+                    deltaElev = targetElevation - sourceElevations[i];  //Elevation difference between unit and Station
+                    double tVal = ((deltaElev * gradient + sourceData[i]) * sourceWeights[i]);
+                    value = value + tVal;
+                    
+                    
                 } else{ //No elevation correction
                     value = value + (sourceData[i] * sourceWeights[i]);
                 }
+                
             }
+            
+            
             dataValue.setValue(value);
             //System.out.getRuntime().println("R2 entity: "+ targetElevation + "weights: " + sourceWeights[0] + ", "+ sourceWeights[1] + ", "+ sourceWeights[2] + ", ");
             writer.writeDouble(value);
