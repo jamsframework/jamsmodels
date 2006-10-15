@@ -49,6 +49,13 @@ public class IDW {
         }
         return dist;
     }
+    
+    public static double[] equalWeights(int nStat){
+    	double[] weights = new double[nStat];
+    	for(int i = 0; i < nStat; i++)
+    		weights[i] = 1. / (double)nStat;
+    	return weights;
+    }
     /**
      * Calcs weight for each Climate Station
      * @param dist the distance array
