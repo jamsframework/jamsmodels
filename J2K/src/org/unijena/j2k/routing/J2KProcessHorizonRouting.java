@@ -232,7 +232,7 @@ import org.unijena.jams.model.*;
                 
             
         } else{
-            getModel().getRuntime().println("Current entity ID: " + entity.getDouble("elevation") + " has no receiver.");
+            getModel().getRuntime().println("Current entity ID: " + entity.getDouble("ID") + " has no receiver.");
         }
         
     }
