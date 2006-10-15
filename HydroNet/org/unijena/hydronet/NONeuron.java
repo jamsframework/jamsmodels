@@ -49,6 +49,13 @@ public class NONeuron extends Neuron {
         downstreamNeuron = dsNeuron;
         downstreamWeight = weight;
     }
+    public double getDownstreamWeight() {
+	return downstreamWeight;
+    }
+    
+    public double getOutputWeight() {
+	return outputWeight;
+    }
     
     public void setOutputNeuron(Neuron dsNeuron, double weight) {
         outputNeuron = dsNeuron;

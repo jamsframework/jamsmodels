@@ -159,15 +159,7 @@ public class HydroNETControl extends JAMSContext {
 	lasterror = Math.abs(errorNO)+Math.abs(errorCost);
 	
 	DistNeuron.eta = learningrate.getValue();
-	
-	for (int i=hrus.getEntities().size()-1;i>=0;i--) {
-            JAMSEntity e = hrus.getEntities().get(i);
-	    
-	    DistNeuron d = (DistNeuron)e.getObject("DIST_NEURON");
-		
-	    e.setDouble("reduction",d.getInput() / d.getInitalExternInput());
-	}
-	
+			
 	System.out.println("Output before learning : " + outbefore + " NO - Output : " + new Double(NitrogenOutNeuron.getActivation()).toString() + "\t" + 
                          "  Cost - Output : " + new Double(CostOutNeuron.getActivation()).toString() + 
 		         "  AvgPerf : " + new Double(avgperformance).toString());
@@ -228,13 +220,18 @@ public class HydroNETControl extends JAMSContext {
 		iteration++;
 		}
 	    
-	    JAMSEntity e;
-	    for (int i=0;i<hrus.getEntities().size();i++) {
-		e = hrus.getEntities().get(i);
+	    for (int i=hrus.getEntities().size()-1;i>=0;i--) {
+		JAMSEntity e = hrus.getEntities().get(i);
 	    
+		DistNeuron d = (DistNeuron)e.getObject("DIST_NEURON");
+	
+		if (d.getInitalExternInput() != 0)
+		    e.setDouble("reduction",d.getInput() / d.getInitalExternInput());
+		else
+		    e.setDouble("reduction",0.0);
+		
 		e.setDouble("new_input",((DistNeuron)e.getObject("DIST_NEURON")).getInput());
-	    }
-	    
+	    }	    	    
 	}
 	catch (JAMSEntity.NoSuchAttributeException e) {
 	    getModel().getRuntime().sendInfoMsg("No such attribute Exception: " + e.getMessage());		    
