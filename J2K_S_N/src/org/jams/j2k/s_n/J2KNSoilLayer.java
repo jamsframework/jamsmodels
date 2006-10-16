@@ -820,7 +820,7 @@ import java.io.*;
                     runResidue_pool = 0;
                 }
                 
-                runsum_Ninput =  fertactivorg.getValue() + fertNH4.getValue() + fertNO3.getValue() + a_deposition + inpN_biomass.getValue();
+                runsum_Ninput =  fertactivorg.getValue() + fertNH4.getValue() + fertNO3.getValue() + a_deposition;
                 //runsum_Ninput =   runinterflowN_in ;
                 
                 
