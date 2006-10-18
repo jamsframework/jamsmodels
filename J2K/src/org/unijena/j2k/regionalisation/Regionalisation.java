@@ -34,123 +34,123 @@ import org.unijena.jams.model.*;
 public class Regionalisation extends JAMSComponent {
     
     @JAMSVarDescription(
-            access = JAMSVarDescription.AccessType.READ,
+    access = JAMSVarDescription.AccessType.READ,
             update = JAMSVarDescription.UpdateType.INIT,
             description = "Workspace directory name"
             )
-            public JAMSString dirName;    
+            public JAMSString dirName;
     
     @JAMSVarDescription(
-            access = JAMSVarDescription.AccessType.READ,
+    access = JAMSVarDescription.AccessType.READ,
             update = JAMSVarDescription.UpdateType.RUN,
             description = "Array of data values for current time step"
             )
             public JAMSDoubleArray dataArray;
     
     @JAMSVarDescription(
-            access = JAMSVarDescription.AccessType.READ,
+    access = JAMSVarDescription.AccessType.READ,
             update = JAMSVarDescription.UpdateType.RUN,
             description = "Regression coefficients"
             )
             public JAMSDoubleArray regCoeff = new JAMSDoubleArray();
     
     @JAMSVarDescription(
-            access = JAMSVarDescription.AccessType.READ,
+    access = JAMSVarDescription.AccessType.READ,
             update = JAMSVarDescription.UpdateType.RUN,
             description = "Array of station elevations"
             )
             public JAMSDoubleArray statElevation = new JAMSDoubleArray();
     
     @JAMSVarDescription(
-            access = JAMSVarDescription.AccessType.READ,
+    access = JAMSVarDescription.AccessType.READ,
             update = JAMSVarDescription.UpdateType.RUN,
             description = "data set descriptor"
             )
             public JAMSString dataSetName;
     
     @JAMSVarDescription(
-            access = JAMSVarDescription.AccessType.READ,
+    access = JAMSVarDescription.AccessType.READ,
             update = JAMSVarDescription.UpdateType.RUN,
             description = "Array of station's x coordinates"
             )
             public JAMSDoubleArray statX = new JAMSDoubleArray();
     
     @JAMSVarDescription(
-            access = JAMSVarDescription.AccessType.READ,
+    access = JAMSVarDescription.AccessType.READ,
             update = JAMSVarDescription.UpdateType.RUN,
             description = "Array of station's y coordinates"
             )
             public JAMSDoubleArray statY = new JAMSDoubleArray();
     
     @JAMSVarDescription(
-            access = JAMSVarDescription.AccessType.READ,
+    access = JAMSVarDescription.AccessType.READ,
             update = JAMSVarDescription.UpdateType.RUN,
             description = "Array of station's weights"
             )
             public JAMSDoubleArray statWeights = new JAMSDoubleArray();
     
     @JAMSVarDescription(
-            access = JAMSVarDescription.AccessType.READ,
+    access = JAMSVarDescription.AccessType.READ,
             update = JAMSVarDescription.UpdateType.INIT,
             description = "Attribute name x coordinate (hru)"
             )
             public JAMSDouble unitX;
     
     @JAMSVarDescription(
-            access = JAMSVarDescription.AccessType.READ,
+    access = JAMSVarDescription.AccessType.READ,
             update = JAMSVarDescription.UpdateType.INIT,
             description = "Attribute name y coordinate (hru)"
             )
             public JAMSDouble unitY;
     
     @JAMSVarDescription(
-            access = JAMSVarDescription.AccessType.WRITE,
+    access = JAMSVarDescription.AccessType.WRITE,
             update = JAMSVarDescription.UpdateType.RUN,
             description = "regionalised data value"
             )
             public JAMSDouble dataValue;
     
     @JAMSVarDescription(
-            access = JAMSVarDescription.AccessType.READ,
+    access = JAMSVarDescription.AccessType.READ,
             update = JAMSVarDescription.UpdateType.RUN,
             description = "Attribute name elevation"
             )
             public JAMSDouble entityElevation;
     
     @JAMSVarDescription(
-            access = JAMSVarDescription.AccessType.READ,
+    access = JAMSVarDescription.AccessType.READ,
             update = JAMSVarDescription.UpdateType.INIT,
             description = "Number of IDW stations"
             )
             public JAMSInteger nidw;
     
     @JAMSVarDescription(
-            access = JAMSVarDescription.AccessType.READ,
+    access = JAMSVarDescription.AccessType.READ,
             update = JAMSVarDescription.UpdateType.INIT,
             description = "Power of IDW function"
             )
             public JAMSDouble pidw;
     
     @JAMSVarDescription(
-            access = JAMSVarDescription.AccessType.READ,
+    access = JAMSVarDescription.AccessType.READ,
             update = JAMSVarDescription.UpdateType.INIT,
             description = "Apply elevation correction to measured data"
             )
             public JAMSBoolean elevationCorrection;
     
     @JAMSVarDescription(
-            access = JAMSVarDescription.AccessType.READ,
+    access = JAMSVarDescription.AccessType.READ,
             update = JAMSVarDescription.UpdateType.INIT,
             description = "Minimum r² value for elevation correction application"
             )
             public JAMSDouble rsqThreshold;
-
+    
     @JAMSVarDescription(
-            access = JAMSVarDescription.AccessType.READ,
+    access = JAMSVarDescription.AccessType.READ,
             update = JAMSVarDescription.UpdateType.INIT,
             description = "Use caching of regionalised data?"
             )
-            public JAMSBoolean dataCaching;  
+            public JAMSBoolean dataCaching;
     
     
     
@@ -165,14 +165,14 @@ public class Regionalisation extends JAMSComponent {
         
         //first, check if cached data are available
         cacheFile = new File(dirName.getValue() + "/$" + this.getInstanceName() + ".cache");
-
+        
         if (!cacheFile.exists() && dataCaching.getValue()) {
             getModel().getRuntime().sendHalt(this.getInstanceName() + ": data caching is switched on but no cache file available!");
-        } 
+        }
         
         if (dataCaching.getValue()) {
-
-            useCache = true;           
+            
+            useCache = true;
             reader = new ObjectInputStream(new BufferedInputStream(new FileInputStream(cacheFile)));//new FileInputStream(cacheFile));
             
         } else {
@@ -192,9 +192,9 @@ public class Regionalisation extends JAMSComponent {
         }
     }
     public void run() throws JAMSEntity.NoSuchAttributeException, IOException {
-    	
+        
         if (!useCache) {
-        	double[] regCoeff = this.regCoeff.getValue();
+            double[] regCoeff = this.regCoeff.getValue();
             double gradient = regCoeff[1];
             double rsq = regCoeff[2];
             
