@@ -79,10 +79,17 @@ import org.unijena.jams.model.*;
             )
             public JAMSString dirName;
     
+     @JAMSVarDescription(
+            access = JAMSVarDescription.AccessType.READ,
+            update = JAMSVarDescription.UpdateType.RUN,
+            description = "Current time"
+            )
+            public JAMSCalendar time;
+    
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
             update = JAMSVarDescription.UpdateType.INIT,
-            description = "temporal resolution [d or h]"
+            description = "temporal resolution [d | h | m]"
             )
             public JAMSString tempRes;
     
@@ -249,6 +256,8 @@ import org.unijena.jams.model.*;
                 tempFactor = 86400;
             else if(this.tempRes.getValue().equals("h"))
                 tempFactor = 3600;
+            else if(this.tempRes.getValue().equals("m"))
+                tempFactor = 86400;
 
             double Letp = this.calcETAllen(delta_s, netRad, G, pa, CP, est, ea, ra, rs, psy, tempFactor);
 
@@ -258,6 +267,13 @@ import org.unijena.jams.model.*;
             //converting mm to litres
             pET = pET * area;
             
+            //aggregation to monthly values
+            if(this.time != null){
+                if(this.tempRes.getValue().equals("m")){
+                    int daysInMonth = this.time.get(time.getActualMaximum(time.get(time.DATE)));
+                    pET = pET * daysInMonth;
+                }
+            }
             //avoiding negative potETPs
             if(pET < 0){
                 pET = 0;
