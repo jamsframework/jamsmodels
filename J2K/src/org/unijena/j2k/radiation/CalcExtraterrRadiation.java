@@ -76,7 +76,7 @@ import org.unijena.jams.model.*;
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
             update = JAMSVarDescription.UpdateType.INIT,
-            description = "temporal resolution [d | h]"
+            description = "temporal resolution [d | h | m]"
             )
             public JAMSString tempRes;
     
@@ -94,6 +94,7 @@ import org.unijena.jams.model.*;
             )
             public JAMSDoubleArray extRadArray = new JAMSDoubleArray();
     
+    int[] monthMean = {15,45,74,105,135,166,196,227,258,288,319,349};
     
     /*
      *  Component run stages
@@ -109,6 +110,8 @@ import org.unijena.jams.model.*;
             extRadiation = new double[366];
         else if(tempRes.getValue().equals("h"))
             extRadiation = new double[366*24];
+        else if(tempRes.getValue().equals("m"))
+            extRadiation = new double[12];
         
         double lati = this.latitude.getValue();
         double longi = this.longitude.getValue();
@@ -122,29 +125,39 @@ import org.unijena.jams.model.*;
         double latRad = org.unijena.j2k.mathematicalCalculations.MathematicalCalculations.deg2rad(lati);
         JAMSCalendar time = new JAMSCalendar();
         time.set(2000, 01, 01, 0, 0); //just a leap year, that's the reason for 2000
-        for(int i = 0; i < 366; i++){
-            int hour = 0;
-            int julDay = i+1;
-            double declination = org.unijena.j2k.physicalCalculations.SolarRadiationCalculationMethods.calc_SunDeclination(julDay);
-            double solarConstant = org.unijena.j2k.physicalCalculations.SolarRadiationCalculationMethods.calc_SolarConstant(julDay);
-            double invRelDistEarthSun = org.unijena.j2k.physicalCalculations.SolarRadiationCalculationMethods.calc_InverseRelativeDistanceEarthSun(julDay);
-            if(tempRes.getValue().equals("d")){
+        if(tempRes.getValue().equals("m")){
+            for(int i = 0; i < 12; i++){
+                double declination = org.unijena.j2k.physicalCalculations.SolarRadiationCalculationMethods.calc_SunDeclination(monthMean[i]);
+                double solarConstant = org.unijena.j2k.physicalCalculations.SolarRadiationCalculationMethods.calc_SolarConstant(monthMean[i]);
+                double invRelDistEarthSun = org.unijena.j2k.physicalCalculations.SolarRadiationCalculationMethods.calc_InverseRelativeDistanceEarthSun(monthMean[i]);
                 double sunsetHourAngle = org.unijena.j2k.physicalCalculations.DailySolarRadiationCalculationMethods.calc_SunsetHourAngle(latRad, declination);
                 extRadiation[i] = org.unijena.j2k.physicalCalculations.DailySolarRadiationCalculationMethods.calc_DailyExtraterrestrialRadiation(solarConstant,
                         invRelDistEarthSun, sunsetHourAngle, latRad, declination);
-                time.add(time.DATE, 1);
-            }else if(tempRes.getValue().equals("h")){
-                while(hour < 24){
-                    double midTimeHourAngle = org.unijena.j2k.physicalCalculations.HourlySolarRadiationCalculationMethods.calc_midTimeHourAngle(time, julDay, longi, longiTZ, false);
-                    double startTimeHourAngle = org.unijena.j2k.physicalCalculations.HourlySolarRadiationCalculationMethods.calc_startTimeHourAngle(midTimeHourAngle);
-                    double endTimeHourAngle = org.unijena.j2k.physicalCalculations.HourlySolarRadiationCalculationMethods.calc_endTimeHourAngle(midTimeHourAngle);
-                    int idx = i * 24 + hour;
-                    extRadiation[idx] = org.unijena.j2k.physicalCalculations.HourlySolarRadiationCalculationMethods.calc_HourlyExtraterrestrialRadiation(solarConstant, invRelDistEarthSun, startTimeHourAngle, endTimeHourAngle, latRad, declination);
-                    hour++;
-                    time.add(time.HOUR_OF_DAY, 1);
+            }
+        } else{
+            for(int i = 0; i < 366; i++){
+                int hour = 0;
+                int julDay = i+1;
+                double declination = org.unijena.j2k.physicalCalculations.SolarRadiationCalculationMethods.calc_SunDeclination(julDay);
+                double solarConstant = org.unijena.j2k.physicalCalculations.SolarRadiationCalculationMethods.calc_SolarConstant(julDay);
+                double invRelDistEarthSun = org.unijena.j2k.physicalCalculations.SolarRadiationCalculationMethods.calc_InverseRelativeDistanceEarthSun(julDay);
+                if(tempRes.getValue().equals("d")){
+                    double sunsetHourAngle = org.unijena.j2k.physicalCalculations.DailySolarRadiationCalculationMethods.calc_SunsetHourAngle(latRad, declination);
+                    extRadiation[i] = org.unijena.j2k.physicalCalculations.DailySolarRadiationCalculationMethods.calc_DailyExtraterrestrialRadiation(solarConstant,
+                            invRelDistEarthSun, sunsetHourAngle, latRad, declination);
+                    time.add(time.DATE, 1);
+                }else if(tempRes.getValue().equals("h")){
+                    while(hour < 24){
+                        double midTimeHourAngle = org.unijena.j2k.physicalCalculations.HourlySolarRadiationCalculationMethods.calc_midTimeHourAngle(time, julDay, longi, longiTZ, false);
+                        double startTimeHourAngle = org.unijena.j2k.physicalCalculations.HourlySolarRadiationCalculationMethods.calc_startTimeHourAngle(midTimeHourAngle);
+                        double endTimeHourAngle = org.unijena.j2k.physicalCalculations.HourlySolarRadiationCalculationMethods.calc_endTimeHourAngle(midTimeHourAngle);
+                        int idx = i * 24 + hour;
+                        extRadiation[idx] = org.unijena.j2k.physicalCalculations.HourlySolarRadiationCalculationMethods.calc_HourlyExtraterrestrialRadiation(solarConstant, invRelDistEarthSun, startTimeHourAngle, endTimeHourAngle, latRad, declination);
+                        hour++;
+                        time.add(time.HOUR_OF_DAY, 1);
+                    }
                 }
             }
-            
         }
         this.extRadArray.setValue(extRadiation);
     }
