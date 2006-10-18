@@ -216,6 +216,12 @@ public class MapCreator extends jams.components.gui.MapCreator {
             )
             public JAMSString shapeColors;
 	
+	@JAMSVarDescription(
+            access = JAMSVarDescription.AccessType.READ,
+            update = JAMSVarDescription.UpdateType.RUN,
+            description = "Original shape file name"
+            )
+            public JAMSString baseShape;
 	
 	private JTextArea idfield;		
 	private JFreeChart chart;
@@ -242,13 +248,17 @@ public class MapCreator extends jams.components.gui.MapCreator {
 	    super.shapeFileName2 = shapeFileName2;
 	    super.shapeFileName3 = shapeFileName3;
 	    super.shapeColors = shapeColors;
+	    super.baseShape = baseShape;
 	    super.run();
 	}
 	protected void getFeature(java.awt.geom.Point2D p) throws IOException {
 	    super.getFeature(p);
 	    
 	    try {
-		ShowActFunction(new Double(selectedHRU).intValue());
+		Feature f = this.getSelectedFeature();
+		if (f != null) {
+		    ShowActFunction(new Double(f.getID()).intValue());
+		}
 	    }
 	    catch (Exception e) {
 		this.getContext().getModel().getRuntime().println(e.toString());
