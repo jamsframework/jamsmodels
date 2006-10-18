@@ -123,6 +123,13 @@ import org.unijena.jams.model.*;
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
             update = JAMSVarDescription.UpdateType.INIT,
+            description = "temporal resolution [d | h | m]"
+            )
+            public JAMSString tempRes;
+    
+    @JAMSVarDescription(
+            access = JAMSVarDescription.AccessType.READ,
+            update = JAMSVarDescription.UpdateType.INIT,
             description = "Use caching of regionalised data?"
             )
             public JAMSBoolean dataCaching; 
@@ -131,7 +138,7 @@ import org.unijena.jams.model.*;
     private boolean useCache = false;
     private ObjectOutputStream writer;
     private ObjectInputStream reader;
-    
+    int[] monthMean = {15,45,74,105,135,166,196,227,258,288,319,349};
     /*
      *  Component run stages
      */
@@ -154,13 +161,21 @@ import org.unijena.jams.model.*;
     public void run() throws JAMSEntity.NoSuchAttributeException, IOException {
         if (!useCache) {
             int julDay = time.get(time.DAY_OF_YEAR);
-        
+            int month = time.get(time.MONTH);
             double SAC = actSlAsCf.getValue();
             double lati = latitude.getValue();
             double sunsh = sunh.getValue();
             double extraterrRadiation = this.actExtRad.getValue();
-            double declination = org.unijena.j2k.physicalCalculations.SolarRadiationCalculationMethods.calc_SunDeclination(julDay);
-          
+            double declination = 0;
+            if(this.tempRes == null){
+                declination = org.unijena.j2k.physicalCalculations.SolarRadiationCalculationMethods.calc_SunDeclination(julDay);
+            }
+            else if(this.tempRes.equals("d")){
+                declination = org.unijena.j2k.physicalCalculations.SolarRadiationCalculationMethods.calc_SunDeclination(julDay);
+            }
+            else if(this.tempRes.equals("m")){
+                declination = org.unijena.j2k.physicalCalculations.SolarRadiationCalculationMethods.calc_SunDeclination(this.monthMean[month]);
+            }
             double latRad = org.unijena.j2k.mathematicalCalculations.MathematicalCalculations.deg2rad(lati);
             double sunsetHourAngle = org.unijena.j2k.physicalCalculations.DailySolarRadiationCalculationMethods.calc_SunsetHourAngle(latRad, declination);
             double maximumSunshine = org.unijena.j2k.physicalCalculations.DailySolarRadiationCalculationMethods.calc_maximumSunshineHours(sunsetHourAngle);
