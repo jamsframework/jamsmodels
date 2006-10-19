@@ -28,6 +28,10 @@ public class TimeNumbers {
         JAMSCalendar time = new JAMSCalendar();
         System.out.println("seconds: " + time.SECOND);
         System.out.println("Minutes: " + time.MINUTE);
+        System.out.println("Hours: " + time.HOUR);
+        System.out.println("Days: " + time.DATE);
+        System.out.println("Months: " + time.MONTH);
+        System.out.println("Years: " + time.YEAR);
         
     }
     
