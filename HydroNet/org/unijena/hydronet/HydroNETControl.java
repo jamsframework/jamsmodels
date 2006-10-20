@@ -90,7 +90,7 @@ public class HydroNETControl extends JAMSContext {
             public JAMSDouble momentum = new JAMSDouble(0.9);  
     
     @JAMSVarDescription(
-            access = JAMSVarDescription.AccessType.READWRITE,
+            access = JAMSVarDescription.AccessType.READ,
             update = JAMSVarDescription.UpdateType.INIT,
             description = "largest accepted nitrogen value"
             )
