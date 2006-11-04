@@ -509,6 +509,13 @@ import java.io.*;
             )
             public JAMSCalendar time;
     
+        @JAMSVarDescription(
+            access = JAMSVarDescription.AccessType.READ,
+            update = JAMSVarDescription.UpdateType.RUN,
+            description = "indicates dormancy of plants"
+            )
+            public JAMSBoolean dormancy;
+    
     
     /*
      *  Component run stages
@@ -1046,6 +1053,11 @@ import java.io.*;
             BioNAct.setValue(0);
         }
         double runpotN_up = BioNoptAct.getValue() - BioNAct.getValue();
+        
+        if (dormancy.getValue()){
+           runpotN_up = 0; 
+        }
+            
         
         if (runpotN_up < 0){
             runpotN_up  = 0;

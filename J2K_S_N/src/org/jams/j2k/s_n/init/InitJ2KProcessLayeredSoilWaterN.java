@@ -253,6 +253,12 @@ import org.unijena.jams.model.*;
         this.satSoil_h.setValue(0);
         this.kf_h.setValue(Kf_val);
         
+        if (Kf_val.length == horizons){
+            horizons = horizons;
+        }else{
+            horizons = horizons;
+        }
+        
        /* System.out.print("mxLPS: ");
         for(int h = 0; h < horizons; h++){
             System.out.print("\t"+mxLPS[h]);

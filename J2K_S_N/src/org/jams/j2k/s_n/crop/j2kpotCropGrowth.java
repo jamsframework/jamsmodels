@@ -44,7 +44,7 @@ import java.util.ArrayList;
      *  Component variables
      */
     
-  
+    
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
             update = JAMSVarDescription.UpdateType.RUN,
@@ -80,14 +80,14 @@ import java.util.ArrayList;
             public JAMSDouble Area;
     
     @JAMSVarDescription(
-            access = JAMSVarDescription.AccessType.READWRITE,
+            access = JAMSVarDescription.AccessType.READ,
             update = JAMSVarDescription.UpdateType.RUN,
             description = "HRU daily mean temperature [°C]"
             )
             public JAMSDouble Tmean;
     
     @JAMSVarDescription(
-            access = JAMSVarDescription.AccessType.READWRITE,
+            access = JAMSVarDescription.AccessType.READ,
             update = JAMSVarDescription.UpdateType.RUN,
             description = "Daily solar radiation [MJ/m²]"
             )
@@ -398,12 +398,19 @@ import java.util.ArrayList;
             )
             public JAMSBoolean doHarvest;
     
-     @JAMSVarDescription(
+    @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
             update = JAMSVarDescription.UpdateType.INIT,
             description = "Factor of rootdepth 1 - 10 default 1"
             )
             public JAMSDouble rootfactor;
+    
+    @JAMSVarDescription(
+            access = JAMSVarDescription.AccessType.READ,
+            update = JAMSVarDescription.UpdateType.RUN,
+            description = "indicates dormancy of plants"
+            )
+            public JAMSBoolean dormancy;
     
     
      /*
@@ -590,7 +597,7 @@ import java.util.ArrayList;
         int managementPos = entity.getInt("managementPos");
         J2KSNLMArable currentManagement = managementList.get(managementPos);*/
         if (crop.idc == 11){
-        phu_delta = 0;
+            phu_delta = 0;
             phu_deltaold = 0;
             phu_daily = 0;
             Tbase = 0;
@@ -622,7 +629,7 @@ import java.util.ArrayList;
             this.addresidue_pool = 0;
             this.addresidue_pooln = 0;
             
-                
+            
         }else if (plantExisting.getValue()) {
             calc_phu();
             calc_lai();
@@ -851,7 +858,7 @@ import java.util.ArrayList;
         this.LAI_delta = u3 * this.mlai *(1 - Math.exp(u2));
  /*       if (this.LAI_delta < 0){
             this.LAI_delta = 0;
-        }*/ 
+        }*/
         this.lai_act = this.lai_act + this.LAI_delta;
         //this.lai_act = this.lai_old + this.LAI_delta;
         if
@@ -860,14 +867,14 @@ import java.util.ArrayList;
         }
         
         if (doHarvest.getValue() && (this.idc == 3 || this.idc == 6 || this.idc == 7)){
-            frLAImx_act = 0; 
+            frLAImx_act = 0;
             LAI_delta = 0;
             lai_act = lai_min;
             frLAImx_Xi = 0;
             
         }
         
-       
+        
         
         //System.out.println("factors LAI: " + this.lai_act +" "+  this.LAI_delta +" "+  u1 +" ");
         
@@ -877,14 +884,14 @@ import java.util.ArrayList;
         // this. phu_sense is the fphu when senescence becomes dominant
         // @todo declare what is fphu_sense; here assumed by phu 0.99 for forests determined by idc;
         // @todo declare when and what happens to the residues
-      
+        
         /*
         double fphu_sense = 0.99;
-        
+         
         if
                 (this.idc == 7 && this.fphu_act > fphu_sense) {
             lai_act = 16 * this.mlai * Math.pow(1 - this.fphu_act,2);
-            
+         
         }*/
         return true;
     }
@@ -901,6 +908,11 @@ import java.util.ArrayList;
         double Hphosyn = 0.5 * this.solrad * (1 - Math.exp(this.leco*this.lai_act)); // Intercepted photosynthetically active radiation [MJ/m²]
         
         this.bio_opt_delta = this.rue * Hphosyn;
+        
+        if (dormancy.getValue()) {
+           bio_opt_delta = 0; 
+        }
+        
         //       this.bio_opt = bio_opt_delta +  this.bio_opt;
         
         //      return bio_opt;
@@ -940,7 +952,7 @@ import java.util.ArrayList;
         rootpartmodi = Math.min(rootpartmodi,0.2);
         frroot_act = 0.40 - rootpartmodi;
         
-       //frroot_act = frroot + frroot_act;
+        //frroot_act = frroot + frroot_act;
         
      /* calculation of the root depth according to the plant types and conditions of IDC
           IDC Land cover/plant classification:
@@ -1061,24 +1073,24 @@ import java.util.ArrayList;
         //new Implementation by Manfred Fink
         
         if (this.bn1 > this.bn2 && this.bn2 > this.bn3 && this.bn3 > 0){
-        
+            
             double s1 = 0;
-            double s2 = 0; 
+            double s2 = 0;
             double n1 = 0;
             double n2 = 0;
-        
-        s1 = Math.log((0.5/(1-((this.bn2 - this.bn3)/(this.bn1 - this.bn3))))-0.5);
-        s2 = Math.log((1/(1-((0.0001)/(this.bn1 - this.bn3))))-1);
-        n2 = (s1 - s2)/0.5;
-        n1 = Math.log((0.5/(1-((this.bn2 - this.bn3)/(this.bn1 - this.bn3))))-0.5) + (n2 * 0.5);
-        
-        this.fnplant_act = ((this.bn1 - this.bn3) * (1 - (this.fphu_act/(this.fphu_act + Math.exp(n1 - n2 * this.fphu_act)))))  +  this.bn3;
-
+            
+            s1 = Math.log((0.5/(1-((this.bn2 - this.bn3)/(this.bn1 - this.bn3))))-0.5);
+            s2 = Math.log((1/(1-((0.0001)/(this.bn1 - this.bn3))))-1);
+            n2 = (s1 - s2)/0.5;
+            n1 = Math.log((0.5/(1-((this.bn2 - this.bn3)/(this.bn1 - this.bn3))))-0.5) + (n2 * 0.5);
+            
+            this.fnplant_act = ((this.bn1 - this.bn3) * (1 - (this.fphu_act/(this.fphu_act + Math.exp(n1 - n2 * this.fphu_act)))))  +  this.bn3;
+            
         }else{
-         fnplant_act = 0.01;   
+            fnplant_act = 0.01;
         }
-
-         // this.test = b1 * y + this.bn3;
+        
+        // this.test = b1 * y + this.bn3;
         //System.out.println(" sc1_Nbio: " +sc1_Nbio + " sc2_Nbio: " + sc2_Nbio +  "test" + test + " - ");
         /*
          *
@@ -1177,13 +1189,13 @@ import java.util.ArrayList;
                 this.yield = bioag_act * hi_act;
                 if (yield >  bioag_act){
                     this.yield = bioag_act;
-            }           
+                }
                 // double yield_root = bio_root * hi_act;
             }
             // second case: a portion of the total biomass is assumed to be yield
             else if (this.hvsti > 1)											// bio is the total biomass on the day of the harvest (kg/ha)
             {
-                this.yield = bio_opt * (1 - (1/(1+ hi_act)));                
+                this.yield = bio_opt * (1 - (1/(1+ hi_act)));
             }
             if (idValue.getValue() == 6) {
                 System.out.println(" hi_act: " + hi_act +  " hvsti: " + hvsti +  " fphu: " + fphu_act + " - ");
@@ -1200,10 +1212,10 @@ import java.util.ArrayList;
             //System.out.println (" Julianischer Tag "+ JAMSCalendar.DAY_OF_YEAR + " hi_act: " + hi_act +  " hvsti: " + hvsti +  " fphu: " + fphu_act + " yldN " + yldN + " yield " + yield);
             //double yldP = this.cpyld * yield; time
             if (this.idc == 7){
-            this.fphu_act = 0; 
+                this.fphu_act = 0;
             }else{
-            this.fphu_act = Math.min(fphu_act, 1);
-            this.fphu_act = (this.fphu_act * (1 - (this.yield / this.bio_opt)))/8;
+                this.fphu_act = Math.min(fphu_act, 1);
+                this.fphu_act = (this.fphu_act * (1 - (this.yield / this.bio_opt)))/8;
             }
             this.phu_daily = this.phu * this.fphu_act;
             bio_opt = bio_opt - this.yield;
@@ -1295,12 +1307,10 @@ import java.util.ArrayList;
         if ( this.idc == 7) {
             this.addresidue_pool =  this.yield;
             this.addresidue_pooln = this.yldN;
-        }
-        else if ( this.idc == 1 || this.idc == 2 || this.idc == 4 || this.idc == 5) {
+        } else if ( this.idc == 1 || this.idc == 2 || this.idc == 4 || this.idc == 5) {
             this.addresidue_pool =  this.bio_opt - this.yield  ;
             this.addresidue_pooln = this.bioN_act - this.yldN;
-        }
-        else if ( this.idc == 6 || this.idc == 3){
+        } else if ( this.idc == 6 || this.idc == 3){
             this.addresidue_pool =  this.yield * 0.1;
             this.addresidue_pooln = this.yldN * 0.1;
             this.addresidue_pool = Math.min(this.addresidue_pool, this.bio_opt);

@@ -496,14 +496,14 @@ import org.unijena.jams.model.*;
             )
             public JAMSDouble LAI;
     
-     @JAMSVarDescription(
+    @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
             update = JAMSVarDescription.UpdateType.RUN,
             description = "estimated hydraulicconductivity in cm/d"
             )
             public JAMSDouble Kf_geo;
-     
-   @JAMSVarDescription(
+    
+    @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
             update = JAMSVarDescription.UpdateType.RUN,
             description = "in cm/d soil hydraulic conductivity"
@@ -703,7 +703,17 @@ import org.unijena.jams.model.*;
             
             /** Distribution of MobileWater to the lateral (interflow) and
              * vertical (percolation) flowpaths  */
+            
+            //try {
             this.calcIntfPercRates(MobileWater, h);
+            
+            /*} catch (Exception e) {
+                System.out.println("MIST");
+            }*/
+            
+            
+            
+            
             perchor[h] = run_vertComp;
             
             
@@ -731,7 +741,7 @@ import org.unijena.jams.model.*;
             sumactETP += actETP_hor[h];
         }
         balDPSend = this.run_actDPS;
-        balET =  sumactETP + preinfep - balET; 
+        balET =  sumactETP + preinfep - balET;
         balOut += balET;
         balOut += this.run_outRD1;
         balOut += this.run_vertComp;
@@ -784,7 +794,7 @@ import org.unijena.jams.model.*;
         double upperMaxMps = 0;
         double upperActMps = 0;
         double upperMaxLps = 0;
-        double upperActLps = 0;    
+        double upperActLps = 0;
         double[] infil_depth = new double[nhor];
         double partdepth = 0;
         double soilinfil = 50;
@@ -808,19 +818,19 @@ import org.unijena.jams.model.*;
             
             infil_depth[h]  += layerdepth.getValue()[h];
             if (infil_depth[h] <= soilinfil || h == 0) {
-               upperMaxMps += this.run_maxMPS[h] * layerdepth.getValue()[h];
-               upperActMps += this.run_actMPS[h] * layerdepth.getValue()[h];
-               upperMaxLps += this.run_maxLPS[h] * layerdepth.getValue()[h];
-               upperActLps += this.run_actLPS[h] * layerdepth.getValue()[h];
-               partdepth += layerdepth.getValue()[h];
-               
+                upperMaxMps += this.run_maxMPS[h] * layerdepth.getValue()[h];
+                upperActMps += this.run_actMPS[h] * layerdepth.getValue()[h];
+                upperMaxLps += this.run_maxLPS[h] * layerdepth.getValue()[h];
+                upperActLps += this.run_actLPS[h] * layerdepth.getValue()[h];
+                partdepth += layerdepth.getValue()[h];
+                
             } else if (infil_depth[h - 1] <= soilinfil) {
-               lowpart = soilinfil - partdepth;
-               upperMaxMps += this.run_maxMPS[h] * lowpart;
-               upperActMps += this.run_actMPS[h] * lowpart;
-               upperMaxLps += this.run_maxLPS[h] * lowpart;
-               upperActMps += this.run_actLPS[h] * lowpart;
-              
+                lowpart = soilinfil - partdepth;
+                upperMaxMps += this.run_maxMPS[h] * lowpart;
+                upperActMps += this.run_actMPS[h] * lowpart;
+                upperMaxLps += this.run_maxLPS[h] * lowpart;
+                upperActMps += this.run_actLPS[h] * lowpart;
+                
             }
             
             soilMaxMps += this.run_maxMPS[h];
@@ -828,7 +838,7 @@ import org.unijena.jams.model.*;
             soilMaxLps += this.run_maxLPS[h];
             soilActLps += this.run_actLPS[h];
         }
-            
+        
         if(((soilMaxLps > 0) | (soilMaxMps > 0)) & ((soilActLps > 0) | (soilActMps > 0))){
             this.run_satSoil1 = ((soilActLps + soilActMps) / (soilMaxLps + soilMaxMps));
             this.top_satsoil = ((upperActLps + upperActMps) / (upperMaxLps + upperMaxMps));
@@ -975,10 +985,10 @@ import org.unijena.jams.model.*;
         i = 0;
         while (i < nhor) {
             
-                // Transpiration loop 2: calculating transpiration distribution function with depth in layers
+            // Transpiration loop 2: calculating transpiration distribution function with depth in layers
             transp_hord[i] = (pTransp  * (1 - Math.exp(-BetaW.getValue()*(runlayerdepth[i]/runrootdepth)))) / (1 - Math.exp(-BetaW.getValue()));
             if  (transp_hord[i] >  pTransp){
-            transp_hord[i] = pTransp;
+                transp_hord[i] = pTransp;
             }
             
             
@@ -1198,16 +1208,21 @@ import org.unijena.jams.model.*;
             if (hor == nhor - 1){
                 maxPerc = this.geoMaxPerc.getValue() * this.run_area * this.Kf_geo.getValue() / 86.4;
                 /*if (Kf_geo.getValue() < 10){
-                 maxPerc = 0;   
+                 maxPerc = 0;
                 }*/
                 // 86.4 cm/d "middle" hydraulic conductivity in geology (1 E-5 m/s)
                 if(this.run_vertComp > maxPerc){
                     double rest = this.run_vertComp - maxPerc;
                     this.run_vertComp = maxPerc;
                     this.run_latComp = this.run_latComp + rest;
-                }  
-                }else {
-                maxPerc = this.soilMaxPerc.getValue() * this.run_area * this.runkf_h[hor + 1] / 86.4;
+                }
+            }else {
+                
+                try{
+                    maxPerc = this.soilMaxPerc.getValue() * this.run_area * this.runkf_h[hor + 1] / 86.4;
+                } catch (Exception e) {
+                    System.out.println("MIST");
+                }
                 // 86.4 cm/d "middle" hydraulic conductivity in geology (1 E-5 m/s)
                 if(this.run_vertComp > maxPerc){
                     double rest = this.run_vertComp - maxPerc;
@@ -1216,7 +1231,7 @@ import org.unijena.jams.model.*;
                 }
                 
             }
-            }
+        }
         
         /** no MobileWater available */
         else{
