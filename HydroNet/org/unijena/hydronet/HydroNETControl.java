@@ -167,6 +167,8 @@ public class HydroNETControl extends JAMSContext {
 	current_output.setValue(NitrogenOutNeuron.getActivation());
 	current_iteration.setValue(iteration);
 	
+	NitrogenOutNeuron.setActivation(current_output.getValue() - nitrogen_goal.getValue());
+	
 	return (breakcount >= 0 /*&& learningrate > 0.000000000001*/ && avgperformance >= delta_min.getValue() );
 	
 	
