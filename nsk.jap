@@ -1,7 +1,7 @@
 #JAMS configuration file
-#Fri Nov 03 09:55:05 CET 2006
+#Thu Nov 09 21:01:51 CET 2006
 debug=1
-infolog=
+infolog=D\:\\error.log
 windowenable=1
 verbose=0
 guiconfigheight=600
