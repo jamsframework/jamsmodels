@@ -44,7 +44,7 @@ public class DistNeuron extends Neuron {
     protected double minValue = Double.MIN_VALUE,
                      maxValue = Double.MAX_VALUE;
     //lerning rate
-    static double eta = 0.000001;
+    static double eta = 0.00000000001;
     //momentum
     static double alpha = 0.0;
     
@@ -121,4 +121,5 @@ public class DistNeuron extends Neuron {
         if (input > this.maxValue)
             input = maxValue;
     }
+    
 }

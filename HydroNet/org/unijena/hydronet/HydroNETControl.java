@@ -114,7 +114,6 @@ public class HydroNETControl extends JAMSContext {
     private double avgperformance=1000,performance;
     private double minError = 1000000000000000.0;
     private double lasterror;    
-    private boolean firstiteration;
     private int iteration;
     //private double delta_min = 0.5;    
     //private double learningrate = 0.000005;
@@ -127,9 +126,8 @@ public class HydroNETControl extends JAMSContext {
 	errorNO = NitrogenOutNeuron.getActivation() - nitrogen_goal.getValue();
 	double outbefore  = NitrogenOutNeuron.getActivation();
         errorCost = CostOutNeuron.getActivation();
-			
-	if (firstiteration) {
-	    firstiteration = false;
+		
+	if (iteration<=2) {
 	    lasterror = Math.abs(errorNO) + Math.abs(errorCost);
 	    return true;
 	}
@@ -175,13 +173,11 @@ public class HydroNETControl extends JAMSContext {
     }
     
     public void init () {
-	
-	firstiteration = true;
-	
+		
 	iteration = 0;
 	
 	DistNeuron.alpha = momentum.getValue();
-	
+	DistNeuron.eta = learningrate.getValue();
 	if (runEnumerator == null) {
             runEnumerator = super.getChildrenEnumerator();
         }
