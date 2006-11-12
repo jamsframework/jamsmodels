@@ -175,6 +175,13 @@ import org.unijena.jams.model.*;
             )
             public JAMSDoubleArray kf_h = new JAMSDoubleArray();
     
+     @JAMSVarDescription(
+            access = JAMSVarDescription.AccessType.WRITE,
+            update = JAMSVarDescription.UpdateType.RUN,
+            description = "ID of soil layer"
+            )
+            public JAMSDoubleArray SID = new JAMSDoubleArray(); 
+      
     /*
      *  Component run stages
      */
@@ -202,6 +209,7 @@ import org.unijena.jams.model.*;
         double[] bulk_density = new double[horizons];
         double[] corg = new double[horizons];
         double[] Kf_val = new double[horizons];
+       
         
         String aNameFC = "fieldcapacity_h";
         String aNameAC = "aircapacity_h";
@@ -210,7 +218,7 @@ import org.unijena.jams.model.*;
         String depthName = "depth_h";
         String bulkdensityName = "bulk_density_h";
         String corgName = "corg_h";
-        
+       
         
         for(int h = 0; h < horizons; h++){
             depth[h] = entity.getDouble(depthName+h);
@@ -225,6 +233,7 @@ import org.unijena.jams.model.*;
                 mxMPS[h] = mxMPS[h] * this.area.getValue();
                 remRD = remRD - depth[h];
             }*/
+           
             acMPS[h] = 0;
             mxMPS[h] = entity.getDouble(aNameFC+h) * area.getValue();
             mxFPS[h] = entity.getDouble(aNameDC+h) * area.getValue();
@@ -253,6 +262,7 @@ import org.unijena.jams.model.*;
         this.satSoil_h.setValue(0);
         this.kf_h.setValue(Kf_val);
         
+       
         if (Kf_val.length == horizons){
             horizons = horizons;
         }else{

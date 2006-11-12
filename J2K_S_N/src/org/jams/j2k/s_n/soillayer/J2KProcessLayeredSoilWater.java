@@ -510,6 +510,13 @@ import org.unijena.jams.model.*;
             )
             public JAMSDoubleArray kf_h = new JAMSDoubleArray();
     
+    @JAMSVarDescription(
+            access = JAMSVarDescription.AccessType.WRITE,
+            update = JAMSVarDescription.UpdateType.RUN,
+            description = "ID of soil"
+            )
+            public JAMSDouble soilID; 
+    
     //internal state variables
     double  run_actDPS, run_satSoil1, run_inRain, run_inSnow,
             run_snowMelt, run_infiltration, run_latComp, run_vertComp, run_overlandflow, run_potETP, run_actETP, run_snowDepth, run_area, run_slope,
@@ -567,6 +574,8 @@ import org.unijena.jams.model.*;
         this.run_inRD1 = inRD1.getValue();
         this.run_inRD2 = inRD2.getValue();
         this.runkf_h = kf_h.getValue();
+        
+        
         
         balIn += this.run_inRD1;
         this.run_inRain = netRain.getValue();
@@ -996,7 +1005,7 @@ import org.unijena.jams.model.*;
             evapo_hord[i] = pEvap * (runlayerdepth[i] / (runlayerdepth[i] + (Math.exp(2.374 -(0.00713 * runlayerdepth[i])))));
             
             
-            //allocation of the rest Evap to the lowest horizon ............ time
+            //allocation of the rest Evap to the lowest horizon ............ 
             if (i == nhor -1){
                 evapo_hord[i] =  pEvap;
                 transp_hord[i] =  pTransp;
@@ -1032,6 +1041,8 @@ import org.unijena.jams.model.*;
             
             i++;
         }
+        
+        
         if ((test > 0.0000001 || test < -0.0000001) && debug){
             System.out.println("evaporation balance error = " + test);
         }
@@ -1221,7 +1232,7 @@ import org.unijena.jams.model.*;
                 try{
                     maxPerc = this.soilMaxPerc.getValue() * this.run_area * this.runkf_h[hor + 1] / 86.4;
                 } catch (Exception e) {
-                    System.out.println("MIST");
+                    System.out.println("SOILID = " + soilID.getValue());
                 }
                 // 86.4 cm/d "middle" hydraulic conductivity in geology (1 E-5 m/s)
                 if(this.run_vertComp > maxPerc){
