@@ -79,6 +79,13 @@ import org.unijena.jams.model.*;
             public JAMSDouble sunh;
     
     @JAMSVarDescription(
+            access = JAMSVarDescription.AccessType.WRITE,
+            update = JAMSVarDescription.UpdateType.RUN,
+            description = "Maximum sunshine duration in h"
+            )
+            public JAMSDouble sunhmax;
+    
+    @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
             update = JAMSVarDescription.UpdateType.RUN,
             description = "state variable slope aspect correction factor"
@@ -179,7 +186,7 @@ import org.unijena.jams.model.*;
             double latRad = org.unijena.j2k.mathematicalCalculations.MathematicalCalculations.deg2rad(lati);
             double sunsetHourAngle = org.unijena.j2k.physicalCalculations.DailySolarRadiationCalculationMethods.calc_SunsetHourAngle(latRad, declination);
             double maximumSunshine = org.unijena.j2k.physicalCalculations.DailySolarRadiationCalculationMethods.calc_maximumSunshineHours(sunsetHourAngle);
-            
+            sunhmax.setValue(maximumSunshine);
             double solarRadiation = org.unijena.j2k.physicalCalculations.SolarRadiationCalculationMethods.calc_SolarRadiation(sunsh, maximumSunshine, extraterrRadiation, angstrom_a.getValue(), angstrom_b.getValue());
             //considering slope and aspect
             solarRadiation = solarRadiation * SAC;
