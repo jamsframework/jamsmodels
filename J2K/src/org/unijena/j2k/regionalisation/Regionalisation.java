@@ -191,6 +191,7 @@ public class Regionalisation extends JAMSComponent {
             
         }
     }
+    
     public void run() throws JAMSEntity.NoSuchAttributeException, IOException {
         
         if (!useCache) {
