@@ -489,6 +489,13 @@ import org.unijena.jams.model.*;
             )
             public JAMSDoubleArray actETP_h = new JAMSDoubleArray();
     
+     @JAMSVarDescription(
+            access = JAMSVarDescription.AccessType.WRITE,
+            update = JAMSVarDescription.UpdateType.RUN,
+            description = "mps diffusion between layers value"
+            )
+            public JAMSDoubleArray w_layer_diff = new JAMSDoubleArray();
+    
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
             update = JAMSVarDescription.UpdateType.RUN,
@@ -515,15 +522,38 @@ import org.unijena.jams.model.*;
             update = JAMSVarDescription.UpdateType.RUN,
             description = "ID of soil"
             )
-            public JAMSDouble soilID; 
+            public JAMSDouble soilID;
+     
+/*    @JAMSVarDescription(
+            access = JAMSVarDescription.AccessType.READ,
+            update = JAMSVarDescription.UpdateType.RUN,
+            description = "Transpiration compensation factor to calibrate 0 - 1 [-] default = 0"
+            )
+            public JAMSDouble esco;
+    
+    @JAMSVarDescription(
+            access = JAMSVarDescription.AccessType.READ,
+            update = JAMSVarDescription.UpdateType.RUN,
+            description = "Evaporation compensation factor to calibrate 0 - 1 [-] default = 0"
+            )
+            public JAMSDouble epco; */
+    @JAMSVarDescription(
+            access = JAMSVarDescription.AccessType.READ,
+            update = JAMSVarDescription.UpdateType.RUN,
+            description = "Layer MPS diffusion factor > 1 [-]  default = 10"
+            )
+            public JAMSDouble kdiff_layer;
+    
+    
     
     //internal state variables
     double  run_actDPS, run_satSoil1, run_inRain, run_inSnow,
             run_snowMelt, run_infiltration, run_latComp, run_vertComp, run_overlandflow, run_potETP, run_actETP, run_snowDepth, run_area, run_slope,
             run_inRD1, soilSatMps, soilSatLps, soilActMps, soilActLps, soilMaxMps, soilMaxLps, run_outRD1, run_genRD1, lowpart, top_satsoil;
     double[] run_maxMPS, run_maxLPS, run_actMPS, run_actLPS, run_satMPS, run_satLPS, run_inRD2, run_satHor, run_outRD2, run_genRD2 ;
-    double[] runlayerdepth, horETP, runkf_h;
+    double[] runlayerdepth, horETP, runkf_h, flux_h_h1;
     int nhor;
+    boolean debug;
     
     /*
      *  Component run stages
@@ -546,6 +576,7 @@ import org.unijena.jams.model.*;
         double balOut = 0;
         double balET = 0;
         double sumactETP = 0;
+        debug = false;
         
         //System.out.getRuntime().println("Processing HRU: " + entity.getDouble("ID"));
         //if(this.time.get(time.DATE) == 23 && this.time.get(time.MONTH)==10 && this.time.get(time.YEAR)==1989){
@@ -560,7 +591,7 @@ import org.unijena.jams.model.*;
         double[] perchor = new double[nhor];
         double[] actETP_hor = new double[nhor];
         
-        
+        this.flux_h_h1 = new double[nhor-1];
         this.run_satHor = new double[nhor];
         
         this.run_maxMPS = maxMPS.getValue();
@@ -607,7 +638,15 @@ import org.unijena.jams.model.*;
         }
         
         
+        
+        
         //calculation of saturations first
+        this.calcSoilSaturations(false);
+        
+        this.layer_diffusion();
+        
+        w_layer_diff.setValue(flux_h_h1);
+        
         this.calcSoilSaturations(false);
         
         /** redistributing RD1 and RD2 inflow of antecedent unit */
@@ -842,10 +881,12 @@ import org.unijena.jams.model.*;
                 
             }
             
+            
             soilMaxMps += this.run_maxMPS[h];
             soilActMps += this.run_actMPS[h];
             soilMaxLps += this.run_maxLPS[h];
             soilActLps += this.run_actLPS[h];
+           
         }
         
         if(((soilMaxLps > 0) | (soilMaxMps > 0)) & ((soilActLps > 0) | (soilActMps > 0))){
@@ -881,6 +922,60 @@ import org.unijena.jams.model.*;
         }
         return true;
     }
+    
+    
+    private boolean layer_diffusion(){
+       
+        double[] gradient_h_h1 = new double[this.nhor];
+        double[] resistance_h_h1 = new double[this.nhor];
+        
+        
+        
+        for(int h = 0; h < this.nhor - 1; h++){
+        
+      
+        //calculate diffussion factor - order horizontal 
+        //diffusion only occur when gravitative flux is not dominating
+        if ((run_satLPS[h] < 0.05 )&&(run_satMPS[h] < 0.8 || run_satMPS[h+1] < 0.8)&&(run_satMPS[h] > 0 || run_satMPS[h+1] > 0) ){
+        
+        //calculate gradient
+            
+        gradient_h_h1[h] = (Math.log10(2 - this.run_satMPS[h]) - Math.log10(2 - this.run_satMPS[h+1]));
+            
+        //calculate resistance
+        
+        double satbalance = Math.pow((Math.pow(this.run_satMPS[h],2)+(Math.pow(this.run_satMPS[h+1],2)))/2.0,0.5);
+        
+        resistance_h_h1[h] = Math.log10(satbalance) * - kdiff_layer.getValue();
+           
+       
+        
+        //calculate amount of water to equilize saturations in layers
+        
+        double avg_sat = ((this.run_maxMPS[h] * this.run_satMPS[h]) + (this.run_maxMPS[h+1] * this.run_satMPS[h+1]))/(this.run_maxMPS[h] + this.run_maxMPS[h+1]);
+        
+        double pot_flux = Math.abs((avg_sat - this.run_satMPS[h]) * this.run_maxMPS[h]);
+        
+
+        //calculate water fluxes
+        
+        flux_h_h1[h] = pot_flux * gradient_h_h1[h] / resistance_h_h1[h];
+        
+        }else{
+          
+            flux_h_h1[h] = 0;  
+        }
+        
+        this.run_actMPS[h] = this.run_actMPS[h] + flux_h_h1[h];
+        this.run_actMPS[h+1] = this.run_actMPS[h+1] - flux_h_h1[h];
+        
+    }
+        
+        
+        
+        return true; 
+    }
+    
     
     private boolean calcPreInfEvaporation(){
         double deltaETP = this.run_potETP - this.run_actETP;
@@ -952,6 +1047,13 @@ import org.unijena.jams.model.*;
         double[] evapo_hord = new double[nhor];
         double[] transp_hor = new double[nhor];
         double[] evapo_hor = new double[nhor];
+        double[] transdemand = new double[nhor];
+        double[] evapodemand = new double[nhor];
+        double[] compevapo = new double[nhor];
+        double[] comptrans = new double[nhor];
+        double sumevapodemand = 0;
+        double sumtransdemand = 0;
+        
         double horbal = 0;
         double test = 0;
         
@@ -1001,15 +1103,25 @@ import org.unijena.jams.model.*;
             }
             
             
+            
+            
+            
+            
             // Evaporation loop 2: calculating evaporation distribution function with depth in layers
             evapo_hord[i] = pEvap * (runlayerdepth[i] / (runlayerdepth[i] + (Math.exp(2.374 -(0.00713 * runlayerdepth[i])))));
+            if  (evapo_hord[i] >  pEvap){
+                evapo_hord[i] = pEvap;
+            }
             
             
-            //allocation of the rest Evap to the lowest horizon ............ 
+            
+            //allocation of the rest Evap to the lowest horizon ............
             if (i == nhor -1){
                 evapo_hord[i] =  pEvap;
                 transp_hord[i] =  pTransp;
             }
+            
+            
             
             i++;
         }
@@ -1031,8 +1143,69 @@ import org.unijena.jams.model.*;
                 evapo_hor[i] = evapo_hord[i] - evapo_hord[i-1];
                 
             }
+            /*
+            //calculation of evapotranspiration demand could not be provided by soillayer
+            
+            double parttrans = transp_hor[i] / (transp_hor[i] + evapo_hor[i]);
+            double partevap = 1 - parttrans;
+            
+            transdemand[i] = transp_hor[i] - (parttrans * (this.run_actLPS[i] + this.run_actMPS[i]));
+            
+            //transdemand[i] = Math.max(transdemand[i],0);
+            
+            evapodemand[i] = evapo_hor[i] - (partevap * (this.run_actLPS[i] + this.run_actMPS[i]));
+            
+            //evapodemand[i] = Math.max(evapodemand[i],0);
+            
+            
+            if  (evapodemand[i] > 0){
+                
+                sumevapodemand = evapodemand[i] + sumevapodemand;
+                
+            }
+            
+            
+            if (i <= rootlayer && transdemand[i] > 0){
+                
+                sumtransdemand = transdemand[i] + sumtransdemand;
+                
+            }
+            i++;
+        }
+        
+        // EvapoTranspiration loop 3: calculating of redistribution of demands not met in the upper soil layers
+        i = 0;
+        
+        while (i < nhor) {
+            
+            if (transdemand[i] < 0 && i <= rootlayer){
+            
+               comptrans[i] =  Math.min(-transdemand[i],(sumtransdemand * epco.getValue()));
+               sumtransdemand = sumtransdemand - comptrans[i];
+               
+            
+            }else{
+               comptrans[i] = 0; 
+            }
+            
+             if (evapodemand[i] < 0){
+            
+               compevapo[i] =  Math.min(-evapodemand[i],(sumevapodemand * esco.getValue()));
+               sumevapodemand = sumevapodemand - compevapo[i];
+               
+            
+            }else{
+               compevapo[i] = 0; 
+            }
+            
+            
+            
+            
+            horETP[i] =  transp_hor[i] + comptrans[i] + evapo_hor[i] + compevapo[i];
+            */
             
             horETP[i] =  transp_hor[i] + evapo_hor[i];
+            
             if (debug) {
                 horbal = horbal + horETP[i];
                 test =  deltaETP - horbal;

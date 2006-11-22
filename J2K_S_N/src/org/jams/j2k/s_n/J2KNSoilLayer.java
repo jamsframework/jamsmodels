@@ -165,7 +165,7 @@ import java.io.*;
             )
             public JAMSDoubleArray N_stabel_pool = new JAMSDoubleArray();
     
-        @JAMSVarDescription(
+    @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
             update = JAMSVarDescription.UpdateType.RUN,
             description = " sum of N-Organic Pool with reactive organic matter in kgN/ha"
@@ -215,7 +215,7 @@ import java.io.*;
             description = " sum of interflowN in kgN/ha"
             )
             public JAMSDouble sinterflowN;
-        
+    
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
             update = JAMSVarDescription.UpdateType.RUN,
@@ -237,6 +237,14 @@ import java.io.*;
             description = " actual evaporation in mm"
             )
             public JAMSDoubleArray aEP_h = new JAMSDoubleArray();
+    
+    @JAMSVarDescription(
+            access = JAMSVarDescription.AccessType.READ,
+            update = JAMSVarDescription.UpdateType.RUN,
+            description = "mps diffusion between layers value"
+            )
+            public JAMSDoubleArray w_layer_diff = new JAMSDoubleArray();
+    
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
@@ -357,7 +365,7 @@ import java.io.*;
             description = "actual nitrate nitrogen content of plants in kgN/ha"
             )
             public JAMSDouble BioNAct;
-     
+    
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
             update = JAMSVarDescription.UpdateType.RUN,
@@ -480,7 +488,7 @@ import java.io.*;
             )
             public JAMSDouble infil_conc_factor;
     
-     @JAMSVarDescription(
+    @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
             update = JAMSVarDescription.UpdateType.INIT,
             description = "denitrfcation saturation factor normally at 0.95 to calibrate 0 - 1"
@@ -509,7 +517,7 @@ import java.io.*;
             )
             public JAMSCalendar time;
     
-        @JAMSVarDescription(
+    @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
             update = JAMSVarDescription.UpdateType.RUN,
             description = "indicates dormancy of plants"
@@ -555,6 +563,7 @@ import java.io.*;
     private double runvolati_trans;
     
     
+    
     private double runplantupN;
     private double rundenit_trans;
     private double runsurfaceN;
@@ -587,6 +596,10 @@ import java.io.*;
     private int datumjul = 0;
     double[] hor_by_infilt;
     double[] NO3_Poolvals;
+    double[] w_l_diff;
+    
+    double[] diffout;
+    
     
     
     public void init() throws JAMSEntity.NoSuchAttributeException{
@@ -628,6 +641,7 @@ import java.io.*;
         double a_deposition = 0;
         double NO3respool = 0;
         double Nactiverespool = 0;
+        double diffoutN = 0;
 //        double[] NO3_Poolvals = new double[layer];
         runlayerdepth = new double[layer];
         double[] NH4_Poolvals = new double[layer];
@@ -644,21 +658,25 @@ import java.io.*;
         double[] NH4balance = new double[layer];
         double[] Nbalance = new double[layer];
         double[] NO3_Poolalt = new double[layer];
+        double[] ConcN_mobile = new double[layer];
+        
         this.runsurfaceN = 0;
         
         hor_by_infilt = new double[layer];
+        diffout = new double[layer];
+        w_l_diff = new double[layer];
         i = 0;
-        while (i < layer){
+        /*while (i < layer){
             NO3_Poolalt[i] = NO3_Pool.getValue()[i];
             i++;
-        }
+        }*/
         NO3_Poolvals = calc_plantuptake();
 //       NO3_Poolvals = NO3_Pool.getValue();
         i = 0;
         double sumplant = 0;
-        double plantup_h = 0; 
+        double plantup_h = 0;
        /* while (i < layer){
-            
+        
             plantup_h = NO3_Poolalt[i] - NO3_Poolvals[i];
             sumplant = sumplant +  plantup_h;
             i++;
@@ -673,6 +691,8 @@ import java.io.*;
         /*        calculation of infiltration water that bypasses the horizonts   loop */
         
         i = layer - 1;
+        
+        
         
         while (i  > 0) {
             
@@ -689,11 +709,30 @@ import java.io.*;
             i--;
         }
         
-        
-        
+        // loops to distibute the layer diffusion water
+        for (i = 0 ; i < layer; i++){
+            
+            diffout[i] = 0;
+        }
         
         i = 0;
         
+        for (i = 0 ; i < layer-1; i++){
+            
+         
+                this.w_l_diff[i] = w_layer_diff.getValue()[i] / runarea;
+                
+                
+                if (w_l_diff[i] > 0){
+                    diffout[i+1] = diffout[i+1] + w_l_diff[i];
+                }else{
+                    diffout[i] =  diffout[i] - w_l_diff[i];              
+                }
+                
+            
+        }
+        
+        i = 0;
         // horizont processies loop
         while (i < layer) {
             
@@ -720,6 +759,7 @@ import java.io.*;
             this.RD2_out_mm = RD2_out.getValue()[i] / runarea;
             this.d_perco_mm = D_perco.getValue() / runarea;
             this.h_perco_mm = perco_hor.getValue()[i] / runarea;
+            
             
             this.runvolati_trans = 0;
             
@@ -776,7 +816,7 @@ import java.io.*;
             
             Hum_trans = calc_Hum_trans();
             
-           
+            
             
             
             
@@ -801,7 +841,7 @@ import java.io.*;
             if (runN_activ_pool < 0){
                 runN_activ_pool = 0;
             }
-           
+            
             Hum_act_min = calc_Hum_act_min();
             
             runN_activ_pool = runN_activ_pool - Hum_act_min;
@@ -901,6 +941,7 @@ import java.io.*;
             /*Calculations of NFluxes (out)*/
             
             concN_mobile = calc_concN_mobile(i);
+            ConcN_mobile[i] = concN_mobile;
             
             if (i == 0) {
                 runsurfaceN = calc_surfaceN();
@@ -913,6 +954,9 @@ import java.io.*;
             runNO3_Pool = runNO3_Pool - runpercoN;
             
             
+
+            
+                
             
             
             
@@ -1002,12 +1046,28 @@ import java.io.*;
             
             i++;
         }
+        i = 0;
+        
+        // distribution of diffusion N into the 
+        for (i = 0; i < layer - 1; i++){ 
+        
+            if (w_l_diff[i] < 0){
+                diffoutN = w_l_diff[i] * ConcN_mobile[i];
+                NO3_Poolvals[i] = NO3_Poolvals[i] + diffoutN;
+                NO3_Poolvals[i+1] = NO3_Poolvals[i+1] - diffoutN;
+        }else{
+               diffoutN = w_l_diff[i] * ConcN_mobile[i+1];
+                NO3_Poolvals[i]  = NO3_Poolvals[i] + diffoutN;
+                NO3_Poolvals[i+1] = NO3_Poolvals[i+1] - diffoutN;
+        
+        }
+        }
         // writing of pools
         double[] zerosetter = new double[layer];
         i = 0;
         while (i < layer){
-           zerosetter[i] = 0;
-           i++;
+            zerosetter[i] = 0;
+            i++;
         }
         NO3_Pool.setValue(NO3_Poolvals);
         NH4_Pool.setValue(NH4_Poolvals);
@@ -1055,9 +1115,9 @@ import java.io.*;
         double runpotN_up = BioNoptAct.getValue() - BioNAct.getValue();
         
         if (dormancy.getValue()){
-           runpotN_up = 0; 
+            runpotN_up = 0;
         }
-            
+        
         
         if (runpotN_up < 0){
             runpotN_up  = 0;
@@ -1110,7 +1170,7 @@ import java.io.*;
             
             if (j == 0){
                 potN_up_z[j] = (runpotN_up /(1 - Math.exp(-runBeta_Ndist)))*(1 - Math.exp(-runBeta_Ndist * (runlayerdepth[j] / runrootdepth)));
-                if (runlayerdepth[j] > runrootdepth){ 
+                if (runlayerdepth[j] > runrootdepth){
                     potN_up_z[j] = runpotN_up;
                 }
                 demand1 = upNO3_Pool - potN_up_z[j];
@@ -1299,7 +1359,7 @@ import java.io.*;
     
     private double calc_denitrification(){
         double denit_trans = 0;
-         
+        
         if (gamma_water > denitfac.getValue()){
             denit_trans = runNO3_Pool * (1 - Math.exp(-1.4 * gamma_temp * runC_org));
             
@@ -1335,14 +1395,14 @@ import java.io.*;
         
         soilstorage = sto_LPS + sto_MPS + sto_FPS;
         if (i == 0) {
-            mobilewater = RD1_out_mm + RD2_out_mm + h_perco_mm + hor_by_infilt[i] +  1.e-10;
+            mobilewater = RD1_out_mm + RD2_out_mm + h_perco_mm + hor_by_infilt[i] + diffout[i] + 1.e-10;
         }
         
         else if (i > 0) {
-            mobilewater = RD2_out_mm + h_perco_mm + hor_by_infilt[i] + 1.e-10;
+            mobilewater = RD2_out_mm + h_perco_mm + hor_by_infilt[i] + diffout[i] + 1.e-10;
         }
         if (i == (layer -1)){
-            mobilewater = RD2_out_mm + d_perco_mm  + 1.e-10;
+            mobilewater = RD2_out_mm + d_perco_mm  + diffout[i] + 1.e-10;
         }
         concN_temp = (runNO3_Pool * (1 - Math.exp(- mobilewater / ((1 - theta_nit) * soilstorage))));
         concN_mobile = concN_temp / mobilewater;

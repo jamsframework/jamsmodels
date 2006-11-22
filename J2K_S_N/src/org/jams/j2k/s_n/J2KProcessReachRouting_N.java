@@ -41,12 +41,14 @@ import org.unijena.jams.model.*;
      *  Component variables
      */
     
-   @JAMSVarDescription(
+    @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
             update = JAMSVarDescription.UpdateType.RUN,
             description = "The reach collection"
             )
             public JAMSEntityCollection entities;
+    
+    
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
@@ -355,7 +357,38 @@ import org.unijena.jams.model.*;
             update = JAMSVarDescription.UpdateType.RUN,
             description = "Catchment outlet sim Nitrogen runoff"
             )
-            public JAMSDouble catchmentSimRunoffN;    
+            public JAMSDouble catchmentSimRunoffN;
+    
+    @JAMSVarDescription(
+            access = JAMSVarDescription.AccessType.READ,
+            update = JAMSVarDescription.UpdateType.RUN,
+            description = "switch whether deep sink is allowed or not"
+            )
+            public JAMSDouble deepsink;
+    
+    @JAMSVarDescription(
+            access = JAMSVarDescription.AccessType.WRITE,
+            update = JAMSVarDescription.UpdateType.RUN,
+            description = "amount of water lost by deep sink in l/d"
+            )
+            public JAMSDouble DeepsinkW;
+    
+    @JAMSVarDescription(
+            access = JAMSVarDescription.AccessType.WRITE,
+            update = JAMSVarDescription.UpdateType.RUN,
+            description = "amount of nitrogen lost by deep sink in kg/d"
+            )
+            public JAMSDouble DeepsinkN;
+    
+    @JAMSVarDescription(
+            access = JAMSVarDescription.AccessType.READ,
+            update = JAMSVarDescription.UpdateType.INIT,
+            description = "K-Value for the riverbed in cm/d"
+            )
+            public JAMSDouble Ksink;
+    
+    
+    
     /*
      *  Component run stages
      */
@@ -368,6 +401,10 @@ import org.unijena.jams.model.*;
         JAMSEntity entity = entities.getCurrent();
         JAMSEntity DestReach = (JAMSEntity) entity.getObject("to_reach");
 //        int datumjul = time.get(time.DAY_OF_YEAR);
+        
+        double deepsinkW = 0;
+        double deepsinkN = 0;
+        double Larea = 0;
         double width = this.width.getValue();
         double slope = this.slope.getValue();
         double rough = this.roughness.getValue();
@@ -491,9 +528,42 @@ import org.unijena.jams.model.*;
         else
             q_act_out = 0;
         
+        
+        
+        
         //calculation of N-content in q_act_out
         
         double q_act_out_N = q_act_out * N_conc_tot;
+        
+        
+        
+        if (deepsink.getValue()==1.0){
+            //calculation of deep sink
+            //calculation of leckage area
+            Larea = width * length;
+            
+            //calculation of deep sinks amount
+            deepsinkW = Larea * Ksink.getValue() * 10;
+            deepsinkN = deepsinkW * N_conc_tot;
+            
+            deepsinkW = Math.min(deepsinkW,q_act_out);
+            deepsinkN = Math.min(deepsinkN,q_act_out_N);
+            
+            
+            
+            q_act_out = q_act_out - deepsinkW;
+            q_act_out_N = q_act_out_N - deepsinkN;
+            
+        }else{
+          
+            deepsinkW = 0;
+            deepsinkN = 0;
+            
+        }
+        
+              
+        DeepsinkW.setValue(deepsinkW);
+        DeepsinkN.setValue(deepsinkN);
         
         //the actual outflow from the reach
         
