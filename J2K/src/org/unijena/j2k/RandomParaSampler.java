@@ -266,7 +266,7 @@ import org.unijena.jams.model.*;
                 try{
                     paraWriter.writeData();
                     paraWriter.flush();
-                }catch(org.unijena.jams.runtime.JAMSRuntimeException e){
+                }catch(org.unijena.jams.runtime.RuntimeException e){
                     
                 }
                 

@@ -157,8 +157,10 @@ public class StandardEntityWriter extends JAMSComponent {
         }
         
         try {
+            
             writer.writeData();
-        } catch (org.unijena.jams.runtime.JAMSRuntimeException jre) {
+            
+        } catch (org.unijena.jams.runtime.RuntimeException jre) {
             getModel().getRuntime().handle(jre);
         }
     }

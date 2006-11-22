@@ -212,7 +212,7 @@ public class SelectiveEntityWriter extends JAMSComponent {
         
         try {
             writer.writeData();
-        } catch (org.unijena.jams.runtime.JAMSRuntimeException jre) {
+        } catch (org.unijena.jams.runtime.RuntimeException jre) {
             this.getModel().getRuntime().handle(jre);
         }
     }

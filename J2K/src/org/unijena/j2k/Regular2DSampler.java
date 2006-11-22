@@ -364,7 +364,7 @@ import org.unijena.jams.model.*;
                 try{
                     paraWriter.writeData();
                     paraWriter.flush();
-                }catch(org.unijena.jams.runtime.JAMSRuntimeException e){
+                }catch(org.unijena.jams.runtime.RuntimeException e){
                     
                 }
                 
@@ -396,7 +396,7 @@ import org.unijena.jams.model.*;
                 }
                 try {
                     attribWriter.writeData();
-                } catch (org.unijena.jams.runtime.JAMSRuntimeException jre) {
+                } catch (org.unijena.jams.runtime.RuntimeException jre) {
                     getModel().getRuntime().println(jre.getMessage());
                 }
             }
