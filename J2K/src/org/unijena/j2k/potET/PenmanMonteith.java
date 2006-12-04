@@ -270,7 +270,7 @@ import org.unijena.jams.model.*;
             //aggregation to monthly values
             if(this.time != null){
                 if(this.tempRes.getValue().equals("m")){
-                    int daysInMonth = this.time.get(time.getActualMaximum(time.get(time.DATE)));
+                    int daysInMonth = this.time.getActualMaximum(time.DATE);
                     pET = pET * daysInMonth;
                 }
             }
