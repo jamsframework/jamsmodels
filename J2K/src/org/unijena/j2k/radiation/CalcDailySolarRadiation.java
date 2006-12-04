@@ -177,10 +177,10 @@ import org.unijena.jams.model.*;
             if(this.tempRes == null){
                 declination = org.unijena.j2k.physicalCalculations.SolarRadiationCalculationMethods.calc_SunDeclination(julDay);
             }
-            else if(this.tempRes.equals("d")){
+            else if(this.tempRes.getValue().equals("d")){
                 declination = org.unijena.j2k.physicalCalculations.SolarRadiationCalculationMethods.calc_SunDeclination(julDay);
             }
-            else if(this.tempRes.equals("m")){
+            else if(this.tempRes.getValue().equals("m")){
                 declination = org.unijena.j2k.physicalCalculations.SolarRadiationCalculationMethods.calc_SunDeclination(this.monthMean[month]);
             }
             double latRad = org.unijena.j2k.mathematicalCalculations.MathematicalCalculations.deg2rad(lati);
