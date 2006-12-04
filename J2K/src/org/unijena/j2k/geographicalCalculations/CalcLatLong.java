@@ -103,6 +103,15 @@ import org.unijena.jams.model.*;
             description = "Projection [GK, UTMZZL]"
             )
             public JAMSString projection;
+    
+    @JAMSVarDescription(
+            access = JAMSVarDescription.AccessType.READ,
+            update = JAMSVarDescription.UpdateType.INIT,
+            description = "temporal resolution [d | h | m]"
+            )
+            public JAMSString tempRes;
+    
+    int[] monthMean = {15,45,74,105,135,166,196,227,258,288,319,349};
        
     /*
      *  Component run stages
@@ -131,11 +140,25 @@ import org.unijena.jams.model.*;
         latitude.setValue(latLong[0]);
         longitude.setValue(latLong[1]);
         
-        double[] sloAspCorr = new double[366];
-        for(int i = 0; i < 366; i++){
-            int julDay = i+1;
-            sloAspCorr[i] = org.unijena.j2k.geographicalCalculations.CalcSlopeAspectCorrectionFactor.calc_slopeAspectCorrectionFactor(julDay, latitude.getValue(), slope.getValue(), aspect.getValue());
+        
+        
+        double[] sloAspCorr = null;
+        
+        if(this.tempRes == null || this.tempRes.getValue().equals("d") || this.tempRes.getValue().equals("h")){
+            sloAspCorr = new double[366];
+            for(int i = 0; i < 366; i++){
+                int julDay = i+1;
+                sloAspCorr[i] = org.unijena.j2k.geographicalCalculations.CalcSlopeAspectCorrectionFactor.calc_slopeAspectCorrectionFactor(julDay, latitude.getValue(), slope.getValue(), aspect.getValue());
+            }
         }
+        else if(this.tempRes.getValue().equals("m")){
+           sloAspCorr = new double[12];
+            for(int i = 0; i < 12; i++){
+                int julDay = this.monthMean[i];
+                sloAspCorr[i] = org.unijena.j2k.geographicalCalculations.CalcSlopeAspectCorrectionFactor.calc_slopeAspectCorrectionFactor(julDay, latitude.getValue(), slope.getValue(), aspect.getValue());
+            }
+        }
+        
         slAsCfArray.setValue(sloAspCorr);
     }
     
