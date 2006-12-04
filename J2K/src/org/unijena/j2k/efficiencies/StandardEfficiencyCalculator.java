@@ -233,8 +233,8 @@ import org.unijena.jams.model.*;
         //....
         this.counter = 0;
         this.monthCount = 0;
-        JAMSCalendar model_sd = this.modelTimeInterval.getStart();
-        JAMSCalendar model_ed = this.modelTimeInterval.getEnd();
+        JAMSCalendar model_sd = this.modelTimeInterval.getStart().clone();
+        JAMSCalendar model_ed = this.modelTimeInterval.getEnd().clone();
         int model_tres = this.modelTimeInterval.getTimeUnit();
         long sdMod = model_sd.getTimeInMillis();
         long edMod = model_ed.getTimeInMillis();
@@ -245,11 +245,22 @@ import org.unijena.jams.model.*;
         }*/
         model_tsteps = modelTimeInterval.getNumberOfTimesteps();
         
-        JAMSCalendar eff_sd = this.effTimeInterval.getStart();
-        JAMSCalendar eff_ed = this.effTimeInterval.getEnd();
+        JAMSCalendar eff_sd = this.effTimeInterval.getStart().clone();
+        JAMSCalendar eff_ed = this.effTimeInterval.getEnd().clone();
         int eff_tres = this.effTimeInterval.getTimeUnit();
         long sdEff = eff_sd.getTimeInMillis();
         long edEff = eff_ed.getTimeInMillis();
+        
+        //check if effTimeInterval is in the bounds of the model time interval
+        //otherwise it will be set to the model interval bounds
+        if(eff_sd.before(model_sd)){
+            this.effTimeInterval.setStart(model_sd);
+            getModel().getRuntime().println("effStartdate was set equal to model startdate", JAMS.STANDARD);
+        }
+        if(model_ed.before(eff_ed)){
+            this.effTimeInterval.setEnd(model_ed);
+            getModel().getRuntime().println("effEnddate was set equal to model enddate", JAMS.STANDARD);
+        }
         
         /*if(eff_tres == eff_sd.DAY_OF_YEAR){
             this.effTsteps = (int)((edEff - sdEff) / (1000 * 60 * 60 * 24));
@@ -272,6 +283,21 @@ import org.unijena.jams.model.*;
         
         if(eff_tres == eff_sd.DAY_OF_YEAR){
             this.interValStart =(int)((sdEff - sdMod) / (1000 * 60 * 60 * 24));
+            this.interValEnd = this.interValStart + this.effTsteps;
+        }
+        else if(eff_tres == eff_sd.HOUR_OF_DAY){
+            this.interValStart =(int)((sdEff - sdMod) / (1000 * 60 * 60));
+            this.interValEnd = this.interValStart + this.effTsteps;
+        }
+        else if(eff_tres == eff_sd.MONTH){
+            JAMSCalendar modStart = modelTimeInterval.getStart().clone();
+            JAMSCalendar effStart = effTimeInterval.getStart().clone();
+            int startStep = 0;
+            while(modStart.before(effStart)){
+                startStep++;
+                modStart.add(JAMSCalendar.MONTH,1);
+            }
+            this.interValStart = startStep;
             this.interValEnd = this.interValStart + this.effTsteps;
         }
         int junk = 0;
