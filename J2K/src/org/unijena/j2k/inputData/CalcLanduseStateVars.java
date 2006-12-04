@@ -83,8 +83,15 @@ import org.unijena.jams.model.*;
             )
             public JAMSDouble elevation;
     
+    @JAMSVarDescription(
+            access = JAMSVarDescription.AccessType.READ,
+            update = JAMSVarDescription.UpdateType.INIT,
+            description = "temporal resolution [d | h | m]"
+            )
+            public JAMSString tempRes;
     
     
+    int[] monthMean = {15,45,74,105,135,166,196,227,258,288,319,349};
     int oldmonth = 0;
     double rsc0 = 0;
     
@@ -100,8 +107,16 @@ import org.unijena.jams.model.*;
         
         JAMSEntity entity = entities.getCurrent();
         
-        double[] lai_vals = new double[366];
-        double[] effH_vals = new double[366];
+        double[] lai_vals = null; 
+        double[] effH_vals = null;
+        if(this.tempRes == null || this.tempRes.getValue().equals("d") || this.tempRes.getValue().equals("h")){
+            lai_vals = new double[366];
+            effH_vals = new double[366];
+        }
+        else if(this.tempRes.getValue().equals("m")){
+            lai_vals = new double[12];
+            effH_vals = new double[12];
+        }
         
         double HRUelevation = elevation.getValue();
         double[] lais = new double[4];
@@ -118,12 +133,21 @@ import org.unijena.jams.model.*;
             String loopName = effName + count;
             effH[i] = entity.getDouble(loopName);
         }
-
-        for(int j = 0; j < 366; j++){
-            int julDay = j+1;
-            lai_vals[j] = this.calcLAI(lais, HRUelevation, julDay);
-            effH_vals[j] = this.calcEffHeight(effH, HRUelevation, julDay);
+        if(this.tempRes == null || this.tempRes.getValue().equals("d") || this.tempRes.getValue().equals("h")){
+            for(int j = 0; j < 366; j++){
+                int julDay = j+1;
+                lai_vals[j] = this.calcLAI(lais, HRUelevation, julDay);
+                effH_vals[j] = this.calcEffHeight(effH, HRUelevation, julDay);
+            }
         }
+        else if(this.tempRes.getValue().equals("m")){
+            for(int j = 0; j < 12; j++){
+                int julDay = this.monthMean[j];
+                lai_vals[j] = this.calcLAI(lais, HRUelevation, julDay);
+                effH_vals[j] = this.calcEffHeight(effH, HRUelevation, julDay);
+            }
+        }
+        
         LAIArray.setValue(lai_vals);
         effHArray.setValue(effH_vals);
         
