@@ -35,7 +35,7 @@ import org.unijena.jams.model.*;
  * @author nsk
  */
 @JAMSComponentDescription(
-        title="Title",
+title="Title",
         author="Author",
         description="Description"
         )
@@ -46,82 +46,82 @@ import org.unijena.jams.model.*;
      */
     
     @JAMSVarDescription(
-            access = JAMSVarDescription.AccessType.READ,
+    access = JAMSVarDescription.AccessType.READ,
             update = JAMSVarDescription.UpdateType.INIT,
             description = "Data file directory name"
             )
             public JAMSString dirName;
     
     @JAMSVarDescription(
-            access = JAMSVarDescription.AccessType.READ,
+    access = JAMSVarDescription.AccessType.READ,
             update = JAMSVarDescription.UpdateType.INIT,
             description = "List of parameter identifiers to be sampled"
             )
             public JAMSString parameterIDs;
     
     @JAMSVarDescription(
-            access = JAMSVarDescription.AccessType.READ,
+    access = JAMSVarDescription.AccessType.READ,
             update = JAMSVarDescription.UpdateType.INIT,
             description = "List of parameter value bounaries corresponding to parameter identifiers"
             )
             public JAMSString boundaries;
     
     @JAMSVarDescription(
-            access = JAMSVarDescription.AccessType.READ,
+    access = JAMSVarDescription.AccessType.READ,
             update = JAMSVarDescription.UpdateType.INIT,
             description = "Number of samples to be taken"
             )
             public JAMSInteger sampleCount;
     
     @JAMSVarDescription(
-            access = JAMSVarDescription.AccessType.READ,
+    access = JAMSVarDescription.AccessType.READ,
             update = JAMSVarDescription.UpdateType.INIT,
             description = "efficiency methods"
             )
             public JAMSString effMethodNames;
     
     @JAMSVarDescription(
-            access = JAMSVarDescription.AccessType.READWRITE,
+    access = JAMSVarDescription.AccessType.READWRITE,
             update = JAMSVarDescription.UpdateType.RUN,
             description = "efficiency values"
             )
             public JAMSDouble[] effValues;
     
     @JAMSVarDescription(
-            access = JAMSVarDescription.AccessType.READ,
+    access = JAMSVarDescription.AccessType.READ,
             update = JAMSVarDescription.UpdateType.INIT,
-            description = "Flag for disabling this sampler"
+            description = "Flag for dis/enabling this sampler"
             )
-            public JAMSBoolean disable;
+            public JAMSBoolean enable;
     
     @JAMSVarDescription(
-            access = JAMSVarDescription.AccessType.READ,
+    access = JAMSVarDescription.AccessType.READ,
             update = JAMSVarDescription.UpdateType.INIT
             )
             public JAMSString paraFileName;
     
     @JAMSVarDescription(
-            access = JAMSVarDescription.AccessType.READ,
+    access = JAMSVarDescription.AccessType.READ,
             update = JAMSVarDescription.UpdateType.INIT
             )
             public JAMSString attribFileName;
     
     @JAMSVarDescription(
-            access = JAMSVarDescription.AccessType.READ,
+    access = JAMSVarDescription.AccessType.READ,
             update = JAMSVarDescription.UpdateType.INIT,
             description = "The model time interval"
             )
             public JAMSTimeInterval modelTimeInterval;
     
     @JAMSVarDescription(
-            access = JAMSVarDescription.AccessType.READ,
+    access = JAMSVarDescription.AccessType.READ,
             update = JAMSVarDescription.UpdateType.INIT,
             description = "Output file header descriptions"
             )
             public JAMSString attribHeader;
     
     @JAMSVarDescription(
-            access = JAMSVarDescription.AccessType.READWRITE,
+    access = JAMSVarDescription.AccessType.READWRITE,
             update = JAMSVarDescription.UpdateType.RUN,
             description = "Output file attribute"
             )
@@ -145,81 +145,81 @@ import org.unijena.jams.model.*;
     
     
     public void init() {
-        
+        if(enable.getValue()){
 //add more checks!!!
-        //retreiving parameter names
-        int i;
-        StringTokenizer tok = new StringTokenizer(parameterIDs.getValue(), ";");
-        String key;
-        parameters = new JAMSDouble[tok.countTokens()];
-        parameterNames = new String[tok.countTokens()];
-        
-        i = 0;
-        while (tok.hasMoreTokens()) {
-            key = tok.nextToken();
-            parameterNames[i] = key;
-            parameters[i] = (JAMSDouble) getModel().getRuntime().getDataHandles().get(key);
-            if(parameters[i] == null){
-            	System.out.println("Problem in Sampler: parameter: " + key + "does not exist!");
-            }
-            i++;
-        }
-        
-        //retreiving boundaries
-        tok = new StringTokenizer(boundaries.getValue(), ";");
-        int n = tok.countTokens();
-        lowBound = new double[n];
-        upBound = new double[n];
-        
-        //check if number of parameter ids and boundaries match
-        if (n != i) {
-            getModel().getRuntime().sendHalt("Component " + this.getInstanceName() + ": Different number of parameterIDs and boundaries!");
-        }
-        
-        i = 0;
-        while (tok.hasMoreTokens()) {
-            key = tok.nextToken();
-            key = key.substring(1, key.length()-1);
+            //retreiving parameter names
+            int i;
+            StringTokenizer tok = new StringTokenizer(parameterIDs.getValue(), ";");
+            String key;
+            parameters = new JAMSDouble[tok.countTokens()];
+            parameterNames = new String[tok.countTokens()];
             
-            StringTokenizer boundTok = new StringTokenizer(key, ">");
-            lowBound[i] = Double.parseDouble(boundTok.nextToken());
-            upBound[i] = Double.parseDouble(boundTok.nextToken());
-            
-            //check if upBound is higher than lowBound
-            if (upBound[i] <= lowBound[i]) {
-                getModel().getRuntime().sendHalt("Component " + this.getInstanceName() + ": upBound must be higher than lowBound!");
+            i = 0;
+            while (tok.hasMoreTokens()) {
+                key = tok.nextToken();
+                parameterNames[i] = key;
+                parameters[i] = (JAMSDouble) getModel().getRuntime().getDataHandles().get(key);
+                if(parameters[i] == null){
+                    System.out.println("Problem in Sampler: parameter: " + key + "does not exist!");
+                }
+                i++;
             }
             
-            i++;
-        }
-        
-        //retreiving effMethodNames
-        i = 0;
-        tok = new StringTokenizer(effMethodNames.getValue(), ";");
-        String[] effNames = new String[tok.countTokens()];
-        i = 0;
-        while (tok.hasMoreTokens()) {
-            key = tok.nextToken();
-            effNames[i] = key;
-            i++;
-        }
-        
-        //create parameter output file
-        paraWriter = new GenericDataWriter(dirName.getValue()+"/"+this.paraFileName.getValue());
-        paraWriter.addColumn("Run");
-        
-        for(int j = 0; j < this.parameters.length; j++)
-            paraWriter.addColumn(this.parameterNames[j]);
-        
-        for(int e = 0; e < effNames.length; e++){
-            paraWriter.addColumn(effNames[e]);
-        }
-        
-        
-        paraWriter.writeHeader();
-        
-        //the attribute output file
-        attribWriter = new GenericDataWriter(dirName.getValue()+"/"+attribFileName.getValue());
+            //retreiving boundaries
+            tok = new StringTokenizer(boundaries.getValue(), ";");
+            int n = tok.countTokens();
+            lowBound = new double[n];
+            upBound = new double[n];
+            
+            //check if number of parameter ids and boundaries match
+            if (n != i) {
+                getModel().getRuntime().sendHalt("Component " + this.getInstanceName() + ": Different number of parameterIDs and boundaries!");
+            }
+            
+            i = 0;
+            while (tok.hasMoreTokens()) {
+                key = tok.nextToken();
+                key = key.substring(1, key.length()-1);
+                
+                StringTokenizer boundTok = new StringTokenizer(key, ">");
+                lowBound[i] = Double.parseDouble(boundTok.nextToken());
+                upBound[i] = Double.parseDouble(boundTok.nextToken());
+                
+                //check if upBound is higher than lowBound
+                if (upBound[i] <= lowBound[i]) {
+                    getModel().getRuntime().sendHalt("Component " + this.getInstanceName() + ": upBound must be higher than lowBound!");
+                }
+                
+                i++;
+            }
+            
+            //retreiving effMethodNames
+            i = 0;
+            tok = new StringTokenizer(effMethodNames.getValue(), ";");
+            String[] effNames = new String[tok.countTokens()];
+            i = 0;
+            while (tok.hasMoreTokens()) {
+                key = tok.nextToken();
+                effNames[i] = key;
+                i++;
+            }
+            
+            //create parameter output file
+            paraWriter = new GenericDataWriter(dirName.getValue()+"/"+this.paraFileName.getValue());
+            paraWriter.addColumn("Run");
+            
+            for(int j = 0; j < this.parameters.length; j++)
+                paraWriter.addColumn(this.parameterNames[j]);
+            
+            for(int e = 0; e < effNames.length; e++){
+                paraWriter.addColumn(effNames[e]);
+            }
+            
+            
+            paraWriter.writeHeader();
+            
+            //the attribute output file
+            attribWriter = new GenericDataWriter(dirName.getValue()+"/"+attribFileName.getValue());
             
             attribWriter.addComment("J2K model output");
             attribWriter.addComment("");
@@ -241,7 +241,7 @@ import org.unijena.jams.model.*;
             this.timeStepCounter = 0;
             this.runCounter = 0;
             
-        
+        }
     }
     
     public void run() {
@@ -249,12 +249,11 @@ import org.unijena.jams.model.*;
             runEnumerator = getChildrenEnumerator();
         }
         
-        if (disable.getValue()) {    
+        if (!enable.getValue()) {
             singleRun();
-        } 
-        else {
+        } else {
             resetValues();
-            while (hasNext()) {             
+            while (hasNext()) {
                 updateValues();
                 singleRun();
                 
@@ -287,7 +286,7 @@ import org.unijena.jams.model.*;
     
     public void cleanup() {
         
-        if (!disable.getValue()) {
+        if (enable.getValue()) {
             /*
             //always write time
             //the time also knows a toString() method with additional formatting parameters
@@ -306,9 +305,9 @@ import org.unijena.jams.model.*;
                 }
             }
             attribWriter.close();
-            
-            
-        */
+             
+             
+             */
             paraWriter.close();
         }
     }
@@ -318,7 +317,7 @@ import org.unijena.jams.model.*;
         int count = this.currentCount + 1;
         getModel().getRuntime().println("Run No. " + count + " of " + this.sampleCount.getValue());
         double[] sample = this.randomSampler(parameters.length);
-                
+        
         for (int i = 0; i < parameters.length; i++) {
             //System.out.println("Parameter: " + this.parameterIDs.getValue());
             //double d = generator.nextDouble();
