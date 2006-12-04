@@ -476,6 +476,7 @@ title="J2KProcessLumpedSoilWater",
     }
     
     public void run() throws JAMSEntity.NoSuchAttributeException {
+        
         double balMPSstart = 0;
         double balMPSend = 0;
         double balLPSstart = 0;
@@ -706,6 +707,7 @@ title="J2KProcessLumpedSoilWater",
         perco_hor.setValue(perchor);
         actETP_h.setValue(actETP_hor);
         //System.out.getRuntime().println("RD2_out: " + this.run_outRD2[0] + "\t" + this.run_outRD2[1] + "\t" + this.run_outRD2[2]);
+        
     }
     
     public void cleanup() {
