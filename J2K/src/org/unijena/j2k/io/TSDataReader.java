@@ -265,6 +265,8 @@ public class TSDataReader extends JAMSComponent {
                     startTime.add(JAMSCalendar.DATE, 1);
                 else if(timeUnit == JAMSCalendar.HOUR_OF_DAY)
                     startTime.add(JAMSCalendar.HOUR_OF_DAY, 1);
+                else if(timeUnit == JAMSCalendar.MONTH)
+                    startTime.add(JAMSCalendar.MONTH, 1);
             }
         }
         
