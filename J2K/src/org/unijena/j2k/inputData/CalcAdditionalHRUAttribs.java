@@ -103,6 +103,14 @@ import org.unijena.jams.model.*;
             )
             public JAMSCalendar time;
     
+    @JAMSVarDescription(
+            access = JAMSVarDescription.AccessType.READ,
+            update = JAMSVarDescription.UpdateType.INIT,
+            description = "temporal resolution [d | h | m]"
+            )
+            public JAMSString tempRes;
+    
+    int[] monthMean = {15,45,74,105,135,166,196,227,258,288,319,349};
     /*
      *  Component run stages
      */
@@ -116,7 +124,15 @@ import org.unijena.jams.model.*;
     }
     
     public void run() throws JAMSEntity.NoSuchAttributeException{
-        int julDay = this.time.get(time.DAY_OF_YEAR);
+        int julDay = 0; 
+        
+        if(this.tempRes == null || this.tempRes.equals("d") || this.tempRes.equals("h")){
+            julDay = this.time.get(time.DAY_OF_YEAR);
+        }
+        else if(this.tempRes.equals("m")){
+            int month = this.time.get(time.MONTH);
+            julDay = this.monthMean[month];
+        }
         double sloAspCorr = org.unijena.j2k.geographicalCalculations.CalcSlopeAspectCorrectionFactor.calc_slopeAspectCorrectionFactor(julDay, latitude.getValue(), slope.getValue(), aspect.getValue());
         slAsCf.setValue(sloAspCorr);
     }
