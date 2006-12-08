@@ -945,9 +945,10 @@ import java.io.*;
             
             if (i == 0) {
                 runsurfaceN = calc_surfaceN();
+                runNO3_Pool = runNO3_Pool - runsurfaceN;
             }
             
-            runNO3_Pool = runNO3_Pool - runsurfaceN;
+            
             runinterflowN = calc_interflowN(i);
             runNO3_Pool = runNO3_Pool - runinterflowN;
             runpercoN = calc_percoN(i);
@@ -1451,15 +1452,15 @@ import java.io.*;
         double interflowN = 0;
         
         if (i == 0) {
-            interflowN = (1 - runBeta_NO3) * RD2_out_mm * concN_mobile;
+            interflowN = (1.0 - runBeta_NO3) * RD2_out_mm * concN_mobile;
             interflowN = Math.min(interflowN,runNO3_Pool);
         } else if (i > 0) {
             interflowN = RD2_out_mm * concN_mobile;
             interflowN = Math.min(interflowN,runNO3_Pool);
         }
-/*        if (interflowN > 0){
+        if (interflowN < 0){
         System.out.println(RD2_out_mm + " = RD2_out_mm " + interflowN +" = interflowN");
-        }*/
+        }
         return interflowN;
         
     }

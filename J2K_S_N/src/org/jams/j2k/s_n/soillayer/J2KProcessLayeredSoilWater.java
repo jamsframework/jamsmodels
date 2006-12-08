@@ -779,7 +779,8 @@ import org.unijena.jams.model.*;
             System.out.println("overlandflow is negative! --> " + this.run_overlandflow);
         /** determining direct runoff from depression storage */
         this.run_overlandflow = this.run_overlandflow + this.calcDirectRunoff();
-        
+//        if (run_overlandflow > 0)
+//                System.out.println("test");
         this.calcRD1_out();
         
         for(int h = 0; h < nhor; h++){

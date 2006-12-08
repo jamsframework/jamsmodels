@@ -548,11 +548,9 @@ import org.unijena.jams.model.*;
             
             deepsinkW = Math.min(deepsinkW,q_act_out);
             deepsinkN = Math.min(deepsinkN,q_act_out_N);
-            
-            
-            
-            q_act_out = q_act_out - deepsinkW;
-            q_act_out_N = q_act_out_N - deepsinkN;
+            deepsinkW = Math.max(deepsinkW,0);
+            deepsinkN = Math.max(deepsinkN,0);         
+ 
             
         }else{
           
@@ -566,17 +564,27 @@ import org.unijena.jams.model.*;
         DeepsinkN.setValue(deepsinkN);
         
         //the actual outflow from the reach
+       
         
+        double RD1outdeep = deepsinkW * RD1_part;
+        double RD2outdeep = deepsinkW * RD2_part;
+        double RG1outdeep = deepsinkW * RG1_part;
+        double RG2outdeep = deepsinkW * RG2_part;
         
-        double RD1out = q_act_out * RD1_part;
-        double RD2out = q_act_out * RD2_part;
-        double RG1out = q_act_out * RG1_part;
-        double RG2out = q_act_out * RG2_part;
+        double RD1out_Ndeep = deepsinkN * RD1_part_N;
+        double RD2out_Ndeep = deepsinkN * RD2_part_N;
+        double RG1out_Ndeep = deepsinkN * RG1_part_N;
+        double RG2out_Ndeep = deepsinkN * RG2_part_N;
         
-        double RD1out_N = q_act_out_N * RD1_part_N;
-        double RD2out_N = q_act_out_N * RD2_part_N;
-        double RG1out_N = q_act_out_N * RG1_part_N;
-        double RG2out_N = q_act_out_N * RG2_part_N;
+        double RD1out = q_act_out * RD1_part - RD1outdeep;
+        double RD2out = q_act_out * RD2_part - RD2outdeep;
+        double RG1out = q_act_out * RG1_part - RG1outdeep;
+        double RG2out = q_act_out * RG2_part - RG2outdeep;
+        
+        double RD1out_N = q_act_out_N * RD1_part_N - RD1out_Ndeep;
+        double RD2out_N = q_act_out_N * RD2_part_N - RD2out_Ndeep;
+        double RG1out_N = q_act_out_N * RG1_part_N - RG1out_Ndeep;
+        double RG2out_N = q_act_out_N * RG2_part_N - RG2out_Ndeep;
         
         //transferring runoff from this reach to the next one
         RD1DestIn = RD1DestIn + RD1out;
@@ -590,15 +598,23 @@ import org.unijena.jams.model.*;
         RG2DestIn_N = RG2DestIn_N + RG2out_N;
         
         //reducing the actual storages
-        RD1act = RD1act - RD1out;
-        RD2act = RD2act - RD2out;
-        RG1act = RG1act - RG1out;
-        RG2act = RG2act - RG2out;
+        RD1act = RD1act - RD1out - RD1outdeep;
+        if (RD1act < 0) RD1act = 0;
+        RD2act = RD2act - RD2out - RD2outdeep;
+        if (RD2act < 0) RD2act = 0;
+        RG1act = RG1act - RG1out - RG1outdeep;
+        if (RG1act < 0) RG1act = 0;
+        RG2act = RG2act - RG2out - RG1outdeep;
+        if (RG2act < 0) RG2act = 0;
         
-        RD1act_N = RD1act_N - RD1out_N;
-        RD2act_N = RD2act_N - RD2out_N;
-        RG1act_N = RG1act_N - RG1out_N;
-        RG2act_N = RG2act_N - RG2out_N;
+        RD1act_N = RD1act_N - RD1out_N - RD1out_Ndeep;
+        if (RD1act_N < 0) RD1act_N = 0;
+        RD2act_N = RD2act_N - RD2out_N - RD2out_Ndeep;
+        if (RD2act_N < 0) RD2act_N = 0;
+        RG1act_N = RG1act_N - RG1out_N - RG1out_Ndeep;
+        if (RG1act_N < 0) RG1act_N = 0;
+        RG2act_N = RG2act_N - RG2out_N - RG2out_Ndeep;
+        if (RG2act_N < 0) RG2act_N = 0;
         
         double channelStorage = RD1act + RD2act + RG1act + RG2act;
         double channelStorage_N = RD1act_N + RD2act_N + RG1act_N + RG2act_N;
