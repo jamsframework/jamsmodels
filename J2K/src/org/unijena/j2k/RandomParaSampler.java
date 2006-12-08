@@ -236,7 +236,7 @@ title="Title",
             attribWriter.writeHeader();
             
             //setting up the dataArray
-            this.timeSteps = (int)modelTimeInterval.getNumberOfTimesteps();
+            //this.timeSteps = (int)modelTimeInterval.getNumberOfTimesteps();
 //            this.valueArray = new double[this.sampleCount.getValue()][timeSteps];
             this.timeStepCounter = 0;
             this.runCounter = 0;
