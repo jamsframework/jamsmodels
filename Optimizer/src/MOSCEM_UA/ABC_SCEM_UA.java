@@ -31,8 +31,7 @@ import java.util.Collections;
 import org.unijena.jams.data.*;
 import org.unijena.jams.io.GenericDataWriter;
 import org.unijena.jams.model.*;
-import org.unijena.abc.ABCEvoluAlgComparator;
-import org.unijena.Optimizer.SCE_Comparator;
+import org.unijena.Optimizer.*;
 import Jama.*;
 /**
  *
