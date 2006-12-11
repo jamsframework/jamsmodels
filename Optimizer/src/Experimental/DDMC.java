@@ -332,6 +332,7 @@ import java.io.*;
     }
     
     public void run() {	
+	String output;
 	
 	//try to open output file
 	try {
@@ -359,9 +360,7 @@ import java.io.*;
 		    distance = istanceOfMCPoint;
 		}
 	    }
-	    
-	    String output;
-	    
+	    	    	    
 	    output = "current minimal distance:" + distance;
 	    
 	    getModel().getRuntime().println(output);
@@ -428,8 +427,26 @@ import java.io.*;
 	    }
 	    SavePoints();
 	}
+	
 	try {
-	    writer.close();
+	
+	output = "Result of Optimization: Value: " + this.bestvalue;
+	getModel().getRuntime().println(output);
+	writer.write(output);
+	writer.newLine();		    
+		
+	output = "Parameters: ";
+		
+	for (int k=0;k<this.bestpoint.length;k++) {
+	    output += this.bestpoint[k] + ",";		    
+	}
+	getModel().getRuntime().println(output);
+		
+	writer.write(output);
+	writer.newLine();
+	writer.flush();
+    
+	writer.close();
 	}
 	catch (Exception e) {
 	    System.out.println("Could not close output file because:" + e.toString());
