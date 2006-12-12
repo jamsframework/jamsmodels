@@ -383,7 +383,7 @@ import java.io.*;
 		catch(Exception e) {
 		    System.out.println("Could not write to output file because:" + e.toString());
 		}
-		return;
+		break;
 	    }
 	    
 	    for (int i=0; i < this.parameters.length; i++) {	
