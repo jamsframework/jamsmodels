@@ -185,20 +185,20 @@ public class SelectiveEntityWriter extends JAMSComponent {
                     area = ((JAMSDouble)entitySet.getCurrent().getObject("area")).getValue();
                 }
                 Object ob = entitySet.getCurrent().getObject(this.attributeName.getValue());
-                if(ob.getClass().getName().contains("DoubleArray")){
+                if (ob.getClass().getName().contains("DoubleArray")) {
                     //System.out.println("HRUNo: " +((JAMSDouble)entitySet.getCurrent().getObject("ID")).getValue());
                     double[] da = ((JAMSDoubleArray)entitySet.getCurrent().getObject(this.attributeName.getValue())).getValue();
                     for(int i = 0; i < da.length; i++){
                         double val = da[i] / area;
                         writer.addData(""+val);
                     }
-                } else{
+                } else {
                     //System.out.println("Primitive");
                     double da = ((JAMSDouble)entitySet.getCurrent().getObject(this.attributeName.getValue())).getValue();
                     double val = da / area;
                     writer.addData(""+val);
                 }
-                if(setCounter < (numEntities - 1)){
+                if (setCounter < (numEntities - 1)) {
                     setCounter++;
                 }
             }
