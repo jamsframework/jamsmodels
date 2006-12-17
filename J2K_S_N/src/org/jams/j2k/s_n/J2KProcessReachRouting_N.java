@@ -388,7 +388,8 @@ import org.unijena.jams.model.*;
             public JAMSDouble Ksink;
     
     
-    
+    private double depth; 
+    private double rh;
     /*
      *  Component run stages
      */
@@ -419,6 +420,8 @@ import org.unijena.jams.model.*;
         double RD2act_N = this.ActRD2_N.getValue() + this.InterflowN_sum.getValue();
         double RG1act_N = this.ActRG1_N.getValue() + this.N_RG1_in.getValue();
         double RG2act_N = this.ActRG2_N.getValue() + this.N_RG2_in.getValue();
+        depth = 0;
+        
         
         inRD1.setValue(0);
         inRD2.setValue(0);
@@ -540,7 +543,7 @@ import org.unijena.jams.model.*;
         if (deepsink.getValue()==1.0){
             //calculation of deep sink
             //calculation of leckage area
-            Larea = width * length;
+            Larea = Math.pow(rh,2.0) * length;
             
             //calculation of deep sinks amount
             deepsinkW = Larea * Ksink.getValue() * 10;
@@ -705,7 +708,7 @@ import org.unijena.jams.model.*;
      * @param secondsOfTimeStep the current time step in seconds
      * @return flow_velocity in m/s
      */
-    public static double calcFlowVelocity(double q, double width, double slope, double rough, int secondsOfTimeStep){
+    public double calcFlowVelocity(double q, double width, double slope, double rough, int secondsOfTimeStep){
         double afv = 1;
         double veloc = 0;
         
@@ -713,7 +716,7 @@ import org.unijena.jams.model.*;
          *transfering liter/d to m³/s
          **/
         double q_m = q / (1000 * secondsOfTimeStep);
-        double rh = calcHydraulicRadius(afv, q_m, width);
+        this.rh = calcHydraulicRadius(afv, q_m, width);
         boolean cont = true;
         while(cont){
             veloc = (rough) * Math.pow(rh, (2.0/3.0)) * Math.sqrt(slope);

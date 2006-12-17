@@ -232,7 +232,7 @@ import org.unijena.jams.model.*;
         double runN_concRG1 = 0;
         double runN_concRG2 = 0;
         double runpot_RG1 = pot_RG1.getValue();
-        double runpot_RG2 = pot_RG1.getValue();
+        double runpot_RG2 = pot_RG2.getValue();
         double percoN = PercoNabs.getValue();
         double RGNretentinon = 1;
         double N_Excess = NExcess.getValue();
