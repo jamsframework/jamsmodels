@@ -108,10 +108,11 @@ import org.unijena.jams.model.*;
             String mpsDesc = aNameFC + count;
             double mpsVal = entity.getDouble(mpsDesc);
             mxMPS = mxMPS + mpsVal;
+            
         }
+        
         mxMPS = mxMPS * this.area.getValue();
         mxMPS = mxMPS * this.FCAdaptation.getValue();
-        
         
         this.maxMPS.setValue(mxMPS);
         
