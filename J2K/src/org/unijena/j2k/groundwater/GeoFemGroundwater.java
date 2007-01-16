@@ -41,6 +41,12 @@ import org.unijena.jams.model.*;
     /*
      *  Component variables
      */
+    @JAMSVarDescription(
+            access = JAMSVarDescription.AccessType.READ,
+            update = JAMSVarDescription.UpdateType.RUN,
+            description = "attribute slope"
+            )
+            public JAMSDouble slope;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
@@ -70,6 +76,13 @@ import org.unijena.jams.model.*;
             )
             public JAMSDouble basQ;
     
+    @JAMSVarDescription(
+            access = JAMSVarDescription.AccessType.WRITE,
+            update = JAMSVarDescription.UpdateType.RUN,
+            description = "baseflow recession coefficient"
+            )
+            public JAMSDouble gwRecCoeff;
+    
    
     
     /*
@@ -84,13 +97,19 @@ import org.unijena.jams.model.*;
        double storage = this.storage.getValue();
        double input = this.gwRecharge.getValue();
        
+       double recTanSlope = 1 - (Math.tan(this.slope.getValue() * (Math.PI / 180.)));
+        if(recTanSlope < 0)
+            recTanSlope = 0;
+       
        storage = storage + input;
        
+       double gwRec = 1. / (this.k.getValue() * recTanSlope);
        double outflow = (1. / this.k.getValue()) * storage;
        storage = storage - outflow;
        
        this.storage.setValue(storage);
        this.basQ.setValue(outflow);
+       this.gwRecCoeff.setValue(this.k.getValue() * recTanSlope);
        
     }
     
