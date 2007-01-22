@@ -39,7 +39,7 @@ public class StandardDataWriter extends JAMSComponent {
      */
     
     @JAMSVarDescription(
-            access = JAMSVarDescription.AccessType.READ,
+    access = JAMSVarDescription.AccessType.READ,
             update = JAMSVarDescription.UpdateType.RUN,
             description = "time interval"
             )
@@ -81,6 +81,8 @@ public class StandardDataWriter extends JAMSComponent {
             public JAMSDouble[] value;
     
     private GenericDataWriter writer;
+    private String timeFormat = "%1$tY-%1$tm-%1$td %1$tH:%1$tM";
+    
     
     /*
      *  Component runstages
@@ -100,26 +102,31 @@ public class StandardDataWriter extends JAMSComponent {
         }
         
         writer.writeHeader();
+        
+        if (this.timeInterval != null) {
+            
+            int tu = this.timeInterval.getTimeUnit();
+            //hourly values
+            if(tu == 11)
+                timeFormat = "%1$td.%1$tm.%1$tY %1$tH:%1$tM";
+            //daily values
+            else if(tu == 6)
+                timeFormat = "%1$td.%1$tm.%1$tY";
+            //monthly values
+            else if(tu == 2)
+                timeFormat = "%1$tm/%1$tY";
+            //annual values
+            else if(tu == 1)
+                timeFormat = "%1$tY";
+            
+        }
+        
     }
     
     public void run() throws JAMSEntity.NoSuchAttributeException {
         //always write time
         //the time also knows a toString() method with additional formatting parameters
         //e.g. time.toString("%1$tY-%1$tm-%1$td %1$tH:%1$tM")
-        int tu = this.timeInterval.getTimeUnit();
-        String timeFormat = "%1$tY-%1$tm-%1$td %1$tH:%1$tM";
-        //hourly values
-        if(tu == 11)
-            timeFormat = "%1$td.%1$tm.%1$tY %1$tH:%1$tM";
-        //daily values
-        else if(tu == 6)
-            timeFormat = "%1$td.%1$tm.%1$tY";
-        //monthly values
-        else if(tu == 2)
-            timeFormat = "%1$tm/%1$tY";
-        //annual values
-        else if(tu == 1)
-            timeFormat = "%1$tY";
         
         //System.out.println(tu + " " + timeFormat);
         writer.addData(time.toString(timeFormat));
@@ -138,10 +145,7 @@ public class StandardDataWriter extends JAMSComponent {
     
     public void cleanup() {
         System.out.println(this.getInstanceName() + " called cleanup");
-        try {
-            writer.writer.flush();
-            writer.writer.close();
-        } catch (IOException ex) {
-        }
+        writer.flush();
+        writer.close();
     }
 }
