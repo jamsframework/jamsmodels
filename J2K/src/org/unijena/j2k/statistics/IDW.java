@@ -128,4 +128,38 @@ public class IDW {
         
         return weights;
     }
+    
+    /**
+     * Computes an integer array (wArray) of same lenght as the weight array
+     * in such a way that the first element of wArray contains the weight 
+     * array position with the highest weight value. The second element of
+     * wArray the second highest weight etc.
+     * @param weight the weight array for all stations
+     * @return the index of weights
+     */
+    public static int[] computeWeightArray(double[] weights){
+        int counter = 0;
+        int pos = 0;
+        int nstat = weights.length;
+        int[] wArray = new int[nstat];
+        double[] tempWeight = new double[nstat];
+        for(int i = 0; i < nstat; i++)
+            tempWeight[i] = weights[i];
+        
+        double maxWeight = -9;
+        
+        for(int j = 0; j < nstat; j++){
+            for(int i = 0; i < nstat; i++){
+                counter = 0;
+                if(tempWeight[i] > maxWeight){
+                    maxWeight = weights[i];
+                    pos = i;
+                }
+            }
+            tempWeight[pos] = -9;
+            maxWeight = -9;
+            wArray[j] = pos;
+        }
+        return wArray;
+    }
 }
