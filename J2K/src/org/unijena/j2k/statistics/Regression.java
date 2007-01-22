@@ -43,23 +43,29 @@ public class Regression {
         double sumX = 0;
         double sumY = 0;
         double prod = 0;
+        double NODATA = -9999;
         int nstat = xData.length;
         double[] regCoef = new double[3]; //(intercept, gradient, r²)
-        
+        int counter = 0;
         //calculating sums
         for(int i = 0; i < nstat; i++){
-            sumYValue += yData[i];
-            sumXValue += xData[i];
+            if((yData[i] != NODATA) && (xData[i] != NODATA)){
+                sumYValue += yData[i];
+                sumXValue += xData[i];
+                counter++;
+            }
         }
         //calculating means
-        meanYValue = sumYValue / nstat;
-        meanXValue = sumXValue / nstat;
+        meanYValue = sumYValue / counter;
+        meanXValue = sumXValue / counter;
         
         //calculating regression coefficients
         for(int i = 0; i < nstat; i++){
-            sumX += Math.pow((xData[i] - meanXValue), 2);
-            sumY += Math.pow((yData[i] - meanYValue), 2);
-            prod += ((xData[i] - meanXValue)*(yData[i] - meanYValue));
+            if((yData[i] != NODATA) && (xData[i] != NODATA)){
+                sumX += Math.pow((xData[i] - meanXValue), 2);
+                sumY += Math.pow((yData[i] - meanYValue), 2);
+                prod += ((xData[i] - meanXValue)*(yData[i] - meanYValue));
+            }
         }
         if(sumX > 0 && sumY > 0){
             regCoef[1] = prod / sumX;  //gradient
