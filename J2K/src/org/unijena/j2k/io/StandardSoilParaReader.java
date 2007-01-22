@@ -84,6 +84,8 @@ public class StandardSoilParaReader extends JAMSComponent {
             st = stMap.get(e.getDouble("soilID"));
             e.setObject("soilType", st);
             //System.out.println("st: " + st.getDouble("SID"));
+            if(st == null)
+                System.out.println("SoilType " + e.getDouble("soilID") + " is not defined in soil parameter table");
             attrs = st.getKeys();
             
             for (int i = 0; i < attrs.length; i++) {
