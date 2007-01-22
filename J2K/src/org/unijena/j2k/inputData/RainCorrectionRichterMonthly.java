@@ -61,6 +61,7 @@ import org.unijena.jams.model.*;
             )
             public JAMSDoubleArray corrPrecip;
     
+    double NODATA = -9999;
     double[] richter3_b = {0.233, 0.245, 0.203, 0.151, 0.111, 0.098, 0.100, 0.095, 0.115, 0.127, 0.168, 0.198};
     double[] richter3_c = {0.173, 0.179, 0.155, 0.127, 0.101, 0.088, 0.091, 0.085, 0.102, 0.110, 0.133, 0.150};
     /*
@@ -83,8 +84,12 @@ import org.unijena.jams.model.*;
         double[] rcorr = new double[precip.length];
         int month = time.get(time.MONTH);
         for(int i = 0; i < rcorr.length; i++){
-            //Applying the correction factors
-            rcorr[i] = precip[i] + (precip[i] * corrFactor[month]);
+            if(precip[i] == -9999){
+                rcorr[i] = -9999;
+            }else{
+                //Applying the correction factors
+                rcorr[i] = precip[i] + (precip[i] * corrFactor[month]);
+            }
         }
         this.corrPrecip.setValue(rcorr);
         
