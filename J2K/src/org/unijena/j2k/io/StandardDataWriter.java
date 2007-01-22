@@ -23,7 +23,7 @@
 
 package org.unijena.j2k.io;
 
-import org.unijena.jams.JAMS;
+import java.io.IOException;
 import org.unijena.jams.data.*;
 import org.unijena.jams.model.*;
 import org.unijena.jams.io.*;
@@ -40,34 +40,41 @@ public class StandardDataWriter extends JAMSComponent {
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
+            update = JAMSVarDescription.UpdateType.RUN,
+            description = "time interval"
+            )
+            public JAMSTimeInterval timeInterval;
+    
+    @JAMSVarDescription(
+    access = JAMSVarDescription.AccessType.READ,
             update = JAMSVarDescription.UpdateType.INIT,
             description = "Data file directory name"
             )
             public JAMSString dirName;
     
     @JAMSVarDescription(
-            access = JAMSVarDescription.AccessType.READ,
+    access = JAMSVarDescription.AccessType.READ,
             update = JAMSVarDescription.UpdateType.INIT,
             description = "Output file name"
             )
             public JAMSString fileName;
     
     @JAMSVarDescription(
-            access = JAMSVarDescription.AccessType.READ,
+    access = JAMSVarDescription.AccessType.READ,
             update = JAMSVarDescription.UpdateType.RUN,
             description = "Current time"
             )
             public JAMSCalendar time;
     
     @JAMSVarDescription(
-            access = JAMSVarDescription.AccessType.READ,
+    access = JAMSVarDescription.AccessType.READ,
             update = JAMSVarDescription.UpdateType.INIT,
             description = "Output file header descriptions"
             )
             public JAMSStringArray headers;
     
     @JAMSVarDescription(
-            access = JAMSVarDescription.AccessType.READ,
+    access = JAMSVarDescription.AccessType.READ,
             update = JAMSVarDescription.UpdateType.RUN,
             description = "Output file attributes"
             )
@@ -86,7 +93,7 @@ public class StandardDataWriter extends JAMSComponent {
         writer.addComment("");
         
         //always write time
-        writer.addColumn("date/time");
+        writer.addColumn("date");
         
         for (int i = 0; i < headers.getValue().length; i++) {
             writer.addColumn(headers.getValue()[i]);
@@ -99,9 +106,26 @@ public class StandardDataWriter extends JAMSComponent {
         //always write time
         //the time also knows a toString() method with additional formatting parameters
         //e.g. time.toString("%1$tY-%1$tm-%1$td %1$tH:%1$tM")
-        writer.addData(time);
+        int tu = this.timeInterval.getTimeUnit();
+        String timeFormat = "%1$tY-%1$tm-%1$td %1$tH:%1$tM";
+        //hourly values
+        if(tu == 11)
+            timeFormat = "%1$td.%1$tm.%1$tY %1$tH:%1$tM";
+        //daily values
+        else if(tu == 6)
+            timeFormat = "%1$td.%1$tm.%1$tY";
+        //monthly values
+        else if(tu == 2)
+            timeFormat = "%1$tm/%1$tY";
+        //annual values
+        else if(tu == 1)
+            timeFormat = "%1$tY";
+        
+        //System.out.println(tu + " " + timeFormat);
+        writer.addData(time.toString(timeFormat));
         
         for (int i = 0; i < value.length; i++) {
+            
             writer.addData(value[i]);
         }
         
@@ -113,6 +137,11 @@ public class StandardDataWriter extends JAMSComponent {
     }
     
     public void cleanup() {
-        writer.close();
+        System.out.println(this.getInstanceName() + " called cleanup");
+        try {
+            writer.writer.flush();
+            writer.writer.close();
+        } catch (IOException ex) {
+        }
     }
 }
