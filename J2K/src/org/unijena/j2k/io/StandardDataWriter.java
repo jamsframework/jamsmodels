@@ -144,7 +144,6 @@ public class StandardDataWriter extends JAMSComponent {
     }
     
     public void cleanup() {
-        System.out.println(this.getInstanceName() + " called cleanup");
         writer.flush();
         writer.close();
     }
