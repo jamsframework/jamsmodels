@@ -524,6 +524,23 @@ import java.io.*;
             )
             public JAMSBoolean dormancy;
     
+   @JAMSVarDescription(
+            access = JAMSVarDescription.AccessType.READ,
+            update = JAMSVarDescription.UpdateType.RUN,
+            description = "time in days since the last PIADIN application"
+            )
+            public JAMSInteger piadin;
+    
+    
+    @JAMSVarDescription(
+            access = JAMSVarDescription.AccessType.READWRITE,
+            update = JAMSVarDescription.UpdateType.RUN,
+            description = "time in days since the last PIADIN application"
+            )
+            public JAMSInteger App_time;
+    
+    
+    
     
     /*
      *  Component run stages
@@ -594,6 +611,7 @@ import java.io.*;
     private double concN_mobile = 0; /*NO3 concentration of the mobile soil water in kgN/mm H2O*/
     
     private int datumjul = 0;
+    private int app_time = 0;
     double[] hor_by_infilt;
     double[] NO3_Poolvals;
     double[] w_l_diff;
@@ -620,6 +638,7 @@ import java.io.*;
         this.gamma_temp = 0;
         this.gamma_water = 0;
         this.runarea = area.getValue();
+        this.app_time = App_time.getValue();
         this.layer = (int)Layer.getValue();
         double runprecip  = precip.getValue();
         sumlayer = 0;
@@ -719,16 +738,16 @@ import java.io.*;
         
         for (i = 0 ; i < layer-1; i++){
             
-         
-                this.w_l_diff[i] = w_layer_diff.getValue()[i] / runarea;
-                
-                
-                if (w_l_diff[i] > 0){
-                    diffout[i+1] = diffout[i+1] + w_l_diff[i];
-                }else{
-                    diffout[i] =  diffout[i] - w_l_diff[i];              
-                }
-                
+            
+            this.w_l_diff[i] = w_layer_diff.getValue()[i] / runarea;
+            
+            
+            if (w_l_diff[i] > 0){
+                diffout[i+1] = diffout[i+1] + w_l_diff[i];
+            }else{
+                diffout[i] =  diffout[i] - w_l_diff[i];
+            }
+            
             
         }
         
@@ -779,6 +798,10 @@ import java.io.*;
             this.runBeta_NO3 = Beta_NO3.getValue();
             
             
+            if (fertNH4.getValue() > 0 && piadin.getValue() == 1){
+                app_time = 0;
+            }
+            app_time++;
             
             /*          calculation of amount of nitrogen uptake with epaporation from soil */
             
@@ -856,6 +879,9 @@ import java.io.*;
 /*                if (inpN_biomass.getValue() > 0){
                     System.out.println(time.get(time.DAY_OF_YEAR) + " resisuenadd " + inpN_biomass.getValue());
                 }*/
+                
+                
+                
                 runNH4_Pool = runNH4_Pool + fertNH4.getValue();
                 delta_ntr = this.calc_Res_N_trans();
                 a_deposition = deposition_factor.getValue() * runprecip;
@@ -955,9 +981,9 @@ import java.io.*;
             runNO3_Pool = runNO3_Pool - runpercoN;
             
             
-
             
-                
+            
+            
             
             
             
@@ -1049,19 +1075,19 @@ import java.io.*;
         }
         i = 0;
         
-        // distribution of diffusion N into the 
-        for (i = 0; i < layer - 1; i++){ 
-        
+        // distribution of diffusion N into the
+        for (i = 0; i < layer - 1; i++){
+            
             if (w_l_diff[i] < 0){
                 diffoutN = w_l_diff[i] * ConcN_mobile[i];
                 NO3_Poolvals[i] = NO3_Poolvals[i] + diffoutN;
                 NO3_Poolvals[i+1] = NO3_Poolvals[i+1] - diffoutN;
-        }else{
-               diffoutN = w_l_diff[i] * ConcN_mobile[i+1];
+            }else{
+                diffoutN = w_l_diff[i] * ConcN_mobile[i+1];
                 NO3_Poolvals[i]  = NO3_Poolvals[i] + diffoutN;
                 NO3_Poolvals[i+1] = NO3_Poolvals[i+1] - diffoutN;
-        
-        }
+                
+            }
         }
         // writing of pools
         double[] zerosetter = new double[layer];
@@ -1096,6 +1122,7 @@ import java.io.*;
         sNH4_Pool.setValue(sumNH4_Pool);
         sNO3_Pool.setValue(sumNO3_Pool);
         sNResiduePool.setValue(sumN_residue_pool);
+        App_time.setValue(app_time);
         InterflowN_in.setValue(zerosetter);
         
         
@@ -1292,6 +1319,14 @@ import java.io.*;
         
         eta_volati = eta_temp * eta_volz;
         
+        if (piadin.getValue() == 1){
+            
+            eta_nitri = (eta_nitri / 2000) * app_time;
+            
+        }
+        
+        //eta_volati = 0;
+        
         this.N_nit_vol = runNH4_Pool * (1 - Math.exp(- eta_nitri -eta_volati));
         
         this.frac_nitr = 1 - Math.exp(- eta_nitri);
@@ -1459,7 +1494,7 @@ import java.io.*;
             interflowN = Math.min(interflowN,runNO3_Pool);
         }
         if (interflowN < 0){
-        System.out.println(RD2_out_mm + " = RD2_out_mm " + interflowN +" = interflowN");
+            System.out.println(RD2_out_mm + " = RD2_out_mm " + interflowN +" = interflowN");
         }
         return interflowN;
         
