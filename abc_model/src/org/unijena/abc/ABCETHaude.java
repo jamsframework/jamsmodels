@@ -102,6 +102,7 @@ import org.unijena.jams.model.*;
            //kPa -> hPa
            est = 10 * est;
            
+           
            double pETP = est * (1 - (rh/100.)) * hf;
            
            pETP = pETP * this.et_adaptation.getValue();
