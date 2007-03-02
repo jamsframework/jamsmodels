@@ -116,7 +116,7 @@ title="GeoFemSnowModule",
         if(this.active == null || this.active.getValue()){
             //System.out.println("RUN ABCModel");
             double snowStorage = this.snowStorage.getValue();
-            double precip = this.precip.getValue() * this.area.getValue();
+            double precip = this.precip.getValue();
             this.precip.setValue(precip);
             double tmin = this.tmin.getValue();
             double tmean = this.tmean.getValue();
