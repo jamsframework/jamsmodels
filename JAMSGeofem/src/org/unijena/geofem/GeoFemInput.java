@@ -33,13 +33,6 @@ title="GeoFemInputModule",
             public JAMSDouble area;
     
     @JAMSVarDescription(
-    access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.INIT,
-            description = "Parameter ddf"
-            )
-            public JAMSDouble ddf;
-    
-    @JAMSVarDescription(
     access = JAMSVarDescription.AccessType.READWRITE,
             update = JAMSVarDescription.UpdateType.RUN,
             description = "precip"
