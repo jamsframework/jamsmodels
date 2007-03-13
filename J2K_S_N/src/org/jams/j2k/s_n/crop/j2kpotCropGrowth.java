@@ -203,12 +203,6 @@ import java.util.ArrayList;
             )
             public JAMSDouble BioNoptAct;
     
-    @JAMSVarDescription(
-            access = JAMSVarDescription.AccessType.READWRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
-            description = "Actual plants N demand [kg N/ha]"
-            )
-            public JAMSDouble PlantNDemAct;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
@@ -475,7 +469,7 @@ import java.util.ArrayList;
     private double hvsti;
     private double cnyld;
     
-    private double Ndemand_act;
+   
     private double bioNopt_act;
     private double bioN_act;
     private double bio_act;
@@ -555,7 +549,7 @@ import java.util.ArrayList;
         this.zrootd_old = ZRootOld.getValue();
         this.fnplant_act = FNPlant.getValue();
         this.bioNopt_act = BioNoptAct.getValue(); /*actual biomass in kg/ha, optimal conditions */
-        this.Ndemand_act = PlantNDemAct.getValue();
+      
         this.bioN_act = BioNAct.getValue(); /*actual biomass in kg/ha adapted by stress*/
         this.hi_act = HarvIndex.getValue();;
         this.bioag_act = BioagAct.getValue();
@@ -615,7 +609,7 @@ import java.util.ArrayList;
             bioNopt_act = 0;
             bio_opt = 0; /*Plants optimal biomass */
             bio_old = 0;
-            Ndemand_act = 0;
+          
             bio_opt_delta = 0;
             hi_act = 0;
             bioag_act = 0;
@@ -669,7 +663,7 @@ import java.util.ArrayList;
             bioNopt_act = 0;
             bio_opt = 0; /*Plants optimal biomass */
             bio_old = 0;
-            Ndemand_act = 0;
+           
             bio_opt_delta = 0;
             hi_act = 0;
             bioag_act = 0;
@@ -739,7 +733,7 @@ import java.util.ArrayList;
         BioNoptAct.setValue(bioNopt_act);
         BioAct.setValue(bio_opt); /*Plants optimal biomass */
         BioOld.setValue(bio_old);
-        PlantNDemAct.setValue(Ndemand_act);
+       
         BioOpt_delta.setValue(bio_opt_delta);
         HarvIndex.setValue(hi_act);
         BioagAct.setValue(bioag_act);
