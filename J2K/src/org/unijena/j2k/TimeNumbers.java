@@ -16,7 +16,7 @@ import org.unijena.jams.data.JAMSCalendar;
  * @author c0krpe
  */
 public class TimeNumbers {
-    
+    static double a = 12;
     /** Creates a new instance of TimeNumbers */
     public TimeNumbers() {
     }
@@ -33,9 +33,16 @@ public class TimeNumbers {
         System.out.println("Months: " + time.MONTH);
         System.out.println("Years: " + time.YEAR);
         
-        test();
+        double x1 = 4;
+        double x2 = 2;
+        double y = (1 - (8 * x1) + (7 * Math.pow(x1,2)) - 7./3. * Math.pow(x1,3) + 1./4. * Math.pow(x1,4)) * Math.pow(x2,2) * Math.exp(-1 * x2);
+        System.out.println("y: " + y);
+       
+        
+        
         
     }
+    
     
     public static void test(){
         double NODATA = -9999;

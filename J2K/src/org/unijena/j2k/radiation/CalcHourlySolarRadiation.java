@@ -66,34 +66,6 @@ import org.unijena.jams.model.*;
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
             update = JAMSVarDescription.UpdateType.RUN,
-            description = "longitude of entity"
-            )
-            public JAMSDouble longitude;
-    
-    @JAMSVarDescription(
-            access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.RUN,
-            description = "elevation of entity"
-            )
-            public JAMSDouble elevation;
-    
-    @JAMSVarDescription(
-            access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.RUN,
-            description = "slope of entity"
-            )
-            public JAMSDouble slope;
-    
-    @JAMSVarDescription(
-            access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.RUN,
-            description = "aspect of entity"
-            )
-            public JAMSDouble aspect;
-    
-    @JAMSVarDescription(
-            access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "state variable slope aspect correction factor"
             )
             public JAMSDouble actSlAsCf;
@@ -104,13 +76,6 @@ import org.unijena.jams.model.*;
             description = "state variable fraction of sunshine in one hour"
             )
             public JAMSDouble sunFrac;
-    
-    @JAMSVarDescription(
-            access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.RUN,
-            description = "extraterrestic radiation [MJ/m²]"
-            )
-            public JAMSDoubleArray extraRad = new JAMSDoubleArray();
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
@@ -181,11 +146,11 @@ import org.unijena.jams.model.*;
             
             double lat = latitude.getValue();
             double radLat = org.unijena.j2k.mathematicalCalculations.MathematicalCalculations.deg2rad(lat);
-            double longi = longitude.getValue();
-            double radLon =  org.unijena.j2k.mathematicalCalculations.MathematicalCalculations.deg2rad(longi);
-            double elev = elevation.getValue();
-            double slo = slope.getValue();
-            double asp = aspect.getValue();
+            //double longi = longitude.getValue();
+            //double radLon =  org.unijena.j2k.mathematicalCalculations.MathematicalCalculations.deg2rad(longi);
+            //double elev = elevation.getValue();
+            //double slo = slope.getValue();
+            //double asp = aspect.getValue();
             double SAC = actSlAsCf.getValue();
             double declination = 0;
             double invRelDistEarthSun = 0;

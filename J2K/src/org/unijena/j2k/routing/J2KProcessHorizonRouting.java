@@ -173,6 +173,9 @@ import org.unijena.jams.model.*;
             for(int i = 0; i < srcHors; i++){ 
                 RD2out[i] = 0;
             }
+            if(recHors == 0){
+                System.out.println("RecHors is null at entity " + entity.getObject("ID"));
+            }
             RD2in[recHors-1] += inGWExcess.getValue();
             double RD1in = toPoly.getDouble("inRD1");
                         
