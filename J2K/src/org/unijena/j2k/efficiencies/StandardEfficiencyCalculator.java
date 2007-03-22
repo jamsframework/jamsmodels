@@ -256,12 +256,10 @@ import org.unijena.jams.model.*;
         if(eff_sd.before(model_sd)){
             this.effTimeInterval.setStart(model_sd);
             getModel().getRuntime().println("effStartdate was set equal to model startdate", JAMS.STANDARD);
-            sdEff = sdMod;
         }
         if(model_ed.before(eff_ed)){
             this.effTimeInterval.setEnd(model_ed);
             getModel().getRuntime().println("effEnddate was set equal to model enddate", JAMS.STANDARD);
-            edEff = edMod;
         }
         
         /*if(eff_tres == eff_sd.DAY_OF_YEAR){
@@ -298,6 +296,17 @@ import org.unijena.jams.model.*;
             while(modStart.before(effStart)){
                 startStep++;
                 modStart.add(JAMSCalendar.MONTH,1);
+            }
+            this.interValStart = startStep;
+            this.interValEnd = this.interValStart + this.effTsteps;
+        }
+        else if(eff_tres == eff_sd.YEAR){
+            JAMSCalendar modStart = modelTimeInterval.getStart().clone();
+            JAMSCalendar effStart = effTimeInterval.getStart().clone();
+            int startStep = 0;
+            while(modStart.before(effStart)){
+                startStep++;
+                modStart.add(JAMSCalendar.YEAR,1);
             }
             this.interValStart = startStep;
             this.interValEnd = this.interValStart + this.effTsteps;
