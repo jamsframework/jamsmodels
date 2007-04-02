@@ -123,7 +123,7 @@ title="ABCSnowModule",
         if(this.active == null || this.active.getValue()){
             //System.out.println("RUN ABCModel");
             double snowStorage = this.snowStorage.getValue();
-            double precip = (this.rain.getValue() + this.snow.getValue()) * this.area.getValue();
+            double precip = (this.rain.getValue() + this.snow.getValue());// * this.area.getValue();
             double tmin = this.tmin.getValue();
             double tmean = this.tmean.getValue();
             double tmax = this.tmax.getValue();
