@@ -61,7 +61,7 @@ import org.unijena.jams.model.*;
             description = "the inflow from the data file or another model"
             )
             public JAMSDouble inflow;
-    
+        
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
             update = JAMSVarDescription.UpdateType.RUN,
