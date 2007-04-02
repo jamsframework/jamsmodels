@@ -210,6 +210,8 @@ import org.unijena.jams.model.*;
        //if(this.mxq.getValue() == null){
         if(firstDay){
             int n = (int)this.nq.getValue();
+            if(n <= 1)
+                n = 1;
             double[] stors = new double[n];
             this.mxq.setValue(stors);
             this.mxs.setValue(0);
@@ -227,9 +229,11 @@ import org.unijena.jams.model.*;
            n = 1;
        double[] qOut = nash(input, n, this.kq.getValue(), this.mxq.getValue());
        double[] stor = new double[qOut.length - 1]; 
+       
        for(int i = 0; i < stor.length; i++)
            stor[i] = qOut[i];
        this.mxq.setValue(stor);
+       
        this.mqq.setValue(qOut[stor.length]);
        
        //Run Infinite Linear tank (Nash Cascade with N=1) routing of slowflow
@@ -301,11 +305,12 @@ import org.unijena.jams.model.*;
             }
         }
         xend[n] = oo[n-1];
+        
         return xend;
     }
     
     public void cleanup() throws JAMSEntity.NoSuchAttributeException {
-       System.out.println("HymodCleanup!");
+       
        this.mxs.setValue(0);
        this.firstDay = true;
     }
