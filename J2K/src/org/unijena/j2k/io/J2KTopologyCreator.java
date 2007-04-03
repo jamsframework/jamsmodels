@@ -36,13 +36,6 @@ import org.unijena.jams.JAMS;
 public class J2KTopologyCreator extends JAMSComponent {
     
     @JAMSVarDescription(
-            access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.INIT,
-            description = "Workspace directory name"
-            )
-            public JAMSString dirName;
-    
-    @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
             update = JAMSVarDescription.UpdateType.RUN,
             description = "Collection of hru objects"
