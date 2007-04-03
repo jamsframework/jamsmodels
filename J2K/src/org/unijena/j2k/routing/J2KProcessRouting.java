@@ -56,6 +56,13 @@ import org.unijena.jams.model.*;
             public JAMSEntityCollection reaches;
     
     @JAMSVarDescription(
+            access = JAMSVarDescription.AccessType.READ,
+            update = JAMSVarDescription.UpdateType.RUN,
+            description = "Collection of reservoir objects"
+            )
+            public JAMSEntityCollection reservoirs;
+    
+    @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
             update = JAMSVarDescription.UpdateType.RUN,
             description = "HRU statevar RD1 inflow"
@@ -134,7 +141,13 @@ import org.unijena.jams.model.*;
         JAMSEntity toPoly = (JAMSEntity) entity.getObject("to_poly");
         //receiving reach
         JAMSEntity toReach = (JAMSEntity) entity.getObject("to_reach");
-        
+        //receiving reservoir
+        JAMSEntity toReservoir = null;
+        try{
+            toReservoir = (JAMSEntity)entity.getObject("to_reservoir");
+        }catch(JAMSEntity.NoSuchAttributeException e){
+            toReservoir = null;
+        }
         double RD1out = outRD1.getValue();
         double RD2out = outRD2.getValue();
         double RG1out = outRG1.getValue();
@@ -176,9 +189,6 @@ import org.unijena.jams.model.*;
             double RG1in = toReach.getDouble("inRG1");
             double RG2in = toReach.getDouble("inRG2");
             
-            if(RD2out > 0){
-                int junk = 1;
-            }
             RD1in = RD1in + RD1out;
             RD2in = RD2in + RD2out;
             RG1in = RG1in + RG1out;
@@ -200,7 +210,32 @@ import org.unijena.jams.model.*;
             inGWExcess.setValue(0);
             toReach.setDouble("inRG2", RG2in);
             
-        } else{
+        }else if(toReservoir != null){
+            double resRD1 = toReservoir.getDouble("compRD1");
+            double resRD2 = toReservoir.getDouble("compRD2");
+            double resRG1 = toReservoir.getDouble("compRG1");
+            double resRG2 = toReservoir.getDouble("compRG2");
+            
+            resRD1 = resRD1 + RD1out;
+            resRD2 = resRD2 + RD2out;
+            resRG1 = resRG1 + RG1out;
+            resRG2 = resRG2 + RG2out;
+            
+            RD1out = 0;
+            RD2out = 0;
+            RG1out = 0;
+            RG2out = 0;
+            
+            outRD1.setValue(RD1out);
+            toReservoir.setDouble("compRD1", resRD1);
+            outRD2.setValue(RD2out);
+            toReservoir.setDouble("compRD2", resRD2);
+            outRG1.setValue(RG1out);
+            toReservoir.setDouble("compRG1", resRG1);
+            outRG2.setValue(RG2out);
+            toReservoir.setDouble("compRG2", resRG2);
+        } 
+        else{
             getModel().getRuntime().println("Current entity ID: " + (int)entity.getDouble("ID") + " has no receiver.");
         }
         
