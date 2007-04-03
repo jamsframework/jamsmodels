@@ -262,10 +262,14 @@ import org.unijena.jams.model.*;
         
         JAMSEntity entity = entities.getCurrent();
         
-        if(entity.getDouble("ID") == 100){
-            int junk = 0;
-        }
         JAMSEntity DestReach = (JAMSEntity) entity.getObject("to_reach");
+        JAMSEntity DestReservoir = null;
+        
+        try{
+            DestReservoir = (JAMSEntity)entity.getObject("to_reservoir");
+        }catch(JAMSEntity.NoSuchAttributeException e){
+            DestReservoir = null;
+        }
         
         double width = this.width.getValue();
         double slope = this.slope.getValue();
@@ -293,15 +297,26 @@ import org.unijena.jams.model.*;
         
         actAddIn.setValue(0);
         
-        double RD1DestIn, RD2DestIn, RG1DestIn, RG2DestIn, addInDestIn;
-        if(entity.getObject("to_reach") == null){
+        double RD1DestIn = 0;
+        double RD2DestIn = 0;
+        double RG1DestIn = 0;
+        double RG2DestIn = 0;
+        double addInDestIn = 0;
+        if(DestReach == null && DestReservoir == null){
             RD1DestIn = 0;//entity.getDouble(aNameCatchmentOutRD1.getValue());
             RD2DestIn = 0;//entity.getDouble(aNameCatchmentOutRD2.getValue());
             RG1DestIn = 0;//entity.getDouble(aNameCatchmentOutRG1.getValue());
             RG2DestIn = 0;//entity.getDouble(aNameCatchmentOutRG2.getValue());
             
             addInDestIn = 0;
-        } else{
+        } 
+        else if(DestReservoir != null){
+            RD1DestIn = DestReservoir.getDouble("compRD1");
+            RD2DestIn = DestReservoir.getDouble("compRD2");
+            RG1DestIn = DestReservoir.getDouble("compRG1");
+            RG2DestIn = DestReservoir.getDouble("compRG2");
+        }
+        else{
             RD1DestIn = DestReach.getDouble("inRD1");
             RD2DestIn = DestReach.getDouble("inRD2");
             RG1DestIn = DestReach.getDouble("inRG1");
@@ -365,7 +380,7 @@ import org.unijena.jams.model.*;
         
         double addInOut = q_act_out * addInPart;
         
-        //transferring runoff from this reach to the next one
+        //transferring runoff from this reach to the next one or a reservoir
         RD1DestIn = RD1DestIn + RD1out;
         RD2DestIn = RD2DestIn + RD2out;
         RG1DestIn = RG1DestIn + RG1out;
@@ -407,8 +422,8 @@ import org.unijena.jams.model.*;
         outRG2.setValue(RG2out);
         
         outAddIn.setValue(addInOut);
-        
-        if(entity.getObject("to_reach") != null){
+        //reach
+        if(DestReach != null && DestReservoir == null){
             DestReach.setDouble("inRD1",RD1DestIn);
             DestReach.setDouble("inRD2",RD2DestIn);
             DestReach.setDouble("inRG1",RG1DestIn);
@@ -416,7 +431,16 @@ import org.unijena.jams.model.*;
             
             DestReach.setDouble("inAddIn", addInDestIn);
             
-        } else {
+        }
+        //reservoir
+        else if(DestReservoir != null){
+            DestReservoir.setDouble("compRD1", RD1DestIn);
+            DestReservoir.setDouble("compRD2", RD2DestIn);
+            DestReservoir.setDouble("compRG1", RG1DestIn);
+            DestReservoir.setDouble("compRG2", RG2DestIn);
+        }
+        //outlet
+        else if(DestReach == null && DestReservoir == null){
             catchmentRD1.setValue(RD1out);
             catchmentRD2.setValue(RD2out);
             catchmentRG1.setValue(RG1out);
