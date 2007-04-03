@@ -57,10 +57,12 @@ public class StandardEntityReader_1 extends JAMSComponent {
             public JAMSEntityCollection entities;
     
     public void init() throws JAMSEntity.NoSuchAttributeException {
-        
+       
         //read entity parameter
         entities.setEntities(J2KFunctions.readParas(dirName.getValue() + "/" + entityFileName.getValue(), getModel()));
-        getModel().getRuntime().println("Entities read and created successfull!", JAMS.STANDARD);
+        int nEnt = entities.getEntityArray().length;
+        getModel().getRuntime().println("Entities read and created successfull! ("+nEnt+")", JAMS.STANDARD);
+        
         
     }
     
