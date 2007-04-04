@@ -85,7 +85,7 @@ public class ManageLanduse_szeno extends JAMSComponent {
             public JAMSInteger ManagementPos;
     
     @JAMSVarDescription(
-            access = JAMSVarDescription.AccessType.WRITE,
+            access = JAMSVarDescription.AccessType.READWRITE,
             update = JAMSVarDescription.UpdateType.RUN,
             description = "Plant exisiting or not"
             )
@@ -140,16 +140,17 @@ public class ManageLanduse_szeno extends JAMSComponent {
         this.fertNH4N.setValue(0);
         this.fertorgNactive.setValue(0);
         this.fertorgNfresh.setValue(0);
+        boolean runplantex = false;
         
-        
+        runplantex = plantExisting.getValue();
         ArrayList<J2KSNCrop> rotation = (ArrayList<J2KSNCrop>) entity.getObject("landuseRotation");
         int rotPos = RotPos.getValue();
         J2KSNCrop currentCrop = rotation.get(rotPos);
         int idc = currentCrop.idc;
         
         if (idc != 1 && idc != 2 && idc != 4 && idc != 5){
-          this.plantExisting.setValue(true);  
-        }
+          runplantex = true;  
+        } 
             
         ArrayList<J2KSNLMArable> managementList = currentCrop.managementList;
         int managementPos = ManagementPos.getValue();
@@ -187,14 +188,16 @@ public class ManageLanduse_szeno extends JAMSComponent {
             } else if (currentManagement.plant == true) {
                 //do planting here!!
                 //PHUact.setValue(0);
-                this.plantExisting.setValue(true);
+                runplantex = true;
             } else if (currentManagement.harvest != -1 && (idc == 1 || idc == 2 || idc == 4 || idc == 5 ) ) {
                 //do harvesting here!!
-                this.plantExisting.setValue(false);
+                runplantex = false;
                 
             }
         }
-       
+        
+        plantExisting.setValue(runplantex);
+        
     }
     
     private void processFertilization(J2KSNLMArable currentManagement) {
