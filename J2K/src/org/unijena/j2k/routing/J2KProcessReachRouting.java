@@ -262,7 +262,7 @@ import org.unijena.jams.model.*;
         
         JAMSEntity entity = entities.getCurrent();
         
-        JAMSEntity DestReach = (JAMSEntity) entity.getObject("to_reach");
+        JAMSEntity DestReach = (JAMSEntity)entity.getObject("to_reach");
         JAMSEntity DestReservoir = null;
         
         try{

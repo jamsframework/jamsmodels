@@ -49,6 +49,13 @@ public class J2KTopologyCreator extends JAMSComponent {
             )
             public JAMSEntityCollection reaches;
     
+    @JAMSVarDescription(
+            access = JAMSVarDescription.AccessType.READWRITE,
+            update = JAMSVarDescription.UpdateType.RUN,
+            description = "Collection of reservoir objects"
+            )
+            public JAMSEntityCollection reservoirs;
+    
     public void init() throws JAMSEntity.NoSuchAttributeException {
         
         //create object associations from id attributes for hrus and reaches
@@ -133,8 +140,13 @@ public class J2KTopologyCreator extends JAMSComponent {
         
         HashMap<Double, JAMSEntity> hruMap = new HashMap<Double, JAMSEntity>();
         HashMap<Double, JAMSEntity> reachMap = new HashMap<Double, JAMSEntity>();
+        HashMap<Double, JAMSEntity> reservoirMap = null;
+        if(this.reservoirs != null){
+            reservoirMap = new HashMap<Double, JAMSEntity>();
+        }
         Iterator<JAMSEntity> hruIterator;
         Iterator<JAMSEntity> reachIterator;
+        Iterator<JAMSEntity> reservoirIterator;
         JAMSEntity e;
         
         //put all entities into a HashMap with their ID as key
@@ -148,6 +160,13 @@ public class J2KTopologyCreator extends JAMSComponent {
             e = reachIterator.next();
             reachMap.put(e.getDouble("ID"),  e);
         }
+        if(this.reservoirs != null){
+            reservoirIterator = reservoirs.getEntities().iterator();
+            while (reservoirIterator.hasNext()) {
+                e = reservoirIterator.next();
+                reservoirMap.put(e.getDouble("ID"),  e);
+            }
+        }
         
         //associate the hru entities with their downstream entity
         hruIterator = hrus.getEntities().iterator();
@@ -155,6 +174,13 @@ public class J2KTopologyCreator extends JAMSComponent {
             e = hruIterator.next();
             e.setObject("to_poly", hruMap.get(e.getDouble("to_poly")));
             e.setObject("to_reach", reachMap.get(e.getDouble("to_reach")));
+            if(this.reservoirs != null){
+                try {
+                    e.setObject("to_reservoir", reservoirMap.get(e.getDouble("to_reservoir")));
+                } catch (JAMSEntity.NoSuchAttributeException ex) {
+                    //ex.printStackTrace();
+                }
+            }
         }
         
         //associate the reach entities with their downstream entity
@@ -162,6 +188,13 @@ public class J2KTopologyCreator extends JAMSComponent {
         while (reachIterator.hasNext()) {
             e = reachIterator.next();
             e.setObject("to_reach", reachMap.get(e.getDouble("to-reach")));
+            if(this.reservoirs != null){
+                try {
+                    e.setObject("to_reservoir", reservoirMap.get(e.getDouble("to-reservoir")));
+                } catch (JAMSEntity.NoSuchAttributeException ex) {
+                    //ex.printStackTrace();
+                }
+            }
         }
         
         //check for cycles

@@ -46,46 +46,87 @@ import org.unijena.jams.model.*;
             update = JAMSVarDescription.UpdateType.RUN,
             description = "The reach collection"
             )
-            public JAMSEntityCollection entities;
+            public JAMSEntityCollection reaches;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
             update = JAMSVarDescription.UpdateType.INIT,
             description = "The receiver reach ID"
             )
-            public JAMSInteger outReachID;
+            public JAMSDouble outReachID;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
             update = JAMSVarDescription.UpdateType.RUN,
-            description = "the inflow from the data file or another model"
+            description = "data array read from file"
             )
-            public JAMSDouble inflow;
-    
+            public JAMSDoubleArray inDataArray;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
+            update = JAMSVarDescription.UpdateType.RUN,
+            description = "var names in data array"
+            )
+            public JAMSStringArray inDataNames;
+    
+    @JAMSVarDescription(
+            access = JAMSVarDescription.AccessType.READWRITE,
+            update = JAMSVarDescription.UpdateType.RUN,
+            description = "the outflow from the data file or another model"
+            )
+            public JAMSDouble resOutflow;
+    
+    @JAMSVarDescription(
+            access = JAMSVarDescription.AccessType.READWRITE,
+            update = JAMSVarDescription.UpdateType.RUN,
+            description = "the reservoir area read in from file"
+            )
+            public JAMSDouble resArea;
+    
+    @JAMSVarDescription(
+            access = JAMSVarDescription.AccessType.READWRITE,
+            update = JAMSVarDescription.UpdateType.RUN,
+            description = "the reservoir volume read in from file"
+            )
+            public JAMSDouble resObsVolume;
+    
+    @JAMSVarDescription(
+            access = JAMSVarDescription.AccessType.READWRITE,
+            update = JAMSVarDescription.UpdateType.RUN,
+            description = "the calculated reservoir volume"
+            )
+            public JAMSDouble resCalcVolume;
+    
+    @JAMSVarDescription(
+            access = JAMSVarDescription.AccessType.READWRITE,
+            update = JAMSVarDescription.UpdateType.RUN,
+            description = "the reservoir depth read in from file"
+            )
+            public JAMSDouble resDepth;
+    
+    @JAMSVarDescription(
+            access = JAMSVarDescription.AccessType.READWRITE,
             update = JAMSVarDescription.UpdateType.RUN,
             description = "component RD1"
             )
             public JAMSDouble compRD1;
     
     @JAMSVarDescription(
-            access = JAMSVarDescription.AccessType.READ,
+            access = JAMSVarDescription.AccessType.READWRITE,
             update = JAMSVarDescription.UpdateType.RUN,
             description = "component RD2"
             )
             public JAMSDouble compRD2;
     
     @JAMSVarDescription(
-            access = JAMSVarDescription.AccessType.READ,
+            access = JAMSVarDescription.AccessType.READWRITE,
             update = JAMSVarDescription.UpdateType.RUN,
             description = "component RG1"
             )
             public JAMSDouble compRG1;
     
     @JAMSVarDescription(
-            access = JAMSVarDescription.AccessType.READ,
+            access = JAMSVarDescription.AccessType.READWRITE,
             update = JAMSVarDescription.UpdateType.RUN,
             description = "component RG2"
             )
@@ -94,106 +135,199 @@ import org.unijena.jams.model.*;
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
             update = JAMSVarDescription.UpdateType.RUN,
-            description = "additional inflow to the specific reach"
+            description = "outflow RD1"
             )
-            public JAMSDouble inAddIn;
+            public JAMSDouble outRD1;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
             update = JAMSVarDescription.UpdateType.RUN,
-            description = "outflow of the additional inflow from the specific reach"
+            description = "outflow RD2"
             )
-            public JAMSDouble outAddIn;
+            public JAMSDouble outRD2;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
             update = JAMSVarDescription.UpdateType.RUN,
-            description = "the actual channel storage of the additional inflow of the specific reach"
+            description = "outflow RG1"
             )
-            public JAMSDouble actAddIn;
+            public JAMSDouble outRG1;
     
     @JAMSVarDescription(
-            access = JAMSVarDescription.AccessType.WRITE,
+            access = JAMSVarDescription.AccessType.READWRITE,
             update = JAMSVarDescription.UpdateType.RUN,
-            description = "Catchment additional input outlet storage"
+            description = "outflow RG2"
             )
-            public JAMSDouble catchmentAddIn;
+            public JAMSDouble outRG2;
     
-      
+    @JAMSVarDescription(
+            access = JAMSVarDescription.AccessType.READ,
+            update = JAMSVarDescription.UpdateType.RUN,
+            description = "the precipitation"
+            )
+            public JAMSDouble precip;
+    
+    @JAMSVarDescription(
+            access = JAMSVarDescription.AccessType.READ,
+            update = JAMSVarDescription.UpdateType.RUN,
+            description = "the potential et"
+            )
+            public JAMSDouble pET;
+    
+    @JAMSVarDescription(
+            access = JAMSVarDescription.AccessType.READWRITE,
+            update = JAMSVarDescription.UpdateType.RUN,
+            description = "the actual et"
+            )
+            public JAMSDouble actET;
+    
+    @JAMSVarDescription(
+            access = JAMSVarDescription.AccessType.READ,
+            update = JAMSVarDescription.UpdateType.INIT,
+            description = "startVolume"
+            )
+            public JAMSDouble startVolume;
+    
+    int nComp = 4;
+    double[] relComp;
+    double[] runComp;
+    double[] outComp;
+    JAMSEntity recReach = null;
+    double currVolume = 0;
+    
     /*
      *  Component run stages
      */
     
     public void init() throws JAMSEntity.NoSuchAttributeException {
+        relComp = new double[nComp];
+        runComp = new double[nComp];
+        outComp = new double[nComp];
         
+        this.resCalcVolume.setValue(this.startVolume.getValue());
+        this.compRD1.setValue(this.startVolume.getValue() * 0.1);
+        this.compRD1.setValue(this.startVolume.getValue() * 0.3);
+        this.compRD1.setValue(this.startVolume.getValue() * 0.3);
+        this.compRD1.setValue(this.startVolume.getValue() * 0.3);
+        
+        //find the recReachObject
+        int nEnts = this.reaches.getEntityArray().length;
+        for(int i = 0; i < nEnts; i++){
+            
+            if(this.reaches.getEntityArray()[i].getDouble("ID") == this.getContext().getEntities().getCurrent().getDouble("to_reach")){
+                recReach = this.reaches.getEntityArray()[i];
+            }
+        }
     }
     
     public void run() throws JAMSEntity.NoSuchAttributeException {
         
-        JAMSEntity entity = entities.getCurrent();
-        double inflow = this.inflow.getValue();
+        //passing the file values to state vars
+        for(int i = 0; i < this.inDataArray.getValue().length; i++){
+            if(this.inDataNames.getValue()[i].equals("runoff")){
+                this.resOutflow.setValue(this.inDataArray.getValue()[i]);
+            }
+            else if(this.inDataNames.getValue()[i].equals("depth")){
+                this.resDepth.setValue(this.inDataArray.getValue()[i]);
+            }
+            else if(this.inDataNames.getValue()[i].equals("area")){
+                this.resArea.setValue(this.inDataArray.getValue()[i]);
+            }
+            else if(this.inDataNames.getValue()[i].equals("volume")){
+                this.resObsVolume.setValue(this.inDataArray.getValue()[i]);
+            }
+            else{
+                System.out.println("Error, wrong attribute name in reservoir file!");
+            }
+                  
+        }
+        //double runoff = this.inDataArray.getValue()[0];
+        //get states and pass them to local vars
+        this.runComp[0] = this.compRD1.getValue();
+        this.runComp[1] = this.compRD2.getValue();
+        this.runComp[2] = this.compRG1.getValue();
+        this.runComp[3] = this.compRG2.getValue();
         
-        //only active for receiver reach
-        if(entity.getDouble("ID") == outReachID.getValue()){
-            double actAddIn = this.actAddIn.getValue();
-            
-            this.actAddIn.setValue(actAddIn + inflow);
-            
-        }    
+        currVolume = this.resCalcVolume.getValue();
         
+        double runArea = this.resArea.getValue();
+        double runPET = this.pET.getValue() * runArea;
         
+        //add precip to comp RD1
+        this.runComp[0] = this.runComp[0] + this.precip.getValue() * runArea;
         
+        //for(int i = 0; i < runComp.length; i++)
+        //    currVolume = currVolume + runComp[i];
+        
+        //recalculate relative parts
+        calcRelComponents();
+        
+        //substract et
+        if(currVolume < runPET){
+            this.actET.setValue(currVolume);
+            for(int i = 0; i < runComp.length; i++)
+                runComp[i] = 0;
+        }else{
+            this.actET.setValue(runPET);
+            for(int i = 0; i < runComp.length; i++)
+                runComp[i] = runComp[i] - runPET * relComp[i];  
+        }
+        
+        //recalculate relative parts and volume
+        calcRelComponents();
+        
+        //substract outflow
+        double runOutflow = this.resOutflow.getValue() * 1000 * 86400;
+        
+        if(currVolume < runOutflow){
+            for(int i = 0; i < runComp.length; i++){
+                outComp[i] = runOutflow * relComp[i];
+                runComp[i] = 0;
+                relComp[i] = 0;
+            }
+        }else{
+            for(int i = 0; i < runComp.length; i++){
+                outComp[i] = runOutflow * relComp[i];
+                runComp[i] = runComp[i] - outComp[i];
+            } 
+        }
+        
+        //recalculate relative parts and volume
+        calcRelComponents();
+        
+        //route outflow to receiver reach
+        recReach.setDouble("inRD1", outComp[0] + recReach.getDouble("inRD1"));
+        recReach.setDouble("inRD2", outComp[1] + recReach.getDouble("inRD2"));
+        recReach.setDouble("inRG1", outComp[2] + recReach.getDouble("inRG1"));
+        recReach.setDouble("inRG2", outComp[3] + recReach.getDouble("inRG2"));
+        
+        //mapping vars back
+        this.resCalcVolume.setValue(this.currVolume);
+        this.compRD1.setValue(this.runComp[0]);
+        this.compRD2.setValue(this.runComp[1]);
+        this.compRG1.setValue(this.runComp[2]);
+        this.compRG2.setValue(this.runComp[3]);
+        
+        System.out.println(""+ this.currVolume + "\t" + this.actET.getValue()/runArea + "\t" + this.resOutflow.getValue());
     }
     
     public void cleanup() {
         
     }
     
-    /**
-     * Calculates flow velocity in specific reach
-     * @param q the runoff in the reach
-     * @param width the width of reach
-     * @param slope the slope of reach
-     * @param rough the roughness of reach
-     * @param secondsOfTimeStep the current time step in seconds
-     * @return flow_velocity in m/s
-     */
-    /*public static double calcFlowVelocity(double q, double width, double slope, double rough, int secondsOfTimeStep){
-        double afv = 1;
-        double veloc = 0;
+    private void calcRelComponents(){
         
-        /**
-         *transfering liter/d to m³/s
-         **/
-       /* double q_m = q / (1000 * secondsOfTimeStep);
-        double rh = calcHydraulicRadius(afv, q_m, width);
-        boolean cont = true;
-        while(cont){
-            veloc = (rough) * Math.pow(rh, (2.0/3.0)) * Math.sqrt(slope);
-            if((Math.abs(veloc - afv)) > 0.001){
-                afv = veloc;
-                rh = calcHydraulicRadius(afv, q_m, width);
-            } else{
-                cont = false;
-                afv = veloc;
-            }
+        currVolume = 0;
+        for(int i = 0; i < nComp; i++){
+            currVolume = currVolume + runComp[i];
         }
-        return afv;
+        for(int i = 0; i < nComp; i++){
+            if(currVolume > 0)
+                relComp[i] = runComp[i] / currVolume;
+            else
+                relComp[i] = 0;
+        }
     }
     
-    /**
-     * Calculates the hydraulic radius of a rectangular
-     * stream bed depending on daily runoff and flow_velocity
-     * @param v the flow velocity
-     * @param q the daily runoff
-     * @param width the width of reach
-     * @return hydraulic radius in m
-     */
-   /* public static double calcHydraulicRadius(double v, double q, double width){
-        double A = (q / v);
-        
-        double rh = A / (width + 2*(A / width));
-        
-        return rh;
-    }*/
+    
 }
