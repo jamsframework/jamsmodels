@@ -241,13 +241,13 @@ public class MapCreator extends jams.components.gui.MapCreator {
 	    super.stylesFileName = stylesFileName;
 	    super.styleID = styleID;
 	    super.dirName = dirName;
-	    super.showAttr = showAttr;
-	    super.numOfRanges = numOfRanges;
-	    super.rangeColor = rangeColor;
+//	    super.showAttr = showAttr;
+//	    super.numOfRanges = numOfRanges;
+//	    super.rangeColor = rangeColor;
 	    super.shapeFileName1 = shapeFileName1;
 	    super.shapeFileName2 = shapeFileName2;
 	    super.shapeFileName3 = shapeFileName3;
-	    super.shapeColors = shapeColors;
+//	    super.shapeColors = shapeColors;
 	    super.baseShape = baseShape;
 	    super.run();
 	}
@@ -268,7 +268,7 @@ public class MapCreator extends jams.components.gui.MapCreator {
 				
 	
 	protected void createPanel() {	    			    
-	    super.createPanel();
+	    //super.createPanel();
 	    
 	    try {	
 		plot = new XYPlot();
