@@ -205,7 +205,7 @@ import org.unijena.jams.model.*;
         double orgNhum = 0; /*concentration of humic organic nitrogen in the layer (mg/kg)*/
         int layer = (int)Layer.getValue();
         double runlayerdepth;
-        plantExisting.setValue(true);
+        plantExisting.setValue(false);
         double runsoil_bulk_density;
         
         double runC_org;
