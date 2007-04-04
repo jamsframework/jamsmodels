@@ -1013,8 +1013,10 @@ import java.io.*;
             sumN_activ_pool = runN_activ_pool + sumN_activ_pool;
             sumNH4_Pool = runNH4_Pool + sumNH4_Pool;
             sumN_residue_pool = sumN_residue_pool + runN_residue_pool_fresh;
-            sumNO3_Pool = runNO3_Pool + sumNO3_Pool;
             
+            if (i < 2){
+            sumNO3_Pool = runNO3_Pool + sumNO3_Pool;
+            }
             suminterflowNabs = runinterflowNabs + suminterflowNabs;
             suminterflowN = runinterflowN + suminterflowN;
             Sumvolati_trans = Sumvolati_trans + runvolati_trans;
