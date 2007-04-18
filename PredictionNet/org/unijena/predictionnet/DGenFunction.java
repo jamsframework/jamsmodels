@@ -32,11 +32,12 @@ package org.unijena.predictionnet;
 public class DGenFunction
         implements ActivationFunction {
     
-    private double p,s;
+    private double p,s,q;
         
-    public DGenFunction(double s,double p) {
+    public DGenFunction(double s,double p,double q) {
         this.p = p;
 	this.s = s;
+	this.q = q;
     }
     
        

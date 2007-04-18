@@ -29,7 +29,7 @@ import java.util.Map.Entry;
 import javax.swing.*;
 import java.math.*;
 import java.io.FileWriter;
-
+import org.unijena.predictionnet.NeuralConnection.*;
 /**
  *
  * @author Christian Fischer
@@ -45,19 +45,13 @@ public class Neuron {
     protected double input;
 
     protected long ID;
-    protected double lastWeightDelta;
-    
+        
     protected Vector ActivationFunctions = new Vector();
-    public HashMap<Neuron,Double> Successors = new HashMap<Neuron,Double>();
-    protected HashMap<Neuron,Double> Predecessors = new HashMap<Neuron,Double>();
-    
-    protected HashMap<Neuron,Double> WeightBuffer = new HashMap<Neuron,Double>();
-    protected HashMap<Neuron,Double> OldWeight = new HashMap<Neuron,Double>();
-    
-    static double learningRate = 0.01;
-    static double momentum = 0.0;
-    static Random generator = new Random();
-    
+    protected Vector<NeuralConnection> OutputConnection = new Vector<NeuralConnection>();
+    protected Vector<NeuralConnection> InputConnection = new Vector<NeuralConnection>();
+                    
+    static double learningRate = 0.0;
+       
     public Neuron() {
         this.initalize();
     }
@@ -70,14 +64,11 @@ public class Neuron {
         activation = 0;
         delta = 0;
         lastInput = 0;
-	//ID = 0;
-	lastWeightDelta = 0;
     }
     public void reset() {
 	this.activation = 0;
 	this.input = 0;
 	this.delta = 0;
-	this.lastWeightDelta = 0;
     }
     
     public void addToInput(double value) {
@@ -97,13 +88,12 @@ public class Neuron {
         calc(input);
         //reset input
 	input = 0;
-        
-	Iterator<Entry<Neuron,Double>> e = Successors.entrySet().iterator();
-	
-	while (e.hasNext()) {
-	    Entry<Neuron,Double> entr = e.next();	    
-	    entr.getKey().addToInput(this.activation*entr.getValue());
-	}
+        		
+	for (int i=0;i<this.OutputConnection.size();i++) {
+	    NeuralConnection connection = this.OutputConnection.get(i);
+	    
+	    connection.dest.addToInput(this.activation*connection.Weight);
+	    }		
     }
    
     public void backpropagate() {
@@ -111,12 +101,11 @@ public class Neuron {
 	//reset error
 	error = 0;
 	
-	Iterator<Entry<Neuron,Double>> e = Predecessors.entrySet().iterator();
-		
-	while (e.hasNext()) {	   	    
-	    Entry<Neuron,Double> entr = e.next();	    	    		    
-	    entr.getKey().addToError(this.delta*entr.getValue());
-	}
+	for (int i=0;i<this.InputConnection.size();i++) {
+	    NeuralConnection connection = this.InputConnection.get(i);
+	    
+	    connection.src.addToError(this.delta*connection.Weight);
+	    }	  		
     }
        
     protected double calc(double value) {        
@@ -154,91 +143,52 @@ public class Neuron {
             gc = (GenericFunction) e.nextElement();
             af = gc.getDFunction();
 
-            delta += af.calculate(value) * error * buffer;
+            delta += af.calculate(value)* error * buffer; // */this.activation*(1.0-this.activation);
         }                    
+	
         return delta;
     }
-        
-    protected void BufferAdjustWeight() {
-	Iterator<Entry<Neuron,Double>> e = Predecessors.entrySet().iterator();
-		
-	while (e.hasNext()) {
-	    Entry<Neuron,Double> entr = e.next();	    
 
-	    if (!WeightBuffer.containsKey(entr.getKey())) {
-		WeightBuffer.put(entr.getKey(),0.0);
-		OldWeight.put(entr.getKey(),entr.getValue());
-	    }
+    protected double updateWeightDelta() {
+	for (int i=0;i<this.InputConnection.size();i++) {
+	    NeuralConnection connection = this.InputConnection.get(i);
 	    
-	    double old = WeightBuffer.get(entr.getKey());	    
-	    double next = delta*entr.getKey().getActivation() + old;
-	    	  	    	    
-	    WeightBuffer.remove(entr.getKey());
-	    WeightBuffer.put(entr.getKey(),next);	    	     
+	    connection.Weight_Delta += delta*connection.src.getActivation()*learningRate;	    	    	    	  
 	    }	    
+	return 0;
     }
     
-    protected void cleanWeightBuffer() {
-	WeightBuffer.clear();
-	OldWeight.clear();
-    }
-    
-    protected void commitWeightBuffer(boolean probFct) {
-	Iterator<Entry<Neuron,Double>> e = Predecessors.entrySet().iterator();
-		
-	while (e.hasNext()) {
-	    Entry<Neuron,Double> entr = e.next();	    
-
-	    double next = 0;
-/*	    if (probFct) {
-		if ( this.generator.nextDouble() < 0.005)
-		    next = (generator.nextDouble() - 0.5) * 1.0;
-		else
-		    next = OldWeight.get(entr.getKey()) + WeightBuffer.get(entr.getKey())*this.learningRate;
-	    }
-	    else*/
-		next = OldWeight.get(entr.getKey()) + WeightBuffer.get(entr.getKey())*this.learningRate;
-	    	  	    
-	    if (next < -10)
-		next = -10;
-	    if (next > 10)
-		next = 10;
-	    
-	    entr.setValue(next);	    
-	    entr.getKey().Successors.remove(this);
-	    entr.getKey().Successors.put(this,next);	    
-	    }
-    } 
-    
-    protected double adjustWeight() {
-	Iterator<Entry<Neuron,Double>> e = Predecessors.entrySet().iterator();
-		
-	while (e.hasNext()) {
-	    Entry<Neuron,Double> entr = e.next();	    
-	    	  
-	    double next = entr.getValue()+delta*entr.getKey().getActivation()*learningRate;
-	    	  	    
-	    if (next < -10)
-		next = -10;
-	    if (next > 10)
-		next = 10;
-	    
-	    entr.setValue(next);
-	    
-	    entr.getKey().Successors.remove(this);
-	    entr.getKey().Successors.put(this,next);	    
+    protected double adjustWeight() {				
+	for (int i=0;i<this.InputConnection.size();i++) {
+	    NeuralConnection connection = this.InputConnection.get(i);
+	    	    
+	    connection.update();
 	    }	    
 	return 0;
     }
 
      protected void AddConnection(Neuron Predecessors,Neuron Successor,double weight) {
-	Predecessors.Successors.put(Successor,weight);
-	Successor.Predecessors.put(Predecessors,weight);
+	NeuralConnection connection = new NeuralConnection();
+	connection.Weight = weight;
+	connection.Weight_Delta = 0;
+	connection.src = Predecessors;
+	connection.dest = Successor;
+	connection.oldWeightDelta = 0;
+	
+	Predecessors.OutputConnection.add(connection);
+	Successor.InputConnection.add(connection);
     }
      
     protected void AddConnection(Neuron Successor,double weight) {
-	this.Successors.put(Successor,weight);
-	Successor.Predecessors.put(this,weight);
+	NeuralConnection connection = new NeuralConnection();
+	connection.Weight = weight;
+	connection.Weight_Delta = 0;
+	connection.src = this;
+	connection.dest = Successor;
+	connection.oldWeightDelta = 0;
+	
+	this.OutputConnection.add(connection);
+	Successor.InputConnection.add(connection);
     }
     
     public void addToError(double delta) {

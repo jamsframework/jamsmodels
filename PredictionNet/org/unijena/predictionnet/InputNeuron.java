@@ -43,7 +43,7 @@ public class InputNeuron extends Neuron {
     public void SetInput(double value) {
         input = value;
     }
-	                 
+/*	                 
    public void propagate() {
         //calculate activation
         calc(input);
@@ -54,5 +54,5 @@ public class InputNeuron extends Neuron {
 	    Entry<Neuron,Double> entr = e.next();	    
 	    entr.getKey().addToInput(this.activation*entr.getValue());
 	}
-    }          
+    }          */
 }

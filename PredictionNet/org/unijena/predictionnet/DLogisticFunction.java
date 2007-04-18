@@ -41,7 +41,7 @@ public class DLogisticFunction
        
     public double calculate(double x) {
 	double expterm = Math.exp(-x*beta);
-	return beta*expterm / (expterm*expterm);
+	return beta*expterm / ((1 + expterm)*(1 + expterm));
     }
     
     public double[] getParams() {

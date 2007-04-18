@@ -31,7 +31,7 @@ package org.unijena.predictionnet;
 
 public class LogisticFunction
         implements ActivationFunction {
-    
+
     private double beta;
         
     public LogisticFunction(double beta) {

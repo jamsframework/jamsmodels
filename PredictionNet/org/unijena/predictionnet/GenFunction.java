@@ -42,7 +42,7 @@ public class GenFunction
     
        
     public double calculate(double x) {
-	return s*Math.sin(p*x);
+	return s*Math.sin(p*x)+q;
     }
     
     public double[] getParams() {
@@ -56,7 +56,7 @@ public class GenFunction
     
 //derive polynom, return polynom of degree (n-1)
     public ActivationFunction derive() {
-	DGenFunction derivation = new DGenFunction(s,p);
+	DGenFunction derivation = new DGenFunction(s,p,q);
 	return derivation;
     }
         
