@@ -23,6 +23,7 @@
 
 package org.unijena.j2k.efficiencies;
 
+import java.util.Locale;
 import java.util.Vector;
 
 import org.unijena.j2k.statistics.Regression;
@@ -35,7 +36,7 @@ import org.unijena.jams.model.*;
  * @author Peter Krause
  */
 @JAMSComponentDescription(
-        title="StandardEfficiencyCalculator",
+title="StandardEfficiencyCalculator",
         author="Peter Krause",
         description="Calculates various efficiency measures"
         )
@@ -44,149 +45,149 @@ import org.unijena.jams.model.*;
     /*
      *  Component variables
      */
-	
-	@JAMSVarDescription(
-            access = JAMSVarDescription.AccessType.READ,
+    
+    @JAMSVarDescription(
+    access = JAMSVarDescription.AccessType.READ,
             update = JAMSVarDescription.UpdateType.RUN,
             description = "time"
             )
             public JAMSCalendar time;
-	
+    
     @JAMSVarDescription(
-            access = JAMSVarDescription.AccessType.READ,
+    access = JAMSVarDescription.AccessType.READ,
             update = JAMSVarDescription.UpdateType.INIT,
             description = "The model time interval"
             )
             public JAMSTimeInterval modelTimeInterval;
     
     @JAMSVarDescription(
-            access = JAMSVarDescription.AccessType.READ,
+    access = JAMSVarDescription.AccessType.READ,
             update = JAMSVarDescription.UpdateType.INIT,
             description = "The efficiency time interval"
             )
             public JAMSTimeInterval effTimeInterval;
     
     @JAMSVarDescription(
-            access = JAMSVarDescription.AccessType.READ,
+    access = JAMSVarDescription.AccessType.READ,
             update = JAMSVarDescription.UpdateType.INIT,
             description = "The months to be evaluated interval"
             )
             public JAMSIntegerArray effMonthList;
     
     @JAMSVarDescription(
-            access = JAMSVarDescription.AccessType.READ,
+    access = JAMSVarDescription.AccessType.READ,
             update = JAMSVarDescription.UpdateType.INIT,
             description = "Efficiency method used"
             )
             public JAMSIntegerArray effMethod;
     
     @JAMSVarDescription(
-            access = JAMSVarDescription.AccessType.READ,
+    access = JAMSVarDescription.AccessType.READ,
             update = JAMSVarDescription.UpdateType.RUN,
             description = "Prediction value"
             )
             public JAMSDouble prediction;
     
     @JAMSVarDescription(
-            access = JAMSVarDescription.AccessType.READ,
+    access = JAMSVarDescription.AccessType.READ,
             update = JAMSVarDescription.UpdateType.RUN,
             description = "Validation value"
             )
             public JAMSDouble validation;
     
     @JAMSVarDescription(
-            access = JAMSVarDescription.AccessType.WRITE,
+    access = JAMSVarDescription.AccessType.WRITE,
             update = JAMSVarDescription.UpdateType.RUN,
             description = "Nash-Sutcliffe-efficiency with power 1.0"
             )
             public JAMSDouble e1;
     
     @JAMSVarDescription(
-            access = JAMSVarDescription.AccessType.WRITE,
+    access = JAMSVarDescription.AccessType.WRITE,
             update = JAMSVarDescription.UpdateType.RUN,
             description = "Nash-Sutcliffe-efficiency with power 2.0"
             )
             public JAMSDouble e2;
     
     @JAMSVarDescription(
-            access = JAMSVarDescription.AccessType.WRITE,
+    access = JAMSVarDescription.AccessType.WRITE,
             update = JAMSVarDescription.UpdateType.RUN,
             description = "logarithmic Nash-Sutcliffe-efficiency with power 1.0"
             )
             public JAMSDouble le1;
     
     @JAMSVarDescription(
-            access = JAMSVarDescription.AccessType.WRITE,
+    access = JAMSVarDescription.AccessType.WRITE,
             update = JAMSVarDescription.UpdateType.RUN,
             description = "logarithmic Nash-Sutcliffe-efficiency with power 2.0"
             )
             public JAMSDouble le2;
     
     @JAMSVarDescription(
-            access = JAMSVarDescription.AccessType.WRITE,
+    access = JAMSVarDescription.AccessType.WRITE,
             update = JAMSVarDescription.UpdateType.RUN,
             description = "Willmot's index of agreement with power 1.0"
             )
             public JAMSDouble ioa1;
     
     @JAMSVarDescription(
-            access = JAMSVarDescription.AccessType.WRITE,
+    access = JAMSVarDescription.AccessType.WRITE,
             update = JAMSVarDescription.UpdateType.RUN,
             description = "Willmot's index of agreement with power 2.0"
             )
             public JAMSDouble ioa2;
     
     @JAMSVarDescription(
-            access = JAMSVarDescription.AccessType.WRITE,
+    access = JAMSVarDescription.AccessType.WRITE,
             update = JAMSVarDescription.UpdateType.RUN,
             description = "coefficient of determination r²"
             )
             public JAMSDouble rsq;
     
     @JAMSVarDescription(
-            access = JAMSVarDescription.AccessType.WRITE,
+    access = JAMSVarDescription.AccessType.WRITE,
             update = JAMSVarDescription.UpdateType.RUN,
             description = "gradient of linear regression"
             )
             public JAMSDouble grad;
     
     @JAMSVarDescription(
-            access = JAMSVarDescription.AccessType.WRITE,
+    access = JAMSVarDescription.AccessType.WRITE,
             update = JAMSVarDescription.UpdateType.RUN,
             description = "weighted r²"
             )
             public JAMSDouble wrsq;
     
     @JAMSVarDescription(
-            access = JAMSVarDescription.AccessType.WRITE,
+    access = JAMSVarDescription.AccessType.WRITE,
             update = JAMSVarDescription.UpdateType.RUN,
             description = "gradient of double sum regression"
             )
             public JAMSDouble dsGrad;
     
     @JAMSVarDescription(
-            access = JAMSVarDescription.AccessType.WRITE,
+    access = JAMSVarDescription.AccessType.WRITE,
             update = JAMSVarDescription.UpdateType.RUN,
             description = "absolute volume error"
             )
             public JAMSDouble absVolErr;
     
     @JAMSVarDescription(
-            access = JAMSVarDescription.AccessType.WRITE,
+    access = JAMSVarDescription.AccessType.WRITE,
             update = JAMSVarDescription.UpdateType.RUN,
             description = "root mean square error"
             )
             public JAMSDouble rmse;
     
     @JAMSVarDescription(
-            access = JAMSVarDescription.AccessType.WRITE,
+    access = JAMSVarDescription.AccessType.WRITE,
             update = JAMSVarDescription.UpdateType.RUN,
             description = "percent bias"
             )
             public JAMSDouble pbias;
     
     @JAMSVarDescription(
-            access = JAMSVarDescription.AccessType.WRITE,
+    access = JAMSVarDescription.AccessType.WRITE,
             update = JAMSVarDescription.UpdateType.RUN,
             description = "full set of predicted values"
             )
@@ -284,12 +285,10 @@ import org.unijena.jams.model.*;
         if(eff_tres == eff_sd.DAY_OF_YEAR){
             this.interValStart =(int)((sdEff - sdMod) / (1000 * 60 * 60 * 24));
             this.interValEnd = this.interValStart + this.effTsteps;
-        }
-        else if(eff_tres == eff_sd.HOUR_OF_DAY){
+        } else if(eff_tres == eff_sd.HOUR_OF_DAY){
             this.interValStart =(int)((sdEff - sdMod) / (1000 * 60 * 60));
             this.interValEnd = this.interValStart + this.effTsteps;
-        }
-        else if(eff_tres == eff_sd.MONTH){
+        } else if(eff_tres == eff_sd.MONTH){
             JAMSCalendar modStart = modelTimeInterval.getStart().clone();
             JAMSCalendar effStart = effTimeInterval.getStart().clone();
             int startStep = 0;
@@ -299,8 +298,7 @@ import org.unijena.jams.model.*;
             }
             this.interValStart = startStep;
             this.interValEnd = this.interValStart + this.effTsteps;
-        }
-        else if(eff_tres == eff_sd.YEAR){
+        } else if(eff_tres == eff_sd.YEAR){
             JAMSCalendar modStart = modelTimeInterval.getStart().clone();
             JAMSCalendar effStart = effTimeInterval.getStart().clone();
             int startStep = 0;
@@ -314,27 +312,26 @@ import org.unijena.jams.model.*;
         int junk = 0;
         
         if(this.effMonthList != null){
-        	this.monthly = true;
+            this.monthly = true;
         }
     }
     
     public void run() {
-    	if(monthly){
-    		int month = time.get(time.MONTH) + 1;
-	    	for(int i = 0; i < this.effMonthList.getValue().length; i++){
-	    		if(month == this.effMonthList.getValue()[i]){
-	    			this.valData[counter] = validation.getValue();
-	    	        this.preData[counter] = prediction.getValue();
-	    	        this.counter++;
-	    	        this.monthCount++;
-	    		}
-	    	}
-    	}
-    	else{
-	        this.valData[counter] = validation.getValue();
-	        this.preData[counter] = prediction.getValue();
-	        this.counter++;
-    	}
+        if(monthly){
+            int month = time.get(time.MONTH) + 1;
+            for(int i = 0; i < this.effMonthList.getValue().length; i++){
+                if(month == this.effMonthList.getValue()[i]){
+                    this.valData[counter] = validation.getValue();
+                    this.preData[counter] = prediction.getValue();
+                    this.counter++;
+                    this.monthCount++;
+                }
+            }
+        } else{
+            this.valData[counter] = validation.getValue();
+            this.preData[counter] = prediction.getValue();
+            this.counter++;
+        }
     }
     
     public void cleanup() {
@@ -350,55 +347,55 @@ import org.unijena.jams.model.*;
         this.predictionValues.setValue(preData);
         
         for(int i = this.interValStart; i < this.interValEnd; i++){
-        	//consider valid values only
+            //consider valid values only
             if(valData[i] > -9999 && preData[i] > -9999){
-            	valVector.add(valData[i]);
-            	preVector.add(preData[i]);
+                valVector.add(valData[i]);
+                preVector.add(preData[i]);
             }
         }
         
         int dataCount = valVector.size();
         if(monthly){
-        	dataCount = this.monthCount;
+            dataCount = this.monthCount;
         }
         double[] valData_1 = new double[dataCount];
         double[] preData_1 = new double[dataCount];
         
         //converting Vectors to arrays
         for(int i = 0; i < dataCount; i++){
-        	valData_1[i] = valVector.get(i).doubleValue();
-        	preData_1[i] = preVector.get(i).doubleValue();
+            valData_1[i] = valVector.get(i).doubleValue();
+            preData_1[i] = preVector.get(i).doubleValue();
         }
         
         for(int i = 0; i < effMethod.getValue().length; i++){
             if(effMethod.getValue()[i] == this.E1){
                 double e1 = NashSutcliffe.efficiency(preData_1, valData_1, 1);
                 this.e1.setValue(e1);
-                getModel().getRuntime().println("e1:\t\t" + e1, JAMS.STANDARD);
+                getModel().getRuntime().println("e1:\t\t" + String.format(Locale.US,"%.5f",e1), JAMS.STANDARD);
             }else if(effMethod.getValue()[i] == this.E2){
                 double e2 = NashSutcliffe.efficiency(preData_1, valData_1, 2);
                 this.e2.setValue(e2);
-                getModel().getRuntime().println("e2:\t\t" + e2, JAMS.STANDARD);
+                getModel().getRuntime().println("e2:\t\t" + String.format(Locale.US,"%.5f",e2), JAMS.STANDARD);
             }else if(effMethod.getValue()[i] == this.LOG_E1){
                 double le1 = NashSutcliffe.logEfficiency(preData_1, valData_1, 1);
                 this.le1.setValue(le1);
-                getModel().getRuntime().println("log_e1:\t\t" + le1, JAMS.STANDARD);
+                getModel().getRuntime().println("log_e1:\t\t" + String.format(Locale.US,"%.5f",le1), JAMS.STANDARD);
             }else if(effMethod.getValue()[i] == this.LOG_E2){
                 double le2 = NashSutcliffe.logEfficiency(preData_1, valData_1, 2);
                 this.le2.setValue(le2);
-                getModel().getRuntime().println("log_e2:\t\t" + le2, JAMS.STANDARD);
+                getModel().getRuntime().println("log_e2:\t\t" + String.format(Locale.US,"%.5f",le2), JAMS.STANDARD);
             }else if(effMethod.getValue()[i] == this.IOA_1){
                 double ioa1 = IndexOfAgreement.calc_IOA(preData_1, valData_1, 1, getModel());
                 this.ioa1.setValue(ioa1);
-                getModel().getRuntime().println("ioa1:\t\t" + ioa1, JAMS.STANDARD);
+                getModel().getRuntime().println("ioa1:\t\t" + String.format(Locale.US,"%.5f",ioa1), JAMS.STANDARD);
             }else if(effMethod.getValue()[i] == this.IOA_2){
                 double ioa2 = IndexOfAgreement.calc_IOA(preData_1, valData_1, 2, getModel());
                 this.ioa2.setValue(ioa2);
-                getModel().getRuntime().println("ioa2:\t\t" + ioa2, JAMS.STANDARD);
+                getModel().getRuntime().println("ioa2:\t\t" + String.format(Locale.US,"%.5f",ioa2), JAMS.STANDARD);
             }else if(effMethod.getValue()[i] == this.R2){
                 double[] rCoeff = Regression.calcLinReg(valData_1, preData_1);
-                getModel().getRuntime().println("r²:\t\t" + rCoeff[2], JAMS.STANDARD);
-                getModel().getRuntime().println("grad:\t\t" + rCoeff[1], JAMS.STANDARD);
+                getModel().getRuntime().println("r²:\t\t" + String.format(Locale.US,"%.5f",rCoeff[2]), JAMS.STANDARD);
+                getModel().getRuntime().println("grad:\t\t" + String.format(Locale.US,"%.5f",rCoeff[1]), JAMS.STANDARD);
                 this.rsq.setValue(rCoeff[2]);
                 this.grad.setValue(rCoeff[1]);
             }else if(effMethod.getValue()[i] == this.WR2){
@@ -409,23 +406,23 @@ import org.unijena.jams.model.*;
                 else
                     wr = Math.pow(Math.abs(rCoeff[1]), -1.0) * rCoeff[2];
                 this.wrsq.setValue(wr);
-                getModel().getRuntime().println("wr²:\t\t" + wr, JAMS.STANDARD);
+                getModel().getRuntime().println("wr²:\t\t" + String.format(Locale.US,"%.5f",wr), JAMS.STANDARD);
             }else if(effMethod.getValue()[i] == this.DSGRAD){
                 double dsGrad = DoubleSumAnalysis.dsGrad(valData_1, preData_1);
                 this.dsGrad.setValue(dsGrad);
-                getModel().getRuntime().println("dsGrad:\t\t" + dsGrad, JAMS.STANDARD);
+                getModel().getRuntime().println("dsGrad:\t\t" + String.format(Locale.US,"%.5f",dsGrad), JAMS.STANDARD);
             }else if(effMethod.getValue()[i] == this.ABSVOLERROR){
                 double volErr = VolumeError.absVolumeError(valData_1, preData_1);
                 this.absVolErr.setValue(volErr);
-                getModel().getRuntime().println("absVolumeError:\t\t" + volErr, JAMS.STANDARD);
+                getModel().getRuntime().println("AVE:\t\t" + String.format(Locale.US,"%.5f",volErr), JAMS.STANDARD);
             }else if(effMethod.getValue()[i] == this.RMSE){
                 double rmse = PredictionErrors.rootMeanSquareError(valData_1, preData_1);
                 this.rmse.setValue(rmse);
-                getModel().getRuntime().println("RMSE:\t\t" + rmse, JAMS.STANDARD);
+                getModel().getRuntime().println("RMSE:\t\t" + String.format(Locale.US,"%.5f",rmse), JAMS.STANDARD);
             }else if(effMethod.getValue()[i] == this.PBIAS){
                 double pbias = VolumeError.pbias(valData_1, preData_1);
                 this.pbias.setValue(pbias);
-                getModel().getRuntime().println("PBIAS:\t\t" + pbias, JAMS.STANDARD);
+                getModel().getRuntime().println("PBIAS:\t\t" + String.format(Locale.US,"%.5f",pbias), JAMS.STANDARD);
             }
             
         }
