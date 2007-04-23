@@ -75,7 +75,8 @@ public class NashSutcliffe {
     /** Calculates the efficiency between the log values of a test data set and a verification data set
      * after Nash & Sutcliffe (1970). The efficiency is described as the proportion of
      * the cumulated cubic deviation between both data sets and the cumulated cubic
-     * deviation between the verification data set and its mean value.
+     * deviation between the verification data set and its mean value. If either prediction or validation has a 
+     * value of <= 0 then the pair is ommited from the calculation and a message is put to system out. 
      * @param predicition the simulation data set
      * @param validation the validation (observed) data set
      * @param pow the power for the deviation terms
@@ -103,47 +104,51 @@ public class NashSutcliffe {
         double[] log_preData = new double[pre_size];
         double[] log_valData = new double[val_size];
         
+        int validPairs = 0;
+        
         for(int i = 0; i < steps; i++){
-            if(prediction[i] < 0){
-                System.err.println("Logarithmic efficiency can only be calculated for positive values!");
-                return -9999;
+            //either prediction or validation shows a value of zero
+            //in this case the pair is excluded from the further calculation,
+            //simply by setting the values to -1 and not increasing valid pairs
+            if(prediction[i] <= 0 || validation[i] <= 0){
+                log_preData[i] = -1;
+                log_valData[i] = -1;
             }
-            if(validation[i] < 0){
-                System.err.println("Logarithmic efficiency can only be calculated for positive values!");
-                return -9999;
-            }
-            
-            if(prediction[i] == 0){
+            //both prediction and validation shows a value of exact zero
+            //in this case the pair is taken as a perfect fit and included 
+            //into the further calculation
+            if(prediction[i] == 0 && validation[i] == 0){
                 log_preData[i] = 0;
+                log_valData[i] = 0;
+                validPairs++;
             }
             else{
                 log_preData[i] = Math.log(prediction[i]);
-            }
-            
-            if(validation[i] == 0){
-                log_valData[i] = 0;
-            }
-            else{
                 log_valData[i] = Math.log(validation[i]);
-            }   
+                validPairs++;
+            } 
         }
         
         /**summing up both data sets */
         for(int i = 0; i < steps; i++){
-            sum_log_pd = sum_log_pd + log_preData[i];
-            sum_log_vd = sum_log_vd + log_valData[i];
+            if(log_preData[i] >= 0){
+                sum_log_pd = sum_log_pd + log_preData[i];
+                sum_log_vd = sum_log_vd + log_valData[i];
+            }
         }
         
         /** calculating mean values for both data sets */
-        double mean_log_pd = sum_log_pd / steps;
-        double mean_log_vd = sum_log_vd / steps;
+        double mean_log_pd = sum_log_pd / validPairs;
+        double mean_log_vd = sum_log_vd / validPairs;
         
         /** calculating mean pow deviations */
         double pd_log_vd = 0;
         double vd_log_mean = 0;
         for(int i = 0; i < steps; i++){
-            pd_log_vd = pd_log_vd + (Math.pow(Math.abs(log_valData[i] - log_preData[i]),pow));
-            vd_log_mean = vd_log_mean + (Math.pow(Math.abs(log_valData[i] - mean_log_vd),pow));
+            if(log_preData[i] >= 0){
+                pd_log_vd = pd_log_vd + (Math.pow(Math.abs(log_valData[i] - log_preData[i]),pow));
+                vd_log_mean = vd_log_mean + (Math.pow(Math.abs(log_valData[i] - mean_log_vd),pow));
+            }
         }
         
         /** calculating efficiency after Nash & Sutcliffe (1970) */
