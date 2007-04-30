@@ -23,6 +23,8 @@ public class Learner {
     protected double data[][];
     protected double result[];
     
+    double normed_data[][];
+	    
     protected double min[],max[],base[];
     protected double pmin,pmax,pbase;
     
@@ -78,10 +80,16 @@ public class Learner {
     public double[] normalize(double x[]) {
 	double result[] = new double[x.length];
 	for (int i=0;i<x.length;i++) {
-	    result[i] = (x[i] - base[i]) / (max[i] - min[i]);
+	    result[i] = 2.0*(x[i] - base[i]) / (max[i] - min[i]);
 	}
 	return result;
     }
     
+    public void normalizeAll() {
+	normed_data = new double[data.length][data[0].length];
+	for (int i=0;i<data.length;i++) {
+	    normed_data[i] = normalize(data[i]);
+	}
+    }
 }
 
