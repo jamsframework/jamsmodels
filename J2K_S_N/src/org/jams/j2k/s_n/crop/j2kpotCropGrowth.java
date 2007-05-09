@@ -395,7 +395,7 @@ import java.util.ArrayList;
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
             update = JAMSVarDescription.UpdateType.INIT,
-            description = "Factor of rootdepth 1 - 10 default 1"
+            description = "Factor of rootdepth 0 - 10 default 1"
             )
             public JAMSDouble rootfactor;
     

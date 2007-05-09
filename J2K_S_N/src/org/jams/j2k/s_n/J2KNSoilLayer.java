@@ -527,7 +527,7 @@ import java.io.*;
    @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
             update = JAMSVarDescription.UpdateType.RUN,
-            description = "time in days since the last PIADIN application"
+            description = "Indicates PIADIN application"
             )
             public JAMSInteger piadin;
     
