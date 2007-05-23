@@ -146,6 +146,7 @@ public class DataReader extends JAMSComponent {
         
     }
     
+    @SuppressWarnings("unchecked")
     public void run(){
         
         JAMSTableDataArray da = store.getNext();
