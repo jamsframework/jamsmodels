@@ -260,7 +260,7 @@ import org.unijena.jams.model.*;
             toReach.setDouble("N_RG2_in", NRG2in);
             
         } else{
-            System.out.println("Current entity ID: " + entity.getInt("ID") + " has no receiver.");
+            System.out.println("Current entity ID: " + entity.getDouble("ID") + " has no receiver.");
         }
         
     }
