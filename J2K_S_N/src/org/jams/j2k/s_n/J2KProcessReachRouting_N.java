@@ -360,6 +360,13 @@ import org.unijena.jams.model.*;
             public JAMSDouble catchmentSimRunoffN;
     
     @JAMSVarDescription(
+            access = JAMSVarDescription.AccessType.WRITE,
+            update = JAMSVarDescription.UpdateType.RUN,
+            description = "Catchment outlet sim Nitrogen runoff"
+            )
+            public JAMSDouble catchmentSimNconc;
+    
+    @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
             update = JAMSVarDescription.UpdateType.RUN,
             description = "switch whether deep sink is allowed or not"
@@ -691,6 +698,7 @@ import org.unijena.jams.model.*;
             catchmentNRG1.setValue(RG1out_N);
             catchmentNRG2.setValue(RG2out_N);
             catchmentSimRunoffN.setValue(cumOutflow_N);
+            catchmentSimNconc.setValue((cumOutflow_N * 1000000)/cumOutflow);
         }
         
     }
