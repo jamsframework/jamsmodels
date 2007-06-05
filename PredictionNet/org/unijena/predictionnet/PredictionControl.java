@@ -41,7 +41,7 @@ import Jama.util.Maths;
  *
  * @author Christian Fischer
  */
-public class PredictionNETCreator extends JAMSComponent {
+public class PredictionControl extends JAMSComponent {
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
             update = JAMSVarDescription.UpdateType.RUN,
@@ -90,34 +90,20 @@ public class PredictionNETCreator extends JAMSComponent {
             description = "TimeSerie of Temp Data"
             )
             public JAMSInteger validationEnd;
-           
-    @JAMSVarDescription(
-            access = JAMSVarDescription.AccessType.READWRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
-            description = "TimeSerie of Temp Data"
-            )
-            public JAMSInteger method;
-    
-    @JAMSVarDescription(
-            access = JAMSVarDescription.AccessType.WRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
-            description = "TimeSerie of Temp Data"
-            )
-            public JAMSDouble performance;
-    
+                          
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
             update = JAMSVarDescription.UpdateType.INIT,
             description = "TimeSerie of Temp Data"
             )
-            public JAMSString parameterFile;
-    
+            public JAMSInteger relevantTime;
+            
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
             update = JAMSVarDescription.UpdateType.INIT,
             description = "TimeSerie of Temp Data"
             )
-            public JAMSString resultFile;
+            public JAMSInteger TrainLengthForOptimizing;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
@@ -126,8 +112,20 @@ public class PredictionNETCreator extends JAMSComponent {
             )
             public JAMSBoolean doOptimizing;
     
-    static int RelevantTime = 3;
-                         
+    @JAMSVarDescription(
+            access = JAMSVarDescription.AccessType.WRITE,
+            update = JAMSVarDescription.UpdateType.RUN,
+            description = "TimeSerie of Temp Data"
+            )
+            public JAMSEntity trainData;
+    
+    @JAMSVarDescription(
+            access = JAMSVarDescription.AccessType.WRITE,
+            update = JAMSVarDescription.UpdateType.RUN,
+            description = "TimeSerie of Temp Data"
+            )
+            public JAMSEntity validationData;
+                                        
     HashMap<Integer, double[]> rawData;    
     HashMap<Integer, double[]> rawPredict;
 
@@ -136,15 +134,15 @@ public class PredictionNETCreator extends JAMSComponent {
     
     double traindata[][];
     double trainpredict[];
+          
+    double optimizedata[][];
+    double optimizepredict[];
     
     double validationdata[][];
     double validationpredict[];
+    int RelevantTime = 1;
     
     int ExamplLength,numOfExampl;
-
-    LinearRegression meth1_learner = null;
-    NNLearner meth2_nnlearner = null;
-    GaussianLearner meth3_learner = null;
     
     public void loadData() throws JAMSEntity.NoSuchAttributeException {  
 	BufferedReader reader = null;
@@ -153,6 +151,7 @@ public class PredictionNETCreator extends JAMSComponent {
 	
 	ExamplLength = ExampleLength.getValue();
 	numOfExampl  = numOfExamples.getValue();
+	RelevantTime = this.relevantTime.getValue();
 	
         try {
             reader = new BufferedReader(new FileReader(datafile.getValue()));
@@ -218,146 +217,70 @@ public class PredictionNETCreator extends JAMSComponent {
 	for (int i=validationStart.getValue();i<validationEnd.getValue();i++) {
 	    validationdata[i-validationStart.getValue()] = data[i];
 	    validationpredict[i-validationStart.getValue()] = predict[i];
-	}		
+	}	
+				
+	validationData.setObject("data",validationdata);
+	validationData.setObject("predict",validationpredict);
+	
+	if (doOptimizing.getValue()) {
+	    SelectOptimalTrainingSet(this.TrainLengthForOptimizing.getValue());
+	    
+	    trainData.setObject("data",optimizedata);
+	    trainData.setObject("predict",optimizepredict);
+	}
+	else {
+	    trainData.setObject("data",traindata);
+	    trainData.setObject("predict",trainpredict);
+	}
     }
     
-    public void train() {
-	System.out.println("*************************************");
-	System.out.println("*********PHASE 1 - TRAINING**********");
-	System.out.println("*************************************");
-	    
-	if (method.getValue() == 1) {
-	    meth1_learner = new LinearRegression();
-	    meth1_learner.normalizeData = true;
-	    meth1_learner.InterpolationSize = 0.75;
-	    meth1_learner.KernelMethod = 1;
-	    
-	    meth1_learner.setTrainingData(this.traindata,this.trainpredict);	    	   
-	    meth1_learner.Train();	    
-	}
+    public void SelectOptimalTrainingSet(int goal) {
+	int set[] = new int[goal];
 	
-	if (method.getValue() == 2) {
-	    meth2_nnlearner = new NNLearner();	    
-	    meth2_nnlearner.normalizeData = true;
-	    meth2_nnlearner.decayLearningRate = false;
-	    meth2_nnlearner.learningRate = 0.0002;
-	    meth2_nnlearner.momentum = 0.2;
-	    meth2_nnlearner.driftThreshold = 0.0;
-	    meth2_nnlearner.numEpochs = 150;    		
-	    meth2_nnlearner.setTrainingData(this.traindata,this.trainpredict);
-	    meth2_nnlearner.setLayerSize(1);
+	for (int i=0;i<goal;i++) {
+	    int bestIndex = -1;
+	    double bestValue = -1.0;
 	    
-	    meth2_nnlearner.setupNET();
-	    meth2_nnlearner.Train();
-	}
-	
-	if (method.getValue() == 3) {	    	    
-	    meth3_learner = new GaussianLearner();
-	    meth3_learner.normalizeData = true;
-	    meth3_learner.theta = new double[this.traindata[0].length+1];
-	    meth3_learner.setTrainingData(this.traindata,this.trainpredict);
-	    meth3_learner.kernelmethod = 5;
-	    meth3_learner.normalizeAll();
-	    
-	    if (this.doOptimizing.getValue()) {
-		for (int i=0;i<meth3_learner.theta.length;i++) {
-		    meth3_learner.theta[i] = 1.0;
-		}	
-		System.out.println("*************************************");
-		System.out.println("***PHASE 1a - PARAMETEROPTIMIZATION**");
-		System.out.println("******you should wait some hours;)***");
-		System.out.println("*************************************");
-		meth3_learner.Train();
-		meth3_learner.optimizeLength();
-		//meth3_learner.Testoptimizer();
-		System.out.println("Optimization Complete!");
+	    for (int j=trainStart.getValue();j<trainEnd.getValue();j++) {
+		//test if data allready in set
+		boolean allreadyIn = false;
+		double sum = 0;
 		
-		BufferedWriter writer;
-		try {
-		    writer = new BufferedWriter(new FileWriter(this.parameterFile.getValue()));
-		    for (int i=0;i<meth3_learner.theta.length;i++) {
-			writer.write((new Double(meth3_learner.theta[i]).toString()));
-			writer.write("\n");
+		for (int k=0;k<i;k++) {		    
+		    for (int l=0;l<this.ExamplLength;l++) {
+			sum += (data[j][l] - data[set[k]][l])*(data[j][l] - data[set[k]][l]);
 		    }
-		    writer.close();
-		}
-		catch (Exception e) {
-		    System.out.println("Could not open parameter result file, becauce:" + e.toString());
-		    System.out.println("Optimizationresult won't be saved");
-		}		
-	    }
-	    else {
-		BufferedReader reader;
-		try {
-		    reader = new BufferedReader(new FileReader(this.parameterFile.getValue()));
-		    for (int i=0;i<meth3_learner.theta.length;i++) {
-			meth3_learner.theta[i] = (new Double(reader.readLine())).doubleValue();			
+		    if (set[k] == j) {
+			allreadyIn = true;
+			break;
 		    }
-		    reader.close();
 		}
-		catch (Exception e) {
-		    System.out.println("Could not open " + "parameter file, becauce:" + e.toString());
-		    System.out.println("I will use Standardparameters!");
+		if (allreadyIn) {
+		    continue;
+		}
+		else {
+		    if (sum > bestValue) {
+			bestValue = sum;
+			bestIndex = j;
+		    }
 		}
 	    }
-	    	    	    	    	    
-	    this.performance.setValue(meth3_learner.Train());
-	    System.out.println("Training Complete!");
-	    System.out.println("marginal likelihood was: " + this.performance.getValue());
+	    set[i] = bestIndex;	 
+	    System.out.println("Take:" + set[i]);
 	}
-    }
-    
-    public void validate() {
-	System.out.println("*************************************");
-	System.out.println("*******PHASE 2 - VALIDATION**********");
-	System.out.println("*************************************");
-	    
-	BufferedWriter writer = null;
-	try {
-	    writer = new BufferedWriter(new FileWriter(this.resultFile.getValue()));	    
-	}
-	catch (Exception e) {
-	    System.out.println("Could not open result file, becauce:" + e.toString());
-	    System.out.println("results won't be saved");
-	}		
 	
-	for (int i=0;i<validationdata.length;i++) {
-	    double result = 0.0,variance = 0.0;
-	    double correctValue = this.validationpredict[i];
-	    
-	    if (method.getValue() == 1) {
-		System.out.println(correctValue + "\t" + result);
-		result = meth1_learner.Predict(this.validationdata[i]);
-	    }
-	    
-	    if (method.getValue() == 2) {
-		System.out.println(correctValue + "\t" + result);
-		result = meth2_nnlearner.Predict(this.validationdata[i]);
-	    }
-	    	    
-	    if (method.getValue() == 3) {								    
-		result = meth3_learner.Predict(this.validationdata[i]);
-		variance = meth3_learner.getVariance(this.validationdata[i]);
-		
-		System.out.println(correctValue + "\t" + result + "\t" + variance);
-		try {
-		writer.write(new String(correctValue + "\t" + result + "\t" + variance + "\n"));
-		writer.write("\n");		
-		} catch(Exception e) {
-		    System.out.println("could not write, because: " + e.toString());
-		}
-	    }		
-	}
-	try {
-	    writer.close();
-	}catch(Exception e) {
-	    System.out.println(e.toString());
+	optimizedata = new double[goal][RelevantTime*ExamplLength];
+	optimizepredict = new double[goal];
+	
+	for (int i=0;i<goal;i++) {
+	    optimizedata[i] = data[set[i]];
+	    optimizepredict[i] = predict[set[i]];
 	}
     }
     
-    public void run() throws JAMSEntity.NoSuchAttributeException {                	
+    public void init() throws JAMSEntity.NoSuchAttributeException {                	
 	loadData();
-	train();		
-	validate();	
+    }
+    public void run() throws JAMSEntity.NoSuchAttributeException {                	
     }
 }

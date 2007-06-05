@@ -11,12 +11,28 @@
 package org.unijena.predictionnet;
 
 import java.util.*;
-import java.io.*;
+import org.unijena.jams.data.JAMSEntity;
+import org.unijena.jams.model.JAMSComponent;
+import org.unijena.jams.model.JAMSVarDescription;
 /**
  *
  * @author Christian(web)
  */
-public class Learner {
+public class Learner extends JAMSComponent{   
+     @JAMSVarDescription(
+            access = JAMSVarDescription.AccessType.READ,
+            update = JAMSVarDescription.UpdateType.RUN,
+            description = "TimeSerie of Temp Data"
+            )
+            public JAMSEntity trainData;
+    
+    @JAMSVarDescription(
+            access = JAMSVarDescription.AccessType.READ,
+            update = JAMSVarDescription.UpdateType.RUN,
+            description = "TimeSerie of Temp Data"
+            )
+            public JAMSEntity validationData;
+    
     protected int DataLength = 0;
     protected int TrainLength = 0;
     
@@ -90,6 +106,14 @@ public class Learner {
 	for (int i=0;i<data.length;i++) {
 	    normed_data[i] = normalize(data[i]);
 	}
+    }
+    
+    public void run() throws JAMSEntity.NoSuchAttributeException { 
+	Object o1 = this.trainData.getObject("data");
+	double t1[][] = (double[][])this.trainData.getObject("data");
+	double t2[] = (double[])this.trainData.getObject("predict");
+	setTrainingData(t1,t2);
+	normalizeAll();
     }
 }
 
