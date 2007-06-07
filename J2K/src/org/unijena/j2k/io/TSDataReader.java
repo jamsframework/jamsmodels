@@ -281,7 +281,7 @@ public class TSDataReader extends JAMSComponent {
         }
     }
     
-    private JAMSCalendar parseJ2KTime(String timeString) {
+    private static JAMSCalendar parseJ2KTime(String timeString) {
         
         //Array keeping values for year, month, day, hour, minute
         String[] timeArray = new String[5];
