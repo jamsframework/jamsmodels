@@ -80,7 +80,15 @@ public class StandardDataWriter extends JAMSComponent {
             )
             public JAMSDouble[] value;
     
+    @JAMSVarDescription(
+    access = JAMSVarDescription.AccessType.READ,
+            update = JAMSVarDescription.UpdateType.INIT,
+            description = "Output data precision"
+            )
+            public JAMSInteger precision;    
+    
     private GenericDataWriter writer;
+    private int prec;
     
     /*
      *  Component runstages
@@ -100,6 +108,12 @@ public class StandardDataWriter extends JAMSComponent {
         }
         
         writer.writeHeader();
+        
+        if (precision == null) {
+            prec = 3;
+        } else {
+            prec = precision.getValue();
+        }
     }
     
     public void run() throws JAMSEntity.NoSuchAttributeException {
@@ -130,7 +144,8 @@ public class StandardDataWriter extends JAMSComponent {
         }
         
         try {
-            writer.writeData(5);
+            System.out.println(prec);
+            writer.writeData(prec);
         } catch (org.unijena.jams.runtime.RuntimeException jre) {
             getModel().getRuntime().println(jre.getMessage());
         }
