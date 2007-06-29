@@ -234,7 +234,7 @@ import org.unijena.jams.model.*;
                 remRD = remRD - depth[h];
             }*/
            
-            acMPS[h] = 0;
+           
             mxMPS[h] = entity.getDouble(aNameFC+h) * area.getValue();
             mxFPS[h] = entity.getDouble(aNameDC+h) * area.getValue();
             mxLPS[h] = entity.getDouble(aNameAC+h) * area.getValue();
@@ -242,9 +242,9 @@ import org.unijena.jams.model.*;
             bulk_density[h] = entity.getDouble(bulkdensityName+h);
             Kf_val[h] = entity.getDouble(KfName+h);
             acLPS[h] = 0;
-            stMPS[h] = 0;
+            stMPS[h] = 1;
             stLPS[h] = 0;
-            
+            acMPS[h] = mxMPS[h];
             inRD2[h] = 0;
         }
         
