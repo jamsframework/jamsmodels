@@ -144,7 +144,6 @@ public class StandardDataWriter extends JAMSComponent {
         }
         
         try {
-            System.out.println(prec);
             writer.writeData(prec);
         } catch (org.unijena.jams.runtime.RuntimeException jre) {
             getModel().getRuntime().println(jre.getMessage());
