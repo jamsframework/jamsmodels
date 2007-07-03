@@ -125,6 +125,13 @@ public class PredictionControl extends JAMSComponent {
             description = "TimeSerie of Temp Data"
             )
             public JAMSEntity validationData;
+    
+    @JAMSVarDescription(
+            access = JAMSVarDescription.AccessType.WRITE,
+            update = JAMSVarDescription.UpdateType.RUN,
+            description = "TimeSerie of Temp Data"
+            )
+            public JAMSInteger dataShift;
                                         
     HashMap<Integer, double[]> rawData;    
     HashMap<Integer, double[]> rawPredict;
@@ -200,7 +207,11 @@ public class PredictionControl extends JAMSComponent {
 		    data[i][j*ExamplLength+k] = entry[k];
 		}
 	    }
-	    predict[i] = rawPredict.get(new Integer(i+RelevantTime-1))[0];
+	    if (i+RelevantTime-1+dataShift.getValue() < 0) {
+		System.out.println("Warning: Dataset: " + i + "contains no prediction!!");
+		continue;
+	    }
+	    predict[i] = rawPredict.get(new Integer(i+RelevantTime-1+dataShift.getValue()))[0];
 	}
 	
 	traindata = new double[trainEnd.getValue() - trainStart.getValue()][RelevantTime*ExamplLength];
@@ -237,34 +248,47 @@ public class PredictionControl extends JAMSComponent {
     public void SelectOptimalTrainingSet(int goal) {
 	int set[] = new int[goal];
 	
-	for (int i=0;i<goal;i++) {
+	double variance[] = new double[trainEnd.getValue()];
+	boolean inSet[] = new boolean[trainEnd.getValue()];
+	for (int j=trainStart.getValue();j<trainEnd.getValue();j++) {
+	    variance[j] = 0.0;
+	    inSet[j] = false;
+	}
+	inSet[0] = true;
+	set[0] = 0;
+	for (int i=1;i<goal;i++) {
 	    int bestIndex = -1;
 	    double bestValue = -1.0;
 	    
 	    for (int j=trainStart.getValue();j<trainEnd.getValue();j++) {
 		//test if data allready in set
-		boolean allreadyIn = false;
-		double sum = 0;
+		/*boolean allreadyIn = false;
+		double min = 0;//Double.MAX_VALUE;
 		
-		for (int k=0;k<i;k++) {		    
+		for (int k=0;k<i;k++) {				    
+		    double sum = 0;
 		    for (int l=0;l<this.ExamplLength;l++) {
 			sum += (data[j][l] - data[set[k]][l])*(data[j][l] - data[set[k]][l]);
 		    }
+		    //if (sum < min)
+			min += sum;
+		    
 		    if (set[k] == j) {
 			allreadyIn = true;
 			break;
 		    }
-		}
-		if (allreadyIn) {
+		}*/
+		if (inSet[j])
 		    continue;
+		for (int l=0;l<this.ExamplLength;l++) {
+		    variance[j] += (data[j][l] - data[set[i-1]][l])*(data[j][l] - data[set[i-1]][l]);
 		}
-		else {
-		    if (sum > bestValue) {
-			bestValue = sum;
-			bestIndex = j;
-		    }
+		if (variance[j] > bestValue) {
+		    bestValue = variance[j];
+		    bestIndex = j;
 		}
 	    }
+	    inSet[bestIndex] = true;
 	    set[i] = bestIndex;	 
 	    System.out.println("Take:" + set[i]);
 	}

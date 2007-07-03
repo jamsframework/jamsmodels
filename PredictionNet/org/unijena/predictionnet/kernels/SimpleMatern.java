@@ -1,7 +1,7 @@
 /*
- * Exponential.java
+ * MaternClass.java
  *
- * Created on 1. Juni 2007, 15:53
+ * Created on 1. Juni 2007, 16:56
  *
  * To change this template, choose Tools | Template Manager
  * and open the template in the editor.
@@ -13,39 +13,34 @@ package org.unijena.predictionnet.kernels;
  *
  * @author Christian(web)
  */
-public class Exponential extends Kernel {    	                  
-    public Exponential(int inputDim) {
+public class SimpleMatern extends Kernel {  
+                      
+    public SimpleMatern(int inputDim) {
 	this.inputDim = inputDim;	
-	this.parameterCount = inputDim + 1;
+	this.parameterCount = 2;
     }
        
     public double SqrDistance2(double x[],double y[]) {
 	double sum = 0;
 	double tmp;
 	for (int i=0;i<x.length;i++) {
-	    tmp = (x[i]-y[i])/theta[i];
+	    tmp = (x[i]-y[i]);
 	    sum += tmp*tmp;
 	}	
 	return sum;
     }
     
     public double kernel(double x[],double y[],int index1,int index2) {
-	double r = SqrDistance2(x,y);
+	double r = Math.sqrt(SqrDistance2(x,y));
+	double noise = 0.0;
 	
 	if (index1 == index2) {
-	    return Math.exp(-0.5*r) + this.theta[parameterCount-1]*this.theta[parameterCount-1];
+	    noise = this.theta[1]*this.theta[1];
 	}
-	return Math.exp(-0.5*r);
+	return (1.0 + 1.732*r/theta[0])*Math.exp(-1.732*r/theta[0]) + noise;
     }
     
     public double dkernel(double x[],double y[],int d) {
-	double r = SqrDistance2(x,y);
-	double dr = (x[d]-y[d])/theta[d];
-		
-	//do not adjust sigma
-	if (d == inputDim)
-	    return 0.0;
-	
-	return dr*dr*Math.exp(-0.5*r)/theta[d];
+	return 0.0;
     }       
 }

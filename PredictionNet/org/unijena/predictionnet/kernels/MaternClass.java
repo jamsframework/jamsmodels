@@ -30,11 +30,11 @@ public class MaternClass extends Kernel {
 	return sum;
     }
     
-    public double kernel(double x[],double y[]) {
+    public double kernel(double x[],double y[],int index1,int index2) {
 	double r = Math.sqrt(SqrDistance2(x,y));
 	double noise = 0.0;
 	
-	if (r == 0) {
+	if (index1 == index2) {
 	    noise = this.theta[parameterCount-1]*this.theta[parameterCount-1];
 	}
 	return (1.0 + 1.732*r/theta[0])*Math.exp(-1.732*r/theta[0]);

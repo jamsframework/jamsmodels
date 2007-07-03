@@ -13,19 +13,19 @@ package org.unijena.predictionnet.kernels;
  *
  * @author Christian(web)
  */
-public class RationalQuadratic extends Kernel {
+public class TestKernel extends Kernel {
     
     /** Creates a new instance of RationalQuadratic */
-    public RationalQuadratic(int inputDim) {              
+    public TestKernel(int inputDim) {              
 	this.inputDim = inputDim;	
-	this.parameterCount = inputDim + 2;
+	this.parameterCount = 2;
     }
        
     public double SqrDistance2(double x[],double y[]) {
 	double sum = 0;
 	double tmp;
 	for (int i=0;i<x.length;i++) {
-	    tmp = (x[i]-y[i])/theta[i];
+	    tmp = (x[i]-y[i])/*theta[i]*/;
 	    sum += tmp*tmp;
 	}	
 	return sum;
@@ -36,9 +36,9 @@ public class RationalQuadratic extends Kernel {
 	double noise = 0.0;
 	
 	if (index1 == index2) {
-	    noise = this.theta[parameterCount-1]*this.theta[parameterCount-1];
+	    noise = this.theta[1]*this.theta[1];
 	}
-	return Math.pow(1.0 + r / (2*theta[parameterCount-2]),-theta[parameterCount-2]) + noise;			
+	return Math.pow(1.0 + r / (2*theta[0]),-theta[0]) + noise;			
     }
     
     public double dkernel(double x[],double y[],int d) {

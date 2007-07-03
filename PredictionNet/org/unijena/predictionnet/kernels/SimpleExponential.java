@@ -13,17 +13,17 @@ package org.unijena.predictionnet.kernels;
  *
  * @author Christian(web)
  */
-public class Exponential extends Kernel {    	                  
-    public Exponential(int inputDim) {
+public class SimpleExponential extends Kernel {    	                  
+    public SimpleExponential(int inputDim) {
 	this.inputDim = inputDim;	
-	this.parameterCount = inputDim + 1;
+	this.parameterCount = 1;
     }
        
     public double SqrDistance2(double x[],double y[]) {
 	double sum = 0;
 	double tmp;
 	for (int i=0;i<x.length;i++) {
-	    tmp = (x[i]-y[i])/theta[i];
+	    tmp = (x[i]-y[i]);
 	    sum += tmp*tmp;
 	}	
 	return sum;
@@ -33,19 +33,12 @@ public class Exponential extends Kernel {
 	double r = SqrDistance2(x,y);
 	
 	if (index1 == index2) {
-	    return Math.exp(-0.5*r) + this.theta[parameterCount-1]*this.theta[parameterCount-1];
+	    return Math.exp(-0.5*r) + this.theta[0]*this.theta[0];
 	}
 	return Math.exp(-0.5*r);
     }
     
     public double dkernel(double x[],double y[],int d) {
-	double r = SqrDistance2(x,y);
-	double dr = (x[d]-y[d])/theta[d];
-		
-	//do not adjust sigma
-	if (d == inputDim)
-	    return 0.0;
-	
-	return dr*dr*Math.exp(-0.5*r)/theta[d];
+	return 0.0;
     }       
 }

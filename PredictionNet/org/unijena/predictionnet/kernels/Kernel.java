@@ -26,7 +26,7 @@ public abstract class Kernel{
 	return true;
     }         
      
-    abstract public double kernel(double x[],double y[]);
+    abstract public double kernel(double x[],double y[],int index1,int index2);
     abstract public double dkernel(double x[],double y[],int d);
     
     public int getParameterCount() {
