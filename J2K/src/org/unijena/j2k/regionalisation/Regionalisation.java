@@ -162,10 +162,8 @@ public class Regionalisation extends JAMSComponent {
     private ObjectInputStream reader;
     
     public void init() throws JAMSEntity.NoSuchAttributeException, IOException {
-        
         //first, check if cached data are available
         cacheFile = new File(dirName.getValue() + "/$" + this.getInstanceName() + ".cache");
-        
         if (!cacheFile.exists() && dataCaching.getValue()) {
             getModel().getRuntime().sendHalt(this.getInstanceName() + ": data caching is switched on but no cache file available!");
         }
