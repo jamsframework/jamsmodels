@@ -120,12 +120,19 @@ public class ManageLanduse_szeno extends JAMSComponent {
             public JAMSTimeInterval timeInterval;
     
     
-/*    @JAMSVarDescription(
-            access = JAMSVarDescription.AccessType.WRITE,
+    @JAMSVarDescription(
+            access = JAMSVarDescription.AccessType.READ,
             update = JAMSVarDescription.UpdateType.RUN,
-            description = "actual potential heat units sum [-]"
+            description = "Indicates fertilazation optimization with plant demand"
             )
-            public JAMSDouble PHUact; */
+            public JAMSInteger opti;    
+    
+    @JAMSVarDescription(
+            access = JAMSVarDescription.AccessType.READ,
+            update = JAMSVarDescription.UpdateType.RUN,
+            description = "Mineral nitrogen content in the soil profile down to 60 cm depth"
+            )
+            public JAMSDouble nmin;    
     
     private JAMSTimeInterval ti;
     public void init() {

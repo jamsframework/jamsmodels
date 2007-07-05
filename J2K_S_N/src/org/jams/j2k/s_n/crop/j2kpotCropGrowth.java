@@ -510,7 +510,7 @@ import java.util.ArrayList;
     int PS = 0;     //Plant status for optimal growth*/
     
     
-    public void init() throws JAMSEntity.NoSuchAttributeException, IOException {
+    public void init()  {
         
     }
     
@@ -769,7 +769,7 @@ import java.util.ArrayList;
     // expressed as LAI fraction of the known max LAI
     // @todo declare how is continuosly vegetated land use is determined
     
-    private boolean calc_phu() throws JAMSEntity.NoSuchAttributeException {
+    private boolean calc_phu()  {
         if (this.tmean > this.Tbase) {
             this.phu_daily = phu_daily + (this.tmean - this.Tbase); //phänologisch wirksame Temperatursumme
             this.fphu_act = this.phu_daily / this.phu;
@@ -822,7 +822,7 @@ import java.util.ArrayList;
     
     
     
-    private boolean calc_lai() throws JAMSEntity.NoSuchAttributeException {
+    private boolean calc_lai()  {
         
          /* Shape coefficients
             sc to determine LAI development */
@@ -897,7 +897,7 @@ import java.util.ArrayList;
 // radiation-use efficiency declared in the crop growth database by parameter 'rue' in crop.par
 // whereas the total biomass on a given day is summed up
     
-    private void calc_biomass() throws JAMSEntity.NoSuchAttributeException {
+    private void calc_biomass()  {
         
         double Hphosyn = 0.5 * this.solrad * (1 - Math.exp(this.leco*this.lai_act)); // Intercepted photosynthetically active radiation [MJ/m²]
         
@@ -921,7 +921,7 @@ import java.util.ArrayList;
 // chtmx = maximum canopy height (m), Parameter from crop.par
 // frLAImx = fraction of plants maximum canopy height
     
-    private double calc_canopy() throws JAMSEntity.NoSuchAttributeException {
+    private double calc_canopy() {
         
         //double hc_old = hc_delta;
         double hc_delta = this.chtmx * Math.sqrt(frLAImx_act);
@@ -939,7 +939,7 @@ import java.util.ArrayList;
     
 // Fraction of root biomass
 //
-    private boolean calc_root() throws JAMSEntity.NoSuchAttributeException {
+    private boolean calc_root()  {
         
         
         double rootpartmodi = 0.20 * this.fphu_act;
@@ -988,14 +988,14 @@ import java.util.ArrayList;
         // idValue.getValue() == 6)
         if
                 (this.idc == 3 || this.idc == 6 || this.idc == 7) {
-            double zrootd_act = this.rdmx;
+                 zrootd_act = this.rdmx;
         }
         
         // annuals
         // if case: as long pfhu is within 0.4; as fphu 0.4 is the time of max root depth
         
         if
-                (this.idc ==  1 || this.idc == 2 || this.idc == 4 || this.idc == 5 && this.fphu_act <= 0.40) {
+                ((this.idc ==  1 || this.idc == 2 || this.idc == 4 || this.idc == 5) && this.fphu_act <= 0.40) {
             
             zrootd_act = 2.5 * this.fphu_act * this.rdmx;
             //  zrootd_act = zrootd_act + zrootd;
@@ -1014,13 +1014,11 @@ import java.util.ArrayList;
 // as therefore no calculation is needed
 // @todo nutrients & water uptake & transpiration will stopp depending on the condition fphu = 1
     
-    private boolean calc_maturity()throws JAMSEntity.NoSuchAttributeException {
+    private boolean calc_maturity() {
         
         if
                 (this.fphu_act >= 1.00) {
-            this.aTransP = 0;
-            double Nup_act = 0;
-            double Wup_act = 0;
+            double Maturity = 1;
         }
         return true;
     }
@@ -1031,7 +1029,7 @@ import java.util.ArrayList;
     
 // Nutrient uptake by plants
     
-    private boolean calc_nuptake() throws JAMSEntity.NoSuchAttributeException {
+    private boolean calc_nuptake() {
         // is calculated by the fraction of the plant biomass as a function of growth stage given the optimal conditions
         // fnplant =fraction N in plant biomass
         // with bn1 as fraction of N in the plant biomass at the emergence
@@ -1153,7 +1151,7 @@ import java.util.ArrayList;
 // Phosphorus uptake
     
 // Crop Yield
-    private boolean calc_cropyield() throws JAMSEntity.NoSuchAttributeException {
+    private boolean calc_cropyield(){
         if (this.idc == 3 || this.idc == 6 || this.idc == 7) {
             
             double u1 = 100 * this.fphu_act;
@@ -1279,8 +1277,9 @@ import java.util.ArrayList;
             // whereas cnyld is the fraction of N being removed by the field crop
             
             this.yldN = this.cnyld * this.yield;
-            if (this.yldN > bioN_act){
-                yldN = bioN_act;
+            
+            if (this.yldN > bioN_act * (yldN / ( this.yldN + ((bio_opt - yield) * (this.bn3 / 1.5))))   ){
+                yldN = bioN_act * (yldN / ( this.yldN + ((bio_opt - yield) * (this.bn3 / 1.5))));
             }
             //System.out.println (" Julianischer Tag "+ JAMSCalendar.DAY_OF_YEAR + " hi_act: " + hi_act +  " hvsti: " + hvsti +  " fphu: " + fphu_act + " yldN " + yldN + " yield " + yield);
             //double yldP = this.cpyld * yield;
@@ -1290,14 +1289,14 @@ import java.util.ArrayList;
         }
         return true;
     }
-    private double calc_cropyield_ha() throws JAMSEntity.NoSuchAttributeException {
+    private double calc_cropyield_ha()  {
         
         this.yldN_ha = this.yldN * area_ha / 10000;
         
         return yldN_ha;
     }
     
-    private boolean calc_residues() throws JAMSEntity.NoSuchAttributeException {
+    private boolean calc_residues()  {
         if ( this.idc == 7) {
             this.addresidue_pool =  this.yield;
             this.addresidue_pooln = this.yldN;
@@ -1315,7 +1314,7 @@ import java.util.ArrayList;
         return true;
         
     }
-    public void cleanup()throws JAMSEntity.NoSuchAttributeException{
+    public void cleanup(){
         // store.close();
     }
     

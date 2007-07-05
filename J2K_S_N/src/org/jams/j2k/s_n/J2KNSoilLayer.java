@@ -539,6 +539,21 @@ import java.io.*;
             )
             public JAMSInteger App_time;
     
+    @JAMSVarDescription(
+            access = JAMSVarDescription.AccessType.READ,
+            update = JAMSVarDescription.UpdateType.RUN,
+            description = "Indicates fertilazation optimization with plant demand"
+            )
+            public JAMSInteger opti;    
+    
+    @JAMSVarDescription(
+            access = JAMSVarDescription.AccessType.WRITE,
+            update = JAMSVarDescription.UpdateType.RUN,
+            description = "Mineral nitrogen content in the soil profile down to 60 cm depth"
+            )
+            public JAMSDouble nmin;    
+    
+    
     
     
     
@@ -615,7 +630,7 @@ import java.io.*;
     double[] hor_by_infilt;
     double[] NO3_Poolvals;
     double[] w_l_diff;
-    
+    double[] partnmin;
     double[] diffout;
     
     
@@ -661,6 +676,7 @@ import java.io.*;
         double NO3respool = 0;
         double Nactiverespool = 0;
         double diffoutN = 0;
+        double runnmin = 0;
 //        double[] NO3_Poolvals = new double[layer];
         runlayerdepth = new double[layer];
         double[] NH4_Poolvals = new double[layer];
@@ -683,6 +699,7 @@ import java.io.*;
         
         hor_by_infilt = new double[layer];
         diffout = new double[layer];
+        partnmin = new double[layer];
         w_l_diff = new double[layer];
         i = 0;
         /*while (i < layer){
@@ -1014,7 +1031,7 @@ import java.io.*;
             sumNH4_Pool = runNH4_Pool + sumNH4_Pool;
             sumN_residue_pool = sumN_residue_pool + runN_residue_pool_fresh;
             
-            if (i < 2){
+            if (i < 5){
             sumNO3_Pool = runNO3_Pool + sumNO3_Pool;
             }
             suminterflowNabs = runinterflowNabs + suminterflowNabs;
@@ -1090,6 +1107,10 @@ import java.io.*;
                 NO3_Poolvals[i+1] = NO3_Poolvals[i+1] - diffoutN;
                 
             }
+            
+            if (opti.getValue() == 1){
+            runnmin = (((NO3_Poolvals[i] + NH4_Poolvals[i]) * this.partnmin[i])) + runnmin;
+            }
         }
         // writing of pools
         double[] zerosetter = new double[layer];
@@ -1126,6 +1147,7 @@ import java.io.*;
         sNResiduePool.setValue(sumN_residue_pool);
         App_time.setValue(app_time);
         InterflowN_in.setValue(zerosetter);
+        nmin.setValue(runnmin);
         
         
 //        System.out.println("percoN = " + percoN +" percoNabs =  "+ percoNabs);
@@ -1135,7 +1157,7 @@ import java.io.*;
     }
     private double[] calc_plantuptake(){
         double upNO3_Pool = 0;
-        double runrootdepth =(rootdepth.getValue() * 100) + 100;
+        double runrootdepth =(rootdepth.getValue() * 10);
         double[] partroot = new double[layer];
         
         
@@ -1174,7 +1196,8 @@ import java.io.*;
         
         // plant uptake loop 1: calculating layer poritions within rootdepth
         while (i < layer) {
-            sumlayer =   sumlayer  +  layerdepth.getValue()[i] * 10;
+            
+            sumlayer =   sumlayer  +  layerdepth.getValue()[i];
             this.runlayerdepth[i] = sumlayer;
             if (runrootdepth > runlayerdepth[0]){
                 if (runrootdepth > runlayerdepth[i]){
@@ -1190,7 +1213,30 @@ import java.io.*;
                 partroot[i] = runrootdepth /  runlayerdepth[0];
                 rootlayer = i;
             }
+            
+            if (opti.getValue() == 1){
+             double Nmin_depth = 60;
+             if (Nmin_depth > runlayerdepth[0]){
+                if (Nmin_depth > runlayerdepth[i]){
+                    partnmin[i] = 1 ;
+                   
+                }else if (Nmin_depth > runlayerdepth[i - 1]){
+                    partnmin[i] = (Nmin_depth - runlayerdepth[i - 1]) /  (runlayerdepth[i] - runlayerdepth[i - 1]);
+                    
+                }else {
+                    partnmin[i] = 0;
+                }
+            }else if (i == 0){
+                partnmin[i] = Nmin_depth /  runlayerdepth[0];
+                
+             
+             
+            }
+           
+            
+            }
             i++;
+            
             
         }
         
