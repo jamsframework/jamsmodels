@@ -1278,8 +1278,8 @@ import java.util.ArrayList;
             
             this.yldN = this.cnyld * this.yield;
             
-            if (this.yldN > bioN_act * (yldN / ( this.yldN + ((bio_opt - yield) * (this.bn3 / 1.5))))   ){
-                yldN = bioN_act * (yldN / ( this.yldN + ((bio_opt - yield) * (this.bn3 / 1.5))));
+            if (this.yldN > bioN_act * (yldN / ( this.yldN + ((bio_opt - yield) * (this.bn3 / 1.0))))   ){
+                yldN = bioN_act * (yldN / ( this.yldN + ((bio_opt - yield) * (this.bn3 / 1.0))));
             }
             //System.out.println (" Julianischer Tag "+ JAMSCalendar.DAY_OF_YEAR + " hi_act: " + hi_act +  " hvsti: " + hvsti +  " fphu: " + fphu_act + " yldN " + yldN + " yield " + yield);
             //double yldP = this.cpyld * yield;
