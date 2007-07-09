@@ -33,7 +33,7 @@ import org.unijena.jams.model.*;
 @JAMSComponentDescription(
         title="J2KSNDormancy",
         author="Manfred Fink",
-        description="Calculates dormancy of plants under use of day length (after SWAT)"
+        description="Calculates dormancy of plants under use of day length (after SWAT) and maturity"
         )
         public class J2KSNDormancy extends JAMSComponent {
     
@@ -83,6 +83,13 @@ import org.unijena.jams.model.*;
             )
             public JAMSDouble Tmean;
     
+    @JAMSVarDescription(
+            access = JAMSVarDescription.AccessType.READWRITE,
+            update = JAMSVarDescription.UpdateType.RUN,
+            description = "Fraction of actual potential heat units sum [-]"
+            )
+            public JAMSDouble FPHUact;  
+    
     /*
      *  Component run stages
      */
@@ -94,6 +101,8 @@ import org.unijena.jams.model.*;
     public void run() {
         double sunhminrun = 0;
         double tdorm = 0;
+        boolean rundormancy = false; 
+        
         
         if (sunhmin.getValue() > 0){
          sunhminrun = sunhmin.getValue();
@@ -112,19 +121,26 @@ import org.unijena.jams.model.*;
         }
         
         if (sunhmax.getValue() < (sunhminrun + tdorm)){
-           dormancy.setValue(true); 
+           rundormancy = true; 
         } else {
             
             if (Tmean.getValue() <  tbase.getValue()) {
-            dormancy.setValue(true);     
+            rundormancy = true;     
             }else{
-            dormancy.setValue(false);     
+            rundormancy = false;     
             }
 
             
         }
         
+        if (FPHUact.getValue() > 1){
+            rundormancy = true;
+        }
+        
         sunhmin.setValue(sunhminrun);
+        
+        dormancy.setValue(rundormancy);
+        
         
         
     
