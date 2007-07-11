@@ -1,7 +1,7 @@
 /*
- * RationalQuadratic.java
+ * Exponential.java
  *
- * Created on 1. Juni 2007, 16:52
+ * Created on 1. Juni 2007, 15:53
  *
  * To change this template, choose Tools | Template Manager
  * and open the template in the editor.
@@ -13,19 +13,21 @@ package org.unijena.predictionnet.kernels;
  *
  * @author Christian(web)
  */
-public class TestKernel extends Kernel {
-    
-    /** Creates a new instance of RationalQuadratic */
-    public TestKernel(int inputDim) {              
+public class TestKernel extends Kernel {    	                  
+    public TestKernel(int inputDim) {
 	this.inputDim = inputDim;	
-	this.parameterCount = 2;
+	this.KernelParameterCount = inputDim + 1;
+	this.parameterCount = inputDim + 1;
     }
        
     public double SqrDistance2(double x[],double y[]) {
 	double sum = 0;
 	double tmp;
 	for (int i=0;i<x.length;i++) {
-	    tmp = (x[i]-y[i])/*theta[i]*/;
+	    tmp = (x[i]-y[i]);
+	    //if (i < 3) {
+		tmp /= theta[i];
+	    //}
 	    sum += tmp*tmp;
 	}	
 	return sum;
@@ -33,30 +35,21 @@ public class TestKernel extends Kernel {
     
     public double kernel(double x[],double y[],int index1,int index2) {
 	double r = SqrDistance2(x,y);
-	double noise = 0.0;
 	
 	if (index1 == index2) {
-	    noise = this.theta[1]*this.theta[1];
+	    return Math.exp(-0.5*r) + theta[KernelParameterCount-1]*theta[KernelParameterCount-1];
 	}
-	return Math.pow(1.0 + r / (2*theta[0]),-theta[0]) + noise;			
+	return Math.exp(-0.5*r);
     }
     
     public double dkernel(double x[],double y[],int d) {
-	double alpha = theta[inputDim];
-	double r = SqrDistance2(x,y);	
-	double base = 1.0 + r / (2.0*alpha);
-	double expterm = Math.pow(base,-alpha);
+	double r = SqrDistance2(x,y);
+	double dr = (x[d]-y[d])/theta[d];
 		
-	if (d < inputDim) {		    		    
-	    double dr = (x[d]-y[d])/theta[d];		
-	    return expterm*dr*dr/(base*theta[d]);
-	}
-	if (d == inputDim) {
-	    return expterm*(-Math.log(base)+r/(2.0*alpha*base));
-	}		
 	//do not adjust sigma
-	if (d > inputDim)
+	if (d == inputDim)
 	    return 0.0;
-	return 0.0;
+	
+	return dr*dr*Math.exp(-0.5*r)/theta[d];
     }       
 }

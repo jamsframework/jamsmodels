@@ -18,6 +18,7 @@ public class MaternClass extends Kernel {
     public MaternClass(int inputDim) {
 	this.inputDim = inputDim;	
 	this.parameterCount = inputDim + 1;
+	this.KernelParameterCount = inputDim + 1;
     }
        
     public double SqrDistance2(double x[],double y[]) {
@@ -35,7 +36,7 @@ public class MaternClass extends Kernel {
 	double noise = 0.0;
 	
 	if (index1 == index2) {
-	    noise = this.theta[parameterCount-1]*this.theta[parameterCount-1];
+	    noise = this.theta[KernelParameterCount-1]*this.theta[KernelParameterCount-1];
 	}
 	return (1.0 + 1.732*r/theta[0])*Math.exp(-1.732*r/theta[0]);
     }

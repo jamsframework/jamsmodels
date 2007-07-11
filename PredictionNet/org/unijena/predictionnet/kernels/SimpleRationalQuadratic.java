@@ -19,6 +19,7 @@ public class SimpleRationalQuadratic extends Kernel {
     public SimpleRationalQuadratic(int inputDim) {              
 	this.inputDim = inputDim;	
 	this.parameterCount = 2;
+	this.KernelParameterCount = 2;
     }
        
     public double SqrDistance2(double x[],double y[]) {

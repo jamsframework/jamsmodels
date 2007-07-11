@@ -21,7 +21,8 @@ public class SimpleNeuralNetwork extends Kernel {
     
     public SimpleNeuralNetwork(int inputDim) {
 	this.inputDim = inputDim;	
-	this.parameterCount = 2;			
+	this.parameterCount = 2;
+	this.KernelParameterCount = 2;
     }
                 
     public boolean SetParameter(double []theta) {

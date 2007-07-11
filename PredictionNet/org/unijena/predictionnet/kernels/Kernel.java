@@ -16,13 +16,35 @@ package org.unijena.predictionnet.kernels;
 public abstract class Kernel{
     int inputDim;
     int parameterCount;
+    int KernelParameterCount;
     double theta[] = null;    
-            
-     public boolean SetParameter(double []theta) {
+    double meanTheta[] = null;
+    public MeanModell MM = null;
+    
+    public void SetMeanModell(MeanModell MM) {
+	this.MM = MM;
+	
+	parameterCount = KernelParameterCount + MM.GetParameterCount();
+    }
+    
+    public boolean SetParameter(double []theta) {
 	if (theta.length < parameterCount) {
 	    return false;
 	}
-	this.theta = theta;
+	this.theta = new double[KernelParameterCount];
+	for (int i=0;i<KernelParameterCount;i++) {
+	    this.theta[i] = theta[i];
+	}
+	if (MM != null) {
+	    if (MM.GetParameterCount() != 0) {
+		meanTheta = new double[MM.GetParameterCount()];	
+		for (int i=KernelParameterCount;i<theta.length;i++) {
+		    meanTheta[i-KernelParameterCount] = Math.log(theta[i]);
+		}
+		MM.SetParameters(meanTheta);
+	    }
+	}	
+	//this.theta = theta;
 	return true;
     }         
      

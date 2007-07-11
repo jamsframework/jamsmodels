@@ -16,6 +16,7 @@ package org.unijena.predictionnet.kernels;
 public class Exponential extends Kernel {    	                  
     public Exponential(int inputDim) {
 	this.inputDim = inputDim;	
+	this.KernelParameterCount = inputDim + 1;
 	this.parameterCount = inputDim + 1;
     }
        
@@ -33,7 +34,7 @@ public class Exponential extends Kernel {
 	double r = SqrDistance2(x,y);
 	
 	if (index1 == index2) {
-	    return Math.exp(-0.5*r) + this.theta[parameterCount-1]*this.theta[parameterCount-1];
+	    return Math.exp(-0.5*r) + this.theta[KernelParameterCount-1]*this.theta[KernelParameterCount-1];
 	}
 	return Math.exp(-0.5*r);
     }

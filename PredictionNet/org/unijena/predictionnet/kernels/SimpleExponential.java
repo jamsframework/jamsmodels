@@ -14,8 +14,9 @@ package org.unijena.predictionnet.kernels;
  * @author Christian(web)
  */
 public class SimpleExponential extends Kernel {    	                  
-    public SimpleExponential(int inputDim) {
+    public SimpleExponential(int inputDim) {	
 	this.inputDim = inputDim;	
+	this.KernelParameterCount = 1;
 	this.parameterCount = 1;
     }
        

@@ -116,8 +116,7 @@ public class SubsetSelect extends JAMSContext {
 	for (int i=0;i<Ngoal;i++) {
 	    optimizedata[i] = data[set[i]];
 	    optimizepredict[i] = predict[set[i]];
-	}
-	
+	}	
 	OutputData.setObject("data",optimizedata);
 	OutputData.setObject("predict",optimizepredict);
     }

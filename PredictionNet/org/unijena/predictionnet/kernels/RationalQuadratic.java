@@ -19,6 +19,7 @@ public class RationalQuadratic extends Kernel {
     public RationalQuadratic(int inputDim) {              
 	this.inputDim = inputDim;	
 	this.parameterCount = inputDim + 2;
+	this.KernelParameterCount = inputDim + 2;
     }
        
     public double SqrDistance2(double x[],double y[]) {
@@ -36,9 +37,9 @@ public class RationalQuadratic extends Kernel {
 	double noise = 0.0;
 	
 	if (index1 == index2) {
-	    noise = this.theta[parameterCount-1]*this.theta[parameterCount-1];
+	    noise = this.theta[KernelParameterCount-1]*this.theta[KernelParameterCount-1];
 	}
-	return Math.pow(1.0 + r / (2*theta[parameterCount-2]),-theta[parameterCount-2]) + noise;			
+	return Math.pow(1.0 + r / (2*theta[KernelParameterCount-2]),-theta[KernelParameterCount-2]) + noise;			
     }
     
     public double dkernel(double x[],double y[],int d) {

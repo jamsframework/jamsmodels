@@ -75,7 +75,7 @@ public class CrossValidation extends JAMSContext {
             try {
                 comp.init();
             } catch (Exception e) {
-                System.out.println(e.getMessage());
+                System.out.println(e.toString());
             }
         }
         
@@ -85,7 +85,7 @@ public class CrossValidation extends JAMSContext {
             try {
                 comp.run();
             } catch (Exception e) {
-                System.out.println(e.getMessage());
+                System.out.println(e.toString());
             }
         }
         
@@ -95,7 +95,7 @@ public class CrossValidation extends JAMSContext {
             try {
                 comp.cleanup();
             } catch (Exception e) {
-                System.out.println(e.getMessage());
+                System.out.println(e.toString());
             }
         }
     }

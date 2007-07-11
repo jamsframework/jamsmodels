@@ -21,6 +21,7 @@ import java.util.Random;
 import java.util.StringTokenizer;
 import org.unijena.jams.io.GenericDataWriter;
 import org.unijena.predictionnet.kernels.*;
+import org.unijena.predictionnet.kernels.LinearMeanModell;
 
 public class GaussianLearner extends Learner  {
     @JAMSVarDescription(
@@ -50,6 +51,13 @@ public class GaussianLearner extends Learner  {
             description = "TimeSerie of Temp Data"
             )
             public JAMSInteger kernelMethod;
+    
+    @JAMSVarDescription(
+            access = JAMSVarDescription.AccessType.READ,
+            update = JAMSVarDescription.UpdateType.RUN,
+            description = "TimeSerie of Temp Data"
+            )
+            public JAMSInteger MeanMethod;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
@@ -91,8 +99,7 @@ public class GaussianLearner extends Learner  {
     Matrix Observations;
     Matrix alpha;
     Matrix invCovarianzMatrix;
-        
-    double average = 0.0;        
+               
     double logtheta[];    
     double theta[];
                         
@@ -132,7 +139,8 @@ public class GaussianLearner extends Learner  {
 
 	    if (sigma_i < 0)
 		sigma_i = -sigma_i;
-	    sigma_i = sigma_i*sigma_i;
+	    //sigma_i = sigma_i*sigma_i;
+	    sigma_i = Math.sqrt(sigma_i);
 	    
 	    logp += (- Math.log(sigma_i) - Math.pow((this.Observations.get(i,0) - mu_i)/sigma_i,2.0)/2.0 /* - 0.5*Math.log(2.0*Math.PI)*/);
 	}
@@ -174,9 +182,7 @@ public class GaussianLearner extends Learner  {
     public double Train(int PerformanceMeasure) {
 	CovarianzMatrix = new Matrix(TrainLength,TrainLength);
 	Observations = new Matrix(TrainLength,1);
-	
-	average = 0.0;
-		
+			
 	theta = new double[this.kernel.getParameterCount()];
 	logtheta = new double[this.kernel.getParameterCount()];
 	
@@ -209,8 +215,7 @@ public class GaussianLearner extends Learner  {
 	    System.out.println("zu wenig Parametern");
 	}
 			
-	for (int i=0;i<TrainLength;i++) {
-	    average += result[i];
+	for (int i=0;i<TrainLength;i++) {	    
 	    for (int j=0;j<i;j++) {
 		//calculate covariance for xi,xj
 		double varianz = this.kernel.kernel(normalize(data[i]),normalize(data[j]),i,j);
@@ -220,12 +225,14 @@ public class GaussianLearner extends Learner  {
 	    double varianz = this.kernel.kernel(normalize(data[i]),normalize(data[i]),i,i);
 	    CovarianzMatrix.set(i,i,varianz);	    
 	}	
+		
+	Observations = this.kernel.MM.Transform(data,result);
 	
-	average /= TrainLength;
+/*	average /= TrainLength;
 	
 	for (int i=0;i<TrainLength;i++) {
 	    Observations.set(i,0,this.result[i] - average);
-	}
+	}*/
 	
 	Solver = CovarianzMatrix.chol();
 	//error!!
@@ -266,10 +273,12 @@ public class GaussianLearner extends Learner  {
 	    }
 	}
 	Matrix prediction = (kstar.times(alpha));
-	double result[] = new double[m];
+	/*double result[] = new double[m];
 	for (int j=0;j<m;j++) {
-	    result[j] = prediction.get(j,0) + average;
-	}
+	    result[j] = prediction.get(j,0);
+	}*/
+	
+	result = this.kernel.MM.ReTransform(x,prediction);
 	
 	if (!writeOutput)
 	    return result;
@@ -353,12 +362,112 @@ public class GaussianLearner extends Learner  {
     }
          
     public void GradientDescent(double x[]) {
+	double y1,y2,diff;						
+	double [] grad = new double[x.length];		
+	double [] alpha = new double[x.length];		
+	double xp[] = new double[x.length];
+	
+	double alpha_min = 0.001;
+	double diff_min = 0.025;
+	double approxError = 0.0001;
+		
+	diff  = 1.0;
+	
+	y1 = funct(x);
+	double y_alt;
+	double y_neu = 1.0;
+	double calpha = 0.1;
+	
+	for (int i=0;i<x.length;i++) {
+	    alpha[i] = 0.1;
+	}
+	
+	while ( calpha > alpha_min && diff > diff_min ) {	    	    
+	    y_alt = y1;
+	    //partial differences quotients
+	    for (int i=0; i < x.length; i++) {	
+		if (alpha[i] == 0) {
+		    continue;
+		}
+	        for (int j=0; j < x.length; j++) {	
+		    if (j == i) {
+		        xp[j] = x[j]+approxError;			
+		    }		    
+		    else
+		        xp[j] = x[j];			
+		}
+						
+		y2 = funct(xp);		    		    	
+		grad[i] = ((y2 - y1) / approxError);    
+		
+		if (grad[i] < 0) grad[i] = -1.0;
+		else		 grad[i] = 1.0;
+		//use armijo - method to obtain step width
+		//decrease step - width until result is better than the last one
+		
+		//try to increase step - width
+		alpha[i] *= 4.0;
+		if (alpha[i] >= 2.0) alpha[i] = 2.0;
+		while (true) {		
+		    for (int k=0; k < x.length; k++) {	
+			xp[k] = x[k];
+			if (k==i) {
+			     xp[k] = x[i] - alpha[i]*grad[i];
+			     
+			     if (xp[k] < -4.0)	xp[k] = -4.0;
+			     if (xp[k] >  4.0)	xp[k] =  4.0;
+			}
+		    }
+		
+		    y_neu = funct(xp);
+		
+		    if (y_neu < y1)
+			break;
+
+		    alpha[i] /= 2.0;
+		
+		    if (alpha[i] < alpha_min) {
+			xp[i] = x[i];
+			alpha[i] = 0;
+			y_neu = funct(xp);
+			break;
+		    }
+		}
+		y1 = y_neu;
+		
+		String info = "Gradient:\t";		
+		String info2 = "Stelle:\t";		
+		for (int k=0; k < x.length; k++) {	
+		    x[k] = xp[k];
+		    if (i == k)
+			info += grad[i] + "\t";
+		    else
+			info += "0.0\t" ;
+		    info2 += x[k] + "\t";
+		}	
+		getModel().getRuntime().println(info);		
+		getModel().getRuntime().println(info2);									
+		getModel().getRuntime().println("Funktionswert:\t" + y1 + "\t Alpha: " + calpha + "\t diff:" + diff);
+	    }		    
+
+	    for (int i=0;i<x.length;i++) {
+		if (alpha[i]>calpha)
+		    calpha = alpha[i];
+	    }
+	    
+	    diff = Math.abs((y_neu-y_alt)/y_neu);
+	    
+	    y_alt = y_neu;	    	    
+	}	
+    }
+
+    public void MomentumGradientDescent(double x[]) {
 	double y1,y2,alpha,diff;						
 	double [] grad = new double[x.length];	
 	double xp[] = new double[x.length];
 	
-	double alpha_min = 0.0001;
-	double diff_min = 0.001;
+	double alpha_min = 0.000000000000001;
+	double diff_min = 0.0000000001;
 	double approxError = 0.0001;
 	
 	alpha = 0.1;
@@ -432,8 +541,9 @@ public class GaussianLearner extends Learner  {
 	    getModel().getRuntime().println("Funktionswert:\t" + y1 + "\t Alpha: " + alpha);
 	}	
     }
-            
+    
     public void run() {
+	trainInit(); //this is necessary
 	switch (this.kernelMethod.getValue()) {
 	    case 0: this.kernel = new org.unijena.predictionnet.kernels.TestKernel(this.DataLength); break;
 	    case 2: this.kernel = new org.unijena.predictionnet.kernels.Exponential(this.DataLength); break;
@@ -448,12 +558,17 @@ public class GaussianLearner extends Learner  {
 	    case 17: this.kernel = new org.unijena.predictionnet.kernels.SimplePeriodic(this.DataLength); break;
 	    default: this.kernel = null; System.out.println("No valid Kernel specified, this will propably cause an error!");break;
 	}
-			
+	switch (this.MeanMethod.getValue()) {
+	    case 0: this.kernel.SetMeanModell(new org.unijena.predictionnet.kernels.FixedMeanModell(this.DataLength)); break;
+	    case 1: this.kernel.SetMeanModell(new org.unijena.predictionnet.kernels.LinearMeanModell(this.DataLength)); break;
+	    case 2: this.kernel.SetMeanModell(new org.unijena.predictionnet.kernels.QuadraticMeanModell(this.DataLength)); break;
+	    default: this.kernel.SetMeanModell(new org.unijena.predictionnet.kernels.FixedMeanModell(this.DataLength)); break;
+	}
 	if (doOptimization.getValue()) {
 	    optInit();
 	    double x[] = new double[kernel.getParameterCount()];
 	    for (int i=0;i<x.length;i++)
-		x[i] = 0.0;
+		x[i] = 1.0 / kernel.getParameterCount();
 	    
 	    GradientDescent(x);
 	}

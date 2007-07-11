@@ -10,6 +10,7 @@ public class SimplePeriodic extends Kernel {
     public SimplePeriodic(int inputDim) {              
 	this.inputDim = inputDim;	
 	this.parameterCount = 3;
+	this.KernelParameterCount = 3;
     }
        
     public double SqrDistance2(double x[],double y[]) {

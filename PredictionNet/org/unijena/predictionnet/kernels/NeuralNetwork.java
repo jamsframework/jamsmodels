@@ -21,7 +21,8 @@ public class NeuralNetwork extends Kernel {
     
     public NeuralNetwork(int inputDim) {
 	this.inputDim = inputDim;	
-	this.parameterCount = inputDim + 2;			
+	this.parameterCount = inputDim + 2;	
+	this.KernelParameterCount = inputDim + 2;	
     }
                 
     public boolean SetParameter(double []theta) {
@@ -30,10 +31,10 @@ public class NeuralNetwork extends Kernel {
 	}
 	this.theta = theta;
 	
-	nnKernel = new Matrix(parameterCount-1,parameterCount-1,0);
+	nnKernel = new Matrix(KernelParameterCount-1,KernelParameterCount-1,0);
 	
 	//light version only main diag
-	for (int i=0;i<parameterCount;i++) {	    
+	for (int i=0;i<KernelParameterCount-1;i++) {	    
 	    nnKernel.set(i,i,theta[i]);	   
 	}
 	return true;
@@ -65,7 +66,7 @@ public class NeuralNetwork extends Kernel {
 
 	double noise = 0;
 	if (index1 == index2) {
-	    noise = theta[inputDim+1]*theta[inputDim+1];
+	    noise = theta[KernelParameterCount-1]*theta[KernelParameterCount-1];
 	}
 	return (2.0/Math.PI)*Math.asin(2.0*value1 / Math.sqrt((1+2.0*value2)*(1+2.0*value3))) + noise;
     }
