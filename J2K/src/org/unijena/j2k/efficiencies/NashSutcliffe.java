@@ -122,7 +122,9 @@ public class NashSutcliffe {
                 log_valData[i] = 0;
                 validPairs++;
             }
-            else{
+            //both prediction and validation are greater than zero
+            //no problem for the calculation
+            if(prediction[i] > 0 && validation[i] > 0){
                 log_preData[i] = Math.log(prediction[i]);
                 log_valData[i] = Math.log(validation[i]);
                 validPairs++;
