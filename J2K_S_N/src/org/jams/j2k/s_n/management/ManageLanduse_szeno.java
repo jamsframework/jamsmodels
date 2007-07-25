@@ -59,7 +59,7 @@ public class ManageLanduse_szeno extends JAMSComponent {
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
             update = JAMSVarDescription.UpdateType.RUN,
-            description = "Current organic fertilizer amount"
+            description = "Current organic fertilizer amount added to residue pool"
             )
             public JAMSDouble fertorgNfresh;
     
@@ -128,13 +128,44 @@ public class ManageLanduse_szeno extends JAMSComponent {
             public JAMSInteger opti;    
     
     @JAMSVarDescription(
-            access = JAMSVarDescription.AccessType.READ,
+            access = JAMSVarDescription.AccessType.READWRITE,
             update = JAMSVarDescription.UpdateType.RUN,
             description = "Mineral nitrogen content in the soil profile down to 60 cm depth"
             )
-            public JAMSDouble nmin;    
+            public JAMSDouble nmin;
+    
+    @JAMSVarDescription(
+            access = JAMSVarDescription.AccessType.READWRITE,
+            update = JAMSVarDescription.UpdateType.RUN,
+            description = "optimal nitrogen content in Biomass in (kgN/ha)"
+            )
+            public JAMSDouble optibioN;
+    
+    @JAMSVarDescription(
+            access = JAMSVarDescription.AccessType.READWRITE,
+            update = JAMSVarDescription.UpdateType.RUN,
+            description = "actual nitrogen content in Biomass in (kgN/ha)"
+            )
+            public JAMSDouble actbioN;
+    
+    @JAMSVarDescription(
+            access = JAMSVarDescription.AccessType.READWRITE,
+            update = JAMSVarDescription.UpdateType.RUN,
+            description = "Fraction of actual potential heat units sum [-]"
+            )
+            public JAMSDouble FPHUact;
+    
+    @JAMSVarDescription(
+            access = JAMSVarDescription.AccessType.WRITE,
+            update = JAMSVarDescription.UpdateType.RUN,
+            description = "Fertilisation reduction due to the plant demand routine [kgN/ha]"
+            )
+            public JAMSDouble Nredu;
+  
     
     private JAMSTimeInterval ti;
+    double endbioN;
+    double runNredu;
     public void init() {
         ti = new JAMSTimeInterval(start, end, timeInterval.getTimeUnit(), timeInterval.getTimeUnitCount());
         
@@ -148,13 +179,13 @@ public class ManageLanduse_szeno extends JAMSComponent {
         this.fertorgNactive.setValue(0);
         this.fertorgNfresh.setValue(0);
         boolean runplantex = false;
-        
+        this.runNredu  = 0;
         runplantex = plantExisting.getValue();
         ArrayList<J2KSNCrop> rotation = (ArrayList<J2KSNCrop>) entity.getObject("landuseRotation");
         int rotPos = RotPos.getValue();
         J2KSNCrop currentCrop = rotation.get(rotPos);
         int idc = currentCrop.idc;
-        
+        this.endbioN = currentCrop.endbioN;
         if (idc != 1 && idc != 2 && idc != 4 && idc != 5){
           runplantex = true;  
         } 
@@ -204,11 +235,15 @@ public class ManageLanduse_szeno extends JAMSComponent {
         }
         
         plantExisting.setValue(runplantex);
+        this.Nredu.setValue(runNredu);
         
     }
     
     private void processFertilization(J2KSNLMArable currentManagement) {
+        double fertN_total = 0;
+        
         J2KSNFertilizer fert = currentManagement.fert;
+        
         double redu = ReductionFactor.getValue();
         
         if (time.after(ti.getStart()) && time.before(ti.getEnd())) {
@@ -220,15 +255,45 @@ public class ManageLanduse_szeno extends JAMSComponent {
         
         double famount = currentManagement.famount * redu;
         
-        /*double fertNO3_old = this.fertNO3.getValue();
-        double fertNH4_old = this.fertNH4.getValue();
-        double fertorg_old = this.fertorg.getValue();*/
+   
         
-        double fertN_total = famount * fert.fminn;
+        fertN_total = famount * fert.fminn;
+        
+        //fertilasation in dependence of the demand and N_min in Soil
+        
+        if (opti.getValue() == 1){ 
+        
+        double demand_factor = Math.min(Math.sqrt(FPHUact.getValue()+ 0.3), 1);
+        double future_demand = (demand_factor * endbioN) - optibioN.getValue();
+        double actual_demand = optibioN.getValue() - actbioN.getValue();
+        double total_demand = (future_demand + actual_demand) - nmin.getValue();
+        
+        if (fertN_total > total_demand){
+            
+            redu =  total_demand / fertN_total;
+            
+        }else{
+            
+            redu = 1;
+            
+        } 
+        
+        
+        runNredu = (1 - redu) * (fert.forgn + fert.fminn) * famount; 
+        famount = redu * famount;
+        
+        
+        fertN_total = famount * fert.fminn;
+        
+        }
+        
         double fertNH4N = fertN_total * fert.fnh4n;
         double fertNO3N = fertN_total - fertNH4N;
         double fertorgNfresh = 0.5 * fert.forgn * famount; // amount of nitrogen in the fresh organic pool added to the soil
         double fertorgNactive = 0.5 * famount * fert.forgn; //orgNact is the amount of nitrogen in the active organic pool added to the soil
+        
+        
+       
         
         
        /* if (fertorgN > 0 || fertNO3N > 0 || fertNH4N > 0) {
