@@ -63,7 +63,7 @@ import java.io.*;
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
             update = JAMSVarDescription.UpdateType.RUN,
-            description = "in mm depth of soil layer"
+            description = "in cm depth of soil layer"
             )
             public JAMSDoubleArray layerdepth = new JAMSDoubleArray();
     
@@ -77,7 +77,7 @@ import java.io.*;
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
             update = JAMSVarDescription.UpdateType.RUN,
-            description = "in dm actual depth of roots"
+            description = "in m actual depth of roots"
             )
             public JAMSDouble rootdepth;
     
@@ -429,6 +429,13 @@ import java.io.*;
             )
             public JAMSDouble sum_Ninput;
     
+    @JAMSVarDescription(
+            access = JAMSVarDescription.AccessType.READ,
+            update = JAMSVarDescription.UpdateType.RUN,
+            description = "Current organic fertilizer amount added to residue pool"
+            )
+            public JAMSDouble fertorgNfresh;
+    
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
@@ -552,6 +559,13 @@ import java.io.*;
             description = "Mineral nitrogen content in the soil profile down to 60 cm depth"
             )
             public JAMSDouble nmin;    
+    
+    @JAMSVarDescription(
+            access = JAMSVarDescription.AccessType.READ,
+            update = JAMSVarDescription.UpdateType.RUN,
+            description = "Indicates whether roots can penetrate or not the soil layer [-]"
+            )
+            public JAMSDoubleArray root_h = new JAMSDoubleArray(); 
     
     
     
@@ -891,8 +905,8 @@ import java.io.*;
             }
             
             if (i < 1){
-                runResidue_pool = runResidue_pool + inp_biomass.getValue();
-                runN_residue_pool_fresh = runN_residue_pool_fresh + inpN_biomass.getValue();
+                runResidue_pool = runResidue_pool + inp_biomass.getValue() + (fertorgNfresh.getValue() * 10);
+                runN_residue_pool_fresh = runN_residue_pool_fresh + inpN_biomass.getValue() + fertorgNfresh.getValue();
 /*                if (inpN_biomass.getValue() > 0){
                     System.out.println(time.get(time.DAY_OF_YEAR) + " resisuenadd " + inpN_biomass.getValue());
                 }*/
@@ -910,7 +924,7 @@ import java.io.*;
                     runResidue_pool = 0;
                 }
                 
-                runsum_Ninput =  fertactivorg.getValue() + fertNH4.getValue() + fertNO3.getValue() + a_deposition;
+                runsum_Ninput =  fertactivorg.getValue() + fertNH4.getValue() + fertNO3.getValue() + fertorgNfresh.getValue() + a_deposition;
                 //runsum_Ninput =   runinterflowN_in ;
                 
                 
@@ -1157,7 +1171,7 @@ import java.io.*;
     }
     private double[] calc_plantuptake(){
         double upNO3_Pool = 0;
-        double runrootdepth =(rootdepth.getValue() * 10);
+        double runrootdepth =(rootdepth.getValue() * 100);
         double[] partroot = new double[layer];
         
         
@@ -1303,7 +1317,7 @@ import java.io.*;
             
             ii++;
         }
-        
+        /* switch off of loop 4
         if (demand2 < 0){
             
             // plant uptake loop 4: redistributing rest N demand on rest NO3_Pools within rootdepth
@@ -1329,7 +1343,7 @@ import java.io.*;
                 jj++;
             }
         }
-        
+        */
         double runactN_up = runpotN_up + demand2;
         
         double bioNact = 0;
