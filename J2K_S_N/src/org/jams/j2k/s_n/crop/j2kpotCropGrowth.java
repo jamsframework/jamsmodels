@@ -33,7 +33,7 @@ import java.io.*;
 import java.util.ArrayList;
 
 @JAMSComponentDescription(
-        title="j2kCropGrowth",
+title="j2kCropGrowth",
         author="Ulrike Bende-Michl & Manfred Fink",
         description="Module for calculation of crop growth according to the algorithms of SWAT"
         )
@@ -46,42 +46,42 @@ import java.util.ArrayList;
     
     
     @JAMSVarDescription(
-            access = JAMSVarDescription.AccessType.READWRITE,
+    access = JAMSVarDescription.AccessType.READWRITE,
             update = JAMSVarDescription.UpdateType.RUN,
             description = "Current organic fertilizer amount"
             )
             public JAMSInteger RotPos;
     
     @JAMSVarDescription(
-            access = JAMSVarDescription.AccessType.READ,
+    access = JAMSVarDescription.AccessType.READ,
             update = JAMSVarDescription.UpdateType.RUN,
             description = "Current hru object"
             )
             public JAMSEntityCollection entities;
     
     @JAMSVarDescription(
-            access = JAMSVarDescription.AccessType.READ,
+    access = JAMSVarDescription.AccessType.READ,
             update = JAMSVarDescription.UpdateType.RUN,
             description = "Current hru object id"
             )
             public JAMSDouble idValue ;
     
     @JAMSVarDescription(
-            access = JAMSVarDescription.AccessType.READ,
+    access = JAMSVarDescription.AccessType.READ,
             update = JAMSVarDescription.UpdateType.RUN,
             description = "HRU attribute name area"
             )
             public JAMSDouble Area;
     
     @JAMSVarDescription(
-            access = JAMSVarDescription.AccessType.READ,
+    access = JAMSVarDescription.AccessType.READ,
             update = JAMSVarDescription.UpdateType.RUN,
             description = "HRU daily mean temperature [°C]"
             )
             public JAMSDouble Tmean;
     
     @JAMSVarDescription(
-            access = JAMSVarDescription.AccessType.READ,
+    access = JAMSVarDescription.AccessType.READ,
             update = JAMSVarDescription.UpdateType.RUN,
             description = "Daily solar radiation [MJ/m²]"
             )
@@ -89,35 +89,35 @@ import java.util.ArrayList;
     
     
     @JAMSVarDescription(
-            access = JAMSVarDescription.AccessType.READWRITE,
+    access = JAMSVarDescription.AccessType.READWRITE,
             update = JAMSVarDescription.UpdateType.RUN,
             description = "Biomass sum produced for a given day [kg/ha] drymass"
             )
             public JAMSDouble BioAct;
     
     @JAMSVarDescription(
-            access = JAMSVarDescription.AccessType.READWRITE,
+    access = JAMSVarDescription.AccessType.READWRITE,
             update = JAMSVarDescription.UpdateType.RUN,
             description = "Actual canopy Height [m]"
             )
             public JAMSDouble CanHeightAct;
     
     @JAMSVarDescription(
-            access = JAMSVarDescription.AccessType.READWRITE,
+    access = JAMSVarDescription.AccessType.READWRITE,
             update = JAMSVarDescription.UpdateType.RUN,
-            description = "Actual rooting depth [dm]"
+            description = "Actual rooting depth [m]"
             )
             public JAMSDouble ZRootD;
     
     @JAMSVarDescription(
-            access = JAMSVarDescription.AccessType.READWRITE,
+    access = JAMSVarDescription.AccessType.READWRITE,
             update = JAMSVarDescription.UpdateType.RUN,
             description = "Fraction of nitrogen in the plant optimal biomass at the current growth's stage"
             )
             public JAMSDouble FNPlant;
-  
+    
     @JAMSVarDescription(
-            access = JAMSVarDescription.AccessType.READWRITE,
+    access = JAMSVarDescription.AccessType.READWRITE,
             update = JAMSVarDescription.UpdateType.RUN,
             description = "Biomass above ground on the day of harvest [kg/ha]"
             )
@@ -125,42 +125,42 @@ import java.util.ArrayList;
     
     
     @JAMSVarDescription(
-            access = JAMSVarDescription.AccessType.WRITE,
+    access = JAMSVarDescription.AccessType.WRITE,
             update = JAMSVarDescription.UpdateType.RUN,
             description = "Biomass added residue pool after harvesting [kg/ha]"
             )
             public JAMSDouble Addresidue_pool;
     
     @JAMSVarDescription(
-            access = JAMSVarDescription.AccessType.WRITE,
+    access = JAMSVarDescription.AccessType.WRITE,
             update = JAMSVarDescription.UpdateType.RUN,
             description = "Nitrogen added residue pool after harvesting [kg N/ha]"
             )
             public JAMSDouble Addresidue_pooln;
     
     @JAMSVarDescription(
-            access = JAMSVarDescription.AccessType.READWRITE,
+    access = JAMSVarDescription.AccessType.READWRITE,
             update = JAMSVarDescription.UpdateType.RUN,
             description = "HRU actual Transpiration [mm]"
             )
             public JAMSDouble aTP;
     
     @JAMSVarDescription(
-            access = JAMSVarDescription.AccessType.READ,
+    access = JAMSVarDescription.AccessType.READ,
             update = JAMSVarDescription.UpdateType.RUN,
             description = "HRU potential Transpiration [mm]"
             )
             public JAMSDouble pTP;
     
     @JAMSVarDescription(
-            access = JAMSVarDescription.AccessType.READ,
+    access = JAMSVarDescription.AccessType.READ,
             update = JAMSVarDescription.UpdateType.INIT,
             description = "Light Extinct Coefficient [-0.65]"
             )
             public JAMSDouble LExCoef;
     
     @JAMSVarDescription(
-            access = JAMSVarDescription.AccessType.READWRITE,
+    access = JAMSVarDescription.AccessType.READWRITE,
             update = JAMSVarDescription.UpdateType.RUN,
             description = "Actual N content in plants biomass [kg N/ha]"
             )
@@ -168,14 +168,14 @@ import java.util.ArrayList;
     
     
     @JAMSVarDescription(
-            access = JAMSVarDescription.AccessType.READWRITE,
+    access = JAMSVarDescription.AccessType.READWRITE,
             update = JAMSVarDescription.UpdateType.RUN,
             description = "Daily fraction of max LAI [-]"
             )
             public JAMSDouble frLAImxAct;
     
     @JAMSVarDescription(
-            access = JAMSVarDescription.AccessType.READWRITE,
+    access = JAMSVarDescription.AccessType.READWRITE,
             update = JAMSVarDescription.UpdateType.RUN,
             description = "Daily fraction of max LAI [-]"
             )
@@ -183,28 +183,28 @@ import java.util.ArrayList;
     
     
     @JAMSVarDescription(
-            access = JAMSVarDescription.AccessType.READWRITE,
+    access = JAMSVarDescription.AccessType.READWRITE,
             update = JAMSVarDescription.UpdateType.RUN,
             description = "Daily fraction of max root development [-]"
             )
             public JAMSDouble frRootAct;
     
     @JAMSVarDescription(
-            access = JAMSVarDescription.AccessType.WRITE,
+    access = JAMSVarDescription.AccessType.WRITE,
             update = JAMSVarDescription.UpdateType.RUN,
             description = "Actual yield [kg/ha]"
             )
             public JAMSDouble BioYield;
     
     @JAMSVarDescription(
-            access = JAMSVarDescription.AccessType.WRITE,
+    access = JAMSVarDescription.AccessType.WRITE,
             update = JAMSVarDescription.UpdateType.RUN,
             description = "Actual N content in yield [absolut]"
             )
             public JAMSDouble NYield;
     
     @JAMSVarDescription(
-            access = JAMSVarDescription.AccessType.WRITE,
+    access = JAMSVarDescription.AccessType.WRITE,
             update = JAMSVarDescription.UpdateType.RUN,
             description = "Actual N content in yield [kg N/ha]"
             )
@@ -212,14 +212,14 @@ import java.util.ArrayList;
     
     
     @JAMSVarDescription(
-            access = JAMSVarDescription.AccessType.READWRITE,
+    access = JAMSVarDescription.AccessType.READWRITE,
             update = JAMSVarDescription.UpdateType.RUN,
             description = "Actual N in Biomass "
             )
             public JAMSDouble BioNAct;
-        
+    
     @JAMSVarDescription(
-            access = JAMSVarDescription.AccessType.READWRITE,
+    access = JAMSVarDescription.AccessType.READWRITE,
             update = JAMSVarDescription.UpdateType.RUN,
             description = "actual harvest index [0-1]"
             )
@@ -227,42 +227,42 @@ import java.util.ArrayList;
     
     
     @JAMSVarDescription(
-            access = JAMSVarDescription.AccessType.READWRITE,
+    access = JAMSVarDescription.AccessType.READWRITE,
             update = JAMSVarDescription.UpdateType.RUN,
             description = "Fraction of actual potential heat units sum [-]"
             )
-            public JAMSDouble FPHUact;    
+            public JAMSDouble FPHUact;
     
     @JAMSVarDescription(
-            access = JAMSVarDescription.AccessType.READWRITE,
+    access = JAMSVarDescription.AccessType.READWRITE,
             update = JAMSVarDescription.UpdateType.RUN,
             description = "delta LAI [-]"
             )
             public JAMSDouble LAIdelta;
     
     @JAMSVarDescription(
-            access = JAMSVarDescription.AccessType.READWRITE,
+    access = JAMSVarDescription.AccessType.READWRITE,
             update = JAMSVarDescription.UpdateType.RUN,
             description = "actual LAI"
             )
             public JAMSDouble LAI;
     
     @JAMSVarDescription(
-            access = JAMSVarDescription.AccessType.READWRITE,
+    access = JAMSVarDescription.AccessType.READWRITE,
             update = JAMSVarDescription.UpdateType.RUN,
             description = "actual nitrate uptake by plants in kgN/ha"
             )
             public JAMSDouble actN_up;
     
     @JAMSVarDescription(
-            access = JAMSVarDescription.AccessType.READWRITE,
+    access = JAMSVarDescription.AccessType.READWRITE,
             update = JAMSVarDescription.UpdateType.RUN,
             description = "flag plant existing yes or no " // attention its a boolean!
             )
             public JAMSBoolean plantExisting;
     
     @JAMSVarDescription(
-            access = JAMSVarDescription.AccessType.READWRITE,
+    access = JAMSVarDescription.AccessType.READWRITE,
             update = JAMSVarDescription.UpdateType.RUN,
             description = "actual potential heat units sum [-]"
             )
@@ -270,7 +270,7 @@ import java.util.ArrayList;
     
     
     @JAMSVarDescription(
-            access = JAMSVarDescription.AccessType.READWRITE,
+    access = JAMSVarDescription.AccessType.READWRITE,
             update = JAMSVarDescription.UpdateType.RUN,
             description = "Plants base growth temperature [°C]"
             )
@@ -278,14 +278,14 @@ import java.util.ArrayList;
     
     
     @JAMSVarDescription(
-            access = JAMSVarDescription.AccessType.READWRITE,
+    access = JAMSVarDescription.AccessType.READWRITE,
             update = JAMSVarDescription.UpdateType.RUN,
             description = "Plants optimum growth temperature [°C]"
             )
             public JAMSDouble topt;
     
     @JAMSVarDescription(
-            access = JAMSVarDescription.AccessType.READWRITE,
+    access = JAMSVarDescription.AccessType.READWRITE,
             update = JAMSVarDescription.UpdateType.RUN,
             description = "Plants daily biomass increase [kg/ha]"
             )
@@ -293,39 +293,46 @@ import java.util.ArrayList;
     
     
     @JAMSVarDescription(
-            access = JAMSVarDescription.AccessType.READWRITE,
+    access = JAMSVarDescription.AccessType.READWRITE,
             update = JAMSVarDescription.UpdateType.RUN,
             description = "Reset plant state variables?"
             )
             public JAMSBoolean plantStateReset;
     
     @JAMSVarDescription(
-            access = JAMSVarDescription.AccessType.WRITE,
+    access = JAMSVarDescription.AccessType.WRITE,
             update = JAMSVarDescription.UpdateType.RUN,
             description = "Indicator for harvesting"
             )
             public JAMSBoolean doHarvest;
     
     @JAMSVarDescription(
-            access = JAMSVarDescription.AccessType.READ,
+    access = JAMSVarDescription.AccessType.READ,
             update = JAMSVarDescription.UpdateType.INIT,
             description = "Factor of rootdepth 0 - 10 default 1"
             )
             public JAMSDouble rootfactor;
     
     @JAMSVarDescription(
-            access = JAMSVarDescription.AccessType.READ,
+    access = JAMSVarDescription.AccessType.READ,
             update = JAMSVarDescription.UpdateType.RUN,
             description = "indicates dormancy of plants"
             )
             public JAMSBoolean dormancy;
     
-      @JAMSVarDescription(
-            access = JAMSVarDescription.AccessType.WRITE,
+    @JAMSVarDescription(
+    access = JAMSVarDescription.AccessType.WRITE,
             update = JAMSVarDescription.UpdateType.RUN,
             description = "id of the current crop"
             )
             public JAMSDouble cropid;
+    
+    @JAMSVarDescription(
+    access = JAMSVarDescription.AccessType.READ,
+            update = JAMSVarDescription.UpdateType.RUN,
+            description = "max Root depth in soil in m"
+            )
+            public JAMSDouble soil_root;
     
     
      /*
@@ -378,7 +385,7 @@ import java.util.ArrayList;
     private double rdmx;
     private double frroot_act;
     private double zrootd_act;
-   
+    
     private double zrootd;
     
     private double bn1;
@@ -394,7 +401,7 @@ import java.util.ArrayList;
     private double bioN_act;
     private double bio_act;
     private double bio_opt;
-   
+    
     private double bioopt_ha;
     private double hi_act;
     private double bioag_act;
@@ -449,12 +456,14 @@ import java.util.ArrayList;
         this.hu_ec8 = crop.hu_ec8;
         this.hu_ec9 = crop.hu_ec9;
         this.enty_id = idValue.getValue();*/
-
+        yield = 0;
+        yldN = 0; /* N Content from the above biomass */
+        yldN_ha = 0;
         this.tmean = Tmean.getValue();
         this.fphu_act = FPHUact.getValue();
         this.phu_daily = PHUact.getValue();
-       
-     
+        
+        
         this.area_ha = Area.getValue() /10000;
         this.solrad = SolRad.getValue();
         this.leco = LExCoef.getValue();
@@ -468,7 +477,7 @@ import java.util.ArrayList;
         
         this.fnplant_act = FNPlant.getValue();
         this.bioNopt_act = BioNoptAct.getValue(); /*actual biomass in kg/ha, optimal conditions */
-      
+        
         this.bioN_act = BioNAct.getValue(); /*actual biomass in kg/ha adapted by stress*/
         this.hi_act = HarvIndex.getValue();;
         this.bioag_act = BioagAct.getValue();
@@ -508,8 +517,8 @@ import java.util.ArrayList;
         int managementPos = entity.getInt("managementPos");
         J2KSNLMArable currentManagement = managementList.get(managementPos);*/
         if (crop.idc == 11){
-          
-         
+            
+            
             phu_daily = 0;
             Tbase = 0;
             Topt = 0;
@@ -521,18 +530,16 @@ import java.util.ArrayList;
             hc_act = 0; /*Actual canopy height */
             frroot_act = 0;  /* daily fraction of root development [mm] */
             zrootd_act = 1000;  /* daily root development [mm] */
-             
+            
             fnplant_act = 0; /* daily fraction of N in plant biomass */
             bioNopt_act = 0;
             bio_opt = 0; /*Plants optimal biomass */
-           
-          
+            
+            
             bio_opt_delta = 0;
             hi_act = 0;
             bioag_act = 0;
-            yield = 0;
-            yldN = 0; /* N Content from the above biomass */
-            yldN_ha = 0;
+            
             fphu_act = 0;
             bioN_act = 0; /*actual biomass in kg/ha adapted by stress*/
             frLAImx_Xi = 0;
@@ -546,9 +553,9 @@ import java.util.ArrayList;
             calc_lai();
             calc_biomass();
             hc_act = calc_canopy();
-            calc_root();            
+            calc_root();
             calc_nuptake();
-            
+           
             // time
             this.addresidue_pool = 0;
             this.addresidue_pooln = 0;
@@ -561,8 +568,8 @@ import java.util.ArrayList;
             
         } else if (plantStateReset.getValue()) {
             
-        
-         
+            
+            
             phu_daily = 0;
             Tbase = 0;
             Topt = 0;
@@ -574,18 +581,15 @@ import java.util.ArrayList;
             hc_act = 0; /*Actual canopy height */
             frroot_act = 0;  /* daily fraction of root development [mm] */
             zrootd_act = 0;  /* daily root development [mm] */
-          
+            
             fnplant_act = 0; /* daily fraction of N in plant biomass */
             bioNopt_act = 0;
             bio_opt = 0; /*Plants optimal biomass */
-          
            
             bio_opt_delta = 0;
             hi_act = 0;
             bioag_act = 0;
-            yield = 0;
-            yldN = 0; /* N Content from the above biomass */
-            yldN_ha = 0;
+            
             fphu_act = 0;
             bioN_act = 0; /*actual biomass in kg/ha adapted by stress*/
             frLAImx_Xi = 0;
@@ -593,13 +597,13 @@ import java.util.ArrayList;
             this.addresidue_pool = 0;
             this.addresidue_pooln = 0;
             plantStateReset.setValue(false);
-
+            
             
             //System.out.println("########################## resetting values ##########################");
             
         }
         
-      
+        
         
         PHUact.setValue(phu_daily);
         tbase.setValue(Tbase);
@@ -611,13 +615,14 @@ import java.util.ArrayList;
         // BioOpt.setValue(bio_opt * area_ha); /*Plants optimal biomass */
         CanHeightAct.setValue(hc_act); /*Actual canopy height */
         frRootAct.setValue(frroot_act);  /* daily fraction of root development [mm] */
-        ZRootD.setValue(zrootd_act * rootfactor.getValue());  /* daily root development [mm] */
+        zrootd_act = Math.min(zrootd_act * rootfactor.getValue(),soil_root.getValue());
+        ZRootD.setValue(zrootd_act);  /* daily root development [mm] */
         
         FNPlant.setValue(fnplant_act); /* daily fraction of N in plant biomass */
         BioNoptAct.setValue(bioNopt_act);
         BioAct.setValue(bio_opt); /*Plants optimal biomass */
-       
-       
+        
+        
         BioOpt_delta.setValue(bio_opt_delta);
         HarvIndex.setValue(hi_act);
         BioagAct.setValue(bioag_act);
@@ -634,7 +639,7 @@ import java.util.ArrayList;
         }else{
             plantStateReset.setValue(true);
         }
-
+        
     }
 //        idc = idc+1;
 //        cropClass.setValue(idc);
@@ -788,7 +793,7 @@ import java.util.ArrayList;
         this.bio_opt_delta = this.rue * Hphosyn;
         
         if (dormancy.getValue()) {
-           bio_opt_delta = 0; 
+            bio_opt_delta = 0;
         }
         
         //       this.bio_opt = bio_opt_delta +  this.bio_opt;
@@ -872,7 +877,7 @@ import java.util.ArrayList;
         // idValue.getValue() == 6)
         if
                 (this.idc == 3 || this.idc == 6 || this.idc == 7) {
-                 zrootd_act = this.rdmx;
+            zrootd_act = this.rdmx;
         }
         
         // annuals
@@ -1065,9 +1070,9 @@ import java.util.ArrayList;
             {
                 this.yield = bio_opt * (1 - (1/(1+ hi_act)));
             }
-            if (idValue.getValue() == 6) {
+            /*if (idValue.getValue() == 6) {
                 System.out.println(" hi_act: " + hi_act +  " hvsti: " + hvsti +  " fphu: " + fphu_act + " - ");
-            }
+            }*/
             // Amounts of nitrogen [kg N/ha](and who wants P) to be removed from the field
             // whereas cnyld is the fraction of N being removed by the field crop
             
@@ -1083,7 +1088,7 @@ import java.util.ArrayList;
                 this.fphu_act = 0;
             }else{
                 this.fphu_act = Math.min(fphu_act, 1);
-                this.fphu_act = (this.fphu_act * (1 - (this.yield / this.bio_opt)))/8;
+                this.fphu_act = (this.fphu_act * (1 - (this.yield / this.bio_opt)));
             }
             this.phu_daily = this.phu * this.fphu_act;
             bio_opt = bio_opt - this.yield;

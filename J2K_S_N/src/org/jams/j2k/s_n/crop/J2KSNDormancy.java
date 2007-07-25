@@ -33,7 +33,7 @@ import org.unijena.jams.model.*;
 @JAMSComponentDescription(
         title="J2KSNDormancy",
         author="Manfred Fink",
-        description="Calculates dormancy of plants under use of day length (after SWAT) and maturity"
+        description="Calculates dormancy of plants under use of day length (after SWAT). Dormancy variable is also used to simulate maturity"
         )
         public class J2KSNDormancy extends JAMSComponent {
     
