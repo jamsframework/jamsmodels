@@ -137,7 +137,7 @@ import org.unijena.jams.model.*;
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
             update = JAMSVarDescription.UpdateType.RUN,
-            description = "in dm actual depth of roots"
+            description = "in m actual depth of roots"
             )
             public JAMSDouble rootdepth;
     
@@ -499,6 +499,22 @@ import org.unijena.jams.model.*;
             description = "Layer MPS diffusion factor > 1 [-]  default = 10"
             )
             public JAMSDouble kdiff_layer;
+    
+    @JAMSVarDescription(
+            access = JAMSVarDescription.AccessType.READ,
+            update = JAMSVarDescription.UpdateType.RUN,
+            description = "Indicates whether roots can penetrate or not the soil layer [-]"
+            )
+            public JAMSDoubleArray root_h = new JAMSDoubleArray(); 
+    
+     @JAMSVarDescription(
+            access = JAMSVarDescription.AccessType.WRITE,
+            update = JAMSVarDescription.UpdateType.RUN,
+            description = "max Root depth in soil in m"
+            )
+            public JAMSDouble soil_root;
+    
+    
     
     
     
@@ -994,7 +1010,7 @@ import org.unijena.jams.model.*;
         double[] horETP = new double[nhor];
         double sumlayer = 0;
         int i = 0;
-        double runrootdepth = (rootdepth.getValue() * 100) + 100;
+        double runrootdepth = (rootdepth.getValue() * 1000) + 10;
         double[] partroot = new double[nhor];
         double rootlayer = 0;
         double runLAI = LAI.getValue();
@@ -1023,16 +1039,21 @@ import org.unijena.jams.model.*;
         }
         pEvap = deltaETP - pTransp;
         
-        
+        double soilroot = 0;
         // EvapoTranspiration loop 1: calculating layer poritions within rootdepth
         while (i < nhor) {
+            
             sumlayer =   sumlayer  +  layerdepth.getValue()[i] * 10;
+            
+            if (root_h.getValue()[i] == 1.0){
+            soilroot = soilroot + layerdepth.getValue()[i] * 10;
+            }
             this.runlayerdepth[i] = sumlayer;
             if (runrootdepth > runlayerdepth[0]){
-                if (runrootdepth > runlayerdepth[i]){
+                if (runrootdepth > runlayerdepth[i] && root_h.getValue()[i] == 1.0){
                     partroot[i] = 1 ;
                     rootlayer = i;
-                }else if (runrootdepth > runlayerdepth[i - 1]){
+                }else if (runrootdepth > runlayerdepth[i - 1] && root_h.getValue()[i] == 1.0){
                     partroot[i] = (runrootdepth - runlayerdepth[i - 1]) /  (runlayerdepth[i] - runlayerdepth[i - 1]);
                     rootlayer = i;
                 }else {
@@ -1053,6 +1074,8 @@ import org.unijena.jams.model.*;
         i = 0;
         while (i < nhor) {
             
+            
+            runrootdepth = Math.min(runrootdepth,soilroot);
             // Transpiration loop 2: calculating transpiration distribution function with depth in layers
             transp_hord[i] = (pTransp  * (1 - Math.exp(-BetaW.getValue()*(runlayerdepth[i]/runrootdepth)))) / (1 - Math.exp(-BetaW.getValue()));
             if  (transp_hord[i] >  pTransp){
@@ -1178,7 +1201,7 @@ import org.unijena.jams.model.*;
         }
         
         
-        
+        this.soil_root.setValue(soilroot/1000);
         return horETP;
     }
     
