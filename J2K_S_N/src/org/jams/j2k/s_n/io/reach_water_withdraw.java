@@ -128,7 +128,7 @@ title="Reach water  withdrawal",
             public JAMSDouble Nitrogenloss;
     
     @JAMSVarDescription(
-    access = JAMSVarDescription.AccessType.WRITE,
+    access = JAMSVarDescription.AccessType.READ,
             update = JAMSVarDescription.UpdateType.RUN,
             description = "ID of the reach which losses water and nitrogen"
             )
@@ -164,7 +164,7 @@ title="Reach water  withdrawal",
         } else{
             losspart = 1;
         }
-        double keep_part = losspart -1;
+        double keep_part = 1 - losspart;
         
         inRD1.setValue(keep_part * inRD1.getValue());
         inRD2.setValue(keep_part * inRD2.getValue());
