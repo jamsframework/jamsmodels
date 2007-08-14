@@ -233,21 +233,21 @@ title="InitJ2KNSoillayer",
         double[] InterflowN_invals = new double[layer];
         
         
-        double fr_actN = 0.02;      /** nitrogen active pool fraction. The fraction of organic nitrogen in the active pool. */
+        double fr_actN = 0.025;      /** nitrogen active pool fraction. The fraction of organic nitrogen in the active pool. */
         
         
         
         
         while (i < layer){
             
-            runC_org = C_org.getValue()[i] / 1.72;
+            runC_org = C_org.getValue()[i] / (1.72 * 2);
             runsoil_bulk_density = soil_bulk_density.getValue()[i];
             runlayerdepth = layerdepth.getValue()[i] * 10; //from cm to mm
             hor_dept = hor_dept + runlayerdepth;
             runResidue_pool = 10;
             runNO3_Pool = ((7 * Math.exp(-hor_dept/1000)) * runsoil_bulk_density * runlayerdepth)/1000;
             runNH4_Pool = 0.1 * runNO3_Pool;
-            orgNhum = 10000 * runC_org / 17;
+            orgNhum = 10000 * runC_org / 14;
             runN_activ_pool = ((orgNhum * fr_actN) * runsoil_bulk_density * runlayerdepth)/100;
             runN_stabel_pool = ((orgNhum * (1 - fr_actN)) * runsoil_bulk_density * runlayerdepth)/100;
             runN_residue_pool_fresh = 0.0015 * runResidue_pool;

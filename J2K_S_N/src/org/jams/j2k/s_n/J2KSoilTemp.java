@@ -92,14 +92,14 @@ import org.unijena.jams.model.*;
             description = "in mm depth of soil profile"
             )
             public JAMSDouble totaldepth;
-/*
+
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
             update = JAMSVarDescription.UpdateType.RUN,
             description = "in kg/dm³ soil bulk density"
             )
             public JAMSDouble soil_bulk_density;
- */
+
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
             update = JAMSVarDescription.UpdateType.INIT,
@@ -177,13 +177,13 @@ import org.unijena.jams.model.*;
             )
             public JAMSDouble Surfacetemp;
     
-/*    @JAMSVarDescription(
+    @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
             update = JAMSVarDescription.UpdateType.RUN,
             description = "aboveground biomass in dt/ha"
             )
             public JAMSDouble biomass;
- */
+
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
             update = JAMSVarDescription.UpdateType.RUN,
@@ -288,8 +288,8 @@ import org.unijena.jams.model.*;
         double lamda;
         double l_depth = layerdepth.getValue() * 10 / 2;
         double t_depth = totaldepth.getValue() * 10;
-//     double soil_bulk_dens = soil_bulk_density.getValue();
-        double soil_bulk_dens = 1.4;
+        double soil_bulk_dens = soil_bulk_density.getValue();
+//        double soil_bulk_dens = 1.4;
         double soilwater = calc_water_content();
         
         dd_max = 1000 + ((2500*soil_bulk_dens)/(soil_bulk_dens+ 686*Math.exp(-5.63*soil_bulk_dens)) );
@@ -314,7 +314,8 @@ import org.unijena.jams.model.*;
         double snowcov = snowcover.getValue();
         
 // dummy calculation for vegetationcover /**vegetationcover estimated from measurements of Paul et. al. 2002*/
-        double vegetationcover =  728.3 * LAI_temp + 326;
+        double vegetationcover = biomass.getValue();
+     // double vegetationcover =  728.3 * LAI_temp + 326;
         double radiation = radiat / 1000;
 /*        epsilon_solar = (entity.getDouble(aNameradiation.getValue())*(1-entity.getDouble(aNamesoilalbedo.getValue()))-14)/20;
  */

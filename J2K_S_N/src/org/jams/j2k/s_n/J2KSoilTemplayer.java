@@ -193,16 +193,24 @@ import org.unijena.jams.model.*;
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
             update = JAMSVarDescription.UpdateType.RUN,
-            description = "aboveground biomass in dt/ha"
+            description = "aboveground biomass in kg/ha"
             )
             public JAMSDouble biomass;
-
+    
     @JAMSVarDescription(
+    access = JAMSVarDescription.AccessType.READ,
+            update = JAMSVarDescription.UpdateType.RUN,
+            description = " Residue in Layer in kgN/ha"
+            )
+            public JAMSDoubleArray Residue_pool = new JAMSDoubleArray();
+
+    
+      @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
             update = JAMSVarDescription.UpdateType.RUN,
-            description = " state variable LAI in [-]"
+            description = "switch for mulch drilling scenario"
             )
-            public JAMSDouble actLAI;
+            public JAMSInteger sceno;
     
  
     double[] Soiltemp_hor;
@@ -340,12 +348,19 @@ import org.unijena.jams.model.*;
         double epsilon_solar;
         double temp_bare_soil;
         
-        double LAI_temp = actLAI.getValue();
+        
         double snowcov = snowcover.getValue();
         
 // dummy calculation for vegetationcover /**vegetationcover estimated from measurements of Paul et. al. 2002*/
-        double vegetationcover =  728.3 * LAI_temp + 326;
-        double radiation = radiat / 1000;
+//          double vegetationcover =  728.3 * LAI_temp + 326;
+           double vegetationcover = biomass.getValue();
+          
+           if (sceno.getValue() == 1){
+               vegetationcover = biomass.getValue() + this.Residue_pool.getValue()[0];
+           }
+           
+           
+           double radiation = radiat / 1000;
 //        double temp_min = atemp_min.getValue();
 //        double temp_max = atemp_max.getValue();
 //        double temp_mean = atemp_mean.getValue();
