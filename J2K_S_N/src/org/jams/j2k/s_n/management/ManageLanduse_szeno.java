@@ -168,6 +168,21 @@ public class ManageLanduse_szeno extends JAMSComponent {
             description = "Number of fertilisation action in crop [-]"
             )
             public JAMSDouble gift;
+     
+     @JAMSVarDescription(
+            access = JAMSVarDescription.AccessType.READWRITE,
+            update = JAMSVarDescription.UpdateType.RUN,
+            description = "in [-] plant groth nitrogen stress factor"
+            )
+            public JAMSDouble nstrs;
+     
+     @JAMSVarDescription(
+            access = JAMSVarDescription.AccessType.READWRITE,
+            update = JAMSVarDescription.UpdateType.RUN,
+            description = "Minimum counter between 2 fertilizer actions in days (only used when opti = 2)"
+            )
+            public JAMSDouble Dayintervall;
+     
   
     
     private JAMSTimeInterval ti;
@@ -179,7 +194,7 @@ public class ManageLanduse_szeno extends JAMSComponent {
     }
      
     public void run() throws JAMSEntity.NoSuchAttributeException {
-        
+        double dayintervall = Dayintervall.getValue();
         JAMSEntity entity = entities.getCurrent();
         this.fertNO3N.setValue(0);
         this.fertNH4N.setValue(0);
@@ -229,7 +244,9 @@ public class ManageLanduse_szeno extends JAMSComponent {
                 //do tillage processing here!!
             } else if (currentManagement.fert != null) {
                 //do fetilization processing here!!
+               if ((opti.getValue() != 2) || (idc != 1 && idc != 2 && idc != 4 && idc != 5)){
                 processFertilization(currentManagement);
+               }
             } else if (currentManagement.plant == true) {
                 //do planting here!!
                 //PHUact.setValue(0);
@@ -241,9 +258,24 @@ public class ManageLanduse_szeno extends JAMSComponent {
             }
         }
         
+        double day = time.get(time.DAY_OF_YEAR);
+        
+        if ((opti.getValue() == 2) && (day > 90.0  && day < 270.0))   { 
+            if (nstrs.getValue() > 0.05 && gift.getValue() < 4){
+                if (dayintervall < 1) {
+                processFertilizationopti(currentManagement);
+                dayintervall = 25;
+                }
+                
+            }
+        }
+        
         plantExisting.setValue(runplantex);
         this.Nredu.setValue(runNredu);
-        
+        if (dayintervall > 0) {
+        dayintervall = dayintervall - 1;
+        }
+        Dayintervall.setValue(dayintervall);
     }
     
     private void processFertilization(J2KSNLMArable currentManagement) {
@@ -275,7 +307,7 @@ public class ManageLanduse_szeno extends JAMSComponent {
         double demand_factor = Math.min(Math.sqrt(FPHUact.getValue()+ 0.3), 1);
         double future_demand = (demand_factor * endbioN) - optibioN.getValue();
         double actual_demand = optibioN.getValue() - actbioN.getValue();
-        double total_demand = (future_demand + actual_demand) - nmin.getValue() + 30;
+        double total_demand = (future_demand + actual_demand) - nmin.getValue() + 40;
         
                    
             redu =  total_demand / fertN_total;
@@ -304,6 +336,90 @@ public class ManageLanduse_szeno extends JAMSComponent {
         double fertNO3N = fertN_total - fertNH4N;
         double fertorgNfresh = 0.5 * fert.forgn * famount; // amount of nitrogen in the fresh organic pool added to the soil
         double fertorgNactive = 0.5 * famount * fert.forgn; //orgNact is the amount of nitrogen in the active organic pool added to the soil
+        
+        
+       
+        
+        
+       /* if (fertorgN > 0 || fertNO3N > 0 || fertNH4N > 0) {
+        System.out.println("Gebe die Düngemengen aus :"  + fertNO3N + fertorgN + fertNH4N );
+        } */
+        /*double fertN03 = fertNO3_current + fertNO3_old;
+        double fertNH4 = fertNH4_current + fertNH4_old;
+        double fertorg = fertorg_current + fertorg_old;*/
+        
+        
+        this.fertNO3N.setValue(fertNO3N);
+        this.fertNH4N.setValue(fertNH4N);
+        this.fertorgNfresh.setValue(fertorgNfresh);
+        this.fertorgNactive.setValue(fertorgNactive);
+    }
+   
+        private void processFertilizationopti(J2KSNLMArable currentManagement) {
+        double run_gift = gift.getValue();
+        double fertN_total = 0;
+        double fertNH4 = 0;
+        double fertNO3 = 0;
+        double fertNactive = 0;
+        double fertNfresh = 0; 
+        double famount = 0;
+       
+        
+       // Rindergülle   gift = 0        | fert.forgn = 0.03 fert.fminn = 0.01 (0.99 NH4; 0.01 NO3)
+       // 15/15/15      gift = 1 & 2    | fert.forgn = 0.00 fert.fminn = 0.15 (0.00 NH4; 1.00 NO3)
+       // Urea          gift = 3        | fert.forgn = 0.00 fert.fminn = 0.43 (1.00 NH4; 0.00 NO3)
+               
+        if (run_gift == 0){
+         
+            fertNH4 = 0.01 * 0.99;
+            fertNO3 = 0.01 * 0.01;
+            fertNactive = 0.015;
+            fertNfresh = 0.015; 
+            
+        }else if (run_gift < 3) {
+            
+            fertNH4 = 0;
+            fertNO3 = 0.15;
+            fertNactive = 0;
+            fertNfresh = 0; 
+            
+        }else if (run_gift == 3) {
+            
+            fertNH4 = 0.43;
+            fertNO3 = 0;
+            fertNactive = 0;
+            fertNfresh = 0;  
+        }
+              
+        fertN_total = fertNH4 + fertNO3 + fertNactive + fertNfresh;
+        
+        double demand_factor = Math.min(Math.sqrt(FPHUact.getValue()), 1);
+        double future_demand = (demand_factor * endbioN) - optibioN.getValue();
+        double actual_demand = optibioN.getValue() - actbioN.getValue();
+        double total_demand = (future_demand + actual_demand) - nmin.getValue() + 30;
+        
+                   
+            famount = total_demand / fertN_total;
+            
+            
+        
+        
+        
+        
+        
+        
+        
+        
+     
+        
+        
+        
+        run_gift = run_gift + 1;
+        gift.setValue(run_gift);
+        double fertNH4N = famount * fertNH4;
+        double fertNO3N = famount * fertNO3;
+        double fertorgNfresh = famount * fertNfresh; // amount of nitrogen in the fresh organic pool added to the soil
+        double fertorgNactive = famount * fertNactive; //orgNact is the amount of nitrogen in the active organic pool added to the soil
         
         
        
