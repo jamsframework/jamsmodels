@@ -233,7 +233,7 @@ title="InitJ2KNSoillayer",
         double[] InterflowN_invals = new double[layer];
         
         
-        double fr_actN = 0.025;      /** nitrogen active pool fraction. The fraction of organic nitrogen in the active pool. */
+        double fr_actN = 0.02;      /** nitrogen active pool fraction. The fraction of organic nitrogen in the active pool. */
         
         
         

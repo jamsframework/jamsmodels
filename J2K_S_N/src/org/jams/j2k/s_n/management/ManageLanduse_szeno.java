@@ -161,6 +161,13 @@ public class ManageLanduse_szeno extends JAMSComponent {
             description = "Fertilisation reduction due to the plant demand routine [kgN/ha]"
             )
             public JAMSDouble Nredu;
+    
+     @JAMSVarDescription(
+            access = JAMSVarDescription.AccessType.READWRITE,
+            update = JAMSVarDescription.UpdateType.RUN,
+            description = "Number of fertilisation action in crop [-]"
+            )
+            public JAMSDouble gift;
   
     
     private JAMSTimeInterval ti;
@@ -240,6 +247,7 @@ public class ManageLanduse_szeno extends JAMSComponent {
     }
     
     private void processFertilization(J2KSNLMArable currentManagement) {
+        double run_gift = gift.getValue();
         double fertN_total = 0;
         
         J2KSNFertilizer fert = currentManagement.fert;
@@ -257,36 +265,41 @@ public class ManageLanduse_szeno extends JAMSComponent {
         
    
         
-        fertN_total = famount * fert.fminn;
+        fertN_total = famount * (fert.fminn + fert.forgn);
         
         //fertilasation in dependence of the demand and N_min in Soil
         
-        if (opti.getValue() == 1){ 
+        if (opti.getValue() == 1 && run_gift == 0.0){ 
+        
         
         double demand_factor = Math.min(Math.sqrt(FPHUact.getValue()+ 0.3), 1);
         double future_demand = (demand_factor * endbioN) - optibioN.getValue();
         double actual_demand = optibioN.getValue() - actbioN.getValue();
-        double total_demand = (future_demand + actual_demand) - nmin.getValue();
+        double total_demand = (future_demand + actual_demand) - nmin.getValue() + 30;
         
-        if (fertN_total > total_demand){
-            
+                   
             redu =  total_demand / fertN_total;
             
-        }else{
+            if (redu < 0){
             
-            redu = 1;
+            redu = 0;
             
-        } 
+            }
+        
         
         
         runNredu = (1 - redu) * (fert.forgn + fert.fminn) * famount; 
         famount = redu * famount;
         
         
-        fertN_total = famount * fert.fminn;
+        fertN_total = famount * (fert.fminn + fert.forgn);
+        
+     
+        
         
         }
-        
+        run_gift = run_gift + 1;
+        gift.setValue(run_gift);
         double fertNH4N = fertN_total * fert.fnh4n;
         double fertNO3N = fertN_total - fertNH4N;
         double fertorgNfresh = 0.5 * fert.forgn * famount; // amount of nitrogen in the fresh organic pool added to the soil

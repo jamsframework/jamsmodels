@@ -334,6 +334,13 @@ title="j2kCropGrowth",
             )
             public JAMSDouble soil_root;
     
+    @JAMSVarDescription(
+            access = JAMSVarDescription.AccessType.WRITE,
+            update = JAMSVarDescription.UpdateType.RUN,
+            description = "Number of fertilisation action in crop [-]"
+            )
+            public JAMSDouble gift;
+    
     
      /*
       
@@ -491,7 +498,15 @@ title="j2kCropGrowth",
         int rotPos = RotPos.getValue();
         J2KSNCrop crop = rotation.get(rotPos);
         
+        double oldcid = cropid.getValue();
         this.cid = crop.cid;
+        
+        if (oldcid == cid){
+        
+        }else{
+         gift.setValue(0.0);   
+        }
+        
         this.phu = crop.phu; /* total heat units required to reach maturity */
         this.idc = crop.idc;
         this.rue = crop.rue; // Radiation use efficiency
@@ -563,7 +578,7 @@ title="j2kCropGrowth",
                 calc_cropyield();
                 calc_cropyield_ha();
                 calc_residues();
-                doHarvest.setValue(false);
+                doHarvest.setValue(false);            
             }
             
         } else if (plantStateReset.getValue()) {
@@ -597,6 +612,7 @@ title="j2kCropGrowth",
             this.addresidue_pool = 0;
             this.addresidue_pooln = 0;
             plantStateReset.setValue(false);
+            
             
             
             //System.out.println("########################## resetting values ##########################");
