@@ -18,6 +18,7 @@ import Jama.Matrix;
 public class NeuralNetwork extends Kernel {
         
     Matrix nnKernel = null;
+    double diag[] = null;
     
     public NeuralNetwork(int inputDim) {
 	this.inputDim = inputDim;	
@@ -32,10 +33,11 @@ public class NeuralNetwork extends Kernel {
 	this.theta = theta;
 	
 	nnKernel = new Matrix(KernelParameterCount-1,KernelParameterCount-1,0);
-	
+	diag = new double[KernelParameterCount-1];
 	//light version only main diag
 	for (int i=0;i<KernelParameterCount-1;i++) {	    
 	    nnKernel.set(i,i,theta[i]);	   
+	    diag[i] = theta[i];
 	}
 	return true;
     }          
@@ -51,7 +53,7 @@ public class NeuralNetwork extends Kernel {
     }
     
     public double kernel(double x[],double y[],int index1,int index2) {
-	Matrix mx = new Matrix(1,x.length+1);		
+	/*Matrix mx = new Matrix(1,x.length+1);		
 	Matrix my = new Matrix(y.length+1,1);
 	for (int i=0;i<x.length;i++) {
 	    mx.set(0,i+1,x[i]);
@@ -63,12 +65,22 @@ public class NeuralNetwork extends Kernel {
 	double value1 = mx.times(nnKernel).times(my).get(0,0);
 	double value2 = mx.times(nnKernel).times(mx.transpose()).get(0,0);
 	double value3 = my.transpose().times(nnKernel).times(my).get(0,0);
-
+	*/
+	double value1 = diag[diag.length-1];;
+	double value2 = diag[diag.length-1];;
+	double value3 = diag[diag.length-1];;
+	
+	for (int i=0;i<x.length;i++) {
+	    value1 += x[i]*diag[i]*y[i];
+	    value2 += x[i]*diag[i]*x[i];
+	    value3 += y[i]*diag[i]*y[i];
+	}
+	
 	double noise = 0;
 	if (index1 == index2) {
 	    noise = theta[KernelParameterCount-1]*theta[KernelParameterCount-1];
 	}
-	return (2.0/Math.PI)*Math.asin(2.0*value1 / Math.sqrt((1+2.0*value2)*(1+2.0*value3))) + noise;
+	return (2.0/Math.PI)*Math.asin(2.0*value1 / Math.sqrt((1+2.0*value2)*(1+2.0*value3))) + noise;		
     }
     
     public double dkernel(double x[],double y[],int d) {

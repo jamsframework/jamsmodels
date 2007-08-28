@@ -14,6 +14,8 @@ import java.io.FileWriter;
 import org.unijena.jams.data.*;
 import org.unijena.jams.model.*;
 import java.util.*;
+import Jama.*;
+import Jama.Matrix;
 import weka.core.Attribute;
 import weka.core.FastVector;
 import weka.core.Instance;
@@ -73,11 +75,25 @@ public class NNLearner extends Learner {
             description = "TimeSerie of Temp Data"
             )
             public JAMSString resultFile = null;
+    
+    @JAMSVarDescription(
+            access = JAMSVarDescription.AccessType.READ,
+            update = JAMSVarDescription.UpdateType.RUN,
+            description = "TimeSerie of Temp Data"
+            )
+            public JAMSString options = null;
                            
+    @JAMSVarDescription(
+            access = JAMSVarDescription.AccessType.READ,
+            update = JAMSVarDescription.UpdateType.RUN,
+            description = "TimeSerie of Temp Data"
+            )
+            public JAMSBoolean applyLinearRegression;
+    
     int LayerCount;
     Vector<Neuron> Layers[];                
     Vector<Integer> LayerSize;
-            
+    Matrix R;
     Neuron outNeuron;
     weka.classifiers.functions.MultilayerPerceptron MLP = null;
     
@@ -262,15 +278,31 @@ public class NNLearner extends Learner {
 	dataSet.setClassIndex(M);
 	double result[] = new double[P];
 	
+	Matrix A = new Matrix(data.length,data[0].length+1);
+	for (int i=0;i<data.length;i++) {
+	    for (int j=0;j<data[0].length;j++) {
+		A.set(i,j,data[i][j]);
+	    }
+	    A.set(i,data[0].length,1.0);	    
+	}
+	Matrix B2 = null;
+	if (this.applyLinearRegression.getValue())
+	    B2 = A.times(R);
+	
 	for (int i=0;i<P;i++) {	   	    	    
 	    try {
-		result[i] = MLP.classifyInstance(dataSet.instance(i));
+		if (this.applyLinearRegression.getValue()) {
+		    result[i] = B2.get(i,0) + MLP.classifyInstance(dataSet.instance(i));		
+		}
+		else
+		    result[i] = MLP.classifyInstance(dataSet.instance(i));
 	    }
 	    catch(Exception e) {
 		System.out.println("Could not classify instance -> " + e.toString());
 	    }
 	    //System.out.println(validation_predict[i] + "\t" + result);
 	}
+			
 	if (!writeResult)
 	    return result;
 	
@@ -304,7 +336,15 @@ public class NNLearner extends Learner {
     public void Train(double data[][],double predict[]) {
 	int M = data[0].length;
 	int N = data.length;
-		
+	
+	
+	double predict_linreg[] = null;
+	if (applyLinearRegression.getValue() == true) {
+	    predict_linreg = LinearRegression(data,predict);
+	}
+	else
+	    predict_linreg = predict;
+	
 	FastVector atts = new FastVector(M+1);
 	for (int i=0;i<M+1;i++) {
 	    atts.addElement(new Attribute("data" + Integer.toString(i)));	    
@@ -316,23 +356,27 @@ public class NNLearner extends Learner {
 	    for (int j=0;j<M;j++) {
 		next[j] = data[i][j];
 	    }
-	    next[M] = predict[i];
+	    next[M] = predict_linreg[i];
 	    Instance singleInst = new Instance(1,next);	    	    
 	    dataSet.add(singleInst);
 	}
 	dataSet.setClassIndex(M);
 	MLP = new weka.classifiers.functions.MultilayerPerceptron();
 	MLP.setGUI(false);
+	MLP.setValidationSetSize(20);
 	MLP.setHiddenLayers(this.layers.getValue());
 	MLP.setLearningRate(this.learningrate.getValue());
+	//MLP.setDecay(true);
 	MLP.setMomentum(this.momentum.getValue());
 	MLP.setTrainingTime(this.epochen.getValue());
+	MLP.setReset(true);	
 	try {
 	    MLP.buildClassifier(dataSet);
 	}
 	catch(Exception e) {
 	    System.out.println("MLP didn´t want to train ... " + e.toString());
 	}
+	//System.out.println("Trained:" + MLP.);
     }
     
     public double SingleRun(double trainData[][],double trainPredict[],double valData[][],double valPredict[],boolean writeResult)  {
@@ -349,7 +393,7 @@ public class NNLearner extends Learner {
     
     public double crossvalidation(double data[][],double predict[]) {
 	long t1 = System.currentTimeMillis();
-	
+		
 	int k = 5;
 	double error = 0;
 	
@@ -401,10 +445,10 @@ public class NNLearner extends Learner {
 	return error;
     }
     
-    public void SetParams(int EpochCounter,double LearningRate, double Momentum) {
+    public void SetParams(int EpochCounter,double LearningRate, double Momentum) {	
 	if (EpochCounter <= 0) EpochCounter = 1;
-	if (LearningRate < 0.01)   LearningRate = 0.01;
-	if (Momentum < 0.0 ) Momentum = 0.0;
+	if (LearningRate <= 0.0)   LearningRate = 0.01;
+	if (Momentum < 0.0) Momentum = 0.01;
 	
 	if (this.epochen == null)	this.epochen = new JAMSInteger();
 	if (this.learningrate == null)  this.learningrate = new JAMSDouble();
@@ -413,115 +457,169 @@ public class NNLearner extends Learner {
 	this.epochen.setValue(EpochCounter);
 	this.learningrate.setValue(LearningRate);
 	this.momentum.setValue(Momentum);
+
     }
-    
+        
     public void optimize(double data[][],double predict[]) {
 	//5 fold cross validation
 	System.out.println("Optimization");
 	boolean noImprovement = false;
 	
-	int EpochCounter = 1;
+	double EpochCounter = 1000;
 	double LearningRate = 0.3;
 	double Momentum = 0.2;
 	
 	double delta = 0.001;
 	double alpha_min = 0.0001;
 	
-	int alpha_Epoch = 1;
+	int alpha_Epoch = 10;
 	double alpha_lrate = 0.1,alpha_mom = 0.1;
 		
 	int igradient;
 	double gradient;
+		
+	double y_neu;
+	double y_best = 100000000.0;
+	double y_tmp;
+	double y_best_alt = 100000000000.0;
 	
-	SetParams(EpochCounter,LearningRate,Momentum);
-	double y_alt = crossvalidation(data,predict);
-	double y_neu = y_alt;
-	double y_last;
+	int Counter = 0;
 	
-	do {
-	    y_last = y_alt;
-	    //improve epochs
-	    do {
-		SetParams(EpochCounter+10,LearningRate,Momentum);
-		y_neu = crossvalidation(data,predict);
-		
-		//alpha_Epoch *= 2;
-		igradient = 1;		
-		/*if (y_neu <= y_alt) igradient = +1;
-		else		    igradient = -1;*/
-		
-		do{		    
-		    alpha_Epoch *= 2;
-		    
-		    SetParams(EpochCounter+alpha_Epoch*igradient,LearningRate,Momentum);
-		    y_neu = crossvalidation(data,predict);
-		    
- 		    if (alpha_Epoch >= 3000) {
-			break;
-		    }
-		}while(y_neu > y_alt);
-		
-		EpochCounter+=alpha_Epoch*igradient;
-		System.out.println("Wert:" + y_neu + "\t Stelle: Epochen:" + EpochCounter + "\t alpha: " + LearningRate + "\t beta: " + Momentum);
-		y_alt = y_neu;
-		
-	    }while(y_neu < y_alt);
-	    /*
+	double bestEpoch = 0;
+	
+	do {	    	    
+	    SetParams( (int)EpochCounter,LearningRate,Momentum);
+	    y_best = y_neu = crossvalidation(data,predict);
+	    y_best_alt = y_best;
+	    System.out.println("Startwert:" + y_best_alt);
+	    /*//epoch
+	    //calculate gradient
+	    /*SetParams( (int)EpochCounter+1,LearningRate,Momentum);
+	    y_tmp = crossvalidation(data,predict);
+	    if (y_tmp < y_neu) {
+		igradient = 1;
+	    }
+	    else {
+		igradient = -1;	    	    
+	    }
+	    alpha_Epoch = 4*alpha_Epoch + 2;
+	    double ysave = y_neu;
 	    
-	    //improve lrate
 	    do {
-		SetParams(EpochCounter,LearningRate+delta,Momentum);
+		alpha_Epoch /= 2;
+		if (alpha_Epoch <= 1) {
+		    alpha_Epoch = 0;
+		    y_neu = ysave;
+		    break;		    
+		}
+		SetParams( (int)EpochCounter+igradient*alpha_Epoch,LearningRate,Momentum);
 		y_neu = crossvalidation(data,predict);
+	    }while (y_neu >= y_best);
 		
-		alpha_lrate *= 4.0;
-				
-		if (y_neu <= y_alt) gradient = +1.0;
-		else		    gradient = -1.0;
-		do{		    
-		    alpha_lrate /= 2.0;
-		    
-		    SetParams(EpochCounter,LearningRate+alpha_lrate*gradient,Momentum);
-		    y_neu = crossvalidation(data,predict);
-		    
-		    if (alpha_lrate <= alpha_min) {
-			alpha_lrate = 0.0;
-			break;
-		    }
-		}while(y_neu > y_alt);
-		LearningRate+=alpha_lrate*gradient;				
-		System.out.println("Wert:" + y_neu + "\t Stelle: Epochen:" + EpochCounter + "\t alpha: " + LearningRate + "\t beta: " + Momentum);
-		y_alt = y_neu;
-	    }while(y_neu < y_alt);
-	    	    
-	    //improve Momentum
+	    EpochCounter+=igradient*alpha_Epoch;
+	    y_best = y_neu;
+	    System.out.println("Epochen:" + EpochCounter + "\tLernrate:" + LearningRate +"\tMomentum:" + Momentum + "\tyBest:" + y_best);
+	    */
+	    //learning rate
+	    //calculate gradient
+	    SetParams( (int)EpochCounter,LearningRate+0.01,Momentum);
+	    y_tmp = crossvalidation(data,predict);
+	    if (y_tmp < y_neu) {
+		gradient = 1.0;
+	    }
+	    else {
+		gradient = -1.0;	    	    
+	    }
+	    alpha_lrate = 4.0*alpha_lrate + 0.05;
+	    double ysave = y_neu;
 	    do {
-		SetParams(EpochCounter,LearningRate,Momentum+delta);
+		do 
+		    alpha_lrate /= 2;
+		while (LearningRate+alpha_lrate*gradient <= 0.0);
+
+		if (alpha_lrate <= 0.0001) {
+		    alpha_lrate = 0.0;
+		    y_neu = ysave;
+		    break;
+		}		
+		SetParams( (int)EpochCounter,LearningRate+alpha_lrate*gradient,Momentum);
 		y_neu = crossvalidation(data,predict);
-		
-		alpha_mom *= 4.0;
-				
-		if (y_neu <= y_alt) gradient = +1.0;
-		else		    gradient = -1.0;
-		do{		    
-		    alpha_mom /= 2.0;
-		    
-		    SetParams(EpochCounter,LearningRate,Momentum+alpha_mom*gradient);
-		    y_neu = crossvalidation(data,predict);
-		    
-		    if (alpha_mom <= alpha_min) {
-			alpha_mom = 0.0;
-			break;
-		    }
-		}while(y_neu > y_alt);
-		
-		Momentum+=alpha_mom*gradient;				
-		System.out.println("Wert:" + y_neu + "\t Stelle: Epochen:" + EpochCounter + "\t alpha: " + LearningRate + "\t beta: " + Momentum);
-		y_alt = y_neu;
-		
-	    }while(y_neu < y_alt);*/	    	    
-	}while( (y_last - y_alt) / y_last > 0.01);
+	    }while (y_neu >= y_best);
+	    y_best = y_neu;
+	    LearningRate+=alpha_lrate*gradient;	    
+	    System.out.println("Epochen:" + EpochCounter + "\tLernrate:" + LearningRate +"\tMomentum:" + Momentum + "\tyBest:" + y_best);
+	    //momentum
+	    //calculate gradient
+	    SetParams( (int)EpochCounter,LearningRate,Momentum+0.01);
+	    y_tmp = crossvalidation(data,predict);
+	    if (y_tmp < y_neu) {
+		gradient = 1.0;
+	    }
+	    else {
+		gradient = -1.0;	    	    
+	    }
+	    alpha_mom = 4.0*alpha_mom + 0.1;
+	    ysave = y_neu;
+	    do {
+		do
+		    alpha_mom /= 2;
+		while (Momentum+alpha_mom*gradient <= 0.0);
+		    		
+		if (alpha_mom <= 0.0001) {
+		    alpha_mom = 0.0;
+		    y_neu = ysave;
+		    break;
+		}		
+		SetParams( (int)EpochCounter,LearningRate,Momentum+alpha_mom*gradient);
+		y_neu = crossvalidation(data,predict);
+	    }while (y_neu > y_best);
+	    y_best = y_neu;
+	    Momentum+=alpha_mom*gradient;
+	    System.out.println("Epochen:" + EpochCounter + "\tLernrate:" + LearningRate +"\tMomentum:" + Momentum + "\tyBest:" + y_best);
+	    System.out.println("Verbessung in diesem Durchgang:" + y_best_alt / y_best);
+	    Counter++;
+	}while (y_best_alt / y_best >1.05 || Counter <= 3);
     }
     
+    double[] LinearRegression(double data[][], double predict[]) {
+	Matrix A = new Matrix(data.length,data[0].length+1);
+	Matrix B = new Matrix(data.length,1);
+	
+	for (int i=0;i<data.length;i++) {
+	    for (int j=0;j<data[0].length;j++) {
+		A.set(i,j,data[i][j]);
+	    }
+	    A.set(i,data[0].length,1.0);
+	    B.set(i,0,predict[i]);
+	}
+	Matrix K = (A.transpose()).times(A);
+	B = A.transpose().times(B);
+	
+	CholeskyDecomposition C = K.chol();
+	if (!C.isSPD()) {
+	    System.out.println("Error!! not a SPD - Matrix");
+	}	
+	R = C.solve(B);
+	
+	Matrix B2 = A.times(R);
+	double result[] = new double[predict.length];
+	for (int i=0;i<data.length;i++) {
+	    result[i] = predict[i] - B2.get(i,0);
+	} 
+	return result;
+    }
+    public void layerTest(double data[][],double predict[],double validation_data[][], double validation_predict[]) {
+	//layer ausprobieren!!
+	for (int i=1;i<40;i+=2) {
+	    //for (int j=1;j<20;j+=2) {
+	    this.resultFile.setValue(options.toString() + "_result_" + Integer.toString(i)/* + "_" + Integer.toString(j)*/ + ".txt");
+	    this.layers.setValue(Integer.toString(i)/* + "," + Integer.toString(j)*/);
+	    //optimize(data,predict);
+	    this.Train(data,predict);
+	    this.Predict(validation_data,validation_predict,true);
+	    //}
+	}
+    }
     public void run() {			
 	double data[][] = null;
 	double predict[] = null;
@@ -537,9 +635,11 @@ public class NNLearner extends Learner {
 	} catch(Exception e) {
 	    System.out.println("could not find data!!" + e.toString());
 	}
+			
+	//layerTest(data,predict,validation_data,validation_predict);
 	
-	optimize(data,predict);
 	
+	this.Train(data,predict);
 	this.Predict(validation_data,validation_predict,true);
     }
 }

@@ -277,8 +277,13 @@ public class GaussianLearner extends Learner  {
 	for (int j=0;j<m;j++) {
 	    result[j] = prediction.get(j,0);
 	}*/
-	
+			
 	result = this.kernel.MM.ReTransform(x,prediction);
+	/*double vresult[] = new double[result.length];
+	
+	for (int i=0;i<result.length;i++) {
+	    
+	}*/
 	
 	if (!writeOutput)
 	    return result;
