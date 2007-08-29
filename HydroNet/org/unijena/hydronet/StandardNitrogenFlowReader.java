@@ -1,0 +1,156 @@
+/*
+ * StandardNitrogenFlowReader.java
+ * Created on 22. September 2006, 15:53
+ *
+ * This file is part of JAMS
+ * Copyright (C) 2005 S. Kralisch and P. Krause
+ *
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License
+ * as published by the Free Software Foundation; either version 2
+ * of the License, or (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
+ *
+ */
+
+package org.unijena.hydronet;
+
+import org.unijena.j2k.*;
+import org.unijena.jams.data.*;
+import org.unijena.jams.model.*;
+import java.util.*;
+import org.unijena.jams.JAMS;
+import org.unijena.hydronet.*;
+
+/**
+ *
+ * @author C. Fischer
+ */
+public class StandardNitrogenFlowReader extends JAMSComponent {
+    
+    @JAMSVarDescription(
+            access = JAMSVarDescription.AccessType.READ,
+            update = JAMSVarDescription.UpdateType.INIT,
+            description = "Data file directory name"
+            )
+            public JAMSString dirName;
+    
+    @JAMSVarDescription(
+            access = JAMSVarDescription.AccessType.READ,
+            update = JAMSVarDescription.UpdateType.INIT,
+            description = "Soil types parameter file name"
+            )
+            public JAMSString Scenario0pFileName;
+    
+    @JAMSVarDescription(
+            access = JAMSVarDescription.AccessType.READ,
+            update = JAMSVarDescription.UpdateType.INIT,
+            description = "Soil types parameter file name"
+            )
+            public JAMSString ScenarioFileNames;
+        
+    @JAMSVarDescription(
+            access = JAMSVarDescription.AccessType.READ,
+            update = JAMSVarDescription.UpdateType.INIT,
+            description = "Soil types parameter file name"
+            )
+            public JAMSString ScenarioISTFileName;
+    
+    @JAMSVarDescription(
+            access = JAMSVarDescription.AccessType.WRITE,
+            update = JAMSVarDescription.UpdateType.RUN,
+            description = "Collection of hru objects"
+            )
+            public JAMSEntityCollection hrus;
+            
+public void init() throws JAMSEntity.NoSuchAttributeException {
+	StringTokenizer tok = new StringTokenizer(ScenarioFileNames.getValue(), ";");
+        
+	int N = tok.countTokens();
+        JAMSEntityCollection[] FlowData = new JAMSEntityCollection[N+1];
+	
+	for (int i=0;i<N;i++) {
+	    FlowData[i] = new JAMSEntityCollection();
+	    FlowData[i].setEntities(J2KFunctions.readParas(dirName.getValue()+"/"+tok.nextToken(), getModel()));
+	}
+	FlowData[N] = new JAMSEntityCollection();
+	FlowData[N].setEntities(J2KFunctions.readParas(dirName.getValue()+"/"+ScenarioISTFileName.getValue(), getModel()));
+	
+        HashMap<Double, JAMSEntity[]> fdMap = new HashMap<Double, JAMSEntity[]>();
+        JAMSEntity fd, e;
+	JAMSEntity[] field_fd;
+        Object[] attrs;
+        		
+	for (int i=0;i<N+1;i++) {
+	    //put all entities into a HashMap with their ID as key
+	    Iterator<JAMSEntity> fdIterator = FlowData[i].getEntities().iterator();	    
+		    
+	    while (fdIterator.hasNext()) {
+		fd = fdIterator.next();
+		field_fd = fdMap.get(fd.getDouble("ID"));
+		
+		if ( field_fd == null) {
+		    field_fd = new JAMSEntity[N+1];
+		    fdMap.put(fd.getDouble("ID"),  field_fd);
+		}
+		
+		field_fd[i] = fd;
+	    }
+	}
+               	
+        Iterator<JAMSEntity> hruIterator = hrus.getEntities().iterator();
+        while (hruIterator.hasNext()) {
+        	
+            e = hruIterator.next();
+            //System.out.println("Processing hruNO: " + e.getDouble("ID"));
+            field_fd = fdMap.get(e.getDouble("ID"));
+	    
+	    if (field_fd == null)
+		continue;
+	
+	    Matrix M = new Matrix(N, 2);		
+	    //berechne verhältnis von 
+	    double interflow = 0;
+	    double percolation = 0; 
+		
+	    for (int i=0;i<N;i++) {
+	        interflow += field_fd[i].getDouble("sinterflowN_2000") + field_fd[i].getDouble("SurfaceN_2000");
+	        percolation += field_fd[i].getDouble("PercoN_2000");
+	    }
+		
+	    interflow /= N;
+	    percolation /= N;
+		
+	    double ratio_interflow = interflow / (interflow + percolation);
+	    double ratio_percolation = 1 - ratio_interflow;
+		
+	    for (int j=0;j<N;j++) {
+	        M.element[j][0] = field_fd[j].getDouble("sum_Ninput_2000");
+	        M.element[j][1] = field_fd[j].getDouble("sinterflowN_2000") + field_fd[j].getDouble("SurfaceN_2000") + 
+				  field_fd[j].getDouble("PercoN_2000");	
+		}
+		
+	    LinApprox lin = new LinApprox(M);
+	    GenericFunction gen = new GenericFunction(lin);
+		
+	    //System.out.println("AktivationFunction:" + M.toString() + "\n");
+		
+	    e.setObject("ActivationFunction",gen);		
+	    e.setDouble("new_input",-1.0);
+	    e.setDouble("interflow_weight",ratio_interflow);
+	    e.setDouble("percolation_weight",ratio_percolation);
+	    e.setDouble("ist_input",field_fd[N].getDouble("sum_Ninput_2000"));
+	    e.setDouble("min_input",field_fd[0].getDouble("sum_Ninput_2000"));
+        }
+        
+        getModel().getRuntime().println("NitrogenFlow parameter file processed ...", JAMS.STANDARD);        
+    }
+}

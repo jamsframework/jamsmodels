@@ -1,0 +1,68 @@
+<?xml version='1.0' encoding='utf-8'?>
+
+<!--<!DOCTYPE JAMSModel SYSTEM "jamsmodel.dtd">-->
+
+<model name="Thornthwaite model" author="S. Markstrom (?)" date="30.09.2005">
+
+    <component class="gov.usgs.thornthwaite.EntityProvider" name="EntityProvider">
+        <jamsvar class="org.unijena.jams.data.JAMSString" name="fileName" value="D:/jamsmodels/Thornthwaite/data/entities.dat"/>
+    </component>
+
+    <compoundcomponent class="org.unijena.jams.model.JAMSTemporalContext" name="TemporalContext">
+        <jamsvar class="org.unijena.jams.data.JAMSTimeInterval" name="timeInterval" value="1960-01-01 00:01 1990-12-01 00:00 2 1"/>
+
+        <component class="gov.usgs.thornthwaite.Climate" name="ClimateReader">
+            <jamsvar class="org.unijena.jams.data.JAMSString" name="fileName" value="D:/jamsmodels/Thornthwaite/data/thorn.dat"/>
+        </component>
+
+        <compoundcomponent class="org.unijena.jams.model.JAMSSpatialContext" name="SpatialContext">
+            <jamsvar class="org.unijena.jams.data.JAMSEntityCollection" name="entities" provider="EntityProvider" providervar="entities"/>           
+		
+		        <component class="gov.usgs.thornthwaite.Daylen" name="Daylen">
+		            <jamsvar name="latitude" provider="SpatialContext" providervar="currentEntity.latitude"/>
+		            <jamsvar name="time" provider="TemporalContext" providervar="current"/>
+		        </component>
+
+		        <component class="gov.usgs.thornthwaite.HamonET" name="HamonET">
+		            <jamsvar name="time" provider="TemporalContext" providervar="current"/>
+		            <jamsvar name="temp" provider="ClimateReader" providervar="temp"/>
+		            <jamsvar name="daylength" provider="Daylen" providervar="daylength"/>
+		        </component>
+
+		        <component class="gov.usgs.thornthwaite.SoilMoisture" name="SoilMoisture">
+								<jamsvar name="soilMoistStorCap" provider="SpatialContext" providervar="currentEntity.soilMoistStorCap"/>
+		            <jamsvar name="potET" provider="HamonET" providervar="potET"/>
+		            <jamsvar name="temp" provider="ClimateReader" providervar="temp"/>
+		            <jamsvar name="precip" provider="ClimateReader" providervar="precip"/>
+								<jamsvar name="prestor" provider="SpatialContext" providervar="currentEntity.prestor"/>		            
+		        </component>
+
+		        <component class="gov.usgs.thornthwaite.Snow" name="Snow">
+		            <jamsvar name="snowStorage" provider="SpatialContext" providervar="currentEntity.snowStorage"/>
+		            <jamsvar name="potET" provider="HamonET" providervar="potET"/>
+		            <jamsvar name="temp" provider="ClimateReader" providervar="temp"/>
+		            <jamsvar name="precip" provider="ClimateReader" providervar="precip"/>
+		        </component>
+		        
+		        <component class="gov.usgs.thornthwaite.Runoff" name="Runoff">
+		            <jamsvar name="runoffFactor" provider="SpatialContext" providervar="currentEntity.runoffFactor"/>
+		            <jamsvar name="remain" provider="SpatialContext" providervar="currentEntity.remain"/>
+		            <jamsvar name="snowMelt" provider="Snow" providervar="snowMelt"/>
+		            <jamsvar name="surfaceRunoff" provider="SoilMoisture" providervar="surfaceRunoff"/>
+		        </component>
+		        
+		        <component class="gov.usgs.thornthwaite.Output" name="Output">
+		            <jamsvar name="fileName" value="D:/jamsmodels/Thornthwaite/data/thorn.out"/>
+		            <jamsvar name="daylength" provider="Daylen" providervar="daylength"/>
+		            <jamsvar name="time" provider="TemporalContext" providervar="current"/>
+		            <jamsvar name="potET" provider="HamonET" providervar="potET"/>
+		            <jamsvar name="runoff" provider="Runoff" providervar="runoff"/>
+		            <jamsvar name="snowMelt" provider="Snow" providervar="snowMelt"/>
+		            <jamsvar name="soilMoistStor" provider="SoilMoisture" providervar="soilMoistStor"/>
+		        </component>
+
+        </compoundcomponent>
+
+    </compoundcomponent>
+    
+</model>
