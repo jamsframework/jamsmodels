@@ -261,7 +261,7 @@ public class ManageLanduse_szeno extends JAMSComponent {
         double day = time.get(time.DAY_OF_YEAR);
         
         if ((opti.getValue() == 2) && (day > 90.0  && day < 270.0))   { 
-            if (nstrs.getValue() > 0.05 && gift.getValue() < 4){
+            if (nstrs.getValue() > 0.03 && gift.getValue() < 4){
                 if (dayintervall < 1) {
                 processFertilizationopti(currentManagement);
                 dayintervall = 25;
@@ -299,15 +299,15 @@ public class ManageLanduse_szeno extends JAMSComponent {
         
         fertN_total = famount * (fert.fminn + fert.forgn);
         
-        //fertilasation in dependence of the demand and N_min in Soil
+        //fertilasation in dependence of the demand and N_min in Soil (only for the first gift)
         
         if (opti.getValue() == 1 && run_gift == 0.0){ 
         
         
-        double demand_factor = Math.min(Math.sqrt(FPHUact.getValue()+ 0.3), 1);
+        double demand_factor = Math.min(Math.sqrt(FPHUact.getValue()+ 0.15), 1);
         double future_demand = (demand_factor * endbioN) - optibioN.getValue();
         double actual_demand = optibioN.getValue() - actbioN.getValue();
-        double total_demand = (future_demand + actual_demand) - nmin.getValue() + 40;
+        double total_demand = (future_demand + actual_demand) - nmin.getValue() + 0;
         
                    
             redu =  total_demand / fertN_total;
@@ -332,8 +332,8 @@ public class ManageLanduse_szeno extends JAMSComponent {
         }
         run_gift = run_gift + 1;
         gift.setValue(run_gift);
-        double fertNH4N = fertN_total * fert.fnh4n;
-        double fertNO3N = fertN_total - fertNH4N;
+        double fertNH4N = famount * fert.fminn * fert.fnh4n;
+        double fertNO3N = famount * fert.fminn * (1 - fert.fnh4n);
         double fertorgNfresh = 0.5 * fert.forgn * famount; // amount of nitrogen in the fresh organic pool added to the soil
         double fertorgNactive = 0.5 * famount * fert.forgn; //orgNact is the amount of nitrogen in the active organic pool added to the soil
         
@@ -393,14 +393,16 @@ public class ManageLanduse_szeno extends JAMSComponent {
               
         fertN_total = fertNH4 + fertNO3 + fertNactive + fertNfresh;
         
-        double demand_factor = Math.min(Math.sqrt(FPHUact.getValue()), 1);
+        double demand_factor = Math.min(Math.sqrt(FPHUact.getValue()) + 0.1, 1);
         double future_demand = (demand_factor * endbioN) - optibioN.getValue();
         double actual_demand = optibioN.getValue() - actbioN.getValue();
-        double total_demand = (future_demand + actual_demand) - nmin.getValue() + 30;
+        double total_demand = (future_demand + actual_demand) - nmin.getValue() + 10;
         
                    
             famount = total_demand / fertN_total;
             
+            if (famount < 0) 
+                famount = 0;
             
         
         

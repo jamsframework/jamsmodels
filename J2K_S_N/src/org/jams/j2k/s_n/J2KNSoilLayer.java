@@ -1493,7 +1493,7 @@ import java.io.*;
         
         soilstorage = sto_LPS + sto_MPS + sto_FPS;
         if (i == 0) {
-            mobilewater = RD1_out_mm + RD2_out_mm + h_perco_mm + hor_by_infilt[i] + diffout[i] + 1.e-10;
+            mobilewater = (RD1_out_mm * runBeta_NO3) + RD2_out_mm + h_perco_mm + hor_by_infilt[i] + diffout[i] + 1.e-10;
         }
         
         else if (i > 0) {
@@ -1547,8 +1547,9 @@ import java.io.*;
     
     private double calc_interflowN(int i){
         double interflowN = 0;
-        
-        if (i == 0) {
+        interflowN = RD2_out_mm * concN_mobile;
+        interflowN = Math.min(interflowN,runNO3_Pool);
+       /* if (i == 0) {
             interflowN = (1.0 - runBeta_NO3) * RD2_out_mm * concN_mobile;
             interflowN = Math.min(interflowN,runNO3_Pool);
         } else if (i > 0) {
@@ -1557,7 +1558,7 @@ import java.io.*;
         }
         if (interflowN < 0){
             System.out.println(RD2_out_mm + " = RD2_out_mm " + interflowN +" = interflowN");
-        }
+        }*/
         return interflowN;
         
     }
