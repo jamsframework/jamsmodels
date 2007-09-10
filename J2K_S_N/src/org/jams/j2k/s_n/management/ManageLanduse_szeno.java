@@ -251,16 +251,19 @@ public class ManageLanduse_szeno extends JAMSComponent {
                 //do planting here!!
                 //PHUact.setValue(0);
                 runplantex = true;
-            } else if (currentManagement.harvest != -1 && (idc == 1 || idc == 2 || idc == 4 || idc == 5 ) ) {
+            } else if (currentManagement.harvest != -1 && (idc == 1 || idc == 2 || idc == 4 || idc == 5 || idc == 8) ) {
                 //do harvesting here!!
                 runplantex = false;
                 
+                if (currentManagement.harvest == 2){
+                 runplantex = true;
+                }
             }
         }
         
         double day = time.get(time.DAY_OF_YEAR);
         
-        if ((opti.getValue() == 2) && (day > 90.0  && day < 270.0))   { 
+        if ((opti.getValue() == 2) && (day > 90.0  && day < 300.0))   { 
             if (nstrs.getValue() > 0.03 && gift.getValue() < 4){
                 if (dayintervall < 1) {
                 processFertilizationopti(currentManagement);
@@ -318,7 +321,7 @@ public class ManageLanduse_szeno extends JAMSComponent {
             
             }
         
-        
+        redu = Math.min(redu,1.5);
         
         runNredu = (1 - redu) * (fert.forgn + fert.fminn) * famount; 
         famount = redu * famount;

@@ -1460,7 +1460,7 @@ import java.io.*;
         
         if (gamma_water > denitfac.getValue()){
             denit_trans = runNO3_Pool * (1 - Math.exp(-1.4 * gamma_temp * runC_org));
-            
+            denit_trans = Math.min(denit_trans,1.0);
         } else if (gamma_water <= denitfac.getValue()){
             denit_trans = 0;
             

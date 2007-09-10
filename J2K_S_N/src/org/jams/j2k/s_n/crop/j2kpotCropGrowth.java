@@ -884,7 +884,9 @@ title="j2kCropGrowth",
         • plant goes dormant when daylength is less than the threshold daylength
         7 trees
         • root depth always equal to the maximum allowed for the plant species and soil
-        • partitions new growth between leaves/needles (30%) and woody growth (70%). At the end of each growing season, biomass in the leaf fraction is converted to residue*/
+        • partitions new growth between leaves/needles (30%) and woody growth (70%). At the end of each growing season, biomass in the leaf fraction is converted to residue
+        8 Untersaat
+        •   */
         
         // Root development (mm in the soil) for plant types on a given day
         
@@ -900,7 +902,7 @@ title="j2kCropGrowth",
         // if case: as long pfhu is within 0.4; as fphu 0.4 is the time of max root depth
         
         if
-                ((this.idc ==  1 || this.idc == 2 || this.idc == 4 || this.idc == 5) && this.fphu_act <= 0.40) {
+                ((this.idc ==  1 || this.idc == 2 || this.idc == 4 || this.idc == 5 || this.idc == 8) && this.fphu_act <= 0.40) {
             
             zrootd_act = 2.5 * this.fphu_act * this.rdmx;
             //  zrootd_act = zrootd_act + zrootd;
@@ -1049,7 +1051,7 @@ title="j2kCropGrowth",
     
 // Crop Yield
     private boolean calc_cropyield(){
-        if (this.idc == 3 || this.idc == 6 || this.idc == 7) {
+        if (this.idc == 3 || this.idc == 6 || this.idc == 7 || (this.idc == 8) )  {
             
             double u1 = 100 * this.fphu_act;
             hi_act = this.hvsti * (u1)/(u1 + Math.exp(11.1 - 10.0 * this.fphu_act));
@@ -1167,9 +1169,9 @@ title="j2kCropGrowth",
             {
                 this.yield = bio_opt * (1 - (1/(1+ hi_act)));
             }
-            if (idValue.getValue() == 6) {
+            /*if (idValue.getValue() == 6) {
                 System.out.println(" hi_act: " + hi_act +  " hvsti: " + hvsti +  " fphu: " + fphu_act + " - ");
-            }
+            }*/
             // Amounts of nitrogen [kg N/ha](and who wants P) to be removed from the field
             // whereas cnyld is the fraction of N being removed by the field crop
             
@@ -1207,6 +1209,10 @@ title="j2kCropGrowth",
             this.addresidue_pooln = Math.min(this.addresidue_pooln, this.bioN_act);
             this.bio_opt = this.bio_opt - this.addresidue_pool;
             this.bioN_act = this.bioN_act - this.addresidue_pooln;
+        } else if  ( this.idc == 8) {
+            this.addresidue_pool =  this.bio_opt - this.yield;
+            this.addresidue_pooln = this.bioN_act - this.yldN;
+            
         }
         return true;
         
