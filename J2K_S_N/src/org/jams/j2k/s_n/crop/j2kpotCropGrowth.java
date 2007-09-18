@@ -341,6 +341,13 @@ title="j2kCropGrowth",
             )
             public JAMSDouble gift;
     
+    @JAMSVarDescription(
+            access = JAMSVarDescription.AccessType.READ,
+            update = JAMSVarDescription.UpdateType.RUN,
+            description = "Type of harvest to distiguish between crops with undersown plants and normal harvesting"
+            )
+            public JAMSInteger harvesttype;
+    
     
      /*
       
@@ -976,7 +983,11 @@ title="j2kCropGrowth",
             n1 = Math.log((0.5/(1-((this.bn2 - this.bn3)/(this.bn1 - this.bn3))))-0.5) + (n2 * 0.5);
             
             this.fnplant_act = ((this.bn1 - this.bn3) * (1 - (this.fphu_act/(this.fphu_act + Math.exp(n1 - n2 * this.fphu_act)))))  +  this.bn3;
-            
+         
+            if (harvesttype.getValue() == 2){
+                fnplant_act = this.bn3;
+            }
+               
         }else{
             fnplant_act = 0.01;
         }
@@ -1210,8 +1221,12 @@ title="j2kCropGrowth",
             this.bio_opt = this.bio_opt - this.addresidue_pool;
             this.bioN_act = this.bioN_act - this.addresidue_pooln;
         } else if  ( this.idc == 8) {
-            this.addresidue_pool =  this.bio_opt - this.yield;
-            this.addresidue_pooln = this.bioN_act - this.yldN;
+            this.addresidue_pool =  this.yield * 0.1;
+            this.addresidue_pooln = this.yldN * 0.1;
+            this.addresidue_pool = Math.min(this.addresidue_pool, this.bio_opt);
+            this.addresidue_pooln = Math.min(this.addresidue_pooln, this.bioN_act);
+            this.bio_opt = this.bio_opt - this.addresidue_pool;
+            this.bioN_act = this.bioN_act - this.addresidue_pooln;
             
         }
         return true;

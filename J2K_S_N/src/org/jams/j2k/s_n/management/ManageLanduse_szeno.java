@@ -183,8 +183,13 @@ public class ManageLanduse_szeno extends JAMSComponent {
             )
             public JAMSDouble Dayintervall;
      
-  
-    
+     @JAMSVarDescription(
+            access = JAMSVarDescription.AccessType.WRITE,
+            update = JAMSVarDescription.UpdateType.RUN,
+            description = "Type of harvest to distiguish between crops with undersown plants and normal harvesting"
+            )
+            public JAMSInteger harvesttype;
+   
     private JAMSTimeInterval ti;
     double endbioN;
     double runNredu;
@@ -254,9 +259,10 @@ public class ManageLanduse_szeno extends JAMSComponent {
             } else if (currentManagement.harvest != -1 && (idc == 1 || idc == 2 || idc == 4 || idc == 5 || idc == 8) ) {
                 //do harvesting here!!
                 runplantex = false;
-                
+                    harvesttype.setValue(1);
                 if (currentManagement.harvest == 2){
-                 runplantex = true;
+                    harvesttype.setValue(2);
+                    runplantex = true;
                 }
             }
         }
@@ -310,7 +316,7 @@ public class ManageLanduse_szeno extends JAMSComponent {
         double demand_factor = Math.min(Math.sqrt(FPHUact.getValue()+ 0.15), 1);
         double future_demand = (demand_factor * endbioN) - optibioN.getValue();
         double actual_demand = optibioN.getValue() - actbioN.getValue();
-        double total_demand = (future_demand + actual_demand) - nmin.getValue() + 0;
+        double total_demand = (future_demand + actual_demand) - nmin.getValue();
         
                    
             redu =  total_demand / fertN_total;
@@ -321,7 +327,7 @@ public class ManageLanduse_szeno extends JAMSComponent {
             
             }
         
-        redu = Math.min(redu,1.5);
+        redu = Math.min(redu,1.0);
         
         runNredu = (1 - redu) * (fert.forgn + fert.fminn) * famount; 
         famount = redu * famount;
