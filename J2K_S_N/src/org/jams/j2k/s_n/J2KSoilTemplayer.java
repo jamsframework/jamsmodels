@@ -210,7 +210,7 @@ import org.unijena.jams.model.*;
             update = JAMSVarDescription.UpdateType.RUN,
             description = "switch for mulch drilling scenario"
             )
-            public JAMSInteger sceno;
+            public JAMSDouble sceno;
     
  
     double[] Soiltemp_hor;
