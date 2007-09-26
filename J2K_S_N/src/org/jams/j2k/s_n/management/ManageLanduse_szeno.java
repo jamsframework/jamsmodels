@@ -125,7 +125,7 @@ public class ManageLanduse_szeno extends JAMSComponent {
             update = JAMSVarDescription.UpdateType.RUN,
             description = "Indicates fertilazation optimization with plant demand"
             )
-            public JAMSInteger opti;    
+            public JAMSDouble opti;    
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
