@@ -258,6 +258,7 @@ import org.unijena.jams.model.*;
             slope_weight = 1;
         
         excStor = excStor + (inflow * slope_weight);
+        
         if(excStor > maxExcStor){
             dirQ = (excStor - maxExcStor);
             excStor = maxExcStor;

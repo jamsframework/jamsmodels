@@ -29,65 +29,78 @@ import org.unijena.jams.io.*;
 
 /**
  *
- * @author S. Kralisch
+ * @author P. Krause
  */
+@JAMSComponentDescription(
+        title="dataWriter",
+        author="Peter Krause",
+        description="The data writer for the JAMS-HYMOD model"
+        )
 public class DataWriter extends JAMSComponent {
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.RUN
+            update = JAMSVarDescription.UpdateType.INIT,
+            description = "full qualified path name for model output file"
             )
-            public JAMSDouble simRunoff;
+            public JAMSString outFileName;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.RUN
-            )
-            public JAMSDouble precip;
-    
-    @JAMSVarDescription(
-            access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.RUN
-            )
-            public JAMSDouble simDirectFlow;
-    
-    @JAMSVarDescription(
-            access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.RUN
-            )
-            public JAMSDouble simBaseFlow;
-    
-    @JAMSVarDescription(
-            access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.RUN
-            )
-            public JAMSDouble simET;
-    
-    @JAMSVarDescription(
-            access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.RUN
-            )
-            public JAMSDouble pET;
-    
-    @JAMSVarDescription(
-            access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.RUN
+            update = JAMSVarDescription.UpdateType.RUN,
+            description = "the current date provided by the temporal context"
             )
             public JAMSCalendar time;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.RUN
+            update = JAMSVarDescription.UpdateType.RUN,
+            description = "the precipitation value of the respective time step"
             )
-            public JAMSDouble obsRunoff;
+            public JAMSDouble precip;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.INIT
+            update = JAMSVarDescription.UpdateType.RUN,
+            description = "the potential ET value of the respective time step"
             )
-            public JAMSString outFileName;
+            public JAMSDouble pET;
+        
+    @JAMSVarDescription(
+            access = JAMSVarDescription.AccessType.READ,
+            update = JAMSVarDescription.UpdateType.RUN,
+            description = "the simulated actual ET value of the respective time step"
+            )
+            public JAMSDouble simET;
     
+    @JAMSVarDescription(
+            access = JAMSVarDescription.AccessType.READ,
+            update = JAMSVarDescription.UpdateType.RUN,
+            description = "the simulated direct flow component of the respective time step"
+            )
+            public JAMSDouble simDirectFlow;
     
+    @JAMSVarDescription(
+            access = JAMSVarDescription.AccessType.READ,
+            update = JAMSVarDescription.UpdateType.RUN,
+            description = "the simulated base flow component of the respective time step"
+            )
+            public JAMSDouble simBaseFlow;
+    
+    @JAMSVarDescription(
+            access = JAMSVarDescription.AccessType.READ,
+            update = JAMSVarDescription.UpdateType.RUN,
+            description = "the simulated total runoff of the respective time step"
+            )
+            public JAMSDouble simRunoff;
+    
+    @JAMSVarDescription(
+            access = JAMSVarDescription.AccessType.READ,
+            update = JAMSVarDescription.UpdateType.RUN,
+            description = "the observed of the respective time step"
+            )
+            public JAMSDouble obsRunoff;
+        
     private GenericDataWriter writer;
     
     public void init(){

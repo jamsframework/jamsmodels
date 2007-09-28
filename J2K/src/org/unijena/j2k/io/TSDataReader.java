@@ -165,14 +165,18 @@ public class TSDataReader extends JAMSComponent {
                     line = reader.readLine();
                     while(i < 4){
                         headerLineCount++;
-                        strTok = new StringTokenizer(line, "\t");
+                        strTok = new StringTokenizer(line, "\t ");
                         String desc = strTok.nextToken();
                         if(desc.compareTo("missingDataVal") == 0){
                            missData = Double.parseDouble(strTok.nextToken()); 
                         }else if(desc.compareTo("dataStart") == 0){
-                           start = strTok.nextToken(); 
+                           start = strTok.nextToken(); //date part
+                           if(strTok.hasMoreTokens())  //potential time part
+                               start = start + " " + strTok.nextToken();
                         }else if(desc.compareTo("dataEnd") == 0){
-                           end = strTok.nextToken(); 
+                           end = strTok.nextToken();   //date part
+                           if(strTok.hasMoreTokens())  //potential time part
+                               end = end + " " + strTok.nextToken();
                         }else if(desc.compareTo("tres") == 0){
                            tres = strTok.nextToken(); 
                         }
@@ -233,7 +237,7 @@ public class TSDataReader extends JAMSComponent {
 
         JAMSCalendar startTime = parseJ2KTime(start);
         JAMSCalendar endTime = parseJ2KTime(end);
-
+        
         if(timeInterval != null){
             //check if the time series start and end date match the temporal context's time interval
             if ((timeInterval.getStart().before(startTime) || timeInterval.getEnd().after(endTime))) {
@@ -257,7 +261,7 @@ public class TSDataReader extends JAMSComponent {
         if(timeInterval != null){
             int timeUnit = timeInterval.getTimeUnit();
             JAMSCalendar tiStart = timeInterval.getStart();
-            JAMSCalendar date = new JAMSCalendar(tiStart.get(Calendar.YEAR), tiStart.get(Calendar.MONTH), tiStart.get(Calendar.DAY_OF_MONTH), startTime.get(Calendar.HOUR_OF_DAY), startTime.get(Calendar.MINUTE), startTime.get(Calendar.SECOND));
+            JAMSCalendar date = new JAMSCalendar(tiStart.get(Calendar.YEAR), tiStart.get(Calendar.MONTH), tiStart.get(Calendar.DAY_OF_MONTH), tiStart.get(Calendar.HOUR_OF_DAY), tiStart.get(Calendar.MINUTE), tiStart.get(Calendar.SECOND));
             
             while (startTime.before(date) && store.hasNext()) {
                 da = store.getNext();
@@ -267,6 +271,7 @@ public class TSDataReader extends JAMSComponent {
                     startTime.add(JAMSCalendar.HOUR_OF_DAY, 1);
                 else if(timeUnit == JAMSCalendar.MONTH)
                     startTime.add(JAMSCalendar.MONTH, 1);
+                
             }
         }
         
