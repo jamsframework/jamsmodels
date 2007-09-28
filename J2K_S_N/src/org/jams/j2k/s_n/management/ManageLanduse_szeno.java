@@ -402,12 +402,13 @@ public class ManageLanduse_szeno extends JAMSComponent {
               
         fertN_total = fertNH4 + fertNO3 + fertNactive + fertNfresh;
         
-        double demand_factor = Math.min(Math.sqrt(FPHUact.getValue()) + 0.15, 1);
+        double demand_factor = Math.min(Math.sqrt(FPHUact.getValue()) + 0.1, 1);
         double future_demand = (demand_factor * endbioN) - optibioN.getValue();
         double actual_demand = optibioN.getValue() - actbioN.getValue();
-        double total_demand = (future_demand + actual_demand) - nmin.getValue() + 30;
+        double total_demand = (future_demand + actual_demand) - nmin.getValue();
         
-                   
+        
+        
             famount = total_demand / fertN_total;
             
             if (famount < 0) 
