@@ -270,10 +270,10 @@ public class ManageLanduse_szeno extends JAMSComponent {
         double day = time.get(time.DAY_OF_YEAR);
         
         if ((opti.getValue() == 2) && (day > 90.0  && day < 300.0))   { 
-            if (nstrs.getValue() > 0.03 && gift.getValue() < 4){
+            if (nstrs.getValue() > 0.1 && gift.getValue() < 4){
                 if (dayintervall < 1) {
                 processFertilizationopti(currentManagement);
-                dayintervall = 25;
+                dayintervall = 30;
                 }
                 
             }
