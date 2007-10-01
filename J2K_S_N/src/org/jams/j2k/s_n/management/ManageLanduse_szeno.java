@@ -22,98 +22,98 @@ import org.unijena.jams.data.*;
 public class ManageLanduse_szeno extends JAMSComponent {
     
     @JAMSVarDescription(
-            access = JAMSVarDescription.AccessType.READ,
+    access = JAMSVarDescription.AccessType.READ,
             update = JAMSVarDescription.UpdateType.RUN,
             description = "Current hru object"
             )
             public JAMSEntityCollection entities;
     
     @JAMSVarDescription(
-            access = JAMSVarDescription.AccessType.READ,
+    access = JAMSVarDescription.AccessType.READ,
             update = JAMSVarDescription.UpdateType.RUN,
             description = "Current time"
             )
             public JAMSCalendar time;
     
     @JAMSVarDescription(
-            access = JAMSVarDescription.AccessType.WRITE,
+    access = JAMSVarDescription.AccessType.WRITE,
             update = JAMSVarDescription.UpdateType.RUN,
             description = "Current NH4 fertilizer amount"
             )
             public JAMSDouble fertNH4N;
     
     @JAMSVarDescription(
-            access = JAMSVarDescription.AccessType.WRITE,
+    access = JAMSVarDescription.AccessType.WRITE,
             update = JAMSVarDescription.UpdateType.RUN,
             description = "Current NO3 fertilizer amount"
             )
             public JAMSDouble fertNO3N;
     
     @JAMSVarDescription(
-            access = JAMSVarDescription.AccessType.WRITE,
+    access = JAMSVarDescription.AccessType.WRITE,
             update = JAMSVarDescription.UpdateType.RUN,
             description = "Current organic fertilizer amount"
             )
             public JAMSDouble fertorgNactive;
     
     @JAMSVarDescription(
-            access = JAMSVarDescription.AccessType.WRITE,
+    access = JAMSVarDescription.AccessType.WRITE,
             update = JAMSVarDescription.UpdateType.RUN,
             description = "Current organic fertilizer amount added to residue pool"
             )
             public JAMSDouble fertorgNfresh;
     
     @JAMSVarDescription(
-            access = JAMSVarDescription.AccessType.READWRITE,
+    access = JAMSVarDescription.AccessType.READWRITE,
             update = JAMSVarDescription.UpdateType.RUN,
             description = "Reduction Factor for Fertilisation 0 - 10 [-]"
             )
             public JAMSDouble ReductionFactor;
     
     @JAMSVarDescription(
-            access = JAMSVarDescription.AccessType.READWRITE,
+    access = JAMSVarDescription.AccessType.READWRITE,
             update = JAMSVarDescription.UpdateType.RUN,
             description = "Current organic fertilizer amount"
             )
             public JAMSInteger RotPos;
     
-     @JAMSVarDescription(
-            access = JAMSVarDescription.AccessType.READWRITE,
+    @JAMSVarDescription(
+    access = JAMSVarDescription.AccessType.READWRITE,
             update = JAMSVarDescription.UpdateType.RUN,
             description = "Current organic fertilizer amount"
             )
             public JAMSInteger ManagementPos;
     
     @JAMSVarDescription(
-            access = JAMSVarDescription.AccessType.READWRITE,
+    access = JAMSVarDescription.AccessType.READWRITE,
             update = JAMSVarDescription.UpdateType.RUN,
             description = "Plant exisiting or not"
             )
             public JAMSBoolean plantExisting;
-
+    
     @JAMSVarDescription(
-            access = JAMSVarDescription.AccessType.WRITE,
+    access = JAMSVarDescription.AccessType.WRITE,
             update = JAMSVarDescription.UpdateType.RUN,
             description = "Indicator for harvesting"
             )
             public JAMSBoolean doHarvest;
- 
+    
     @JAMSVarDescription(
-            access = JAMSVarDescription.AccessType.READ,
+    access = JAMSVarDescription.AccessType.READ,
             update = JAMSVarDescription.UpdateType.INIT,
             description = "Date to start reduction"
             )
             public JAMSCalendar start;
     
     @JAMSVarDescription(
-            access = JAMSVarDescription.AccessType.READ,
+    access = JAMSVarDescription.AccessType.READ,
             update = JAMSVarDescription.UpdateType.INIT,
             description = "Date to end reduction"
             )
             public JAMSCalendar end;
     
-     @JAMSVarDescription(
-            access = JAMSVarDescription.AccessType.READ,
+    @JAMSVarDescription(
+    access = JAMSVarDescription.AccessType.READ,
             update = JAMSVarDescription.UpdateType.INIT,
             description = "Encapsulating time interval"
             )
@@ -121,75 +121,89 @@ public class ManageLanduse_szeno extends JAMSComponent {
     
     
     @JAMSVarDescription(
-            access = JAMSVarDescription.AccessType.READ,
+    access = JAMSVarDescription.AccessType.READ,
             update = JAMSVarDescription.UpdateType.RUN,
             description = "Indicates fertilazation optimization with plant demand"
             )
-            public JAMSDouble opti;    
+            public JAMSDouble opti;
     
     @JAMSVarDescription(
-            access = JAMSVarDescription.AccessType.READWRITE,
+    access = JAMSVarDescription.AccessType.READWRITE,
             update = JAMSVarDescription.UpdateType.RUN,
             description = "Mineral nitrogen content in the soil profile down to 60 cm depth"
             )
             public JAMSDouble nmin;
     
     @JAMSVarDescription(
-            access = JAMSVarDescription.AccessType.READWRITE,
+    access = JAMSVarDescription.AccessType.READWRITE,
             update = JAMSVarDescription.UpdateType.RUN,
             description = "optimal nitrogen content in Biomass in (kgN/ha)"
             )
             public JAMSDouble optibioN;
     
     @JAMSVarDescription(
-            access = JAMSVarDescription.AccessType.READWRITE,
+    access = JAMSVarDescription.AccessType.READWRITE,
             update = JAMSVarDescription.UpdateType.RUN,
             description = "actual nitrogen content in Biomass in (kgN/ha)"
             )
             public JAMSDouble actbioN;
     
     @JAMSVarDescription(
-            access = JAMSVarDescription.AccessType.READWRITE,
+    access = JAMSVarDescription.AccessType.READWRITE,
             update = JAMSVarDescription.UpdateType.RUN,
             description = "Fraction of actual potential heat units sum [-]"
             )
             public JAMSDouble FPHUact;
     
     @JAMSVarDescription(
-            access = JAMSVarDescription.AccessType.WRITE,
+    access = JAMSVarDescription.AccessType.WRITE,
             update = JAMSVarDescription.UpdateType.RUN,
             description = "Fertilisation reduction due to the plant demand routine [kgN/ha]"
             )
             public JAMSDouble Nredu;
     
-     @JAMSVarDescription(
-            access = JAMSVarDescription.AccessType.READWRITE,
+    @JAMSVarDescription(
+    access = JAMSVarDescription.AccessType.READWRITE,
             update = JAMSVarDescription.UpdateType.RUN,
             description = "Number of fertilisation action in crop [-]"
             )
             public JAMSDouble gift;
-     
-     @JAMSVarDescription(
-            access = JAMSVarDescription.AccessType.READWRITE,
+    
+    @JAMSVarDescription(
+    access = JAMSVarDescription.AccessType.READ,
+            update = JAMSVarDescription.UpdateType.RUN,
+            description = "Maximum amount of N-fertilizer in [kg/ha*a]"
+            )
+            public JAMSDouble maxfert;
+    
+    @JAMSVarDescription(
+    access = JAMSVarDescription.AccessType.READWRITE,
+            update = JAMSVarDescription.UpdateType.RUN,
+            description = "Rest after former gifts amount of N-fertilizer in [kg/ha*a]"
+            )
+            public JAMSDouble restfert;
+    
+    @JAMSVarDescription(
+    access = JAMSVarDescription.AccessType.READWRITE,
             update = JAMSVarDescription.UpdateType.RUN,
             description = "in [-] plant groth nitrogen stress factor"
             )
             public JAMSDouble nstrs;
-     
-     @JAMSVarDescription(
-            access = JAMSVarDescription.AccessType.READWRITE,
+    
+    @JAMSVarDescription(
+    access = JAMSVarDescription.AccessType.READWRITE,
             update = JAMSVarDescription.UpdateType.RUN,
             description = "Minimum counter between 2 fertilizer actions in days (only used when opti = 2)"
             )
             public JAMSDouble Dayintervall;
-     
-     @JAMSVarDescription(
-            access = JAMSVarDescription.AccessType.WRITE,
+    
+    @JAMSVarDescription(
+    access = JAMSVarDescription.AccessType.WRITE,
             update = JAMSVarDescription.UpdateType.RUN,
             description = "Type of harvest to distiguish between crops with undersown plants and normal harvesting"
             )
             public JAMSInteger harvesttype;
-   
+    
     private JAMSTimeInterval ti;
     double endbioN;
     double runNredu;
@@ -197,7 +211,7 @@ public class ManageLanduse_szeno extends JAMSComponent {
         ti = new JAMSTimeInterval(start, end, timeInterval.getTimeUnit(), timeInterval.getTimeUnitCount());
         
     }
-     
+    
     public void run() throws JAMSEntity.NoSuchAttributeException {
         double dayintervall = Dayintervall.getValue();
         JAMSEntity entity = entities.getCurrent();
@@ -214,9 +228,9 @@ public class ManageLanduse_szeno extends JAMSComponent {
         int idc = currentCrop.idc;
         this.endbioN = currentCrop.endbioN;
         if (idc != 1 && idc != 2 && idc != 4 && idc != 5){
-          runplantex = true;  
-        } 
-            
+            runplantex = true;
+        }
+        
         ArrayList<J2KSNLMArable> managementList = currentCrop.managementList;
         int managementPos = ManagementPos.getValue();
         J2KSNLMArable currentManagement = managementList.get(managementPos);
@@ -249,9 +263,9 @@ public class ManageLanduse_szeno extends JAMSComponent {
                 //do tillage processing here!!
             } else if (currentManagement.fert != null) {
                 //do fetilization processing here!!
-               if ((opti.getValue() != 2) || (idc != 1 && idc != 2 && idc != 4 && idc != 5)){
-                processFertilization(currentManagement);
-               }
+                if ((opti.getValue() != 2) || (gift.getValue() == 0)  || (idc != 1 && idc != 2 && idc != 4 && idc != 5)){
+                    processFertilization(currentManagement);
+                }
             } else if (currentManagement.plant == true) {
                 //do planting here!!
                 //PHUact.setValue(0);
@@ -259,7 +273,7 @@ public class ManageLanduse_szeno extends JAMSComponent {
             } else if (currentManagement.harvest != -1 && (idc == 1 || idc == 2 || idc == 4 || idc == 5 || idc == 8) ) {
                 //do harvesting here!!
                 runplantex = false;
-                    harvesttype.setValue(1);
+                harvesttype.setValue(1);
                 if (currentManagement.harvest == 2){
                     harvesttype.setValue(2);
                     runplantex = true;
@@ -269,11 +283,11 @@ public class ManageLanduse_szeno extends JAMSComponent {
         
         double day = time.get(time.DAY_OF_YEAR);
         
-        if ((opti.getValue() == 2) && (day > 90.0  && day < 300.0))   { 
+        if ((opti.getValue() == 2) && (day > 90.0  && day < 300.0) && (gift.getValue() > 0))   {
             if (nstrs.getValue() > 0.1 && gift.getValue() < 4){
                 if (dayintervall < 1) {
-                processFertilizationopti(currentManagement);
-                dayintervall = 30;
+                    processFertilizationopti(currentManagement);
+                    dayintervall = 30;
                 }
                 
             }
@@ -282,7 +296,7 @@ public class ManageLanduse_szeno extends JAMSComponent {
         plantExisting.setValue(runplantex);
         this.Nredu.setValue(runNredu);
         if (dayintervall > 0) {
-        dayintervall = dayintervall - 1;
+            dayintervall = dayintervall - 1;
         }
         Dayintervall.setValue(dayintervall);
     }
@@ -296,48 +310,48 @@ public class ManageLanduse_szeno extends JAMSComponent {
         double redu = ReductionFactor.getValue();
         
         if (time.after(ti.getStart()) && time.before(ti.getEnd())) {
-        
-         redu = Math.max(0,redu);           
+            
+            redu = Math.max(0,redu);
         } else {
-          redu = 1;  
+            redu = 1;
         }
         
         double famount = currentManagement.famount * redu;
         
-   
+        
         
         fertN_total = famount * (fert.fminn + fert.forgn);
         
         //fertilasation in dependence of the demand and N_min in Soil (only for the first gift)
         
-        if (opti.getValue() == 1 && run_gift == 0.0){ 
-        
-        
-        double demand_factor = Math.min(Math.sqrt(FPHUact.getValue()+ 0.15), 1);
-        double future_demand = (demand_factor * endbioN) - optibioN.getValue();
-        double actual_demand = optibioN.getValue() - actbioN.getValue();
-        double total_demand = (future_demand + actual_demand) - nmin.getValue() + 30;
-        
-                   
+        if (opti.getValue() == 1 && run_gift == 0.0){
+            
+            
+            double demand_factor = Math.min(Math.sqrt(FPHUact.getValue()+ 0.15), 1);
+            double future_demand = (demand_factor * endbioN) - optibioN.getValue();
+            double actual_demand = optibioN.getValue() - actbioN.getValue();
+            double total_demand = (future_demand + actual_demand) - nmin.getValue() + 30;
+            
+            
             redu =  total_demand / fertN_total;
             
             if (redu < 0){
-            
-            redu = 0;
-            
+                
+                redu = 0;
+                
             }
-        
-        redu = Math.min(redu,1.0);
-        
-        runNredu = (1 - redu) * (fert.forgn + fert.fminn) * famount; 
-        famount = redu * famount;
-        
-        
-        fertN_total = famount * (fert.fminn + fert.forgn);
-        
-     
-        
-        
+            
+            redu = Math.min(redu,1.0);
+            
+            runNredu = (1 - redu) * (fert.forgn + fert.fminn) * famount;
+            famount = redu * famount;
+            
+            
+            fertN_total = famount * (fert.fminn + fert.forgn);
+            
+            
+            
+            
         }
         run_gift = run_gift + 1;
         gift.setValue(run_gift);
@@ -347,7 +361,7 @@ public class ManageLanduse_szeno extends JAMSComponent {
         double fertorgNactive = 0.5 * famount * fert.forgn; //orgNact is the amount of nitrogen in the active organic pool added to the soil
         
         
-       
+        
         
         
        /* if (fertorgN > 0 || fertNO3N > 0 || fertNH4N > 0) {
@@ -363,43 +377,47 @@ public class ManageLanduse_szeno extends JAMSComponent {
         this.fertorgNfresh.setValue(fertorgNfresh);
         this.fertorgNactive.setValue(fertorgNactive);
     }
-   
-        private void processFertilizationopti(J2KSNLMArable currentManagement) {
+    
+    private void processFertilizationopti(J2KSNLMArable currentManagement) {
         double run_gift = gift.getValue();
+        double run_restfert = restfert.getValue();
+        
         double fertN_total = 0;
         double fertNH4 = 0;
         double fertNO3 = 0;
         double fertNactive = 0;
-        double fertNfresh = 0; 
+        double fertNfresh = 0;
         double famount = 0;
-       
+        double Namount = 0;
         
-       // Rindergülle   gift = 0        | fert.forgn = 0.03 fert.fminn = 0.01 (0.99 NH4; 0.01 NO3)
-       // 15/15/15      gift = 1 & 2    | fert.forgn = 0.00 fert.fminn = 0.15 (0.00 NH4; 1.00 NO3)
-       // Urea          gift = 3        | fert.forgn = 0.00 fert.fminn = 0.43 (1.00 NH4; 0.00 NO3)
-               
+        
+        // Rindergülle   gift = 0        | fert.forgn = 0.03 fert.fminn = 0.01 (0.99 NH4; 0.01 NO3)
+        // 15/15/15      gift = 1 & 2    | fert.forgn = 0.00 fert.fminn = 0.15 (0.00 NH4; 1.00 NO3)
+        // Urea          gift = 3        | fert.forgn = 0.00 fert.fminn = 0.43 (1.00 NH4; 0.00 NO3)
+        
+        
         if (run_gift == 0){
-         
+            
             fertNH4 = 0.01 * 0.99;
             fertNO3 = 0.01 * 0.01;
             fertNactive = 0.015;
-            fertNfresh = 0.015; 
+            fertNfresh = 0.015;
             
         }else if (run_gift < 3) {
             
             fertNH4 = 0;
             fertNO3 = 0.15;
             fertNactive = 0;
-            fertNfresh = 0; 
+            fertNfresh = 0;
             
         }else if (run_gift == 3) {
             
             fertNH4 = 0.43;
             fertNO3 = 0;
             fertNactive = 0;
-            fertNfresh = 0;  
+            fertNfresh = 0;
         }
-              
+        
         fertN_total = fertNH4 + fertNO3 + fertNactive + fertNfresh;
         
         double demand_factor = Math.min(Math.sqrt(FPHUact.getValue()) + 0.1, 1);
@@ -409,11 +427,26 @@ public class ManageLanduse_szeno extends JAMSComponent {
         
         
         
-            famount = total_demand / fertN_total;
+        famount = total_demand / fertN_total;
+        
+        if (famount < 0)
+            famount = 0;
+        Namount = famount * fertN_total;
+        
+        if (run_gift > 1){
             
-            if (famount < 0) 
-                famount = 0;
+            if (Namount < run_restfert ){
+                run_restfert = run_restfert - Namount;
+            }else{
+                Namount = run_restfert;
+            }
             
+            
+        }else{
+            run_restfert = maxfert.getValue();
+        }
+        
+        famount =  Namount / fertN_total;
         
         
         
@@ -421,11 +454,7 @@ public class ManageLanduse_szeno extends JAMSComponent {
         
         
         
-        
-     
-        
-        
-        
+        run_restfert  = Math.max(run_restfert,0);
         run_gift = run_gift + 1;
         gift.setValue(run_gift);
         double fertNH4N = famount * fertNH4;
@@ -434,7 +463,7 @@ public class ManageLanduse_szeno extends JAMSComponent {
         double fertorgNactive = famount * fertNactive; //orgNact is the amount of nitrogen in the active organic pool added to the soil
         
         
-       
+        
         
         
        /* if (fertorgN > 0 || fertNO3N > 0 || fertNH4N > 0) {

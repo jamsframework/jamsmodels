@@ -84,6 +84,7 @@ public class J2KSNCrop {
     public double hu_ec9;
     public double lai_min;
     public double endbioN;
+    public double maxfert;
     
     public ArrayList<J2KSNLMArable> managementList;
     
@@ -137,6 +138,7 @@ public class J2KSNCrop {
         hu_ec9 = Double.parseDouble(vals[42]);
         lai_min = Double.parseDouble(vals[43]);
         endbioN = Double.parseDouble(vals[44]);
+        maxfert = Double.parseDouble(vals[45]);
         
         
         this.managementList = mList;
