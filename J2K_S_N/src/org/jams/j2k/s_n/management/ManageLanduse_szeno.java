@@ -263,9 +263,10 @@ public class ManageLanduse_szeno extends JAMSComponent {
                 //do tillage processing here!!
             } else if (currentManagement.fert != null) {
                 //do fetilization processing here!!
-                if ((opti.getValue() != 2) || (gift.getValue() == 0)  || (idc != 1 && idc != 2 && idc != 4 && idc != 5)){
+                if ((opti.getValue() != 2) || ((gift.getValue() == 0) && (opti.getValue() == 2)) || (idc != 1 && idc != 2 && idc != 4 && idc != 5)){
                     processFertilization(currentManagement);
-                }
+                    restfert.setValue(currentCrop.maxfert);
+                   }
             } else if (currentManagement.plant == true) {
                 //do planting here!!
                 //PHUact.setValue(0);
@@ -283,8 +284,8 @@ public class ManageLanduse_szeno extends JAMSComponent {
         
         double day = time.get(time.DAY_OF_YEAR);
         
-        if ((opti.getValue() == 2) && (day > 90.0  && day < 300.0) && (gift.getValue() > 0))   {
-            if (nstrs.getValue() > 0.1 && gift.getValue() < 4){
+        if ((opti.getValue() == 2) && (day > 90.0  && day < 300.0) && (gift.getValue() > 0) && (idc == 1 || idc == 2 || idc == 4 || idc == 5))   {
+            if (nstrs.getValue() > 0.03 && gift.getValue() < 4){
                 if (dayintervall < 1) {
                     processFertilizationopti(currentManagement);
                     dayintervall = 30;
@@ -324,7 +325,7 @@ public class ManageLanduse_szeno extends JAMSComponent {
         
         //fertilasation in dependence of the demand and N_min in Soil (only for the first gift)
         
-        if (opti.getValue() == 1 && run_gift == 0.0){
+        if (opti.getValue() == 1 && run_gift == 0.0 || opti.getValue() == 2 && run_gift == 0.0){
             
             
             double demand_factor = Math.min(Math.sqrt(FPHUact.getValue()+ 0.15), 1);
@@ -433,7 +434,7 @@ public class ManageLanduse_szeno extends JAMSComponent {
             famount = 0;
         Namount = famount * fertN_total;
         
-        if (run_gift > 1){
+        if (run_gift > 0){
             
             if (Namount < run_restfert ){
                 run_restfert = run_restfert - Namount;
@@ -443,7 +444,7 @@ public class ManageLanduse_szeno extends JAMSComponent {
             
             
         }else{
-            run_restfert = maxfert.getValue();
+            
         }
         
         famount =  Namount / fertN_total;
