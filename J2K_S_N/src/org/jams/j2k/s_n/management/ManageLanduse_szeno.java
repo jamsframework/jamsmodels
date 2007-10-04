@@ -437,7 +437,7 @@ public class ManageLanduse_szeno extends JAMSComponent {
         if (run_gift > 0){
             
             if (Namount < run_restfert ){
-                run_restfert = run_restfert - Namount;
+                Namount = Namount;
             }else{
                 Namount = run_restfert;
             }
@@ -447,6 +447,7 @@ public class ManageLanduse_szeno extends JAMSComponent {
             
         }
         
+        run_restfert = run_restfert - Namount;
         famount =  Namount / fertN_total;
         
         
