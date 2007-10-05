@@ -475,7 +475,7 @@ public class ManageLanduse_szeno extends JAMSComponent {
         double fertNH4 = fertNH4_current + fertNH4_old;
         double fertorg = fertorg_current + fertorg_old;*/
         
-        
+        this.restfert.setValue(run_restfert);
         this.fertNO3N.setValue(fertNO3N);
         this.fertNH4N.setValue(fertNH4N);
         this.fertorgNfresh.setValue(fertorgNfresh);
