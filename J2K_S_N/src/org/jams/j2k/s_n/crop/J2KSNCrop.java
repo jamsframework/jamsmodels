@@ -85,6 +85,11 @@ public class J2KSNCrop {
     public double lai_min;
     public double endbioN;
     public double maxfert;
+    public double bion02;
+    public double bion04;
+    public double bion06;
+    public double bion08;
+    
     
     public ArrayList<J2KSNLMArable> managementList;
     
@@ -139,7 +144,10 @@ public class J2KSNCrop {
         lai_min = Double.parseDouble(vals[43]);
         endbioN = Double.parseDouble(vals[44]);
         maxfert = Double.parseDouble(vals[45]);
-        
+        bion02 = Double.parseDouble(vals[46]);
+        bion04 = Double.parseDouble(vals[47]);
+        bion06 = Double.parseDouble(vals[48]);
+        bion08 = Double.parseDouble(vals[49]);
         
         this.managementList = mList;
     }

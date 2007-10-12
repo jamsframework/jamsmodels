@@ -240,7 +240,7 @@ public class StandardManagementParaReader extends JAMSComponent {
         
         BufferedReader reader;
         StringTokenizer tokenizer;
-        String[] vals = new String[46];
+        String[] vals = new String[50];
         Integer id;
         
         // HashMap anlegen
@@ -262,7 +262,7 @@ public class StandardManagementParaReader extends JAMSComponent {
                 
                 tokenizer = new StringTokenizer(s, "\t");
                 
-                for (int i = 0; i < 46; i++) {
+                for (int i = 0; i < 50; i++) {
                     vals[i] = tokenizer.nextToken();
                 }
                 

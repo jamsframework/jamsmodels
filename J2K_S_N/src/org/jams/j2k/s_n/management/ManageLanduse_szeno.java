@@ -206,6 +206,10 @@ public class ManageLanduse_szeno extends JAMSComponent {
     
     private JAMSTimeInterval ti;
     double endbioN;
+    double bion02;
+    double bion04;
+    double bion06;
+    double bion08;
     double runNredu;
     public void init() {
         ti = new JAMSTimeInterval(start, end, timeInterval.getTimeUnit(), timeInterval.getTimeUnitCount());
@@ -227,6 +231,10 @@ public class ManageLanduse_szeno extends JAMSComponent {
         J2KSNCrop currentCrop = rotation.get(rotPos);
         int idc = currentCrop.idc;
         this.endbioN = currentCrop.endbioN;
+        this.bion02 = currentCrop.bion02;
+        this.bion04 = currentCrop.bion04;
+        this.bion06 = currentCrop.bion06;
+        this.bion08 = currentCrop.bion08;
         if (idc != 1 && idc != 2 && idc != 4 && idc != 5){
             runplantex = true;
         }
@@ -305,6 +313,7 @@ public class ManageLanduse_szeno extends JAMSComponent {
     private void processFertilization(J2KSNLMArable currentManagement) {
         double run_gift = gift.getValue();
         double fertN_total = 0;
+       
         
         J2KSNFertilizer fert = currentManagement.fert;
         
@@ -326,6 +335,9 @@ public class ManageLanduse_szeno extends JAMSComponent {
         //fertilasation in dependence of the demand and N_min in Soil (only for the first gift)
         
         if (opti.getValue() == 1 && run_gift == 0.0 || opti.getValue() == 2 && run_gift == 0.0){
+            
+        
+            
             
             
             double demand_factor = Math.min(Math.sqrt(FPHUact.getValue()+ 0.15), 1);
@@ -382,6 +394,7 @@ public class ManageLanduse_szeno extends JAMSComponent {
     private void processFertilizationopti(J2KSNLMArable currentManagement) {
         double run_gift = gift.getValue();
         double run_restfert = restfert.getValue();
+        double targetN = 0;
         
         double fertN_total = 0;
         double fertNH4 = 0;
@@ -390,7 +403,7 @@ public class ManageLanduse_szeno extends JAMSComponent {
         double fertNfresh = 0;
         double famount = 0;
         double Namount = 0;
-        
+        double actsollbio = 0;
         
         // Rindergülle   gift = 0        | fert.forgn = 0.03 fert.fminn = 0.01 (0.99 NH4; 0.01 NO3)
         // 15/15/15      gift = 1 & 2    | fert.forgn = 0.00 fert.fminn = 0.15 (0.00 NH4; 1.00 NO3)
@@ -421,8 +434,28 @@ public class ManageLanduse_szeno extends JAMSComponent {
         
         fertN_total = fertNH4 + fertNO3 + fertNactive + fertNfresh;
         
+        
+        
+            if (FPHUact.getValue() > 0 && FPHUact.getValue() <= 0.2){
+              targetN  =  (this.bion02 * FPHUact.getValue()) / 0.2;    
+            }else if (FPHUact.getValue() > 0.2 && FPHUact.getValue() <= 0.4){
+              targetN  =  (((this.bion04 - this.bion02) * FPHUact.getValue()) / 0.4) +   this.bion02;  
+            }else if (FPHUact.getValue() > 0.4 && FPHUact.getValue() <= 0.6){
+              targetN  =  (((this.bion06 - this.bion04) * FPHUact.getValue()) / 0.6) +   this.bion04;
+            }else if (FPHUact.getValue() > 0.6 && FPHUact.getValue() <= 0.8){
+              targetN  =  (((this.bion08 - this.bion06) * FPHUact.getValue()) / 0.8) +   this.bion06;  
+            }else if (FPHUact.getValue() > 0.8 && FPHUact.getValue() <= 1){
+              targetN  =  (((this.endbioN - this.bion08) * FPHUact.getValue()) / 1)  +   this.bion08;   
+            }
+        
+        if (optibioN.getValue() < targetN){
+          endbioN = endbioN - (targetN  - optibioN.getValue());  
+        }
+        
+
         double demand_factor = Math.min(Math.sqrt(FPHUact.getValue()) + 0.1, 1);
         double future_demand = (demand_factor * endbioN) - optibioN.getValue();
+        
         double actual_demand = optibioN.getValue() - actbioN.getValue();
         double total_demand = (future_demand + actual_demand) - nmin.getValue();
         
@@ -451,7 +484,9 @@ public class ManageLanduse_szeno extends JAMSComponent {
         famount =  Namount / fertN_total;
         
         
-        
+        if (FPHUact.getValue() > 0.95){
+            famount = 0;
+        }
         
         
         
