@@ -374,7 +374,7 @@ public class NNLearner extends Learner {
 	    MLP.buildClassifier(dataSet);
 	}
 	catch(Exception e) {
-	    System.out.println("MLP didn´t want to train ... " + e.toString());
+	    System.out.println("MLP didnÂ´t want to train ... " + e.toString());
 	}
 	//System.out.println("Trained:" + MLP.);
     }

@@ -194,8 +194,8 @@ import org.unijena.jams.model.*;
             }
             summaryWriter.addColumn("Dauerstufe D [min]");
             summaryWriter.addColumn("Niederschlag [mm]");
-            summaryWriter.addColumn("Scheitelabfluss [m³/s]");
-            summaryWriter.addColumn("Wellenvolumen [Mio m³]");
+            summaryWriter.addColumn("Scheitelabfluss [mÂ³/s]");
+            summaryWriter.addColumn("Wellenvolumen [Mio mÂ³]");
             summaryWriter.writeHeader();
             
             //the attribute output file
@@ -256,7 +256,7 @@ import org.unijena.jams.model.*;
                         detailWriter.write("\t"+kv[i]);
                     }
                     detailWriter.write("\n");
-                    detailWriter.write("N-Höhe [mm]:");
+                    detailWriter.write("N-HÃ¶he [mm]:");
                     for(int i = 0; i < inPrecip.length; i++){
                         detailWriter.write("\t"+inPrecip[i]);
                     }

@@ -1,7 +1,7 @@
 /*
  * StandardFertTillParaReader.java
  *
- * Created on 6. M‰rz 2006, 13:35
+ * Created on 6. M√§rz 2006, 13:35
  *
  * * This file is part of JAMS
  * Copyright (C) 2005 S. Kralisch and P. Krause
@@ -82,7 +82,7 @@ public class StandardFertTillParaReader extends JAMSComponent {
         BufferedReader reader;
         StringTokenizer tokenizer;
         String[] vals = new String[5];
-        // neu seit Netbeans 5.0 ist die n‰here Definition der HashMaps
+        // neu seit Netbeans 5.0 ist die n√§here Definition der HashMaps
         HashMap<String, Tillage> map = new HashMap<String, Tillage>();
         
         try {

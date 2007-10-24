@@ -46,7 +46,7 @@ import org.unijena.jams.model.*;
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
             update = JAMSVarDescription.UpdateType.RUN,
-            description = "HRU attribute name area in m²"
+            description = "HRU attribute name area in mÂ²"
             )
             public JAMSDouble area;
     
@@ -54,28 +54,28 @@ import org.unijena.jams.model.*;
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
             update = JAMSVarDescription.UpdateType.RUN,
-            description = "in °C daily max. temperature"
+            description = "in Â°C daily max. temperature"
             )
             public JAMSDouble atemp_max;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
             update = JAMSVarDescription.UpdateType.RUN,
-            description = "in °C dayly min. temperature"
+            description = "in Â°C dayly min. temperature"
             )
             public JAMSDouble atemp_min;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
             update = JAMSVarDescription.UpdateType.RUN,
-            description = "in °C dayly mean. temperature"
+            description = "in Â°C dayly mean. temperature"
             )
             public JAMSDouble atemp_mean;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
             update = JAMSVarDescription.UpdateType.RUN,
-            description = "in °C anual mean temperature"
+            description = "in Â°C anual mean temperature"
             )
             public JAMSDouble anatemp_mean;
     
@@ -96,7 +96,7 @@ import org.unijena.jams.model.*;
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
             update = JAMSVarDescription.UpdateType.RUN,
-            description = "in kg/dm³ soil bulk density"
+            description = "in kg/dmÂ³ soil bulk density"
             )
             public JAMSDouble soil_bulk_density;
 
@@ -159,21 +159,21 @@ import org.unijena.jams.model.*;
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
             update = JAMSVarDescription.UpdateType.INIT,
-            description = "global radiation in MJ/(m²*d)"
+            description = "global radiation in MJ/(mÂ²*d)"
             )
             public JAMSDouble radiation;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
             update = JAMSVarDescription.UpdateType.RUN,
-            description = "soil temperature in layerdepth in °C"
+            description = "soil temperature in layerdepth in Â°C"
             )
             public JAMSDouble Soil_Temp_Layer;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
             update = JAMSVarDescription.UpdateType.RUN,
-            description = "in °C *  Output soil surface temperature"
+            description = "in Â°C *  Output soil surface temperature"
             )
             public JAMSDouble Surfacetemp;
     
@@ -238,9 +238,9 @@ import org.unijena.jams.model.*;
         
         /**
          * Frostroitine
-         * Wärmekapazität von Wasser 4.18 kJ/(kg K)
-         * Wärmekapazität von Eis 2.1 kJ/(kg K)
-         * Schmelzwärme von Wasser 332 kJ/(kg K)
+         * WÃ¤rmekapazitÃ¤t von Wasser 4.18 kJ/(kg K)
+         * WÃ¤rmekapazitÃ¤t von Eis 2.1 kJ/(kg K)
+         * SchmelzwÃ¤rme von Wasser 332 kJ/(kg K)
          * Annahme ca. 33% des Bodens ist Wasser
          *
          *//*

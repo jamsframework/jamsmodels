@@ -96,14 +96,14 @@ public class NeuralNetwork extends Kernel {
 	//knn(x,y) = 2/Pi * sin^(-1)(2x^T*sigma*y / sqrt((1+2x^T*sigma*x)*(1+2y^T*sigma*y))
 	//                                u                       v
 	//ableitung = 2/Pi * 1/sqrt(1-arg^2)*(du/v - u*dv / v^2) 
-	//            --------‰uﬂere-------
+	//            --------√§u√üere-------
 	double xSy = mx.times(nnKernel).times(my).get(0,0);
 	double xSx = mx.times(nnKernel).times(mx.transpose()).get(0,0);
 	double ySy = my.transpose().times(nnKernel).times(my).get(0,0);
 	
 	double v = Math.sqrt((1+2.0*xSx)*(1+2.0*ySy));
 		
-	//‰ussere ableitung
+	//√§ussere ableitung
 	double outer_derivative = (2.0/Math.PI)/Math.sqrt(1.0-((4.0*xSy*xSy)/(v*v)));
 		
 	int t1 = d;// / (x.length + 1); // zeilenindex

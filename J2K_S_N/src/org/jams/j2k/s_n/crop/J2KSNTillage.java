@@ -1,7 +1,7 @@
 /*
  * J2KSNTillage.java
  *
- * Created on 7. März 2006, 12:53
+ * Created on 7. MÃ¤rz 2006, 12:53
  *
  *  
  * This file is part of JAMS

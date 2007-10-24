@@ -1,7 +1,7 @@
 /*
  * ManageLanduse.java
  *
- * Created on 16. März 2006, 13:20
+ * Created on 16. MÃ¤rz 2006, 13:20
  *
  * To change this template, choose Tools | Template Manager
  * and open the template in the editor.
@@ -378,7 +378,7 @@ public class ManageLanduse_szeno extends JAMSComponent {
         
         
        /* if (fertorgN > 0 || fertNO3N > 0 || fertNH4N > 0) {
-        System.out.println("Gebe die Düngemengen aus :"  + fertNO3N + fertorgN + fertNH4N );
+        System.out.println("Gebe die DÃ¼ngemengen aus :"  + fertNO3N + fertorgN + fertNH4N );
         } */
         /*double fertN03 = fertNO3_current + fertNO3_old;
         double fertNH4 = fertNH4_current + fertNH4_old;
@@ -405,7 +405,7 @@ public class ManageLanduse_szeno extends JAMSComponent {
         double Namount = 0;
         double actsollbio = 0;
         
-        // Rindergülle   gift = 0        | fert.forgn = 0.03 fert.fminn = 0.01 (0.99 NH4; 0.01 NO3)
+        // RindergÃ¼lle   gift = 0        | fert.forgn = 0.03 fert.fminn = 0.01 (0.99 NH4; 0.01 NO3)
         // 15/15/15      gift = 1 & 2    | fert.forgn = 0.00 fert.fminn = 0.15 (0.00 NH4; 1.00 NO3)
         // Urea          gift = 3        | fert.forgn = 0.00 fert.fminn = 0.43 (1.00 NH4; 0.00 NO3)
         
@@ -504,7 +504,7 @@ public class ManageLanduse_szeno extends JAMSComponent {
         
         
        /* if (fertorgN > 0 || fertNO3N > 0 || fertNH4N > 0) {
-        System.out.println("Gebe die Düngemengen aus :"  + fertNO3N + fertorgN + fertNH4N );
+        System.out.println("Gebe die DÃ¼ngemengen aus :"  + fertNO3N + fertorgN + fertNH4N );
         } */
         /*double fertN03 = fertNO3_current + fertNO3_old;
         double fertNH4 = fertNH4_current + fertNH4_old;

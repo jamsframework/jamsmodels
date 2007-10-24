@@ -51,7 +51,7 @@ public class HamonET extends JAMSComponent {
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
             update = JAMSVarDescription.UpdateType.RUN,
-            unit = "ft³ / s"
+            unit = "ftÂ³ / s"
             )
             public JAMSDouble daylength;
 

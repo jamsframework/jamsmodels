@@ -1,7 +1,7 @@
 /*
  * ManageLanduse.java
  *
- * Created on 16. März 2006, 13:20
+ * Created on 16. MÃ¤rz 2006, 13:20
  *
  * To change this template, choose Tools | Template Manager
  * and open the template in the editor.
@@ -193,7 +193,7 @@ public class ManageLanduse extends JAMSComponent {
         
         
        /* if (fertorgN > 0 || fertNO3N > 0 || fertNH4N > 0) {
-        System.out.println("Gebe die Düngemengen aus :"  + fertNO3N + fertorgN + fertNH4N );
+        System.out.println("Gebe die DÃ¼ngemengen aus :"  + fertNO3N + fertorgN + fertNH4N );
         } */
         /*double fertN03 = fertNO3_current + fertNO3_old;
         double fertNH4 = fertNH4_current + fertNH4_old;

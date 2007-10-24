@@ -45,7 +45,7 @@ import org.unijena.jams.model.*;
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
             update = JAMSVarDescription.UpdateType.RUN,
-            description = "HRU attribute name area in m²"
+            description = "HRU attribute name area in mÂ²"
             )
             public JAMSDouble area;
     
@@ -66,7 +66,7 @@ import org.unijena.jams.model.*;
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
             update = JAMSVarDescription.UpdateType.INIT,
-            description = "in kg/dm³ soil bulk density"
+            description = "in kg/dmÂ³ soil bulk density"
             )
             public JAMSDouble soil_bulk_density;
     
@@ -108,7 +108,7 @@ import org.unijena.jams.model.*;
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
             update = JAMSVarDescription.UpdateType.RUN,
-            description = "soil temperature in layerdepth in °C"
+            description = "soil temperature in layerdepth in Â°C"
             )
             public JAMSDouble Soil_Temp_Layer;
     

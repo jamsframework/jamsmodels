@@ -60,7 +60,7 @@ public class ParallelStorageCascade extends JAMSComponent {
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
             update = JAMSVarDescription.UpdateType.RUN,
-            unit = "m³/s",
+            unit = "mÂ³/s",
             description = "runoff"
             )
             public JAMSDouble runoff;
@@ -68,7 +68,7 @@ public class ParallelStorageCascade extends JAMSComponent {
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
             update = JAMSVarDescription.UpdateType.RUN,
-            unit = "m³/s",
+            unit = "mÂ³/s",
             description = "max runoff"
             )
             public JAMSDouble maxRunoff;
@@ -84,7 +84,7 @@ public class ParallelStorageCascade extends JAMSComponent {
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
             update = JAMSVarDescription.UpdateType.RUN,
-            unit = "m³/s",
+            unit = "mÂ³/s",
             description = "runoff_arr"
             )
             public JAMSDoubleArray runoff_arr;

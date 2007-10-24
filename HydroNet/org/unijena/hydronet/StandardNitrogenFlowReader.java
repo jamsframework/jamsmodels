@@ -117,7 +117,7 @@ public void init() throws JAMSEntity.NoSuchAttributeException {
 		continue;
 	
 	    Matrix M = new Matrix(N, 2);		
-	    //berechne verh‰ltnis von 
+	    //berechne verh√§ltnis von 
 	    double interflow = 0;
 	    double percolation = 0; 
 		

@@ -1,7 +1,7 @@
 /*
  * StandardManagementParaReader.java
  *
- * Created on 6. März 2006, 13:35
+ * Created on 6. MÃ¤rz 2006, 13:35
  *
  * * This file is part of JAMS
  * Copyright (C) 2005 S. Kralisch and P. Krause
@@ -100,7 +100,7 @@ public class StandardManagementParaReader extends JAMSComponent {
             )
             public JAMSString aNameHRUID;
     
-    // HashMap für Fertilizer anlegen
+    // HashMap fÃ¼r Fertilizer anlegen
     private HashMap<Integer, J2KSNFertilizer> readFertPara(String fileName) {
         
         BufferedReader reader;
@@ -145,8 +145,8 @@ public class StandardManagementParaReader extends JAMSComponent {
         BufferedReader reader;
         StringTokenizer tokenizer;
         String[] vals = new String[5];
-        // neu seit Netbeans 5.0 ist die nähere Definition der HashMaps gewünscht
-        // HashMap für Tillage anlegen
+        // neu seit Netbeans 5.0 ist die nÃ¤here Definition der HashMaps gewÃ¼nscht
+        // HashMap fÃ¼r Tillage anlegen
         HashMap<Integer, J2KSNTillage> map = new HashMap<Integer, J2KSNTillage>();
         
         try {
@@ -183,7 +183,7 @@ public class StandardManagementParaReader extends JAMSComponent {
         return map;
     }
     
-    // HashMap für Management anlegen; mit Verweis auf Tillage und Fertilizer
+    // HashMap fÃ¼r Management anlegen; mit Verweis auf Tillage und Fertilizer
     private HashMap<Integer, ArrayList<J2KSNLMArable>> readManagementPara(String fileName, HashMap<Integer, J2KSNTillage> tills, HashMap<Integer, J2KSNFertilizer> ferts) {
         
         BufferedReader reader;
@@ -191,7 +191,7 @@ public class StandardManagementParaReader extends JAMSComponent {
         String[] vals = new String[8];
         int oldCID = -1, cid = -1;
         ArrayList<J2KSNLMArable> managements = null;
-        // neu seit Java 5 ist die nähere Definition der Collections gewünscht
+        // neu seit Java 5 ist die nÃ¤here Definition der Collections gewÃ¼nscht
         // HashMap anlegen
         HashMap<Integer, ArrayList<J2KSNLMArable>> map = new HashMap<Integer, ArrayList<J2KSNLMArable>>();
         
@@ -235,7 +235,7 @@ public class StandardManagementParaReader extends JAMSComponent {
         return map;
     }
     
-    // HashMap für Crop anlegen; mit Verweis auf Management, respective tillage und fertilizer
+    // HashMap fÃ¼r Crop anlegen; mit Verweis auf Management, respective tillage und fertilizer
     private HashMap<Integer, J2KSNCrop> readCrops(String fileName, HashMap<Integer, ArrayList<J2KSNLMArable>> management) {
         
         BufferedReader reader;
@@ -282,14 +282,14 @@ public class StandardManagementParaReader extends JAMSComponent {
         
         return map;
     }
-    // haspMap für crop rotations, respective vorherige Hashmaps
+    // haspMap fÃ¼r crop rotations, respective vorherige Hashmaps
     private HashMap<Integer, ArrayList<J2KSNCrop>> readRotations(String fileName, HashMap<Integer, J2KSNCrop> crops) {
         
         BufferedReader reader;
         StringTokenizer tokenizer;
         Integer rid, cid;
         ArrayList <J2KSNCrop> cropList;
-        // neu seit Java 5 ist die nähere Definition der Collections gewünscht
+        // neu seit Java 5 ist die nÃ¤here Definition der Collections gewÃ¼nscht
         // HashMap anlegen
         HashMap<Integer, ArrayList<J2KSNCrop>> map = new HashMap<Integer, ArrayList<J2KSNCrop>>();
         

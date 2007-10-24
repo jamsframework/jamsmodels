@@ -52,14 +52,14 @@ import java.io.*;
      @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
             update = JAMSVarDescription.UpdateType.INIT,
-            description = "HRU daily mean temperature [°C]"
+            description = "HRU daily mean temperature [Â°C]"
             )
             public JAMSDouble Tmean;
      
       @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
             update = JAMSVarDescription.UpdateType.INIT,
-            description = "Plants base temperature required for growing[°C]"
+            description = "Plants base temperature required for growing[Â°C]"
             )
             public JAMSDouble Tbase;
     

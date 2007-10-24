@@ -48,20 +48,20 @@ import org.unijena.jams.model.*;
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
             update = JAMSVarDescription.UpdateType.RUN,
-            description = "Daily mean temperature in 캜"
+            description = "Daily mean temperature in 째C"
             )
             public JAMSDouble tmeanpre;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
             update = JAMSVarDescription.UpdateType.RUN,
-            description = "mean temperature of the simulation period in 캜"
+            description = "mean temperature of the simulation period in 째C"
             )
             public JAMSDouble tmeanavg;
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
             update = JAMSVarDescription.UpdateType.RUN,
-            description = "average yearly temperature sum of the simulation period in 캜"
+            description = "average yearly temperature sum of the simulation period in 째C"
             )
             public JAMSDouble tmeansum;
     
@@ -75,14 +75,14 @@ import org.unijena.jams.model.*;
      @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
             update = JAMSVarDescription.UpdateType.RUN,
-            description = "soil temperature in layerdepth in 캜"
+            description = "soil temperature in layerdepth in 째C"
             )
             public JAMSDouble Soil_Temp_Layer;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
             update = JAMSVarDescription.UpdateType.RUN,
-            description = "in 캜 *  Output soil surface temperature"
+            description = "in 째C *  Output soil surface temperature"
             )
             public JAMSDouble Surfacetemp;
     

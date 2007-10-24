@@ -114,7 +114,7 @@ import org.unijena.jams.model.*;
     public void run() throws JAMSEntity.NoSuchAttributeException {
         double totOut = this.sro.getValue() + this.ssro.getValue() + this.gwro.getValue();
         this.totRunoff_mm.setValue(totOut / area.getValue());
-        //conversion from l/d to m³/s
+        //conversion from l/d to mÂ³/s
         this.totRunoff_cms.setValue(totOut / (86400 * 1000));
         this.c_sro.setValue(sro.getValue() / (86400 * 1000));
         this.c_ssro.setValue(ssro.getValue() / (86400 * 1000));

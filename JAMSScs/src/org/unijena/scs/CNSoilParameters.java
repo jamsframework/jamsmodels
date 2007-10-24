@@ -103,7 +103,7 @@ public class CNSoilParameters extends JAMSComponent {
     	String hruFN = this.dirName.getValue() + java.io.File.separator + this.hruFileName.getValue();
     	readParameters(cnFN, hruFN, this.getModel());
     	
-    	getModel().getRuntime().println("Einzugsgebietsgröße [km²]: " + this.catchmentArea.getValue());
+    	getModel().getRuntime().println("EinzugsgebietsgrÃ¶ÃŸe [kmÂ²]: " + this.catchmentArea.getValue());
     }
     
     public void readParameters(String cnFileName, String hruFileName, JAMSModel model){

@@ -165,7 +165,7 @@ import java.util.*;
      @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
             update = JAMSVarDescription.UpdateType.INIT,
-            description = "Daily solar radiation [MJ/m²]"
+            description = "Daily solar radiation [MJ/mÂ²]"
             )
             public JAMSString aNameSolRad;
     
@@ -173,14 +173,14 @@ import java.util.*;
      @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
             update = JAMSVarDescription.UpdateType.INIT,
-            description = "Crop specific radiation use efficiency ([kg/ha] drymass per[MJm²])"
+            description = "Crop specific radiation use efficiency ([kg/ha] drymass per[MJmÂ²])"
             )
             public JAMSString aNameRadUse;
      
      @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
             update = JAMSVarDescription.UpdateType.INIT,
-            description = "Intercepted photosynthetically active radiation [MJ/m²]"
+            description = "Intercepted photosynthetically active radiation [MJ/mÂ²]"
             )
             public JAMSString aNameHphosyn;
      
@@ -372,7 +372,7 @@ import java.util.*;
      @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
             update = JAMSVarDescription.UpdateType.INIT,
-            description = "Optimal temperature for plant growth [°C]"
+            description = "Optimal temperature for plant growth [Â°C]"
             )
             public JAMSString aNameTOpt; 
      
@@ -416,7 +416,7 @@ import java.util.*;
             update = JAMSVarDescription.UpdateType.INIT,
             description = "Initial Leaf Area Index [-]"
             )
-            public JAMSString aNameLai_init;*/ //@todo muss noch im ParaReader für jedes Crop initialisiert werden (ALAI)
+            public JAMSString aNameLai_init;*/ //@todo muss noch im ParaReader fÃ¼r jedes Crop initialisiert werden (ALAI)
      
       @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
@@ -550,7 +550,7 @@ import java.util.*;
          double cnyld = entity.getDouble(aNameFrcNYld.getValue()); /*fraction N in yield*/
          double topt = entity.getDouble(aNameTOpt.getValue()); /*Plants optimal growth temperature */
  /*        double tbase = entity.getDouble(aNameTBase.getValue()); /*Plants base temperature */
-         double bio_daily = entity.getDouble(aNamebio_daily.getValue()); /*actual biomass in kg/ha -> können auch berechnete Werte sein, die wieder zuückgeladen werden*/
+         double bio_daily = entity.getDouble(aNamebio_daily.getValue()); /*actual biomass in kg/ha -> kÃ¶nnen auch berechnete Werte sein, die wieder zuÃ¼ckgeladen werden*/
          double lai_daily = entity.getDouble(aNamelai_daily.getValue()); /*actual LAI*/
          double frLAImx_daily = entity.getDouble(aNamefrLAImx_daily.getValue()); /*actual fraction of max LAI for a given day */
          double hc_daily = entity.getDouble(aNamelai_daily.getValue()); /*actual Canopy height [m] on a given day */
@@ -561,16 +561,16 @@ import java.util.*;
          double bioNUp_daily = entity.setDouble(aNamebioNUp_daily.getValue(), bioNUp_daily); /*  daily N content by plant uptake */
          double yldN = entity.setDouble(aNameyldN.getValue(), yldN); /* N Content from the above biomass */
    
-         calc_lai(); /*Rückgabewerte der Calc-Routinen*/
+         calc_lai(); /*RÃ¼ckgabewerte der Calc-Routinen*/
          bio_daily = calc_biomass();
          hc_daily = calc_canopy();
          calc_root ();
          calc_nuptake ();
         
-         /* HRU bezogene Rückgabe von Werten 'nach aussen'*/
+         /* HRU bezogene RÃ¼ckgabe von Werten 'nach aussen'*/
           entity.setDouble(aNamefrLAImx_daily.getValue(), frLAImx_daily);
           entity.setDouble(aNamelai_daily.getValue(), lai_daily);
-          entity.setDouble(aNamebio_daily.getValue(), bio_daily); /*tägliche Wert von calc_biomass kann wieder eingelesen werden*/
+          entity.setDouble(aNamebio_daily.getValue(), bio_daily); /*tÃ¤gliche Wert von calc_biomass kann wieder eingelesen werden*/
           entity.setDouble(aNamehc_daily.getValue(), hc_daily);  
           entity.setDouble(aNamefrRoot_daily.getValue(), frroot_daily);   
           entity.setDouble(aNamefNPlant_daily.getValue(), fnplant_daily); 
@@ -626,7 +626,7 @@ import java.util.*;
          double bio_delta = this.raduse * this.Hphosyn;
          double bio_daily1 = this.bio_delta +  this.bio_daily; // 
                   
-         return bio_daily1; /*Möglichkeit zur Rückgabe von nur 1 Wert ausserhalb der Routine*/
+         return bio_daily1; /*MÃ¶glichkeit zur RÃ¼ckgabe von nur 1 Wert ausserhalb der Routine*/
         }
          // Canopy height and cover
          // Canopy cover is expressed as leaf area index
@@ -665,27 +665,27 @@ import java.util.*;
         7 trees
         Processes modeled differently for the 7 groups are:
         1 warm season annual legume
-        • simulate nitrogen fixation
-        • root depth varies during growing season due to root growth
+        Â• simulate nitrogen fixation
+        Â• root depth varies during growing season due to root growth
         2 cold season annual legume
-        • simulate nitrogen fixation
-        • root depth varies during growing season due to root growth
-        • fall-planted land covers will go dormant when daylength is less than the threshold daylength
+        Â• simulate nitrogen fixation
+        Â• root depth varies during growing season due to root growth
+        Â• fall-planted land covers will go dormant when daylength is less than the threshold daylength
         3 perennial legume
-        • simulate nitrogen fixation
-        • root depth always equal to the maximum allowed for the plant species and soil
-        • plant goes dormant when daylength is less than the threshold daylength
+        Â• simulate nitrogen fixation
+        Â• root depth always equal to the maximum allowed for the plant species and soil
+        Â• plant goes dormant when daylength is less than the threshold daylength
         4 warm season annual
-        • root depth varies during growing season due to root growth
+        Â• root depth varies during growing season due to root growth
         5 cold season annual
-        • root depth varies during growing season due to root growth
-        • fall-planted land covers will go dormant when daylength is less than the threshold daylength
+        Â• root depth varies during growing season due to root growth
+        Â• fall-planted land covers will go dormant when daylength is less than the threshold daylength
         6 perennial
-        • root depth always equal to the maximum allowed for the plant species and soil
-        • plant goes dormant when daylength is less than the threshold daylength
+        Â• root depth always equal to the maximum allowed for the plant species and soil
+        Â• plant goes dormant when daylength is less than the threshold daylength
         7 trees
-        • root depth always equal to the maximum allowed for the plant species and soil
-        • partitions new growth between leaves/needles (30%) and woody growth (70%). At the end of each growing season, biomass in the leaf fraction is converted to residue*/
+        Â• root depth always equal to the maximum allowed for the plant species and soil
+        Â• partitions new growth between leaves/needles (30%) and woody growth (70%). At the end of each growing season, biomass in the leaf fraction is converted to residue*/
          
          // Root development (mm in the soil) for plant types on a given day
          // Varying linearly from 0.0 at the beginning of the growing season to the maximum rooting depth at fphu = 0.4
@@ -843,10 +843,10 @@ import java.util.*;
           double tempstrs = 1;
           else if 
           this.tbase < this.tmean < this.tppt
-          this tempstrs = 1 - Math.exp ((-0.1054 * (this.topt - this.tmean)²/(this.tmean - this.tbase))
+          this tempstrs = 1 - Math.exp ((-0.1054 * (this.topt - this.tmean)Â²/(this.tmean - this.tbase))
           else if
           this.topt < this.tmean < (2 * this.tOpt) - this.tBase
-          this tempstrs = 1 - Math.exp ((-0.1054 * (this.topt - this.tmean)²/(2 * this.topt - this.tmean - this.tbase))
+          this tempstrs = 1 - Math.exp ((-0.1054 * (this.topt - this.tmean)Â²/(2 * this.topt - this.tmean - this.tbase))
           else if
           this.tmean > (2 * this.topt) - this.tbase
           this tempstrs = 1;
