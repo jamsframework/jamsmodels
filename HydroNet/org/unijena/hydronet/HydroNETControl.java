@@ -108,6 +108,20 @@ public class HydroNETControl extends JAMSContext {
             update = JAMSVarDescription.UpdateType.RUN,
             description = "largest accepted nitrogen value"
             )
+            public JAMSDouble current_cost;
+    
+    @JAMSVarDescription(
+            access = JAMSVarDescription.AccessType.READWRITE,
+            update = JAMSVarDescription.UpdateType.RUN,
+            description = "largest accepted nitrogen value"
+            )
+            public JAMSDouble current_sum;
+    
+    @JAMSVarDescription(
+            access = JAMSVarDescription.AccessType.READWRITE,
+            update = JAMSVarDescription.UpdateType.RUN,
+            description = "largest accepted nitrogen value"
+            )
             public JAMSDouble current_iteration;
     
     private double errorNO,errorCost;   
@@ -151,7 +165,7 @@ public class HydroNETControl extends JAMSContext {
                     learningrate.setValue(learningrate.getValue()*1.035);
                 }
                 else {
-                    breakcount = 20;
+                    breakcount = 200;
                 }
             }
 	lasterror = Math.abs(errorNO)+Math.abs(errorCost);
@@ -160,9 +174,12 @@ public class HydroNETControl extends JAMSContext {
 			
 	System.out.println("Output before learning : " + outbefore + " NO - Output : " + new Double(NitrogenOutNeuron.getActivation()).toString() + "\t" + 
                          "  Cost - Output : " + new Double(CostOutNeuron.getActivation()).toString() + 
+                         "  Summe - Output : " + 
 		         "  AvgPerf : " + new Double(avgperformance).toString());
 	
 	current_output.setValue(NitrogenOutNeuron.getActivation());
+        current_cost.setValue(CostOutNeuron.getActivation());
+        current_sum.setValue(NitrogenOutNeuron.getActivation()+CostOutNeuron.getActivation());
 	current_iteration.setValue(iteration);
 	
 	NitrogenOutNeuron.setActivation(current_output.getValue() - nitrogen_goal.getValue());

@@ -78,7 +78,7 @@ public class HydroNETCreator extends JAMSComponent {
         M2.element[0][0] = -100;
         M2.element[0][1] = 0;
         M2.element[1][0] = 100;
-        M2.element[1][1] = 0;
+        M2.element[1][1] = -0.0;
 	
        
 	LinApprox lin_id2 = new LinApprox(M2);

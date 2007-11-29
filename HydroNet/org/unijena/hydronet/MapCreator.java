@@ -1,6 +1,6 @@
 package org.unijena.hydronet;
 
-import java.awt.BorderLayout;
+/*import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.MouseEvent;
@@ -136,7 +136,7 @@ import jams.components.gui.*;
  *
  * @author C. Fischer
  */
-
+/*
 public class MapCreator extends jams.components.gui.MapCreator {
 	
 	@JAMSVarDescription(
@@ -392,7 +392,7 @@ public class MapCreator extends jams.components.gui.MapCreator {
 	downstreamID.setText(new Integer((new Double(e.getDouble("ID"))).intValue()).toString());
     }
     /* Used by makeCompactGrid. */
-    private static SpringLayout.Constraints getConstraintsForCell(
+/*    private static SpringLayout.Constraints getConstraintsForCell(
                                                 int row, int col,
                                                 Container parent,
                                                 int cols) {
@@ -416,7 +416,7 @@ public class MapCreator extends jams.components.gui.MapCreator {
      * @param xPad x padding between cells
      * @param yPad y padding between cells
      */
-    private static void makeCompactGrid(Container parent,
+/*    private static void makeCompactGrid(Container parent,
                                        int rows, int cols,
                                        int initialX, int initialY,
                                        int xPad, int yPad) {
@@ -469,4 +469,4 @@ public class MapCreator extends jams.components.gui.MapCreator {
         pCons.setConstraint(SpringLayout.SOUTH, y);
         pCons.setConstraint(SpringLayout.EAST, x);
     }
-}
+}*/
