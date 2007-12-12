@@ -13,7 +13,7 @@ import org.unijena.jams.model.*;
 import java.io.*;
 import Jama.*;
 import Jama.Matrix;
-import jams.components.optimizer.SCE.SCE_Comparator;
+import jams.components.optimizer.SCE_Comparator;
 import java.util.Arrays;
 import java.util.Random;
 import java.util.StringTokenizer;

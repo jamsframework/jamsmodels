@@ -16,10 +16,10 @@ import org.unijena.jams.model.*;
 import java.util.*;
 import Jama.*;
 import Jama.Matrix;
-import weka.core.Attribute;
+/*import weka.core.Attribute;
 import weka.core.FastVector;
 import weka.core.Instance;
-import weka.core.Instances;
+import weka.core.Instances;*/
 
 /**
  *
@@ -95,7 +95,7 @@ public class NNLearner extends Learner {
     Vector<Integer> LayerSize;
     Matrix R;
     Neuron outNeuron;
-    weka.classifiers.functions.MultilayerPerceptron MLP = null;
+    //weka.classifiers.functions.MultilayerPerceptron MLP = null;
     
     public NNLearner() {
 	normalizeData = true;
@@ -259,7 +259,7 @@ public class NNLearner extends Learner {
 	int M = data[0].length;
 	int P = data.length;
 		
-	FastVector atts = new FastVector(M+1);
+/*	FastVector atts = new FastVector(M+1);
 	for (int i=0;i<M+1;i++) {
 	    atts.addElement(new Attribute("data" + Integer.toString(i)));	    
 	}
@@ -330,7 +330,7 @@ public class NNLearner extends Learner {
 	catch(Exception e) {
 	    System.out.println("NN - Error" + e.toString());
 	}
-	return result;
+	return result;*/return null;
     }
     
     public void Train(double data[][],double predict[]) {
@@ -345,7 +345,7 @@ public class NNLearner extends Learner {
 	else
 	    predict_linreg = predict;
 	
-	FastVector atts = new FastVector(M+1);
+/*	FastVector atts = new FastVector(M+1);
 	for (int i=0;i<M+1;i++) {
 	    atts.addElement(new Attribute("data" + Integer.toString(i)));	    
 	}
@@ -375,7 +375,7 @@ public class NNLearner extends Learner {
 	}
 	catch(Exception e) {
 	    System.out.println("MLP didn´t want to train ... " + e.toString());
-	}
+	}*/
 	//System.out.println("Trained:" + MLP.);
     }
     
