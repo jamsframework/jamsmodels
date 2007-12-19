@@ -23,7 +23,7 @@ public class CalcVariables {
         final double R = 287; //Gas constant [J kg-1 K-1]
         final double P0 = 103.1; //Atmospheric pressure at sea level [kPa]
         final double LR = 0.0065; //Lapse rate [K m-1]
-        final double TK0 = 293.16; //Reference absolute temperature at sea level [캜]
+        final double TK0 = 293.16; //Reference absolute temperature at sea level [째C]
         final double G = 9.807; //Gravitational acceleration at sea level [m s-2]
         
         //air pressure at given temperature
@@ -69,8 +69,8 @@ public class CalcVariables {
     
     /**
      * calculates the slope of the saturation vapour pressure curve at given temperature
-     * @param temperature the air temperature in 캜
-     * @return slope of saturation vapour pressure curve [kPa/캜]
+     * @param temperature the air temperature in 째C
+     * @return slope of saturation vapour pressure curve [kPa/째C]
      */    
     public static double calc_slopeOfSaturationPressureCurve(double temperature){
         double sospc = (4098*(0.6108*Math.exp((17.27 * temperature)/(temperature + 237.3))))/(Math.pow((temperature + 237.3),2));
@@ -79,7 +79,7 @@ public class CalcVariables {
     
     /**
      * calculated latent heat of vaporization depending from temperature in MJ / kg
-     * @param temperature the air temperature in 캜
+     * @param temperature the air temperature in 째C
      * @return latent heat of vaporization in [KJ/kg]
      */    
      public static double calc_latentHeatOfVaporization(double temperature){
@@ -96,11 +96,11 @@ public class CalcVariables {
       * latent heat of vaporisation [MJ/kg]
       * @param airPressure - atmospheric pressure [hPa]
       * @param latHeat - latent heat of vaporisation [MJ/kg]
-      * @return psychrometric constant [kPa / 캜]
+      * @return psychrometric constant [kPa / 째C]
       */     
     public static double calc_psyConst(double airPressure, double latHeat){
         /**
-         *specif. heat capacity of air [MJ kg-1 캜-1]
+         *specif. heat capacity of air [MJ kg-1 째C-1]
          */
         double CP = 0.001013;
         /**
@@ -108,7 +108,7 @@ public class CalcVariables {
          */
         double VM = 0.622;
         //----------------------------------
-        // Psychrometric constant psy [hPa/캜]
+        // Psychrometric constant psy [hPa/째C]
         //----------------------------------
         double psyConst = (CP * airPressure)   / (VM * latHeat);
         

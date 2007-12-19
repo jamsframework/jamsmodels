@@ -45,7 +45,7 @@ title="ABCSnowModule",
     access = JAMSVarDescription.AccessType.READ,
             update = JAMSVarDescription.UpdateType.RUN,
             description = "Entity area"
-            //unit = "m²"
+            //unit = "mÂ²"
             )
             public JAMSDouble area;
     

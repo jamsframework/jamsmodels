@@ -48,9 +48,6 @@ import org.unijena.jams.model.*;
  *
  * @author Peter Krause
  */
-
-
-
 @JAMSComponentDescription(
         title="CalcDailyETP_PenmanMonteith",
         author="Peter Krause",

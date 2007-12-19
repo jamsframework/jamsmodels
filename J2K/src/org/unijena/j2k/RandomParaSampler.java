@@ -25,7 +25,6 @@ package org.unijena.j2k;
 
 import java.util.Random;
 import java.util.StringTokenizer;
-import org.unijena.jams.JAMS;
 import org.unijena.jams.data.*;
 import org.unijena.jams.io.GenericDataWriter;
 import org.unijena.jams.model.*;
@@ -236,8 +235,8 @@ title="Title",
             attribWriter.writeHeader();
             
             //setting up the dataArray
-            //this.timeSteps = (int)modelTimeInterval.getNumberOfTimesteps();
-//            this.valueArray = new double[this.sampleCount.getValue()][timeSteps];
+            this.timeSteps = (int)modelTimeInterval.getNumberOfTimesteps();
+            this.valueArray = new double[this.sampleCount.getValue()][timeSteps];
             this.timeStepCounter = 0;
             this.runCounter = 0;
             
@@ -268,9 +267,8 @@ title="Title",
                 }catch(org.unijena.jams.runtime.RuntimeException e){
                     
                 }
-                
-                
-//                this.valueArray[runCounter] = this.targetValue.getValue();
+         
+                this.valueArray[runCounter] = this.targetValue.getValue();
                 this.runCounter++;
             }
             
@@ -287,7 +285,7 @@ title="Title",
     public void cleanup() {
         
         if (enable.getValue()) {
-            /*
+            
             //always write time
             //the time also knows a toString() method with additional formatting parameters
             //e.g. time.toString("%1$tY-%1$tm-%1$td %1$tH:%1$tM")
@@ -300,14 +298,14 @@ title="Title",
                 }
                 try {
                     attribWriter.writeData();
-                } catch (org.unijena.jams.runtime.JAMSRuntimeException jre) {
+                } catch (org.unijena.jams.runtime.RuntimeException jre) {
                     getModel().getRuntime().println(jre.getMessage());
                 }
             }
             attribWriter.close();
              
              
-             */
+             
             paraWriter.close();
         }
     }

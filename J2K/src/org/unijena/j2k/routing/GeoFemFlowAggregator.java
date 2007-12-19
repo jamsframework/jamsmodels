@@ -87,7 +87,7 @@ import org.unijena.jams.model.*;
         
         double totOut = this.dirQ.getValue() + this.basQ.getValue();
         this.totQmm.setValue(totOut);
-        //conversion from mm to m³/time
+        //conversion from mm to mÂ³/time
         totOut = (totOut * cArea.getValue()) / (86400 * 1000);
         this.totQcbm.setValue(totOut);
         

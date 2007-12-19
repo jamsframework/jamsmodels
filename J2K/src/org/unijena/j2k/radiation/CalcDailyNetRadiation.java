@@ -116,28 +116,28 @@ import org.unijena.jams.model.*;
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
             update = JAMSVarDescription.UpdateType.RUN,
-            description = "daily net radiation [MJ/m²]"
+            description = "daily net radiation [MJ/mÂ²]"
             )
             public JAMSDouble netRad;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
             update = JAMSVarDescription.UpdateType.RUN,
-            description = "daily shortwave radiation [MJ/m²]"
+            description = "daily shortwave radiation [MJ/mÂ²]"
             )
             public JAMSDouble swRad;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
             update = JAMSVarDescription.UpdateType.RUN,
-            description = "daily longwave radiation [MJ/m²]"
+            description = "daily longwave radiation [MJ/mÂ²]"
             )
             public JAMSDouble lwRad;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
             update = JAMSVarDescription.UpdateType.RUN,
-            description = "daily net radiation for refET [MJ/m²]"
+            description = "daily net radiation for refET [MJ/mÂ²]"
             )
             public JAMSDouble refETNetRad;
     

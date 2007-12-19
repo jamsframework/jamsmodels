@@ -140,7 +140,7 @@ import org.unijena.jams.model.*;
     }
     
     public void run() throws JAMSEntity.NoSuchAttributeException, IOException {
-            final double CP = 0.001031; //Specific heat of air [MJ kg-1 °C-1]
+            final double CP = 0.001031; //Specific heat of air [MJ kg-1 Â°C-1]
             final double albedo = 0.23; //according to Allen et al.
             final double rc = 70; //according to Allen et al.
             final double clearSkyTrans = 0.75; //according to Donatelli

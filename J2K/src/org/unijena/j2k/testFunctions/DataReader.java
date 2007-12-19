@@ -21,7 +21,7 @@
  *
  */
 
-package hymod;
+package org.unijena.j2k.testFunctions;
 
 import org.unijena.jams.model.*;
 import org.unijena.jams.data.*;
@@ -34,43 +34,36 @@ import org.unijena.jams.JAMS;
  *
  * @author P. Krause
  */
+@JAMSComponentDescription(
+title="DataReader",
+        author="Peter Krause",
+        description="Component which reads input and output data for test cases"
+        )
 public class DataReader extends JAMSComponent {
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.INIT
+            update = JAMSVarDescription.UpdateType.INIT,
+            description="A full qualfied file name pointing to a testFunction" +
+            "compliant data file"
             )
             public JAMSString fileName;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
-            update = JAMSVarDescription.UpdateType.RUN
+            update = JAMSVarDescription.UpdateType.RUN,
+            description="Internal variable name for the input value of" +
+            "each time step"
             )
-            public JAMSDouble precip;
+            public JAMSDouble input;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
-            update = JAMSVarDescription.UpdateType.RUN
+            update = JAMSVarDescription.UpdateType.RUN,
+            description="Internal variable name for the observed value of" +
+            "each time step"
             )
-            public JAMSDouble pet;
-    
-    @JAMSVarDescription(
-            access = JAMSVarDescription.AccessType.WRITE,
-            update = JAMSVarDescription.UpdateType.RUN
-            )
-            public JAMSDouble obsRunoff;
-    
-    @JAMSVarDescription(
-            access = JAMSVarDescription.AccessType.WRITE,
-            update = JAMSVarDescription.UpdateType.RUN
-            )
-            public JAMSDoubleArray data = new JAMSDoubleArray();
-    
-    @JAMSVarDescription(
-            access = JAMSVarDescription.AccessType.WRITE,
-            update = JAMSVarDescription.UpdateType.RUN
-            )
-            public JAMSStringArray dataNames = new JAMSStringArray();
+            public JAMSDouble observation;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
@@ -111,7 +104,6 @@ public class DataReader extends JAMSComponent {
             for(int i = 0; i < cols; i++){
                 md[i] = strTok.nextToken();
             }
-            this.dataNames.setValue(md);
             
             store = new GenericDataReader(fileName.getValue(), true, 1, 4);
             
@@ -142,8 +134,6 @@ public class DataReader extends JAMSComponent {
             getModel().getRuntime().handle(ioe);
         }
         
-        
-        
     }
     
     @SuppressWarnings("unchecked")
@@ -151,14 +141,12 @@ public class DataReader extends JAMSComponent {
         
         JAMSTableDataArray da = store.getNext();
         double[] vals = JAMSTableDataConverter.toDouble(da);
-        this.data.setValue(vals);
         
         for(int i = 0; i < md.length; i++)
             dataMap.put(md[i], vals[i]);
         
-        this.precip.setValue(((Double)dataMap.get("precip")).doubleValue());
-        this.pet.setValue(((Double)dataMap.get("pet")).doubleValue());
-        this.obsRunoff.setValue(((Double)dataMap.get("runoff")).doubleValue());
+        this.input.setValue(((Double)dataMap.get("input")).doubleValue());
+        this.observation.setValue(((Double)dataMap.get("observation")).doubleValue());
     }
     
     public void cleanup(){

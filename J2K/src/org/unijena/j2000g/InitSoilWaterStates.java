@@ -79,23 +79,11 @@ import org.unijena.jams.model.*;
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
             update = JAMSVarDescription.UpdateType.RUN,
-            description = "HRU attribute maximum percolation rate"
-            )
-            public JAMSDouble maxPerc;
-    
-    @JAMSVarDescription(
-            access = JAMSVarDescription.AccessType.WRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "HRU state var actual MPS"
             )
             public JAMSDouble actMPS;
     
-    @JAMSVarDescription(
-            access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.INIT,
-            description = "maximum percolation adaptation factor"
-            )
-            public JAMSDouble maxPercAdaptation;
+    
     
     
     
@@ -127,11 +115,6 @@ import org.unijena.jams.model.*;
         mxMPS = mxMPS * this.FCAdaptation.getValue();
         
         this.maxMPS.setValue(mxMPS);
-        
-        double mxPerc = entity.getDouble("mxPerc") * this.maxPercAdaptation.getValue() * this.area.getValue();
-        
-        this.maxPerc.setValue(mxPerc);
-        
         
     }
     

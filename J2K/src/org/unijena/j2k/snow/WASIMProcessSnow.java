@@ -52,7 +52,7 @@ title="WASIMProcessSnow",
             access = JAMSVarDescription.AccessType.READ,
             update = JAMSVarDescription.UpdateType.RUN,
             description = "Entity area",
-            unit = "m²"
+            unit = "mÂ²"
             )
             public JAMSDouble area;
     
@@ -435,7 +435,7 @@ title="WASIMProcessSnow",
     
     /**
      * calculates saturation vapour pressure over ice at the given temperature in hPa
-     * @param temperature the air temperature in °C
+     * @param temperature the air temperature in Â°C
      * @return the saturation vapour pressure at temperature T [hPa]
      */
     private double calcIceSaturationVapourPressure(double temperature){

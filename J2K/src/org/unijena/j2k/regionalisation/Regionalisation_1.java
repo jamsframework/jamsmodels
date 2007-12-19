@@ -134,13 +134,6 @@ public class Regionalisation_1 extends JAMSComponent {
     @JAMSVarDescription(
     access = JAMSVarDescription.AccessType.READ,
             update = JAMSVarDescription.UpdateType.INIT,
-            description = "Power of IDW function"
-            )
-            public JAMSDouble pidw;
-    
-    @JAMSVarDescription(
-    access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.INIT,
             description = "Apply elevation correction to measured data"
             )
             public JAMSBoolean elevationCorrection;
@@ -148,7 +141,7 @@ public class Regionalisation_1 extends JAMSComponent {
     @JAMSVarDescription(
     access = JAMSVarDescription.AccessType.READ,
             update = JAMSVarDescription.UpdateType.INIT,
-            description = "Minimum r² value for elevation correction application"
+            description = "Minimum rÂ² value for elevation correction application"
             )
             public JAMSDouble rsqThreshold;
     
@@ -161,6 +154,7 @@ public class Regionalisation_1 extends JAMSComponent {
     
     private File cacheFile;
     private boolean useCache = false;
+    private boolean writeCache = false;
     private ObjectOutputStream writer;
     private ObjectInputStream reader;
     double NODATA = -9999;
@@ -171,17 +165,25 @@ public class Regionalisation_1 extends JAMSComponent {
         cacheFile = new File(dirName.getValue() + "/$" + this.getInstanceName() + ".cache");
         
         if (!cacheFile.exists() && dataCaching.getValue()) {
-            getModel().getRuntime().sendHalt(this.getInstanceName() + ": data caching is switched on but no cache file available!");
+            getModel().getRuntime().println(this.getInstanceName() + ": data caching is switched on but no cache file available!", JAMS.STANDARD);
+            writeCache = true;
         }
         
-        if (dataCaching.getValue()) {
-            
+        //cache file existent and cache should be used
+        if (dataCaching.getValue() && !writeCache) {
             useCache = true;
             reader = new ObjectInputStream(new BufferedInputStream(new FileInputStream(cacheFile)));//new FileInputStream(cacheFile));
-            
-        } else {
+            writer = null;
+        } 
+        //cache file not existent but cache should be used
+        else if (dataCaching.getValue() && writeCache) {
             useCache = false;
             writer = new ObjectOutputStream(new BufferedOutputStream(new FileOutputStream(cacheFile)));
+        }
+        //cache should not be used
+        else {
+            useCache = false;
+            writer = null;
         }
     }
     
@@ -231,7 +233,7 @@ public class Regionalisation_1 extends JAMSComponent {
                 if(sourceData[t] == NODATA){
                     element++;
                     if(element >= wA.length){
-                        System.out.println("BREAK1: too less data NIDW had been reduced!");
+                        //System.out.println("BREAK1: too less data NIDW had been reduced!");
                         cont = false;
                         //value = NODATA;
                     } else{
@@ -275,13 +277,14 @@ public class Regionalisation_1 extends JAMSComponent {
                     
                 }
             } else{
-                System.out.println("All data are no-data values!");
+                //System.out.println("All data are no-data values!");
                 value = NODATA;
             }
             
             dataValue.setValue(value);
             //System.out.getRuntime().println("R2 entity: "+ targetElevation + "weights: " + sourceWeights[0] + ", "+ sourceWeights[1] + ", "+ sourceWeights[2] + ", ");
-            writer.writeDouble(value);
+            if(writer != null)
+                writer.writeDouble(value);
             
             
         } else {
@@ -290,10 +293,10 @@ public class Regionalisation_1 extends JAMSComponent {
     }
     
     public void cleanup() throws IOException {
-        if (!useCache) {
+        if (!useCache && writeCache) {
             writer.flush();
             writer.close();
-        } else {
+        } else if(useCache && !writeCache){
             reader.close();
         }
     }

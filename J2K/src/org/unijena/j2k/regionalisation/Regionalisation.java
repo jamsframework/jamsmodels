@@ -141,7 +141,7 @@ public class Regionalisation extends JAMSComponent {
     @JAMSVarDescription(
     access = JAMSVarDescription.AccessType.READ,
             update = JAMSVarDescription.UpdateType.INIT,
-            description = "Minimum r² value for elevation correction application"
+            description = "Minimum rÂ² value for elevation correction application"
             )
             public JAMSDouble rsqThreshold;
     

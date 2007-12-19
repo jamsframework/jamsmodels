@@ -9,7 +9,6 @@
 
 package org.unijena.j2k;
 
-import java.util.Locale;
 import org.unijena.jams.data.JAMSCalendar;
 
 /**
@@ -47,17 +46,6 @@ public class TimeNumbers {
         
         System.out.println("e2: " + e2);
         System.out.println("le2: " + le2);
-        
-        double z1 = 3.24;
-        double z2 = 3.27;
-        
-        System.out.println("3.24 with %f.0 " + String.format(Locale.US, "%.0f ", z1));
-        System.out.println("3.24 with %f.1 " + String.format(Locale.US, "%.1f ", z1));
-        System.out.println("3.24 with %f.2 " + String.format(Locale.US, "%.2f ", z1));
-        
-        System.out.println("3.27 with %f.0 " + String.format(Locale.US, "%.0f ", z2));
-        System.out.println("3.27 with %f.1 " + String.format(Locale.US, "%.1f ", z2));
-        System.out.println("3.27 with %f.2 " + String.format(Locale.US, "%.2f ", z2));
         
         
         

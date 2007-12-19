@@ -79,6 +79,13 @@ public class StandardEntityWriter extends JAMSComponent {
             )
             public JAMSString attributeName;
     
+    @JAMSVarDescription(
+            access = JAMSVarDescription.AccessType.READ,
+            update = JAMSVarDescription.UpdateType.INIT,
+            description = "entity attribute name for weight [attName | none]"
+            )
+            public JAMSString weight;
+    
     private GenericDataWriter writer;
     private boolean headerWritten;
     /*
@@ -141,12 +148,29 @@ public class StandardEntityWriter extends JAMSComponent {
             if(ob.getClass().getName().contains("DoubleArray")){
                 //System.out.getRuntime().println("HRUNo: " +((JAMSDouble)entitySet.getCurrent().getObject("ID")).getValue());
                 double[] da = ((JAMSDoubleArray)entities.getCurrent().getObject(this.attributeName.getValue())).getValue();
-                for(int i = 0; i < da.length; i++)
-                    writer.addData(""+da[i]);
+                for(int i = 0; i < da.length; i++){
+                    double val = 0;
+                    if(this.weight.getValue().equals("none")){
+                        val = da[i];
+                    }
+                    else{
+                         double weight = (((JAMSDouble)entities.getCurrent().getObject(this.weight.getValue())).getValue());
+                         val = da[i] / weight;
+                    }
+                    writer.addData(""+val);
+                }
             } else{
                 //System.out.getRuntime().println("Primitive");
+                double val = 0;
                 double da = ((JAMSDouble)entities.getCurrent().getObject(this.attributeName.getValue())).getValue();
-                writer.addData(""+da);
+                if(this.weight.getValue().equals("none")){
+                    val = da;
+                }
+                else{
+                    double weight = (((JAMSDouble)entities.getCurrent().getObject(this.weight.getValue())).getValue());
+                    val = da / weight;
+                }
+                writer.addData(""+val);
             }
             //writer.addData(""+entitySet.getCurrent().getDouble(this.attributeName.getValue()));
             if(ee.hasNext()){

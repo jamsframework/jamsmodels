@@ -138,7 +138,7 @@ title="PRMSProcessSnow",
     access = JAMSVarDescription.AccessType.READWRITE,
             update = JAMSVarDescription.UpdateType.RUN,
             description = "temperature of the snowpack [PRMS: Pk_temp]",
-            unit = "캜"
+            unit = "째C"
             )
             public JAMSDouble packTemp;
     
@@ -427,7 +427,7 @@ title="PRMSProcessSnow",
             description = "Precip all snow if hru max temperature below this value." +
             "If HRU maximum temperature is less than or equal to this" +
             "value, precipitation is assumed to be snow [PRMS: Tmax_allsnow]",
-            unit = "캜"
+            unit = "째C"
             )
             public JAMSDouble tmaxAllSnow;
     
@@ -443,7 +443,7 @@ title="PRMSProcessSnow",
     access = JAMSVarDescription.AccessType.READ,
             update = JAMSVarDescription.UpdateType.RUN,
             description = "minum temperature",
-            unit = "캜"
+            unit = "째C"
             )
             public JAMSDouble tmin;
     
@@ -451,7 +451,7 @@ title="PRMSProcessSnow",
     access = JAMSVarDescription.AccessType.READ,
             update = JAMSVarDescription.UpdateType.RUN,
             description = "mean temperature",
-            unit = "캜"
+            unit = "째C"
             )
             public JAMSDouble tmean;
     
@@ -459,7 +459,7 @@ title="PRMSProcessSnow",
     access = JAMSVarDescription.AccessType.READ,
             update = JAMSVarDescription.UpdateType.RUN,
             description = "max temperature",
-            unit = "캜"
+            unit = "째C"
             )
             public JAMSDouble tmax;
     
@@ -556,7 +556,7 @@ title="PRMSProcessSnow",
     //Set to 1 if thunderstorms prevalent during month.
     //Monthly indicator for prevalent storm type:
     //0 = frontal storms prevalent, 1 = convective storms prevalent
-    int[] tStorm = {1,1,1,1,1,1,1,1,1,1,1,1};
+    int[] tStorm = {0,0,0,0,1,1,1,1,1,1,0,0};
     
     double[] aCum = {.80,.77,.75,.72,.70,.69,.68,.67,.66,.65,.64,.63,.62,.61,.60};
     double[] aMlt = {.72,.65,.60,.58,.56,.54,.52,.50,.48,.46,.44,.43,.42,.41,.40};
@@ -579,7 +579,7 @@ title="PRMSProcessSnow",
     boolean runLst, runTranspOn;
     //int runLstSave;
     
-    //  conversion factor from MJ/m� to langley
+    //  conversion factor from MJ/m짼 to langley
     final double MJ2LY = 28.88458966;
     
     //conversion from mm to inch

@@ -90,7 +90,7 @@ import org.unijena.jams.model.*;
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
             update = JAMSVarDescription.UpdateType.RUN,
-            description = "extraterrestric radiation of each time step of the year [MJ/m² timeUnit]"
+            description = "extraterrestric radiation of each time step of the year [MJ/mÂ² timeUnit]"
             )
             public JAMSDoubleArray extRadArray = new JAMSDoubleArray();
     
@@ -124,7 +124,7 @@ import org.unijena.jams.model.*;
         
         double latRad = org.unijena.j2k.mathematicalCalculations.MathematicalCalculations.deg2rad(lati);
         JAMSCalendar time = new JAMSCalendar();
-        time.set(2000, 01, 01, 0, 0); //just a leap year, that's the reason for 2000
+        time.set(2000, 0, 1, 0, 0); //just a leap year, that's the reason for 2000
         if(tempRes.getValue().equals("m")){
             for(int i = 0; i < 12; i++){
                 double declination = org.unijena.j2k.physicalCalculations.SolarRadiationCalculationMethods.calc_SunDeclination(monthMean[i]);

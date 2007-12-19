@@ -120,6 +120,14 @@ public class StandardEntityWriterN extends JAMSComponent {
         valueMatrix = new double[tsteps][nEnts];
         dateVals = new String[tsteps];
         
+        //daily values
+        if(this.timeInterval.getTimeUnit() == 5){
+            timeFormat = "%1$td.%1$tm.%1$tY";
+            aggMatrix = new double[tsteps][nEnts];
+            aggCounter = new int[tsteps];
+            aggFieldNames = new String[tsteps];
+        }
+        
         //monthly values
         if(this.timeInterval.getTimeUnit() == 2){
             timeFormat = "%1$tb/%1$ty";
@@ -146,11 +154,20 @@ public class StandardEntityWriterN extends JAMSComponent {
             for(int i = 0; i < nEnts; i++){
                 double weight = (((JAMSDouble)entities.getEntityArray()[i].getObject(this.weight.getValue())).getValue());
                 valueMatrix[tcounter][i] = (((JAMSDouble)entities.getEntityArray()[i].getObject(this.attributeName.getValue())).getValue()) / weight;
-                
             }
         }
         
         //aggregated values
+        //daily values
+        if(this.timeInterval.getTimeUnit() == 5){
+            int month = time.get(time.MONTH);
+            aggCounter[month]++;
+            aggFieldNames[month] = time.toString("%1$tb");
+            
+            for(int i = 0; i < nEnts; i++){
+                aggMatrix[month][i] += valueMatrix[tcounter][i];
+            }
+        }
         //monthly values
         if(this.timeInterval.getTimeUnit() == 2){
             int month = time.get(time.MONTH);

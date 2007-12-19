@@ -45,7 +45,7 @@ title="ABCSnowModule",
     access = JAMSVarDescription.AccessType.READ,
             update = JAMSVarDescription.UpdateType.RUN,
             description = "Entity area"
-            //unit = "m²"
+            //unit = "mÂ²"
             )
             public JAMSDouble area;
     
@@ -729,7 +729,7 @@ title="ABCSnowModule",
             double maxLiqWater = maxWaterCap * swe;
             negSnowHeat = negSnowHeat + heat;
             
-            //temperature of snow should not be below 52.8°C
+            //temperature of snow should not be below 52.8Â°C
             if(negSnowHeat < 0)
                 negSnowHeat = 0;
             double xcst = 0.33 * swe;
@@ -1077,7 +1077,7 @@ title="ABCSnowModule",
         double wx = we * 0.1;
         //calculation of snow depth and density as a result of compaction
         //c1 is the fractional increase in density [ 1 / (cm * hr)]
-        //c2 is a constant (cm³/g) Kojima estimated as 21.0 cm³/g
+        //c2 is a constant (cmÂ³/g) Kojima estimated as 21.0 cmÂ³/g
         
         double dsc = 1.0;
         if(wx > 1E-2){

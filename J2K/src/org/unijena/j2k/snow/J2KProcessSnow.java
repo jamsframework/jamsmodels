@@ -188,16 +188,16 @@ import org.unijena.jams.model.*;
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
             update = JAMSVarDescription.UpdateType.INIT,
-            description = "Snow parameter TRS"
+            description = "base temperature"
             )
-            public JAMSDouble snow_trs;
+            public JAMSDouble baseTemp;
     
-    @JAMSVarDescription(
+    /*@JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
             update = JAMSVarDescription.UpdateType.INIT,
             description = "Snow parameter TRANS"
             )
-            public JAMSDouble snow_trans;
+            public JAMSDouble snow_trans;*/
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
@@ -304,8 +304,8 @@ import org.unijena.jams.model.*;
 	        
 	        double critDens = snowCritDens.getValue();
 	        double coldContentFactor = ccf_factor.getValue();
-	        double TRS = snow_trs.getValue();
-	        double TRANS = snow_trans.getValue();
+	        double TRS = baseTemp.getValue();
+	        //double TRANS = snow_trans.getValue();
 	        double temp_fac = t_factor.getValue();
 	        double rain_fac = r_factor.getValue();
 	        double ground_fac = g_factor.getValue();
@@ -333,8 +333,8 @@ import org.unijena.jams.model.*;
 	        }
 	        
 	        
-	        if((meltTemp >= (TRS - TRANS)) && (this.run_snowDepth > 0)){
-	            this.calcMetamorphosis(meltTemp, TRS, TRANS, temp_fac, rain_fac, ground_fac, run_area, SAC, critDens);
+	        if((meltTemp >= TRS) && (this.run_snowDepth > 0)){
+	            this.calcMetamorphosis(meltTemp, TRS, temp_fac, rain_fac, ground_fac, run_area, SAC, critDens);
 	        }
 	        
 	        this.calcSnowDensities(run_area);
@@ -452,7 +452,7 @@ import org.unijena.jams.model.*;
     
     /** calculates density of new fallen snow depending
      * on the mean temperature. Follows the approach
-     * of KUCHMENT 1983 and VEHVILÄINEN 1992 as presented
+     * of KUCHMENT 1983 and VEHVILÃ„INEN 1992 as presented
      * by HERPERTZ 2002
      * @param tmean the current mean temperature of the spatial unit
      * @return density of new fallen snow
@@ -533,11 +533,11 @@ import org.unijena.jams.model.*;
         return potRunoff;
     }
     
-    private boolean calcMetamorphosis(double temp, double TRS, double TRANS, double temp_fac, double rain_fac, double ground_fac, double area, double SAC, double critDens){
+    private boolean calcMetamorphosis(double temp, double TRS, double temp_fac, double rain_fac, double ground_fac, double area, double SAC, double critDens){
         /**calculation of snowmelt - complex formula*/
         //@todo integration of canopy shadow by LAI
         double potMeltrate = 0;
-        potMeltrate = this.calcPotMR_semiComp(temp, TRS, TRANS, temp_fac, rain_fac, ground_fac, area);
+        potMeltrate = this.calcPotMR_semiComp(temp, TRS, temp_fac, rain_fac, ground_fac, area);
         
         if(Math.abs(this.run_coldContent) >= potMeltrate){
             this.run_coldContent = this.run_coldContent + potMeltrate;
@@ -631,8 +631,8 @@ import org.unijena.jams.model.*;
         return true;
     }
     
-    private double calcPotMR_semiComp(double temp, double TRS, double TRANS, double temp_fac, double rain_fac, double ground_fac, double area){
-        double meltTemp = temp - (TRS - TRANS);
+    private double calcPotMR_semiComp(double temp, double TRS, double temp_fac, double rain_fac, double ground_fac, double area){
+        double meltTemp = temp - TRS;
         double potMR = (temp_fac * meltTemp + ground_fac + rain_fac * (this.in_rain / area) * meltTemp);
         //avoid negative melt rates
         if(potMR < 0)

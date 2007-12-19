@@ -130,7 +130,7 @@ import org.unijena.jams.model.*;
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
             update = JAMSVarDescription.UpdateType.RUN,
-            description = "daily net radiation [MJ/m²]"
+            description = "daily net radiation [MJ/mÂ²]"
             )
             public JAMSDouble netRad;
     
@@ -175,7 +175,7 @@ import org.unijena.jams.model.*;
             double temperature = temp.getValue();
             double rh = rhum.getValue();
             double sRad = solRad.getValue();
-            double sunh = sunFrac.getValue();
+            //double sunh = sunFrac.getValue();
             
             double sat_vapour_pressure = org.unijena.j2k.physicalCalculations.ClimatologicalVariables.calc_saturationVapourPressure(temperature);
             double act_vapour_pressure = org.unijena.j2k.physicalCalculations.ClimatologicalVariables.calc_vapourPressure(rh, sat_vapour_pressure);

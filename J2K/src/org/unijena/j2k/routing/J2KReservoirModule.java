@@ -91,7 +91,7 @@ import org.unijena.jams.model.*;
             public JAMSDouble resObsVolume;
     
     @JAMSVarDescription(
-            access = JAMSVarDescription.AccessType.READWRITE,
+            access = JAMSVarDescription.AccessType.WRITE,
             update = JAMSVarDescription.UpdateType.RUN,
             description = "the calculated reservoir volume"
             )
@@ -205,19 +205,15 @@ import org.unijena.jams.model.*;
         outComp = new double[nComp];
         
         this.resCalcVolume.setValue(this.startVolume.getValue());
-        this.compRD1.setValue(this.startVolume.getValue() * 0.1);
-        this.compRD1.setValue(this.startVolume.getValue() * 0.3);
-        this.compRD1.setValue(this.startVolume.getValue() * 0.3);
-        this.compRD1.setValue(this.startVolume.getValue() * 0.3);
         
         //find the recReachObject
         int nEnts = this.reaches.getEntityArray().length;
         for(int i = 0; i < nEnts; i++){
-            
             if(this.reaches.getEntityArray()[i].getDouble("ID") == this.getContext().getEntities().getCurrent().getDouble("to_reach")){
                 recReach = this.reaches.getEntityArray()[i];
             }
         }
+        
     }
     
     public void run() throws JAMSEntity.NoSuchAttributeException {
@@ -241,14 +237,33 @@ import org.unijena.jams.model.*;
             }
                   
         }
-        //double runoff = this.inDataArray.getValue()[0];
+        
+        //set states
+        
+        currVolume = this.resCalcVolume.getValue();
+        
+        double test = this.compRD1.getValue();
+        test = test + this.compRD2.getValue();
+        test = test + this.compRG1.getValue();
+        test = test + this.compRG2.getValue();
+        
+        System.out.println("test: " + test + " currVolume: " + currVolume);
+        if(test < currVolume){
+            this.compRD1.setValue(currVolume * 0.1);
+            this.compRD2.setValue(currVolume * 0.3);
+            this.compRG1.setValue(currVolume * 0.3);
+            this.compRG2.setValue(currVolume * 0.3);
+        }
+        else{
+            calcRelComponents();
+        }
+        
         //get states and pass them to local vars
         this.runComp[0] = this.compRD1.getValue();
         this.runComp[1] = this.compRD2.getValue();
         this.runComp[2] = this.compRG1.getValue();
         this.runComp[3] = this.compRG2.getValue();
         
-        currVolume = this.resCalcVolume.getValue();
         
         double runArea = this.resArea.getValue();
         double runPET = this.pET.getValue() * runArea;
@@ -256,8 +271,6 @@ import org.unijena.jams.model.*;
         //add precip to comp RD1
         this.runComp[0] = this.runComp[0] + this.precip.getValue() * runArea;
         
-        //for(int i = 0; i < runComp.length; i++)
-        //    currVolume = currVolume + runComp[i];
         
         //recalculate relative parts
         calcRelComponents();
@@ -285,11 +298,13 @@ import org.unijena.jams.model.*;
                 runComp[i] = 0;
                 relComp[i] = 0;
             }
+            currVolume = 0;
         }else{
             for(int i = 0; i < runComp.length; i++){
                 outComp[i] = runOutflow * relComp[i];
                 runComp[i] = runComp[i] - outComp[i];
-            } 
+            }
+            currVolume = currVolume - runOutflow;
         }
         
         //recalculate relative parts and volume
@@ -316,7 +331,6 @@ import org.unijena.jams.model.*;
     }
     
     private void calcRelComponents(){
-        
         currVolume = 0;
         for(int i = 0; i < nComp; i++){
             currVolume = currVolume + runComp[i];

@@ -261,7 +261,14 @@ public class TSDataReader extends JAMSComponent {
         if(timeInterval != null){
             int timeUnit = timeInterval.getTimeUnit();
             JAMSCalendar tiStart = timeInterval.getStart();
-            JAMSCalendar date = new JAMSCalendar(tiStart.get(Calendar.YEAR), tiStart.get(Calendar.MONTH), tiStart.get(Calendar.DAY_OF_MONTH), tiStart.get(Calendar.HOUR_OF_DAY), tiStart.get(Calendar.MINUTE), tiStart.get(Calendar.SECOND));
+            JAMSCalendar date = null;
+            if(timeUnit == JAMSCalendar.DAY_OF_YEAR)
+                    date = new JAMSCalendar(tiStart.get(Calendar.YEAR), tiStart.get(Calendar.MONTH), tiStart.get(Calendar.DAY_OF_MONTH), 0, 0, 0);
+                else if(timeUnit == JAMSCalendar.HOUR_OF_DAY)
+                    date = new JAMSCalendar(tiStart.get(Calendar.YEAR), tiStart.get(Calendar.MONTH), tiStart.get(Calendar.DAY_OF_MONTH), tiStart.get(Calendar.HOUR_OF_DAY), tiStart.get(Calendar.MINUTE), 0);
+                else if(timeUnit == JAMSCalendar.MONTH)
+                    date = new JAMSCalendar(tiStart.get(Calendar.YEAR), tiStart.get(Calendar.MONTH), 1, 0, 0, 0);
+            
             
             while (startTime.before(date) && store.hasNext()) {
                 da = store.getNext();

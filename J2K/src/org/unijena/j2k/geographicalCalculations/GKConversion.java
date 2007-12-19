@@ -27,7 +27,7 @@ public class GKConversion {
    /**     
         {==============================================================================}
 { Umrechnung von Geographischen Koordinaten in Gauss-Krueger-Koordinaten       }
-{ Formel: Grossmann,W., Geod‰tische Abbildungen, 1964, Seite 151               }
+{ Formel: Grossmann,W., Geod√§tische Abbildungen, 1964, Seite 151               }
 { Parameter: geo.Breite (Grad.Min.Sek) in Altgrad  : Twinkel                   }
 {            geo.Laenge (Grad.Min.Sek) in Altgrad  : Twinkel                   }
 {            Zielsystemnummer (Meridiankennziffer) : longint                   }
@@ -86,7 +86,7 @@ end;
     }
     /**
      * converts Gauss-Krueger coordinates to latitute longitude in dec. degree
-     * after: Grossmann,W., Geod‰tische Abbildungen, 1964, page 153
+     * after: Grossmann,W., Geod√§tische Abbildungen, 1964, page 153
      * @param Rw gauss-krueger longitude (Rechtswert)
      * @param Hw gauss-krueger latitude (Hochwert)
      * @return latitude [0] and longitude [1] as dec. degree

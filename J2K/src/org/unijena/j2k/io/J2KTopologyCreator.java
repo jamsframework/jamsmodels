@@ -187,7 +187,7 @@ public class J2KTopologyCreator extends JAMSComponent {
         reachIterator = reaches.getEntities().iterator();
         while (reachIterator.hasNext()) {
             e = reachIterator.next();
-            e.setObject("to_reach", reachMap.get(e.getDouble("to_reach")));
+            e.setObject("to_reach", reachMap.get(e.getDouble("to-reach")));
             if(this.reservoirs != null){
                 try {
                     e.setObject("to_reservoir", reservoirMap.get(e.getDouble("to-reservoir")));

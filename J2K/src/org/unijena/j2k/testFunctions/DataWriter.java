@@ -21,7 +21,7 @@
  *
  */
 
-package hymod;
+package org.unijena.j2k.testFunctions;
 
 import org.unijena.jams.model.*;
 import org.unijena.jams.data.*;
@@ -29,80 +29,63 @@ import org.unijena.jams.io.*;
 
 /**
  *
- * @author S. Kralisch
+ * @author P. Krause
  */
+@JAMSComponentDescription(
+        title="dataWriter",
+        author="Peter Krause",
+        description="The data writer for the test cases model"
+        )
 public class DataWriter extends JAMSComponent {
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.RUN
+            update = JAMSVarDescription.UpdateType.INIT,
+            description = "full qualified path name for model output file"
             )
-            public JAMSDouble simRunoff;
+            public JAMSString outFileName;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.RUN
-            )
-            public JAMSDouble precip;
-    
-    @JAMSVarDescription(
-            access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.RUN
-            )
-            public JAMSDouble simDirectFlow;
-    
-    @JAMSVarDescription(
-            access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.RUN
-            )
-            public JAMSDouble simBaseFlow;
-    
-    @JAMSVarDescription(
-            access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.RUN
-            )
-            public JAMSDouble simET;
-    
-    @JAMSVarDescription(
-            access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.RUN
-            )
-            public JAMSDouble pET;
-    
-    @JAMSVarDescription(
-            access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.RUN
+            update = JAMSVarDescription.UpdateType.RUN,
+            description = "the current date provided by the temporal context"
             )
             public JAMSCalendar time;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.RUN
+            update = JAMSVarDescription.UpdateType.RUN,
+            description = "the input value of the respective time step"
             )
-            public JAMSDouble obsRunoff;
+            public JAMSDouble input;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.INIT
+            update = JAMSVarDescription.UpdateType.RUN,
+            description = "the simulation value of the respective time step"
             )
-            public JAMSString outFileName;
+            public JAMSDouble simulation;
+        
+    @JAMSVarDescription(
+            access = JAMSVarDescription.AccessType.READ,
+            update = JAMSVarDescription.UpdateType.RUN,
+            description = "the observation value of the respective time step"
+            )
+            public JAMSDouble observation;
     
     
+        
     private GenericDataWriter writer;
     
     public void init(){
         //System.out.println("Init output ...");
         writer = new GenericDataWriter(outFileName.getValue());
-        writer.addComment("hymod output");
+        writer.addComment("test output");
         writer.addComment("");
         writer.addColumn("time");
-        writer.addColumn("precip");
-        writer.addColumn("obsRunoff");
-        writer.addColumn("simRunoff");
-        writer.addColumn("simDirectFlow");
-        writer.addColumn("simBaseFlow");
-        writer.addColumn("simET");
-        writer.addColumn("pET");
+        writer.addColumn("input");
+        writer.addColumn("simulation");
+        writer.addColumn("observation");
         writer.writeHeader();
         
     }
@@ -111,13 +94,10 @@ public class DataWriter extends JAMSComponent {
     public void run(){
         
         writer.addData(time);
-        writer.addData(precip);
-        writer.addData(obsRunoff);
-        writer.addData(simRunoff);
-        writer.addData(simDirectFlow);
-        writer.addData(simBaseFlow);
-        writer.addData(simET);
-        writer.addData(pET);
+        writer.addData(input);
+        writer.addData(simulation);
+        writer.addData(observation);
+       
         try {
             writer.writeData();
         } catch (org.unijena.jams.runtime.RuntimeException jre) {

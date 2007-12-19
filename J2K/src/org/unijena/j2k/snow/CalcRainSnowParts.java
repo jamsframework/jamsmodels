@@ -131,7 +131,7 @@ import org.unijena.jams.model.*;
         else if(pSnow < 0)
             pSnow = 0;
         
-        //converting mm/m² to absolute litres
+        //converting mm/mÂ² to absolute litres
         double precip = this.precip.getValue() * this.area.getValue();
         if (precip < 0){
            precip = 0; 

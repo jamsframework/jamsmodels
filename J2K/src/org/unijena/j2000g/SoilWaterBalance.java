@@ -258,7 +258,6 @@ import org.unijena.jams.model.*;
             slope_weight = 1;
         
         excStor = excStor + (inflow * slope_weight);
-        
         if(excStor > maxExcStor){
             dirQ = (excStor - maxExcStor);
             excStor = maxExcStor;
@@ -266,7 +265,6 @@ import org.unijena.jams.model.*;
         double interflow = excStor * (1.0 / k_factor);
         excStor = excStor - interflow;
         dirQ = dirQ + interflow;
-        
         gwRecharge = inflow * (1 - slope_weight);
         
         //writing values back
