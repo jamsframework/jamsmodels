@@ -9,6 +9,7 @@
 
 package org.unijena.j2k;
 
+import java.util.Locale;
 import org.unijena.jams.data.JAMSCalendar;
 
 /**
@@ -37,7 +38,26 @@ public class TimeNumbers {
         double x2 = 2;
         double y = (1 - (8 * x1) + (7 * Math.pow(x1,2)) - 7./3. * Math.pow(x1,3) + 1./4. * Math.pow(x1,4)) * Math.pow(x2,2) * Math.exp(-1 * x2);
         System.out.println("y: " + y);
+        
+        double[] p = {3,2,1,0};
+        double[] v = {1,0,0,0};
        
+        double e2 = org.unijena.j2k.efficiencies.NashSutcliffe.efficiency(p, v, 2);
+        double le2 = org.unijena.j2k.efficiencies.NashSutcliffe.logEfficiency(p, v, 2);
+        
+        System.out.println("e2: " + e2);
+        System.out.println("le2: " + le2);
+        
+        double z1 = 3.24;
+        double z2 = 3.27;
+        
+        System.out.println("3.24 with %f.0 " + String.format(Locale.US, "%.0f ", z1));
+        System.out.println("3.24 with %f.1 " + String.format(Locale.US, "%.1f ", z1));
+        System.out.println("3.24 with %f.2 " + String.format(Locale.US, "%.2f ", z1));
+        
+        System.out.println("3.27 with %f.0 " + String.format(Locale.US, "%.0f ", z2));
+        System.out.println("3.27 with %f.1 " + String.format(Locale.US, "%.1f ", z2));
+        System.out.println("3.27 with %f.2 " + String.format(Locale.US, "%.2f ", z2));
         
         
         

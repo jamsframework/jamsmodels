@@ -35,7 +35,7 @@ import org.unijena.jams.model.*;
         author="Peter Krause",
         description="Calculates a simplified soil water balance for each HRU"
         )
-        public class SoilWaterBalance extends JAMSComponent {
+        public class SoilWaterBalance_1 extends JAMSComponent {
     
     /*
      *  Component variables
@@ -166,6 +166,21 @@ import org.unijena.jams.model.*;
             description = "maximum excStor"
             )
             public JAMSDouble maxExcStor;
+    
+    @JAMSVarDescription(
+            access = JAMSVarDescription.AccessType.READ,
+            update = JAMSVarDescription.UpdateType.RUN,
+            description = "HRU attribute maximum percolation"
+            )
+            public JAMSDouble maxPerc;
+    
+    @JAMSVarDescription(
+            access = JAMSVarDescription.AccessType.READ,
+            update = JAMSVarDescription.UpdateType.INIT,
+            description = "direct runoff coefficient ß"
+            )
+            public JAMSDouble df_beta;
+    
 
     /*
      *  Component run stages
@@ -189,6 +204,10 @@ import org.unijena.jams.model.*;
         double actMPS = this.actMPS.getValue();
         double inflow = this.precip.getValue() + this.snowMelt.getValue();
         double maxMPS = this.maxMPS.getValue();
+        
+        //subtraction of direct flow as done in HBV
+        //double directFlow = Math.pow((actMPS / maxMPS), this.df_beta.getValue()) * inflow;
+        //inflow = inflow - directFlow;
         
         //inflow goes into the soil
         double deltaMPS = maxMPS - actMPS;
@@ -269,6 +288,16 @@ import org.unijena.jams.model.*;
         
         gwRecharge = inflow * (1 - slope_weight);
         
+        //cross checking against maximum percolation
+       if(gwRecharge > maxPerc.getValue()){
+            double delta = gwRecharge - maxPerc.getValue();
+            dirQ = dirQ + delta;
+            gwRecharge = maxPerc.getValue();
+        }
+        
+        //adding directFlow to dirQ
+        dirQ = dirQ;// + directFlow;
+      
         //writing values back
         this.actET.setValue(actET);
         this.actMPS.setValue(actMPS);
