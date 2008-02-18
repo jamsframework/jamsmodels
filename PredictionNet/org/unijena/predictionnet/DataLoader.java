@@ -70,14 +70,28 @@ public class DataLoader extends JAMSComponent {
             )
             public JAMSInteger dataShift;
     
-    public DataLoader() {
+    @JAMSVarDescription(
+            access = JAMSVarDescription.AccessType.READ,
+            update = JAMSVarDescription.UpdateType.RUN,
+            description = "TimeSerie of Temp Data"
+            )
+            public JAMSString Gaps;
+    
+    public DataLoader() {        
     }
     
     public void init() throws JAMSEntity.NoSuchAttributeException {  
 	BufferedReader reader = null;
 	HashMap<Integer, double[]> rawData = new HashMap<Integer,double[]>();
 	HashMap<Integer, double[]> rawPredict = new HashMap<Integer,double[]>();
-	
+	Vector<Integer> excluded = new Vector<Integer>();
+
+        if (Gaps != null){
+            StringTokenizer GapTokenizer = new StringTokenizer(Gaps.getValue(),";");
+            while(GapTokenizer.hasMoreElements()){
+                excluded.add(new Integer(GapTokenizer.nextToken()));
+            }
+        }
 	int ExamplLength = ExampleLength.getValue();
 	int numOfExampl  = numOfExamples.getValue();
 	int RelevantTime = this.relevantTime.getValue();
@@ -117,25 +131,48 @@ public class DataLoader extends JAMSComponent {
 	} catch (IOException ioe) {
             JAMS.handle(ioe);
         }
-					
-	double data[][] = new double[numOfExampl][RelevantTime*ExamplLength];
-	double predict[] = new double[numOfExampl];
+
+        Vector<double[]> data = new Vector();
+        Vector<Double> predict = new Vector();       
+        
+	/*double data[][] = new double[numOfExampl][RelevantTime*ExamplLength];
+	double predict[] = new double[numOfExampl];*/
 	
+        boolean isExcluded = false;
 	for (int i=0;i<numOfExampl;i++) {
-	    for (int j=0;j<RelevantTime;j++) {
+            isExcluded = false;
+             double Sample[] = new double[RelevantTime*ExamplLength];
+	    for (int j=0;j<RelevantTime;j++) {                
+                if (excluded.contains(new Integer(i+j))){
+                    isExcluded = true;
+                    break;
+                }                
 		double entry[] = rawData.get(new Integer(i+j));
 		for (int k=0;k<ExamplLength;k++) {
-		    data[i][j*ExamplLength+k] = entry[k];
+		    Sample[j*ExamplLength+k] = entry[k];
 		}
+                
 	    }
+            if (isExcluded)
+                continue;
 	    if (i+RelevantTime-1+dataShift.getValue() < 0) {
 		System.out.println("Warning: Dataset: " + i + "contains no prediction!!");
 		continue;
 	    }
-	    predict[i] = rawPredict.get(new Integer(i+RelevantTime-1+dataShift.getValue()))[0];
+            if (excluded.contains(new Integer(i+RelevantTime-1+dataShift.getValue()))){
+                isExcluded = true;
+                continue;
+            } 
+            data.add(Sample);
+	    predict.add(rawPredict.get(new Integer(i+RelevantTime-1+dataShift.getValue()))[0]);
 	}
-	
-	Data.setObject("data",data);
-	Data.setObject("predict",predict);
+	double dataAsArray[][] = new double[data.size()][RelevantTime*ExamplLength];
+        double predictAsArray[] = new double[data.size()];
+        for (int i=0;i<data.size();i++){
+            dataAsArray[i] = data.get(i);
+            predictAsArray[i] = predict.get(i);
+        }
+	Data.setObject("data",dataAsArray);
+	Data.setObject("predict",predictAsArray);
     }    
 }

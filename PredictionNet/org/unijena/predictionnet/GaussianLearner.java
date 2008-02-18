@@ -15,7 +15,6 @@ import org.unijena.jams.model.*;
 import java.io.*;
 import Jama.*;
 import Jama.Matrix;
-import jams.components.optimizer.SCE_Comparator;
 import java.util.Arrays;
 import java.util.Random;
 import java.util.StringTokenizer;
@@ -111,51 +110,10 @@ public class GaussianLearner extends Learner  {
     int MaximizeEff = 1;
     
     Kernel kernel;
-//table for gauss dist. from 0 to 4
-    static double gaussianDistribution[] = {
-        0.5000,	0.5039,	0.5079,	0.5119,	0.5159,	0.5199,	0.5239,	0.5279,	0.5318,	0.53586,
- 	0.5398,	0.5438,	0.5477,	0.5517,	0.5556,	0.5596,	0.5635,	0.5674,	0.5714,	0.57535,
- 	0.5792,	0.5831,	0.5870,	0.5909,	0.5948,	0.5987,	0.6025,	0.6064,	0.6102,	0.61409,
- 	0.6179,	0.6217,	0.6255,	0.6293,	0.6330,	0.6368,	0.6405,	0.6443,	0.6480,	0.65173,
- 	0.6554,	0.6591,	0.6627,	0.6664,	0.6700,	0.6736,	0.6772,	0.6808,	0.6843,	0.68793,
- 	0.6914,	0.6949,	0.6984,	0.7019,	0.7054,	0.7088,	0.7122,	0.7156,	0.7190,	0.72240,
- 	0.7257,	0.7290,	0.7323,	0.7356,	0.7389,	0.7421,	0.7453,	0.7485,	0.7517,	0.75490,
- 	0.7580,	0.7611,	0.7642,	0.7673,	0.7703,	0.7733,	0.7763,	0.7793,	0.7823,	0.78524,
- 	0.7881,	0.7910,	0.7938,	0.7967,	0.7995,	0.8023,	0.8051,	0.8078,	0.8105,	0.81327,
- 	0.8159,	0.8185,	0.8212,	0.8238,	0.8263,	0.8289,	0.8314,	0.8339,	0.8364,	0.83891,
- 	0.8413,	0.8437,	0.8461,	0.8484,	0.8508,	0.8531,	0.8554,	0.8576,	0.8599,	0.86214,
- 	0.8643,	0.8665,	0.8686,	0.8707,	0.8728,	0.8749,	0.8769,	0.8790,	0.8810,	0.88298,
- 	0.8849,	0.8868,	0.8887,	0.8906,	0.8925,	0.8943,	0.8961,	0.8979,	0.8997,	0.90147,
- 	0.9032,	0.9049,	0.9065,	0.9082,	0.9098,	0.9114,	0.9130,	0.9146,	0.9162,	0.91774,
- 	0.9192,	0.9207,	0.9222,	0.9236,	0.9250,	0.9264,	0.9278,	0.9292,	0.9305,	0.93189,
- 	0.9331,	0.9344,	0.9357,	0.9369,	0.9382,	0.9394,	0.9406,	0.9417,	0.9429,	0.94408,
- 	0.9452,	0.9463,	0.9473,	0.9484,	0.9495,	0.9505,	0.9515,	0.9525,	0.9535,	0.95449,
- 	0.9554,	0.9563,	0.9572,	0.9581,	0.9590,	0.9599,	0.9608,	0.9616,	0.9624,	0.96327,
- 	0.9640,	0.9648,	0.9656,	0.9663,	0.9671,	0.9678,	0.9685,	0.9692,	0.9699,	0.97062,
- 	0.9712,	0.9719,	0.9725,	0.9732,	0.9738,	0.9744,	0.9750,	0.9755,	0.9761,	0.97670,
- 	0.9772,	0.9777,	0.9783,	0.9788,	0.9793,	0.9798,	0.9803,	0.9807,	0.9812,	0.98169,
- 	0.9821,	0.9825,	0.9830,	0.9834,	0.9838,	0.9842,	0.9846,	0.9850,	0.9853,	0.98574,
- 	0.9861,	0.9864,	0.9867,	0.9871,	0.9874,	0.9877,	0.9880,	0.9884,	0.9887,	0.98899,
- 	0.9892,	0.9895,	0.9898,	0.9901,	0.9903,	0.9906,	0.9908,	0.9911,	0.9913,	0.99158,
- 	0.9918,	0.9920,	0.9922,	0.9924,	0.9926,	0.9928,	0.9930,	0.9932,	0.9934,	0.99361,
- 	0.9937,	0.9939,	0.9941,	0.9943,	0.9944,	0.9946,	0.9947,	0.9949,	0.9950,	0.99520,
- 	0.9953,	0.9954,	0.9956,	0.9957,	0.9958,	0.9959,	0.9960,	0.9962,	0.9963,	0.99643,
- 	0.9965,	0.9966,	0.9967,	0.9968,	0.9969,	0.9970,	0.9971,	0.9972,	0.9972,	0.99736,
- 	0.9974,	0.9975,	0.9976,	0.9976,	0.9977,	0.9978,	0.9978,	0.9979,	0.9980,	0.99807,
- 	0.9981,	0.9981,	0.9982,	0.9983,	0.9983,	0.9984,	0.9984,	0.9985,	0.9985,	0.99861,
- 	0.9986,	0.9986,	0.9987,	0.9987,	0.9988,	0.9988,	0.9988,	0.9989,	0.9989,	0.99900,
- 	0.9990,	0.9990,	0.9991,	0.9991,	0.9991,	0.9991,	0.9992,	0.9992,	0.9992,	0.99929,
- 	0.9993,	0.9993,	0.9993,	0.9993,	0.9994,	0.9994,	0.9994,	0.9994,	0.9994,	0.99950,
- 	0.9995,	0.9995,	0.9995,	0.9995,	0.9995,	0.9996,	0.9996,	0.9996,	0.9996,	0.99965,
- 	0.9996,	0.9996,	0.9996,	0.9997,	0.9997,	0.9997,	0.9997,	0.9997,	0.9997,	0.99976,
- 	0.9997,	0.9997,	0.9997,	0.9997,	0.9998,	0.9998,	0.9998,	0.9998,	0.9998,	0.99983,
- 	0.9998,	0.9998,	0.9998,	0.9998,	0.9998,	0.9998,	0.9998,	0.9998,	0.9998,	0.99989,
- 	0.9998,	0.9999,	0.9999,	0.9999,	0.9999,	0.9999,	0.9999,	0.9999,	0.9999,	0.99992,
- 	0.9999,	0.9999,	0.9999,	0.9999,	0.9999,	0.9999,	0.9999,	0.9999,	0.9999,	0.99995,
- 	0.9999,	0.9999,	0.9999,	0.9999,	0.9999,	0.9999,	0.9999,	0.9999,	0.9999,	0.99997,
- 	0.9999,	0.9999,	0.9999,	0.9999,	0.9999,	0.9999,	0.9999,	0.9999,	0.9999,	0.99998
-    };
-    
+    static final double resolution = 0.01;
+    static final double limit = 200;
+    static double gaussianDistribution[];
+
     public double getMarginalLikelihood() {
 	double n = this.TrainLength;
 	double term1 = -0.5*Observations.transpose().times(this.alpha).get(0,0);		
@@ -306,51 +264,91 @@ public class GaussianLearner extends Learner  {
         
         return result[0];
     }
-    
+            
     public double GetVariance(double x[]) {
         
         Matrix kstar = new Matrix(1,TrainLength);
         Matrix kstarT = new Matrix(TrainLength,1);
+        
+        Matrix one = new Matrix(1,TrainLength);
+        Matrix oneT = new Matrix(TrainLength,1);
         for (int i=0;i<TrainLength;i++) {	    
             //calculate covariance for xi,x
             double variance = this.kernel.kernel(normalize(data[i]),normalize(x),i,-1);
             kstar.set(0,i,variance);
             kstarT.set(i,0,variance);
+            
+            one.set(0,i,1.0);
+            oneT.set(i,0,1.0);            
         }                        
-        Matrix alpha2 = Solver.solve(kstarT);
-        Matrix prediction = (kstar.times(alpha2));
+        Matrix RMinus1r = Solver.solve(kstarT);
+        Matrix rRMinus1r = (kstar.times(RMinus1r));
         
-        double base = this.kernel.kernel(normalize(x),normalize(x),1,2);
+        Matrix RMinus1Eins = Solver.solve(oneT);
+        Matrix EinsRMinus1Eins = (one.times(RMinus1Eins));
         
-        return base - prediction.get(0,0);
+        double t = 1.0 - rRMinus1r.get(0,0);
+        double tOne = EinsRMinus1Eins.get(0,0);
+        
+        double sigma2 = (1.0/(double)this.Observations.getColumnDimension())*(this.Observations.transpose().times(alpha)).get(0,0);
+        
+        //return sigma2*(t + ( (t*t) / tOne));
+        return t;
+        
+        /*double base = this.kernel.kernel(normalize(x),normalize(x),1,2);
+        
+        return base - prediction.get(0,0);*/
     }
     
+    static public double Gauss(double a){
+        return (1.0/Math.sqrt(2*Math.PI))*Math.exp(-0.5*a*a);
+    }
+    
+    static public void BuildGaussDistributionTable(){
+        double x1 = 0;
+        double x2 = resolution;
+                
+        gaussianDistribution = new double[(int)(limit/resolution)+1];
+        int counter = 0;
+        double integral = 0.5;
+        while (x1 < limit){
+            //Simpsonsche Formel
+            integral += (x2 - x1)/6.0 * (Gauss(x1) + 4*Gauss(0.5*(x1+x2))+Gauss(x2));
+            gaussianDistribution[counter++] = integral;
+            x1 = x2;
+            x2 = x2 + resolution;
+        }
+    }
+    
+    public double variancecontrol = 1.0;
     //berechnet wahrscheinlichkeit dafür, dass f(x) < target
     public double GetProbabilityForXLessY(double x[],double target){
         double mean = GetMean(x);
-        double variance = GetVariance(x);
-                                    
+        //variancecontrol, because probability decreases very fast at edges of distrubtion
+        double variance = GetVariance(x)*variancecontrol;
+        
+        if (variance < 0.0001)
+            return 0;
+                
         //transform to 0/1 distriburion        
         target = target - mean;                            
         target /= variance;
-        
-        
-        //wir suchen phi(target) := gauss(-unendl,target)
-        //es gilt phi(target) = 1-phi(target)       
-        //tabelliert sind werte von target = 0 ... 4.09
-        
+               
+        //return -Math.exp(-target);
+               
         double tmp = target;
         double prob;
         if (tmp<0)
             tmp = -tmp;
+                       
+        long index = (long)((tmp/limit)*(double)(gaussianDistribution.length));
         
-        int index = (int)Math.round((tmp/4.09)*(double)(gaussianDistribution.length));
-        
-        if (index >= gaussianDistribution.length){
-            prob = 0.99998+0.00002*(1.0 - Math.sin((Math.PI/2.0) * (1.0/(tmp-3.0))));
+        if (index >= (long)gaussianDistribution.length){
+            System.out.println("gp out of range!!");
+            prob = 1.0;
             }
         else{            
-            prob = gaussianDistribution[index];
+            prob = gaussianDistribution[(int)index];
             }
         
         if (target < 0){
