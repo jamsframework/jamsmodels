@@ -101,14 +101,14 @@ import org.unijena.jams.model.*;
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
             update = JAMSVarDescription.UpdateType.RUN,
-            description = "hourly solar radiation [MJ/mÂ²]"
+            description = "hourly solar radiation [MJ/m²]"
             )
             public JAMSDouble solRad;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
             update = JAMSVarDescription.UpdateType.RUN,
-            description = "extraterrestic radiation [MJ/mÂ²]"
+            description = "extraterrestic radiation [MJ/m²]"
             )
             public JAMSDouble actExtRad;
     
@@ -163,7 +163,7 @@ import org.unijena.jams.model.*;
                 declination = org.unijena.j2k.physicalCalculations.SolarRadiationCalculationMethods.calc_SunDeclination(julDay);
                 //inverse relative dist. Earth Sun
                 invRelDistEarthSun = org.unijena.j2k.physicalCalculations.SolarRadiationCalculationMethods.calc_InverseRelativeDistanceEarthSun(julDay);
-                //the solar constant MJ /mÂ² min
+                //the solar constant MJ /m² min
                 solarConstant = org.unijena.j2k.physicalCalculations.SolarRadiationCalculationMethods.calc_SolarConstant(julDay);
                 oldjulDay = julDay;
             }

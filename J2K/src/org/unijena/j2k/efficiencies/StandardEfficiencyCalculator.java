@@ -140,7 +140,7 @@ title="StandardEfficiencyCalculator",
     @JAMSVarDescription(
     access = JAMSVarDescription.AccessType.WRITE,
             update = JAMSVarDescription.UpdateType.RUN,
-            description = "coefficient of determination rÂ²"
+            description = "coefficient of determination r²"
             )
             public JAMSDouble rsq;
     
@@ -154,7 +154,7 @@ title="StandardEfficiencyCalculator",
     @JAMSVarDescription(
     access = JAMSVarDescription.AccessType.WRITE,
             update = JAMSVarDescription.UpdateType.RUN,
-            description = "weighted rÂ²"
+            description = "weighted r²"
             )
             public JAMSDouble wrsq;
     
@@ -394,7 +394,7 @@ title="StandardEfficiencyCalculator",
                 getModel().getRuntime().println("ioa2:\t\t" + String.format(Locale.US,"%.5f",ioa2), JAMS.STANDARD);
             }else if(effMethod.getValue()[i] == this.R2){
                 double[] rCoeff = Regression.calcLinReg(valData_1, preData_1);
-                getModel().getRuntime().println("rÂ²:\t\t" + String.format(Locale.US,"%.5f",rCoeff[2]), JAMS.STANDARD);
+                getModel().getRuntime().println("r²:\t\t" + String.format(Locale.US,"%.5f",rCoeff[2]), JAMS.STANDARD);
                 getModel().getRuntime().println("grad:\t\t" + String.format(Locale.US,"%.5f",rCoeff[1]), JAMS.STANDARD);
                 this.rsq.setValue(rCoeff[2]);
                 this.grad.setValue(rCoeff[1]);
@@ -406,7 +406,7 @@ title="StandardEfficiencyCalculator",
                 else
                     wr = Math.pow(Math.abs(rCoeff[1]), -1.0) * rCoeff[2];
                 this.wrsq.setValue(wr);
-                getModel().getRuntime().println("wrÂ²:\t\t" + String.format(Locale.US,"%.5f",wr), JAMS.STANDARD);
+                getModel().getRuntime().println("wr²:\t\t" + String.format(Locale.US,"%.5f",wr), JAMS.STANDARD);
             }else if(effMethod.getValue()[i] == this.DSGRAD){
                 double dsGrad = DoubleSumAnalysis.dsGrad(valData_1, preData_1);
                 this.dsGrad.setValue(dsGrad);

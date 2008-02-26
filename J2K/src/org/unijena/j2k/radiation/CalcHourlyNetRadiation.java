@@ -130,7 +130,7 @@ import org.unijena.jams.model.*;
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
             update = JAMSVarDescription.UpdateType.RUN,
-            description = "daily net radiation [MJ/mÂ²]"
+            description = "daily net radiation [MJ/m²]"
             )
             public JAMSDouble netRad;
     

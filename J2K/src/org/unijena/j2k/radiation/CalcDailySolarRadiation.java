@@ -102,14 +102,14 @@ import org.unijena.jams.model.*;
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
             update = JAMSVarDescription.UpdateType.RUN,
-            description = "daily extraterrestic radiation [MJ/mÂ²d]"
+            description = "daily extraterrestic radiation [MJ/m²d]"
             )
             public JAMSDouble actExtRad;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
             update = JAMSVarDescription.UpdateType.RUN,
-            description = "daily solar radiation [MJ/mÂ²d]"
+            description = "daily solar radiation [MJ/m²d]"
             )
             public JAMSDouble solRad;
     

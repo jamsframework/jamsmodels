@@ -126,6 +126,7 @@ title="Title",
             )
             public JAMSDoubleArray targetValue;
     
+
     JAMSDouble[] parameters;
     String[] parameterNames;
     double[] lowBound;
@@ -133,7 +134,6 @@ title="Title",
     int currentCount;
     Random generator;
     GenericDataWriter paraWriter;
-    
     GenericDataWriter attribWriter;
     double[][] valueArray;
     int timeStepCounter = 0;
@@ -243,6 +243,7 @@ title="Title",
         }
     }
     
+    @Override
     public void run() {
         if (runEnumerator == null) {
             runEnumerator = getChildrenEnumerator();

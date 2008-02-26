@@ -141,7 +141,7 @@ public class Regionalisation extends JAMSComponent {
     @JAMSVarDescription(
     access = JAMSVarDescription.AccessType.READ,
             update = JAMSVarDescription.UpdateType.INIT,
-            description = "Minimum rÂ² value for elevation correction application"
+            description = "Minimum r² value for elevation correction application"
             )
             public JAMSDouble rsqThreshold;
     
@@ -162,8 +162,10 @@ public class Regionalisation extends JAMSComponent {
     private ObjectInputStream reader;
     
     public void init() throws JAMSEntity.NoSuchAttributeException, IOException {
+        
         //first, check if cached data are available
         cacheFile = new File(dirName.getValue() + "/$" + this.getInstanceName() + ".cache");
+        
         if (!cacheFile.exists() && dataCaching.getValue()) {
             getModel().getRuntime().sendHalt(this.getInstanceName() + ": data caching is switched on but no cache file available!");
         }

@@ -91,7 +91,7 @@ import org.unijena.jams.model.*;
     
     public void run() throws JAMSEntity.NoSuchAttributeException {
         
-        //eigentlich br√§uchten wir hier einen ReachOutputWriter
+        //eigentlich br‰uchten wir hier einen ReachOutputWriter
         //jetzt aber erstmal quick and dirty nur den outflow reach!
         JAMSEntity[] entities = reaches.getEntityArray();
         double flow = 0;

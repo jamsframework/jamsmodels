@@ -138,7 +138,7 @@ import org.unijena.jams.model.*;
             access = JAMSVarDescription.AccessType.READWRITE,
             update = JAMSVarDescription.UpdateType.RUN,
             description = "temperature of the snowpack [PRMS: Pk_temp]",
-            unit = "Â°C"
+            unit = "°C"
             )
             public JAMSDouble packTemp;
     
@@ -420,7 +420,7 @@ import org.unijena.jams.model.*;
             description = "Precip all snow if hru max temperature below this value." +
             		      "If HRU maximum temperature is less than or equal to this" +
             		      "value, precipitation is assumed to be snow [PRMS: Tmax_allsnow]",
-            unit = "Â°C"
+            unit = "°C"
             )
             public JAMSDouble tmaxAllSnow;
     
@@ -436,7 +436,7 @@ import org.unijena.jams.model.*;
             access = JAMSVarDescription.AccessType.READ,
             update = JAMSVarDescription.UpdateType.RUN,
             description = "minum temperature",
-            unit = "Â°C"
+            unit = "°C"
             )
             public JAMSDouble tmin;
     
@@ -444,7 +444,7 @@ import org.unijena.jams.model.*;
             access = JAMSVarDescription.AccessType.READ,
             update = JAMSVarDescription.UpdateType.RUN,
             description = "mean temperature",
-            unit = "Â°C"
+            unit = "°C"
             )
             public JAMSDouble tmean;
     
@@ -452,7 +452,7 @@ import org.unijena.jams.model.*;
             access = JAMSVarDescription.AccessType.READ,
             update = JAMSVarDescription.UpdateType.RUN,
             description = "max temperature",
-            unit = "Â°C"
+            unit = "°C"
             )
             public JAMSDouble tmax;
     
@@ -611,7 +611,7 @@ import org.unijena.jams.model.*;
         //mapping the runVariables
         this.runPackSwe = this.snowWaterEquivalent.getValue() / this.area.getValue();
         this.runPackPrecip = 0;
-        //convert the volume to mm/mÂ²
+        //convert the volume to mm/m²
         this.runRain = this.inRain.getValue() / this.area.getValue();
         this.runSnow = this.inSnow.getValue() / this.area.getValue();
         this.runAet = this.aET.getValue() / this.area.getValue();
@@ -877,7 +877,7 @@ import org.unijena.jams.model.*;
 				
 				//pack is not isothermal
 				if(this.runPackDef > 0){
-					double caln = (1000 * train); // * 10;// * 2.54; [heatcapacity of water = 1000 cal/kgÂ°C --> calories per mm brought in by 1 mm of rain with temp train]
+					double caln = (1000 * train); // * 10;// * 2.54; [heatcapacity of water = 1000 cal/kg°C --> calories per mm brought in by 1 mm of rain with temp train]
 					double pndz = this.runPackDef / caln;
 
 					//Exactly enought rain to bring pack to isothermal
@@ -889,7 +889,7 @@ import org.unijena.jams.model.*;
 					//Rain not sufficient to bring pack to isothermal
 					else if(this.runRain < pndz){
 						this.runPackDef = this.runPackDef - (caln * this.runRain);
-						this.runPackTemp = (-1 * this.runPackDef) / (this.runPackSwe * 500.0); //heatcapacity of ice = 500 cal/kgÂ°C
+						this.runPackTemp = (-1 * this.runPackDef) / (this.runPackSwe * 500.0); //heatcapacity of ice = 500 cal/kg°C
 						this.runPackIce = this.runPackIce + this.runRain;
 					}
 					//Rain in excess of amount required to bring pack to isothermal

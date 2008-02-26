@@ -35,7 +35,7 @@ public class DoubleSumAnalysis {
             cumVali[i] = cv;
         }
         
-        //interc., grad., rÂ²
+        //interc., grad., r²
         double[] regCoef = org.unijena.j2k.statistics.Regression.calcLinReg(cumVali, cumPred);
         
         return regCoef[1];

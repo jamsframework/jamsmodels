@@ -29,7 +29,7 @@ title="SnowModule",
     access = JAMSVarDescription.AccessType.READ,
             update = JAMSVarDescription.UpdateType.RUN,
             description = "Entity area",
-            unit = "mÂ²"
+            unit = "m²"
             )
             public JAMSDouble area;
     

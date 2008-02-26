@@ -90,7 +90,7 @@ import org.unijena.jams.model.*;
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
             update = JAMSVarDescription.UpdateType.RUN,
-            description = "extraterrestric radiation of each time step of the year [MJ/mÂ² timeUnit]"
+            description = "extraterrestric radiation of each time step of the year [MJ/m² timeUnit]"
             )
             public JAMSDoubleArray extRadArray = new JAMSDoubleArray();
     

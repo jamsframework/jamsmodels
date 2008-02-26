@@ -35,10 +35,10 @@ public class SolarRadiationCalculationMethods {
     /**
      * Calculates the solar constant for the julian day
      * @param julDay the julian day count [1 ... 365,366]
-     * @return the solar constant in MJ/mÂ²min.
+     * @return the solar constant in MJ/m²min.
      */    
     public static double calc_SolarConstant(int julDay){
-        //solar constant in J / mÂ² min
+        //solar constant in J / m² min
         double S = 81930 + 2910 * Math.cos(Math.PI / 180 * (julDay - 15));
         // J --> MJ
         S = S / 1000000;
@@ -60,8 +60,8 @@ public class SolarRadiationCalculationMethods {
      * calculates the daily solar or shortwave radiation
      * @param s the actual (measured) sunshine hours [h]
      * @param s0 the maximum possible sunshine hours [hour]
-     * @param Ra the daily extraterrestrial radiation [MJ / mÂ² day or hour]
-     * @return the daily solar radiation [MJ / mÂ² day or hour]
+     * @param Ra the daily extraterrestrial radiation [MJ / m² day or hour]
+     * @return the daily solar radiation [MJ / m² day or hour]
      */    
     public static double calc_SolarRadiation(double s, double s0, double Ra, double angstrom_a, double angstrom_b){
         double Rs;
@@ -79,8 +79,8 @@ public class SolarRadiationCalculationMethods {
      * calculates the daily net shortwave radiation resulting from the balance between incoming
      * and reflected solar radiation
      * @param albedo the albedo of the landcover [-]
-     * @param Rs the daily solar radiation [MJ / mÂ² day or hour]
-     * @return net solar or shortwave radiation [MJ / mÂ² day or hour]
+     * @param Rs the daily solar radiation [MJ / m² day or hour]
+     * @return net solar or shortwave radiation [MJ / m² day or hour]
      */    
     public static double calc_NetShortwaveRadiation(double albedo, double Rs){
         double Rns = (1 - albedo) * Rs;
@@ -89,9 +89,9 @@ public class SolarRadiationCalculationMethods {
     
     /**
      * calculates the net radiation
-     * @param Rns the daily net solar or shortwave radiation [MJ / mÂ² day or hour]
-     * @param Rnl the daily net longwave radiation [MJ / mÂ² day or hour]
-     * @return the daily net radiation [MJ / mÂ² day] or hour
+     * @param Rns the daily net solar or shortwave radiation [MJ / m² day or hour]
+     * @param Rnl the daily net longwave radiation [MJ / m² day or hour]
+     * @return the daily net radiation [MJ / m² day] or hour
      */    
     public static double calc_NetRadiation(double Rns, double Rnl){
         double Rn = Rns - Rnl;
@@ -103,8 +103,8 @@ public class SolarRadiationCalculationMethods {
     /**
      * calculates the daily clear sky solar radiation RS0
      * @param elevation the elevation of the point of interest [m a.s.l]
-     * @param Ra the daily extraterrestrial radiation [MJ / mÂ² day or hour]
-     * @return the daily clear sky solar radiation [MJ / mÂ² day or hour]
+     * @param Ra the daily extraterrestrial radiation [MJ / m² day or hour]
+     * @return the daily clear sky solar radiation [MJ / m² day or hour]
      */    
     public static double calc_ClearSkySolarRadiation(double elevation, double Ra){
         double cssr = (0.75 + 2E-5 * elevation) * Ra;

@@ -43,12 +43,12 @@ public class DailySolarRadiationCalculationMethods {
     
     /**
      * calculates the daily extraterrestrial radiation
-     * @param Gsc the solar constant [MJ / mÂ²min.]
+     * @param Gsc the solar constant [MJ / m²min.]
      * @param dr the inverse relative distance Earth-Sun [rad.]
      * @param ws the hour angle [rad.]
      * @param lat the latitude of the point of interest [rad.]
      * @param decl the sun's declination [rad.]
-     * @return the extraterrestrial radiation [MJ / mÂ² day]
+     * @return the extraterrestrial radiation [MJ / m² day]
      */    
     public static double calc_DailyExtraterrestrialRadiation(double Gsc, 
                                                              double dr, 
@@ -61,17 +61,17 @@ public class DailySolarRadiationCalculationMethods {
     
     /**
      * calculates the net (outgoing) longwave radiation uses the 
-     * Stefan Bolztmann constant in [MJ / K^4 mÂ² day]
+     * Stefan Bolztmann constant in [MJ / K^4 m² day]
      * and 273.16 K to calculate absolute temperatures
-     * @param tmean the air temperature [Â°C]
+     * @param tmean the air temperature [°C]
      * @param ea actual vapour pressure [kPa]
-     * @param Rs actual solar radiation [MJ / mÂ² day]
-     * @param Rs0 the clear sky solar radiation [MJ / mÂ² day]
-     * @return the net (outgoing) longwave radiation [MJ / mÂ² day]
+     * @param Rs actual solar radiation [MJ / m² day]
+     * @param Rs0 the clear sky solar radiation [MJ / m² day]
+     * @return the net (outgoing) longwave radiation [MJ / m² day]
      */    
     public static double calc_DailyNetLongwaveRadiation(double tmean, double ea, double Rs, double Rs0, boolean debug){
         double tabs = tmean + 273.16;
-        /** the Stefan Bolztmann constant in [MJ / K^4 mÂ² day] **/
+        /** the Stefan Bolztmann constant in [MJ / K^4 m² day] **/
         final double BOLTZMANN = 4.903E-9; 
         
         double Rnl = BOLTZMANN * Math.pow(tabs,4) * (0.34 - 0.14 * Math.sqrt(ea)) * (1.35 * (Rs/Rs0) - 0.35);
@@ -90,10 +90,10 @@ public class DailySolarRadiationCalculationMethods {
     
     
     /**
-     * estimates the soil heat flux [MJ / mÂ² day]
-     * @param Rn the daily net radiation [MJ / mÂ² day]
+     * estimates the soil heat flux [MJ / m² day]
+     * @param Rn the daily net radiation [MJ / m² day]
      * @param N the potential sunshine hours = daylength [hours]
-     * @return the daily soil heat flux [MJ / mÂ² day]
+     * @return the daily soil heat flux [MJ / m² day]
      */    
     public static double calc_SoilHeatFlux(double Rn, double N){
         double G;

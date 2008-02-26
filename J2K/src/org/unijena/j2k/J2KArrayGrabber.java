@@ -135,6 +135,20 @@ import org.unijena.jams.model.*;
             public JAMSDouble actRsc0;
     
     @JAMSVarDescription(
+            access = JAMSVarDescription.AccessType.READ,
+            update = JAMSVarDescription.UpdateType.RUN,
+            description = "Haude factor array"
+            )
+            public JAMSDoubleArray haudeFactorArray;
+    
+    @JAMSVarDescription(
+            access = JAMSVarDescription.AccessType.WRITE,
+            update = JAMSVarDescription.UpdateType.RUN,
+            description = "actHaudeFactor"
+            )
+            public JAMSDouble actHaudeFactor;
+    
+    @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
             update = JAMSVarDescription.UpdateType.RUN,
             description = "actSlopeAscpectCorrectionFactor"
@@ -159,9 +173,13 @@ import org.unijena.jams.model.*;
         double in_extRad = -9999;
         double in_scf = -9999;
         double in_rsc0 = -9999;
-        if(this.rsc0Array != null)
-        	in_rsc0 = this.rsc0Array.getValue()[monthCount];
+        double in_haudeF = -9999;
         
+        if(this.rsc0Array != null)
+            in_rsc0 = this.rsc0Array.getValue()[monthCount];
+        
+        if(this.haudeFactorArray != null)
+            in_haudeF = this.haudeFactorArray.getValue()[monthCount];
         
         if(this.tempRes.getValue().equals("m")){
             if(this.LAIArray != null)
@@ -198,6 +216,7 @@ import org.unijena.jams.model.*;
         this.actRsc0.setValue(in_rsc0);
         this.actSlAsCf.setValue(in_scf);
         this.actExtRad.setValue(in_extRad);
+        this.actHaudeFactor.setValue(in_haudeF);
         
     }
     

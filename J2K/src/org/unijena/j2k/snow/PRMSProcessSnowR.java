@@ -555,7 +555,7 @@ title="PRMSProcessSnow",
     boolean runLst, runTranspOn;
     //int runLstSave;
     
-    //  conversion factor from MJ/mÂ² to langley
+    //  conversion factor from MJ/m² to langley
     final double MJ2LY = 28.88458966;
     
     //conversion from mm to inch
