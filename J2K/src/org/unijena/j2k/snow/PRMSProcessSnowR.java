@@ -129,24 +129,21 @@ title="PRMSProcessSnow",
     @JAMSVarDescription(
     access = JAMSVarDescription.AccessType.WRITE,
             update = JAMSVarDescription.UpdateType.RUN,
-            description = "precipitation added to snowpack [PRMS: Pk_precip]",
-            unit = "mm"
+            description = "precipitation added to snowpack [PRMS: Pk_precip]"
             )
             public JAMSDouble packPrecip;
     
     @JAMSVarDescription(
     access = JAMSVarDescription.AccessType.READWRITE,
             update = JAMSVarDescription.UpdateType.RUN,
-            description = "temperature of the snowpack [PRMS: Pk_temp]",
-            unit = "°C"
+            description = "temperature of the snowpack [PRMS: Pk_temp]"
             )
             public JAMSDouble packTemp;
     
     @JAMSVarDescription(
     access = JAMSVarDescription.AccessType.READWRITE,
             update = JAMSVarDescription.UpdateType.RUN,
-            description = "density of the snowpack [PRMS: Pk_den]",
-            unit = "g/cm^3"
+            description = "density of the snowpack [PRMS: Pk_den]"
             )
             public JAMSDouble packDensity;
     
@@ -160,24 +157,21 @@ title="PRMSProcessSnow",
     @JAMSVarDescription(
     access = JAMSVarDescription.AccessType.WRITE,
             update = JAMSVarDescription.UpdateType.RUN,
-            description = "evaporation and sublimation from snowpack [PRMS: Snow_evap]",
-            unit = "mm"
+            description = "evaporation and sublimation from snowpack [PRMS: Snow_evap]"
             )
             public JAMSDouble snowET;
     
     @JAMSVarDescription(
     access = JAMSVarDescription.AccessType.WRITE,
             update = JAMSVarDescription.UpdateType.RUN,
-            description = "snowmelt from snowpack [PRMS: Snowmelt]",
-            unit = "mm"
+            description = "snowmelt from snowpack [PRMS: Snowmelt]"
             )
             public JAMSDouble snowMelt;
     
     @JAMSVarDescription(
     access = JAMSVarDescription.AccessType.READWRITE,
             update = JAMSVarDescription.UpdateType.RUN,
-            description = "snowpack water equivalent [PRMS: Pkwater_equiv]",
-            unit = "mm"
+            description = "snowpack water equivalent [PRMS: Pkwater_equiv]"
             )
             public JAMSDouble snowWaterEquivalent;
     
@@ -255,8 +249,7 @@ title="PRMSProcessSnow",
     @JAMSVarDescription(
     access = JAMSVarDescription.AccessType.READWRITE,
             update = JAMSVarDescription.UpdateType.RUN,
-            description = "depth of the snowpack [PRMS: Pk_depth]",
-            unit = "mm"
+            description = "depth of the snowpack [PRMS: Pk_depth]"
             )
             public JAMSDouble packDepth;
     
@@ -294,8 +287,7 @@ title="PRMSProcessSnow",
     @JAMSVarDescription(
     access = JAMSVarDescription.AccessType.READ,
             update = JAMSVarDescription.UpdateType.INIT,
-            description = "density of new snow [PRMS: Den_init]",
-            unit = "g/cm^3"
+            description = "density of new snow [PRMS: Den_init]"
             )
             public JAMSDouble initDens;
     
@@ -309,8 +301,7 @@ title="PRMSProcessSnow",
     @JAMSVarDescription(
     access = JAMSVarDescription.AccessType.READ,
             update = JAMSVarDescription.UpdateType.INIT,
-            description = "Average maximum snowpack density [PRMS: Den_max]",
-            unit = "g/cm^3"
+            description = "Average maximum snowpack density [PRMS: Den_max]"
             )
             public JAMSDouble maxDens;
     
@@ -320,8 +311,7 @@ title="PRMSProcessSnow",
             description = "Julian date to start looking for spring snowmelt, " +
             "Julian date to start looking for spring snowmelt stage. " +
             "Varies with region depending on length of time that permanent " +
-            "snowpack exists [PRMS: Melt_look]",
-            unit = "julDay"
+            "snowpack exists [PRMS: Melt_look]"
             )
             public JAMSInteger meltLook;
     
@@ -330,8 +320,7 @@ title="PRMSProcessSnow",
             update = JAMSVarDescription.UpdateType.INIT,
             description = "Julian date to force snowpack to spring snowmelt stage." +
             "Varies with region depending on length of time that" +
-            "permanent snowpack exists' [PRMS: Melt_force]",
-            unit = "julDay"
+            "permanent snowpack exists' [PRMS: Melt_force]"
             )
             public JAMSInteger meltForce;
     
@@ -379,8 +368,7 @@ title="PRMSProcessSnow",
             description = "Albedo reset - snow, melt stage," +
             "Minimum snowfall, in water equivalent, needed to reset" +
             "snow albedo during the snowpack melt stage" +
-            "[PRMS: Albset_snm]",
-            unit = "mm"
+            "[PRMS: Albset_snm]"
             )
             public JAMSDouble albedoResetSnowMelt;
     
@@ -390,8 +378,7 @@ title="PRMSProcessSnow",
             description = "Albedo reset - snow, accumulation stage" +
             "Minimum snowfall, in water equivalent, needed to reset" +
             "snow albedo during the snowpack accumulation stage" +
-            "[PRMS: Albset_sna]",
-            unit = "mm"
+            "[PRMS: Albset_sna]"
             )
             public JAMSDouble albedoResetSnowAccu;
     
@@ -426,8 +413,7 @@ title="PRMSProcessSnow",
             update = JAMSVarDescription.UpdateType.INIT,
             description = "Precip all snow if hru max temperature below this value." +
             "If HRU maximum temperature is less than or equal to this" +
-            "value, precipitation is assumed to be snow [PRMS: Tmax_allsnow]",
-            unit = "°C"
+            "value, precipitation is assumed to be snow [PRMS: Tmax_allsnow]"
             )
             public JAMSDouble tmaxAllSnow;
     
@@ -442,64 +428,56 @@ title="PRMSProcessSnow",
     @JAMSVarDescription(
     access = JAMSVarDescription.AccessType.READ,
             update = JAMSVarDescription.UpdateType.RUN,
-            description = "minum temperature",
-            unit = "°C"
+            description = "minum temperature"
             )
             public JAMSDouble tmin;
     
     @JAMSVarDescription(
     access = JAMSVarDescription.AccessType.READ,
             update = JAMSVarDescription.UpdateType.RUN,
-            description = "mean temperature",
-            unit = "°C"
+            description = "mean temperature"
             )
             public JAMSDouble tmean;
     
     @JAMSVarDescription(
     access = JAMSVarDescription.AccessType.READ,
             update = JAMSVarDescription.UpdateType.RUN,
-            description = "max temperature",
-            unit = "°C"
+            description = "max temperature"
             )
             public JAMSDouble tmax;
     
     @JAMSVarDescription(
     access = JAMSVarDescription.AccessType.READ,
             update = JAMSVarDescription.UpdateType.RUN,
-            description = "observed or calculated solar radiation",
-            unit = "MJ"
+            description = "observed or calculated solar radiation"
             )
             public JAMSDouble solRad;
     
     @JAMSVarDescription(
     access = JAMSVarDescription.AccessType.READ,
             update = JAMSVarDescription.UpdateType.RUN,
-            description = "observed or calculated shortwave radiation",
-            unit = "MJ"
+            description = "observed or calculated shortwave radiation"
             )
             public JAMSDouble swRad;
     
     @JAMSVarDescription(
     access = JAMSVarDescription.AccessType.READ,
             update = JAMSVarDescription.UpdateType.RUN,
-            description = "total precipitation (rain and snow)",
-            unit = "mm"
+            description = "total precipitation (rain and snow)"
             )
             public JAMSDouble precip;
     
     @JAMSVarDescription(
     access = JAMSVarDescription.AccessType.READWRITE,
             update = JAMSVarDescription.UpdateType.RUN,
-            description = "rain amount of precipitation, will be changed during snow modelling",
-            unit = "mm"
+            description = "rain amount of precipitation, will be changed during snow modelling"
             )
             public JAMSDouble inRain;
     
     @JAMSVarDescription(
     access = JAMSVarDescription.AccessType.READWRITE,
             update = JAMSVarDescription.UpdateType.RUN,
-            description = "snow amount of precipitation, will be changed during snow modelling",
-            unit = "mm"
+            description = "snow amount of precipitation, will be changed during snow modelling"
             )
             public JAMSDouble inSnow;
     
@@ -520,16 +498,14 @@ title="PRMSProcessSnow",
     @JAMSVarDescription(
     access = JAMSVarDescription.AccessType.READWRITE,
             update = JAMSVarDescription.UpdateType.RUN,
-            description = "actual evapotranspiration so far",
-            unit = "mm"
+            description = "actual evapotranspiration so far"
             )
             public JAMSDouble aET;
     
     @JAMSVarDescription(
     access = JAMSVarDescription.AccessType.READ,
             update = JAMSVarDescription.UpdateType.RUN,
-            description = "potential evapotranspiration",
-            unit = "mm"
+            description = "potential evapotranspiration"
             )
             public JAMSDouble pET;
     
