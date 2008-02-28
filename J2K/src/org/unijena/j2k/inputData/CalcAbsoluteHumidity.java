@@ -31,10 +31,10 @@ import org.unijena.jams.model.*;
  * @author Peter Krause
  */
 @JAMSComponentDescription(
-        title="CalcAbsoluteHumidity",
+title="CalcAbsoluteHumidity",
         author="Peter Krause",
         description="Calculates absolute humidity of relative humidity and temperature" +
-        "If temperature is not existent at the site it is regionalized"
+        "at climate station location. If either rhum or temp is missing ahum will no be calculated."
         )
         public class CalcAbsoluteHumidity extends JAMSComponent {
     
@@ -42,105 +42,77 @@ import org.unijena.jams.model.*;
      *  Component variables
      */
     @JAMSVarDescription(
-            access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.RUN,
-            description = "time"
-            )
-            public JAMSCalendar time;
-    
-    @JAMSVarDescription(
-            access = JAMSVarDescription.AccessType.READ,
+    access = JAMSVarDescription.AccessType.READ,
             update = JAMSVarDescription.UpdateType.RUN,
             description = "the relative humidity values"
             )
             public JAMSDoubleArray rhum;
     
     @JAMSVarDescription(
-            access = JAMSVarDescription.AccessType.READ,
+    access = JAMSVarDescription.AccessType.READ,
             update = JAMSVarDescription.UpdateType.RUN,
             description = "temperature for the computation"
             )
             public JAMSDoubleArray temperature;
     
     @JAMSVarDescription(
-            access = JAMSVarDescription.AccessType.WRITE,
+    access = JAMSVarDescription.AccessType.WRITE,
             update = JAMSVarDescription.UpdateType.RUN,
-            description = "aboslute humidity values"
+            description = "absolute humidity values"
             )
             public JAMSDoubleArray ahum;
     
     @JAMSVarDescription(
-            access = JAMSVarDescription.AccessType.WRITE,
+    access = JAMSVarDescription.AccessType.WRITE,
             update = JAMSVarDescription.UpdateType.RUN,
             description = "Array of temperature station elevations"
             )
             public JAMSDoubleArray tempElevation = new JAMSDoubleArray();
     
     @JAMSVarDescription(
-            access = JAMSVarDescription.AccessType.WRITE,
+    access = JAMSVarDescription.AccessType.WRITE,
             update = JAMSVarDescription.UpdateType.RUN,
             description = "Array of temperature station's x coordinate"
             )
             public JAMSDoubleArray tempXCoord = new JAMSDoubleArray();
     
     @JAMSVarDescription(
-            access = JAMSVarDescription.AccessType.WRITE,
+    access = JAMSVarDescription.AccessType.WRITE,
             update = JAMSVarDescription.UpdateType.RUN,
             description = "Array of temperature station's y coordinate"
             )
             public JAMSDoubleArray tempYCoord = new JAMSDoubleArray();
     
     @JAMSVarDescription(
-            access = JAMSVarDescription.AccessType.WRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
-            description = "Regression coefficients for temperature"
-            )
-            public JAMSDoubleArray tempRegCoeff = new JAMSDoubleArray();
-    
-    @JAMSVarDescription(
-            access = JAMSVarDescription.AccessType.WRITE,
+    access = JAMSVarDescription.AccessType.WRITE,
             update = JAMSVarDescription.UpdateType.RUN,
             description = "Array of rhum station elevations"
             )
             public JAMSDoubleArray rhumElevation = new JAMSDoubleArray();
     
     @JAMSVarDescription(
-            access = JAMSVarDescription.AccessType.WRITE,
+    access = JAMSVarDescription.AccessType.WRITE,
             update = JAMSVarDescription.UpdateType.RUN,
             description = "Array of rhum station's x coordinate"
             )
             public JAMSDoubleArray rhumXCoord = new JAMSDoubleArray();
     
     @JAMSVarDescription(
-            access = JAMSVarDescription.AccessType.WRITE,
+    access = JAMSVarDescription.AccessType.WRITE,
             update = JAMSVarDescription.UpdateType.RUN,
             description = "Array of rhum station's y coordinate"
             )
             public JAMSDoubleArray rhumYCoord = new JAMSDoubleArray();
     
     @JAMSVarDescription(
-            access = JAMSVarDescription.AccessType.WRITE,
+    access = JAMSVarDescription.AccessType.WRITE,
             update = JAMSVarDescription.UpdateType.RUN,
-            description = "number of temperature station for IDW"
+            description = "rsqr for ahum stations"
             )
-            public JAMSInteger tempNIDW;
+            public JAMSDoubleArray regCoeffAhum = new JAMSDoubleArray();
     
     @JAMSVarDescription(
-            access = JAMSVarDescription.AccessType.WRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
-            description = "power for IDW function"
-            )
-            public JAMSDouble pIDW;
-    
-    @JAMSVarDescription(
-            access = JAMSVarDescription.AccessType.WRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
-            description = "regression threshold"
-            )
-            public JAMSDouble regThres;
-    
-    @JAMSVarDescription(
-            access = JAMSVarDescription.AccessType.READ,
+    access = JAMSVarDescription.AccessType.READ,
             update = JAMSVarDescription.UpdateType.RUN,
             description = "Use caching of regionalised data?"
             )
@@ -165,52 +137,55 @@ import org.unijena.jams.model.*;
             double[] rhumX = new double[rhum.length];
             double[] rhumY = new double[rhum.length];
             
-            //we need arrays for the temperature stations dist weight and id
-            double[][] statWeights = new double[rhum.length][temperature.length];
+            double[] tempElev = new double[temperature.length];
+            double[] tempX = new double[temperature.length];
+            double[] tempY = new double[temperature.length];
             
             //parameterization of rhum stations
             for(int i = 0; i < rhum.length; i++){
                 rhumElev[i] = this.rhumElevation.getValue()[i];
                 rhumX[i] = this.rhumXCoord.getValue()[i];
                 rhumY[i] = this.rhumYCoord.getValue()[i];
-                
-                
-                for(int n = 0; n < this.tempNIDW.getValue(); n++){
-                    statWeights[i][n] = 0;
-                    //statDists[i][n]   = 0;
-                }
             }
             
-            for(int i = 0; i < ahum.length; i++){
-                //Calculating weights for nidw stations
-                statWeights[i] = org.unijena.j2k.statistics.IDW.calcNidwWeights(rhumX[i], rhumY[i], this.tempXCoord.getValue(), this.tempYCoord.getValue(), this.pIDW.getValue(), this.tempNIDW.getValue());
+            //parameterization of temp stations
+            for(int i = 0; i < temperature.length; i++){
+                tempElev[i] = this.tempElevation.getValue()[i];
+                tempX[i] = this.tempXCoord.getValue()[i];
+                tempY[i] = this.tempYCoord.getValue()[i];
             }
-            double rsq = this.tempRegCoeff.getValue()[2];
-            double grad = this.tempRegCoeff.getValue()[1];
             
-            //temperature for each rain station
+            //temperature for each rhum station
             double rhumTemp;
             for (int r = 0; r < ahum.length; r++) {
-                rhumTemp = 0;
-                for(int t = 0; t < temperature.length; t++){
-                    if(rsq >= this.regThres.getValue()) {  //Elevation correction is applied
-                        double deltaElev = this.rhumElevation.getValue()[r] - this.tempElevation.getValue()[t];  //Elevation difference between unit and Station
-                        rhumTemp += ((deltaElev * grad + temperature[t]) * statWeights[r][t]);
-                    } else{ //No elevation correction
-                        rhumTemp  += (temperature[t] * statWeights[r][t]);
+                if(rhum[r] > 0){
+                    rhumTemp = 0;
+                    double absDist = -1;
+                    int t = 0;
+                    while(absDist != 0 && t < temperature.length){
+                        absDist = (tempX[t] - rhumX[r]) - (tempY[t] - rhumY[r]) - (tempElev[t] - rhumElev[r]);
+                        t++;
                     }
+                    rhumTemp = temperature[t-1];
+                    if(rhumTemp > -9999){
+                        //calculate saturation vapour pressure
+                        double est = 6.11 * Math.exp((17.62*rhumTemp)/(243.12+rhumTemp));
+                        
+                        //compute maximum humidity
+                        double maxHum = est * 216.7 /(rhumTemp + 273.15);
+                        
+                        //compute absolute humidity
+                        ahum[r] = maxHum * (rhum[r] / 100.);
+                    } else{
+                        ahum[r] = -9999;
+                    }
+                } else{
+                    ahum[r] = -9999;
                 }
-                //calculate saturation vapour pressure
-                double est = 6.11 * Math.exp((17.62*rhumTemp)/(243.12+rhumTemp));
-                
-                //compute maximum humidity
-                double maxHum = est * 216.7 /(rhumTemp + 273.15);
-              
-                //compute absolute humidity
-                ahum[r] = maxHum * (rhum[r] / 100.);
             }
             
             this.ahum.setValue(ahum);
+            regCoeffAhum.setValue(org.unijena.j2k.statistics.Regression.calcLinReg(rhumElevation.getValue(), this.ahum.getValue()));
         }
     }
     

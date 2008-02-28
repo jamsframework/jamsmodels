@@ -29,7 +29,7 @@ import org.unijena.jams.io.*;
 
 /**
  *
- * @author S. Kralisch
+ * @author Peter Krause
  */
 public class FullSetEntityWriter extends JAMSComponent {
     
@@ -171,6 +171,7 @@ public class FullSetEntityWriter extends JAMSComponent {
                 //System.out.println("Primitive");
                 double da = ((JAMSDouble)entitySet.getCurrent().getObject(this.attributeName.getValue())).getValue();
                 double val = da / weightVal;
+                System.out.println("Val:" + val + " da: " + da);
                 writer.addData(""+val);
             }
             if(setCounter < (nEnts - 1)){

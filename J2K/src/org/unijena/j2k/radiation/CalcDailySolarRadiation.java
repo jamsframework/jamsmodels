@@ -22,23 +22,11 @@
  */
 
 /*
-<component class="org.unijena.j2k.CalcDailySolarRadiation" name="CalcDailySolarRadiation">
-    <jamsvar name="dirName" globvar="workspaceDir"/>
-    <jamsvar name="dataCaching" globvar="data_caching"/>
-    <jamsvar name="time" provider="TemporalContext" providervar="current"/>
-    <jamsvar name="actSlAsCf" provider="HRUContext" providervar="currentEntity.actSlAsCf"/>
-    <jamsvar name="latitude" provider="HRUContext" providervar="currentEntity.latitude"/>
-    <jamsvar name="actExtRad" provider="HRUContext" providervar="currentEntity.actExtRad"/>
-    <jamsvar name="sunh" provider="HRUContext" providervar="currentEntity.sunh"/>
-    <jamsvar name="angstrom_a" value="0.25"/>
-    <jamsvar name="angstrom_b" value="0.5"/>
-    <jamsvar name="solRad" provider="HRUContext" providervar="currentEntity.solRad"/>
-</component>
+
  */
 package org.unijena.j2k.radiation;
 
 import java.io.*;
-import org.unijena.jams.JAMS;
 import org.unijena.jams.data.*;
 import org.unijena.jams.model.*;
 
@@ -190,7 +178,7 @@ import org.unijena.jams.model.*;
             double solarRadiation = org.unijena.j2k.physicalCalculations.SolarRadiationCalculationMethods.calc_SolarRadiation(sunsh, maximumSunshine, extraterrRadiation, angstrom_a.getValue(), angstrom_b.getValue());
             //considering slope and aspect
             solarRadiation = solarRadiation * SAC;
-            
+            System.out.println("solRad: " + solarRadiation);
             solRad.setValue(solarRadiation);
             writer.writeDouble(solarRadiation);
         } 

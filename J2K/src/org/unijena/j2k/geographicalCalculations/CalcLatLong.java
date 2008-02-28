@@ -24,7 +24,6 @@
 package org.unijena.j2k.geographicalCalculations;
 
 import org.unijena.jams.data.*;
-import org.unijena.jams.data.JAMSEntity.NoSuchAttributeException;
 import org.unijena.jams.model.*;
 
 /**
