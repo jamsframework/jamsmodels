@@ -132,13 +132,13 @@ public class ClimatologicalVariables {
      * @return slope of saturation vapour pressure curve [kPa/°C]
      */    
     public static double calc_slopeOfSaturationPressureCurve(double temperature){
-        double sospc = (4098*(0.6108*Math.exp((17.27 * temperature)/(temperature + 237.3))))/(Math.pow((temperature + 237.3),2));
+        double sospc = (4098*(0.6108*Math.exp((17.27 * temperature)/(temperature + 237.3))))/((temperature + 237.3)*(temperature + 237.3));
         //double sospc =(25040 / Math.pow((237.3 + temperature),2)) * Math.exp((17.27 * temperature)/(237.3 + temperature));
         return sospc;
     }
     
     public static double calc_VirtualTemperature(double tabs, double pz, double ea){
-        double vt = tabs * Math.pow((1-0.378*(ea/pz)),-1);
+        double vt = tabs / (1-0.378*(ea/pz));
         return vt;
     }
     /**

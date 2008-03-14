@@ -21,31 +21,11 @@
  *
  */
 
-/**********************XML Description********************************************
- <component class="org.unijena.j2k.CalcPotETP_PenmanMonteith" name="CalcPotentialET">
-    <jamsvar name="dirName" globvar="workspaceDir"/>
-    <jamsvar name="dataCaching" globvar="data_caching"/>
-    <jamsvar name="netRad" provider="HRUContext" providervar="currentEntity.netRad"/>
-    <jamsvar name="tmean" provider="HRUContext" providervar="currentEntity.tmean"/>
-    <jamsvar name="rhum" provider="HRUContext" providervar="currentEntity.rhum"/>
-    <jamsvar name="wind" provider="HRUContext" providervar="currentEntity.wind"/>
-    <jamsvar name="actRsc0" provider="HRUContext" providervar="currentEntity.actRsc0"/>
-    <jamsvar name="actLAI" provider="HRUContext" providervar="currentEntity.actLAI"/>
-    <jamsvar name="actEffH" provider="HRUContext" providervar="currentEntity.actEffH"/>
-    <jamsvar name="elevation" provider="HRUContext" providervar="currentEntity.elevation"/>
-    <jamsvar name="area" provider="HRUContext" providervar="currentEntity.area"/>
-    <jamsvar name="potET" provider="HRUContext" providervar="currentEntity.potET"/>
-    <jamsvar name="actET" provider="HRUContext" providervar="currentEntity.actET"/>
-    <jamsvar name="rs" provider="HRUContext" providervar="currentEntity.rs"/>
-    <jamsvar name="ra" provider="HRUContext" providervar="currentEntity.ra"/>
-    <jamsvar name="tempRes" value="d"/>
- </component>
- *********************************************************************************/
+
 
 package org.unijena.j2k.potET;
 
 import java.io.*;
-import org.unijena.jams.JAMS;
 import org.unijena.jams.data.*;
 import org.unijena.jams.model.*;
 
@@ -59,7 +39,7 @@ import org.unijena.jams.model.*;
 @JAMSComponentDescription(
         title="CalcDailyETP_PenmanMonteith",
         author="Peter Krause",
-        description="Calculates potential ETP after Penman-Monteith"
+        description="Calculates potential ETP according Penman-Monteith"
         )
     
     public class PenmanMonteith extends JAMSComponent {

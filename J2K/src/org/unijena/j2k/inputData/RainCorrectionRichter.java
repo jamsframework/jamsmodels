@@ -243,9 +243,9 @@ import org.unijena.jams.model.*;
                 }
                 if(rain > 0){ //if(pSnow < 1.0){//
                     if(rain < 0.1)
-                        rain += (precip[r] * 0.492);
+                        rain += (rain * 0.492);
                     else
-                        rain += (precip[r] * (0.1349 * Math.pow(precip[r], -0.494)));
+                        rain += (rain * (0.1349 * Math.pow(rain, -0.494)));
                 }
                 
                 //Calculating error from evaporation and wetting acc. to Richter

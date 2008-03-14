@@ -21,21 +21,11 @@
  *
  */
 
-/*
-<component class="org.unijena.j2k.CalcExtraterrRadiation" name="ExtRad">
-    <jamsvar name="latitude" provider="InitHRUContext" providervar="currentEntity.latitude"/>
-    <jamsvar name="longitude" provider="InitHRUContext" providervar="currentEntity.longitude"/>
-    <jamsvar name="longTZ" value="15"/>
-    <jamsvar name="locGrw" value="e"/>
-    <jamsvar name="tempRes" value="h"/>
-    <jamsvar name="extRadArray" provider="InitHRUContext" providervar="currentEntity.extRadArray"/>
- </component>
- */
+
 
 package org.unijena.j2k.radiation;
 
 import org.unijena.jams.data.*;
-import org.unijena.jams.data.JAMSEntity.NoSuchAttributeException;
 import org.unijena.jams.model.*;
 
 /**

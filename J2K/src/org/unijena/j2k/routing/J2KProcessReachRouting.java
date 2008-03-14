@@ -302,6 +302,7 @@ import org.unijena.jams.model.*;
         double RG1DestIn = 0;
         double RG2DestIn = 0;
         double addInDestIn = 0;
+        
         if(DestReach == null && DestReservoir == null){
             RD1DestIn = 0;//entity.getDouble(aNameCatchmentOutRD1.getValue());
             RD2DestIn = 0;//entity.getDouble(aNameCatchmentOutRD2.getValue());

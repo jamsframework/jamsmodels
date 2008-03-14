@@ -30,7 +30,53 @@ import org.unijena.jams.model.*;
  *
  * @author Peter Krause
  */
-
+/*
+<component class="org.unijena.j2k.soilWater.J2KProcessLumpedSoilWater" name="J2KProcessLumpedSoilWater">
+    <jamsvar name="time" provider="TemporalContext" providervar="current"/>
+    <jamsvar name="area" provider="HRUContext" providervar="currentEntity.area"/>
+    <jamsvar name="slope" provider="HRUContext" providervar="currentEntity.slope"/>
+    <jamsvar name="sealedGrade" provider="HRUContext" providervar="currentEntity.sealedGrade"/>
+    <jamsvar name="netRain" provider="HRUContext" providervar="currentEntity.netRain"/>
+    <jamsvar name="netSnow" provider="HRUContext" providervar="currentEntity.netSnow"/>
+    <jamsvar name="potET" provider="HRUContext" providervar="currentEntity.potET"/>
+    <jamsvar name="actET" provider="HRUContext" providervar="currentEntity.actET"/>
+    <jamsvar name="snowDepth" provider="HRUContext" providervar="currentEntity.snowDepth"/>
+    <jamsvar name="snowMelt" provider="HRUContext" providervar="currentEntity.snowMelt"/>
+    <jamsvar name="maxMPS" provider="HRUContext" providervar="currentEntity.horizons"/>
+    <jamsvar name="maxMPS" provider="HRUContext" providervar="currentEntity.maxMPS"/>
+    <jamsvar name="maxLPS" provider="HRUContext" providervar="currentEntity.maxLPS"/>
+    <jamsvar name="actDPS" provider="HRUContext" providervar="currentEntity.actDPS"/>
+    <jamsvar name="actMPS" provider="HRUContext" providervar="currentEntity.actMPS"/>
+    <jamsvar name="actLPS" provider="HRUContext" providervar="currentEntity.actLPS"/>
+    <jamsvar name="satMPS" provider="HRUContext" providervar="currentEntity.satMPS"/>
+    <jamsvar name="satLPS" provider="HRUContext" providervar="currentEntity.satLPS"/>
+    <jamsvar name="satSoil" provider="HRUContext" providervar="currentEntity.satSoil"/>
+    <jamsvar name="infiltration" provider="HRUContext" providervar="currentEntity.infiltration"/>
+    <jamsvar name="interflow" provider="HRUContext" providervar="currentEntity.interflow"/>
+    <jamsvar name="percolation" provider="HRUContext" providervar="currentEntity.percolation"/>
+    <jamsvar name="inRD1" provider="HRUContext" providervar="currentEntity.inRD1"/>
+    <jamsvar name="inRD2" provider="HRUContext" providervar="currentEntity.inRD2"/>
+    <jamsvar name="genRD1" provider="HRUContext" providervar="currentEntity.genRD1"/>
+    <jamsvar name="genRD2" provider="HRUContext" providervar="currentEntity.genRD2"/>
+    <jamsvar name="outRD1" provider="HRUContext" providervar="currentEntity.outRD1"/>
+    <jamsvar name="outRD2" provider="HRUContext" providervar="currentEntity.outRD2"/>
+    <jamsvar name="soilMaxDPS" value="2.0"/>
+    <jamsvar name="soilPolRed" value="5.0"/>
+    <jamsvar name="soilLinRed" value="0.0"/>
+    <jamsvar name="soilMaxInfSummer" value="80.0"/>
+    <jamsvar name="soilMaxInfWinter" value="100.0"/>
+    <jamsvar name="soilMaxInfSnow" value="50.0"/>
+    <jamsvar name="soilImpGT80" value="0.25"/>
+    <jamsvar name="soilImpLT80" value="0.6"/>
+    <jamsvar name="soilDistMPSLPS" value="0.1"/>
+    <jamsvar name="soilDiffMPSLPS" value="0.68"/>
+    <jamsvar name="soilOutLPS" value="0.9"/>
+    <jamsvar name="soilLatVertLPS" value="0.5"/>
+    <jamsvar name="soilMaxPerc" value="5.0"/>
+    <jamsvar name="soilConcRD1" value="1.0"/>
+    <jamsvar name="soilConcRD2" value="1.8"/>
+</component>
+ */
 @JAMSComponentDescription(
 title="J2KProcessLumpedSoilWater",
         author="Peter Krause",

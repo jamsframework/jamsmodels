@@ -74,6 +74,8 @@ public class StandardEntityReader extends JAMSComponent {
         
         //read hru parameter
         //hrus = new JAMSEntityCollection();
+        String theFileName = dirName.getValue() + "/" + hruFileName.getValue();
+        System.out.println("HRU-file name: " + theFileName);
         hrus.setEntities(J2KFunctions.readParas(dirName.getValue() + "/" + hruFileName.getValue(), getModel()));
         
         //read reach parameter

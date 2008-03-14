@@ -178,7 +178,7 @@ import org.unijena.jams.model.*;
             double solarRadiation = org.unijena.j2k.physicalCalculations.SolarRadiationCalculationMethods.calc_SolarRadiation(sunsh, maximumSunshine, extraterrRadiation, angstrom_a.getValue(), angstrom_b.getValue());
             //considering slope and aspect
             solarRadiation = solarRadiation * SAC;
-            System.out.println("solRad: " + solarRadiation);
+            
             solRad.setValue(solarRadiation);
             writer.writeDouble(solarRadiation);
         } 

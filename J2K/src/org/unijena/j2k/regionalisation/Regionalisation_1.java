@@ -148,6 +148,13 @@ public class Regionalisation_1 extends JAMSComponent {
     @JAMSVarDescription(
     access = JAMSVarDescription.AccessType.READ,
             update = JAMSVarDescription.UpdateType.INIT,
+            description = "Absolute possible minimum value for data set"
+            )
+            public JAMSDouble fixedMinimum;
+    
+    @JAMSVarDescription(
+    access = JAMSVarDescription.AccessType.READ,
+            update = JAMSVarDescription.UpdateType.INIT,
             description = "Use caching of regionalised data?"
             )
             public JAMSBoolean dataCaching;
@@ -233,7 +240,7 @@ public class Regionalisation_1 extends JAMSComponent {
                 if(sourceData[t] == NODATA){
                     element++;
                     if(element >= wA.length){
-                        //System.out.println("BREAK1: too less data NIDW had been reduced!");
+                        System.out.println("BREAK1: too less data NIDW had been reduced!");
                         cont = false;
                         //value = NODATA;
                     } else{
@@ -268,10 +275,14 @@ public class Regionalisation_1 extends JAMSComponent {
                     if((rsq >= rsqThreshold.getValue()) && (elevationCorrection.getValue())) {  //Elevation correction is applied
                         deltaElev = targetElevation - elev[i];  //Elevation difference between unit and Station
                         double tVal = ((deltaElev * gradient + data[i]) * weights[i]);
+                        //checking for minimum
+                        if(tVal < this.fixedMinimum.getValue())
+                            tVal = this.fixedMinimum.getValue();
                         value = value + tVal;
                         
                         
                     } else{ //No elevation correction
+                        
                         value = value + (data[i] * weights[i]);
                     }
                     
