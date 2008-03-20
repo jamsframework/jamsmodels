@@ -22,7 +22,7 @@ public class HourlySolarRadiationCalculationMethods {
     
     /**
      * calculates the mid time hour angle between two time steps. The hour angle is defined as the angle of the sun before
-     * noon. It is assumed that the sun moves 15° per hour. At times before noon the hour
+     * noon. It is assumed that the sun moves 15Â° per hour. At times before noon the hour
      * angle is positive at noon it is zero and after noon the hour angle is negative.
      * @return the hour angle in dec. degree
      * @param localTimeDateObject the current J2KDate object transferred to real local time
@@ -33,6 +33,28 @@ public class HourlySolarRadiationCalculationMethods {
     public static double calc_midTimeHourAngle(org.unijena.jams.data.JAMSCalendar time, int julDay, double longSite, double longTZ, boolean debug){
         long hour = time.get(time.HOUR_OF_DAY);//localTimeDateObject.decTime();
         long minute = time.get(time.MINUTE);
+        double decMin = minute / 60;
+        double decTime = hour + decMin;
+        if(decTime >= 24.0)
+            decTime = decTime - 24;
+        double midTime = decTime + 0.5;
+        double b = (2 * Math.PI * (julDay - 81)) / 364;
+        double Sc = 0.1645 * Math.sin(2*b)-0.1255 * Math.cos(b) - 0.025 * Math.sin(b);
+        double midTimeHourAngle = Math.PI / 12 * ((midTime + 0.06667 * (longTZ - longSite) + Sc) - 12);
+        
+        if(debug){
+            System.out.println("midTime: " + midTime + "\n" +
+                    "decTime: " + decTime + "\n" +
+                    "b: " + b + "\n" +
+                    "Sc: " + Sc + "\n" +
+                    "midTimeHourAngle: " + midTimeHourAngle);
+        }
+        return midTimeHourAngle;
+    }
+
+    public static double calc_midTimeHourAngle(long hour, int julDay, double longSite, double longTZ, boolean debug){
+        //long hour = time.get(time.HOUR_OF_DAY);//localTimeDateObject.decTime();
+        long minute = 0;
         double decMin = minute / 60;
         double decTime = hour + decMin;
         if(decTime >= 24.0)
@@ -74,13 +96,13 @@ public class HourlySolarRadiationCalculationMethods {
     
     /**
      * calculates the extraterrestrial radiation of the given time step
-     * @param Gsc the solar constant of the current time step [MJ/m²min]
+     * @param Gsc the solar constant of the current time step [MJ/mÂ²min]
      * @param relDist the relative distance Earth -- Sun [rad]
      * @param w1 the hour angle at the beginning of the time step [rad]
      * @param w2 the hour angle at the end of the time step [rad]
      * @param radLat the latitude of the point of interest [rad]
      * @param decl the declination of the sun [rad]
-     * @return the extraterrestial radiation [MJ / m² hour]
+     * @return the extraterrestial radiation [MJ / mÂ² hour]
      */
     public static double calc_HourlyExtraterrestrialRadiation(double Gsc, double relDist, double w1, double w2, double radLat, double decl ){
         double Ra =((12*60)/Math.PI) * Gsc * relDist *((w2 - w1) * Math.sin(radLat) * Math.sin(decl) + Math.cos(radLat) * Math.cos(decl) *(Math.sin(w2)-Math.sin(w1)));
@@ -108,18 +130,18 @@ public class HourlySolarRadiationCalculationMethods {
     
     /**
      * calculates the net (outgoing) longwave radiation uses the
-     * Stefan Bolztmann constant in [MJ / K^4 m² hour]
+     * Stefan Bolztmann constant in [MJ / K^4 mÂ² hour]
      * and 273.16 K to calculate absolute temperatures
-     * @param tmean the air temperature [°C]
+     * @param tmean the air temperature [Â°C]
      * @param ea actual vapour pressure [kPa]
-     * @param Rs actual solar radiation [MJ / m² hour]
-     * @param Rs0 the clear sky solar radiation [MJ / m² hour]
-     * @return the net (outgoing) longwave radiation [MJ / m² hour]
+     * @param Rs actual solar radiation [MJ / mÂ² hour]
+     * @param Rs0 the clear sky solar radiation [MJ / mÂ² hour]
+     * @return the net (outgoing) longwave radiation [MJ / mÂ² hour]
      */
     public static double calc_HourlyNetLongwaveRadiation(double tmean, double ea, double Rs, double Rs0, double Rs_Rs0_t0, boolean debug){
         double relGlobRad = 0;
         double tabs = tmean + 273.16;
-        /** the Stefan Bolztmann constant in [MJ / K^4 m² hour] **/
+        /** the Stefan Bolztmann constant in [MJ / K^4 mÂ² hour] **/
         final double BOLTZMANN = 2.043E-10;
         double Rnl;
         if(Rs0 > 0){
@@ -141,10 +163,10 @@ public class HourlySolarRadiationCalculationMethods {
     }
     
     /**
-     * estimates the soil heat flux [MJ / m² hour]
-     * @param Rn the daily net radiation [MJ / m² hour]
+     * estimates the soil heat flux [MJ / mÂ² hour]
+     * @param Rn the daily net radiation [MJ / mÂ² hour]
      * @param N the potential sunshine hours = daylength [hours]
-     * @return the daily soil heat flux [MJ / m² hour]
+     * @return the daily soil heat flux [MJ / mÂ² hour]
      */
     public static double calc_SoilHeatFlux(double Rn, double N){
         double G;
