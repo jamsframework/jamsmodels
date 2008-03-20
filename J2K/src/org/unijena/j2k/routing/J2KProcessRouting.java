@@ -125,6 +125,19 @@ import org.unijena.jams.model.*;
             )
             public JAMSDouble outRG2;
     
+    @JAMSVarDescription(
+            access = JAMSVarDescription.AccessType.READWRITE,
+            update = JAMSVarDescription.UpdateType.RUN,
+            description = "Downstream hru entity"
+            )
+            public JAMSEntity toPoly;
+    
+    @JAMSVarDescription(
+            access = JAMSVarDescription.AccessType.READWRITE,
+            update = JAMSVarDescription.UpdateType.RUN,
+            description = "Downstream reach entity"
+            )
+            public JAMSEntity toReach;
     
     /*
      *  Component run stages
@@ -132,15 +145,17 @@ import org.unijena.jams.model.*;
     
     public void init() throws JAMSEntity.NoSuchAttributeException {
     }
-    
+
     public void run() throws JAMSEntity.NoSuchAttributeException {
 
         JAMSEntity entity = entities.getCurrent();
-
+        
         //receiving polygon
-        JAMSEntity toPoly = (JAMSEntity) entity.getObject("to_poly");
+        //JAMSEntity toPoly = (JAMSEntity) entity.getObject("to_poly");
+        
         //receiving reach
-        JAMSEntity toReach = (JAMSEntity) entity.getObject("to_reach");
+        //JAMSEntity toReach = (JAMSEntity) entity.getObject("to_reach");
+                
         //receiving reservoir
         JAMSEntity toReservoir = null;
         try{
@@ -154,7 +169,7 @@ import org.unijena.jams.model.*;
         double RG2out = outRG2.getValue();
         
         
-        if(toPoly != null){
+        if(toPoly.getValue() != null){
             double elev = toPoly.getDouble("slope");
             double RD1in = toPoly.getDouble("inRD1");
             double RD2in = toPoly.getDouble("inRD2");
@@ -183,7 +198,7 @@ import org.unijena.jams.model.*;
             toPoly.setDouble("inRD2", RD2in);
             toPoly.setDouble("inRG1", RG1in);
             toPoly.setDouble("inRG2", RG2in);
-        } else if(toReach != null){
+        } else if(toReach.getValue() != null){
             double RD1in = toReach.getDouble("inRD1");
             double RD2in = toReach.getDouble("inRD2");
             double RG1in = toReach.getDouble("inRG1");
