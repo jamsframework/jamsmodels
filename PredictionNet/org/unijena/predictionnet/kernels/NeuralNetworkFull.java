@@ -15,15 +15,16 @@ import Jama.Matrix;
  *
  * @author Christian(web)
  */
-public class NeuralNetwork extends Kernel {
+public class NeuralNetworkFull extends Kernel {
         
     Matrix nnKernel = null;
-    double diag[] = null;
-    
-    public NeuralNetwork(int inputDim) {
-	this.inputDim = inputDim;	
-	this.parameterCount = inputDim + 2;	
-	this.KernelParameterCount = inputDim + 2;	
+
+    int d;
+    public NeuralNetworkFull(int inputDim) {
+	this.inputDim = inputDim;
+        d = inputDim+1;
+	this.parameterCount = d*d + 1;	
+	this.KernelParameterCount = d*d + 1;                
     }
                 
     public boolean SetParameter(double []theta) {
@@ -31,29 +32,19 @@ public class NeuralNetwork extends Kernel {
 	    return false;
 	}
 	this.theta = theta;
-	
-	nnKernel = new Matrix(KernelParameterCount-1,KernelParameterCount-1,0);
-	diag = new double[KernelParameterCount-1];
+	nnKernel = new Matrix(d,d);
 	//light version only main diag
-	for (int i=0;i<KernelParameterCount-1;i++) {	    
-	    nnKernel.set(i,i,theta[i]);	   
-	    diag[i] = theta[i];
+	for (int i=0;i<d;i++) {	    
+            for (int j=0;j<d;j++) {	    
+                nnKernel.set(i,j,theta[i*d+j]);	 
+                nnKernel.set(j,i,theta[i*d+j]);	 
+            }
 	}
 	return true;
     }          
-	    
-    public double SqrDistance2(double x[],double y[]) {
-	double sum = 0;
-	double tmp;
-	for (int i=0;i<x.length;i++) {
-	    tmp = (x[i]-y[i])/theta[i];
-	    sum += tmp*tmp;
-	}	
-	return sum;
-    }
-    
+	            
     public double kernel(double x[],double y[],int index1,int index2) {
-	/*Matrix mx = new Matrix(1,x.length+1);		
+	Matrix mx = new Matrix(1,x.length+1);		
 	Matrix my = new Matrix(y.length+1,1);
 	for (int i=0;i<x.length;i++) {
 	    mx.set(0,i+1,x[i]);
@@ -65,7 +56,7 @@ public class NeuralNetwork extends Kernel {
 	double value1 = mx.times(nnKernel).times(my).get(0,0);
 	double value2 = mx.times(nnKernel).times(mx.transpose()).get(0,0);
 	double value3 = my.transpose().times(nnKernel).times(my).get(0,0);
-	*/
+/*	
 	double value1 = diag[diag.length-1];;
 	double value2 = diag[diag.length-1];;
 	double value3 = diag[diag.length-1];;
@@ -74,7 +65,7 @@ public class NeuralNetwork extends Kernel {
 	    value1 += x[i]*diag[i]*y[i];
 	    value2 += x[i]*diag[i]*x[i];
 	    value3 += y[i]*diag[i]*y[i];
-	}
+	}*/
 	
 	double noise = 0;
 	if (index1 == index2) {

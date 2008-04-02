@@ -110,8 +110,8 @@ public class GaussianLearner extends Learner  {
     int MaximizeEff = 1;
     
     Kernel kernel;
-    static final double resolution = 0.01;
-    static final double limit = 200;
+    static final double resolution = 0.001;
+    static final double limit = 20;
     static double gaussianDistribution[];
 
     public double getMarginalLikelihood() {
@@ -290,17 +290,35 @@ public class GaussianLearner extends Learner  {
         double t = 1.0 - rRMinus1r.get(0,0);
         double tOne = EinsRMinus1Eins.get(0,0);
         
-        double sigma2 = (1.0/(double)this.Observations.getColumnDimension())*(this.Observations.transpose().times(alpha)).get(0,0);
+        //double sigma2 = (1.0/(double)this.Observations.getColumnDimension())*(this.Observations.transpose().times(alpha)).get(0,0);
         
-        //return sigma2*(t + ( (t*t) / tOne));
-        return t;
+        double my_hat = one.times(alpha).get(0,0) / tOne;
         
-        /*double base = this.kernel.kernel(normalize(x),normalize(x),1,2);
+        Matrix tmp = new Matrix(1,TrainLength);
+        for (int i=0;i<TrainLength;i++) {
+            tmp.set(0,i,Observations.get(i,0)-my_hat);
+        }
+        double k = (double)this.Observations.getRowDimension();
+        double my_sigma = tmp.times(Solver.solve(tmp.transpose())).get(0,0) / k;
         
-        return base - prediction.get(0,0);*/
+        double sigma2 = 1.0 - kstar.times(Solver.solve(kstarT)).get(0,0);
+        
+                
+        return Math.abs(my_sigma)*Math.sqrt(sigma2 + sigma2*sigma2 / tOne);
+        
+        //heuristic approach
+        
+        //find nearest neighbour
+/*        double minDistance = 0.0;
+        for (int i=0;i<TrainLength;i++) {
+            double value = this.kernel.kernel(normalize(data[i]),normalize(x),i,-1);
+            if (value > minDistance)
+                minDistance = value;
+        }        
+        return 1.0 - minDistance;*/
     }
     
-    static public double Gauss(double a){
+    static public double NormalDensityFunction(double a){
         return (1.0/Math.sqrt(2*Math.PI))*Math.exp(-0.5*a*a);
     }
     
@@ -313,48 +331,58 @@ public class GaussianLearner extends Learner  {
         double integral = 0.5;
         while (x1 < limit){
             //Simpsonsche Formel
-            integral += (x2 - x1)/6.0 * (Gauss(x1) + 4*Gauss(0.5*(x1+x2))+Gauss(x2));
+            integral += (x2 - x1)/6.0 * (NormalDensityFunction(x1) + 4*NormalDensityFunction(0.5*(x1+x2))+NormalDensityFunction(x2));
             gaussianDistribution[counter++] = integral;
             x1 = x2;
             x2 = x2 + resolution;
         }
     }
+
+    public double CumulativeNormalDistributionFunction(double x){        
+        long index = (long)((Math.abs(x)/limit)*(double)(gaussianDistribution.length));
+        double probability = 0.0;
+        if (index >= (long)gaussianDistribution.length){
+            System.out.println("gp out of range!!");
+            probability = 1.0;
+            }
+        else{            
+            probability = gaussianDistribution[(int)index];
+            }
+        
+        if (x < 0){
+            probability = 1.0 - probability;
+        }       
+        return probability;
+    }
     
-    public double variancecontrol = 1.0;
-    //berechnet wahrscheinlichkeit dafür, dass f(x) < target
+    //probability for value of f(x) < y
     public double GetProbabilityForXLessY(double x[],double target){
         double mean = GetMean(x);
         //variancecontrol, because probability decreases very fast at edges of distrubtion
-        double variance = GetVariance(x)*variancecontrol;
+        double variance = GetVariance(x);
         
-        if (variance < 0.0001)
-            return 0;
+        if (variance < 0.00001)
+            return -1000;
                 
         //transform to 0/1 distriburion        
         target = target - mean;                            
-        target /= variance;
-               
-        //return -Math.exp(-target);
-               
-        double tmp = target;
-        double prob;
-        if (tmp<0)
-            tmp = -tmp;
+        target /= variance;       
                        
-        long index = (long)((tmp/limit)*(double)(gaussianDistribution.length));
+        return CumulativeNormalDistributionFunction(target);
+    }
+    
+    public double GetExpectedImprovement(double x[],double fmin){
+        double mean = GetMean(x);
+        //variancecontrol, because probability decreases very fast at edges of distrubtion
+        double variance = GetVariance(x);
         
-        if (index >= (long)gaussianDistribution.length){
-            System.out.println("gp out of range!!");
-            prob = 1.0;
-            }
-        else{            
-            prob = gaussianDistribution[(int)index];
-            }
+        if (variance < 0.00001)
+            return -1000;
+                
+        //transform to 0/1 distriburion        
+        double u = (fmin - mean) / variance;  
         
-        if (target < 0){
-            prob = 1.0 - prob;
-        }       
-        return prob;
+        return variance*(CumulativeNormalDistributionFunction(u)*u + NormalDensityFunction(u));
     }
     
     public double[] Predict(boolean writeOutput) {	
@@ -379,17 +407,8 @@ public class GaussianLearner extends Learner  {
 	    }
 	}
 	Matrix prediction = (kstar.times(alpha));
-	/*double result[] = new double[m];
-	for (int j=0;j<m;j++) {
-	    result[j] = prediction.get(j,0);
-	}*/
-			
+				
 	result = this.kernel.MM.ReTransform(x,prediction);
-	/*double vresult[] = new double[result.length];
-	
-	for (int i=0;i<result.length;i++) {
-	    
-	}*/
 	
 	if (!writeOutput)
 	    return result;
@@ -490,7 +509,7 @@ public class GaussianLearner extends Learner  {
 	double calpha = 0.1;
 	
 	for (int i=0;i<x.length;i++) {
-	    alpha[i] = 0.1;
+	    alpha[i] = 0.01;
 	}
 	
 	while ( calpha > alpha_min && diff > diff_min ) {	    	    
@@ -525,8 +544,8 @@ public class GaussianLearner extends Learner  {
 			if (k==i) {
 			     xp[k] = x[i] - alpha[i]*grad[i];
 			     
-			     if (xp[k] < -4.0)	xp[k] = -4.0;
-			     if (xp[k] >  4.0)	xp[k] =  4.0;
+			     if (xp[k] < -10.0)	xp[k] = -10.0;
+			     if (xp[k] >  10.0)	xp[k] =  10.0;
 			}
 		    }
 		
@@ -660,6 +679,8 @@ public class GaussianLearner extends Learner  {
 	    case 3: this.kernel = new org.unijena.predictionnet.kernels.MaternClass(this.DataLength); break;
 	    case 5: this.kernel = new org.unijena.predictionnet.kernels.RationalQuadratic(this.DataLength); break;
 	    case 6: this.kernel = new org.unijena.predictionnet.kernels.NeuralNetwork(this.DataLength); break;
+            case 7: this.kernel = new org.unijena.predictionnet.kernels.NoNoiseExponential(this.DataLength); break;
+            case 8: this.kernel = new org.unijena.predictionnet.kernels.NeuralNetworkFull(this.DataLength); break;
 	    
 	    case 12: this.kernel = new org.unijena.predictionnet.kernels.SimpleExponential(this.DataLength); break;
 	    case 13: this.kernel = new org.unijena.predictionnet.kernels.SimpleMatern(this.DataLength); break;
@@ -684,12 +705,20 @@ public class GaussianLearner extends Learner  {
 	    optInit();
 	    double x[] = new double[kernel.getParameterCount()];
 	    for (int i=0;i<x.length;i++)
-		x[i] = 1.0 / kernel.getParameterCount();
+		x[i] = Math.log(this.param_theta.getValue()[i]);//1.0 / kernel.getParameterCount();
 	    
-	    GradientDescent(x);
+	    GradientDescent(x);                        
 	}
 	trainInit();
-	Train(0); 
+        
+	if (Train(0) < -10000000000.0){
+            optInit();
+	    double x[] = new double[kernel.getParameterCount()];
+	    for (int i=0;i<x.length;i++)
+		x[i] = 1.0 / kernel.getParameterCount();
+	    
+	    GradientDescent(x);                                
+        }
 	Predict(true);
     }    
 }
