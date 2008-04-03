@@ -153,7 +153,7 @@ import org.unijena.jams.model.*;
         double[] emf = new double[12];
         String emfName;
         if(this.haudeET != null && this.haudeET.getValue())
-            emfName = "HaudeFactor_";
+            emfName = "HF_";
         else
             emfName = "RSC0_";
         
