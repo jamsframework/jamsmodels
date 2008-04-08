@@ -46,116 +46,74 @@ import org.unijena.jams.model.*;
     /*
      *  Component variables
      */
-    @JAMSVarDescription(
-            access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.INIT,
-            description = "Workspace directory name"
-            )
-            public JAMSString dirName;
-    
-    @JAMSVarDescription(
-            access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.INIT,
-            description = "Collection of hru objects"
-            )
-            public JAMSEntityCollection hrus;
-    
+
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
             update = JAMSVarDescription.UpdateType.RUN,
-            description = "The current hru entity"
-            )
-            public JAMSEntity entity;
-    
-    @JAMSVarDescription(
-            access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.RUN,
-            description = "Current time"
-            )
-            public JAMSCalendar time;
-    
-    @JAMSVarDescription(
-            access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.INIT,
             description = "state variable mean temperature"
             )
-            public JAMSString aNameTmean;
+            public JAMSDouble tmean;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.INIT,
+            update = JAMSVarDescription.UpdateType.RUN,
             description = "state variable relative humidity"
             )
-            public JAMSString aNameRhum;
+            public JAMSDouble rhum;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.INIT,
+            update = JAMSVarDescription.UpdateType.RUN,
             description = "state variable haude factor"
             )
-            public JAMSString aNameHaudeFactor;
+            public JAMSDouble haudeFactor;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.INIT,
+            update = JAMSVarDescription.UpdateType.RUN,
             description = "attribute area"
             )
-            public JAMSString aNameArea;
+            public JAMSDouble area;
     
     @JAMSVarDescription(
-            access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.INIT,
+            access = JAMSVarDescription.AccessType.WRITE,
+            update = JAMSVarDescription.UpdateType.RUN,
             description = "daily potential ETP [mm/d]"
             )
-            public JAMSString aNamePotETP;
+            public JAMSDouble pET;
     
     @JAMSVarDescription(
-            access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.INIT,
+            access = JAMSVarDescription.AccessType.WRITE,
+            update = JAMSVarDescription.UpdateType.RUN,
             description = "daily actual ETP [mm/d]"
             )
-            public JAMSString aNameActETP;
+            public JAMSDouble aET;
     
-    private File cacheFile;
-    private boolean useCache = false;
-    private ObjectOutputStream writer;
-    private ObjectInputStream reader;
+    
     
     /*
      *  Component run stages
      */
     
     public void init() throws JAMSEntity.NoSuchAttributeException, IOException {
-        //first, check if cached data are available
-        cacheFile = new File(dirName.getValue() + "/$" + this.getInstanceName() + ".cache");
-        if (cacheFile.exists() && false) {
-            useCache = true;
-                       
-            reader = new ObjectInputStream(new BufferedInputStream(new FileInputStream(cacheFile)));//new FileInputStream(cacheFile));
-        } else {
-            useCache = false;
-            writer = new ObjectOutputStream(new BufferedOutputStream(new FileOutputStream(cacheFile)));
-        }
+        
     }
-    
     public void run() throws JAMSEntity.NoSuchAttributeException, IOException {
-        if (!useCache) {
-            int month = time.get(time.MONTH) + 1;
-            double temperature = entity.getDouble(aNameTmean.getValue());
-            double rhum = entity.getDouble(aNameRhum.getValue());
-            double area = entity.getDouble(aNameArea.getValue());
-            String hFactStr = aNameHaudeFactor.getValue() + month;
-            double h_factor = entity.getDouble(hFactStr);
-            double est = org.unijena.j2k.physicalCalculations.ClimatologicalVariables.calc_saturationVapourPressure(temperature);
+        
+            double tmeanVal = tmean.getValue();
+            double rhumVal = rhum.getValue();
+            double areaVal = area.getValue();
+            double h_factor = haudeFactor.getValue();
+            double est = org.unijena.j2k.physicalCalculations.ClimatologicalVariables.calc_saturationVapourPressure(tmeanVal);
             //kPa -> hPa
             est = 10 * est;
                         
-            double pETP = est * (1 - (rhum/100.)) * h_factor; 
+            double pETP = est * (1 - (rhumVal/100.)) * h_factor; 
             
             double aETP = 0;
             
             //converting mm to litres
-            pETP = pETP * area;
+            pETP = pETP * areaVal;
             
             //avoiding negative potETPs
             if(pETP < 0){
@@ -163,24 +121,15 @@ import org.unijena.jams.model.*;
             }
             
             //conversion from daily to hourly values
-            pETP = pETP / 24;
+            //pETP = pETP / 24;
             
-            entity.setDouble(aNamePotETP.getValue(), pETP);
-            writer.writeDouble(pETP);
-            entity.setDouble(aNameActETP.getValue(), aETP);
-        } 
-        else {
-            entity.setDouble(aNamePotETP.getValue(), reader.readDouble());
-            entity.setDouble(aNameActETP.getValue(), 0);
-        }
+            pET.setValue(pETP);
+            aET.setValue(aETP);
+        
+        
     }
     
     public void cleanup()  throws IOException {
-        if (!useCache) {
-            writer.flush();
-            writer.close();
-        } else {
-            reader.close();
-        }
+        
     }
 }

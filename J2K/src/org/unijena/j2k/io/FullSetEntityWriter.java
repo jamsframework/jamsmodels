@@ -86,6 +86,7 @@ public class FullSetEntityWriter extends JAMSComponent {
             )
             public JAMSString weight;
     
+   
     private GenericDataWriter writer;
     private String[] attrs;
     private boolean headerWritten;
