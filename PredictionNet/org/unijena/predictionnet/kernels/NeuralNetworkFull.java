@@ -23,8 +23,8 @@ public class NeuralNetworkFull extends Kernel {
     public NeuralNetworkFull(int inputDim) {
 	this.inputDim = inputDim;
         d = inputDim+1;
-	this.parameterCount = d*d + 1;	
-	this.KernelParameterCount = d*d + 1;                
+	this.parameterCount = d*(d+1)/2 + 1;	
+	this.KernelParameterCount = d*(d+1)/2 + 1;                
     }
                 
     public boolean SetParameter(double []theta) {
@@ -33,13 +33,19 @@ public class NeuralNetworkFull extends Kernel {
 	}
 	this.theta = theta;
 	nnKernel = new Matrix(d,d);
+        
+        Matrix G = new Matrix(d,d);
 	//light version only main diag
+        int counter = 0;
 	for (int i=0;i<d;i++) {	    
-            for (int j=0;j<d;j++) {	    
-                nnKernel.set(i,j,theta[i*d+j]);	 
-                nnKernel.set(j,i,theta[i*d+j]);	 
+            for (int j=i;j<d;j++) {	  
+                G.set(j,i,0);
+                G.set(i,j,5.0*Math.log(theta[counter]));                
+                counter++;
             }
 	}
+        //this makes sure, that nnKernel ist SPD
+        nnKernel = G.times(G.transpose());
 	return true;
     }          
 	            

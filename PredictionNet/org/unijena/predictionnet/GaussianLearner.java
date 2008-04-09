@@ -94,7 +94,7 @@ public class GaussianLearner extends Learner  {
             public JAMSBoolean doOptimization;
     
     Matrix CovarianzMatrix;
-    CholeskyDecomposition Solver;
+    LUDecomposition Solver;
     Matrix Observations;
     Matrix alpha;
     Matrix invCovarianzMatrix;
@@ -194,7 +194,7 @@ public class GaussianLearner extends Learner  {
 	    try {
 		reader = new BufferedReader(new FileReader(this.parameterFile.getValue()));
 		for (int i=0;i<theta.length;i++) {
-		    logtheta[i] = Math.log(new Double(reader.readLine()).doubleValue());	
+		    logtheta[i] = (new Double(reader.readLine()).doubleValue());	
 		}
 		reader.close();
 	    }
@@ -228,10 +228,11 @@ public class GaussianLearner extends Learner  {
 	    CovarianzMatrix.set(i,i,varianz);	    
 	}	
 		
-	Observations = this.kernel.MM.Transform(data,result);		
-	Solver = CovarianzMatrix.chol();
+	Observations = this.kernel.MM.Transform(data,result);	       
+	Solver = CovarianzMatrix.lu();
+        
 	//error!!
-	if (!Solver.isSPD()) {
+	if (!Solver.isNonsingular()) {
 	    System.out.println("NOT a SPD Matrix");
 	    return -1000000000000.0;
 	}
@@ -702,22 +703,36 @@ public class GaussianLearner extends Learner  {
         setKernels();
         
 	if (doOptimization.getValue()) {
+            double x[] = new double[kernel.getParameterCount()];
+	    for (int i=0;i<x.length;i++){
+                if (this.param_theta != null)
+                    x[i] = Math.log(this.param_theta.getValue()[i]);//1.0 / kernel.getParameterCount();
+                else
+                    x[i] = 1.0/x.length;
+            }
+            while (Train(0) < -100000.0){
+                for (int i=0;i<x.length;i++){
+                    x[i] = (generator.nextDouble()*10.0);
+                }
+                if (this.param_theta != null)
+                    this.param_theta.setValue(x);
+            }
 	    optInit();
-	    double x[] = new double[kernel.getParameterCount()];
-	    for (int i=0;i<x.length;i++)
-		x[i] = Math.log(this.param_theta.getValue()[i]);//1.0 / kernel.getParameterCount();
-	    
+	    	    
 	    GradientDescent(x);                        
 	}
 	trainInit();
-        
-	if (Train(0) < -10000000000.0){
-            optInit();
+        double performance;
+	while ((performance = Train(0)) < -100000.0){            
 	    double x[] = new double[kernel.getParameterCount()];
 	    for (int i=0;i<x.length;i++)
-		x[i] = 1.0 / kernel.getParameterCount();
-	    
-	    GradientDescent(x);                                
+		x[i] = (generator.nextDouble()*10.0);
+            if (this.param_theta != null)
+                this.param_theta.setValue(x);
+	    if (performance > -100000.0){
+                optInit();
+                GradientDescent(x);                                
+            }
         }
 	Predict(true);
     }    

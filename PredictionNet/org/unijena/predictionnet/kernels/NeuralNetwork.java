@@ -78,7 +78,7 @@ public class NeuralNetwork extends Kernel {
 	
 	double noise = 0;
 	if (index1 == index2) {
-	    noise = 0.0;//theta[KernelParameterCount-1]*theta[KernelParameterCount-1];
+	    noise = theta[KernelParameterCount-1]*theta[KernelParameterCount-1];
 	}
 	return (2.0/Math.PI)*Math.asin(2.0*value1 / Math.sqrt((1+2.0*value2)*(1+2.0*value3))) + noise;		
     }
