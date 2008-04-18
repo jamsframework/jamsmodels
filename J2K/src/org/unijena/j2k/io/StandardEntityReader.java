@@ -224,15 +224,13 @@ public class StandardEntityReader extends JAMSComponent {
                     eDepth = depthMap.get(e);
                     fDepth = depthMap.get(f);
                     if (fDepth.intValue() <= eDepth.intValue()) {
-                        depthMap.put(f, new Integer(fDepth.intValue() + 1));
-                        //System.out.println("Processing entity: " + e.getDouble("ID"));
+                        depthMap.put(f, new Integer(eDepth.intValue() + 1));
                         mapChanged = true;
 
                     }
                 }
             }
         }
-
 
         //find out which is the max depth of all entities
         maxDepth = 0;
