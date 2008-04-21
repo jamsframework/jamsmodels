@@ -1467,6 +1467,7 @@ import java.io.*;
         }
         return denit_trans;
     }
+    
     private double calc_nitrateupmove(int j){
         double n_upmove = 0;
         double runaEvap = aEP_h.getValue()[j];

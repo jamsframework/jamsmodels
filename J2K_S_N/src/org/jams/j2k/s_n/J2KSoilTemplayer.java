@@ -366,7 +366,7 @@ import org.unijena.jams.model.*;
 //        double temp_mean = atemp_mean.getValue();
 /*        epsilon_solar = (entity.getDouble(aNameradiation.getValue())*(1-entity.getDouble(aNamesoilalbedo.getValue()))-14)/20;
  */
-        epsilon_solar = (radiation * (1 - 0.2) - 14) / 20;
+        //epsilon_solar = (radiation * (1 - 0.2) - 14) / 20;
         coverweightveg = vegetationcover/(vegetationcover + Math.exp(7.563-(0.0001297*vegetationcover)));
         
         coverweightsnow = snowcov/(snowcov + Math.exp(6.055-(0.3002*snowcov)));

@@ -153,7 +153,7 @@ import org.unijena.jams.model.*;
         double reachNRD2in = 0;
 //        System.out.println("NRD2out: " + NRD2out);
         
-       if(toPoly != null){
+       if(toPoly.getValue() != null){
             double[] srcDepth = ((JAMSDoubleArray)entity.getObject("depth_h")).getValue();
             double[] recDepth = ((JAMSDoubleArray)toPoly.getObject("depth_h")).getValue();
             int srcHors = srcDepth.length;
@@ -217,7 +217,7 @@ import org.unijena.jams.model.*;
             toPoly.setObject("InterflowN_in", rdAN);
             toPoly.setDouble("N_RG1_in", NRG1in);
             toPoly.setDouble("N_RG2_in", NRG2in);
-        } else if(toReach != null){
+        } else if(toReach.getValue() != null){
             
             double NRD1in = toReach.getDouble("SurfaceN_in");
 /*            
