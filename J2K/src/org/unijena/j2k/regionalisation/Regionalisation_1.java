@@ -29,7 +29,7 @@ import org.unijena.jams.model.*;
 
 /**
  *
- * @author S. Kralisch
+ * @author Peter Krause
  */
 public class Regionalisation_1 extends JAMSComponent {
     

@@ -23,7 +23,6 @@
 
 package org.unijena.j2k.routing;
 
-import org.unijena.jams.JAMS;
 import org.unijena.jams.data.*;
 import org.unijena.jams.model.*;
 
