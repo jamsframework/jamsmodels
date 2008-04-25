@@ -68,7 +68,8 @@ public class SubsetSelect extends JAMSContext {
 	     predict = (double[])InputData.getObject("predict");
 	}
 	catch(Exception e) {
-	    System.out.println("Konnte InputData nicht finden" + e.toString());
+            this.getModel().getRuntime().sendHalt("Could not find input data for subset selection" + e.toString());
+	    return;
 	}
 	
 	if (active.getValue() == false) {
@@ -76,11 +77,18 @@ public class SubsetSelect extends JAMSContext {
 	    OutputData.setObject("predict",predict);
 	    return;
 	}
-	
-	System.out.println("Optimiere Trainingsdaten!");
-	
+	this.getModel().getRuntime().sendInfoMsg("Optimiere Trainingsdaten!");
+
+        if ( n.getValue() <= 0){
+            this.getModel().getRuntime().sendHalt("subsetsize less or equal zero!");
+	    return; 
+        }
+        
 	int Ngoal = n.getValue();
 	int N0 = data.length;
+        if (Ngoal > N0){
+            Ngoal = N0;
+        }
 	int M = data[0].length;
 		
 	int set[] = new int[Ngoal];
@@ -106,8 +114,6 @@ public class SubsetSelect extends JAMSContext {
 	    for (int j=0;j<N0;j++) {		
 		if (inSet[j])
 		    continue;
-		/*if (HashFilter.contains(new Double(hash_value[j])))
-		    continue;*/
 				
 		for (int l=0;l<M;l++) {
 		    variance[j] += (data[j][l] - data[set[i-1]][l])*(data[j][l] - data[set[i-1]][l]);
@@ -118,7 +124,7 @@ public class SubsetSelect extends JAMSContext {
 		}
 	    }
 	    if (bestValue == -1) {
-		System.out.println("No enough data!!");
+                this.getModel().getRuntime().sendHalt("subset size large than number of available datasets");
 	    }
 	    inSet[bestIndex] = true;
 	    HashFilter.add(new Double(hash_value[bestIndex]));
@@ -152,6 +158,6 @@ public class SubsetSelect extends JAMSContext {
 	OutputData.setObject("data",optimizedata);
 	OutputData.setObject("predict",optimizepredict);
 	
-	System.out.println("Fertig!");
+        this.getModel().getRuntime().sendInfoMsg("finished subset selection");	
     }
 }

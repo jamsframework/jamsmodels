@@ -13,6 +13,14 @@ public class SimplePeriodic extends Kernel {
 	this.KernelParameterCount = 3;
     }
        
+    public String[] getKernelParameterNames(){
+        this.KernelParameterNames[0] = "l";
+        this.KernelParameterNames[1] = "period";
+        this.KernelParameterNames[2] = "sigma";
+        
+        return KernelParameterNames;
+    }
+    
     public double SqrDistance2(double x[],double y[]) {
 	double sum = 0;
 	double tmp;

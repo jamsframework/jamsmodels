@@ -26,7 +26,15 @@ public class NeuralNetworkFull extends Kernel {
 	this.parameterCount = d*(d+1)/2 + 1;	
 	this.KernelParameterCount = d*(d+1)/2 + 1;                
     }
+     
+    public String[] getKernelParameterNames(){
+        for (int i=0;i<inputDim;i++){
+            this.KernelParameterNames[i] = "P_i" + i;
+        }
                 
+        return KernelParameterNames;
+    }
+    
     public boolean SetParameter(double []theta) {
 	if (theta.length < parameterCount) {
 	    return false;
@@ -77,7 +85,7 @@ public class NeuralNetworkFull extends Kernel {
 	if (index1 == index2) {
 	    noise = 0.0;//theta[KernelParameterCount-1]*theta[KernelParameterCount-1];
 	}
-	return (2.0/Math.PI)*Math.asin(2.0*value1 / Math.sqrt((1+2.0*value2)*(1+2.0*value3))) + noise;		
+	return ((2.0/Math.PI)*Math.asin((1.0+2.0*value1) / Math.sqrt((1+2.0*value2)*(1+2.0*value3)))) + noise;		
     }
     
     public double dkernel(double x[],double y[],int d) {

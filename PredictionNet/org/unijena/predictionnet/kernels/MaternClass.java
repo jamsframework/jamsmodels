@@ -21,6 +21,15 @@ public class MaternClass extends Kernel {
 	this.KernelParameterCount = inputDim + 1;
     }
        
+    public String[] getKernelParameterNames(){
+        for (int i=0;i<inputDim;i++){
+            this.KernelParameterNames[i] = "l_" + i;
+        }
+        this.KernelParameterNames[inputDim] = "sigma" ;
+        
+        return KernelParameterNames;
+    }
+    
     public double SqrDistance2(double x[],double y[]) {
 	double sum = 0;
 	double tmp;

@@ -41,14 +41,7 @@ public class DataLoader extends JAMSComponent {
             description = "TimeSerie of Temp Data"
             )
              public JAMSInteger ExampleLength;
-    
-    @JAMSVarDescription(
-            access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.INIT,
-            description = "TimeSerie of Temp Data"
-            )
-             public JAMSInteger numOfExamples;
-                                      
+                                              
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
             update = JAMSVarDescription.UpdateType.INIT,
@@ -93,33 +86,49 @@ public class DataLoader extends JAMSComponent {
             }
         }
 	int ExamplLength = ExampleLength.getValue();
-	int numOfExampl  = numOfExamples.getValue();
+	int numOfExampl  = 0;
 	int RelevantTime = this.relevantTime.getValue();
 	
+        if (ExamplLength <= 0){
+            this.getModel().getRuntime().sendHalt("inputDimension is less or equal zero!");
+            return;
+        }
+        if (RelevantTime <= 0){
+            this.getModel().getRuntime().sendHalt("Relevant timesteps is less or equal zero!");
+            return;
+        }
+        
         try {
             reader = new BufferedReader(new FileReader(datafile.getValue()));
         } catch (IOException ioe) {
+            this.getModel().getRuntime().sendHalt("could not open datafile " + datafile.getValue() + "; wrong path?");
             JAMS.handle(ioe);
+            return;
         }
 	String nextString = null;
 	try {
 	    int i = 0;
 	    while ((nextString = reader.readLine()) != null) {	    	    
-	      StringTokenizer st = new StringTokenizer(nextString, "\t");
+                StringTokenizer st = new StringTokenizer(nextString, "\t");
 		double[] Example = new double[ExamplLength];
 		double[] Predict = new double[1];
-	    
+	                                    
 		try {
 		    for (int j = 0; j < ExamplLength; j++) {		
 			Example[j] = (new Double(st.nextToken())).doubleValue();
 		    }
 		    Predict[0] = (new Double(st.nextToken())).doubleValue();
-		} catch(Exception e) {
-		    System.out.println("Error in Dataset: " + i + " stop reading! (not enough tokens)");
-		    break;
-		}	    	    	    	    
+		}catch(NoSuchElementException e) {
+                    this.getModel().getRuntime().sendHalt("Error in row " + i + "\nstop reading! (not enough numbers in row\nExpected " + (ExamplLength+1) + ")");
+		    JAMS.handle(e);
+                    break;
+		}catch(NumberFormatException e) {
+                    this.getModel().getRuntime().sendHalt("Error in row " + i + "\nstop reading!\nNot a number!!");
+		    JAMS.handle(e);
+                    break;
+                }
 		if (st.hasMoreTokens()) {
-		    System.out.println("Error in Dataset: " + i + " stop reading! (too many tokens)");
+		    this.getModel().getRuntime().sendHalt("Error in row " + i + ";stop reading! (too many numbers in row\nExpected " + (ExamplLength+1) + ")");                    
 		    break;
 		}
 	    
@@ -128,35 +137,35 @@ public class DataLoader extends JAMSComponent {
 	    
 		i++;
 	    }	
+            numOfExampl = i;
 	} catch (IOException ioe) {
+            this.getModel().getRuntime().sendHalt("could not read datafile " + datafile.getValue());
             JAMS.handle(ioe);
         }
 
         Vector<double[]> data = new Vector();
         Vector<Double> predict = new Vector();       
         
-	/*double data[][] = new double[numOfExampl][RelevantTime*ExamplLength];
-	double predict[] = new double[numOfExampl];*/
-	
         boolean isExcluded = false;
-	for (int i=0;i<numOfExampl;i++) {
+	for (int i=0;i<numOfExampl-RelevantTime;i++) {
             isExcluded = false;
-             double Sample[] = new double[RelevantTime*ExamplLength];
+            double Sample[] = new double[RelevantTime*ExamplLength];
 	    for (int j=0;j<RelevantTime;j++) {                
                 if (excluded.contains(new Integer(i+j))){
                     isExcluded = true;
                     break;
                 }                
 		double entry[] = rawData.get(new Integer(i+j));
+                
 		for (int k=0;k<ExamplLength;k++) {
 		    Sample[j*ExamplLength+k] = entry[k];
 		}
                 
 	    }
+            
             if (isExcluded)
                 continue;
-	    if (i+RelevantTime-1+dataShift.getValue() < 0) {
-		System.out.println("Warning: Dataset: " + i + "contains no prediction!!");
+	    if (i+RelevantTime-1+dataShift.getValue() < 0) {                
 		continue;
 	    }
             if (excluded.contains(new Integer(i+RelevantTime-1+dataShift.getValue()))){

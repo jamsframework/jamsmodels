@@ -25,7 +25,17 @@ public class NeuralNetwork extends Kernel {
 	this.parameterCount = inputDim + 2;	
 	this.KernelParameterCount = inputDim + 2;	
     }
-                
+
+    public String[] getKernelParameterNames(){
+        for (int i=0;i<inputDim;i++){
+            this.KernelParameterNames[i] = "l_" + i;
+        }
+        this.KernelParameterNames[inputDim] = "bias";
+        this.KernelParameterNames[inputDim+1] = "sigma";
+        
+        return KernelParameterNames;
+    }
+    
     public boolean SetParameter(double []theta) {
 	if (theta.length < parameterCount) {
 	    return false;

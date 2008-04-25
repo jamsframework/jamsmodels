@@ -13,13 +13,24 @@ package org.unijena.predictionnet.kernels;
  *
  * @author Christian(web)
  */
-public class Exponential extends Kernel {    	                  
+public class Exponential extends Kernel {    	
+    
     public Exponential(int inputDim) {
 	this.inputDim = inputDim;	
 	this.KernelParameterCount = inputDim + 1;
 	this.parameterCount = inputDim + 1;
+                
     }
        
+    public String[] getKernelParameterNames(){
+        for (int i=0;i<inputDim;i++){
+            this.KernelParameterNames[i] = "l_" + i;
+        }
+        this.KernelParameterNames[inputDim] = "sigma" ;
+        
+        return KernelParameterNames;
+    }
+    
     public double SqrDistance2(double x[],double y[]) {
 	double sum = 0;
 	double tmp;

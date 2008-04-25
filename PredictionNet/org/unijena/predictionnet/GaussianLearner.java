@@ -95,6 +95,8 @@ public class GaussianLearner extends Learner  {
     
     Matrix CovarianzMatrix;
     LUDecomposition Solver;
+    CholeskyDecomposition fastSolver = null;
+            
     Matrix Observations;
     Matrix alpha;
     Matrix invCovarianzMatrix;
@@ -110,6 +112,7 @@ public class GaussianLearner extends Learner  {
     int MaximizeEff = 1;
     
     Kernel kernel;
+    String kernelParameterNames[];
     static final double resolution = 0.001;
     static final double limit = 20;
     static double gaussianDistribution[];
@@ -118,8 +121,11 @@ public class GaussianLearner extends Learner  {
 	double n = this.TrainLength;
 	double term1 = -0.5*Observations.transpose().times(this.alpha).get(0,0);		
 	double term2 = 0;
-	
-	Matrix L = this.Solver.getL();
+        Matrix L = null;
+	if (fastSolver == null)
+            L = fastSolver.getL();
+        else
+            L = Solver.getL();
 	
 	for (int i=0;i<L.getColumnDimension();i++) {
 	    term2 += 2.0 * Math.log(L.get(i,i));
@@ -131,7 +137,8 @@ public class GaussianLearner extends Learner  {
     }
     
     public double getLOOlogPredictiveProbability() {	
-	invCovarianzMatrix = this.CovarianzMatrix.inverse();	
+	if (invCovarianzMatrix == null)
+            invCovarianzMatrix = this.CovarianzMatrix.inverse();
 	double logp = 0;
 	
 	for (int i=0;i<TrainLength;i++) {
@@ -150,8 +157,8 @@ public class GaussianLearner extends Learner  {
     }
     
     public double getLOOSquareError() {	
-	//Matrix id = Matrix.identity(CovarianzMatrix.getRowDimension(),CovarianzMatrix.getRowDimension());	
-	invCovarianzMatrix = this.CovarianzMatrix.inverse();
+	if (invCovarianzMatrix == null)
+            invCovarianzMatrix = this.CovarianzMatrix.inverse();
 	double error = 0;
 	
 	for (int i=0;i<TrainLength;i++) {
@@ -172,7 +179,7 @@ public class GaussianLearner extends Learner  {
 	    correctValue = ((double[])this.validationData.getObject("predict"));
 	}
 	catch(Exception e) {
-	    System.out.println("GP SplitValidation - Error: " + e.toString());
+            this.getModel().getRuntime().sendInfoMsg("error occured, while calculating performance measure " + e.toString());
 	}
 	double sum = 0.0;
 	for (int i=0;i<result.length;i++) {
@@ -183,11 +190,11 @@ public class GaussianLearner extends Learner  {
     
     public double Train(int PerformanceMeasure) {
 	CovarianzMatrix = new Matrix(TrainLength,TrainLength);
-	Observations = new Matrix(TrainLength,1);
-			
+	Observations = new Matrix(TrainLength,1);        
 	theta = new double[this.kernel.getParameterCount()];
 	logtheta = new double[this.kernel.getParameterCount()];
-	
+	invCovarianzMatrix = null;
+        
 	//read params from file
 	if (this.parameterFile != null && param_theta == null) {
 	    BufferedReader reader;
@@ -199,8 +206,10 @@ public class GaussianLearner extends Learner  {
 		reader.close();
 	    }
 	    catch (Exception e) {
-	        System.out.println("Could not open or read parameter file, becauce:" + e.toString());
-	        return 0.0;
+                this.getModel().getRuntime().sendInfoMsg("Could not open or read parameter file, becauce:" + e.toString());
+	        for (int i=0;i<logtheta.length;i++){
+                    logtheta[i] = 0.0;
+                }
 	    }	
 	}
 	//try to use parameters directly
@@ -214,7 +223,7 @@ public class GaussianLearner extends Learner  {
 	    theta[i] = Math.exp(logtheta[i]);
 	}
 	if (!this.kernel.SetParameter(theta)) {
-	    System.out.println("zu wenig Parametern");
+            this.getModel().getRuntime().sendInfoMsg("covariance function has more parameters than specified!");	    
 	}
 			
 	for (int i=0;i<TrainLength;i++) {	    
@@ -228,15 +237,21 @@ public class GaussianLearner extends Learner  {
 	    CovarianzMatrix.set(i,i,varianz);	    
 	}	
 		
-	Observations = this.kernel.MM.Transform(data,result);	       
-	Solver = CovarianzMatrix.lu();
-        
-	//error!!
-	if (!Solver.isNonsingular()) {
-	    System.out.println("NOT a SPD Matrix");
-	    return -1000000000000.0;
-	}
-	alpha = Solver.solve(Observations);
+	Observations = this.kernel.MM.Transform(data,result);
+        this.fastSolver = CovarianzMatrix.chol();
+        if (!fastSolver.isSPD()){
+            fastSolver = null;
+            this.getModel().getRuntime().sendInfoMsg("current covariancematrix is not SPD, using LU decomposition instead");	    
+            Solver = CovarianzMatrix.lu();
+            if (!Solver.isNonsingular()) {
+                this.getModel().getRuntime().sendInfoMsg("current covariancematrix is singular, can`t create model with this dataset/parameter combination!");	    
+                return -1000000000000.0;
+            }
+        }	
+        if(fastSolver==null)
+            alpha = Solver.solve(Observations);
+        else
+            alpha = fastSolver.solve(Observations);
 		
 	switch (PerformanceMeasure) {
 	    case 1: return getMarginalLikelihood();
@@ -290,9 +305,7 @@ public class GaussianLearner extends Learner  {
         
         double t = 1.0 - rRMinus1r.get(0,0);
         double tOne = EinsRMinus1Eins.get(0,0);
-        
-        //double sigma2 = (1.0/(double)this.Observations.getColumnDimension())*(this.Observations.transpose().times(alpha)).get(0,0);
-        
+                
         double my_hat = one.times(alpha).get(0,0) / tOne;
         
         Matrix tmp = new Matrix(1,TrainLength);
@@ -305,18 +318,7 @@ public class GaussianLearner extends Learner  {
         double sigma2 = 1.0 - kstar.times(Solver.solve(kstarT)).get(0,0);
         
                 
-        return Math.abs(my_sigma)*Math.sqrt(sigma2 + sigma2*sigma2 / tOne);
-        
-        //heuristic approach
-        
-        //find nearest neighbour
-/*        double minDistance = 0.0;
-        for (int i=0;i<TrainLength;i++) {
-            double value = this.kernel.kernel(normalize(data[i]),normalize(x),i,-1);
-            if (value > minDistance)
-                minDistance = value;
-        }        
-        return 1.0 - minDistance;*/
+        return Math.abs(my_sigma)*Math.sqrt(sigma2 + sigma2*sigma2 / tOne);                  
     }
     
     static public double NormalDensityFunction(double a){
@@ -343,7 +345,7 @@ public class GaussianLearner extends Learner  {
         long index = (long)((Math.abs(x)/limit)*(double)(gaussianDistribution.length));
         double probability = 0.0;
         if (index >= (long)gaussianDistribution.length){
-            System.out.println("gp out of range!!");
+            //System.out.println("gp out of range!!");
             probability = 1.0;
             }
         else{            
@@ -386,6 +388,70 @@ public class GaussianLearner extends Learner  {
         return variance*(CumulativeNormalDistributionFunction(u)*u + NormalDensityFunction(u));
     }
     
+    public double GetMarginalLikelihoodWithAdditionalSample(double x[],double value){
+        if (invCovarianzMatrix == null)
+            invCovarianzMatrix = this.CovarianzMatrix.inverse(); 
+                        
+        Matrix kstar = new Matrix(TrainLength,1);        
+        Matrix one = new Matrix(TrainLength,1);        
+        
+        for (int i=0;i<TrainLength;i++) {	    
+            //calculate covariance for xi,x
+            double variance = this.kernel.kernel(normalize(data[i]),normalize(x),i,-1);
+            kstar.set(i,0,variance);                          
+            one.set(i,0,1.0);                          
+        }   
+                        
+        Matrix Zu = invCovarianzMatrix.times(kstar);
+        double uZu = 1.0/(1.0 + kstar.transpose().times(invCovarianzMatrix.times(kstar)).get(0,0));
+        
+        //sherman morrision
+        //(Z + uv^T)^-1 = Z-1 - (Z^-1*uvT*Z^-1)/(1+vTZ^-1u)
+        Matrix modifiedInvCovarianzMatrix = invCovarianzMatrix.minus(Zu.times(Zu.transpose()).times(uZu));
+                
+        double mean = one.transpose().times(modifiedInvCovarianzMatrix.times(Observations)).get(0,0) / one.transpose().times(one).get(0,0);
+        
+        Matrix modifiedObservations = Observations.minus(one.times(mean).plus(kstar.times(value-mean)));
+        
+        double n = this.TrainLength;
+	double term1 = -0.5*modifiedObservations.transpose().times(modifiedInvCovarianzMatrix.times(modifiedObservations)).get(0,0);		
+	double term2 = -0.5*Math.log(modifiedInvCovarianzMatrix.det()) ;		
+	double term3 = -n/2.0 * Math.log(2*Math.PI);
+	return (term1 + term2 + term3);        
+    }
+    
+    public double Predict(double[] x){
+        Matrix kstar = new Matrix(1,TrainLength);                
+        
+        for (int i=0;i<TrainLength;i++) {	    
+	//calculate covariance for xi,x
+            double varianz = this.kernel.kernel(normalize(data[i]),normalize(x),i,-1);
+            kstar.set(0,i,varianz);
+        }
+	Matrix prediction = (kstar.times(alpha));
+        
+        double xx[][] = new double[1][2];
+        xx[0][0] = x[0];
+        xx[0][1] = x[1];
+        
+        return this.kernel.MM.ReTransform(xx,prediction)[0];                
+    }
+    
+    public double[] Predict(double[][] x){
+        Matrix kstar = new Matrix(x.length,TrainLength);                
+        
+        for (int j=0;j<x.length;j++){
+            for (int i=0;i<TrainLength;i++) {	    
+            //calculate covariance for xi,x
+                double varianz = this.kernel.kernel(normalize(data[i]),normalize(x[j]),i,-1);
+                kstar.set(j,i,varianz);
+            }
+        }
+	Matrix prediction = (kstar.times(alpha));
+                                
+        return this.kernel.MM.ReTransform(x,prediction);                
+    }
+    
     public double[] Predict(boolean writeOutput) {	
 	double x[][] = null;
 	double correctValue[] = null;
@@ -393,8 +459,8 @@ public class GaussianLearner extends Learner  {
 	    x = (double[][])validationData.getObject("data");
 	    correctValue = (double[])validationData.getObject("predict");
 	}catch(Exception e) {
-	    System.out.println("Could not find validation data. " + e.toString());
-	    return null;
+            this.getModel().getRuntime().sendHalt("there are no datasets for validation!" + e.toString());
+            return null;	    
 	}
 	
 	int m = x.length;
@@ -419,8 +485,8 @@ public class GaussianLearner extends Learner  {
 	    writer = new BufferedWriter(new FileWriter(this.resultFile.getValue(),true));	    
 	}
 	catch (Exception e) {
-	    System.out.println("Could not open result file, becauce:" + e.toString());
-	    System.out.println("results won't be saved");
+            this.getModel().getRuntime().sendHalt("could not open result-file, because:" + e.toString() + "\nresults won't be saved!");
+            return null;	    
 	}
 	    
 	for (int i=0;i<x.length;i++) {			    
@@ -429,14 +495,16 @@ public class GaussianLearner extends Learner  {
 		writer.flush();
 	    }
 	    catch(Exception e) {
-		System.out.println("could not write, because: " + e.toString());
+                this.getModel().getRuntime().sendHalt("could not write to result-file, because:" + e.toString());
+                return null;
 	    }
 	}
 	try {
 	    writer.close();
 	}
 	catch(Exception e) {
-	    System.out.println("GP - Error" + e.toString());
+	    this.getModel().getRuntime().sendHalt("Error occured while closing result file" + e.toString());
+            return null;
 	}
 	return result;
     }  
@@ -449,7 +517,8 @@ public class GaussianLearner extends Learner  {
 	    super.run();
 	}
 	catch (Exception e) {
-	    System.out.println("GP Init Fehler - " + e.toString());
+	    this.getModel().getRuntime().sendHalt("Error occured while initializing Gaussian Process Module" + e.toString());
+            return;
 	}			
     }
     
@@ -461,7 +530,8 @@ public class GaussianLearner extends Learner  {
 	    super.run();
 	}
 	catch (Exception e) {
-	    System.out.println("GP Init Fehler - " + e.toString());
+            this.getModel().getRuntime().sendHalt("Error occured while initializing Gaussian Process Module" + e.toString());
+            return;
 	}			
     }
                                             
@@ -492,7 +562,7 @@ public class GaussianLearner extends Learner  {
             return 0;
     }
          
-    public void GradientDescent(double x[]) {
+    public void GradientDescent(double x[],String paramName[]) {
 	double y1,y2,diff;						
 	double [] grad = new double[x.length];		
 	double [] alpha = new double[x.length];		
@@ -505,6 +575,7 @@ public class GaussianLearner extends Learner  {
 	diff  = 1.0;
 	
 	y1 = funct(x);
+        
 	double y_alt;
 	double y_neu = 1.0;
 	double calpha = 0.1;
@@ -512,8 +583,12 @@ public class GaussianLearner extends Learner  {
 	for (int i=0;i<x.length;i++) {
 	    alpha[i] = 0.01;
 	}
-	
-	while ( calpha > alpha_min && diff > diff_min ) {	    	    
+	this.getModel().getRuntime().sendInfoMsg("Performing Gradient Descent Optimization!");
+        this.getModel().getRuntime().sendInfoMsg("starting with function value:" + y1);
+        int iteration = 0;
+	while ( calpha > alpha_min && diff > diff_min ) {	
+            iteration++;
+            this.getModel().getRuntime().sendInfoMsg("iteration:" + iteration);
 	    y_alt = y1;
 	    //partial differences quotients
 	    for (int i=0; i < x.length; i++) {	
@@ -564,23 +639,26 @@ public class GaussianLearner extends Learner  {
 			break;
 		    }
 		}
-		y1 = y_neu;
-		
-		String info = "Gradient:\t";		
-		String info2 = "Stelle:\t";		
-		for (int k=0; k < x.length; k++) {	
-		    x[k] = xp[k];
-		    if (i == k)
-			info += grad[i] + "\t";
-		    else
-			info += "0.0\t" ;
-		    info2 += x[k] + "\t";
-		}	
-		getModel().getRuntime().println(info);		
-		getModel().getRuntime().println(info2);									
-		getModel().getRuntime().println("Funktionswert:\t" + y1 + "\t Alpha: " + calpha + "\t diff:" + diff);
+		y1 = y_neu;	
+                for (int k=0; k < x.length; k++) {	
+                    x[k] = xp[k];                    
+                }	                
 	    }		    
 
+            String info = "current parameter - set:\n";		
+            for (int k=0; k < x.length; k++) {	
+                x[k] = xp[k];
+                info += paramName[k] + ":";
+		info += Math.exp(x[k]) + "\n";
+            }	
+            if (this.getModel()!=null){
+                getModel().getRuntime().println(info);		
+                getModel().getRuntime().println("function value:\t" + y1 + "\t alpha: " + calpha + "\t diff:" + diff);
+            }else{
+                System.out.println(info);
+                System.out.println("function value:\t" + y1 + "\t Alpha: " + calpha + "\t diff:" + diff);
+            }  
+            
 	    for (int i=0;i<x.length;i++) {
 		if (alpha[i]>calpha)
 		    calpha = alpha[i];
@@ -592,7 +670,7 @@ public class GaussianLearner extends Learner  {
 	}	
     }
 
-    public void MomentumGradientDescent(double x[]) {
+ /*   public void MomentumGradientDescent(double x[]) {
 	double y1,y2,alpha,diff;						
 	double [] grad = new double[x.length];	
 	double xp[] = new double[x.length];
@@ -671,7 +749,7 @@ public class GaussianLearner extends Learner  {
 	    getModel().getRuntime().println(info);									
 	    getModel().getRuntime().println("Funktionswert:\t" + y1 + "\t Alpha: " + alpha);
 	}	
-    }
+    }*/
     
     public void setKernels(){
         switch (this.kernelMethod.getValue()) {
@@ -688,25 +766,28 @@ public class GaussianLearner extends Learner  {
 	    case 15: this.kernel = new org.unijena.predictionnet.kernels.SimpleRationalQuadratic(this.DataLength); break;
 	    case 16: this.kernel = new org.unijena.predictionnet.kernels.SimpleNeuralNetwork(this.DataLength); break;
 	    case 17: this.kernel = new org.unijena.predictionnet.kernels.SimplePeriodic(this.DataLength); break;
-	    default: this.kernel = null; System.out.println("No valid Kernel specified, this will propably cause an error!");break;
-	}
+	    default: this.kernel = null; this.getModel().getRuntime().sendInfoMsg("No valid Kernel specified, using Neural-Network Kernel"); break;
+	}                
 	switch (this.MeanMethod.getValue()) {
 	    case 0: this.kernel.SetMeanModell(new org.unijena.predictionnet.kernels.FixedMeanModell(this.DataLength)); break;
 	    case 1: this.kernel.SetMeanModell(new org.unijena.predictionnet.kernels.LinearMeanModell(this.DataLength)); break;
 	    case 2: this.kernel.SetMeanModell(new org.unijena.predictionnet.kernels.QuadraticMeanModell(this.DataLength)); break;
-	    default: this.kernel.SetMeanModell(new org.unijena.predictionnet.kernels.FixedMeanModell(this.DataLength)); break;
+	    default: this.getModel().getRuntime().sendInfoMsg("No valid mean function specified, using Fixed Mean Model"); this.kernel.SetMeanModell(new org.unijena.predictionnet.kernels.FixedMeanModell(this.DataLength)); break;
 	}
+        
+        kernelParameterNames = this.kernel.getParameterNames();
+        
     }
     
     public void run() {
-	trainInit(); //this is necessary
+	trainInit();
         setKernels();
         
 	if (doOptimization.getValue()) {
             double x[] = new double[kernel.getParameterCount()];
 	    for (int i=0;i<x.length;i++){
                 if (this.param_theta != null)
-                    x[i] = Math.log(this.param_theta.getValue()[i]);//1.0 / kernel.getParameterCount();
+                    x[i] = Math.log(this.param_theta.getValue()[i]);
                 else
                     x[i] = 1.0/x.length;
             }
@@ -719,7 +800,20 @@ public class GaussianLearner extends Learner  {
             }
 	    optInit();
 	    	    
-	    GradientDescent(x);                        
+	    GradientDescent(x,this.kernelParameterNames);   
+            
+            //save parameters
+            BufferedWriter writer;
+	    try {
+		writer = new BufferedWriter(new FileWriter(this.parameterFile.getValue()));
+		for (int i=0;i<theta.length;i++) {
+                    writer.write(Double.toString(this.logtheta[i]) + "\n");		    
+		}
+		writer.close();
+	    }
+	    catch (Exception e) {
+                this.getModel().getRuntime().sendInfoMsg("Could not open or writer parameter file, becauce:" + e.toString());	        
+	    }	
 	}
 	trainInit();
         double performance;
@@ -731,7 +825,7 @@ public class GaussianLearner extends Learner  {
                 this.param_theta.setValue(x);
 	    if (performance > -100000.0){
                 optInit();
-                GradientDescent(x);                                
+                GradientDescent(x,this.kernelParameterNames);                                
             }
         }
 	Predict(true);

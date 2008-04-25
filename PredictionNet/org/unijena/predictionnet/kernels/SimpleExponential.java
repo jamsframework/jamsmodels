@@ -20,6 +20,12 @@ public class SimpleExponential extends Kernel {
 	this.parameterCount = 1;
     }
        
+    public String[] getKernelParameterNames(){
+        this.KernelParameterNames[0] = "l";
+        
+        return KernelParameterNames;
+    }
+    
     public double SqrDistance2(double x[],double y[]) {
 	double sum = 0;
 	double tmp;

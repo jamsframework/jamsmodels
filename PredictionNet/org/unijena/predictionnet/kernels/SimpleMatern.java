@@ -21,6 +21,13 @@ public class SimpleMatern extends Kernel {
 	this.KernelParameterCount = 2;
     }
        
+    public String[] getKernelParameterNames(){
+        this.KernelParameterNames[0] = "l";
+        this.KernelParameterNames[1] = "sigma";
+        
+        return KernelParameterNames;
+    }
+    
     public double SqrDistance2(double x[],double y[]) {
 	double sum = 0;
 	double tmp;

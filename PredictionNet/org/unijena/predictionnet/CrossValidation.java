@@ -57,6 +57,13 @@ public class CrossValidation extends JAMSContext {
             )
             public JAMSEntity validationData;
      
+     @JAMSVarDescription(
+            access = JAMSVarDescription.AccessType.WRITE,
+            update = JAMSVarDescription.UpdateType.RUN,
+            description = "TimeSerie of Temp Data"
+            )
+            public JAMSBoolean enable;
+     
      public CrossValidation() {
 	 
      }
@@ -101,6 +108,18 @@ public class CrossValidation extends JAMSContext {
     }
      
     public void run() {  
+        if (enable != null){
+            if (enable.getValue() == false){
+                singleRun();
+                return;
+            }
+        }
+        
+        if (k.getValue() <= 0){
+            this.getModel().getRuntime().sendHalt("Number of Crossvalidation Iterations less or equal zero!!");
+            return;
+        }
+        
 	double data[][] = null;
 	double predict[] = null;
 	try {
@@ -108,9 +127,9 @@ public class CrossValidation extends JAMSContext {
 	    predict = (double[])Data.getObject("predict");
 	}
 	catch(Exception e) {
-	    System.out.println("Konnte Daten nicht finden!!" + e.toString());
+            this.getModel().getRuntime().sendHalt("Keine Datensätze gefunden!!" + e.toString());
 	}
-	System.out.println("Cross Validation");
+        this.getModel().getRuntime().sendInfoMsg("Cross Validation");
 	
 	int N = data.length;
 	int M = data[0].length;
@@ -123,8 +142,7 @@ public class CrossValidation extends JAMSContext {
 	for (int i=0;i<k.getValue();i++) {
 	    int trainCounter = 0;
 	    int valCounter = 0;
-	    	    
-	    System.out.println("Run " + (i+1) + " of " + k.getValue());
+	    this.getModel().getRuntime().sendInfoMsg("Run " + (i+1) + " of " + k.getValue());
 	    
 	    //testrun
 	    for (int j=0;j<N;j++) {

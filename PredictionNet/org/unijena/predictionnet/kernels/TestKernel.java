@@ -20,6 +20,12 @@ public class TestKernel extends Kernel {
 	this.parameterCount = inputDim + 1;
     }
        
+    public String[] getKernelParameterNames(){
+        for (int i=0;i<KernelParameterCount;i++)
+            this.KernelParameterNames[i] = "p_" + i;
+        return KernelParameterNames;
+    }
+    
     public double SqrDistance2(double x[],double y[]) {
 	double sum = 0;
 	double tmp;

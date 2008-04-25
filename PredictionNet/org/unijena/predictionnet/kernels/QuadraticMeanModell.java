@@ -24,6 +24,17 @@ public class QuadraticMeanModell extends MeanModell {
 	beta = new double[parameterCount];
     }
  
+    public String[] getMeanModelParameterNames(){
+        meanModelParameterNames = new String[2*inputSize];
+        for (int i=0;i<inputSize;i++){
+            meanModelParameterNames[i] = "linRegCoeff_" + i;
+        }
+        for (int i=0;i<inputSize;i++){
+            meanModelParameterNames[i+inputSize] = "quadRegCoeff_" + i;
+        }
+        return meanModelParameterNames;
+    }
+    
     public Matrix Transform(double data[][],double result[]) {
 	double sum = 0;
 	average = 0;

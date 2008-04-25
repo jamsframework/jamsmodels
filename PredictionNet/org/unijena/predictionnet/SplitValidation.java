@@ -25,29 +25,8 @@ public class SplitValidation extends JAMSContext {
             update = JAMSVarDescription.UpdateType.RUN,
             description = "TimeSerie of Temp Data"
             )
-            public JAMSInteger trainingStart;
-    
-    @JAMSVarDescription(
-            access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.RUN,
-            description = "TimeSerie of Temp Data"
-            )
-            public JAMSInteger trainingEnd;
-    
-    @JAMSVarDescription(
-            access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.RUN,
-            description = "TimeSerie of Temp Data"
-            )
-            public JAMSInteger validationStart;
-    
-    @JAMSVarDescription(
-            access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.RUN,
-            description = "TimeSerie of Temp Data"
-            )
-            public JAMSInteger validationEnd;
-           
+            public JAMSInteger TrainingSetSize;
+                   
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
             update = JAMSVarDescription.UpdateType.RUN,
@@ -68,6 +47,13 @@ public class SplitValidation extends JAMSContext {
             description = "TimeSerie of Temp Data"
             )
             public JAMSEntity validationData;
+     
+     @JAMSVarDescription(
+            access = JAMSVarDescription.AccessType.WRITE,
+            update = JAMSVarDescription.UpdateType.RUN,
+            description = "TimeSerie of Temp Data"
+            )
+            public JAMSBoolean enable;
      
      public SplitValidation() {
 	 
@@ -113,6 +99,12 @@ public class SplitValidation extends JAMSContext {
     }
      
     public void run() {  
+        if (enable != null){
+            if (enable.getValue() == false){
+                singleRun();
+                return;
+            }
+        }
 	double data[][] = null;
 	double predict[] = null;
 	try {
@@ -120,26 +112,35 @@ public class SplitValidation extends JAMSContext {
 	    predict = (double[])Data.getObject("predict");
 	}
 	catch(Exception e) {
-	    System.out.println("Konnte Daten nicht finden!!" + e.toString());
-	}	
-	
-	System.out.println("Split Validation");
-	
+            this.getModel().getRuntime().sendHalt("Could not find dataset" + e.toString());
+	}		
+        this.getModel().getRuntime().sendInfoMsg("Split Validation");
+        	
+        int n = data.length;
+        int m = TrainingSetSize.getValue();
+        
+        if (m>n){
+             this.getModel().getRuntime().sendHalt("training set size is larger than number of observations");
+        }
+        if (m<=0){
+            this.getModel().getRuntime().sendHalt("training set size is less or equal to zero");
+        }
+        
 	//split up data	    	    	    
-	double valData[][] = new double[validationEnd.getValue()-validationStart.getValue()][];
-	double valPredict[] = new double[validationEnd.getValue()-validationStart.getValue()]; 
-	double trainData[][] = new double[trainingEnd.getValue()-trainingStart.getValue()][];	    	    
-	double trainPredict[] = new double[trainingEnd.getValue()-trainingStart.getValue()]; 
+	double valData[][] = new double[n-m][];
+	double valPredict[] = new double[n-m]; 
+	double trainData[][] = new double[m][];	    	    
+	double trainPredict[] = new double[m]; 
 	 
 	for (int j=0;j<data.length;j++) {
-	    if ( j >= validationStart.getValue() && j < validationEnd.getValue()) {
-	        valData[j - validationStart.getValue()] = data[j];
-	        valPredict[j - validationStart.getValue()] = predict[j];
+	    if ( j >= m && j < n) {
+	        valData[j - m] = data[j];
+	        valPredict[j - m] = predict[j];
 	    }
 	
-	    if ( j >= trainingStart.getValue() && j < trainingEnd.getValue()) {
-	        trainData[j - trainingStart.getValue()] = data[j];
-	        trainPredict[j - trainingStart.getValue()] = predict[j];
+	    if ( j >= 0 && j < m) {
+	        trainData[j] = data[j];
+	        trainPredict[j] = predict[j];
 	    }
 	}	 
 	    

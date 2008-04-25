@@ -18,7 +18,7 @@ import Jama.Matrix;
 public abstract class MeanModell{
     int inputSize;
     int parameterCount;
-
+    String meanModelParameterNames[];
     double beta[] = null;    
     
     MeanModell() {
@@ -41,4 +41,6 @@ public abstract class MeanModell{
     
     abstract public Matrix Transform(double data[][],double result[]);
     abstract public double[] ReTransform(double data[][],Matrix prediction);
+    abstract public String[] getMeanModelParameterNames();
+    
 }

@@ -30,6 +30,15 @@ public class NoNoiseExponential extends Kernel {
 	return sum;
     }
     
+    public String[] getKernelParameterNames(){
+        for (int i=0;i<inputDim;i++){
+            this.KernelParameterNames[2*i] = "l_" + i;
+            this.KernelParameterNames[2*i+1] = "alpha_" + i;
+        }
+        
+        return KernelParameterNames;
+    }
+    
     public double kernel(double x[],double y[],int index1,int index2) {
 	double r = Distance(x,y);
 	/*if (index1 == index2) {

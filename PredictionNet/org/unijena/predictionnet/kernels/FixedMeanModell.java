@@ -24,6 +24,9 @@ public class FixedMeanModell extends MeanModell {
 	beta = null;
     }
  
+    public String[] getMeanModelParameterNames(){
+        return null;
+    }
     public Matrix Transform(double data[][],double result[]) {
 	double sum = 0;
 	average = 0;

@@ -24,6 +24,14 @@ public class LinearMeanModell extends MeanModell {
 	beta = new double[inputSize];
     }
  
+    public String[] getMeanModelParameterNames(){
+        meanModelParameterNames = new String[inputSize];
+        for (int i=0;i<inputSize;i++){
+            meanModelParameterNames[i] = "linRegCoeff_" + i;
+        }
+        return meanModelParameterNames;
+    }
+    
     public Matrix Transform(double data[][],double result[]) {
 	double sum = 0;
 	average = 0;
