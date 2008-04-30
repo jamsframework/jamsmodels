@@ -59,7 +59,6 @@ public class StandardLUReader extends JAMSComponent {
     
     
     public void init() throws JAMSEntity.NoSuchAttributeException {
-        
         //read lu parameter
         JAMSEntityCollection lus = new JAMSEntityCollection();
         lus.setEntities(J2KFunctions.readParas(dirName.getValue()+"/"+luFileName.getValue(), getModel()));
