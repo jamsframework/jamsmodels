@@ -166,6 +166,13 @@ import org.unijena.jams.model.*;
             description = "maximum excStor"
             )
             public JAMSDouble maxExcStor;
+    
+    @JAMSVarDescription(
+            access = JAMSVarDescription.AccessType.READ,
+            update = JAMSVarDescription.UpdateType.RUN,
+            description = "HRU attribute maximum percolation"
+            )
+            public JAMSDouble maxPerc;
 
     /*
      *  Component run stages
@@ -264,8 +271,17 @@ import org.unijena.jams.model.*;
         }
         double interflow = excStor * (1.0 / k_factor);
         excStor = excStor - interflow;
-        dirQ = dirQ + interflow;
+        
         gwRecharge = inflow * (1 - slope_weight);
+        
+         //cross checking against maximum percolation
+       if(gwRecharge > maxPerc.getValue()){
+            double delta = gwRecharge - maxPerc.getValue();
+            interflow = interflow + delta;
+            gwRecharge = maxPerc.getValue();
+        }
+        
+        dirQ = dirQ + interflow;
         
         //writing values back
         this.actET.setValue(actET);

@@ -35,7 +35,7 @@ import org.unijena.jams.model.*;
         author="Peter Krause",
         description="Calculates a simplified soil water balance for each HRU"
         )
-        public class SoilWaterBalance extends JAMSComponent {
+        public class SoilWaterGen extends JAMSComponent {
     
     /*
      *  Component variables
@@ -47,13 +47,6 @@ import org.unijena.jams.model.*;
             description = "attribute slope"
             )
             public JAMSDouble slope;
-    
-    @JAMSVarDescription(
-            access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.RUN,
-            description = "attribute id"
-            )
-            public JAMSDouble id;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
@@ -84,25 +77,18 @@ import org.unijena.jams.model.*;
             public JAMSDouble satMPS;
     
     @JAMSVarDescription(
-            access = JAMSVarDescription.AccessType.READWRITE,
+            access = JAMSVarDescription.AccessType.WRITE,
             update = JAMSVarDescription.UpdateType.RUN,
-            description = "HRU excess storage"
+            description = "surface runoff"
             )
-            public JAMSDouble excStor;
+            public JAMSDouble surfaceQ;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
             update = JAMSVarDescription.UpdateType.RUN,
-            description = "direct runoff"
+            description = "subsurface runoff"
             )
-            public JAMSDouble dirQ;
-    
-    @JAMSVarDescription(
-            access = JAMSVarDescription.AccessType.WRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
-            description = "interflow"
-            )
-            public JAMSDouble interflow;
+            public JAMSDouble subsurfaceQ;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
@@ -156,23 +142,9 @@ import org.unijena.jams.model.*;
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
             update = JAMSVarDescription.UpdateType.INIT,
-            description = "lateral recession constant"
-            )
-            public JAMSDouble recConst;
-    
-    @JAMSVarDescription(
-            access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.INIT,
             description = "ET reduction factor"
             )
             public JAMSDouble linETRed;
-    
-    @JAMSVarDescription(
-            access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.INIT,
-            description = "maximum excStor"
-            )
-            public JAMSDouble maxExcStor;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
@@ -199,15 +171,7 @@ import org.unijena.jams.model.*;
     }
     
     public void run() throws JAMSEntity.NoSuchAttributeException {
-        double k_factor = 1;
-        double maxExcStor = 100000000000.0;
-        if(this.recConst.getValue() != 0){
-            k_factor = this.recConst.getValue();
-        }
-        if(this.maxExcStor.getValue() != 0){
-            maxExcStor = this.maxExcStor.getValue() * this.area.getValue();
-        }
-        double excStor = this.excStor.getValue();
+        
         double actMPS = this.actMPS.getValue();
         double inflow = this.precip.getValue() + this.snowMelt.getValue();
         double maxMPS = this.maxMPS.getValue();
@@ -219,7 +183,7 @@ import org.unijena.jams.model.*;
         
         //et out of the soil
         double actET = this.actET.getValue();
-        double potET = this.potET.getValue();
+        double potET = this.potET.getValue() * 1.2;
         
         double deltaET = potET - actET;
         
@@ -259,8 +223,14 @@ import org.unijena.jams.model.*;
         double directFlow = 0;
         if(this.df_beta.getValue() != 0){
             double sat = actMPS / maxMPS;
-            double fact = Math.pow(sat, this.df_beta.getValue());
-            System.out.println("fact: " + fact);
+            //double fact = Math.pow(sat, this.df_beta.getValue());
+            //double fact = df_beta.getValue() * Math.log(sat) + 0.1;
+            double b = df_beta.getValue();
+            double a = 0.1;
+            double fact = a * Math.pow(sat, b);
+            if(fact < 0)
+                fact = 0;
+            //System.out.println("fact: " + fact);
             directFlow = fact * inflow;
             inflow = inflow - directFlow;
         }
@@ -291,7 +261,6 @@ import org.unijena.jams.model.*;
             inflow = inflow - deltaMPS;
         }
         
-        double dirQ = 0;
         double gwRecharge = 0;
         double interflow = 0;
         //excess water is distributed to Qdir and GWrecharge
@@ -299,17 +268,7 @@ import org.unijena.jams.model.*;
         if(slope_weight > 1)
             slope_weight = 1;
         
-        excStor = excStor + (inflow * slope_weight);
-        
-        if(excStor > maxExcStor){
-            dirQ = (excStor - maxExcStor);
-            excStor = maxExcStor;
-        }
-        System.out.println("dirQ: " + dirQ);
-        interflow = excStor * (1.0 / k_factor);
-        excStor = excStor - interflow;
-        //dirQ = dirQ;
-        
+        interflow = (inflow * slope_weight);
         gwRecharge = inflow * (1 - slope_weight);
         
         //System.out.println("INF: " + interflow);
@@ -322,18 +281,15 @@ import org.unijena.jams.model.*;
             gwRecharge = maxPerc.getValue();
         }
         
-        //adding directFlow to dirQ
-        dirQ = dirQ + directFlow;
-      
+        
         //writing values back
         this.actET.setValue(actET);
         this.actMPS.setValue(actMPS);
         this.satMPS.setValue(actMPS / maxMPS);
-        this.excStor.setValue(excStor);
+        this.surfaceQ.setValue(directFlow);
+        this.subsurfaceQ.setValue(interflow);
         this.gwRecharge.setValue(gwRecharge);
-        this.dirQ.setValue(dirQ);
-        this.interflow.setValue(interflow);
-        this.totQ.setValue(dirQ + gwRecharge);
+        this.totQ.setValue(directFlow + interflow + gwRecharge);
     }
     
     public void cleanup() {

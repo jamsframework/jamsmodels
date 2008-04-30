@@ -10,7 +10,6 @@
 package org.unijena.j2000g;
 
 import org.unijena.jams.data.*;
-import org.unijena.jams.data.JAMSEntity.NoSuchAttributeException;
 import org.unijena.jams.model.*;
 
 /**
@@ -29,7 +28,7 @@ title="SnowModule",
     access = JAMSVarDescription.AccessType.READ,
             update = JAMSVarDescription.UpdateType.RUN,
             description = "Entity area",
-            unit = "m²"
+            unit = "m2"
             )
             public JAMSDouble area;
     
@@ -147,7 +146,6 @@ title="SnowModule",
             //this.precip.setValue(precip);
             this.snowStorage.setValue(snowStorage);
             this.snowMelt.setValue(snowMelt);
-            
             this.restPrecip.setValue(precip);
             
         }

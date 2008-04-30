@@ -57,6 +57,13 @@ import org.unijena.jams.model.*;
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
             update = JAMSVarDescription.UpdateType.RUN,
+            description = "interflow"
+            )
+            public JAMSDouble interflow;
+    
+    @JAMSVarDescription(
+            access = JAMSVarDescription.AccessType.READ,
+            update = JAMSVarDescription.UpdateType.RUN,
             description = "base flow"
             )
             public JAMSDouble basQ;
@@ -67,6 +74,13 @@ import org.unijena.jams.model.*;
             description = "direct runoff cbm"
             )
             public JAMSDouble dirQcbm;
+    
+    @JAMSVarDescription(
+            access = JAMSVarDescription.AccessType.WRITE,
+            update = JAMSVarDescription.UpdateType.RUN,
+            description = "interflow runoff cbm"
+            )
+            public JAMSDouble infQcbm;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
@@ -99,15 +113,15 @@ import org.unijena.jams.model.*;
     
     public void run() throws JAMSEntity.NoSuchAttributeException {
         
-        double totOut = this.dirQ.getValue() + this.basQ.getValue();
+        double totOut = this.dirQ.getValue() + this.interflow.getValue() + this.basQ.getValue();
         
         this.totQmm.setValue(totOut);
-        //conversion from mm to m³/time
+        //conversion from mm to m^3/time
         totOut = (totOut * cArea.getValue()) / (86400 * 1000);
-        
         
         this.totQcbm.setValue(totOut);
         this.dirQcbm.setValue((dirQ.getValue() * cArea.getValue()) / (86400 * 1000));
+        this.infQcbm.setValue((interflow.getValue() * cArea.getValue()) / (86400 * 1000));
         this.basQcbm.setValue((basQ.getValue() * cArea.getValue()) / (86400 * 1000));
     }
     
