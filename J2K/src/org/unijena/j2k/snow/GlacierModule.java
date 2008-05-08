@@ -263,7 +263,7 @@ import org.unijena.jams.model.*;
             } else if (this.meltFormula.getValue() == 2) {
                 //complex formula
                 //snow melt
-                snowMelt = (1 / n) * this.meltFactor.getValue() + this.alphaSnow.getValue() * this.radiation.getValue();
+                snowMelt = (1 / n) * (this.meltFactor.getValue() + this.alphaSnow.getValue() * this.radiation.getValue()) * (temp - this.tbase.getValue());
                 snowMelt = snowMelt * this.area.getValue();
                 if (snowMelt >= snowStor) {
                     snowMelt = snowStor;
@@ -273,7 +273,7 @@ import org.unijena.jams.model.*;
                 }
                 //ice melt only when no snow is available
                 if(snowStor == 0){
-                    iceMelt = (1 / n) * this.meltFactor.getValue() + this.alphaIce.getValue() * this.radiation.getValue();
+                    iceMelt = (1 / n) * this.meltFactor.getValue() + this.alphaIce.getValue() * this.radiation.getValue() * (temp - this.tbase.getValue());
                     iceMelt = iceMelt * this.area.getValue();
                 }
                 else{
