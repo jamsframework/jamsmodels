@@ -23,11 +23,8 @@
 
 package org.unijena.hydronet;
 
-import org.unijena.j2k.*;
 import org.unijena.jams.data.*;
 import org.unijena.jams.model.*;
-import java.util.*;
-import org.unijena.jams.JAMS;
 
 /**
  *
