@@ -731,7 +731,8 @@ import org.unijena.jams.model.*;
                 System.out.println("MIST");
             }*/
             
-            
+            /** updating saturations */
+            this.calcSoilSaturations(false);
             
             
             perchor[h] = run_vertComp;
@@ -888,6 +889,10 @@ import org.unijena.jams.model.*;
                 this.run_inRD2[h] = this.calcLPSInflow(this.run_inRD2[h], h);
                 if(this.run_inRD2[h] > 0){
                     //System.out.getRuntime().println("RD2 of entity " + entity.getDouble("ID") + " and horizon " + h +  " is routed through RD2out: "+this.run_inRD2[h]);
+                    if ((h > 0)&&(h < (this.nhor - 1))){
+                        this.run_inRD2[h] = this.calcMPSInflow(this.run_inRD2[h], h+1);
+                        this.run_inRD2[h] = this.calcLPSInflow(this.run_inRD2[h], h+1);
+                    }
                     this.run_outRD2[h] = this.run_outRD2[h] + this.run_inRD2[h];
                     this.run_inRD2[h] = 0;
                 }
@@ -1378,7 +1383,8 @@ import org.unijena.jams.model.*;
                 if(this.run_vertComp > maxPerc){
                     double rest = this.run_vertComp - maxPerc;
                     this.run_vertComp = maxPerc;
-                    this.run_latComp = this.run_latComp + rest;
+                    //this.run_latComp = this.run_latComp + rest;
+                    run_actLPS[hor] = run_actLPS[hor] + rest;
                 }
             }else {
                 
@@ -1391,7 +1397,9 @@ import org.unijena.jams.model.*;
                 if(this.run_vertComp > maxPerc){
                     double rest = this.run_vertComp - maxPerc;
                     this.run_vertComp = maxPerc;
-                    this.run_latComp = this.run_latComp + rest;
+                    //this.run_latComp = this.run_latComp + rest;
+                    run_actLPS[hor] = run_actLPS[hor] + rest;
+                    
                 }
                 
             }
