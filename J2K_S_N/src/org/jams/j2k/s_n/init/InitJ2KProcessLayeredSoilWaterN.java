@@ -157,14 +157,14 @@ import org.unijena.jams.model.*;
      @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
             update = JAMSVarDescription.UpdateType.RUN,
-            description = "Soil bulk density in g/cmÂ³"
+            description = "Soil bulk density in g/cm³"
             )
             public JAMSDoubleArray bulk_density_h = new JAMSDoubleArray();
     
       @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
             update = JAMSVarDescription.UpdateType.RUN,
-            description = "organic carbon content in %Â³"
+            description = "organic carbon content in %³"
             )
             public JAMSDoubleArray corg_h = new JAMSDoubleArray();
     
@@ -188,6 +188,13 @@ import org.unijena.jams.model.*;
             description = "Indicates whether roots can penetrate or not the soil layer [-]"
             )
             public JAMSDoubleArray root_h = new JAMSDoubleArray(); 
+     
+      @JAMSVarDescription(
+            access = JAMSVarDescription.AccessType.WRITE,
+            update = JAMSVarDescription.UpdateType.RUN,
+            description = "HRU state var actual Moist"
+            )
+            public JAMSDoubleArray actMoist_h = new JAMSDoubleArray();
       
     /*
      *  Component run stages
@@ -217,7 +224,7 @@ import org.unijena.jams.model.*;
         double[] root = new double[horizons];
         double[] corg = new double[horizons];
         double[] Kf_val = new double[horizons];
-       
+        double[] actMoist = new double[horizons];
         
         String aNameFC = "fieldcapacity_h";
         String aNameAC = "aircapacity_h";
@@ -257,6 +264,7 @@ import org.unijena.jams.model.*;
             stLPS[h] = 0;
             
             inRD2[h] = 0;
+            actMoist[h] = 0;
         }
         
         this.bulk_density_h.setValue(bulk_density);
@@ -273,7 +281,8 @@ import org.unijena.jams.model.*;
         this.satSoil_h.setValue(0);
         this.kf_h.setValue(Kf_val);
         this.root_h.setValue(root);
-       
+        this.actMoist_h.setValue(actMoist);
+        
         if (Kf_val.length == horizons){
             horizons = horizons;
         }else{
