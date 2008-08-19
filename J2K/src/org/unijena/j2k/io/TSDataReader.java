@@ -30,6 +30,7 @@ import org.unijena.jams.io.*;
 import java.util.*;
 import java.io.*;
 import org.unijena.jams.JAMS;
+import org.unijena.jams.JAMSTools;
 
 /**
  *
@@ -132,12 +133,10 @@ public class TSDataReader extends JAMSComponent {
         double[] statx = null;
         double[] staty = null;
         double[] statelev = null;
-        
-        
-        String fileName = dirName.getValue()+"/"+dataFileName.getValue();
+                      
         String line = "#";
         try {
-            BufferedReader reader = new BufferedReader(new FileReader(fileName));
+            BufferedReader reader = new BufferedReader(new FileReader(JAMSTools.CreateAbsoluteFileName(dirName.getValue(),dataFileName.getValue())));
             
             //skip comment lines
             while(line.charAt(0) == '#'){
@@ -232,7 +231,7 @@ public class TSDataReader extends JAMSComponent {
             getModel().getRuntime().handle(ioe);
         }
         
-        store = new GenericDataReader(dirName.getValue()+"/"+dataFileName.getValue(), false, headerLineCount+1);
+        store = new GenericDataReader(JAMSTools.CreateAbsoluteFileName(dirName.getValue(),dataFileName.getValue()), false, headerLineCount+1);
         
 
         JAMSCalendar startTime = parseJ2KTime(start);

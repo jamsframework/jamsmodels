@@ -23,6 +23,7 @@
 
 package org.unijena.j2k.io;
 
+import org.unijena.jams.JAMSTools;
 import org.unijena.jams.data.*;
 import org.unijena.jams.model.*;
 import org.unijena.jams.io.*;
@@ -96,7 +97,7 @@ public class FullSetEntityWriter extends JAMSComponent {
      */
     
     public void init() throws JAMSEntity.NoSuchAttributeException {
-        writer = new GenericDataWriter(dirName.getValue()+"/"+fileName.getValue());
+        writer = new GenericDataWriter(JAMSTools.CreateAbsoluteFileName(dirName.getValue(),fileName.getValue()));
         
         writer.addComment("J2K model output"+header.getValue());
         

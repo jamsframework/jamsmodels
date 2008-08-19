@@ -24,6 +24,7 @@
 package org.unijena.j2k.io;
 
 import java.io.IOException;
+import org.unijena.jams.JAMSTools;
 import org.unijena.jams.data.*;
 import org.unijena.jams.model.*;
 import org.unijena.jams.io.*;
@@ -95,7 +96,7 @@ public class StandardDataWriter extends JAMSComponent {
      */
     
     public void init() {
-        writer = new GenericDataWriter(dirName.getValue()+"/"+fileName.getValue());
+        writer = new GenericDataWriter(JAMSTools.CreateAbsoluteFileName(dirName.getValue(),fileName.getValue()));
         
         writer.addComment("J2K model output");
         writer.addComment("");

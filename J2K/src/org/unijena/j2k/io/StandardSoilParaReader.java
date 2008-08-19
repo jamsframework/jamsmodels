@@ -28,7 +28,7 @@ import org.unijena.jams.JAMS;
 import org.unijena.jams.data.*;
 import org.unijena.jams.model.*;
 import java.util.*;
-import java.io.*;
+import org.unijena.jams.JAMSTools;
 
 /**
  *
@@ -63,7 +63,8 @@ public class StandardSoilParaReader extends JAMSComponent {
         
         //read soil parameters
         JAMSEntityCollection soilTypes = new JAMSEntityCollection();
-        soilTypes.setEntities(J2KFunctions.readParas(dirName.getValue()+"/"+stFileName.getValue(), getModel()));
+        
+        soilTypes.setEntities(J2KFunctions.readParas(JAMSTools.CreateAbsoluteFileName(dirName.getValue(),stFileName.getValue()), getModel()));
         
         HashMap<Double, JAMSEntity> stMap = new HashMap<Double, JAMSEntity>();
         JAMSEntity st, e;

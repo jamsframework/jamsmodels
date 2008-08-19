@@ -143,8 +143,8 @@ import org.unijena.jams.model.*;
     
     private File cacheFile;
     private boolean useCache = false;
-    private ObjectOutputStream writer;
-    private ObjectInputStream reader;
+    transient private ObjectOutputStream writer;
+    transient private ObjectInputStream reader;
     int[] monthMean = {15,45,74,105,135,166,196,227,258,288,319,349};
     /*
      *  Component run stages

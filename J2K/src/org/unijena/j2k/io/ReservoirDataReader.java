@@ -23,13 +23,13 @@
 
 package org.unijena.j2k.io;
 
-import org.unijena.j2k.statistics.*;
 import org.unijena.jams.data.*;
 import org.unijena.jams.model.*;
 import org.unijena.jams.io.*;
 import java.util.*;
 import java.io.*;
 import org.unijena.jams.JAMS;
+import org.unijena.jams.JAMSTools;
 
 /**
  *
@@ -105,12 +105,10 @@ public class ReservoirDataReader extends JAMSComponent {
         double statx = 0;
         double staty = 0;
         double statelev = 0;
-        
-        
-        String fileName = dirName.getValue()+"/"+dataFileName.getValue();
+                        
         String line = "#";
         try {
-            BufferedReader reader = new BufferedReader(new FileReader(fileName));
+            BufferedReader reader = new BufferedReader(new FileReader(JAMSTools.CreateAbsoluteFileName(dirName.getValue(),dataFileName.getValue())));
             
             //skip comment lines
             while(line.charAt(0) == '#'){

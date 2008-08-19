@@ -27,6 +27,7 @@
 package org.unijena.j2k.radiation;
 
 import java.io.*;
+import org.unijena.jams.JAMSTools;
 import org.unijena.jams.data.*;
 import org.unijena.jams.model.*;
 
@@ -131,8 +132,8 @@ import org.unijena.jams.model.*;
     
     private File cacheFile;
     private boolean useCache = false;
-    private ObjectOutputStream writer;
-    private ObjectInputStream reader;
+    transient private ObjectOutputStream writer;
+    transient private ObjectInputStream reader;
     int[] monthMean = {15,45,74,105,135,166,196,227,258,288,319,349};
     /*
      *  Component run stages
@@ -140,7 +141,8 @@ import org.unijena.jams.model.*;
     
     public void init() throws JAMSEntity.NoSuchAttributeException, IOException {
         //first, check if cached data are available
-        cacheFile = new File(dirName.getValue() + "/$" + this.getInstanceName() + ".cache");
+        //cacheFile = new File(dirName.getValue() + "/$" + this.getInstanceName() + ".cache");
+        cacheFile = new File(JAMSTools.CreateAbsoluteFileName(dirName.getValue(),"/$" + this.getInstanceName() + ".cache"));
         if (!cacheFile.exists() && dataCaching.getValue()) {
  //           getModel().getRuntime().sendHalt(this.getInstanceName() + ": dataCaching is true but no cache file available!");
         }

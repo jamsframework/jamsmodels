@@ -32,7 +32,7 @@ import org.unijena.jams.data.*;
  */
 @JAMSComponentDescription(
         title="Hosaki Test Function",
-        author="Peter Krause",
+        author="Christian Fischer",
         description="A test function for optimizers which has a global and a local optimum"
         )
         
@@ -63,7 +63,7 @@ public class HosakiTestFunction extends JAMSComponent {
         double x1 = this.paraX1.getValue();
         double x2 = this.paraX2.getValue();
         
-        double y = (1 - 8 * x1 + 7 * Math.pow(x1,2) - 7./3. * Math.pow(x1,3) + 1./4. * Math.pow(x1,4)) * Math.pow(x2,2) * Math.exp(-1 * x2);
+        double y = ((1 - (8 * x1) + (7 * Math.pow(x1,2)) - ((7./3.) * Math.pow(x1,3)) + ((1./4.) * Math.pow(x1,4)))) * Math.pow(x2,2) * Math.exp(-1 * x2);
         
         this.yVal.setValue(y);
     }

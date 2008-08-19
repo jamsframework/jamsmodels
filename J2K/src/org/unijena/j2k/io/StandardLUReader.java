@@ -28,6 +28,7 @@ import org.unijena.jams.data.*;
 import org.unijena.jams.model.*;
 import java.util.*;
 import org.unijena.jams.JAMS;
+import org.unijena.jams.JAMSTools;
 
 /**
  *
@@ -61,7 +62,8 @@ public class StandardLUReader extends JAMSComponent {
     public void init() throws JAMSEntity.NoSuchAttributeException {
         //read lu parameter
         JAMSEntityCollection lus = new JAMSEntityCollection();
-        lus.setEntities(J2KFunctions.readParas(dirName.getValue()+"/"+luFileName.getValue(), getModel()));
+        
+        lus.setEntities(J2KFunctions.readParas(JAMSTools.CreateAbsoluteFileName(dirName.getValue(),luFileName.getValue()), getModel()));
         
         HashMap<Double, JAMSEntity> luMap = new HashMap<Double, JAMSEntity>();
         JAMSEntity lu, e;

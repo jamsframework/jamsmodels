@@ -357,7 +357,7 @@ title="Title",
             try {
                 comp.init();
             } catch (Exception e) {
-                
+                this.getModel().getRuntime().sendHalt(e.toString());
             }
         }
         
@@ -369,7 +369,7 @@ title="Title",
             try {
                 comp.run();
             } catch (Exception e) {
-                
+                 this.getModel().getRuntime().sendHalt(e.toString());
             }
         }
         
@@ -379,7 +379,7 @@ title="Title",
             try {
                 comp.cleanup();
             } catch (Exception e) {
-                
+                 this.getModel().getRuntime().sendHalt(e.toString());
             }
         }
     }

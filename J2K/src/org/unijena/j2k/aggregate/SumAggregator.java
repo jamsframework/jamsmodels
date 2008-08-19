@@ -62,7 +62,7 @@ public class SumAggregator extends JAMSComponent {
     
     public void cleanup(){
         for (int i = 0; i < value.length; i++) {
-            sum[i].setValue(0);
+            //sum[i].setValue(0);
         }
     }
     

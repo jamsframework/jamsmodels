@@ -28,6 +28,7 @@ import org.unijena.jams.data.*;
 import org.unijena.jams.model.*;
 import java.util.*;
 import org.unijena.jams.JAMS;
+import org.unijena.jams.JAMSTools;
 
 /**
  *
@@ -46,16 +47,13 @@ public class StandardEntityReader extends JAMSComponent {
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.WRITE, update = JAMSVarDescription.UpdateType.RUN, description = "Collection of reach objects")
     public JAMSEntityCollection reaches;
 
-    public void init() throws JAMSEntity.NoSuchAttributeException {
-
-        //read hru parameter
-        //hrus = new JAMSEntityCollection();
-        String theFileName = dirName.getValue() + "/" + hruFileName.getValue();
-        hrus.setEntities(J2KFunctions.readParas(dirName.getValue() + "/" + hruFileName.getValue(), getModel()));
+    public void init() throws JAMSEntity.NoSuchAttributeException {        
+        //to handle relative path names        
+        hrus.setEntities(J2KFunctions.readParas(JAMSTools.CreateAbsoluteFileName(dirName.getValue(),hruFileName.getValue()), getModel()));
 
         //read reach parameter
         //reaches = new JAMSEntityCollection();
-        reaches.setEntities(J2KFunctions.readParas(dirName.getValue() + "/" + reachFileName.getValue(), getModel()));
+        reaches.setEntities(J2KFunctions.readParas(JAMSTools.CreateAbsoluteFileName(dirName.getValue(),reachFileName.getValue()), getModel()));
 
         //create object associations from id attributes for hrus and reaches
         createTopology();

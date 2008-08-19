@@ -25,6 +25,7 @@ package org.unijena.j2k.io;
 
 import java.util.Locale;
 import org.unijena.jams.JAMS;
+import org.unijena.jams.JAMSTools;
 import org.unijena.jams.data.*;
 import org.unijena.jams.model.*;
 import org.unijena.jams.io.*;
@@ -111,9 +112,8 @@ public class StandardEntityWriterN extends JAMSComponent {
      *  Component runstages
      */
     
-    public void init() throws JAMSEntity.NoSuchAttributeException {
-                
-        writer = new GenericDataWriter(dirName.getValue()+"/"+fileName.getValue());
+    public void init() throws JAMSEntity.NoSuchAttributeException {                        
+        writer = new GenericDataWriter(JAMSTools.CreateAbsoluteFileName(dirName.getValue(),fileName.getValue()));
         
         int tsteps = (int)this.timeInterval.getNumberOfTimesteps();
         nEnts = this.entities.getEntityArray().length;

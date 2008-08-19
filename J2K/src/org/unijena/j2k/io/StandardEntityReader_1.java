@@ -26,8 +26,8 @@ package org.unijena.j2k.io;
 import org.unijena.j2k.*;
 import org.unijena.jams.data.*;
 import org.unijena.jams.model.*;
-import java.util.*;
 import org.unijena.jams.JAMS;
+import org.unijena.jams.JAMSTools;
 
 /**
  *
@@ -58,8 +58,8 @@ public class StandardEntityReader_1 extends JAMSComponent {
     
     public void init() throws JAMSEntity.NoSuchAttributeException {
        
-        //read entity parameter
-        entities.setEntities(J2KFunctions.readParas(dirName.getValue() + "/" + entityFileName.getValue(), getModel()));
+        //read entity parameter        
+        entities.setEntities(J2KFunctions.readParas(JAMSTools.CreateAbsoluteFileName(dirName.getValue(),entityFileName.getValue()), getModel()));
         int nEnt = entities.getEntityArray().length;
         getModel().getRuntime().println("Entities read and created successfull! ("+nEnt+")", JAMS.STANDARD);
         

@@ -28,7 +28,7 @@ import org.unijena.jams.JAMS;
 import org.unijena.jams.data.*;
 import org.unijena.jams.model.*;
 import java.util.*;
-import java.io.*;
+import org.unijena.jams.JAMSTools;
 
 /**
  *
@@ -63,7 +63,8 @@ public class StandardGroundwaterParaReader extends JAMSComponent {
         
         //read gw parameter
         JAMSEntityCollection gwTypes = new JAMSEntityCollection();
-        gwTypes.setEntities(J2KFunctions.readParas(dirName.getValue()+"/"+gwFileName.getValue(), getModel()));
+        
+        gwTypes.setEntities(J2KFunctions.readParas(JAMSTools.CreateAbsoluteFileName(dirName.getValue(),gwFileName.getValue()), getModel()));
         
         HashMap<Double, JAMSEntity> gwMap = new HashMap<Double, JAMSEntity>();
         JAMSEntity gw, e;
