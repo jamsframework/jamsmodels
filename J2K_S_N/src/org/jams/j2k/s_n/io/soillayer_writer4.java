@@ -177,7 +177,7 @@ title="soillayer_writer4",
     @JAMSVarDescription(
     access = JAMSVarDescription.AccessType.WRITE,
             update = JAMSVarDescription.UpdateType.RUN,
-            description = "HRU soil moistrure of the fourth layer in %"
+            description = "HRU soil moistrure array of all layers in %"
             )
             public JAMSDoubleArray actMoist_h = new JAMSDoubleArray();
     
@@ -206,13 +206,13 @@ title="soillayer_writer4",
         
         double[] run_actMoist_h = new double[nhor];
         
-        actMPS1.setValue(run_actMPS[0]);
-        actLPS1.setValue(run_actLPS[0]);
+        actMPS1.setValue((run_actMPS[0]/run_maxMPS[0])*100);
+        actLPS1.setValue((run_actLPS[0]/run_maxLPS[0])*100);
         actMoist1.setValue(((run_actMPS[0] + run_actLPS[0] + run_maxFPS[0])/(run_layerdepth[0]*10*area.getValue()))*100);
         
         if (nhor > 1){
-            actMPS2.setValue(run_actMPS[1]);
-            actLPS2.setValue(run_actLPS[1]);
+            actMPS2.setValue((run_actMPS[1]/run_maxMPS[1])*100);
+            actLPS2.setValue((run_actLPS[1]/run_maxLPS[1])*100);
             actMoist2.setValue(((run_actMPS[1] + run_actLPS[1] + run_maxFPS[1])/(run_layerdepth[1]*10*area.getValue()))*100);
         }else{
             actMPS2.setValue(0);
@@ -220,8 +220,8 @@ title="soillayer_writer4",
             actMoist2.setValue(0);}
         
         if (nhor > 2){
-            actMPS3.setValue(run_actMPS[2]);
-            actLPS3.setValue(run_actLPS[2]);
+            actMPS3.setValue((run_actMPS[2]/run_maxMPS[2])*100);
+            actLPS3.setValue((run_actLPS[2]/run_maxLPS[2])*100);
             actMoist3.setValue(((run_actMPS[2] + run_actLPS[2] + run_maxFPS[2])/(run_layerdepth[2]*10*area.getValue()))*100);
         }else{
             actMPS3.setValue(0);
@@ -229,8 +229,8 @@ title="soillayer_writer4",
             actMoist3.setValue(0);}
         
         if (nhor > 3){
-            actMPS4.setValue(run_actMPS[3]);
-            actLPS4.setValue(run_actLPS[3]);
+            actMPS4.setValue((run_actMPS[3]/run_maxMPS[3])*100);
+            actLPS4.setValue((run_actLPS[3]/run_maxLPS[3])*100);
             actMoist4.setValue(((run_actMPS[3] + run_actLPS[3] + run_maxFPS[3])/(run_layerdepth[3]*10*area.getValue()))*100);
         }else{
             actMPS4.setValue(0);
