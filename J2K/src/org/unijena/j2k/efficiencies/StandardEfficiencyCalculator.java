@@ -132,13 +132,8 @@ public class StandardEfficiencyCalculator extends JAMSComponent {
     update = JAMSVarDescription.UpdateType.RUN,
     description = "full set of predicted values")
     public JAMSDoubleArray predictionValues = new JAMSDoubleArray();
-    @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
-    description = "Workspace directory -- needed for file output")
-    public JAMSDirName workspace;
-    @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
-    description = "Output file -- needed for file output")
-    public JAMSString outputFile;
-    private BufferedWriter writer;
+
+    
     private final int E1 = 1;
     private final int E2 = 2;
     private final int LOG_E1 = 3;
@@ -367,63 +362,5 @@ public class StandardEfficiencyCalculator extends JAMSComponent {
             }
 
         }
-
-        if (outputFile == null) {
-            outputFile = new JAMSString();
-            outputFile.setValue("efficiencies_out.txt");
-        }
-
-        if (workspace != null) {
-
-            try {
-                writer = new BufferedWriter(new FileWriter(workspace.getValue() + File.separator + outputFile.getValue()));
-            } catch (IOException ioe) {
-                getModel().getRuntime().handle(ioe);
-            }
-
-
-        }
-
-        if (workspace != null) {
-            try {
-                writer.write("#JAMS model efficiencies");
-                writer.newLine();
-
-                Calendar cal = Calendar.getInstance();
-                SimpleDateFormat sdf = new SimpleDateFormat("dd.MM.yyyy 'at' hh:mm:ss");
-                writer.write("#" + sdf.format(cal.getTime()));
-                writer.newLine();
-
-                writer.write("E1=" + this.e1);
-                writer.newLine();
-                writer.write("E2=" + this.e2);
-                writer.newLine();
-                writer.write("LOG_E1=" + this.le1);
-                writer.newLine();
-                writer.write("LOG_E2=" + this.le2);
-                writer.newLine();
-                writer.write("IOA_1=" + this.ioa1);
-                writer.newLine();
-                writer.write("IOA_2=" + this.ioa2);
-                writer.newLine();
-                writer.write("R2=" + this.rsq);
-                writer.newLine();
-                writer.write("WR2=" + this.wrsq);
-                writer.newLine();
-                writer.write("DSGRAD=" + this.dsGrad);
-                writer.newLine();
-                writer.write("ABSVOLERROR=" + this.absVolErr);
-                writer.newLine();
-                writer.write("RMSE=" + this.rmse);
-                writer.newLine();
-                writer.write("PBIAS=" + this.pbias);
-
-                writer.close();
-            } catch (IOException ioe) {
-                getModel().getRuntime().handle(ioe);
-            }
-        }
-
-
     }
 }
