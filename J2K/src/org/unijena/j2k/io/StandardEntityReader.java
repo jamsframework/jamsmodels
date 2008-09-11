@@ -20,7 +20,6 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
  *
  */
-
 package org.unijena.j2k.io;
 
 import org.unijena.j2k.*;
@@ -47,13 +46,21 @@ public class StandardEntityReader extends JAMSComponent {
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.WRITE, update = JAMSVarDescription.UpdateType.RUN, description = "Collection of reach objects")
     public JAMSEntityCollection reaches;
 
-    public void init() throws JAMSEntity.NoSuchAttributeException {        
+    public void init() throws JAMSEntity.NoSuchAttributeException {
         //to handle relative path names        
-        hrus.setEntities(J2KFunctions.readParas(JAMSTools.CreateAbsoluteFileName(dirName.getValue(),hruFileName.getValue()), getModel()));
+        hrus.setEntities(J2KFunctions.readParas(JAMSTools.CreateAbsoluteFileName(dirName.getValue(), hruFileName.getValue()), getModel()));
+
+        for (JAMSEntity e : hrus.getEntityArray()) {
+            try {
+                e.setId((long) e.getDouble("ID"));
+            } catch (JAMSEntity.NoSuchAttributeException nsae) {
+                getModel().getRuntime().sendErrorMsg("Couldn't find attribute \"ID\" while reading J2K HRU parameter file (" + hruFileName.getValue() + ")!");
+            }
+        }
 
         //read reach parameter
         //reaches = new JAMSEntityCollection();
-        reaches.setEntities(J2KFunctions.readParas(JAMSTools.CreateAbsoluteFileName(dirName.getValue(),reachFileName.getValue()), getModel()));
+        reaches.setEntities(J2KFunctions.readParas(JAMSTools.CreateAbsoluteFileName(dirName.getValue(), reachFileName.getValue()), getModel()));
 
         //create object associations from id attributes for hrus and reaches
         createTopology();

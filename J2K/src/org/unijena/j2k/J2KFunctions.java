@@ -20,7 +20,6 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
  *
  */
-
 package org.unijena.j2k;
 
 import java.util.*;
@@ -28,54 +27,53 @@ import java.io.*;
 import org.unijena.jams.data.*;
 import org.unijena.jams.model.JAMSModel;
 
-
 /**
  *
  * @author S. Kralisch
  */
 public class J2KFunctions {
-    
+
     public static ArrayList<JAMSEntity> readParas(String fileName, JAMSModel model) {
-        
+
         BufferedReader reader;
-        ArrayList <JAMSEntity> entityList = new ArrayList<JAMSEntity>();
+        ArrayList<JAMSEntity> entityList = new ArrayList<JAMSEntity>();
         StringTokenizer tokenizer;
-        
+
         try {
-            
+
             reader = new BufferedReader(new FileReader(fileName));
-            
+
             String s = "#";
-            
+
             // get rid of comments
             while (s.startsWith("#")) {
                 s = reader.readLine();
             }
-            
+
             //put the attribure names into a vector
             Vector<String> attributeNames = new Vector<String>();
             tokenizer = new StringTokenizer(s, "\t");
             while (tokenizer.hasMoreTokens()) {
                 attributeNames.add(tokenizer.nextToken());
             }
-            
+
             //process lower boundaries
             reader.readLine();
-            
+
             //process upper boundaries
             reader.readLine();
             //coment
             //process units
             reader.readLine();
-            
+
             //get first line of hru data
             s = reader.readLine();
-            
-            while ((s != null) && !s.startsWith("#"))  {
-                
+
+            while ((s != null) && !s.startsWith("#")) {
+
                 JAMSEntity e = JAMSDataFactory.createEntity();
                 tokenizer = new StringTokenizer(s, "\t");
-                
+
                 String token;
                 for (int i = 0; i < attributeNames.size(); i++) {
                     token = tokenizer.nextToken();
@@ -88,21 +86,21 @@ public class J2KFunctions {
                         e.setObject(attributeNames.get(i), token);
                     }
                 }
-                
+
                 entityList.add(e);
                 s = reader.readLine();
             }
-            
+
         } catch (IOException ioe) {
             model.getRuntime().handle(ioe);
         }
-        
+
         return entityList;
-        
+
     }
-    
+
     public static ArrayList<JAMSEntity> createStationEntities(String fileName, JAMSModel model) {
-        ArrayList <JAMSEntity> entityList = new ArrayList<JAMSEntity>();
+        ArrayList<JAMSEntity> entityList = new ArrayList<JAMSEntity>();
         //handle the j2k metadata descriptions
         int headerLineCount = 0;
         String dataName = null;
@@ -110,28 +108,28 @@ public class J2KFunctions {
         String start = null;
         String end = null;
         double lowBound, uppBound, missData;
-        
+
         String[] name, id;
         double[] statx = null;
         double[] staty = null;
         double[] statelev = null;
-        
-        
+
+
         String line = "#";
         try {
             BufferedReader reader = new BufferedReader(new FileReader(fileName));
-            
+
             //skip comment lines
-            while(line.charAt(0) == '#'){
+            while (line.charAt(0) == '#') {
                 line = reader.readLine();
                 headerLineCount++;
             }
-            
+
             //metadata tags
             StringTokenizer strTok = new StringTokenizer(line, "\t");
             String token = strTok.nextToken();
-            while(token.compareTo("@dataVal") != 0){
-                if(token.compareTo("@dataValueAttribs") == 0){
+            while (token.compareTo("@dataVal") != 0) {
+                if (token.compareTo("@dataValueAttribs") == 0) {
                     line = reader.readLine();
                     headerLineCount++;
                     strTok = new StringTokenizer(line, "\t");
@@ -142,20 +140,20 @@ public class J2KFunctions {
                     strTok = new StringTokenizer(line, "\t");
                     token = strTok.nextToken();
                     headerLineCount++;
-                }else if(token.compareTo("@dataSetAttribs") == 0){
+                } else if (token.compareTo("@dataSetAttribs") == 0) {
                     int i = 0;
                     line = reader.readLine();
-                    while(i < 4){
+                    while (i < 4) {
                         headerLineCount++;
                         strTok = new StringTokenizer(line, "\t");
                         String desc = strTok.nextToken();
-                        if(desc.compareTo("missingDataVal") == 0){
+                        if (desc.compareTo("missingDataVal") == 0) {
                             missData = Double.parseDouble(strTok.nextToken());
-                        }else if(desc.compareTo("dataStart") == 0){
+                        } else if (desc.compareTo("dataStart") == 0) {
                             start = strTok.nextToken();
-                        }else if(desc.compareTo("dataEnd") == 0){
+                        } else if (desc.compareTo("dataEnd") == 0) {
                             end = strTok.nextToken();
-                        }else if(desc.compareTo("tres") == 0){
+                        } else if (desc.compareTo("tres") == 0) {
                             tres = strTok.nextToken();
                         }
                         i++;
@@ -163,36 +161,41 @@ public class J2KFunctions {
                         strTok = new StringTokenizer(line, "\t");
                         token = strTok.nextToken();
                     }
-                }else if(token.compareTo("@statAttribVal") == 0){
+                } else if (token.compareTo("@statAttribVal") == 0) {
                     int i = 0;
                     line = reader.readLine();
-                    while(i < 6){
+                    while (i < 6) {
                         headerLineCount++;
                         strTok = new StringTokenizer(line, "\t");
                         String desc = strTok.nextToken();
                         int nstat = strTok.countTokens();
-                        
-                        if(desc.compareTo("name") == 0){
+
+                        if (desc.compareTo("name") == 0) {
                             name = new String[nstat];
-                            for(int j = 0; j < nstat; j++)
+                            for (int j = 0; j < nstat; j++) {
                                 name[j] = strTok.nextToken();
-                        }else if(desc.compareTo("ID") == 0){
+                            }
+                        } else if (desc.compareTo("ID") == 0) {
                             id = new String[nstat];
-                            for(int j = 0; j < nstat; j++)
+                            for (int j = 0; j < nstat; j++) {
                                 id[j] = strTok.nextToken();
-                        }else if(desc.compareTo("elevation") == 0){
+                            }
+                        } else if (desc.compareTo("elevation") == 0) {
                             statelev = new double[nstat];
-                            for(int j = 0; j < nstat; j++)
+                            for (int j = 0; j < nstat; j++) {
                                 statelev[j] = Double.parseDouble(strTok.nextToken());
-                        }else if(desc.compareTo("x") == 0){
+                            }
+                        } else if (desc.compareTo("x") == 0) {
                             statx = new double[nstat];
-                            for(int j = 0; j < nstat; j++)
+                            for (int j = 0; j < nstat; j++) {
                                 statx[j] = Double.parseDouble(strTok.nextToken());
-                        }else if(desc.compareTo("y") == 0){
+                            }
+                        } else if (desc.compareTo("y") == 0) {
                             staty = new double[nstat];
-                            for(int j = 0; j < nstat; j++)
+                            for (int j = 0; j < nstat; j++) {
                                 staty[j] = Double.parseDouble(strTok.nextToken());
-                        }else if(desc.compareTo("dataColumn")==0){
+                            }
+                        } else if (desc.compareTo("dataColumn") == 0) {
                             //do nothing for the moment just counting
                             headerLineCount++;
                             headerLineCount++;
@@ -204,8 +207,8 @@ public class J2KFunctions {
                     }
                 }
             }
-            
-            
+
+
         } catch (IOException ioe) {
             model.getRuntime().handle(ioe);
         }
