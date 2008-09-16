@@ -838,7 +838,7 @@ public class J2KProcessLayeredSoilWater extends JAMSComponent {
             
             //calculate diffussion factor - order horizontal 
             //diffusion only occur when gravitative flux is not dominating
-            if ((run_satLPS[h] < 0.2) && (run_satMPS[h] < 1 || run_satMPS[h + 1] < 1) && (run_satMPS[h] > 0.2 || run_satMPS[h + 1] > 0.2)) {
+            if ((run_satLPS[h] < 1) && (run_satMPS[h] < 1 || run_satMPS[h + 1] < 1) && (run_satMPS[h] > 0.2 || run_satMPS[h + 1] > 0.2)) {
                 //calculate layer distance
                 
                 double dist = (layerdepth.getValue()[h] + layerdepth.getValue()[h +1]) / 2;
