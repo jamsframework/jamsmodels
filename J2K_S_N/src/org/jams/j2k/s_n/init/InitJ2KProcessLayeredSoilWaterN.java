@@ -192,10 +192,10 @@ public class InitJ2KProcessLayeredSoilWaterN extends JAMSComponent {
 
             inRD2[h] = 0;
             actMoist[h] = 0;
+           // acMPS[6] = mxMPS[6];
+           // acLPS[6] = mxLPS[6]/2;
             acMPS[0] = mxMPS[0];
             acLPS[0] = mxLPS[0];
-            acMPS[1] = mxMPS[1];
-            acLPS[1] = mxLPS[1];
         }
 
         this.bulk_density_h.setValue(bulk_density);
