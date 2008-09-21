@@ -273,7 +273,7 @@ public class J2KProcessLayeredSoilWater extends JAMSComponent {
     description = "mps diffusion between layers value")
     public JAMSDoubleArray w_layer_diff = new JAMSDoubleArray();
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
-    update = JAMSVarDescription.UpdateType.RUN,            
+    update = JAMSVarDescription.UpdateType.RUN,
     description = "Array of state variables LAI ")
     public JAMSDouble LAI;
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
@@ -667,7 +667,7 @@ public class J2KProcessLayeredSoilWater extends JAMSComponent {
         return true;
     }
 
-        private boolean calcSoilSaturationslayer(int h) {
+    private boolean calcSoilSaturationslayer(int h) {
         soilMaxMps = 0;
         soilActMps = 0;
         soilMaxLps = 0;
@@ -682,47 +682,47 @@ public class J2KProcessLayeredSoilWater extends JAMSComponent {
         double partdepth = 0;
         double soilinfil = 50;
 
-      
-            if ((this.run_actLPS[h] > 0) && (this.run_maxLPS[h] > 0)) {
-                this.run_satLPS[h] = this.run_actLPS[h] / this.run_maxLPS[h];
-            } else {
-                this.run_satLPS[h] = 0;
-            }
-            if ((this.run_actMPS[h] > 0) && (this.run_maxMPS[h] > 0)) {
-                this.run_satMPS[h] = this.run_actMPS[h] / this.run_maxMPS[h];
-            } else {
-                this.run_satMPS[h] = 0;
-            }
-            if (((this.run_maxLPS[h] > 0) | (this.run_maxMPS[h] > 0)) & ((this.run_actLPS[h] > 0) | (this.run_actMPS[h] > 0))) {
-                this.run_satHor[h] = ((this.run_actLPS[h] + this.run_actMPS[h]) / (this.run_maxLPS[h] + this.run_maxMPS[h]));
-            } else {
-                this.run_satSoil1 = 0;
-            }
 
-            infil_depth[h] += layerdepth.getValue()[h];
-            if (infil_depth[h] <= soilinfil || h == 0) {
-                upperMaxMps += this.run_maxMPS[h] * layerdepth.getValue()[h];
-                upperActMps += this.run_actMPS[h] * layerdepth.getValue()[h];
-                upperMaxLps += this.run_maxLPS[h] * layerdepth.getValue()[h];
-                upperActLps += this.run_actLPS[h] * layerdepth.getValue()[h];
-                partdepth += layerdepth.getValue()[h];
+        if ((this.run_actLPS[h] > 0) && (this.run_maxLPS[h] > 0)) {
+            this.run_satLPS[h] = this.run_actLPS[h] / this.run_maxLPS[h];
+        } else {
+            this.run_satLPS[h] = 0;
+        }
+        if ((this.run_actMPS[h] > 0) && (this.run_maxMPS[h] > 0)) {
+            this.run_satMPS[h] = this.run_actMPS[h] / this.run_maxMPS[h];
+        } else {
+            this.run_satMPS[h] = 0;
+        }
+        if (((this.run_maxLPS[h] > 0) | (this.run_maxMPS[h] > 0)) & ((this.run_actLPS[h] > 0) | (this.run_actMPS[h] > 0))) {
+            this.run_satHor[h] = ((this.run_actLPS[h] + this.run_actMPS[h]) / (this.run_maxLPS[h] + this.run_maxMPS[h]));
+        } else {
+            this.run_satSoil1 = 0;
+        }
 
-            } else if (infil_depth[h - 1] <= soilinfil) {
-                lowpart = soilinfil - partdepth;
-                upperMaxMps += this.run_maxMPS[h] * lowpart;
-                upperActMps += this.run_actMPS[h] * lowpart;
-                upperMaxLps += this.run_maxLPS[h] * lowpart;
-                upperActMps += this.run_actLPS[h] * lowpart;
+        infil_depth[h] += layerdepth.getValue()[h];
+        if (infil_depth[h] <= soilinfil || h == 0) {
+            upperMaxMps += this.run_maxMPS[h] * layerdepth.getValue()[h];
+            upperActMps += this.run_actMPS[h] * layerdepth.getValue()[h];
+            upperMaxLps += this.run_maxLPS[h] * layerdepth.getValue()[h];
+            upperActLps += this.run_actLPS[h] * layerdepth.getValue()[h];
+            partdepth += layerdepth.getValue()[h];
 
-            }
+        } else if (infil_depth[h - 1] <= soilinfil) {
+            lowpart = soilinfil - partdepth;
+            upperMaxMps += this.run_maxMPS[h] * lowpart;
+            upperActMps += this.run_actMPS[h] * lowpart;
+            upperMaxLps += this.run_maxLPS[h] * lowpart;
+            upperActMps += this.run_actLPS[h] * lowpart;
+
+        }
 
 
-            soilMaxMps += this.run_maxMPS[h];
-            soilActMps += this.run_actMPS[h];
-            soilMaxLps += this.run_maxLPS[h];
-            soilActLps += this.run_actLPS[h];
+        soilMaxMps += this.run_maxMPS[h];
+        soilActMps += this.run_actMPS[h];
+        soilMaxLps += this.run_maxLPS[h];
+        soilActLps += this.run_actLPS[h];
 
-        
+
 
         if (((soilMaxLps > 0) | (soilMaxMps > 0)) & ((soilActLps > 0) | (soilActMps > 0))) {
             this.run_satSoil1 = ((soilActLps + soilActMps) / (soilMaxLps + soilMaxMps));
@@ -737,8 +737,6 @@ public class J2KProcessLayeredSoilWater extends JAMSComponent {
         return true;
     }
 
-
-    
     private boolean redistRD1_RD2_in() throws JAMSEntity.NoSuchAttributeException {
         //RD1 is put to DPS first
         if (this.run_inRD1 > 0) {
@@ -768,8 +766,6 @@ public class J2KProcessLayeredSoilWater extends JAMSComponent {
         }
         return true;
     }
-    
-    
 
     private boolean layer_diffusion_log10() {
 
@@ -834,33 +830,44 @@ public class J2KProcessLayeredSoilWater extends JAMSComponent {
         double[] gradient_h_h1 = new double[this.nhor];
         double[] resistance_h_h1 = new double[this.nhor];
 
-        
+
 
         for (int h = 0; h < this.nhor - 1; h++) {
 
+            //calculate average saturation between Layers
             
-            
+            double avg_sat = ((this.run_actMPS[h]) + (this.run_actMPS[h + 1])) / (this.run_maxMPS[h] + this.run_maxMPS[h + 1]);
+
             //calculate diffussion factor - order horizontal 
             //diffusion only occur when gravitative flux is not dominating
-            if ((run_satLPS[h] < 0.2) && (run_satMPS[h] < 1 || run_satMPS[h + 1] < 1) && ((run_actMPS[h] + run_actMPS[h + 1]) / (run_maxMPS[h] + run_maxMPS[h +1])  > min_moist.getValue())) {
+            if ((run_satLPS[h] < 0.2) && (run_satMPS[h] < 1 || run_satMPS[h + 1] < 1) && (avg_sat > min_moist.getValue())) {
                 //calculate layer distance
-                
-                double dist = (layerdepth.getValue()[h] + layerdepth.getValue()[h +1]) / 2;
-                
-                //calculate gradient
-                gradient_h_h1[h] = (Math.exp((1 - this.run_satMPS[h]) * kgrad_layer.getValue()) - Math.exp((1 - this.run_satMPS[h + 1]) * kgrad_layer.getValue())) / (Math.pow(dist,1));
 
+                double dist = (layerdepth.getValue()[h] + layerdepth.getValue()[h + 1]) / 2;
+
+                //calculate gradient
+                /* if ((run_actMPS[h] + run_actMPS[h + 1]) / (run_maxMPS[h] + run_maxMPS[h + 1]) < 2 * min_moist.getValue()) {
+                    if (this.run_satMPS[h] < this.run_satMPS[h + 1]) {
+                        gradient_h_h1[h] = (Math.exp(((1 + min_moist.getValue()) - this.run_satMPS[h]) * kgrad_layer.getValue()) - Math.exp((1 - this.run_satMPS[h + 1]) * kgrad_layer.getValue())) / (Math.pow(dist, 1));
+                    } else {
+                        gradient_h_h1[h] = (Math.exp((1 - this.run_satMPS[h]) * kgrad_layer.getValue()) - Math.exp(((1 + min_moist.getValue()) - this.run_satMPS[h + 1]) * kgrad_layer.getValue())) / (Math.pow(dist, 1));
+                    }
+                } else { */
+                    gradient_h_h1[h] = (Math.exp((1 - this.run_satMPS[h]) * kgrad_layer.getValue()) - Math.exp((1 - this.run_satMPS[h + 1]) * kgrad_layer.getValue())) / (Math.pow(dist, 1));
+                //}
                 //calculate resistance
 
                 double satbalance = Math.pow((Math.pow(this.run_satMPS[h], 2) + (Math.pow(this.run_satMPS[h + 1], 2))) / 2.0, 0.5);
 
-                resistance_h_h1[h] = Math.exp((1 - satbalance) *  (kdiff_layer.getValue())) * (Math.pow(dist,2));
+                resistance_h_h1[h] = Math.exp((1 - satbalance) * (kdiff_layer.getValue())) * (Math.pow(dist, 2));
 
-
+                if (avg_sat < (2 * min_moist.getValue())){
+                   resistance_h_h1[h] = resistance_h_h1[h] * (1 + (min_moist.getValue() * 100)); 
+                }
 
                 //calculate amount of water to equilize saturations in layers
 
-                double avg_sat = ((this.run_actMPS[h]) + (this.run_actMPS[h + 1])) / (this.run_maxMPS[h] + this.run_maxMPS[h + 1]);
+                
 
                 double pot_flux = Math.abs((avg_sat - this.run_satMPS[h]) * this.run_maxMPS[h]);
 
@@ -868,7 +875,7 @@ public class J2KProcessLayeredSoilWater extends JAMSComponent {
                 //calculate water fluxes
 
                 double flux = (pot_flux * gradient_h_h1[h] / resistance_h_h1[h]);
-
+                
                 if (flux >= 0) {
                     flux_h1_h[h] = Math.min(flux, pot_flux);
                 } else {
