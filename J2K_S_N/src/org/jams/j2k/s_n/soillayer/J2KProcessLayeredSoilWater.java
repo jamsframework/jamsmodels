@@ -840,7 +840,8 @@ public class J2KProcessLayeredSoilWater extends JAMSComponent {
 
             //calculate diffussion factor - order horizontal 
             //diffusion only occur when gravitative flux is not dominating
-            if ((run_satLPS[h] < 0.2) && (run_satMPS[h] < 1 || run_satMPS[h + 1] < 1) && (avg_sat > min_moist.getValue())) {
+       //     if ((run_satLPS[h] < 0.2) && (run_satMPS[h] < 1 || run_satMPS[h + 1] < 1) && (avg_sat > min_moist.getValue())) {
+            if ((run_satLPS[h] < 0.2) && (run_satMPS[h] < 1 || run_satMPS[h + 1] < 1)) {    
                 //calculate layer distance
 
                 double dist = (layerdepth.getValue()[h] + layerdepth.getValue()[h + 1]) / 2;
@@ -859,11 +860,12 @@ public class J2KProcessLayeredSoilWater extends JAMSComponent {
 
                 double satbalance = Math.pow((Math.pow(this.run_satMPS[h], 2) + (Math.pow(this.run_satMPS[h + 1], 2))) / 2.0, 0.5);
 
-                resistance_h_h1[h] = Math.exp((1 - satbalance) * (kdiff_layer.getValue())) * (Math.pow(dist, 2));
-
-                if (avg_sat < (2 * min_moist.getValue())){
-                   resistance_h_h1[h] = resistance_h_h1[h] * (1 + (min_moist.getValue() * 100)); 
-                }
+                //resistance_h_h1[h] = Math.exp((1 - satbalance) * (kdiff_layer.getValue())) * (Math.pow(dist, 2));
+                  resistance_h_h1[h] = (1 / kf_h.getValue()[h]) * Math.pow(min_moist.getValue(), Math.pow(1 - satbalance,kdiff_layer.getValue()) * kdiff_layer.getValue()) * Math.pow(dist, 2); 
+       /*         if (avg_sat < (2 * min_moist.getValue())){
+                   resistance_h_h1[h] = resistance_h_h1[h] * (1 + (min_moist.getValue() * 100));
+                   //resistance_h_h1[h] = Math.exp((1 - satbalance) * (kdiff_layer.getValue())) * (Math.pow(dist, 2));
+                }*/
 
                 //calculate amount of water to equilize saturations in layers
 
@@ -1281,7 +1283,7 @@ public class J2KProcessLayeredSoilWater extends JAMSComponent {
         //double potLPSoutflow = Math.pow(this.run_satHor[hor], alpha) * this.run_actLPS[hor];
         //Manfreds new
         }
-        double potLPSoutflow = ((1 - (1 / (Math.pow(this.run_satHor[hor], 2) + alpha))) * this.run_actLPS[hor]) * (this.runkf_h[hor] / this.runlayerdepth[hor]);
+        double potLPSoutflow = ((1 - (1 / (Math.pow(this.run_satHor[hor], 2) + alpha))) * this.run_actLPS[hor]) * (this.runkf_h[hor] / layerdepth.getValue()[hor]);
         //testing a simple function function out = 1/k * sto
         //double potLPSoutflow = 1 / alpha * this.act_LPS;//Math.pow(this.act_LPS, alpha);
         if (potLPSoutflow > this.run_actLPS[hor]) {
@@ -1315,11 +1317,11 @@ public class J2KProcessLayeredSoilWater extends JAMSComponent {
             double maxPerc = 0;
             /** checking if percolation rate is limited by parameter */
             if (hor == nhor - 1) {
-                maxPerc = this.geoMaxPerc.getValue() * this.run_area * this.Kf_geo.getValue() / 86.4;
+                maxPerc = this.geoMaxPerc.getValue() * this.run_area * this.Kf_geo.getValue();
                 /*if (Kf_geo.getValue() < 10){
                 maxPerc = 0;
                 }*/
-                // 86.4 cm/d "middle" hydraulic conductivity in geology (1 E-5 m/s)
+                
                 if (this.run_vertComp > maxPerc) {
                     double rest = this.run_vertComp - maxPerc;
                     this.run_vertComp = maxPerc;
@@ -1329,11 +1331,11 @@ public class J2KProcessLayeredSoilWater extends JAMSComponent {
             } else {
 
                 try {
-                    maxPerc = this.soilMaxPerc.getValue() * this.run_area * this.runkf_h[hor + 1] / 86.4;
+                    maxPerc = this.soilMaxPerc.getValue() * this.run_area * this.runkf_h[hor + 1];
                 } catch (Exception e) {
                     System.out.println("SOILID = " + soilID.getValue());
                 }
-                // 86.4 cm/d "middle" hydraulic conductivity in geology (1 E-5 m/s)
+                
                 if (this.run_vertComp > maxPerc) {
                     double rest = this.run_vertComp - maxPerc;
                     this.run_vertComp = maxPerc;
