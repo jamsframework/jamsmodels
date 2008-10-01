@@ -24,11 +24,11 @@
 
 package org.jams.j2k.s_n.crop;
 
-import org.unijena.jams.model.*;
+import jams.model.*;
 import java.util.*;
 import java.io.*;
 import org.jams.j2k.s_n.crop.J2KSNLMArable;
-import org.unijena.jams.data.JAMSCalendar;
+import jams.data.JAMSCalendar;
 
 /**
  *

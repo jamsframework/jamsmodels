@@ -31,8 +31,8 @@
 */        
 package org.unijena.j2k.inputData;
 
-import org.unijena.jams.data.*;
-import org.unijena.jams.model.*;
+import jams.data.*;
+import jams.model.*;
 
 /**
  *

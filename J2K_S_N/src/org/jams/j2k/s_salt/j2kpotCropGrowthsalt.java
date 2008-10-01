@@ -28,8 +28,8 @@ package org.jams.j2k.s_salt;
  * @author  c5ulbe
  */
 import org.jams.j2k.s_n.crop.J2KSNCrop;
-import org.unijena.jams.model.*;
-import org.unijena.jams.data.*;
+import jams.model.*;
+import jams.data.*;
 import java.io.*;
 import java.util.ArrayList;
 

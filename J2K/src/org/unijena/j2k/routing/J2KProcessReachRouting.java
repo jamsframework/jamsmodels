@@ -23,8 +23,8 @@
 
 package org.unijena.j2k.routing;
 
-import org.unijena.jams.data.*;
-import org.unijena.jams.model.*;
+import jams.data.*;
+import jams.model.*;
 
 /**
  *
@@ -328,7 +328,7 @@ import org.unijena.jams.model.*;
             
             try{
                 addInDestIn = DestReach.getDouble("inAddIn");
-            }catch(org.unijena.jams.data.JAMSEntity.NoSuchAttributeException e){
+            }catch(jams.data.JAMSEntity.NoSuchAttributeException e){
                 addInDestIn = 0;
             }
         }

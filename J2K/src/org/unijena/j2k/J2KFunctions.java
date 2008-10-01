@@ -24,8 +24,8 @@ package org.unijena.j2k;
 
 import java.util.*;
 import java.io.*;
-import org.unijena.jams.data.*;
-import org.unijena.jams.model.JAMSModel;
+import jams.data.*;
+import jams.model.JAMSModel;
 
 /**
  *

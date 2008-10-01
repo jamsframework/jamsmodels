@@ -24,9 +24,9 @@
 package org.unijena.j2k.radiation;
 
 import java.io.*;
-import org.unijena.jams.JAMSTools;
-import org.unijena.jams.data.*;
-import org.unijena.jams.model.*;
+import jams.JAMSTools;
+import jams.data.*;
+import jams.model.*;
 
 /**
  *
@@ -42,14 +42,7 @@ import org.unijena.jams.model.*;
     /*
      *  Component variables
      */
-    
-    @JAMSVarDescription(
-            access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.INIT,
-            description = "Workspace directory name"
-            )
-            public JAMSString dirName;
-    
+
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
             update = JAMSVarDescription.UpdateType.INIT,
@@ -147,7 +140,7 @@ import org.unijena.jams.model.*;
     public void init() throws JAMSEntity.NoSuchAttributeException, IOException {
         //first, check if cached data are available
         //cacheFile = new File(dirName.getValue() + "/$" + this.getInstanceName() + ".cache");
-        cacheFile = new File(JAMSTools.CreateAbsoluteFileName(dirName.getValue(),"/$" + this.getInstanceName() + ".cache"));
+        cacheFile = new File(JAMSTools.CreateAbsoluteFileName(getModel().getWorkspaceDirectory().getPath(),"/$" + this.getInstanceName() + ".cache"));
         if (!cacheFile.exists() && dataCaching.getValue()) {
  //           getModel().getRuntime().sendHalt(this.getInstanceName() + ": dataCaching is true but no cache file available!");
         }

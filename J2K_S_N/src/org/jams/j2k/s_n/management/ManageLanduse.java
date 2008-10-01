@@ -11,8 +11,8 @@ package org.jams.j2k.s_n.management;
 
 import java.util.ArrayList;
 import org.jams.j2k.s_n.crop.*;
-import org.unijena.jams.model.*;
-import org.unijena.jams.data.*;
+import jams.model.*;
+import jams.data.*;
 
 
 /**

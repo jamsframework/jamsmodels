@@ -23,8 +23,8 @@
 
 package org.unijena.j2k.testFunctions;
 
-import org.unijena.jams.model.*;
-import org.unijena.jams.data.*;
+import jams.model.*;
+import jams.data.*;
 
 /**
  *

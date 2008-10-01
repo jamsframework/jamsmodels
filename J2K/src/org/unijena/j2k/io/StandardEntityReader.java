@@ -23,20 +23,18 @@
 package org.unijena.j2k.io;
 
 import org.unijena.j2k.*;
-import org.unijena.jams.data.*;
-import org.unijena.jams.model.*;
+import jams.data.*;
+import jams.model.*;
 import java.util.*;
-import org.unijena.jams.JAMS;
-import org.unijena.jams.JAMSTools;
+import jams.JAMS;
+import jams.JAMSTools;
 
 /**
  *
  * @author S. Kralisch
  */
 public class StandardEntityReader extends JAMSComponent {
-
-    @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ, update = JAMSVarDescription.UpdateType.INIT, description = "Workspace directory name")
-    public JAMSString dirName;
+    
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ, update = JAMSVarDescription.UpdateType.INIT, description = "HRU parameter file name")
     public JAMSString hruFileName;
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ, update = JAMSVarDescription.UpdateType.INIT, description = "Reach parameter file name")
@@ -48,7 +46,7 @@ public class StandardEntityReader extends JAMSComponent {
 
     public void init() throws JAMSEntity.NoSuchAttributeException {
         //to handle relative path names        
-        hrus.setEntities(J2KFunctions.readParas(JAMSTools.CreateAbsoluteFileName(dirName.getValue(), hruFileName.getValue()), getModel()));
+        hrus.setEntities(J2KFunctions.readParas(JAMSTools.CreateAbsoluteFileName(getModel().getWorkspaceDirectory().getPath(), hruFileName.getValue()), getModel()));
 
         for (JAMSEntity e : hrus.getEntityArray()) {
             try {
@@ -60,7 +58,7 @@ public class StandardEntityReader extends JAMSComponent {
 
         //read reach parameter
         //reaches = new JAMSEntityCollection();
-        reaches.setEntities(J2KFunctions.readParas(JAMSTools.CreateAbsoluteFileName(dirName.getValue(), reachFileName.getValue()), getModel()));
+        reaches.setEntities(J2KFunctions.readParas(JAMSTools.CreateAbsoluteFileName(getModel().getWorkspaceDirectory().getPath(), reachFileName.getValue()), getModel()));
 
         //create object associations from id attributes for hrus and reaches
         createTopology();

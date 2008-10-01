@@ -24,10 +24,10 @@
 package org.unijena.j2k.io;
 
 import org.unijena.j2k.*;
-import org.unijena.jams.data.*;
-import org.unijena.jams.model.*;
+import jams.data.*;
+import jams.model.*;
 import java.util.*;
-import org.unijena.jams.JAMS;
+import jams.JAMS;
 
 /**
  *

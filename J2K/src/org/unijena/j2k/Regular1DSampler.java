@@ -25,10 +25,10 @@ package org.unijena.j2k;
 
 import java.util.Random;
 import java.util.StringTokenizer;
-import org.unijena.jams.JAMS;
-import org.unijena.jams.data.*;
-import org.unijena.jams.io.GenericDataWriter;
-import org.unijena.jams.model.*;
+import jams.JAMS;
+import jams.data.*;
+import jams.io.GenericDataWriter;
+import jams.model.*;
 
 /**
  *
@@ -44,13 +44,7 @@ import org.unijena.jams.model.*;
     /*
      *  Component variables
      */
-    @JAMSVarDescription(
-            access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.INIT,
-            description = "Data file directory name"
-            )
-            public JAMSString dirName;
-    
+
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
             update = JAMSVarDescription.UpdateType.INIT,
@@ -179,7 +173,7 @@ import org.unijena.jams.model.*;
             }
             
             //create para output file
-            paraWriter = new GenericDataWriter(dirName.getValue()+"/"+this.paraFileName.getValue());
+            paraWriter = new GenericDataWriter(getModel().getWorkspaceDirectory().getPath()+"/"+this.paraFileName.getValue());
             paraWriter.addColumn("Run");
             
             paraWriter.addColumn(this.parameterName);
@@ -192,7 +186,7 @@ import org.unijena.jams.model.*;
             paraWriter.writeHeader();
             
             //the attribute output file
-            attribWriter = new GenericDataWriter(dirName.getValue()+"/"+attribFileName.getValue());
+            attribWriter = new GenericDataWriter(getModel().getWorkspaceDirectory().getPath()+"/"+attribFileName.getValue());
             
             attribWriter.addComment("J2K model output");
             attribWriter.addComment("");
@@ -312,7 +306,7 @@ import org.unijena.jams.model.*;
                 try{
                     paraWriter.writeData();
                     paraWriter.flush();
-                }catch(org.unijena.jams.runtime.RuntimeException e){
+                }catch(jams.runtime.RuntimeException e){
                     
                 }
                 
@@ -344,7 +338,7 @@ import org.unijena.jams.model.*;
                 }
                 try {
                     attribWriter.writeData();
-                } catch (org.unijena.jams.runtime.RuntimeException jre) {
+                } catch (jams.runtime.RuntimeException jre) {
                     getModel().getRuntime().println(jre.getMessage());
                 }
             }

@@ -28,7 +28,7 @@ package org.jams.j2k.s_n.crop;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import org.unijena.jams.model.*;
+import jams.model.*;
 import java.util.*;
 import java.io.*;
 import org.jams.j2k.s_n.crop.J2KSNLMArable;

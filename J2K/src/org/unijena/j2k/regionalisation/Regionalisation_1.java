@@ -23,23 +23,16 @@
 
 package org.unijena.j2k.regionalisation;
 import java.io.*;
-import org.unijena.jams.JAMS;
-import org.unijena.jams.JAMSTools;
-import org.unijena.jams.data.*;
-import org.unijena.jams.model.*;
+import jams.JAMS;
+import jams.JAMSTools;
+import jams.data.*;
+import jams.model.*;
 
 /**
  *
  * @author Peter Krause
  */
 public class Regionalisation_1 extends JAMSComponent {
-    
-    @JAMSVarDescription(
-    access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.INIT,
-            description = "Workspace directory name"
-            )
-            public JAMSString dirName;
     
     @JAMSVarDescription(
     access = JAMSVarDescription.AccessType.READ,
@@ -170,7 +163,7 @@ public class Regionalisation_1 extends JAMSComponent {
     public void init() throws JAMSEntity.NoSuchAttributeException, IOException {
         
         //first, check if cached data are available        
-        cacheFile = new File(JAMSTools.CreateAbsoluteFileName(dirName.getValue(),"/$" + this.getInstanceName() + ".cache"));
+        cacheFile = new File(JAMSTools.CreateAbsoluteFileName(getModel().getWorkspaceDirectory().getPath(),"/$" + this.getInstanceName() + ".cache"));
         if (!cacheFile.exists() && dataCaching.getValue()) {
             getModel().getRuntime().println(this.getInstanceName() + ": data caching is switched on but no cache file available!", JAMS.STANDARD);
             writeCache = true;

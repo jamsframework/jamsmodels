@@ -24,8 +24,8 @@
 
 package org.jams.j2k.s_n.crop;
 
-import org.unijena.jams.data.*;
-import org.unijena.jams.model.*;
+import jams.data.*;
+import jams.model.*;
 import java.util.*;
 import org.unijena.j2k.J2KFunctions;
 
@@ -36,13 +36,6 @@ import org.unijena.j2k.J2KFunctions;
  */
 public class StandardCropParaReader extends JAMSComponent {
     
-    @JAMSVarDescription(
-            access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.INIT,
-            description = "Data file directory name"
-            )
-            public JAMSString dirName;
-
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
             update = JAMSVarDescription.UpdateType.INIT,
@@ -63,7 +56,7 @@ public class StandardCropParaReader extends JAMSComponent {
         
         //read crop parameter
         JAMSEntityCollection crops = new JAMSEntityCollection();
-        crops.setEntities(J2KFunctions.readParas(dirName.getValue()+"/"+crFileName.getValue(), getModel()));
+        crops.setEntities(J2KFunctions.readParas(getModel().getWorkspaceDirectory().getPath()+"/"+crFileName.getValue(), getModel()));
         
         HashMap<Double, JAMSEntity> crMap = new HashMap<Double, JAMSEntity>();
         JAMSEntity cr, e;

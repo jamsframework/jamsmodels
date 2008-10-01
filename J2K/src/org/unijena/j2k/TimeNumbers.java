@@ -10,7 +10,7 @@
 package org.unijena.j2k;
 
 import java.util.Locale;
-import org.unijena.jams.data.JAMSCalendar;
+import jams.data.JAMSCalendar;
 
 /**
  *

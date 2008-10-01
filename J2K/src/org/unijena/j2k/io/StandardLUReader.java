@@ -24,25 +24,18 @@
 package org.unijena.j2k.io;
 
 import org.unijena.j2k.*;
-import org.unijena.jams.data.*;
-import org.unijena.jams.model.*;
+import jams.data.*;
+import jams.model.*;
 import java.util.*;
-import org.unijena.jams.JAMS;
-import org.unijena.jams.JAMSTools;
+import jams.JAMS;
+import jams.JAMSTools;
 
 /**
  *
  * @author S. Kralisch
  */
 public class StandardLUReader extends JAMSComponent {
-    
-    @JAMSVarDescription(
-            access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.INIT,
-            description = "Data file directory name"
-            )
-            public JAMSString dirName;
-    
+
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
             update = JAMSVarDescription.UpdateType.INIT,
@@ -63,7 +56,7 @@ public class StandardLUReader extends JAMSComponent {
         //read lu parameter
         JAMSEntityCollection lus = new JAMSEntityCollection();
         
-        lus.setEntities(J2KFunctions.readParas(JAMSTools.CreateAbsoluteFileName(dirName.getValue(),luFileName.getValue()), getModel()));
+        lus.setEntities(J2KFunctions.readParas(JAMSTools.CreateAbsoluteFileName(getModel().getWorkspaceDirectory().getPath(),luFileName.getValue()), getModel()));
         
         HashMap<Double, JAMSEntity> luMap = new HashMap<Double, JAMSEntity>();
         JAMSEntity lu, e;

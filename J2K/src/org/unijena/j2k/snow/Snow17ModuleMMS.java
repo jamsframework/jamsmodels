@@ -9,9 +9,9 @@
 
 package org.unijena.j2k.snow;
 
-import org.unijena.jams.data.*;
-import org.unijena.jams.data.JAMSEntity.NoSuchAttributeException;
-import org.unijena.jams.model.*;
+import jams.data.*;
+import jams.data.JAMSEntity.NoSuchAttributeException;
+import jams.model.*;
 
 /**
  *

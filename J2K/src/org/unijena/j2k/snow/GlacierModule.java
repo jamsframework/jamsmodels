@@ -24,8 +24,8 @@
 package org.unijena.j2k.snow;
 ;
 import java.io.*;
-import org.unijena.jams.data.*;
-import org.unijena.jams.model.*;
+import jams.data.*;
+import jams.model.*;
 
 /**
  *

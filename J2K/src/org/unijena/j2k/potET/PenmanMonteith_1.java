@@ -45,9 +45,9 @@
 package org.unijena.j2k.potET;
 
 import java.io.*;
-import org.unijena.jams.JAMS;
-import org.unijena.jams.data.*;
-import org.unijena.jams.model.*;
+import jams.JAMS;
+import jams.data.*;
+import jams.model.*;
 
 /**
  *
@@ -71,14 +71,7 @@ import org.unijena.jams.model.*;
     /*
      *  Component variables
      */
-    
-    @JAMSVarDescription(
-            access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.INIT,
-            description = "Workspace directory name"
-            )
-            public JAMSString dirName;
-    
+
      @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
             update = JAMSVarDescription.UpdateType.RUN,

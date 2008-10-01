@@ -23,22 +23,15 @@
 
 package org.unijena.j2k.regionalisation;
 import java.io.*;
-import org.unijena.jams.JAMS;
-import org.unijena.jams.data.*;
-import org.unijena.jams.model.*;
+import jams.JAMS;
+import jams.data.*;
+import jams.model.*;
 
 /**
  *
  * @author S. Kralisch
  */
 public class Regionalisation_2 extends JAMSComponent {
-    
-    @JAMSVarDescription(
-    access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.INIT,
-            description = "Workspace directory name"
-            )
-            public JAMSString dirName;
     
     @JAMSVarDescription(
     access = JAMSVarDescription.AccessType.READ,

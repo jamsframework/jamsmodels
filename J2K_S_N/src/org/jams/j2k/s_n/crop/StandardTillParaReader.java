@@ -24,8 +24,8 @@
 
 package org.jams.j2k.s_n.crop;
 
-import org.unijena.jams.data.*;
-import org.unijena.jams.model.*;
+import jams.data.*;
+import jams.model.*;
 import java.util.*;
 import org.unijena.j2k.J2KFunctions;
 
@@ -35,14 +35,6 @@ import org.unijena.j2k.J2KFunctions;
  */
 public class StandardTillParaReader extends JAMSComponent {
     
-    
-    @JAMSVarDescription(
-            access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.INIT,
-            description = "Data file directory name"
-            )
-            public JAMSString dirName;
-
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
             update = JAMSVarDescription.UpdateType.INIT,
@@ -63,7 +55,7 @@ public class StandardTillParaReader extends JAMSComponent {
         
         //read tillage parameter
         JAMSEntityCollection till = new JAMSEntityCollection();
-        till.setEntities(J2KFunctions.readParas(dirName.getValue()+"/"+tlFileName.getValue(), getModel()));
+        till.setEntities(J2KFunctions.readParas(getModel().getWorkspaceDirectory().getPath()+"/"+tlFileName.getValue(), getModel()));
         
         HashMap<Double, JAMSEntity> tlMap = new HashMap<Double, JAMSEntity>();
         JAMSEntity tl, e;

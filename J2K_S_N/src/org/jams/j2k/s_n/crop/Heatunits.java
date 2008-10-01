@@ -13,8 +13,8 @@
  */
 package org.jams.j2k.s_n.crop;
 
-import org.unijena.jams.data.*;
-import org.unijena.jams.model.*;
+import jams.data.*;
+import jams.model.*;
 import java.io.*;
 
  public class Heatunits extends JAMSComponent {

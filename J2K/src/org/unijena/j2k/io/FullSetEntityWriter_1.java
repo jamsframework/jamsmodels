@@ -23,10 +23,10 @@
 
 package org.unijena.j2k.io;
 
-import org.unijena.jams.JAMSTools;
-import org.unijena.jams.data.*;
-import org.unijena.jams.model.*;
-import org.unijena.jams.io.*;
+import jams.JAMSTools;
+import jams.data.*;
+import jams.model.*;
+import jams.io.*;
 
 /**
  *
@@ -44,14 +44,7 @@ public class FullSetEntityWriter_1 extends JAMSComponent {
             description = "EntitySet"
             )
             public JAMSEntityCollection entitySet;
-    
-    @JAMSVarDescription(
-            access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.INIT,
-            description = "Data file directory name"
-            )
-            public JAMSString dirName;
-    
+
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
             update = JAMSVarDescription.UpdateType.INIT,
@@ -108,7 +101,7 @@ public class FullSetEntityWriter_1 extends JAMSComponent {
      */
     
     public void init() throws JAMSEntity.NoSuchAttributeException {
-        writer = new GenericDataWriter(JAMSTools.CreateAbsoluteFileName(dirName.getValue(),fileName.getValue()));
+        writer = new GenericDataWriter(JAMSTools.CreateAbsoluteFileName(getModel().getWorkspaceDirectory().getPath(),fileName.getValue()));
         
         writer.addComment("J2K model output"+header.getValue());
         
@@ -183,7 +176,7 @@ public class FullSetEntityWriter_1 extends JAMSComponent {
                 writer.writeData();
             }
             
-        } catch (org.unijena.jams.runtime.RuntimeException jre) {
+        } catch (jams.runtime.RuntimeException jre) {
             this.getModel().getRuntime().handle(jre);
         }
         writer.flush();

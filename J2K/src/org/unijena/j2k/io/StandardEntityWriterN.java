@@ -24,11 +24,11 @@
 package org.unijena.j2k.io;
 
 import java.util.Locale;
-import org.unijena.jams.JAMS;
-import org.unijena.jams.JAMSTools;
-import org.unijena.jams.data.*;
-import org.unijena.jams.model.*;
-import org.unijena.jams.io.*;
+import jams.JAMS;
+import jams.JAMSTools;
+import jams.data.*;
+import jams.model.*;
+import jams.io.*;
 
 /**
  *
@@ -46,14 +46,7 @@ public class StandardEntityWriterN extends JAMSComponent {
             description = "EntitySet"
             )
             public JAMSEntityCollection entities;
-    
-    @JAMSVarDescription(
-            access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.INIT,
-            description = "Data file directory name"
-            )
-            public JAMSString dirName;
-    
+
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
             update = JAMSVarDescription.UpdateType.INIT,
@@ -113,7 +106,7 @@ public class StandardEntityWriterN extends JAMSComponent {
      */
     
     public void init() throws JAMSEntity.NoSuchAttributeException {                        
-        writer = new GenericDataWriter(JAMSTools.CreateAbsoluteFileName(dirName.getValue(),fileName.getValue()));
+        writer = new GenericDataWriter(JAMSTools.CreateAbsoluteFileName(getModel().getWorkspaceDirectory().getPath(),fileName.getValue()));
         
         int tsteps = (int)this.timeInterval.getNumberOfTimesteps();
         nEnts = this.entities.getEntityArray().length;
@@ -229,7 +222,7 @@ public class StandardEntityWriterN extends JAMSComponent {
                 }
                 writer.writeData();
             }
-        } catch (org.unijena.jams.runtime.RuntimeException jre) {
+        } catch (jams.runtime.RuntimeException jre) {
             getModel().getRuntime().handle(jre);
         }
         writer.close();

@@ -24,25 +24,18 @@
 
 package org.jams.j2k.s_n.io;
 
-import org.unijena.jams.model.*;
+import jams.model.*;
 import java.util.*;
 import java.io.*;
 import org.jams.j2k.s_n.crop.*;
-import org.unijena.jams.JAMS;
-import org.unijena.jams.data.*;
+import jams.JAMS;
+import jams.data.*;
 
 /**
  *
  * @author c5ulbe
  */
 public class StandardManagementParaReader extends JAMSComponent {
-    
-    @JAMSVarDescription(
-            access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.INIT,
-            description = "Data file directory name"
-            )
-            public JAMSString dirName;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
@@ -410,12 +403,12 @@ public class StandardManagementParaReader extends JAMSComponent {
         linkCrops("C:\\jamsmodels\\JAMS-Application\\JAMS-Arnstadt\\parameter\\hrus_rot.par", rotations);
          */
         
-        HashMap<Integer, J2KSNFertilizer> ferts = readFertPara(dirName.getValue() + "/" + fertFileName.getValue());
-        HashMap<Integer, J2KSNTillage> tills = readTillPara(dirName.getValue() + "/" + tillFileName.getValue());
-        HashMap<Integer, ArrayList<J2KSNLMArable>> managements = readManagementPara(dirName.getValue() + "/" + managementFileName.getValue(), tills, ferts);
-        HashMap<Integer, J2KSNCrop> crops = readCrops(dirName.getValue() + "/" + cropFileName.getValue(), managements);
-        HashMap<Integer, ArrayList<J2KSNCrop>> rotations = readRotations(dirName.getValue() + "/" + rotationFileName.getValue(), crops);
-        linkCrops(dirName.getValue() + "/" + hruRotationFileName.getValue(), rotations);
+        HashMap<Integer, J2KSNFertilizer> ferts = readFertPara(getModel().getWorkspaceDirectory().getPath() + "/" + fertFileName.getValue());
+        HashMap<Integer, J2KSNTillage> tills = readTillPara(getModel().getWorkspaceDirectory().getPath() + "/" + tillFileName.getValue());
+        HashMap<Integer, ArrayList<J2KSNLMArable>> managements = readManagementPara(getModel().getWorkspaceDirectory().getPath() + "/" + managementFileName.getValue(), tills, ferts);
+        HashMap<Integer, J2KSNCrop> crops = readCrops(getModel().getWorkspaceDirectory().getPath() + "/" + cropFileName.getValue(), managements);
+        HashMap<Integer, ArrayList<J2KSNCrop>> rotations = readRotations(getModel().getWorkspaceDirectory().getPath() + "/" + rotationFileName.getValue(), crops);
+        linkCrops(getModel().getWorkspaceDirectory().getPath() + "/" + hruRotationFileName.getValue(), rotations);
     }
     
     public static void main(String[] x) {

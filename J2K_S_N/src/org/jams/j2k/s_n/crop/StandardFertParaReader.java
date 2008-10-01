@@ -24,8 +24,8 @@
 
 package org.jams.j2k.s_n.crop;
 
-import org.unijena.jams.data.*;
-import org.unijena.jams.model.*;
+import jams.data.*;
+import jams.model.*;
 import java.util.*;
 import org.unijena.j2k.J2KFunctions;
 
@@ -34,13 +34,6 @@ import org.unijena.j2k.J2KFunctions;
  * @author S. Kralisch file edited by U. Bende-Michl
  */
 public class StandardFertParaReader extends JAMSComponent {
-    
-    @JAMSVarDescription(
-            access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.INIT,
-            description = "Data file directory name"
-            )
-            public JAMSString dirName;
 
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
@@ -62,7 +55,7 @@ public class StandardFertParaReader extends JAMSComponent {
         
         //read fertilizer parameter
         JAMSEntityCollection fert = new JAMSEntityCollection();
-        fert.setEntities(J2KFunctions.readParas(dirName.getValue()+"/"+ftFileName.getValue(), getModel()));
+        fert.setEntities(J2KFunctions.readParas(getModel().getWorkspaceDirectory().getPath()+"/"+ftFileName.getValue(), getModel()));
         
         HashMap<Double, JAMSEntity> ftMap = new HashMap<Double, JAMSEntity>();
         JAMSEntity ft, e;

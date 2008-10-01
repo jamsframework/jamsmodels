@@ -25,8 +25,8 @@
 
 package org.unijena.j2k.radiation;
 
-import org.unijena.jams.data.*;
-import org.unijena.jams.model.*;
+import jams.data.*;
+import jams.model.*;
 
 /**
  *

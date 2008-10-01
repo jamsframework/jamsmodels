@@ -24,10 +24,10 @@
 package org.unijena.j2k.io;
 
 import java.io.IOException;
-import org.unijena.jams.JAMSTools;
-import org.unijena.jams.data.*;
-import org.unijena.jams.model.*;
-import org.unijena.jams.io.*;
+import jams.JAMSTools;
+import jams.data.*;
+import jams.model.*;
+import jams.io.*;
 
 /**
  *
@@ -45,14 +45,7 @@ public class StandardDataWriter extends JAMSComponent {
             description = "time interval"
             )
             public JAMSTimeInterval timeInterval;
-    
-    @JAMSVarDescription(
-    access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.INIT,
-            description = "Data file directory name"
-            )
-            public JAMSString dirName;
-    
+
     @JAMSVarDescription(
     access = JAMSVarDescription.AccessType.READ,
             update = JAMSVarDescription.UpdateType.INIT,
@@ -96,7 +89,7 @@ public class StandardDataWriter extends JAMSComponent {
      */
     
     public void init() {
-        writer = new GenericDataWriter(JAMSTools.CreateAbsoluteFileName(dirName.getValue(),fileName.getValue()));
+        writer = new GenericDataWriter(JAMSTools.CreateAbsoluteFileName(getModel().getWorkspaceDirectory().getPath(),fileName.getValue()));
         
         writer.addComment("J2K model output");
         writer.addComment("");
@@ -146,7 +139,7 @@ public class StandardDataWriter extends JAMSComponent {
         
         try {
             writer.writeData(prec);
-        } catch (org.unijena.jams.runtime.RuntimeException jre) {
+        } catch (jams.runtime.RuntimeException jre) {
             getModel().getRuntime().println(jre.getMessage());
         }
     }

@@ -23,8 +23,8 @@
 
 package org.unijena.j2k.groundwater;
 
-import org.unijena.jams.data.*;
-import org.unijena.jams.model.*;
+import jams.data.*;
+import jams.model.*;
 
 /**
  *

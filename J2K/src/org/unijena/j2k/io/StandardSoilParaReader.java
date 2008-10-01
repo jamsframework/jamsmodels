@@ -24,25 +24,18 @@
 package org.unijena.j2k.io;
 
 import org.unijena.j2k.*;
-import org.unijena.jams.JAMS;
-import org.unijena.jams.data.*;
-import org.unijena.jams.model.*;
+import jams.JAMS;
+import jams.data.*;
+import jams.model.*;
 import java.util.*;
-import org.unijena.jams.JAMSTools;
+import jams.JAMSTools;
 
 /**
  *
  * @author S. Kralisch
  */
 public class StandardSoilParaReader extends JAMSComponent {
-    
-    @JAMSVarDescription(
-            access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.INIT,
-            description = "Data file directory name"
-            )
-            public JAMSString dirName;
-    
+
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
             update = JAMSVarDescription.UpdateType.INIT,
@@ -64,7 +57,7 @@ public class StandardSoilParaReader extends JAMSComponent {
         //read soil parameters
         JAMSEntityCollection soilTypes = new JAMSEntityCollection();
         
-        soilTypes.setEntities(J2KFunctions.readParas(JAMSTools.CreateAbsoluteFileName(dirName.getValue(),stFileName.getValue()), getModel()));
+        soilTypes.setEntities(J2KFunctions.readParas(JAMSTools.CreateAbsoluteFileName(getModel().getWorkspaceDirectory().getPath(),stFileName.getValue()), getModel()));
         
         HashMap<Double, JAMSEntity> stMap = new HashMap<Double, JAMSEntity>();
         JAMSEntity st, e;

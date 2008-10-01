@@ -23,12 +23,12 @@
 
 package org.unijena.j2k.testFunctions;
 
-import org.unijena.jams.model.*;
-import org.unijena.jams.data.*;
-import org.unijena.jams.io.*;
+import jams.model.*;
+import jams.data.*;
+import jams.io.*;
 import java.io.*;
 import java.util.*;
-import org.unijena.jams.JAMS;
+import jams.JAMS;
 
 /**
  *

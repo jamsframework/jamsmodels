@@ -23,9 +23,9 @@
 
 package org.jams.j2k.s_salt;
 
-import org.unijena.jams.data.*;
-import org.unijena.jams.model.*;
-import org.unijena.jams.io.*;
+import jams.data.*;
+import jams.model.*;
+import jams.io.*;
 import java.util.*;
 import java.io.*;
 

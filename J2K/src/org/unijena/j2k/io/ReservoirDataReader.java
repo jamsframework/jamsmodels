@@ -23,13 +23,13 @@
 
 package org.unijena.j2k.io;
 
-import org.unijena.jams.data.*;
-import org.unijena.jams.model.*;
-import org.unijena.jams.io.*;
+import jams.data.*;
+import jams.model.*;
+import jams.io.*;
 import java.util.*;
 import java.io.*;
-import org.unijena.jams.JAMS;
-import org.unijena.jams.JAMSTools;
+import jams.JAMS;
+import jams.JAMSTools;
 
 /**
  *
@@ -43,13 +43,6 @@ public class ReservoirDataReader extends JAMSComponent {
             description = "Data file name"
             )
             public JAMSString dataFileName;
-    
-    @JAMSVarDescription(
-            access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.INIT,
-            description = "Data file directory name"
-            )
-            public JAMSString dirName;
 
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
@@ -108,7 +101,7 @@ public class ReservoirDataReader extends JAMSComponent {
                         
         String line = "#";
         try {
-            BufferedReader reader = new BufferedReader(new FileReader(JAMSTools.CreateAbsoluteFileName(dirName.getValue(),dataFileName.getValue())));
+            BufferedReader reader = new BufferedReader(new FileReader(JAMSTools.CreateAbsoluteFileName(getModel().getWorkspaceDirectory().getPath(),dataFileName.getValue())));
             
             //skip comment lines
             while(line.charAt(0) == '#'){
@@ -179,7 +172,7 @@ public class ReservoirDataReader extends JAMSComponent {
         //        reservoir.setDouble(dataSetNames[i], 0);
         this.dataNames.setValue(dataNames);
         
-        store = new GenericDataReader(dirName.getValue()+"/"+dataFileName.getValue(), false, headerLineCount+1);
+        store = new GenericDataReader(getModel().getWorkspaceDirectory().getPath()+"/"+dataFileName.getValue(), false, headerLineCount+1);
         
 
         JAMSCalendar startTime = parseJ2KTime(start);

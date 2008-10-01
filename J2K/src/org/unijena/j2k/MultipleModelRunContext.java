@@ -25,9 +25,9 @@ package org.unijena.j2k;
 
 import java.util.Random;
 import java.util.StringTokenizer;
-import org.unijena.jams.data.*;
-import org.unijena.jams.io.GenericDataWriter;
-import org.unijena.jams.model.*;
+import jams.data.*;
+import jams.io.GenericDataWriter;
+import jams.model.*;
 
 /**
  *
@@ -47,14 +47,7 @@ title="InErrorContext",
     /*
      *  Component variables
      */
-    
-    @JAMSVarDescription(
-    access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.INIT,
-            description = "Worksspace directory"
-            )
-            public JAMSString dirName;
-    
+
     @JAMSVarDescription(
     access = JAMSVarDescription.AccessType.READ,
             update = JAMSVarDescription.UpdateType.INIT,
@@ -133,7 +126,7 @@ title="InErrorContext",
             }
             
             //create efficiency output file
-            effWriter = new GenericDataWriter(dirName.getValue()+"/"+this.effFileName.getValue());
+            effWriter = new GenericDataWriter(getModel().getWorkspaceDirectory().getPath()+"/"+this.effFileName.getValue());
             effWriter.addColumn("Run");
             
             for(int e = 0; e < effNames.length; e++){
@@ -143,7 +136,7 @@ title="InErrorContext",
             effWriter.writeHeader();
             
             //the targetValue output file
-            targetWriter = new GenericDataWriter(dirName.getValue()+"/"+targetFileName.getValue());
+            targetWriter = new GenericDataWriter(getModel().getWorkspaceDirectory().getPath()+"/"+targetFileName.getValue());
             
             targetWriter.addComment("J2K model output");
             targetWriter.addComment("");
@@ -185,7 +178,7 @@ title="InErrorContext",
                 try{
                     effWriter.writeData();
                     effWriter.flush();
-                }catch(org.unijena.jams.runtime.RuntimeException e){
+                }catch(jams.runtime.RuntimeException e){
                     
                 }
          
@@ -216,7 +209,7 @@ title="InErrorContext",
                 }
                 try {
                     targetWriter.writeData();
-                } catch (org.unijena.jams.runtime.RuntimeException jre) {
+                } catch (jams.runtime.RuntimeException jre) {
                     getModel().getRuntime().println(jre.getMessage());
                 }
             }

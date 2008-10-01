@@ -22,8 +22,8 @@ package org.jams.j2k.s_n;
  *
  */
 
-import org.unijena.jams.data.*;
-import org.unijena.jams.model.*;
+import jams.data.*;
+import jams.model.*;
 
 /**
  *

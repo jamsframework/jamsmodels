@@ -30,7 +30,7 @@ public class HourlySolarRadiationCalculationMethods {
      * @param longSite the longitude of the point of interest in deg. west from Greenwich
      * @param longTZ the longitude of the time zone in deg. west from Greenwich
      */
-    public static double calc_midTimeHourAngle(org.unijena.jams.data.JAMSCalendar time, int julDay, double longSite, double longTZ, boolean debug){
+    public static double calc_midTimeHourAngle(jams.data.JAMSCalendar time, int julDay, double longSite, double longTZ, boolean debug){
         long hour = time.get(time.HOUR_OF_DAY);//localTimeDateObject.decTime();
         long minute = time.get(time.MINUTE);
         double decMin = minute / 60;

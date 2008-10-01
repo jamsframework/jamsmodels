@@ -27,8 +27,8 @@ package org.jams.j2k.s_n.crop;
  *
  * @author  c5ulbe
  */
-import org.unijena.jams.model.*;
-import org.unijena.jams.data.*;
+import jams.model.*;
+import jams.data.*;
 import java.io.*;
 import java.util.ArrayList;
 

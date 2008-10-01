@@ -24,24 +24,17 @@
 package org.unijena.j2k.io;
 
 import org.unijena.j2k.*;
-import org.unijena.jams.data.*;
-import org.unijena.jams.model.*;
-import org.unijena.jams.JAMS;
-import org.unijena.jams.JAMSTools;
+import jams.data.*;
+import jams.model.*;
+import jams.JAMS;
+import jams.JAMSTools;
 
 /**
  *
  * @author S. Kralisch
  */
 public class StandardEntityReader_1 extends JAMSComponent {
-    
-    @JAMSVarDescription(
-            access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.INIT,
-            description = "Workspace directory name"
-            )
-            public JAMSString dirName;
-    
+
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
             update = JAMSVarDescription.UpdateType.INIT,
@@ -59,7 +52,7 @@ public class StandardEntityReader_1 extends JAMSComponent {
     public void init() throws JAMSEntity.NoSuchAttributeException {
        
         //read entity parameter        
-        entities.setEntities(J2KFunctions.readParas(JAMSTools.CreateAbsoluteFileName(dirName.getValue(),entityFileName.getValue()), getModel()));
+        entities.setEntities(J2KFunctions.readParas(JAMSTools.CreateAbsoluteFileName(getModel().getWorkspaceDirectory().getPath(),entityFileName.getValue()), getModel()));
         int nEnt = entities.getEntityArray().length;
         getModel().getRuntime().println("Entities read and created successfull! ("+nEnt+")", JAMS.STANDARD);
         

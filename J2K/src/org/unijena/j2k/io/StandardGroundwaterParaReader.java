@@ -24,24 +24,17 @@
 package org.unijena.j2k.io;
 
 import org.unijena.j2k.*;
-import org.unijena.jams.JAMS;
-import org.unijena.jams.data.*;
-import org.unijena.jams.model.*;
+import jams.JAMS;
+import jams.data.*;
+import jams.model.*;
 import java.util.*;
-import org.unijena.jams.JAMSTools;
+import jams.JAMSTools;
 
 /**
  *
  * @author S. Kralisch
  */
 public class StandardGroundwaterParaReader extends JAMSComponent {
-    
-    @JAMSVarDescription(
-            access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.INIT,
-            description = "Data file directory name"
-            )
-            public JAMSString dirName;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
@@ -64,7 +57,7 @@ public class StandardGroundwaterParaReader extends JAMSComponent {
         //read gw parameter
         JAMSEntityCollection gwTypes = new JAMSEntityCollection();
         
-        gwTypes.setEntities(J2KFunctions.readParas(JAMSTools.CreateAbsoluteFileName(dirName.getValue(),gwFileName.getValue()), getModel()));
+        gwTypes.setEntities(J2KFunctions.readParas(JAMSTools.CreateAbsoluteFileName(getModel().getWorkspaceDirectory().getPath(),gwFileName.getValue()), getModel()));
         
         HashMap<Double, JAMSEntity> gwMap = new HashMap<Double, JAMSEntity>();
         JAMSEntity gw, e;

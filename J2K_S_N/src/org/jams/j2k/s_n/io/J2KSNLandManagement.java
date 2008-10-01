@@ -23,7 +23,7 @@
 
 package org.jams.j2k.s_n.io;
 
-import org.unijena.jams.model.*;
+import jams.model.*;
 import java.util.*;
 import java.io.*;
 //import org.jams.j2k.s_n.LandManagement;

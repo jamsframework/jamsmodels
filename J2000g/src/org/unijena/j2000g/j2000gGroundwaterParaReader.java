@@ -24,9 +24,9 @@
 package org.unijena.j2000g;
 
 import org.unijena.j2k.*;
-import org.unijena.jams.JAMS;
-import org.unijena.jams.data.*;
-import org.unijena.jams.model.*;
+import jams.JAMS;
+import jams.data.*;
+import jams.model.*;
 import java.util.*;
 import java.io.*;
 
@@ -35,14 +35,7 @@ import java.io.*;
  * @author P. Krause
  */
 public class j2000gGroundwaterParaReader extends JAMSComponent {
-    
-    @JAMSVarDescription(
-            access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.INIT,
-            description = "Data file directory name"
-            )
-            public JAMSString dirName;
-    
+
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
             update = JAMSVarDescription.UpdateType.INIT,
@@ -63,7 +56,7 @@ public class j2000gGroundwaterParaReader extends JAMSComponent {
         
         //read gw parameter
         JAMSEntityCollection gwTypes = new JAMSEntityCollection();
-        gwTypes.setEntities(J2KFunctions.readParas(dirName.getValue()+"/"+gwFileName.getValue(), getModel()));
+        gwTypes.setEntities(J2KFunctions.readParas(getModel().getWorkspaceDirectory().getPath()+"/"+gwFileName.getValue(), getModel()));
         
         HashMap<Double, JAMSEntity> gwMap = new HashMap<Double, JAMSEntity>();
         JAMSEntity gw, e;
