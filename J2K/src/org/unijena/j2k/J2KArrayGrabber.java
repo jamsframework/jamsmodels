@@ -144,7 +144,8 @@ import jams.model.*;
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
             update = JAMSVarDescription.UpdateType.RUN,
-            description = "actHaudeFactor"
+            description = "actHaudeFactor",
+            defaultValue="0"
             )
             public JAMSDouble actHaudeFactor;
     

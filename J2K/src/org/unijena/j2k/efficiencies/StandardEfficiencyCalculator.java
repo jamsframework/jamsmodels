@@ -98,56 +98,64 @@ title="StandardEfficiencyCalculator",
     @JAMSVarDescription(
     access = JAMSVarDescription.AccessType.WRITE,
             update = JAMSVarDescription.UpdateType.RUN,
-            description = "Nash-Sutcliffe-efficiency with power 1.0"
+            description = "Nash-Sutcliffe-efficiency with power 1.0",
+            defaultValue= "0"
             )
             public JAMSDouble e1;
     
     @JAMSVarDescription(
     access = JAMSVarDescription.AccessType.WRITE,
             update = JAMSVarDescription.UpdateType.RUN,
-            description = "Nash-Sutcliffe-efficiency with power 2.0"
+            description = "Nash-Sutcliffe-efficiency with power 2.0",
+            defaultValue= "0"
             )
             public JAMSDouble e2;
     
     @JAMSVarDescription(
     access = JAMSVarDescription.AccessType.WRITE,
             update = JAMSVarDescription.UpdateType.RUN,
-            description = "logarithmic Nash-Sutcliffe-efficiency with power 1.0"
+            description = "logarithmic Nash-Sutcliffe-efficiency with power 1.0",
+            defaultValue= "0"
             )
             public JAMSDouble le1;
     
     @JAMSVarDescription(
     access = JAMSVarDescription.AccessType.WRITE,
             update = JAMSVarDescription.UpdateType.RUN,
-            description = "logarithmic Nash-Sutcliffe-efficiency with power 2.0"
+            description = "logarithmic Nash-Sutcliffe-efficiency with power 2.0",
+            defaultValue= "0"
             )
             public JAMSDouble le2;
     
     @JAMSVarDescription(
     access = JAMSVarDescription.AccessType.WRITE,
             update = JAMSVarDescription.UpdateType.RUN,
-            description = "Willmot's index of agreement with power 1.0"
+            description = "Willmot's index of agreement with power 1.0",
+            defaultValue= "0"
             )
             public JAMSDouble ioa1;
     
     @JAMSVarDescription(
     access = JAMSVarDescription.AccessType.WRITE,
             update = JAMSVarDescription.UpdateType.RUN,
-            description = "Willmot's index of agreement with power 2.0"
+            description = "Willmot's index of agreement with power 2.0",
+            defaultValue= "0"
             )
             public JAMSDouble ioa2;
     
     @JAMSVarDescription(
     access = JAMSVarDescription.AccessType.WRITE,
             update = JAMSVarDescription.UpdateType.RUN,
-            description = "coefficient of determination r²"
+            description = "coefficient of determination r²",
+            defaultValue= "0"
             )
             public JAMSDouble rsq;
     
     @JAMSVarDescription(
     access = JAMSVarDescription.AccessType.WRITE,
             update = JAMSVarDescription.UpdateType.RUN,
-            description = "gradient of linear regression"
+            description = "gradient of linear regression",
+            defaultValue= "0"
             )
             public JAMSDouble grad;
     
@@ -161,28 +169,32 @@ title="StandardEfficiencyCalculator",
     @JAMSVarDescription(
     access = JAMSVarDescription.AccessType.WRITE,
             update = JAMSVarDescription.UpdateType.RUN,
-            description = "gradient of double sum regression"
+            description = "gradient of double sum regression",
+            defaultValue= "0"
             )
             public JAMSDouble dsGrad;
     
     @JAMSVarDescription(
     access = JAMSVarDescription.AccessType.WRITE,
             update = JAMSVarDescription.UpdateType.RUN,
-            description = "absolute volume error"
+            description = "absolute volume error",
+            defaultValue= "0"
             )
             public JAMSDouble absVolErr;
     
     @JAMSVarDescription(
     access = JAMSVarDescription.AccessType.WRITE,
             update = JAMSVarDescription.UpdateType.RUN,
-            description = "root mean square error"
+            description = "root mean square error",
+            defaultValue= "0"
             )
             public JAMSDouble rmse;
     
     @JAMSVarDescription(
     access = JAMSVarDescription.AccessType.WRITE,
             update = JAMSVarDescription.UpdateType.RUN,
-            description = "percent bias"
+            description = "percent bias",
+            defaultValue= "0"
             )
             public JAMSDouble pbias;
     

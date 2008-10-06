@@ -131,7 +131,8 @@ import jams.model.*;
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
             update = JAMSVarDescription.UpdateType.RUN,
-            description = "daily net radiation for refET [MJ/m²]"
+            description = "daily net radiation for refET [MJ/m²]",
+            defaultValue="0"
             )
             public JAMSDouble refETNetRad;
     

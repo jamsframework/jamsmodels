@@ -99,14 +99,16 @@ import jams.model.*;
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
             update = JAMSVarDescription.UpdateType.RUN,
-            description = "save variable rain"
+            description = "save variable rain",
+            defaultValue= "0"
             )
             public JAMSDouble svRain;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
             update = JAMSVarDescription.UpdateType.RUN,
-            description = "save variable snow"
+            description = "save variable snow",
+            defaultValue= "0"
             )
             public JAMSDouble svSnow;
     

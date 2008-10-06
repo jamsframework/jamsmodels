@@ -107,7 +107,8 @@ import jams.model.*;
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
             update = JAMSVarDescription.UpdateType.RUN,
-            description = "Reach statevar additional inflow"
+            description = "Reach statevar additional inflow",
+            defaultValue= "0"
             )
             public JAMSDouble inAddIn;
     
@@ -142,7 +143,8 @@ import jams.model.*;
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
             update = JAMSVarDescription.UpdateType.RUN,
-            description = "Reach statevar additional outflow"
+            description = "Reach statevar additional outflow",
+            defaultValue= "0"
             )
             public JAMSDouble outAddIn;
     
@@ -184,7 +186,8 @@ import jams.model.*;
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
             update = JAMSVarDescription.UpdateType.RUN,
-            description = "Reach statevar additional inflow storage"
+            description = "Reach statevar additional inflow storage",
+            defaultValue= "0"
             )
             public JAMSDouble actAddIn;
     
@@ -233,7 +236,8 @@ import jams.model.*;
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
             update = JAMSVarDescription.UpdateType.RUN,
-            description = "Catchment additional input outlet storage"
+            description = "Catchment additional input outlet storage",
+            defaultValue= "0"
             )
             public JAMSDouble catchmentAddIn;
     
