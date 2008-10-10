@@ -840,8 +840,8 @@ public class J2KProcessLayeredSoilWater extends JAMSComponent {
 
             //calculate diffussion factor - order horizontal 
             //diffusion only occur when gravitative flux is not dominating
-       //     if ((run_satLPS[h] < 0.2) && (run_satMPS[h] < 1 || run_satMPS[h + 1] < 1) && (avg_sat > min_moist.getValue())) {
-            if ((run_satLPS[h] < 0.2) && (run_satMPS[h] < 1 || run_satMPS[h + 1] < 1)) {    
+            if ((run_satLPS[h] < 0.2) && (run_satMPS[h] < 1 || run_satMPS[h + 1] < 1) && (avg_sat > min_moist.getValue())) {
+       //     if ((run_satLPS[h] < 0.2) && (run_satMPS[h] < 1 || run_satMPS[h + 1] < 1)) {    
                 //calculate layer distance
 
                 double dist = (layerdepth.getValue()[h] + layerdepth.getValue()[h + 1]) / 2;
@@ -860,28 +860,28 @@ public class J2KProcessLayeredSoilWater extends JAMSComponent {
 
                 double satbalance = Math.pow((Math.pow(this.run_satMPS[h], 2) + (Math.pow(this.run_satMPS[h + 1], 2))) / 2.0, 0.5);
 
-                //resistance_h_h1[h] = Math.exp((1 - satbalance) * (kdiff_layer.getValue())) * (Math.pow(dist, 2));
-                  resistance_h_h1[h] = (1 / kf_h.getValue()[h]) * Math.pow(min_moist.getValue(), Math.pow(1 - satbalance,kdiff_layer.getValue()) * kdiff_layer.getValue()) * Math.pow(dist, 2); 
-       /*         if (avg_sat < (2 * min_moist.getValue())){
+                resistance_h_h1[h] = Math.exp((1 - satbalance) * (kdiff_layer.getValue())) * (Math.pow(dist, 2));
+         //         resistance_h_h1[h] = (1 / kf_h.getValue()[h]) * Math.pow(min_moist.getValue(), Math.pow(1 - satbalance,kdiff_layer.getValue()) * kdiff_layer.getValue()) * Math.pow(dist, 2); 
+                if (avg_sat < (2 * min_moist.getValue())){
                    resistance_h_h1[h] = resistance_h_h1[h] * (1 + (min_moist.getValue() * 100));
                    //resistance_h_h1[h] = Math.exp((1 - satbalance) * (kdiff_layer.getValue())) * (Math.pow(dist, 2));
-                }*/
+                }
 
                 //calculate amount of water to equilize saturations in layers
 
                 
 
                 double pot_flux = Math.abs((avg_sat - this.run_satMPS[h]) * this.run_maxMPS[h]);
-
+                
 
                 //calculate water fluxes
 
                 double flux = (pot_flux * gradient_h_h1[h] / resistance_h_h1[h]);
                 
                 if (flux >= 0) {
-                    flux_h1_h[h] = Math.min(flux, pot_flux);
+                    flux_h1_h[h] = Math.min(flux, pot_flux) / 10;
                 } else {
-                    flux_h1_h[h] = Math.max(flux, -pot_flux);
+                    flux_h1_h[h] = Math.max(flux, -pot_flux) / 10;
                 }
 
             } else {
