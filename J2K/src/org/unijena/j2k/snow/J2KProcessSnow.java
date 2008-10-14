@@ -188,7 +188,8 @@ import jams.model.*;
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
             update = JAMSVarDescription.UpdateType.INIT,
-            description = "base temperature"
+            description = "base temperature",
+            defaultValue="0"
             )
             public JAMSDouble baseTemp;
     
