@@ -369,7 +369,8 @@ import jams.model.*;
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
             update = JAMSVarDescription.UpdateType.RUN,
-            description = "switch whether deep sink is allowed or not"
+            description = "switch whether deep sink is allowed or not",
+            defaultValue="0"
             )
             public JAMSDouble deepsink;
     

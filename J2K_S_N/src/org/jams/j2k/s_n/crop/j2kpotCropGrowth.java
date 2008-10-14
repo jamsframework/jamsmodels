@@ -177,7 +177,8 @@ title="j2kCropGrowth",
     @JAMSVarDescription(
     access = JAMSVarDescription.AccessType.READWRITE,
             update = JAMSVarDescription.UpdateType.RUN,
-            description = "Daily fraction of max LAI [-]"
+            description = "Daily fraction of max LAI [-]",
+            defaultValue="0"
             )
             public JAMSDouble frLAImx_xi;
     
@@ -236,7 +237,8 @@ title="j2kCropGrowth",
     @JAMSVarDescription(
     access = JAMSVarDescription.AccessType.READWRITE,
             update = JAMSVarDescription.UpdateType.RUN,
-            description = "delta LAI [-]"
+            description = "delta LAI [-]",
+            defaultValue="0"
             )
             public JAMSDouble LAIdelta;
     
@@ -246,13 +248,6 @@ title="j2kCropGrowth",
             description = "actual LAI"
             )
             public JAMSDouble LAI;
-    
-    @JAMSVarDescription(
-    access = JAMSVarDescription.AccessType.READWRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
-            description = "actual nitrate uptake by plants in kgN/ha"
-            )
-            public JAMSDouble actN_up;
     
     @JAMSVarDescription(
     access = JAMSVarDescription.AccessType.READWRITE,
@@ -441,7 +436,6 @@ title="j2kCropGrowth",
     private double soil_no3;
     private double bioNopt_accumu ;
     private double Ndemand_accumu;
-    private double actN_uprun;
     
     private double bio_opt_delta;
     
@@ -496,7 +490,6 @@ title="j2kCropGrowth",
         this.hi_act = HarvIndex.getValue();;
         this.bioag_act = BioagAct.getValue();
         this.bio_opt = BioAct.getValue();
-        this.actN_uprun = actN_up.getValue();
         this.bio_opt_delta = BioOpt_delta.getValue();
         
         

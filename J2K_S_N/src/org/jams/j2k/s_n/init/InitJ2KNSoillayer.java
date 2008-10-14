@@ -144,7 +144,7 @@ title="InitJ2KNSoillayer",
             )
             public JAMSDouble fertactivorg;
     
-    @JAMSVarDescription(
+    /*@JAMSVarDescription(
     access = JAMSVarDescription.AccessType.WRITE,
             update = JAMSVarDescription.UpdateType.RUN,
             description = " Input of plant residues kg/ha"
@@ -156,7 +156,7 @@ title="InitJ2KNSoillayer",
             update = JAMSVarDescription.UpdateType.RUN,
             description = "Nitrogen input of plant residues in kgN/ha"
             )
-            public JAMSDouble inpN_biomass;
+            public JAMSDouble inpN_biomass;*/
     
     @JAMSVarDescription(
     access = JAMSVarDescription.AccessType.READ,
@@ -274,8 +274,8 @@ title="InitJ2KNSoillayer",
         fertNH4.setValue(0);
         fertstableorg.setValue(0);
         fertactivorg.setValue(0);
-        inp_biomass.setValue(0);
-        inpN_biomass.setValue(0);
+        //inp_biomass.setValue(0);
+        //inpN_biomass.setValue(0);
         ZRootD.setValue(0);
         LAI.setValue(0);
     }

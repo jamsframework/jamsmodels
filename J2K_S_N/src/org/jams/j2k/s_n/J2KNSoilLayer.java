@@ -205,7 +205,8 @@ import java.io.*;
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
             update = JAMSVarDescription.UpdateType.RUN,
-            description = " sum of interflowNabs in kgN/ha"
+            description = " sum of interflowNabs in kgN/ha",
+            defaultValue="0"
             )
             public JAMSDouble sinterflowNabs;
     

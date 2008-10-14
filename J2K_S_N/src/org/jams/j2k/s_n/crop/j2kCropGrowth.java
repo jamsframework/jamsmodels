@@ -475,14 +475,14 @@ import java.io.*;
             update = JAMSVarDescription.UpdateType.RUN,
             description = "Array of days required for EC stage "
             )
-            public JAMSDoubleArray D_ECArray = new JAMSDoubleArray(); */
+            public JAMSDoubleArray D_ECArray = new JAMSDoubleArray(); 
       
       @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
             update = JAMSVarDescription.UpdateType.RUN,
             description = "time"
             )
-            public JAMSCalendar time;
+            public JAMSCalendar time;*/
     
       
         
