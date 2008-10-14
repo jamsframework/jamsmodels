@@ -73,7 +73,11 @@ public class eff_sum extends JAMSComponent {
     }
 
     public void run() {
-      double sum;
+      
+    }
+
+    public void cleanup() {
+        double sum;
         int i;
       
         int length = obj_values.length;
@@ -93,9 +97,6 @@ public class eff_sum extends JAMSComponent {
       } else{
       obj_sum.setValue(sum);
       }
-    }
-
-    public void cleanup() {
         
     }
 }
