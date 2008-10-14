@@ -89,7 +89,7 @@ public class StandardDataWriter extends JAMSComponent {
      */
     
     public void init() {
-        writer = new GenericDataWriter(JAMSTools.CreateAbsoluteFileName(getModel().getWorkspaceDirectory().getPath(),fileName.getValue()));
+        writer = new GenericDataWriter(JAMSTools.CreateAbsoluteFileName(getModel().getWorkspace().getOutputDataDirectory().getPath(),fileName.getValue()));
         
         writer.addComment("J2K model output");
         writer.addComment("");

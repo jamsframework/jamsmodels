@@ -63,7 +63,8 @@ import jams.model.*;
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
             update = JAMSVarDescription.UpdateType.RUN,
-            description = "Maximum sunshine duration in h"
+            description = "Maximum sunshine duration in h",
+            defaultValue = "0"
             )
             public JAMSDouble sunhmax;
     
