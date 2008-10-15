@@ -285,7 +285,7 @@ title="Title",
             //e.g. time.toString("%1$tY-%1$tm-%1$td %1$tH:%1$tM")
             JAMSCalendar timeStamp = this.modelTimeInterval.getStart();
             for(int t = 0; t < this.timeSteps; t++){
-                attribWriter.addData(timeStamp.toString("%1$tY-%1$tm-%1$td %1$tH:%1$tM"));
+                attribWriter.addData(timeStamp.toString());
                 timeStamp.add(modelTimeInterval.getTimeUnit(), 1);
                 for(int r = 0; r < this.sampleCount.getValue(); r++){
                     attribWriter.addData(this.valueArray[r][t]);

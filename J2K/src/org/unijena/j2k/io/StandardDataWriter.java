@@ -28,6 +28,8 @@ import jams.JAMSTools;
 import jams.data.*;
 import jams.model.*;
 import jams.io.*;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 
 /**
  *
@@ -83,6 +85,7 @@ public class StandardDataWriter extends JAMSComponent {
     
     private GenericDataWriter writer;
     private int prec;
+    private DateFormat dateFormat;
     
     /*
      *  Component runstages
@@ -108,29 +111,38 @@ public class StandardDataWriter extends JAMSComponent {
         } else {
             prec = precision.getValue();
         }
+        
+        int tu = this.timeInterval.getTimeUnit();
+        String timeFormat = "%1$tY-%1$tm-%1$td %1$tH:%1$tM";
+        dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+        //hourly values
+        if(tu == 11) {
+            timeFormat = "%1$td.%1$tm.%1$tY %1$tH:%1$tM";
+            dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+        //daily values
+        } else if(tu == 6) {
+            timeFormat = "%1$td.%1$tm.%1$tY";
+            dateFormat = new SimpleDateFormat("dd.MM.yyyy");
+        //monthly values
+        } else if(tu == 2) {
+            timeFormat = "%1$tm/%1$tY";
+            dateFormat = new SimpleDateFormat("MM/yyyy");
+        //annual values
+        } else if(tu == 1) {
+            timeFormat = "%1$tY";        
+            dateFormat = new SimpleDateFormat("yyyy");
+        }
+        dateFormat.setTimeZone(JAMSCalendar.STANDARD_TIME_ZONE);
     }
     
     public void run() throws JAMSEntity.NoSuchAttributeException {
         //always write time
         //the time also knows a toString() method with additional formatting parameters
         //e.g. time.toString("%1$tY-%1$tm-%1$td %1$tH:%1$tM")
-        int tu = this.timeInterval.getTimeUnit();
-        String timeFormat = "%1$tY-%1$tm-%1$td %1$tH:%1$tM";
-        //hourly values
-        if(tu == 11)
-            timeFormat = "%1$td.%1$tm.%1$tY %1$tH:%1$tM";
-        //daily values
-        else if(tu == 6)
-            timeFormat = "%1$td.%1$tm.%1$tY";
-        //monthly values
-        else if(tu == 2)
-            timeFormat = "%1$tm/%1$tY";
-        //annual values
-        else if(tu == 1)
-            timeFormat = "%1$tY";
+
         
         //System.out.println(tu + " " + timeFormat);
-        writer.addData(time.toString(timeFormat));
+        writer.addData(time.toString(dateFormat));
         
         for (int i = 0; i < value.length; i++) {
             

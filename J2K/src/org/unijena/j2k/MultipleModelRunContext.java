@@ -202,7 +202,7 @@ title="InErrorContext",
             //e.g. time.toString("%1$tY-%1$tm-%1$td %1$tH:%1$tM")
             JAMSCalendar timeStamp = this.modelTimeInterval.getStart();
             for(int t = 0; t < this.timeSteps; t++){
-                targetWriter.addData(timeStamp.toString("%1$tY-%1$tm-%1$td %1$tH:%1$tM"));
+                targetWriter.addData(timeStamp.toString());
                 timeStamp.add(modelTimeInterval.getTimeUnit(), 1);
                 for(int r = 0; r < this.modelRuns.getValue(); r++){
                     targetWriter.addData(this.valueArray[r][t]);

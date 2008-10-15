@@ -29,6 +29,8 @@ import jams.JAMSTools;
 import jams.data.*;
 import jams.model.*;
 import jams.io.*;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 
 /**
  *
@@ -94,7 +96,8 @@ public class StandardEntityWriterN extends JAMSComponent {
     private boolean headerWritten;
     private double[][] valueMatrix;
     private String[] dateVals;
-    private String timeFormat = "%1$td.%1$tm.%1$tY"; 
+    //private String timeFormat = "%1$td.%1$tm.%1$tY";
+    private DateFormat dateFormat, aggfieldNameFormat;
     private int tcounter;
     private int nEnts;
     private double[][] aggMatrix;
@@ -115,7 +118,8 @@ public class StandardEntityWriterN extends JAMSComponent {
         
         //daily values
         if(this.timeInterval.getTimeUnit() == 5){
-            timeFormat = "%1$td.%1$tm.%1$tY";
+            //timeFormat = "%1$td.%1$tm.%1$tY";
+            dateFormat = new SimpleDateFormat("dd.MM.yyyy");            
             aggMatrix = new double[tsteps][nEnts];
             aggCounter = new int[tsteps];
             aggFieldNames = new String[tsteps];
@@ -123,18 +127,22 @@ public class StandardEntityWriterN extends JAMSComponent {
         
         //monthly values
         if(this.timeInterval.getTimeUnit() == 2){
-            timeFormat = "%1$tb/%1$ty";
+            //timeFormat = "%1$tb/%1$ty";
+            dateFormat = new SimpleDateFormat("MMM/yy");            
             aggMatrix = new double[12][nEnts];
             aggCounter = new int[12];
             aggFieldNames = new String[12];
         }
+        dateFormat.setTimeZone(JAMSCalendar.STANDARD_TIME_ZONE);
+        aggfieldNameFormat = new SimpleDateFormat("MMM");
+        aggfieldNameFormat.setTimeZone(JAMSCalendar.STANDARD_TIME_ZONE);
         
         tcounter = 0;
         
     }
     
     public void run() throws JAMSEntity.NoSuchAttributeException {
-        dateVals[tcounter] = time.toString(timeFormat);
+        dateVals[tcounter] = time.toString(dateFormat);
         
         //no weight
         if(this.weight.getValue().equals("none")){
@@ -155,7 +163,9 @@ public class StandardEntityWriterN extends JAMSComponent {
         if(this.timeInterval.getTimeUnit() == 5){
             int month = time.get(time.MONTH);
             aggCounter[month]++;
-            aggFieldNames[month] = time.toString("%1$tb");
+            //aggFieldNames[month] = time.toString("%1$tb");
+            aggFieldNames[month] = time.toString(aggfieldNameFormat);
+            
             
             for(int i = 0; i < nEnts; i++){
                 aggMatrix[month][i] += valueMatrix[tcounter][i];
@@ -165,7 +175,8 @@ public class StandardEntityWriterN extends JAMSComponent {
         if(this.timeInterval.getTimeUnit() == 2){
             int month = time.get(time.MONTH);
             aggCounter[month]++;
-            aggFieldNames[month] = time.toString("%1$tb");
+            //aggFieldNames[month] = time.toString("%1$tb");
+            aggFieldNames[month] = time.toString(aggfieldNameFormat);
             
             for(int i = 0; i < nEnts; i++){
                 aggMatrix[month][i] += valueMatrix[tcounter][i];
