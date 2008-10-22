@@ -35,122 +35,101 @@ import jams.model.*;
  *
  * @author c0krpe
  */
-@JAMSComponentDescription(
-        title="Title",
-        author="Author",
-        description="Description"
-        )
-        public class CalcDailySolarRadiation extends JAMSComponent {
-    
+@JAMSComponentDescription(title = "Title",
+author = "Author",
+description = "Description")
+public class CalcDailySolarRadiation extends JAMSComponent {
+
     /*
      *  Component variables
      */
+    @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
+    update = JAMSVarDescription.UpdateType.RUN,
+    description = "time")
+    public JAMSCalendar time;
 
-    @JAMSVarDescription(
-            access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.RUN,
-            description = "time"
-            )
-            public JAMSCalendar time;
-    
-    @JAMSVarDescription(
-            access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.RUN,
-            description = "state variable sunshine hours [h/d]"
-            )
-            public JAMSDouble sunh;
-    
-    @JAMSVarDescription(
-            access = JAMSVarDescription.AccessType.WRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
-            description = "Maximum sunshine duration in h",
-            defaultValue = "0"
-            )
-            public JAMSDouble sunhmax;
-    
-    @JAMSVarDescription(
-            access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.RUN,
-            description = "state variable slope aspect correction factor"
-            )
-            public JAMSDouble actSlAsCf;
-    
-    @JAMSVarDescription(
-            access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.RUN,
-            description = "attribute latitude [deg]"
-            )
-            public JAMSDouble latitude;
-    
-    @JAMSVarDescription(
-            access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.RUN,
-            description = "daily extraterrestic radiation [MJ/m²d]"
-            )
-            public JAMSDouble actExtRad;
-    
-    @JAMSVarDescription(
-            access = JAMSVarDescription.AccessType.WRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
-            description = "daily solar radiation [MJ/m²d]"
-            )
-            public JAMSDouble solRad;
-    
-    @JAMSVarDescription(
-            access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.INIT,
-            description = "Angstrom factor a"
-            )
-            public JAMSDouble angstrom_a;
-    
-    @JAMSVarDescription(
-            access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.INIT,
-            description = "Angstrom factor b"
-            )
-            public JAMSDouble angstrom_b;
-    
-    @JAMSVarDescription(
-            access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.INIT,
-            description = "temporal resolution [d | h | m]"
-            )
-            public JAMSString tempRes;
-    
-    @JAMSVarDescription(
-            access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.INIT,
-            description = "Use caching of regionalised data?"
-            )
-            public JAMSBoolean dataCaching; 
-    
+    @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
+    update = JAMSVarDescription.UpdateType.RUN,
+    description = "state variable sunshine hours [h/d]")
+    public JAMSDouble sunh;
+
+    @JAMSVarDescription(access = JAMSVarDescription.AccessType.WRITE,
+    update = JAMSVarDescription.UpdateType.RUN,
+    description = "Maximum sunshine duration in h",
+    defaultValue = "0")
+    public JAMSDouble sunhmax;
+
+    @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
+    update = JAMSVarDescription.UpdateType.RUN,
+    description = "state variable slope aspect correction factor")
+    public JAMSDouble actSlAsCf;
+
+    @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
+    update = JAMSVarDescription.UpdateType.RUN,
+    description = "attribute latitude [deg]")
+    public JAMSDouble latitude;
+
+    @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
+    update = JAMSVarDescription.UpdateType.RUN,
+    description = "daily extraterrestic radiation [MJ/m²d]")
+    public JAMSDouble actExtRad;
+
+    @JAMSVarDescription(access = JAMSVarDescription.AccessType.WRITE,
+    update = JAMSVarDescription.UpdateType.RUN,
+    description = "daily solar radiation [MJ/m²d]")
+    public JAMSDouble solRad;
+
+    @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
+    update = JAMSVarDescription.UpdateType.INIT,
+    description = "Angstrom factor a")
+    public JAMSDouble angstrom_a;
+
+    @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
+    update = JAMSVarDescription.UpdateType.INIT,
+    description = "Angstrom factor b")
+    public JAMSDouble angstrom_b;
+
+    @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
+    update = JAMSVarDescription.UpdateType.INIT,
+    description = "temporal resolution [d | h | m]")
+    public JAMSString tempRes;
+
+    @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
+    update = JAMSVarDescription.UpdateType.INIT,
+    description = "Caching configuration: 0 - write cache, 1 - use cache, 2 - caching off",
+    defaultValue = "0")
+    public JAMSInteger dataCaching;
+
     private File cacheFile;
-    private boolean useCache = false;
+
     transient private ObjectOutputStream writer;
+
     transient private ObjectInputStream reader;
-    int[] monthMean = {15,45,74,105,135,166,196,227,258,288,319,349};
+
+    int[] monthMean = {15, 45, 74, 105, 135, 166, 196, 227, 258, 288, 319, 349};
     /*
      *  Component run stages
      */
-    
+
     public void init() throws JAMSEntity.NoSuchAttributeException, IOException {
         //first, check if cached data are available
         //cacheFile = new File(dirName.getValue() + "/$" + this.getInstanceName() + ".cache");
-        cacheFile = new File(JAMSTools.CreateAbsoluteFileName(getModel().getWorkspaceDirectory().getPath(),"/$" + this.getInstanceName() + ".cache"));
-        if (!cacheFile.exists() && dataCaching.getValue()) {
- //           getModel().getRuntime().sendHalt(this.getInstanceName() + ": dataCaching is true but no cache file available!");
+        cacheFile = new File(JAMSTools.CreateAbsoluteFileName(getModel().getWorkspaceDirectory().getPath(), "/$" + this.getInstanceName() + ".cache"));
+        if (!cacheFile.exists() && (dataCaching.getValue() == 1)) {
+            //           getModel().getRuntime().sendHalt(this.getInstanceName() + ": dataCaching is true but no cache file available!");
         }
-        if(dataCaching.getValue()){               
-            useCache = true;
+        if (dataCaching.getValue() == 1) {
             reader = new ObjectInputStream(new BufferedInputStream(new FileInputStream(cacheFile)));
-        } else {
-            useCache = false;
+        } else if (dataCaching.getValue() == 0) {
             writer = new ObjectOutputStream(new BufferedOutputStream(new FileOutputStream(cacheFile)));
         }
     }
-    
+
     public void run() throws JAMSEntity.NoSuchAttributeException, IOException {
-        if (!useCache) {
+
+        if (dataCaching.getValue() == 1) {
+            solRad.setValue(reader.readDouble());
+        } else {
             int julDay = time.get(time.DAY_OF_YEAR);
             int month = time.get(time.MONTH);
             double SAC = actSlAsCf.getValue();
@@ -158,13 +137,11 @@ import jams.model.*;
             double sunsh = sunh.getValue();
             double extraterrRadiation = this.actExtRad.getValue();
             double declination = 0;
-            if(this.tempRes == null){
+            if (this.tempRes == null) {
                 declination = org.unijena.j2k.physicalCalculations.SolarRadiationCalculationMethods.calc_SunDeclination(julDay);
-            }
-            else if(this.tempRes.getValue().equals("d")){
+            } else if (this.tempRes.getValue().equals("d")) {
                 declination = org.unijena.j2k.physicalCalculations.SolarRadiationCalculationMethods.calc_SunDeclination(julDay);
-            }
-            else if(this.tempRes.getValue().equals("m")){
+            } else if (this.tempRes.getValue().equals("m")) {
                 declination = org.unijena.j2k.physicalCalculations.SolarRadiationCalculationMethods.calc_SunDeclination(this.monthMean[month]);
             }
             double latRad = org.unijena.j2k.mathematicalCalculations.MathematicalCalculations.deg2rad(lati);
@@ -174,23 +151,21 @@ import jams.model.*;
             double solarRadiation = org.unijena.j2k.physicalCalculations.SolarRadiationCalculationMethods.calc_SolarRadiation(sunsh, maximumSunshine, extraterrRadiation, angstrom_a.getValue(), angstrom_b.getValue());
             //considering slope and aspect
             solarRadiation = solarRadiation * SAC;
-            
+
             solRad.setValue(solarRadiation);
-            writer.writeDouble(solarRadiation);
-        } 
-        else {
-            solRad.setValue(reader.readDouble());
+
+            if (dataCaching.getValue() == 0) {
+                writer.writeDouble(solarRadiation);
+            }
         }
-        
     }
-    
+
     public void cleanup() throws IOException {
-        if (!useCache) {
+        if (dataCaching.getValue() == 0) {
             writer.flush();
             writer.close();
-        } else {
+        } else if (dataCaching.getValue() == 1) {
             reader.close();
         }
-        
     }
 }

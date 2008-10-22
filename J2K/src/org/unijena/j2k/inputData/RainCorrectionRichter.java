@@ -155,9 +155,10 @@ import jams.model.*;
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
             update = JAMSVarDescription.UpdateType.RUN,
-            description = "Use caching of regionalised data?"
+            description = "Caching configuration: 0 - write cache, 1 - use cache, 2 - caching off",
+            defaultValue = "0"
             )
-            public JAMSBoolean dataCaching;
+            public JAMSInteger dataCaching;
     
     
     /*
@@ -169,7 +170,7 @@ import jams.model.*;
     }
     
     public void run() throws JAMSEntity.NoSuchAttributeException {
-        if(!dataCaching.getValue()){
+        if(dataCaching.getValue() != 1){
             double[] precip = this.precip.getValue();
             double[] temperature = this.temperature.getValue();
             double[] rcorr = new double[precip.length];
