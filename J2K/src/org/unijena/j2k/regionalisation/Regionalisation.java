@@ -123,7 +123,7 @@ public class Regionalisation extends JAMSComponent {
     public void init() throws JAMSEntity.NoSuchAttributeException, IOException {
 
         //first, check if cached data are available
-        cacheFile = new File(JAMSTools.CreateAbsoluteFileName(getModel().getWorkspaceDirectory().getPath(), "/$" + this.getInstanceName() + ".cache"));
+        cacheFile = new File(getModel().getWorkspace().getTempDirectory(), this.getInstanceName() + ".cache");
 
         if (!cacheFile.exists() && (dataCaching.getValue() == 1)) {
             getModel().getRuntime().sendHalt(this.getInstanceName() + ": data caching is switched on but no cache file available!");

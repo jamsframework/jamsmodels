@@ -130,8 +130,8 @@ public class CalcDailyNetRadiation extends JAMSComponent {
      */
     public void init() throws JAMSEntity.NoSuchAttributeException, IOException {
         //first, check if cached data are available
-        cacheFile_n = new File(JAMSTools.CreateAbsoluteFileName(getModel().getWorkspaceDirectory().getPath(), "/$" + this.getInstanceName() + "_norm.cache"));
-        cacheFile_refET = new File(JAMSTools.CreateAbsoluteFileName(getModel().getWorkspaceDirectory().getPath(), "/$" + this.getInstanceName() + "_refET.cache"));
+        cacheFile_n = new File(getModel().getWorkspace().getTempDirectory(), this.getInstanceName() + "_norm.cache");
+        cacheFile_refET = new File(getModel().getWorkspace().getTempDirectory(), this.getInstanceName() + "_refET.cache");
 
         if (!cacheFile_n.exists() && (dataCaching.getValue() == 1)) {
             //           getModel().getRuntime().sendHalt(this.getInstanceName() + ": dataCaching is true but no cache file available!");
