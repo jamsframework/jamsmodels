@@ -44,10 +44,10 @@ public class J2KProcessLayeredSoilWater extends JAMSComponent {
     update = JAMSVarDescription.UpdateType.RUN,
     description = "time")
     public JAMSCalendar time;
-    @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
+    /*@JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
     update = JAMSVarDescription.UpdateType.RUN,
     description = "The current hru entity")
-    public JAMSEntity entity;
+    public JAMSEntity entity;*/
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
     update = JAMSVarDescription.UpdateType.RUN,
     description = "attribute area")
@@ -835,53 +835,84 @@ public class J2KProcessLayeredSoilWater extends JAMSComponent {
         for (int h = 0; h < this.nhor - 1; h++) {
 
             //calculate average saturation between Layers
-            
+
             double avg_sat = ((this.run_actMPS[h]) + (this.run_actMPS[h + 1])) / (this.run_maxMPS[h] + this.run_maxMPS[h + 1]);
 
             //calculate diffussion factor - order horizontal 
             //diffusion only occur when gravitative flux is not dominating
             if ((run_satLPS[h] < 0.2) && (run_satMPS[h] < 1 || run_satMPS[h + 1] < 1) && (avg_sat > min_moist.getValue())) {
-       //     if ((run_satLPS[h] < 0.2) && (run_satMPS[h] < 1 || run_satMPS[h + 1] < 1)) {    
+                //     if ((run_satLPS[h] < 0.2) && (run_satMPS[h] < 1 || run_satMPS[h + 1] < 1)) {    
                 //calculate layer distance
 
                 double dist = (layerdepth.getValue()[h] + layerdepth.getValue()[h + 1]) / 2;
 
                 //calculate gradient
                 /* if ((run_actMPS[h] + run_actMPS[h + 1]) / (run_maxMPS[h] + run_maxMPS[h + 1]) < 2 * min_moist.getValue()) {
-                    if (this.run_satMPS[h] < this.run_satMPS[h + 1]) {
-                        gradient_h_h1[h] = (Math.exp(((1 + min_moist.getValue()) - this.run_satMPS[h]) * kgrad_layer.getValue()) - Math.exp((1 - this.run_satMPS[h + 1]) * kgrad_layer.getValue())) / (Math.pow(dist, 1));
-                    } else {
-                        gradient_h_h1[h] = (Math.exp((1 - this.run_satMPS[h]) * kgrad_layer.getValue()) - Math.exp(((1 + min_moist.getValue()) - this.run_satMPS[h + 1]) * kgrad_layer.getValue())) / (Math.pow(dist, 1));
-                    }
+                if (this.run_satMPS[h] < this.run_satMPS[h + 1]) {
+                gradient_h_h1[h] = (Math.exp(((1 + min_moist.getValue()) - this.run_satMPS[h]) * kgrad_layer.getValue()) - Math.exp((1 - this.run_satMPS[h + 1]) * kgrad_layer.getValue())) / (Math.pow(dist, 1));
+                } else {
+                gradient_h_h1[h] = (Math.exp((1 - this.run_satMPS[h]) * kgrad_layer.getValue()) - Math.exp(((1 + min_moist.getValue()) - this.run_satMPS[h + 1]) * kgrad_layer.getValue())) / (Math.pow(dist, 1));
+                }
                 } else { */
-                    gradient_h_h1[h] = (Math.exp((1 - this.run_satMPS[h]) * kgrad_layer.getValue()) - Math.exp((1 - this.run_satMPS[h + 1]) * kgrad_layer.getValue())) / (Math.pow(dist, 1));
+                // gradient_h_h1[h] = (Math.exp((1 - this.run_satMPS[h]) * kgrad_layer.getValue()) - Math.exp((1 - this.run_satMPS[h + 1]) * kgrad_layer.getValue())) / (Math.pow(dist, 1));
+
+                // after van Genuchten (1980)
+
+                double satpot_h = Math.pow(this.run_satMPS[h], 1 / (kgrad_layer.getValue() - 1)) - 1;
+                double pot_h = -60 - (Math.pow(((Math.abs(satpot_h))), 1 / kgrad_layer.getValue()) * 14940) + dist;
+                double satpot_h1 = Math.pow(this.run_satMPS[h + 1], 1 / (kgrad_layer.getValue() - 1)) - 1;
+                double pot_h1 = -60 - (Math.pow(((Math.abs(satpot_h1))), 1 / kgrad_layer.getValue()) * 14940);
+                gradient_h_h1[h] = (pot_h1 - pot_h) / dist;
                 //}
                 //calculate resistance
 
-                double satbalance = Math.pow((Math.pow(this.run_satMPS[h], 2) + (Math.pow(this.run_satMPS[h + 1], 2))) / 2.0, 0.5);
+                double kf_min = Math.min(kf_h.getValue()[h], kf_h.getValue()[h + 1]);
 
-                resistance_h_h1[h] = Math.exp((1 - satbalance) * (kdiff_layer.getValue())) * (Math.pow(dist, 2));
-         //         resistance_h_h1[h] = (1 / kf_h.getValue()[h]) * Math.pow(min_moist.getValue(), Math.pow(1 - satbalance,kdiff_layer.getValue()) * kdiff_layer.getValue()) * Math.pow(dist, 2); 
-                if (avg_sat < (2 * min_moist.getValue())){
-                   resistance_h_h1[h] = resistance_h_h1[h] * (1 + (min_moist.getValue() * 100));
-                   //resistance_h_h1[h] = Math.exp((1 - satbalance) * (kdiff_layer.getValue())) * (Math.pow(dist, 2));
-                }
+                double awc_sat = (this.run_actLPS[h] + this.run_actMPS[h]) / (this.run_maxLPS[h] + this.run_maxMPS[h]);
+
+                double awc_sat1 = (this.run_actLPS[h + 1] + this.run_actMPS[h + 1]) / (this.run_maxLPS[h + 1] + this.run_maxMPS[h + 1]);
+
+                double satbalance = 1 - (Math.pow((Math.pow(1 - awc_sat, 2) + (Math.pow(1 - awc_sat1, 2))) / 2.0, 0.5));
+                //double satbalance = Math.pow((Math.pow(this.run_satMPS[h], 2) + (Math.pow(this.run_satMPS[h + 1], 2))) / 2.0, 0.5) * 100;
+
+                // after van Genuchten-Mualem
+
+                double kf_unsat = kf_min * satbalance * Math.pow(1 - Math.pow(1 - Math.pow(satbalance, 1 / kdiff_layer.getValue()), kdiff_layer.getValue()), 2);
+
+                resistance_h_h1[h] = (1 / kf_unsat) * (Math.pow(dist, 2));
+                //resistance_h_h1[h] = Math.exp((1 - satbalance) * (kdiff_layer.getValue())) * (Math.pow(dist, 2)) ;
+                //last good version resistance_h_h1[h] = Math.exp((100 - satbalance) * (1 / kf_min)) * (Math.pow(dist, 2));
+                //         resistance_h_h1[h] = (1 / kf_h.getValue()[h]) * Math.pow(min_moist.getValue(), Math.pow(1 - satbalance,kdiff_layer.getValue()) * kdiff_layer.getValue()) * Math.pow(dist, 2); 
+                /*if (avg_sat < (2 * min_moist.getValue())) {
+                //resistance_h_h1[h] = resistance_h_h1[h] * (1 + (min_moist.getValue() * 100));
+                resistance_h_h1[h] = resistance_h_h1[h] * (1 + ((min_moist.getValue() - (avg_sat - min_moist.getValue()))) / (avg_sat - min_moist.getValue()));
+                //resistance_h_h1[h] = Math.exp((1 - satbalance) * (kdiff_layer.getValue())) * (Math.pow(dist, 2));
+                }*/
 
                 //calculate amount of water to equilize saturations in layers
 
-                
+
 
                 double pot_flux = Math.abs((avg_sat - this.run_satMPS[h]) * this.run_maxMPS[h]);
-                
+
+
+
+                //double maxflux = (kf_min / dist) * area.getValue();
+
+                //pot_flux = Math.min(pot_flux, maxflux);
 
                 //calculate water fluxes
 
                 double flux = (pot_flux * gradient_h_h1[h] / resistance_h_h1[h]);
-                
+
+
+
                 if (flux >= 0) {
-                    flux_h1_h[h] = Math.min(flux, pot_flux) / 10;
+                    flux_h1_h[h] = Math.min(flux, pot_flux);
+                //flux_h1_h[h] = Math.min(Math.min(flux, pot_flux), maxflux);
                 } else {
-                    flux_h1_h[h] = Math.max(flux, -pot_flux) / 10;
+                    //flux_h1_h[h] = Math.max(Math.max(flux, -pot_flux), -maxflux);
+                    flux_h1_h[h] = Math.max(flux, -pot_flux);
                 }
 
             } else {
@@ -1321,7 +1352,7 @@ public class J2KProcessLayeredSoilWater extends JAMSComponent {
                 /*if (Kf_geo.getValue() < 10){
                 maxPerc = 0;
                 }*/
-                
+
                 if (this.run_vertComp > maxPerc) {
                     double rest = this.run_vertComp - maxPerc;
                     this.run_vertComp = maxPerc;
@@ -1335,7 +1366,7 @@ public class J2KProcessLayeredSoilWater extends JAMSComponent {
                 } catch (Exception e) {
                     System.out.println("SOILID = " + soilID.getValue());
                 }
-                
+
                 if (this.run_vertComp > maxPerc) {
                     double rest = this.run_vertComp - maxPerc;
                     this.run_vertComp = maxPerc;
