@@ -462,7 +462,8 @@ public class J2KProcessLayeredSoilWater extends JAMSComponent {
         horETP = this.calcMPSEvapotranslayer(true, nhor);
 
         for (int h = 0; h < nhor; h++) {
-            /** determining inflow of infiltration to MPS */
+            /** determining infladdabc347g1
+             * ow of infiltration to MPS */
             //balMPSstart += this.run_actMPS[h];
             //balLPSstart += this.run_actLPS[h];
             double bak_infiltration = run_infiltration;
