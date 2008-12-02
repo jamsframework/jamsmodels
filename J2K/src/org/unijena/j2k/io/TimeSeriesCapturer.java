@@ -26,9 +26,9 @@ package org.unijena.j2k.io;
 import java.util.Locale;
 import java.util.Vector;
 
-import jams.JAMS;
-import jams.data.*;
-import jams.model.*;
+import org.unijena.jams.JAMS;
+import org.unijena.jams.data.*;
+import org.unijena.jams.model.*;
 
 /**
  *
@@ -150,6 +150,7 @@ title="Time series capturer",
         }*/
         effTsteps = (int) captureTimeInterval.getNumberOfTimesteps();
         
+        System.out.println("TS:"+effTsteps);
         //int ts = (int)tsteps;
         int ts = (int) this.getContext().getNumberOfIterations();
         getModel().getRuntime().println("effStartdate:\t" + eff_sd.toString(), JAMS.VERBOSE);

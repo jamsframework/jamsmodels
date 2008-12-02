@@ -23,8 +23,8 @@
 
 package org.unijena.j2k.soilWater;
 
-import jams.data.*;
-import jams.model.*;
+import org.unijena.jams.data.*;
+import org.unijena.jams.model.*;
 
 /**
  *
@@ -146,6 +146,13 @@ import jams.model.*;
             )
             public JAMSDoubleArray inRD2_h = new JAMSDoubleArray();
     
+    @JAMSVarDescription(
+            access = JAMSVarDescription.AccessType.READ,
+            update = JAMSVarDescription.UpdateType.RUN,
+            description = "initial saturation for all horizons"
+            )
+            public JAMSDouble initSat;
+    
    
     /*
      *  Component run stages
@@ -191,8 +198,8 @@ import jams.model.*;
             
             mxMPS[h] = entity.getDouble(aNameFC+h) * area.getValue() * this.FCAdaptation.getValue();    
             mxLPS[h] = entity.getDouble(aNameAC+h) * area.getValue() * this.ACAdaptation.getValue();
-            acLPS[h] = 0;
-            stMPS[h] = 0;
+            acMPS[h] = initSat.getValue() * mxMPS[h];
+            stMPS[h] = initSat.getValue();
             stLPS[h] = 0;
             
             inRD2[h] = 0;
@@ -208,11 +215,7 @@ import jams.model.*;
         this.depth_h.setValue(depth);
         this.satSoil_h.setValue(0);
         
-       /* System.out.print("mxLPS: ");
-        for(int h = 0; h < horizons; h++){
-            System.out.print("\t"+mxLPS[h]);
-        }
-        System.out.getRuntime().println("");*/
+        
     }
     
     public void cleanup() {

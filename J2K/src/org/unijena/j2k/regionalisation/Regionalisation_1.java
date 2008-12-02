@@ -23,16 +23,22 @@
 
 package org.unijena.j2k.regionalisation;
 import java.io.*;
-import jams.JAMS;
-import jams.JAMSTools;
-import jams.data.*;
-import jams.model.*;
+import org.unijena.jams.JAMS;
+import org.unijena.jams.data.*;
+import org.unijena.jams.model.*;
 
 /**
  *
  * @author Peter Krause
  */
 public class Regionalisation_1 extends JAMSComponent {
+    
+    @JAMSVarDescription(
+    access = JAMSVarDescription.AccessType.READ,
+            update = JAMSVarDescription.UpdateType.INIT,
+            description = "Workspace directory name"
+            )
+            public JAMSString dirName;
     
     @JAMSVarDescription(
     access = JAMSVarDescription.AccessType.READ,
@@ -156,14 +162,15 @@ public class Regionalisation_1 extends JAMSComponent {
     private File cacheFile;
     private boolean useCache = false;
     private boolean writeCache = false;
-    transient private ObjectOutputStream writer;
-    transient private ObjectInputStream reader;
-    double NODATA = -9999;
+    private ObjectOutputStream writer;
+    private ObjectInputStream reader;
+    double NODATA = -9999.0;
     
     public void init() throws JAMSEntity.NoSuchAttributeException, IOException {
         
-        //first, check if cached data are available        
-        cacheFile = new File(JAMSTools.CreateAbsoluteFileName(getModel().getWorkspaceDirectory().getPath(),"/$" + this.getInstanceName() + ".cache"));
+        //first, check if cached data are available
+        cacheFile = new File(dirName.getValue() + "/$" + this.getInstanceName() + ".cache");
+        
         if (!cacheFile.exists() && dataCaching.getValue()) {
             getModel().getRuntime().println(this.getInstanceName() + ": data caching is switched on but no cache file available!", JAMS.STANDARD);
             writeCache = true;
@@ -231,6 +238,7 @@ public class Regionalisation_1 extends JAMSComponent {
                 int t = wA[element];
                 //check if data is valid or no data
                 if(sourceData[t] == NODATA){
+                    
                     element++;
                     if(element >= wA.length){
                         System.out.println("BREAK1: too less data NIDW had been reduced!");

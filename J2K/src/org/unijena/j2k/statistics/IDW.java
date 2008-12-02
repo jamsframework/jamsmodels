@@ -28,9 +28,10 @@ package org.unijena.j2k.statistics;
  * @author S. Kralisch
  */
 public class IDW {
-    
+    private final static int NODATA = -9999;
     /**
      * Calcs distances of specific climate stations from HRU
+     * for projected coordinates
      * @param hru Instance of HRU-Class
      * @param stat Instances of relevant Climate Stations
      * @param pidw Power of IDW function
@@ -44,6 +45,30 @@ public class IDW {
             double y = entityY - statY[s];
             //Phytagoras
             dist[s]  = Math.sqrt((Math.pow(x,2)+Math.pow(y,2)));
+            //Power pidw, abs for positive values
+            dist[s]  = Math.abs(Math.pow(dist[s],pidw));
+        }
+        return dist;
+    }
+    
+    /**
+     * Calcs distances of specific climate stations from HRU
+     * for geographical coordinates
+     * @param hru Instance of HRU-Class
+     * @param stat Instances of relevant Climate Stations
+     * @param pidw Power of IDW function
+     * @return array of distances
+     */
+    public static double[] calcLatLongDistances(double entityX, double entityY, double[] statX, double[] statY, double pidw){
+        //radius at the equator in meter
+        final double R = 6378137.0;
+        double[] dist = new double[statX.length];
+        
+        //Calculating distances of each station to the entity
+        for(int s = 0; s < statX.length; s++){
+            dist[s]  = R * Math.acos(Math.sin(rad(entityY)) * Math.sin(rad(statY[s])) + 
+                                     Math.cos(rad(entityY)) * Math.cos(rad(statY[s])) *
+                                     Math.cos(rad(statX[s]) - rad(entityX)));
             //Power pidw, abs for positive values
             dist[s]  = Math.abs(Math.pow(dist[s],pidw));
         }
@@ -83,6 +108,48 @@ public class IDW {
                     weight[j] = 0.0;
                 weight[s] = 1.0;
                 return weight;
+            }
+            else{
+                weight[s] = temp[s] / tempsum;
+            }
+        }
+        return weight;
+    }
+    
+    /**
+     * Calcs weight for each Climate Station
+     * @param dist the distance array
+     * @param nstat number of Climate Stations
+     * @return the weight array
+     */
+    public static double[] calcWeights(double[] dist, double[] data){
+        int nstat = dist.length;
+        double[] weight = new double[nstat];
+        double[] temp = new double[nstat];
+        double distsum = 0;
+        double tempsum = 0;
+        //CALCULATING THE WEIGHTS
+        for(int i = 0; i < nstat; i++)
+            distsum += dist[i];
+        for(int i = 0; i < nstat; i++){
+            if(dist[i] > 0){
+                temp[i] = distsum / dist[i];
+                tempsum += temp[i];
+            }else{
+                temp[i] = 0;
+            }
+        }
+        for(int s = 0; s < nstat; s++){
+            //if station is identical this station get a weight of 1.0
+            //and all others are set to 0.0
+            if(dist[s] == 0 && data[s] != NODATA){
+                for(int j = 0; j < nstat; j++)
+                    weight[j] = 0.0;
+                weight[s] = 1.0;
+                return weight;
+            }
+            else if(dist[s] == 0 && data[s] == NODATA){
+                weight[s] = 0.0;
             }
             else{
                 weight[s] = temp[s] / tempsum;
@@ -161,5 +228,9 @@ public class IDW {
             wArray[j] = pos;
         }
         return wArray;
+    }
+    
+    private static double rad(double decDeg){
+        return(decDeg * Math.PI / 180.);
     }
 }

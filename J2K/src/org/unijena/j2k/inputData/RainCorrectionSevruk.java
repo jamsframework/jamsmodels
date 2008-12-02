@@ -1,9 +1,9 @@
 /*
- * RainCorrectionRichter2.java
- * Created on 8. May 2008, 09:48
+ * RainCorrectionSevruk.java
+ * Created on 15. May 2008
  *
  * This file is part of JAMS
- * Copyright (C) 2005 FSU Jena, Peter Krause
+ * Copyright (C) 2005 FSU Jena, c0krpe
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -31,12 +31,14 @@ import org.unijena.jams.model.*;
  * @author Peter Krause
  */
 @JAMSComponentDescription(
-        title="RainCorrectionRichter2",
+        title="RainCorrectionSevruk",
         author="Peter Krause",
-        description="Applies correction according to RICHTER 1985 for measured daily precip sums," +
-        "this module allows the consideration of the station location and shelter"
+        description="Applies correction according to RICHTER 1985 and SEVRUK 1989" +
+        "for measured daily precip sums. RICHTER is used for wetting and ET losses" +
+        "whereas SEVRUK is used for the wind correction. This routine is thought" +
+        "to produce better results in alpine regions than the normal RICHTER correction"
         )
-        public class RainCorrectionRichter2 extends JAMSComponent {
+        public class RainCorrectionSevruk extends JAMSComponent {
     
     /*
      *  Component variables
@@ -61,6 +63,13 @@ import org.unijena.jams.model.*;
             description = "temperature for the correction function"
             )
             public JAMSDoubleArray temperature;
+    
+    @JAMSVarDescription(
+            access = JAMSVarDescription.AccessType.READ,
+            update = JAMSVarDescription.UpdateType.RUN,
+            description = "wind speed for the correction function"
+            )
+            public JAMSDoubleArray wind;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
@@ -121,9 +130,44 @@ import org.unijena.jams.model.*;
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
             update = JAMSVarDescription.UpdateType.RUN,
+            description = "Array of wind station elevations"
+            )
+            public JAMSDoubleArray windElevation = new JAMSDoubleArray();
+    
+    @JAMSVarDescription(
+            access = JAMSVarDescription.AccessType.WRITE,
+            update = JAMSVarDescription.UpdateType.RUN,
+            description = "Array of wind station's x coordinate"
+            )
+            public JAMSDoubleArray windXCoord = new JAMSDoubleArray();
+    
+    @JAMSVarDescription(
+            access = JAMSVarDescription.AccessType.WRITE,
+            update = JAMSVarDescription.UpdateType.RUN,
+            description = "Array of wind station's y coordinate"
+            )
+            public JAMSDoubleArray windYCoord = new JAMSDoubleArray();
+    
+    @JAMSVarDescription(
+            access = JAMSVarDescription.AccessType.WRITE,
+            update = JAMSVarDescription.UpdateType.RUN,
+            description = "Regression coefficients for wind"
+            )
+            public JAMSDoubleArray windRegCoeff = new JAMSDoubleArray();
+    
+    @JAMSVarDescription(
+            access = JAMSVarDescription.AccessType.WRITE,
+            update = JAMSVarDescription.UpdateType.RUN,
             description = "number of temperature station for IDW"
             )
             public JAMSInteger tempNIDW;
+    
+    @JAMSVarDescription(
+            access = JAMSVarDescription.AccessType.WRITE,
+            update = JAMSVarDescription.UpdateType.RUN,
+            description = "number of wind station for IDW"
+            )
+            public JAMSInteger windNIDW;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
@@ -142,16 +186,9 @@ import org.unijena.jams.model.*;
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
             update = JAMSVarDescription.UpdateType.RUN,
-            description = "snow_trs"
+            description = "tbase"
             )
-            public JAMSDouble snow_trs;
-    
-    @JAMSVarDescription(
-            access = JAMSVarDescription.AccessType.WRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
-            description = "snow_trans"
-            )
-            public JAMSDouble snow_trans;
+            public JAMSDouble tbase;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
@@ -159,14 +196,6 @@ import org.unijena.jams.model.*;
             description = "Use caching of regionalised data?"
             )
             public JAMSBoolean dataCaching;
-    
-    @JAMSVarDescription(
-            access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.RUN,
-            description = "Station shelter [1 - no protection; 2 - gentle protection; " +
-            "3 - moderate protection; 4 - strong protection]"
-            )
-            public JAMSIntegerArray protection = new JAMSIntegerArray();
     
     
     /*
@@ -181,126 +210,82 @@ import org.unijena.jams.model.*;
         if(!dataCaching.getValue()){
             double[] precip = this.precip.getValue();
             double[] temperature = this.temperature.getValue();
+            double[] wind = this.wind.getValue();
             double[] rcorr = new double[precip.length];
             
             double[] rainElev = new double[precip.length];
             double[] rainX = new double[precip.length];
             double[] rainY = new double[precip.length];
             
-            int[] protect = new int[precip.length];
-            
             //we need arrays for the temperature stations dist weight and id
-            double[][] statWeights = new double[precip.length][temperature.length];
-            //double[][] statDists   = new double[precip.length][temperature.length];
+            double[][] tempStatWeights = new double[precip.length][temperature.length];
+             //we need arrays for the wind stations dist weight and id
+            double[][] windStatWeights = new double[precip.length][wind.length];
             
             //parameterization of rain stations
             for(int i = 0; i < precip.length; i++){
                 rainElev[i] = this.rainElevation.getValue()[i];
                 rainX[i] = this.rainXCoord.getValue()[i];
                 rainY[i] = this.rainYCoord.getValue()[i];
-                protect[i] = this.protection.getValue()[i];
                 
                 
                 for(int n = 0; n < this.tempNIDW.getValue(); n++){
-                    statWeights[i][n] = 0;
-                    //statDists[i][n]   = 0;
+                    tempStatWeights[i][n] = 0;
+                }
+                for(int n = 0; n < this.windNIDW.getValue(); n++){
+                    windStatWeights[i][n] = 0;
                 }
             }
             
             for(int i = 0; i < rcorr.length; i++){
                 //Calculating weights for nidw stations
-                statWeights[i] = org.unijena.j2k.statistics.IDW.calcNidwWeights(rainX[i], rainY[i], this.tempXCoord.getValue(), this.tempYCoord.getValue(), this.pIDW.getValue(), this.tempNIDW.getValue());
+                tempStatWeights[i] = org.unijena.j2k.statistics.IDW.calcNidwWeights(rainX[i], rainY[i], this.tempXCoord.getValue(), this.tempYCoord.getValue(), this.pIDW.getValue(), this.tempNIDW.getValue());
+                windStatWeights[i] = org.unijena.j2k.statistics.IDW.calcNidwWeights(rainX[i], rainY[i], this.windXCoord.getValue(), this.windYCoord.getValue(), this.pIDW.getValue(), this.windNIDW.getValue());
             }
-            double rsq = this.tempRegCoeff.getValue()[2];
-            double grad = this.tempRegCoeff.getValue()[1];
+            double rsq_t = this.tempRegCoeff.getValue()[2];
+            double grad_t = this.tempRegCoeff.getValue()[1];
             
-            //temperature for each rain station
+            double rsq_w = this.windRegCoeff.getValue()[2];
+            double grad_w = this.windRegCoeff.getValue()[1];
+            
+            //temperature and wind for each rain station
             double rainTemp;
+            double rainWind;
             for (int r = 0; r < rcorr.length; r++) {
                 rainTemp = 0;
+                rainWind = 0;
                 for(int t = 0; t < temperature.length; t++){
-                    if(rsq >= this.regThres.getValue()) {  //Elevation correction is applied
+                    if(rsq_t >= this.regThres.getValue()) {  //Elevation correction is applied
                         double deltaElev = this.rainElevation.getValue()[r] - this.tempElevation.getValue()[t];  //Elevation difference between unit and Station
-                        rainTemp += ((deltaElev * grad + temperature[t]) * statWeights[r][t]);
+                        rainTemp += ((deltaElev * grad_t + temperature[t]) * tempStatWeights[r][t]);
                     } else{ //No elevation correction
-                        rainTemp  += (temperature[t] * statWeights[r][t]);
+                        rainTemp  += (temperature[t] * tempStatWeights[r][t]);
                     }
                 }
-                //determine rain and snow amount of precip
-                double pSnow = (snow_trs.getValue() + snow_trans.getValue() - rainTemp) /
-                        (2 * snow_trans.getValue());
-                
-                //fixing upper and lower bound for pSnow (has to be between 0 and 1
-                if(pSnow > 1.0)
-                    pSnow = 1.0;
-                else if(pSnow < 0)
-                    pSnow = 0;
-                
-                //dividing input precip into rain and snow
-                double rain = (1 - pSnow) * precip[r];
-                double snow = pSnow * precip[r];
-               
-                //Calculating relative Winderror acc to RICHTER 1995
-                double as = 0,bs = 0,ls = 0;
-                double ar = 0,br = 0,lr = 0;
-                //coefficients according to protection
-                switch(protect[r]){
-                    case 1: 
-                        lr = 0.642;
-                        ar = 0.1801;
-                        br = -0.608;
-                        ls = 1.102;
-                        as = 0.6774;
-                        bs = -0.204;
-                        break;
-                        
-                    case 2:
-                        lr = 0.492;
-                        ar = 0.1421;
-                        br = -0.505;
-                        ls = 0.938;
-                        as = 0.5424;
-                        bs = -0.211;
-                        break;
-                        
-                    case 3:
-                        lr = 0.304;
-                        ar = 0.1029;
-                        br = -0.519;
-                        ls = 0.516;
-                        as = 0.5424;
-                        bs = -0.211;
-                        break;
-                    
-                    case 4:
-                        lr = 0.270;
-                        ar = 0.0584;
-                        br = -0.693;
-                        ls = 0.326;
-                        as = 0.1008;
-                        bs = -0.022;
-                        break;
-                        
-                    default:
-                        System.out.println("Wrong protection type for rain station");
-                        break;
+                for(int t = 0; t < wind.length; t++){
+                    if(rsq_w >= this.regThres.getValue()) {  //Elevation correction is applied
+                        double deltaElev = this.rainElevation.getValue()[r] - this.windElevation.getValue()[t];  //Elevation difference between unit and Station
+                        rainWind += ((deltaElev * grad_w + wind[t]) * windStatWeights[r][t]);
+                    } else{ //No elevation correction
+                        rainWind  += (wind[t] * windStatWeights[r][t]);
+                    }
+                    if(rainWind < 0)
+                        rainWind = 0;
                 }
+                
+                //Calculating relative Winderror acc to SEVRUK 1989
                 double windErr = 0;
-                if(snow > 0){//if(pSnow >= 1.0){      //set to all snow (5/11/01), rechanged 1.03.02
-                    if(snow <= 0.1)
-                        snow = snow + (snow * ls);
-                    else{
-                        double relSnow = as * Math.pow(snow, bs);
-                        snow = snow + (snow * relSnow);
-                    }
+                if(rainTemp < -27.0){
+                    windErr = 1 + 0.550 * Math.pow(rainWind, 1.4);
                 }
-                if(rain > 0){ //if(pSnow < 1.0){//
-                    if(rain < 0.1)
-                        rain += (rain * lr);
-                    else{
-                        double relRain = ar * Math.pow(rain,br);
-                        rain = rain + (rain * relRain);
-                    }
+                else if((rainTemp >= -27.0)&&(rainTemp < -8.0)){
+                    windErr = 1 + 0.280 * Math.pow(rainWind, 1.3);
+                }
+                else if((rainTemp >= -8.0)&&(rainTemp <= this.tbase.getValue())){
+                    windErr = 1 + 0.150 * Math.pow(rainWind, 1.18);
+                }
+                else if(rainTemp >= this.tbase.getValue()){
+                    windErr = 1 + 0.015 * rainWind;
                 }
                 
                 //Calculating error from evaporation and wetting acc. to Richter
@@ -322,7 +307,7 @@ import org.unijena.jams.model.*;
                 }
                 
                 //Calculating corrected rain_value
-                rcorr[r] = rain + snow + wetErr;
+                rcorr[r] = precip[r] + precip[r] * windErr + wetErr;
             }
             
             this.rcorr.setValue(rcorr);

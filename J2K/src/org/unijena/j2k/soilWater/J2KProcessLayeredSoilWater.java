@@ -23,8 +23,8 @@
 
 package org.unijena.j2k.soilWater;
 
-import jams.data.*;
-import jams.model.*;
+import org.unijena.jams.data.*;
+import org.unijena.jams.model.*;
 
 /**
  *
@@ -424,7 +424,7 @@ title="J2KProcessLumpedSoilWater",
      */
     
     public void init() throws JAMSEntity.NoSuchAttributeException {
-        
+        for(i = )
         
         
     }
@@ -481,6 +481,7 @@ title="J2KProcessLumpedSoilWater",
         this.run_vertComp = 0;
         this.run_genRD1 = 0;
         this.run_outRD1 = 0;
+        double run_interflow = 0;
         
         balET = this.run_actETP;
         balDPSstart = this.run_actDPS;
@@ -619,10 +620,13 @@ title="J2KProcessLumpedSoilWater",
         
         this.calcRD1_out();
         
+        
+        
         for(int h = 0; h < nhor; h++){
             balMPSend += this.run_actMPS[h];
             balLPSend += this.run_actLPS[h];
             balOut += this.run_outRD2[h];
+            run_interflow += this.run_genRD2[h];   
         }
         balDPSend = this.run_actDPS;
         balET = this.run_actETP - balET;
@@ -649,7 +653,7 @@ title="J2KProcessLumpedSoilWater",
         genRD1.setValue(this.run_genRD1);
         genRD2.setValue(this.run_genRD2);
         percolation.setValue(this.run_vertComp);
-        interflow.setValue(this.run_latComp);
+        interflow.setValue(run_interflow);
         
         soilActMPS.setValue(soilActMps);
         soilMaxMPS.setValue(soilMaxMps);

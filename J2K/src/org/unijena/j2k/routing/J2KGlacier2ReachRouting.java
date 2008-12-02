@@ -23,8 +23,8 @@
 
 package org.unijena.j2k.routing;
 
-import jams.data.*;
-import jams.model.*;
+import org.unijena.jams.data.*;
+import org.unijena.jams.model.*;
 
 /**
  *
@@ -71,7 +71,6 @@ import jams.model.*;
     }
 
     public void run() throws JAMSEntity.NoSuchAttributeException {
-        System.out.println("inside glac routing");
         double gm = glacMelt.getValue();
         double RD1in = toReach.getDouble("inRD1");
         RD1in = RD1in + gm;
