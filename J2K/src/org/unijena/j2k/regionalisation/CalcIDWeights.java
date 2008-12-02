@@ -23,8 +23,8 @@
 
 package org.unijena.j2k.regionalisation;
 
-import jams.data.*;
-import jams.model.*;
+import org.unijena.jams.data.*;
+import org.unijena.jams.model.*;
 
 /**
  *
@@ -102,7 +102,14 @@ import jams.model.*;
             update = JAMSVarDescription.UpdateType.INIT,
             description = "Doug Boyle's famous function"
             )
-            public JAMSBoolean equalWeights;  
+            public JAMSBoolean equalWeights; 
+    
+    @JAMSVarDescription(
+            access = JAMSVarDescription.AccessType.READ,
+            update = JAMSVarDescription.UpdateType.INIT,
+            description = "Calculation with geographical coordinates LL"
+            )
+            public JAMSBoolean latLong; 
     
     /*
      *  Component run stages
@@ -115,8 +122,14 @@ import jams.model.*;
     public void run() throws JAMSEntity.NoSuchAttributeException{
         JAMSDoubleArray idwWeights = new JAMSDoubleArray();
         JAMSIntegerArray wA = new JAMSIntegerArray();
+        double[] dist = null;
         if(equalWeights == null || !equalWeights.getValue()){
-            double[] dist = org.unijena.j2k.statistics.IDW.calcDistances(entityX.getValue(), entityY.getValue(), statX.getValue(), statY.getValue(), pidw.getValue());
+            if(latLong == null || !latLong.getValue()){
+                dist = org.unijena.j2k.statistics.IDW.calcDistances(entityX.getValue(), entityY.getValue(), statX.getValue(), statY.getValue(), pidw.getValue());
+            }
+            else{
+                dist = org.unijena.j2k.statistics.IDW.calcLatLongDistances(entityX.getValue(), entityY.getValue(), statX.getValue(), statY.getValue(), pidw.getValue());
+            }
             idwWeights.setValue(org.unijena.j2k.statistics.IDW.calcWeights(dist));
             wA.setValue(org.unijena.j2k.statistics.IDW.computeWeightArray(idwWeights.getValue()));
             
