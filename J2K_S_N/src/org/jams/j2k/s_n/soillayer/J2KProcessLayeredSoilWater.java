@@ -320,7 +320,8 @@ public class J2KProcessLayeredSoilWater extends JAMSComponent {
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.WRITE,
     update = JAMSVarDescription.UpdateType.RUN,
     description = "max Root depth in soil in m")
-    public JAMSDouble soil_root;    //internal state variables
+    public JAMSDouble soil_root;   
+    //internal state variables
     double run_actDPS, run_satSoil1, run_inRain, run_inSnow,
             run_snowMelt, run_infiltration, run_latComp, run_vertComp, run_overlandflow, run_potETP, run_actETP, run_snowDepth, run_area, run_slope,
             run_inRD1, soilSatMps, soilSatLps, soilActMps, soilActLps, soilMaxMps, soilMaxLps, run_outRD1, run_genRD1, lowpart, top_satsoil;
