@@ -23,8 +23,8 @@
 
 package org.unijena.j2k.geographicalCalculations;
 
-import jams.data.*;
-import jams.model.*;
+import org.unijena.jams.data.*;
+import org.unijena.jams.model.*;
 
 /**
  *
@@ -99,7 +99,7 @@ import jams.model.*;
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
             update = JAMSVarDescription.UpdateType.INIT,
-            description = "Projection [GK, UTMZZL]"
+            description = "Projection [GK, UTMZZL, LL]"
             )
             public JAMSString projection;
     
@@ -129,16 +129,18 @@ import jams.model.*;
             proj = this.projection.toString();
         if(proj.equals("GK")){
             latLong = org.unijena.j2k.geographicalCalculations.GKConversion.GK2LatLon(x.getValue(), y.getValue());
+            latitude.setValue(latLong[0]);
+            longitude.setValue(latLong[1]);
+        }else if(proj.equals("LL")){
+            //nothing to do here as far as the module is structured as it is right now
         }
         else if(proj.substring(0,3).equals("UTM")){
             int len = proj.length();
             String zoneStr = proj.substring(3, len);
             latLong = org.unijena.j2k.geographicalCalculations.UTMConversion.utm2LatLong(x.getValue(), y.getValue(), zoneStr);
-            
+            latitude.setValue(latLong[0]);
+            longitude.setValue(latLong[1]);
         }
-        latitude.setValue(latLong[0]);
-        longitude.setValue(latLong[1]);
-        
         
         
         double[] sloAspCorr = null;
