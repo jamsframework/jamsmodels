@@ -23,8 +23,9 @@
 
 package org.unijena.j2k.inputData;
 
-import jams.data.*;
-import jams.model.*;
+import org.unijena.jams.data.*;
+import org.unijena.jams.io.GenericDataWriter;
+import org.unijena.jams.model.*;
 
 /**
  *
@@ -33,7 +34,8 @@ import jams.model.*;
 @JAMSComponentDescription(
         title="RainCorrectionRichterMonthly",
         author="Peter Krause",
-        description="Applies correction according to RICHTER 1985 for measured monthly precip sums"
+        description="Corrects measured precipitation values with correction" +
+        "factors according to Richter 1995, table X, page Y"
         )
         public class RainCorrectionRichterMonthly extends JAMSComponent {
     
@@ -61,25 +63,70 @@ import jams.model.*;
             )
             public JAMSDoubleArray corrPrecip;
     
+    @JAMSVarDescription(
+            access = JAMSVarDescription.AccessType.READ,
+            update = JAMSVarDescription.UpdateType.INIT,
+            description = "the geographical zone according to Richter 1995"
+            )
+            public JAMSInteger precipZone;
+    
+    @JAMSVarDescription(
+            access = JAMSVarDescription.AccessType.READ,
+            update = JAMSVarDescription.UpdateType.INIT,
+            description = "precipitation adjustment factor"
+            )
+            public JAMSDouble precipAdj;
+    
+    @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
+            update = JAMSVarDescription.UpdateType.INIT,
+            description = "Output file name"
+            )
+            public JAMSString outFileName;
+    
+    
+    
     double NODATA = -9999;
     double[] richter3_b = {0.233, 0.245, 0.203, 0.151, 0.111, 0.098, 0.100, 0.095, 0.115, 0.127, 0.168, 0.198};
     double[] richter3_c = {0.173, 0.179, 0.155, 0.127, 0.101, 0.088, 0.091, 0.085, 0.102, 0.110, 0.133, 0.150};
+    double[] richter5_b = {0.233, 0.245, 0.203, 0.151, 0.111, 0.098, 0.100, 0.095, 0.115, 0.127, 0.168, 0.198};
+    double[] richter5_c = {0.173, 0.179, 0.155, 0.127, 0.101, 0.088, 0.091, 0.085, 0.102, 0.110, 0.133, 0.150};
+    
+    double adj = 1;
+    
+    private GenericDataWriter writer;
+    private boolean headerWritten;
+    
     /*
      *  Component run stages
      */
     
     public void init() throws JAMSEntity.NoSuchAttributeException {
+        adj = this.precipAdj.getValue();
+        if(adj == 0)
+            adj = 1;
         
+        if (this.outFileName != null) {
+            writer = new GenericDataWriter(outFileName.getValue());
+        }
     }
     
     public void run() throws JAMSEntity.NoSuchAttributeException {
+        double[] corrFactor = null;
+        if (this.outFileName != null) {
+            int nstat = inPrecip.getValue().length;
+            if (!this.headerWritten) {
+                //always write time
+                writer.addColumn("date/time");
+                for (int i = 0; i < nstat; i++) {
+                    writer.addColumn("stat" + (i + 1));
+                }
+                writer.writeHeader();
+                this.headerWritten = true;
+            }
+        }
         
-        /*
-         *right at the moment the module assumes that all station are
-         *in the same zone and are of the same type, should be enhanced 
-         *later if necessary
-         */
-        double[] corrFactor = richter3_c;
+        if(this.precipZone.getValue() == 3)
+            corrFactor = richter3_c;
         double[] precip = this.inPrecip.getValue();
         double[] rcorr = new double[precip.length];
         int month = time.get(time.MONTH);
@@ -88,14 +135,30 @@ import jams.model.*;
                 rcorr[i] = -9999;
             }else{
                 //Applying the correction factors
-                rcorr[i] = precip[i] + (precip[i] * corrFactor[month]);
+                rcorr[i] = precip[i] + (precip[i] * (corrFactor[month] * adj));
             }
+            
         }
         this.corrPrecip.setValue(rcorr);
+        
+        if (this.outFileName != null) {
+            writer.addData(time);
+            for (int i = 0; i < rcorr.length; i++) {
+                writer.addData(rcorr[i]);
+            }
+            try {
+                writer.writeData();
+            } catch (org.unijena.jams.runtime.RuntimeException jre) {
+                this.getModel().getRuntime().handle(jre);
+            }
+        }
         
     }
     
     public void cleanup() throws JAMSEntity.NoSuchAttributeException {
-        
+        if (this.outFileName != null) {
+            writer.write("#eof");
+            writer.close();
+        }
     }
 }
