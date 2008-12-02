@@ -23,8 +23,8 @@
 
 package org.unijena.j2k.groundwater;
 
-import jams.data.*;
-import jams.model.*;
+import org.unijena.jams.data.*;
+import org.unijena.jams.model.*;
 
 /**
  *
@@ -268,9 +268,14 @@ import jams.model.*;
             double alpha = this.gwCapRise.getValue();
             inSoilStor = (deltaSoilStor) * (1. - Math.exp(-1*alpha / sat_SoilStor));
         }
-        
-        this.run_actSoilStor = this.run_actSoilStor + inSoilStor;
-        this.run_actRG2 = this.run_actRG2 - inSoilStor;
+        if(run_actRG2 >= inSoilStor){
+            this.run_actSoilStor = this.run_actSoilStor + inSoilStor;
+            this.run_actRG2 = this.run_actRG2 - inSoilStor;
+        }
+        else{
+            this.run_actSoilStor = this.run_actSoilStor + this.run_actRG2;
+            this.run_actRG2 = 0;
+        }
         
         return true;
     }
