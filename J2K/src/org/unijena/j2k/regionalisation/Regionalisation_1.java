@@ -24,6 +24,7 @@
 package org.unijena.j2k.regionalisation;
 import java.io.*;
 import jams.JAMS;
+import jams.JAMSTools;
 import jams.data.*;
 import jams.model.*;
 
@@ -169,7 +170,9 @@ public class Regionalisation_1 extends JAMSComponent {
     public void init() throws JAMSEntity.NoSuchAttributeException, IOException {
         
         //first, check if cached data are available
-        cacheFile = new File(dirName.getValue() + "/$" + this.getInstanceName() + ".cache");
+        String fName = "/$" + this.getInstanceName() + ".cache";
+
+        cacheFile = new File(JAMSTools.CreateAbsoluteFileName(getModel().getWorkspaceDirectory().getPath(), fName));
         
         if (!cacheFile.exists() && dataCaching.getValue()) {
             getModel().getRuntime().println(this.getInstanceName() + ": data caching is switched on but no cache file available!", JAMS.STANDARD);
