@@ -23,9 +23,9 @@
 
 package org.unijena.j2k.inputData;
 
-import org.unijena.jams.data.*;
-import org.unijena.jams.io.GenericDataWriter;
-import org.unijena.jams.model.*;
+import jams.data.*;
+import jams.io.GenericDataWriter;
+import jams.model.*;
 
 /**
  *
@@ -148,7 +148,7 @@ import org.unijena.jams.model.*;
             }
             try {
                 writer.writeData();
-            } catch (org.unijena.jams.runtime.RuntimeException jre) {
+            } catch (jams.runtime.RuntimeException jre) {
                 this.getModel().getRuntime().handle(jre);
             }
         }

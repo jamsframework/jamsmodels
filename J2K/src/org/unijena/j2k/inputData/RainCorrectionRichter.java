@@ -22,9 +22,9 @@
  */
 package org.unijena.j2k.inputData;
 
-import org.unijena.jams.data.*;
-import org.unijena.jams.io.GenericDataWriter;
-import org.unijena.jams.model.*;
+import jams.data.*;
+import jams.io.GenericDataWriter;
+import jams.model.*;
 
 /**
  *
@@ -348,7 +348,7 @@ public class RainCorrectionRichter extends JAMSComponent {
                 try {
                     writer.writeData();
                     writer2.writeData();
-                } catch (org.unijena.jams.runtime.RuntimeException jre) {
+                } catch (jams.runtime.RuntimeException jre) {
                     this.getModel().getRuntime().handle(jre);
                 }
             }
