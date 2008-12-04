@@ -307,7 +307,7 @@ title="Title",
                 }
                 try {
                     attribWriter.writeData();
-                } catch (org.unijena.jams.runtime.JAMSRuntimeException jre) {
+                } catch (jams.runtime.JAMSRuntimeException jre) {
                     getModel().getRuntime().println(jre.getMessage());
                 }
             }
