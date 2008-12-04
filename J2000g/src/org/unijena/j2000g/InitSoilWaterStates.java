@@ -93,6 +93,13 @@ import jams.model.*;
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
             update = JAMSVarDescription.UpdateType.INIT,
+            description = "relative start content"
+            )
+            public JAMSDouble initMPS;
+    
+    @JAMSVarDescription(
+            access = JAMSVarDescription.AccessType.READ,
+            update = JAMSVarDescription.UpdateType.INIT,
             description = "maximum percolation adaptation factor"
             )
             public JAMSDouble maxPercAdaptation;
@@ -128,7 +135,7 @@ import jams.model.*;
         
         this.maxMPS.setValue(mxMPS);
         
-        this.actMPS.setValue(0.8*mxMPS);
+        this.actMPS.setValue(initMPS.getValue()*mxMPS);
         
         double mxPerc = entity.getDouble("mxPerc") * this.maxPercAdaptation.getValue() * this.area.getValue();
         

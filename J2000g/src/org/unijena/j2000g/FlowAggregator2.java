@@ -35,7 +35,7 @@ import jams.model.*;
         author="Author",
         description="Description"
         )
-        public class FlowConverter extends JAMSComponent {
+        public class FlowAggregator2 extends JAMSComponent {
     
     /*
      *  Component variables
@@ -50,39 +50,44 @@ import jams.model.*;
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
             update = JAMSVarDescription.UpdateType.RUN,
-            description = "input"
+            description = "direct runoff"
             )
-            public JAMSDouble inQ;
+            public JAMSDouble dirQ;
+    
+    @JAMSVarDescription(
+            access = JAMSVarDescription.AccessType.READ,
+            update = JAMSVarDescription.UpdateType.RUN,
+            description = "base flow"
+            )
+            public JAMSDouble basQ;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
             update = JAMSVarDescription.UpdateType.RUN,
-            description = "output in cms"
+            description = "direct runoff cbm"
             )
-            public JAMSDouble outQcbm;
+            public JAMSDouble dirQcbm;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
             update = JAMSVarDescription.UpdateType.RUN,
-            description = "output in mm"
+            description = "baseflow cbm"
             )
-            public JAMSDouble outQmm;
+            public JAMSDouble basQcbm;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
             update = JAMSVarDescription.UpdateType.RUN,
-            description = "output in litres"
+            description = "total outflow cbm"
             )
-            public JAMSDouble outQl;
+            public JAMSDouble totQcbm;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
             update = JAMSVarDescription.UpdateType.RUN,
-            description = "temporal resolution [h;d;m]"
+            description = "total outflow mm"
             )
-            public JAMSString tempRes;
-    
-    
+            public JAMSDouble totQmm;
     
     /*
      *  Component run stages
@@ -93,17 +98,21 @@ import jams.model.*;
     }
     
     public void run() throws JAMSEntity.NoSuchAttributeException {
-        //conversion from liters to m^3/time
-        if(tempRes.getValue().equalsIgnoreCase("h")){
-            this.outQcbm.setValue((inQ.getValue()) / (3600 * 1000));
-            this.outQl.setValue((inQ.getValue()) / (3600));
-            this.outQmm.setValue(inQ.getValue() / cArea.getValue());
-        }
-        else{
-            this.outQcbm.setValue((inQ.getValue()) / (86400 * 1000));
-            this.outQl.setValue((inQ.getValue()) / (86400));
-            this.outQmm.setValue(inQ.getValue() / cArea.getValue());
-        }
+        
+        double totOut = this.dirQ.getValue() + this.basQ.getValue();
+        
+        this.totQmm.setValue(totOut);
+        //conversion from mm to m^3/time
+        totOut = (totOut * cArea.getValue()) / (86400 * 1000);
+        
+        this.totQcbm.setValue(totOut);
+        this.dirQcbm.setValue((dirQ.getValue() * cArea.getValue()) / (86400 * 1000));
+        this.basQcbm.setValue((basQ.getValue() * cArea.getValue()) / (86400 * 1000));
+        
+        //System.out.println("Area:" + cArea.getValue());
+        //System.out.println("dirQ:" + dirQ.getValue());
+        //System.out.println("interflow:" + interflow.getValue());
+        //System.out.println("basQ:" + basQ.getValue());
     }
     
     public void cleanup() {

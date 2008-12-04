@@ -35,7 +35,7 @@ import jams.model.*;
         author="Author",
         description="Description"
         )
-        public class FlowConverter extends JAMSComponent {
+        public class FlowConverterHours extends JAMSComponent {
     
     /*
      *  Component variables
@@ -57,30 +57,9 @@ import jams.model.*;
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
             update = JAMSVarDescription.UpdateType.RUN,
-            description = "output in cms"
+            description = "output"
             )
-            public JAMSDouble outQcbm;
-    
-    @JAMSVarDescription(
-            access = JAMSVarDescription.AccessType.WRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
-            description = "output in mm"
-            )
-            public JAMSDouble outQmm;
-    
-    @JAMSVarDescription(
-            access = JAMSVarDescription.AccessType.WRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
-            description = "output in litres"
-            )
-            public JAMSDouble outQl;
-    
-    @JAMSVarDescription(
-            access = JAMSVarDescription.AccessType.WRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
-            description = "temporal resolution [h;d;m]"
-            )
-            public JAMSString tempRes;
+            public JAMSDouble outQ;
     
     
     
@@ -94,16 +73,9 @@ import jams.model.*;
     
     public void run() throws JAMSEntity.NoSuchAttributeException {
         //conversion from liters to m^3/time
-        if(tempRes.getValue().equalsIgnoreCase("h")){
-            this.outQcbm.setValue((inQ.getValue()) / (3600 * 1000));
-            this.outQl.setValue((inQ.getValue()) / (3600));
-            this.outQmm.setValue(inQ.getValue() / cArea.getValue());
-        }
-        else{
-            this.outQcbm.setValue((inQ.getValue()) / (86400 * 1000));
-            this.outQl.setValue((inQ.getValue()) / (86400));
-            this.outQmm.setValue(inQ.getValue() / cArea.getValue());
-        }
+        //this.outQ.setValue((inQ.getValue()) / (86400 * 1000));
+        this.outQ.setValue((inQ.getValue()) / (3600 * 1000));
+        
     }
     
     public void cleanup() {

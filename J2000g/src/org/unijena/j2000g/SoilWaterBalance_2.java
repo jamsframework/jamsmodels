@@ -173,6 +173,13 @@ import jams.model.*;
             description = "HRU attribute maximum percolation"
             )
             public JAMSDouble maxPerc;
+    
+    @JAMSVarDescription(
+            access = JAMSVarDescription.AccessType.READ,
+            update = JAMSVarDescription.UpdateType.RUN,
+            description = "PET adjustment factor"
+            )
+            public JAMSDouble petMult;
 
     /*
      *  Component run stages
@@ -211,7 +218,8 @@ import jams.model.*;
         
         //et out of the soil
         double actET = this.actET.getValue();
-        double potET = this.potET.getValue();
+        double potET = this.potET.getValue() * this.petMult.getValue();
+        this.potET.setValue(potET);
         
         double deltaET = potET - actET;
         
@@ -269,17 +277,23 @@ import jams.model.*;
             dirQ = (excStor - maxExcStor);
             excStor = maxExcStor;
         }
+         
         double interflow = excStor * (1.0 / k_factor);
+        
+        
         excStor = excStor - interflow;
         
         gwRecharge = inflow * (1 - slope_weight);
         
          //cross checking against maximum percolation
+       double delta = 0;
        if(gwRecharge > maxPerc.getValue()){
-            double delta = gwRecharge - maxPerc.getValue();
+            delta = gwRecharge - maxPerc.getValue();
             interflow = interflow + delta;
             gwRecharge = maxPerc.getValue();
         }
+        
+        
         
         dirQ = dirQ + interflow;
         

@@ -35,7 +35,7 @@ import jams.model.*;
         author="Peter Krause",
         description="Calculates a simplified soil water balance for each HRU"
         )
-        public class SoilWaterGen extends JAMSComponent {
+        public class SoilWaterGen_test extends JAMSComponent {
     
     /*
      *  Component variables
@@ -170,6 +170,20 @@ import jams.model.*;
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
             update = JAMSVarDescription.UpdateType.INIT,
+            description = "interflow coefficient beta"
+            )
+            public JAMSDouble if_beta;
+    
+    @JAMSVarDescription(
+            access = JAMSVarDescription.AccessType.READ,
+            update = JAMSVarDescription.UpdateType.INIT,
+            description = "interflow coefficient a"
+            )
+            public JAMSDouble if_a;
+    
+    @JAMSVarDescription(
+            access = JAMSVarDescription.AccessType.READ,
+            update = JAMSVarDescription.UpdateType.INIT,
             description = "pet multiplier"
             )
             public JAMSDouble mPET;
@@ -247,7 +261,8 @@ import jams.model.*;
         //subtraction of surface runoff; same approach as in HBV
         double directFlow = 0;
         double ifbf = 0;
-        double fact = 0;
+        double fact_df = 0;
+        double fact_if = 0;
         if(this.df_beta.getValue() != 0){
             double sat = 0;
             if(maxMPS > 0)
@@ -256,23 +271,48 @@ import jams.model.*;
             //double fact = df_beta.getValue() * Math.log(sat) + 0.1;
             double b = df_beta.getValue();
             double a = df_a.getValue();
-            fact = a * Math.pow(sat, b);
-            if(fact < 0)
-                fact = 0;
-            //System.out.println("fact: " + fact + "sat: " + sat);
-            //ifbf = fact * inflow;
-            //inflow = inflow - ifbf;
-            //directFlow = fact * inflow;
-            //inflow = inflow - directFlow;
+            fact_df = a * Math.pow(sat, b);
+            if(fact_df < 0)
+                fact_df = 0;
             
-            directFlow = fact * inflow;
+            fact_if = if_a.getValue() * Math.pow(sat, if_beta.getValue());
+            if(fact_if < 0)
+                fact_if = 0;
+            //System.out.println("fact: " + fact + "sat: " + sat);
+            directFlow = fact_df * inflow;
             inflow = inflow - directFlow;
             
-            //ifbf = fact * inflow;
-            //inflow = inflow - ifbf;
+            ifbf = fact_if * inflow;
+            inflow = inflow - ifbf;
+            
+        }
+        //System.out.println("DF: " + directFlow);
+        
+        
+        double interflow = 0;
+        double gwRecharge = 0;
+         
+        
+        //double interflow = 0;
+        //excess water is distributed to Qdir and GWrecharge
+        double slope_weight = (Math.tan(this.slope.getValue() * (Math.PI / 180.))) * this.latVertDist.getValue();
+        if(slope_weight > 1)
+            slope_weight = 1;
+        
+        interflow = (ifbf * slope_weight);
+        gwRecharge = ifbf * (1 - slope_weight);
+        
+        //System.out.println("INF: " + interflow);
+        //System.out.println("GWR: " + gwRecharge);
+        
+        //cross checking against maximum percolation additional perc is interflow
+       if(gwRecharge > maxPerc.getValue()){
+            double delta = gwRecharge - maxPerc.getValue();
+            interflow = interflow + delta;
+            gwRecharge = maxPerc.getValue();
         }
         
-        //remaining inflow is put into soil storage
+        //inflow goes into the soil
         double deltaMPS = maxMPS - actMPS;
         
         //remaining water is put into soil
@@ -286,30 +326,8 @@ import jams.model.*;
             inflow = inflow - deltaMPS;
         }
         
-        double interflow = 0;
-        double gwRecharge = 0;
-         
-        
-        //excess water is distributed to interflow and GWrecharge
-        double slope_weight = (Math.tan(this.slope.getValue() * (Math.PI / 180.))) * this.latVertDist.getValue();
-        if(slope_weight > 1)
-            slope_weight = 1;
-        
-        interflow = (inflow * slope_weight);
-        gwRecharge = inflow * (1 - slope_weight);
-        
-        inflow = 0;
-        
-        //System.out.println("INF: " + interflow);
-        //System.out.println("GWR: " + gwRecharge);
-        
-        //cross checking against maximum percolation additional perc is considered to produce interflow
-       if(gwRecharge > maxPerc.getValue()){
-            double delta = gwRecharge - maxPerc.getValue();
-            interflow = interflow + delta;
-            gwRecharge = maxPerc.getValue();
-        }
-        
+        //any excess is added to interflow
+        interflow = interflow + inflow;
         
         double balFlows = directFlow + interflow + gwRecharge;
         double balMPSend = actMPS;
@@ -331,11 +349,6 @@ import jams.model.*;
         this.subsurfaceQ.setValue(interflow);
         this.gwRecharge.setValue(gwRecharge);
         this.totQ.setValue(directFlow + interflow + gwRecharge);
-        
-        //System.out.println("sQ: "+ directFlow);
-        //System.out.println("ssQ: "+ interflow);
-        
-        
     }
     
     public void cleanup() {

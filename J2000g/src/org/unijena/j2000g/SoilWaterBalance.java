@@ -51,20 +51,6 @@ import jams.model.*;
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
             update = JAMSVarDescription.UpdateType.RUN,
-            description = "attribute id"
-            )
-            public JAMSDouble id;
-    
-    @JAMSVarDescription(
-            access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.RUN,
-            description = "attribute area"
-            )
-            public JAMSDouble area;
-    
-    @JAMSVarDescription(
-            access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "HRU attribute maximum MPS"
             )
             public JAMSDouble maxMPS;
@@ -84,25 +70,11 @@ import jams.model.*;
             public JAMSDouble satMPS;
     
     @JAMSVarDescription(
-            access = JAMSVarDescription.AccessType.READWRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
-            description = "HRU excess storage"
-            )
-            public JAMSDouble excStor;
-    
-    @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
             update = JAMSVarDescription.UpdateType.RUN,
             description = "direct runoff"
             )
             public JAMSDouble dirQ;
-    
-    @JAMSVarDescription(
-            access = JAMSVarDescription.AccessType.WRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
-            description = "interflow"
-            )
-            public JAMSDouble interflow;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
@@ -156,23 +128,9 @@ import jams.model.*;
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
             update = JAMSVarDescription.UpdateType.INIT,
-            description = "lateral recession constant"
-            )
-            public JAMSDouble recConst;
-    
-    @JAMSVarDescription(
-            access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.INIT,
             description = "ET reduction factor"
             )
             public JAMSDouble linETRed;
-    
-    @JAMSVarDescription(
-            access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.INIT,
-            description = "maximum excStor"
-            )
-            public JAMSDouble maxExcStor;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
@@ -181,14 +139,7 @@ import jams.model.*;
             )
             public JAMSDouble maxPerc;
     
-    @JAMSVarDescription(
-            access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.INIT,
-            description = "direct runoff coefficient beta"
-            )
-            public JAMSDouble df_beta;
     
-
     /*
      *  Component run stages
      */
@@ -199,23 +150,10 @@ import jams.model.*;
     }
     
     public void run() throws JAMSEntity.NoSuchAttributeException {
-        double k_factor = 1;
-        double maxExcStor = 100000000000.0;
-        if(this.recConst.getValue() != 0){
-            k_factor = this.recConst.getValue();
-        }
-        if(this.maxExcStor.getValue() != 0){
-            maxExcStor = this.maxExcStor.getValue() * this.area.getValue();
-        }
-        double excStor = this.excStor.getValue();
         double actMPS = this.actMPS.getValue();
         double inflow = this.precip.getValue() + this.snowMelt.getValue();
         double maxMPS = this.maxMPS.getValue();
         
-        //System.out.println("***IN***");
-        //System.out.println("P: " + this.precip.getValue());
-        //System.out.println("SM: " + this.snowMelt.getValue());
-          
         
         //et out of the soil
         double actET = this.actET.getValue();
@@ -223,7 +161,7 @@ import jams.model.*;
         
         double deltaET = potET - actET;
         
-        //excess water is used first
+        //first ET is saturated from input
         if(inflow >= deltaET){
             actET = potET;
             inflow = inflow - deltaET;
@@ -234,7 +172,7 @@ import jams.model.*;
             inflow = 0;
             deltaET = potET - actET;
         }
-        //soilwater storage is used next
+        //then form soilwater storage
         
         //evapotranspiration
         //reduction function here
@@ -254,17 +192,6 @@ import jams.model.*;
             actET = actET + actMPS;
             actMPS = 0;
         }
-        
-        //subtraction of surface runoff; same approach as in HBV
-        double directFlow = 0;
-        if(this.df_beta.getValue() != 0){
-            double sat = actMPS / maxMPS;
-            double fact = Math.pow(sat, this.df_beta.getValue());
-            System.out.println("fact: " + fact);
-            directFlow = fact * inflow;
-            inflow = inflow - directFlow;
-        }
-        //System.out.println("DF: " + directFlow);
         
         //inflow goes into the soil
         double deltaMPS = maxMPS - actMPS;
@@ -291,49 +218,33 @@ import jams.model.*;
             inflow = inflow - deltaMPS;
         }
         
-        double dirQ = 0;
-        double gwRecharge = 0;
-        double interflow = 0;
+        double dQ = 0;
+        double gR = 0;
+        
         //excess water is distributed to Qdir and GWrecharge
         double slope_weight = (Math.tan(this.slope.getValue() * (Math.PI / 180.))) * this.latVertDist.getValue();
         if(slope_weight > 1)
             slope_weight = 1;
         
-        excStor = excStor + (inflow * slope_weight);
+        dQ = slope_weight * inflow;
+        gR = (1-slope_weight) * inflow;
+        inflow = 0;
         
-        if(excStor > maxExcStor){
-            dirQ = (excStor - maxExcStor);
-            excStor = maxExcStor;
-        }
-        System.out.println("dirQ: " + dirQ);
-        interflow = excStor * (1.0 / k_factor);
-        excStor = excStor - interflow;
-        //dirQ = dirQ;
-        
-        gwRecharge = inflow * (1 - slope_weight);
-        
-        //System.out.println("INF: " + interflow);
-        //System.out.println("GWR: " + gwRecharge);
-        
-        //cross checking against maximum percolation
-       if(gwRecharge > maxPerc.getValue()){
-            double delta = gwRecharge - maxPerc.getValue();
-            interflow = interflow + delta;
-            gwRecharge = maxPerc.getValue();
+       //cross checking against maximum percolation
+       if(gR > maxPerc.getValue()){
+            double delta = gR - maxPerc.getValue();
+            dQ = dQ + delta;
+            gR = maxPerc.getValue();
         }
         
-        //adding directFlow to dirQ
-        dirQ = dirQ + directFlow;
-      
+        
         //writing values back
         this.actET.setValue(actET);
         this.actMPS.setValue(actMPS);
         this.satMPS.setValue(actMPS / maxMPS);
-        this.excStor.setValue(excStor);
-        this.gwRecharge.setValue(gwRecharge);
-        this.dirQ.setValue(dirQ);
-        this.interflow.setValue(interflow);
-        this.totQ.setValue(dirQ + gwRecharge);
+        this.gwRecharge.setValue(gR);
+        this.dirQ.setValue(dQ);
+        this.totQ.setValue(dQ + gR);
     }
     
     public void cleanup() {
