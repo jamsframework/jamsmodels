@@ -106,7 +106,7 @@ public class TSDataReader extends JAMSComponent {
             update = JAMSVarDescription.UpdateType.INIT,
             description = "Calculate regression coefficients? If not, regCoeff array stays empty!"
             )
-            public JAMSInteger skipRegression;
+            public JAMSBoolean skipRegression;
     
     
     private JAMSTableDataStore store;
@@ -283,7 +283,7 @@ public class TSDataReader extends JAMSComponent {
     public void run() {
         
         dataArray.setValue(JAMSTableDataConverter.toDouble(store.getNext(), startColumn.getValue()));
-        if (skipRegression.getValue() != 1) {
+        if (!skipRegression.getValue()) {
             regCoeff.setValue(Regression.calcLinReg(elevation.getValue(), dataArray.getValue()));
         }
     }
