@@ -23,8 +23,8 @@
 
 package org.unijena.j2k.soilWater;
 
-import org.unijena.jams.data.*;
-import org.unijena.jams.model.*;
+import jams.data.*;
+import jams.model.*;
 
 /**
  *
@@ -424,8 +424,6 @@ title="J2KProcessLumpedSoilWater",
      */
     
     public void init() throws JAMSEntity.NoSuchAttributeException {
-        for(i = )
-        
         
     }
     
