@@ -41,13 +41,6 @@ public class CalcDailyNetRadiation extends JAMSComponent {
      *  Component variables
      */
 
-    /*@JAMSVarDescription(
-    access = JAMSVarDescription.AccessType.READ,
-    update = JAMSVarDescription.UpdateType.RUN,
-    description = "state variable sunshine hours"
-    )
-    public JAMSDouble sunh;
-     */
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
     update = JAMSVarDescription.UpdateType.RUN,
     description = "state variable mean temperature")
@@ -78,20 +71,6 @@ public class CalcDailyNetRadiation extends JAMSComponent {
     description = "attribute elevation")
     public JAMSDouble elevation;
 
-    /*@JAMSVarDescription(
-    access = JAMSVarDescription.AccessType.READ,
-    update = JAMSVarDescription.UpdateType.RUN,
-    description = "attribute latitude"
-    )
-    public JAMSDouble latitude;
-    
-    @JAMSVarDescription(
-    access = JAMSVarDescription.AccessType.READ,
-    update = JAMSVarDescription.UpdateType.RUN,
-    description = "Current time"
-    )
-    public JAMSCalendar time;
-     */
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.WRITE,
     update = JAMSVarDescription.UpdateType.RUN,
     description = "daily net radiation [MJ/m²]")

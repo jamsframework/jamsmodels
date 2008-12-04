@@ -156,154 +156,142 @@ public class Regionalisation_1 extends JAMSComponent {
     @JAMSVarDescription(
     access = JAMSVarDescription.AccessType.READ,
             update = JAMSVarDescription.UpdateType.INIT,
-            description = "Use caching of regionalised data?"
-            )
-            public JAMSBoolean dataCaching;
+            description = "Caching configuration: 0 - write cache, 1 - use cache, 2 - caching off",
+            defaultValue = "0")
+            public JAMSInteger dataCaching;
     
     private File cacheFile;
     private boolean useCache = false;
     private boolean writeCache = false;
-    private ObjectOutputStream writer;
-    private ObjectInputStream reader;
+    transient private ObjectOutputStream writer;
+    transient private ObjectInputStream reader;
     double NODATA = -9999.0;
     
     public void init() throws JAMSEntity.NoSuchAttributeException, IOException {
         
         //first, check if cached data are available
-        String fName = "/$" + this.getInstanceName() + ".cache";
+        cacheFile = new File(getModel().getWorkspace().getTempDirectory(), this.getInstanceName() + ".cache");
 
-        cacheFile = new File(JAMSTools.CreateAbsoluteFileName(getModel().getWorkspaceDirectory().getPath(), fName));
-        
-        if (!cacheFile.exists() && dataCaching.getValue()) {
-            getModel().getRuntime().println(this.getInstanceName() + ": data caching is switched on but no cache file available!", JAMS.STANDARD);
-            writeCache = true;
+        if (!cacheFile.exists() && (dataCaching.getValue() == 1)) {
+            getModel().getRuntime().sendHalt(this.getInstanceName() + ": data caching is switched on but no cache file available!");
         }
-        
-        //cache file existent and cache should be used
-        if (dataCaching.getValue() && !writeCache) {
-            useCache = true;
+
+        if (dataCaching.getValue() == 1) {
+
             reader = new ObjectInputStream(new BufferedInputStream(new FileInputStream(cacheFile)));//new FileInputStream(cacheFile));
-            writer = null;
-        } 
-        //cache file not existent but cache should be used
-        else if (dataCaching.getValue() && writeCache) {
-            useCache = false;
+
+        } else if (dataCaching.getValue() == 0) {
             writer = new ObjectOutputStream(new BufferedOutputStream(new FileOutputStream(cacheFile)));
-        }
-        //cache should not be used
-        else {
-            useCache = false;
-            writer = null;
         }
     }
     
     public void run() throws JAMSEntity.NoSuchAttributeException, IOException {
-        
-        
-        if (!useCache) {
+        if (dataCaching.getValue() == 1) {
+            dataValue.setValue(reader.readDouble());
+        } else {
             double[] regCoeff = this.regCoeff.getValue();
             double gradient = regCoeff[1];
             double rsq = regCoeff[2];
-            
-            
+
+
             double[] sourceElevations = statElevation.getValue();
             double[] sourceData = dataArray.getValue();
-            
-            
+
+
             double[] sourceWeights = statWeights.getValue();
             double targetElevation = entityElevation.getValue();
-            
-            
+
+
             double value = 0;
             double deltaElev = 0;
             int nIDW = this.nidw.getValue();
-            
+
             double[] data = new double[nIDW];
             double[] weights = new double[nIDW];
             double[] elev = new double[nIDW];
             //make sure that the arrays are intialized with 0s
-            for(int i = 0; i < nIDW;i++){
+            for (int i = 0; i < nIDW; i++) {
                 data[i] = 0;
                 weights[i] = 0;
                 elev[i] = 0;
             }
-            
+
 //@TODO: Recheck this for correct calculation, the Doug Boyle Problem!!
-            
+
             //Retreiving data, elevations and weights
             int[] wA = this.wArray.getValue();
             int counter = 0;
             int element = counter;
             boolean cont = true;
             boolean valid = false;
-            
-            while(counter < nIDW && cont){
+
+            while (counter < nIDW && cont) {
                 int t = wA[element];
                 //check if data is valid or no data
-                if(sourceData[t] == NODATA){
-                    
+                if (sourceData[t] == NODATA) {
+
                     element++;
-                    if(element >= wA.length){
+                    if (element >= wA.length) {
                         System.out.println("BREAK1: too less data NIDW had been reduced!");
                         cont = false;
-                        //value = NODATA;
-                    } else{
+                    //value = NODATA;
+                    } else {
                         t = wA[element];
                     }
-                } else{
+                } else {
                     valid = true;
                     data[counter] = sourceData[t];
                     weights[counter] = sourceWeights[t];
                     elev[counter] = sourceElevations[t];
-                    
+
                     counter++;
                     element++;
                 /*if(element >= wA.length){
-                    if(element <= nIDW)
-                        System.out.println("NIDW has been reduced, because of too less valid data!");
-                    cont = false;
+                if(element <= nIDW)
+                System.out.println("NIDW has been reduced, because of too less valid data!");
+                cont = false;
                 }*/
-                    
+
                 }
-                
+
             }
             //normalising weights
             double weightsum = 0;
-            for(int i = 0; i < counter; i++)
+            for (int i = 0; i < counter; i++) {
                 weightsum += weights[i];
-            for(int i = 0; i < counter; i++)
+            }
+            for (int i = 0; i < counter; i++) {
                 weights[i] = weights[i] / weightsum;
-            
-            if(valid){
+            }
+
+            if (valid) {
                 for (int i = 0; i < counter; i++) {
-                    if((rsq >= rsqThreshold.getValue()) && (elevationCorrection.getValue())) {  //Elevation correction is applied
+                    if ((rsq >= rsqThreshold.getValue()) && (elevationCorrection.getValue())) {  //Elevation correction is applied
                         deltaElev = targetElevation - elev[i];  //Elevation difference between unit and Station
                         double tVal = ((deltaElev * gradient + data[i]) * weights[i]);
                         //checking for minimum
-                        if(tVal < this.fixedMinimum.getValue())
+                        if (tVal < this.fixedMinimum.getValue()) {
                             tVal = this.fixedMinimum.getValue();
+                        }
                         value = value + tVal;
-                        
-                        
-                    } else{ //No elevation correction
-                        
+
+
+                    } else { //No elevation correction
+
                         value = value + (data[i] * weights[i]);
                     }
-                    
+
                 }
-            } else{
+            } else {
                 //System.out.println("All data are no-data values!");
                 value = NODATA;
             }
-            
+
             dataValue.setValue(value);
             //System.out.getRuntime().println("R2 entity: "+ targetElevation + "weights: " + sourceWeights[0] + ", "+ sourceWeights[1] + ", "+ sourceWeights[2] + ", ");
-            if(writer != null)
+            if (dataCaching.getValue() == 0) {
                 writer.writeDouble(value);
-            
-            
-        } else {
-            dataValue.setValue(reader.readDouble());
+            }
         }
     }
     
