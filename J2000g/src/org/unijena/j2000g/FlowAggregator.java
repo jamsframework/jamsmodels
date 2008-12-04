@@ -113,7 +113,11 @@ import jams.model.*;
     
     public void run() throws JAMSEntity.NoSuchAttributeException {
         
-        double totOut = this.dirQ.getValue() + this.interflow.getValue() + this.basQ.getValue();
+        double totOut = 0;
+        if(this.interflow != null)
+            totOut = this.dirQ.getValue() + this.interflow.getValue() + this.basQ.getValue();
+        else
+            totOut = this.dirQ.getValue() + this.basQ.getValue();
         
         this.totQmm.setValue(totOut);
         //conversion from mm to m^3/time
@@ -121,7 +125,8 @@ import jams.model.*;
         
         this.totQcbm.setValue(totOut);
         this.dirQcbm.setValue((dirQ.getValue() * cArea.getValue()) / (86400 * 1000));
-        this.infQcbm.setValue((interflow.getValue() * cArea.getValue()) / (86400 * 1000));
+        if(this.interflow != null)
+            this.infQcbm.setValue((interflow.getValue() * cArea.getValue()) / (86400 * 1000));
         this.basQcbm.setValue((basQ.getValue() * cArea.getValue()) / (86400 * 1000));
         
         //System.out.println("Area:" + cArea.getValue());
