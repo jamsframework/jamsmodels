@@ -23,8 +23,8 @@
 
 package org.unijena.j2k.regionalisation;
 import java.io.*;
-import jams.JAMS;
-import jams.JAMSTools;
+//import jams.JAMS;
+//import jams.JAMSTools;
 import jams.data.*;
 import jams.model.*;
 
@@ -32,7 +32,7 @@ import jams.model.*;
  *
  * @author Peter Krause
  */
-public class Regionalisation_1 extends JAMSComponent {
+public class Regionalisation extends JAMSComponent {
     
     @JAMSVarDescription(
     access = JAMSVarDescription.AccessType.READ,
@@ -178,7 +178,7 @@ public class Regionalisation_1 extends JAMSComponent {
 
         if (dataCaching.getValue() == 1) {
 
-            reader = new ObjectInputStream(new BufferedInputStream(new FileInputStream(cacheFile)));//new FileInputStream(cacheFile));
+            reader = new ObjectInputStream(new BufferedInputStream(new FileInputStream(cacheFile)));
 
         } else if (dataCaching.getValue() == 0) {
             writer = new ObjectOutputStream(new BufferedOutputStream(new FileOutputStream(cacheFile)));
@@ -186,6 +186,7 @@ public class Regionalisation_1 extends JAMSComponent {
     }
     
     public void run() throws JAMSEntity.NoSuchAttributeException, IOException {
+        //data is read from cache file
         if (dataCaching.getValue() == 1) {
             dataValue.setValue(reader.readDouble());
         } else {
@@ -193,14 +194,11 @@ public class Regionalisation_1 extends JAMSComponent {
             double gradient = regCoeff[1];
             double rsq = regCoeff[2];
 
-
             double[] sourceElevations = statElevation.getValue();
             double[] sourceData = dataArray.getValue();
 
-
             double[] sourceWeights = statWeights.getValue();
             double targetElevation = entityElevation.getValue();
-
 
             double value = 0;
             double deltaElev = 0;
@@ -288,7 +286,8 @@ public class Regionalisation_1 extends JAMSComponent {
             }
 
             dataValue.setValue(value);
-            //System.out.getRuntime().println("R2 entity: "+ targetElevation + "weights: " + sourceWeights[0] + ", "+ sourceWeights[1] + ", "+ sourceWeights[2] + ", ");
+            
+            //Write cache file
             if (dataCaching.getValue() == 0) {
                 writer.writeDouble(value);
             }
