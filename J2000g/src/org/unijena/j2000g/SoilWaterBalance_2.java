@@ -196,7 +196,6 @@ import jams.model.*;
         System.out.println(k_factor);
         if(this.recConst != null){
             k_factor = this.recConst.getValue();
-            System.out.println(k_factor);
         }
         if(this.maxExcStor != null){
             maxExcStor = this.maxExcStor.getValue() * this.area.getValue();
