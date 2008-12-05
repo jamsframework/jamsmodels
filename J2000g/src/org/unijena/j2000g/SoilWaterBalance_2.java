@@ -193,7 +193,7 @@ import jams.model.*;
     public void run() throws JAMSEntity.NoSuchAttributeException {
         double k_factor = 1;
         double maxExcStor = 100000.0;
-        System.out.println(k_factor);
+
         if(this.recConst != null){
             k_factor = this.recConst.getValue();
         }
