@@ -1,5 +1,5 @@
 /*
- * Regionalisation.java
+ * Regionalisation_old.java
  * Created on 17. November 2005, 14:20
  *
  * This file is part of JAMS
@@ -32,7 +32,7 @@ import jams.model.*;
  *
  * @author Peter Krause
  */
-public class Regionalisation extends JAMSComponent {
+public class Regionalisation_old extends JAMSComponent {
     
     @JAMSVarDescription(
     access = JAMSVarDescription.AccessType.READ,
