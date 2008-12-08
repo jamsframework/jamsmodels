@@ -23,7 +23,6 @@
 package org.unijena.j2k.potET;
 
 import java.io.*;
-import jams.JAMSTools;
 import jams.data.*;
 import jams.model.*;
 
