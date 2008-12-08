@@ -73,8 +73,7 @@ public class Regionalisation extends JAMSComponent {
     public JAMSDouble rsqThreshold;
 
     @JAMSVarDescription (access = JAMSVarDescription.AccessType.READ,
-                         description = "Absolute possible minimum value for data set",
-                         defaultValue = "-Infinity")
+                         description = "Absolute possible minimum value for data set")
     public JAMSDouble fixedMinimum;
 
     @JAMSVarDescription (access = JAMSVarDescription.AccessType.READ,
