@@ -64,12 +64,12 @@ public class IDWWeightCalculator extends JAMSComponent {
     public JAMSIntegerArray statOrder = new JAMSIntegerArray();
 
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
-                        description = "Doug Boyle's famous function",
+                        description = "Weights for Thiessen polygons",
                         defaultValue = "false")
     public JAMSBoolean equalWeights;
 
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
-                        description = "Calculation with geographical coordinates LL",
+                        description = "Calculation with geographical coordinates lat, long",
                         defaultValue = "false")
     public JAMSBoolean latLong;
 
