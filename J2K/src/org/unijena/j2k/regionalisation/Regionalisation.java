@@ -32,63 +32,60 @@ import jams.model.*;
  */
 public class Regionalisation extends JAMSComponent {
 
-    @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
-                        description = "Array of data values for current time step")
+    @JAMSVarDescription (access = JAMSVarDescription.AccessType.READ,
+                         description = "Array of data values for current time step")
     public JAMSDoubleArray dataArray;
 
-    @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
-                        description = "Regression coefficients")
+    @JAMSVarDescription (access = JAMSVarDescription.AccessType.READ,
+                         description = "Regression coefficients")
     public JAMSDoubleArray regCoeff = new JAMSDoubleArray();
 
-    @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
-                        description = "Array of station elevations")
+    @JAMSVarDescription (access = JAMSVarDescription.AccessType.READ,
+                         description = "Array of station elevations")
     public JAMSDoubleArray statElevation = new JAMSDoubleArray();
 
-    @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
-                        description = "Array of station's weights")
+    @JAMSVarDescription (access = JAMSVarDescription.AccessType.READ,
+                         description = "Array of station's weights")
     public JAMSDoubleArray statWeights = new JAMSDoubleArray();
 
-    @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
-                        description = "Array position of weights")
+    @JAMSVarDescription (access = JAMSVarDescription.AccessType.READ,
+                         description = "Array position of weights")
     public JAMSIntegerArray statOrder = new JAMSIntegerArray();
 
-    @JAMSVarDescription(access = JAMSVarDescription.AccessType.WRITE,
-                        description = "regionalised data value")
+    @JAMSVarDescription (access = JAMSVarDescription.AccessType.WRITE,
+                         description = "regionalised data value")
     public JAMSDouble dataValue;
 
-    @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
-                        description = "Attribute name elevation")
+    @JAMSVarDescription (access = JAMSVarDescription.AccessType.READ,
+                         description = "Attribute name elevation")
     public JAMSDouble entityElevation;
 
-    @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
-                        description = "Number of IDW stations")
+    @JAMSVarDescription (access = JAMSVarDescription.AccessType.READ,
+                         description = "Number of IDW stations")
     public JAMSInteger nidw;
 
-    @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
-                        description = "Apply elevation correction to measured data")
+    @JAMSVarDescription (access = JAMSVarDescription.AccessType.READ,
+                         description = "Apply elevation correction to measured data")
     public JAMSBoolean elevationCorrection;
 
-    @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
-                        description = "Minimum r² value for elevation correction application")
+    @JAMSVarDescription (access = JAMSVarDescription.AccessType.READ,
+                         description = "Minimum r² value for elevation correction application")
     public JAMSDouble rsqThreshold;
 
-    @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
-                        description = "Absolute possible minimum value for data set",
-                        defaultValue = "-9999.0")
+    @JAMSVarDescription (access = JAMSVarDescription.AccessType.READ,
+                         description = "Absolute possible minimum value for data set",
+                         defaultValue = "-Infinity")
     public JAMSDouble fixedMinimum;
 
-    @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
-                        description = "Caching configuration: 0 - write cache, 1 - use cache, 2 - caching off",
-                        defaultValue = "0")
+    @JAMSVarDescription (access = JAMSVarDescription.AccessType.READ,
+                         description = "Caching configuration: 0 - write cache, 1 - use cache, 2 - caching off",
+                         defaultValue = "0")
     public JAMSInteger dataCaching;
 
-    @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
-                        description = "Value of parameter if no value is available",
-                        defaultValue = "-9999.0")
+    @JAMSVarDescription (access = JAMSVarDescription.AccessType.READ,
+                         description = "Result value if no value is available",
+                         defaultValue = "-9999.0")
     public JAMSDouble noData;
-
-    @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ)
-    public JAMSString dataSetName;
 
     private File cacheFile;
 
