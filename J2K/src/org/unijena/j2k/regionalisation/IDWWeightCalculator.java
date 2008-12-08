@@ -112,9 +112,7 @@ public class IDWWeightCalculator extends JAMSComponent {
     }
 
     public void run() throws JAMSEntity.NoSuchAttributeException {
-        //JAMSDoubleArray idwWeights = new JAMSDoubleArray();
         double[] idwWeights;
-        //JAMSIntegerArray wA = new JAMSIntegerArray();
         int[] wA;
         double[] dist;
         if (!equalWeights.getValue()) {
