@@ -95,7 +95,7 @@ import jams.model.*;
             update = JAMSVarDescription.UpdateType.RUN,
             description = "position array to determine best weights"
             )
-            public JAMSIntegerArray wArray = new JAMSIntegerArray();
+            public JAMSIntegerArray statOrder = new JAMSIntegerArray();
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
@@ -144,7 +144,7 @@ import jams.model.*;
         }
         	
         statIDWeights.setValue(idwWeights.getValue());
-        wArray.setValue(wA.getValue());
+        statOrder.setValue(wA.getValue());
     }
     
     public void cleanup() throws JAMSEntity.NoSuchAttributeException{
