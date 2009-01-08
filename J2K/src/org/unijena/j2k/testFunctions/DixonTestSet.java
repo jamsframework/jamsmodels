@@ -170,6 +170,13 @@ public class DixonTestSet extends JAMSComponent {
             description = "function y"            
             )
             public JAMSDouble option;
+    
+    @JAMSVarDescription(
+            access = JAMSVarDescription.AccessType.READ,
+            update = JAMSVarDescription.UpdateType.RUN,
+            description = "function y"            
+            )
+            public JAMSInteger n;
 
     public void run() {
         if (function == null){
@@ -178,23 +185,23 @@ public class DixonTestSet extends JAMSComponent {
         }
         double x1=0,x2=0,x3=0,x4=0,x5=0,x6=0,x7=0,x8=0,
                x9=0,x10=0,x11=0,x12=0,x13=0,x14=0,x15=0,x16=0;
-        int n=16;
-        if (paraX1!=null){x1 = paraX1.getValue();}else n=0;
-        if (paraX2!=null){x2 = paraX2.getValue();}else n=1;
-        if (paraX3!=null){x3 = paraX3.getValue();}else n=2;
-        if (paraX4!=null){x4 = paraX4.getValue();}else n=3;
-        if (paraX5!=null){x5 = paraX5.getValue();}else n=4;
-        if (paraX6!=null){x6 = paraX6.getValue();}else n=5;
-        if (paraX7!=null){x7 = paraX7.getValue();}else n=6;
-        if (paraX8!=null){x8 = paraX8.getValue();}else n=7;
-        if (paraX9!=null){x9 = paraX9.getValue();}else n=8;
-        if (paraX10!=null){x10 = paraX10.getValue();}else n=9;
-        if (paraX11!=null){x11 = paraX11.getValue();}else n=10;
-        if (paraX12!=null){x12 = paraX12.getValue();}else n=11;
-        if (paraX13!=null){x13 = paraX13.getValue();}else n=12;
-        if (paraX14!=null){x14 = paraX14.getValue();}else n=13;
-        if (paraX15!=null){x15 = paraX15.getValue();}else n=14;
-        if (paraX16!=null){x16 = paraX16.getValue();}else n=15;
+        int n=this.n.getValue();
+        if (paraX1!=null){x1 = paraX1.getValue();}
+        if (paraX2!=null){x2 = paraX2.getValue();}
+        if (paraX3!=null){x3 = paraX3.getValue();}
+        if (paraX4!=null){x4 = paraX4.getValue();}
+        if (paraX5!=null){x5 = paraX5.getValue();}
+        if (paraX6!=null){x6 = paraX6.getValue();}
+        if (paraX7!=null){x7 = paraX7.getValue();}
+        if (paraX8!=null){x8 = paraX8.getValue();}
+        if (paraX9!=null){x9 = paraX9.getValue();}
+        if (paraX10!=null){x10 = paraX10.getValue();}
+        if (paraX11!=null){x11 = paraX11.getValue();}
+        if (paraX12!=null){x12 = paraX12.getValue();}
+        if (paraX13!=null){x13 = paraX13.getValue();}
+        if (paraX14!=null){x14 = paraX14.getValue();}
+        if (paraX15!=null){x15 = paraX15.getValue();}
+        if (paraX16!=null){x16 = paraX16.getValue();}
         double x[] = new double[16];
         x[0] = x1;x[1] = x2;x[2] = x3;x[3] = x4;
         x[4] = x5;x[5] = x6;x[6] = x7;x[7] = x8;
@@ -276,16 +283,22 @@ public class DixonTestSet extends JAMSComponent {
             //Bounds -10 < x < 10;
             case 9: {
                 r = Math.pow((x1-1),2.0);
-                r = r+2*Math.pow(((4*x2*x2)-x1),2);    
-                r = r+3*Math.pow(((4*x3*x3)-x2),2);
-                r = r+4*Math.pow(((4*x4*x4)-x3),2);
+                for (int i=1;i<n;i++){
+                    r += (i+1)*Math.pow((2*x[i]*x[i]-x[i-1]), 2);
+                }                
                 break;
             }
             //Easom Function
             //Minimum x = (Pi, Pi) y = -1
             //Bounds -100 < x < 100;
             case 10: {
-                r = -Math.cos(x1)*Math.cos(x2)*Math.exp(-Math.pow((x1-Math.PI),2.0)-Math.pow((x2-Math.PI),2));                
+                r = -1;
+                double tmp = 0;
+                for (int i=0;i<n;i++){
+                    r *= Math.cos(x[i]);                    
+                    tmp -= Math.pow(x[i]-Math.PI,2);
+                }
+                r *= Math.exp(tmp);                
                 break;
             }
             //Goldstein Price Function
@@ -302,10 +315,13 @@ public class DixonTestSet extends JAMSComponent {
                 double s = 0;
                 double p = 1.0;
                 double fr = 4000;
-                s = x1*x1 + x2*x2;
-                p = Math.cos(x1)*Math.cos(x2/2.0);
-                r = s/fr-p+1;
-                r -= Math.cos(x1)*Math.cos(x2)*Math.exp(-Math.pow((x1-Math.PI),2.0)-Math.pow((x2-Math.PI),2));                
+                for (int i=0;i<n;i++){
+                    s += x[i]*x[i];
+                    p+=Math.cos(x[i])/Math.sqrt(i+1);
+                }
+                //s = x1*x1 + x2*x2;
+                //p = Math.cos(x1)*Math.cos(x2/2.0);
+                r = s/fr-p+1;                
                 break;
             }                        
             //Hartmann Function (4,3)
@@ -353,17 +369,20 @@ public class DixonTestSet extends JAMSComponent {
             //Minimum x =  (1,... 1),  y = 0.0
             //Bounds -10 < x < 10;
             case 15:{
-                double z[] = new double[4];
-                z[0] = 1+(x1-1.0)/4.0;
+                double z[] = new double[n];
+                for (int i=0;i<n;i++){
+                    z[i] = 1+(x[i]-1.0)/4.0;
+                }
+                /*z[0] = 1+(x1-1.0)/4.0;
                 z[1] = 1+(x2-1.0)/4.0;
                 z[2] = 1+(x3-1.0)/4.0;
-                z[3] = 1+(x4-1.0)/4.0;
+                z[3] = 1+(x4-1.0)/4.0;*/
                 
                 double s = Math.sin(Math.PI*z[0])*Math.sin(Math.PI*z[0]);
-                for (int i=0;i<3;i++){
+                for (int i=0;i<n-1;i++){
                     s += (z[i]-1)*(z[i]-1)*(1+10*Math.pow(Math.sin(Math.PI*z[i]+1),2.0));
                 }
-                r = s+(z[3]-1)*(z[3]-1)*2*(1+Math.pow(Math.sin(2*Math.PI*z[3]), 2));
+                r = s+(z[n-1]-1)*(z[n-1]-1)*2*(1+Math.pow(Math.sin(2*Math.PI*z[n-1]), 2));
                 break;
             }   
             //Matjas Function
@@ -376,23 +395,23 @@ public class DixonTestSet extends JAMSComponent {
             //Michalewics Function
             //Minimum x =  ?,  y = -1.8013
             //Bounds 0 < x < Pi;
-            case 17:{                
-                r = -(Math.sin(x1)*Math.pow(Math.sin(x1*x1/Math.PI),20) + 
-                        Math.sin(x2)*Math.pow(Math.sin(x2*x2/Math.PI),20));
+            case 17:{    
+                r = 0;
+                for (int i=0;i<n;i++){
+                    r -= Math.sin(x[i])*Math.pow((i+1)*Math.sin(x[i]*x[i]/Math.PI), 20);
+                }                
                 break;
             }  
             //Perm Functions
             //Minimum x =  (1,2,3,..n),  y = 0
             //Bounds -n < x < n;
-            case 18:{                
-                x = new double[4];
+            case 18:{                                
                 double s_out = 0;
-                double b = 0.5;
-                x[0] = x1;  x[1] = x2;  x[2] = x3; x[3] = x4;                                
-                
-                for (int k=0;k<4;k++){
+                double b = 0.0;
+                                
+                for (int k=0;k<n;k++){
                     double s_in = 0;
-                    for (int j=0;j<4;j++){
+                    for (int j=0;j<n;j++){
                         s_in += ((Math.pow(j+1,k+1))+b)*(Math.pow(x[j]/(j+1),k+1)-1);
                     }
                     s_out += s_in*s_in;
@@ -445,8 +464,11 @@ public class DixonTestSet extends JAMSComponent {
             //Minimum x =  (1,..,1),  y = 0
             //Bounds -500 < x < 500;
             case 22:{   
-                double s = -x1*Math.sin(Math.sqrt(Math.abs(x1))) -x2*Math.sin(Math.sqrt(Math.abs(x2)));
-                r = 418.9829*2+s;
+                double s = 0;
+                for (int i=0;i<n;i++){
+                    s-=x[i]*Math.sin(Math.sqrt(Math.abs(x[i])));
+                }
+                r = 418.9829*n+s;
                 break;
             } 
             //Shekel Functions
@@ -501,23 +523,29 @@ public class DixonTestSet extends JAMSComponent {
             //Minimum x = 0 y = 0
             //Bounds -5.12 < x < 5.12
             case 25:{
-                r = x1*x1 + x2*x2 + x3*x3 + x4*x4;
+                r = 0;
+                for (int i=0;i<n;i++)
+                    r += x[i]*x[i];
                 break;
             }
             //Sum Squares Function
             //Minimum x = 0 y = 0
             //Bounds -10 < x < 10
             case 26:{
-                r = x1*x1 + 2.0*x2*x2 + 3.0*x3*x3 + 4.0*x4*x4;
+                r = 0;
+                for (int i=0;i<n;i++)
+                    r += (i+1)*x[i]*x[i];
                 break;
             }
             //Trid Function
             //Minimum x = ? y = ?
             // -n² < x < n²
             case 27:{
-                double s1 = (x1-1.0)*(x1-1.0) + (x2-1.0)*(x2-1.0) + 
-                        (x3-1.0)*(x3-1.0) + (x4-1.0)*(x4-1.0);
-                double s2 = x2*x1 + x3*x2 + x4*x3;
+                double s1 = 0,s2 = 0;                
+                for (int i=0;i<n;i++)
+                    s1 += (x[i]-1.0)*(x[i]-1.0);
+                for (int i=1;i<n;i++)
+                    s2 += x[i]*x[i-1];
                 r = s1 - s2;
                 break;
             }
@@ -525,8 +553,12 @@ public class DixonTestSet extends JAMSComponent {
             //Minimum x = 0 y = 0
             // -5 < x < 10
             case 28:{
-                double s1 = x1*x1 + x2*x2 + x3*x3 + x4*x4;
-                double s2 = 0.5*x1 + 1.0*x2 + 1.5*x3 + 2.0*x4;
+                double s1 = 0,s2 = 0;
+                for (int i=0;i<n;i++)
+                    s1 += x[i]*x[i];
+                for (int i=0;i<n;i++)
+                    s2 += 0.5*(i+1)*x[i];
+                
                 double p2s2 = s2*s2;
                 r = s1 + p2s2 + p2s2*p2s2;
                 break;
