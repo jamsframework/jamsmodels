@@ -167,11 +167,11 @@ public class Regionalisation extends JAMSComponent {
 
                     counter++;
                     element++;
-                /*if(element >= wA.length){
-                if(element <= nIDW)
-                System.out.println("NIDW has been reduced, because of too less valid data!");
-                cont = false;
-                }*/
+                if(element >= wA.length){
+                    //if(element <= nIDW)
+                        //System.out.println("NIDW has been reduced, because of too less valid data!");
+                    cont = false;
+                }
 
                 }
 
