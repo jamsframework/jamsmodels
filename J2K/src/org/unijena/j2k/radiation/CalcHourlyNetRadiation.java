@@ -43,12 +43,11 @@ import jams.model.*;
      *  Component variables
      */
 
-    @JAMSVarDescription(
-            access = JAMSVarDescription.AccessType.READ,
+    @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
             update = JAMSVarDescription.UpdateType.INIT,
-            description = "Use caching of regionalised data?"
-            )
-            public JAMSBoolean dataCaching;
+            description = "Caching configuration: 0 - write cache, 1 - use cache, 2 - caching off",
+            defaultValue = "0")
+            public JAMSInteger dataCaching;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
@@ -141,21 +140,22 @@ import jams.model.*;
         //first, check if cached data are available
         //cacheFile = new File(dirName.getValue() + "/$" + this.getInstanceName() + ".cache");
         cacheFile = new File(getModel().getWorkspace().getTempDirectory(), this.getInstanceName() + ".cache");
-        if (!cacheFile.exists() && dataCaching.getValue()) {
- //           getModel().getRuntime().sendHalt(this.getInstanceName() + ": dataCaching is true but no cache file available!");
+        if (!cacheFile.exists() && (dataCaching.getValue() == 1)) {
+            //           getModel().getRuntime().sendHalt(this.getInstanceName() + ": dataCaching is true but no cache file available!");
         }
-        if(dataCaching.getValue()){
-            useCache = true;
+        if (dataCaching.getValue() == 1) {
             reader = new ObjectInputStream(new BufferedInputStream(new FileInputStream(cacheFile)));
-        } else {
-            useCache = false;
+        } else if (dataCaching.getValue() == 0) {
             writer = new ObjectOutputStream(new BufferedOutputStream(new FileOutputStream(cacheFile)));
         }
         
     }
     
     public void run() throws JAMSEntity.NoSuchAttributeException, IOException{
-        if (!useCache) {
+        if (dataCaching.getValue() == 1) {
+            netRad.setValue(reader.readDouble());
+        }
+        else {
             int julDay = time.get(time.DAY_OF_YEAR);
             int idx = (julDay - 1) * 24 + time.get(time.HOUR_OF_DAY);
             double extraterrRadiation = extRad.getValue();
@@ -182,9 +182,7 @@ import jams.model.*;
             double nRad = org.unijena.j2k.physicalCalculations.SolarRadiationCalculationMethods.calc_NetRadiation(netSWRadiation, netLWRadiation);
             
             netRad.setValue(nRad);
-        } else {
-            netRad.setValue(reader.readDouble());
-        }
+        } 
         
     }
     
