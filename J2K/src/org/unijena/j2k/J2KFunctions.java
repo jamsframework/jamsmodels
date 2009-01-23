@@ -26,6 +26,8 @@ import java.util.*;
 import java.io.*;
 import jams.data.*;
 import jams.model.JAMSModel;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -71,23 +73,29 @@ public class J2KFunctions {
 
             while ((s != null) && !s.startsWith("#")) {
 
-                JAMSEntity e = JAMSDataFactory.createEntity();
-                tokenizer = new StringTokenizer(s, "\t");
+                JAMSEntity e;
+                try {
+                    e = (JAMSEntity) JAMSDataFactory.getInstance(JAMSEntity.class);
+                    tokenizer = new StringTokenizer(s, "\t");
 
-                String token;
-                for (int i = 0; i < attributeNames.size(); i++) {
-                    token = tokenizer.nextToken();
-                    try {
-                        //hopefully these are double values :-)
-                        e.setDouble(attributeNames.get(i), Double.parseDouble(token));
-                        model.getRuntime().println(attributeNames.get(i) + ": " + token, 4);
-                    } catch (NumberFormatException nfe) {
-                        //most probably this happens because of string values within J2K parameter files
-                        e.setObject(attributeNames.get(i), token);
+                    String token;
+                    for (int i = 0; i < attributeNames.size(); i++) {
+                        token = tokenizer.nextToken();
+                        try {
+                            //hopefully these are double values :-)
+                            e.setDouble(attributeNames.get(i), Double.parseDouble(token));
+                            model.getRuntime().println(attributeNames.get(i) + ": " + token, 4);
+                        } catch (NumberFormatException nfe) {
+                            //most probably this happens because of string values within J2K parameter files
+                            e.setObject(attributeNames.get(i), token);
+                        }
                     }
+
+                    entityList.add(e);
+                } catch (InstantiationException ex) {
+                } catch (IllegalAccessException ex) {
                 }
 
-                entityList.add(e);
                 s = reader.readLine();
             }
 
