@@ -10,7 +10,6 @@
 package org.unijena.j2k.snow;
 
 import jams.data.*;
-import jams.data.JAMSEntity.NoSuchAttributeException;
 import jams.model.*;
 
 /**
