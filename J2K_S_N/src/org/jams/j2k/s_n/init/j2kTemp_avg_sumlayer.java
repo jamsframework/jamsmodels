@@ -79,7 +79,7 @@ import jams.model.*;
             update = JAMSVarDescription.UpdateType.RUN,
             description = "soil temperature in layerdepth in °C"
             )
-            public JAMSDoubleArray Soil_Temp_Layer = new JAMSDoubleArray();
+            public JAMSDoubleArray Soil_Temp_Layer;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,

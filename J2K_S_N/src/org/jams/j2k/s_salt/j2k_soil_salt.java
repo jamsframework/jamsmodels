@@ -64,7 +64,7 @@ import java.io.*;
             update = JAMSVarDescription.UpdateType.RUN,
             description = "in mm depth of soil layer"
             )
-            public JAMSDoubleArray layerdepth = new JAMSDoubleArray();
+            public JAMSDoubleArray layerdepth;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
@@ -85,49 +85,49 @@ import java.io.*;
             update = JAMSVarDescription.UpdateType.RUN,
             description = "in kg/dm³ soil bulk density"
             )
-            public JAMSDoubleArray soil_bulk_density = new JAMSDoubleArray();
+            public JAMSDoubleArray soil_bulk_density;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
             update = JAMSVarDescription.UpdateType.RUN,
             description = "actual LPS in portion of sto_LPS soil water content"
             )
-            public JAMSDoubleArray sat_LPS  = new JAMSDoubleArray();
+            public JAMSDoubleArray sat_LPS ;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
             update = JAMSVarDescription.UpdateType.RUN,
             description = "actual MPS in portion of sto_MPS soil water content"
             )
-            public JAMSDoubleArray sat_MPS  = new JAMSDoubleArray();
+            public JAMSDoubleArray sat_MPS ;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
             update = JAMSVarDescription.UpdateType.RUN,
             description = "maximum MPS  in l soil water content"
             )
-            public JAMSDoubleArray stohru_MPS = new JAMSDoubleArray();
+            public JAMSDoubleArray stohru_MPS;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
             update = JAMSVarDescription.UpdateType.RUN,
             description = "maximum LPS  in l soil water content"
             )
-            public JAMSDoubleArray stohru_LPS  = new JAMSDoubleArray();
+            public JAMSDoubleArray stohru_LPS ;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
             update = JAMSVarDescription.UpdateType.RUN,
             description = "maximum FPS  in l soil water content"
             )
-            public JAMSDoubleArray stohru_FPS  = new JAMSDoubleArray();
+            public JAMSDoubleArray stohru_FPS ;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
             update = JAMSVarDescription.UpdateType.RUN,
             description = "soil temperature in layerdepth in °C"
             )
-            public JAMSDoubleArray Soil_Temp_Layer  = new JAMSDoubleArray();
+            public JAMSDoubleArray Soil_Temp_Layer ;
     
    
     @JAMSVarDescription(
@@ -135,7 +135,7 @@ import java.io.*;
             update = JAMSVarDescription.UpdateType.RUN,
             description = " NO3-Pool in kgN/ha"
             )
-            public JAMSDoubleArray NaCl_Pool = new JAMSDoubleArray();
+            public JAMSDoubleArray NaCl_Pool;
     
 
     
@@ -169,14 +169,14 @@ import java.io.*;
             update = JAMSVarDescription.UpdateType.RUN,
             description = " actual evaporation in mm"
             )
-            public JAMSDoubleArray aEP_h = new JAMSDoubleArray();
+            public JAMSDoubleArray aEP_h;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
             update = JAMSVarDescription.UpdateType.RUN,
             description = "mps diffusion between layers value"
             )
-            public JAMSDoubleArray w_layer_diff = new JAMSDoubleArray();
+            public JAMSDoubleArray w_layer_diff;
     
     
     @JAMSVarDescription(
@@ -191,7 +191,7 @@ import java.io.*;
             update = JAMSVarDescription.UpdateType.RUN,
             description = " interflow in l"
             )
-            public JAMSDoubleArray RD2_out  = new JAMSDoubleArray();
+            public JAMSDoubleArray RD2_out ;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
@@ -213,7 +213,7 @@ import java.io.*;
             update = JAMSVarDescription.UpdateType.RUN,
             description = " NaCl in interflow in  in kgNaCl/ha"
             )
-            public JAMSDoubleArray InterflowNaCl  = new JAMSDoubleArray();
+            public JAMSDoubleArray InterflowNaCl ;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
@@ -234,7 +234,7 @@ import java.io.*;
             update = JAMSVarDescription.UpdateType.RUN,
             description = " Nitrate in interflow in in kgNaCl"
             )
-            public JAMSDoubleArray InterflowNaClabs = new JAMSDoubleArray();
+            public JAMSDoubleArray InterflowNaClabs;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
@@ -255,7 +255,7 @@ import java.io.*;
             update = JAMSVarDescription.UpdateType.RUN,
             description = " NaCl in interflow in added to HRU layer in kgNaCl"
             )
-            public JAMSDoubleArray InterflowNaCl_in  = new JAMSDoubleArray();
+            public JAMSDoubleArray InterflowNaCl_in ;
     
     
     @JAMSVarDescription(
@@ -284,21 +284,21 @@ import java.io.*;
             update = JAMSVarDescription.UpdateType.RUN,
             description = "intfiltration poritions for the single horizonts in l"
             )
-            public JAMSDoubleArray infiltration_hor = new JAMSDoubleArray();
+            public JAMSDoubleArray infiltration_hor;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
             update = JAMSVarDescription.UpdateType.RUN,
             description = "percolation out ouf the single horizonts in l"
             )
-            public JAMSDoubleArray perco_hor = new JAMSDoubleArray();
+            public JAMSDoubleArray perco_hor;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
             update = JAMSVarDescription.UpdateType.RUN,
             description = "percolation out ouf the single horizonts in l"
             )
-            public JAMSDoubleArray actETP_h = new JAMSDoubleArray();
+            public JAMSDoubleArray actETP_h;
     
    
     
@@ -322,14 +322,14 @@ import java.io.*;
             update = JAMSVarDescription.UpdateType.RUN,
             description = " Residue in Layer in kgN/ha"
             )
-            public JAMSDoubleArray Residue_pool = new JAMSDoubleArray();
+            public JAMSDoubleArray Residue_pool;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
             update = JAMSVarDescription.UpdateType.RUN,
             description = " NaCl-Organic fresh Pool from Residue in kgN/ha"
             )
-            public JAMSDoubleArray NaCl_residue_pool_fresh = new JAMSDoubleArray();
+            public JAMSDoubleArray NaCl_residue_pool_fresh;
     
      @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
@@ -382,7 +382,7 @@ import java.io.*;
             update = JAMSVarDescription.UpdateType.RUN,
             description = " actual evaporation in mm"
             )
-            public JAMSDoubleArray aTP_h = new JAMSDoubleArray();
+            public JAMSDoubleArray aTP_h;
      
       @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,

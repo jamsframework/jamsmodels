@@ -57,11 +57,11 @@ public class IDWWeightCalculator extends JAMSComponent {
 
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.WRITE,
                         description = "weights for IDW part of regionalisation")
-    public JAMSDoubleArray statWeights = new JAMSDoubleArray();
+    public JAMSDoubleArray statWeights;
 
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.WRITE,
                         description = "position array to determine best weights")
-    public JAMSIntegerArray statOrder = new JAMSIntegerArray();
+    public JAMSIntegerArray statOrder;
 
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
                         description = "Weights for Thiessen polygons",

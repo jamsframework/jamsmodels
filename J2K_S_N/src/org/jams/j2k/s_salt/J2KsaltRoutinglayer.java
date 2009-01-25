@@ -67,7 +67,7 @@ import jams.model.*;
             update = JAMSVarDescription.UpdateType.RUN,
             description = "RD2 NaCl inflow in kgNaCl"
             )
-            public JAMSDoubleArray InterflowNaCl_in = new JAMSDoubleArray();
+            public JAMSDoubleArray InterflowNaCl_in;
     
 /*    @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
@@ -103,7 +103,7 @@ import jams.model.*;
             update = JAMSVarDescription.UpdateType.RUN,
             description = "RD2 NaCl outflow in kgNaCl"
             )
-            public JAMSDoubleArray InterflowNaClabs  = new JAMSDoubleArray();
+            public JAMSDoubleArray InterflowNaClabs ;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,

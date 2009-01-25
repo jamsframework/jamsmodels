@@ -85,7 +85,7 @@ title="NashCascade",
         double[] tanks = new double[this.nTanks.getValue()];
         for(int i = 0; i < this.nTanks.getValue(); i++)
             tanks[i] = 0;
-        this.storages = new JAMSDoubleArray();
+        this.storages = JAMSDataFactory.getDoubleArray();
         this.storages.setValue(tanks);
     }
     

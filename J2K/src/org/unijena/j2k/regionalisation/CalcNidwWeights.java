@@ -88,7 +88,7 @@ import jams.model.*;
             update = JAMSVarDescription.UpdateType.RUN,
             description = "weights for IDW part of regionalisation"
             )
-            public JAMSDoubleArray statWeights = new JAMSDoubleArray();
+            public JAMSDoubleArray statWeights;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
@@ -106,7 +106,7 @@ import jams.model.*;
     }
     
     public void run() throws JAMSEntity.NoSuchAttributeException{
-        JAMSDoubleArray idwWeights = new JAMSDoubleArray();
+        JAMSDoubleArray idwWeights = JAMSDataFactory.getDoubleArray();
         if(equalWeights == null || !equalWeights.getValue()){
         	idwWeights.setValue(org.unijena.j2k.statistics.IDW.calcNidwWeights(entityX.getValue(), entityY.getValue(), statX.getValue(), statY.getValue(), pidw.getValue(), nidw.getValue()));
         }

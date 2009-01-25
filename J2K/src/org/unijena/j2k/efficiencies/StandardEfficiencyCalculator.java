@@ -203,7 +203,7 @@ title="StandardEfficiencyCalculator",
             update = JAMSVarDescription.UpdateType.RUN,
             description = "full set of predicted values"
             )
-            public JAMSDoubleArray predictionValues = new JAMSDoubleArray();
+            public JAMSDoubleArray predictionValues;
     
     private final int E1 = 1;
     private final int E2 = 2;

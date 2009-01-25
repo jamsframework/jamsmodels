@@ -94,7 +94,7 @@ import jams.model.*;
             update = JAMSVarDescription.UpdateType.RUN,
             description = "entity slopeAspectCorrectionFactor"
             )
-            public JAMSDoubleArray slAsCfArray = new JAMSDoubleArray();
+            public JAMSDoubleArray slAsCfArray;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,

@@ -98,7 +98,7 @@ public class SelectiveEntityWriter extends JAMSComponent {
             update = JAMSVarDescription.UpdateType.RUN,
             description = "HRU soil moistrure of the fourth layer in %"
             )
-            public JAMSDoubleArray actMoist_h = new JAMSDoubleArray();
+            public JAMSDoubleArray actMoist_h;
     
     private GenericDataWriter writer;
     private String[] attrs;

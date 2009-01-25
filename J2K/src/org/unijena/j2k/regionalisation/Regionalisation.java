@@ -38,19 +38,19 @@ public class Regionalisation extends JAMSComponent {
 
     @JAMSVarDescription (access = JAMSVarDescription.AccessType.READ,
                          description = "Regression coefficients")
-    public JAMSDoubleArray regCoeff = new JAMSDoubleArray();
+    public JAMSDoubleArray regCoeff;
 
     @JAMSVarDescription (access = JAMSVarDescription.AccessType.READ,
                          description = "Array of station elevations")
-    public JAMSDoubleArray statElevation = new JAMSDoubleArray();
+    public JAMSDoubleArray statElevation;
 
     @JAMSVarDescription (access = JAMSVarDescription.AccessType.READ,
                          description = "Array of station's weights")
-    public JAMSDoubleArray statWeights = new JAMSDoubleArray();
+    public JAMSDoubleArray statWeights;
 
     @JAMSVarDescription (access = JAMSVarDescription.AccessType.READ,
                          description = "Array position of weights")
-    public JAMSIntegerArray statOrder = new JAMSIntegerArray();
+    public JAMSIntegerArray statOrder;
 
     @JAMSVarDescription (access = JAMSVarDescription.AccessType.WRITE,
                          description = "regionalised data value")

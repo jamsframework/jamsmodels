@@ -67,7 +67,7 @@ import jams.model.*;
             update = JAMSVarDescription.UpdateType.RUN,
             description = "RD2 N inflow in kgN"
             )
-            public JAMSDoubleArray InterflowN_in = new JAMSDoubleArray();
+            public JAMSDoubleArray InterflowN_in;
     
 /*    @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
@@ -103,7 +103,7 @@ import jams.model.*;
             update = JAMSVarDescription.UpdateType.RUN,
             description = "RD2 N outflow in kgN"
             )
-            public JAMSDoubleArray InterflowNabs  = new JAMSDoubleArray();
+            public JAMSDoubleArray InterflowNabs;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,

@@ -46,7 +46,7 @@ title="soillayer_writer4",
             update = JAMSVarDescription.UpdateType.RUN,
             description = "in cm depth of soil layer"
             )
-            public JAMSDoubleArray layerdepth = new JAMSDoubleArray();
+            public JAMSDoubleArray layerdepth;
     
     @JAMSVarDescription(
     access = JAMSVarDescription.AccessType.READ,
@@ -60,35 +60,35 @@ title="soillayer_writer4",
             update = JAMSVarDescription.UpdateType.RUN,
             description = "HRU attribute maximum FPS in mm"
             )
-            public JAMSDoubleArray maxFPS = new JAMSDoubleArray();
+            public JAMSDoubleArray maxFPS;
     
     @JAMSVarDescription(
     access = JAMSVarDescription.AccessType.READ,
             update = JAMSVarDescription.UpdateType.RUN,
             description = "HRU attribute maximum MPS in mm"
             )
-            public JAMSDoubleArray maxMPS = new JAMSDoubleArray();
+            public JAMSDoubleArray maxMPS;
     
     @JAMSVarDescription(
     access = JAMSVarDescription.AccessType.READ,
             update = JAMSVarDescription.UpdateType.RUN,
             description = "HRU attribute maximum LPS in mm"
             )
-            public JAMSDoubleArray maxLPS = new JAMSDoubleArray();
+            public JAMSDoubleArray maxLPS;
     
     @JAMSVarDescription(
     access = JAMSVarDescription.AccessType.READ,
             update = JAMSVarDescription.UpdateType.RUN,
             description = "HRU state var actual MPS in mm"
             )
-            public JAMSDoubleArray actMPS = new JAMSDoubleArray();
+            public JAMSDoubleArray actMPS;
     
     @JAMSVarDescription(
     access = JAMSVarDescription.AccessType.READ,
             update = JAMSVarDescription.UpdateType.RUN,
             description = "HRU state var actual LPS in mm"
             )
-            public JAMSDoubleArray actLPS = new JAMSDoubleArray();
+            public JAMSDoubleArray actLPS;
     
     @JAMSVarDescription(
     access = JAMSVarDescription.AccessType.WRITE,
@@ -179,7 +179,7 @@ title="soillayer_writer4",
             update = JAMSVarDescription.UpdateType.RUN,
             description = "HRU soil moistrure array of all layers in %"
             )
-            public JAMSDoubleArray actMoist_h = new JAMSDoubleArray();
+            public JAMSDoubleArray actMoist_h;
     
     
     

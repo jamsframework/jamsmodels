@@ -53,14 +53,14 @@ public class Regionalisation_old extends JAMSComponent {
             update = JAMSVarDescription.UpdateType.RUN,
             description = "Regression coefficients"
             )
-            public JAMSDoubleArray regCoeff = new JAMSDoubleArray();
+            public JAMSDoubleArray regCoeff;
     
     @JAMSVarDescription(
     access = JAMSVarDescription.AccessType.READ,
             update = JAMSVarDescription.UpdateType.RUN,
             description = "Array of station elevations"
             )
-            public JAMSDoubleArray statElevation = new JAMSDoubleArray();
+            public JAMSDoubleArray statElevation;
     
     @JAMSVarDescription(
     access = JAMSVarDescription.AccessType.READ,
@@ -74,28 +74,28 @@ public class Regionalisation_old extends JAMSComponent {
             update = JAMSVarDescription.UpdateType.RUN,
             description = "Array of station's x coordinates"
             )
-            public JAMSDoubleArray statX = new JAMSDoubleArray();
+            public JAMSDoubleArray statX;
     
     @JAMSVarDescription(
     access = JAMSVarDescription.AccessType.READ,
             update = JAMSVarDescription.UpdateType.RUN,
             description = "Array of station's y coordinates"
             )
-            public JAMSDoubleArray statY = new JAMSDoubleArray();
+            public JAMSDoubleArray statY;
     
     @JAMSVarDescription(
     access = JAMSVarDescription.AccessType.READ,
             update = JAMSVarDescription.UpdateType.RUN,
             description = "Array of station's weights"
             )
-            public JAMSDoubleArray statWeights = new JAMSDoubleArray();
+            public JAMSDoubleArray statWeights;
     
     @JAMSVarDescription(
     access = JAMSVarDescription.AccessType.READ,
             update = JAMSVarDescription.UpdateType.RUN,
             description = "Array position of weights"
             )
-            public JAMSIntegerArray wArray = new JAMSIntegerArray();
+            public JAMSIntegerArray wArray;
     
     @JAMSVarDescription(
     access = JAMSVarDescription.AccessType.READ,

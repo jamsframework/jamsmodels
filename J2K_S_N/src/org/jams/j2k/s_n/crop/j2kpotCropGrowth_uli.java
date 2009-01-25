@@ -335,7 +335,7 @@ import java.util.ArrayList;
             update = JAMSVarDescription.UpdateType.RUN,
             description = "flag plant existing yes or no " // attention its a boolean!
             )
-            public JAMSBoolean plantExisting = new JAMSBoolean();
+            public JAMSBoolean plantExisting;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
@@ -381,7 +381,7 @@ import java.util.ArrayList;
             update = JAMSVarDescription.UpdateType.RUN,
             description = "Reset plant state variables?"
             )
-            public JAMSBoolean plantStateReset = new JAMSBoolean();
+            public JAMSBoolean plantStateReset;
     
     
      /*

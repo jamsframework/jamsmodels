@@ -55,7 +55,7 @@ public class StandardSoilParaReader extends JAMSComponent {
     public void init() throws JAMSEntity.NoSuchAttributeException {
         
         //read soil parameters
-        JAMSEntityCollection soilTypes = new JAMSEntityCollection();
+        JAMSEntityCollection soilTypes = JAMSDataFactory.getEntityCollection();
         
         soilTypes.setEntities(J2KFunctions.readParas(JAMSTools.CreateAbsoluteFileName(getModel().getWorkspaceDirectory().getPath(),stFileName.getValue()), getModel()));
         

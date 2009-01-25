@@ -189,7 +189,7 @@ import jams.model.*;
             update = JAMSVarDescription.UpdateType.RUN,
             description = "Array of state variables LAI "
             )
-            public JAMSDoubleArray LAIArray = new JAMSDoubleArray();
+            public JAMSDoubleArray LAIArray;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,

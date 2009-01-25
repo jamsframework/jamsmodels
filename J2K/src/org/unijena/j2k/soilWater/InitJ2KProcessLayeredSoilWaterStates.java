@@ -88,49 +88,49 @@ import jams.model.*;
             update = JAMSVarDescription.UpdateType.RUN,
             description = "soil horizon depths"
             )
-            public JAMSDoubleArray depth_h = new JAMSDoubleArray();
+            public JAMSDoubleArray depth_h;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
             update = JAMSVarDescription.UpdateType.RUN,
             description = "HRU attribute maximum MPS"
             )
-            public JAMSDoubleArray maxMPS_h = new JAMSDoubleArray();
+            public JAMSDoubleArray maxMPS_h;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
             update = JAMSVarDescription.UpdateType.RUN,
             description = "HRU attribute maximum LPS"
             )
-            public JAMSDoubleArray maxLPS_h = new JAMSDoubleArray();
+            public JAMSDoubleArray maxLPS_h;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
             update = JAMSVarDescription.UpdateType.RUN,
             description = "HRU state var actual MPS"
             )
-            public JAMSDoubleArray actMPS_h = new JAMSDoubleArray();
+            public JAMSDoubleArray actMPS_h;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
             update = JAMSVarDescription.UpdateType.RUN,
             description = "HRU state var actual LPS"
             )
-            public JAMSDoubleArray actLPS_h = new JAMSDoubleArray();
+            public JAMSDoubleArray actLPS_h;
    
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
             update = JAMSVarDescription.UpdateType.RUN,
             description = "HRU state var saturation of MPS"
             )
-            public JAMSDoubleArray satMPS_h = new JAMSDoubleArray();
+            public JAMSDoubleArray satMPS_h;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
             update = JAMSVarDescription.UpdateType.RUN,
             description = "HRU state var saturation of LPS"
             )
-            public JAMSDoubleArray satLPS_h = new JAMSDoubleArray();
+            public JAMSDoubleArray satLPS_h;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
@@ -144,7 +144,7 @@ import jams.model.*;
             update = JAMSVarDescription.UpdateType.RUN,
             description = "RD2 inflow"
             )
-            public JAMSDoubleArray inRD2_h = new JAMSDoubleArray();
+            public JAMSDoubleArray inRD2_h;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,

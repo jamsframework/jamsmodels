@@ -83,77 +83,77 @@ import jams.model.*;
             update = JAMSVarDescription.UpdateType.RUN,
             description = "Array of temperature station elevations"
             )
-            public JAMSDoubleArray tempElevation = new JAMSDoubleArray();
+            public JAMSDoubleArray tempElevation;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
             update = JAMSVarDescription.UpdateType.RUN,
             description = "Array of temperature station's x coordinate"
             )
-            public JAMSDoubleArray tempXCoord = new JAMSDoubleArray();
+            public JAMSDoubleArray tempXCoord;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
             update = JAMSVarDescription.UpdateType.RUN,
             description = "Array of temperature station's y coordinate"
             )
-            public JAMSDoubleArray tempYCoord = new JAMSDoubleArray();
+            public JAMSDoubleArray tempYCoord;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
             update = JAMSVarDescription.UpdateType.RUN,
             description = "Regression coefficients for temperature"
             )
-            public JAMSDoubleArray tempRegCoeff = new JAMSDoubleArray();
+            public JAMSDoubleArray tempRegCoeff;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
             update = JAMSVarDescription.UpdateType.RUN,
             description = "Array of precip station elevations"
             )
-            public JAMSDoubleArray rainElevation = new JAMSDoubleArray();
+            public JAMSDoubleArray rainElevation;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
             update = JAMSVarDescription.UpdateType.RUN,
             description = "Array of precip station's x coordinate"
             )
-            public JAMSDoubleArray rainXCoord = new JAMSDoubleArray();
+            public JAMSDoubleArray rainXCoord;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
             update = JAMSVarDescription.UpdateType.RUN,
             description = "Array of precip station's y coordinate"
             )
-            public JAMSDoubleArray rainYCoord = new JAMSDoubleArray();
+            public JAMSDoubleArray rainYCoord;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
             update = JAMSVarDescription.UpdateType.RUN,
             description = "Array of wind station elevations"
             )
-            public JAMSDoubleArray windElevation = new JAMSDoubleArray();
+            public JAMSDoubleArray windElevation;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
             update = JAMSVarDescription.UpdateType.RUN,
             description = "Array of wind station's x coordinate"
             )
-            public JAMSDoubleArray windXCoord = new JAMSDoubleArray();
+            public JAMSDoubleArray windXCoord;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
             update = JAMSVarDescription.UpdateType.RUN,
             description = "Array of wind station's y coordinate"
             )
-            public JAMSDoubleArray windYCoord = new JAMSDoubleArray();
+            public JAMSDoubleArray windYCoord;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
             update = JAMSVarDescription.UpdateType.RUN,
             description = "Regression coefficients for wind"
             )
-            public JAMSDoubleArray windRegCoeff = new JAMSDoubleArray();
+            public JAMSDoubleArray windRegCoeff;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,

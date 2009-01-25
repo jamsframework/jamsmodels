@@ -82,7 +82,7 @@ import jams.model.*;
             update = JAMSVarDescription.UpdateType.RUN,
             description = "extraterrestric radiation of each time step of the year [MJ/m² timeUnit]"
             )
-            public JAMSDoubleArray extRadArray = new JAMSDoubleArray();
+            public JAMSDoubleArray extRadArray;
     
     int[] monthMean = {15,45,74,105,135,166,196,227,258,288,319,349};
     
@@ -113,7 +113,7 @@ import jams.model.*;
         }
         
         double latRad = org.unijena.j2k.mathematicalCalculations.MathematicalCalculations.deg2rad(lati);
-        JAMSCalendar time = new JAMSCalendar();
+        JAMSCalendar time = JAMSDataFactory.getCalendar();
         time.set(2000, 0, 1, 0, 0); //just a leap year, that's the reason for 2000
         if(tempRes.getValue().equals("m")){
             for(int i = 0; i < 12; i++){

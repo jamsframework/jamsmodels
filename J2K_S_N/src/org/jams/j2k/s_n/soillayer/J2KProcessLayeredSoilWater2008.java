@@ -132,7 +132,7 @@ import jams.model.*;
             update = JAMSVarDescription.UpdateType.RUN,
             description = "in cm depth of soil layer"
             )
-            public JAMSDoubleArray layerdepth = new JAMSDoubleArray();
+            public JAMSDoubleArray layerdepth;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
@@ -147,28 +147,28 @@ import jams.model.*;
             update = JAMSVarDescription.UpdateType.RUN,
             description = "HRU attribute maximum MPS"
             )
-            public JAMSDoubleArray maxMPS = new JAMSDoubleArray();
+            public JAMSDoubleArray maxMPS;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
             update = JAMSVarDescription.UpdateType.RUN,
             description = "HRU attribute maximum LPS"
             )
-            public JAMSDoubleArray maxLPS = new JAMSDoubleArray();
+            public JAMSDoubleArray maxLPS;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
             update = JAMSVarDescription.UpdateType.RUN,
             description = "HRU state var actual MPS"
             )
-            public JAMSDoubleArray actMPS = new JAMSDoubleArray();
+            public JAMSDoubleArray actMPS;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
             update = JAMSVarDescription.UpdateType.RUN,
             description = "HRU state var actual LPS"
             )
-            public JAMSDoubleArray actLPS = new JAMSDoubleArray();
+            public JAMSDoubleArray actLPS;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
@@ -182,14 +182,14 @@ import jams.model.*;
             update = JAMSVarDescription.UpdateType.RUN,
             description = "HRU state var saturation of MPS"
             )
-            public JAMSDoubleArray satMPS = new JAMSDoubleArray();
+            public JAMSDoubleArray satMPS;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
             update = JAMSVarDescription.UpdateType.RUN,
             description = "HRU state var saturation of LPS"
             )
-            public JAMSDoubleArray satLPS = new JAMSDoubleArray();
+            public JAMSDoubleArray satLPS;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
@@ -287,21 +287,21 @@ import jams.model.*;
             update = JAMSVarDescription.UpdateType.RUN,
             description = "HRU statevar RD2 inflow"
             )
-            public JAMSDoubleArray inRD2 = new JAMSDoubleArray();
+            public JAMSDoubleArray inRD2;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
             update = JAMSVarDescription.UpdateType.RUN,
             description = "HRU statevar RD2 outflow"
             )
-            public JAMSDoubleArray outRD2 = new JAMSDoubleArray();
+            public JAMSDoubleArray outRD2;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
             update = JAMSVarDescription.UpdateType.RUN,
             description = "HRU statevar RD2 generation"
             )
-            public JAMSDoubleArray genRD2 = new JAMSDoubleArray();
+            public JAMSDoubleArray genRD2;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
@@ -429,28 +429,28 @@ import jams.model.*;
             update = JAMSVarDescription.UpdateType.RUN,
             description = "intfiltration poritions for the single horizonts"
             )
-            public JAMSDoubleArray infiltration_hor = new JAMSDoubleArray();
+            public JAMSDoubleArray infiltration_hor;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
             update = JAMSVarDescription.UpdateType.RUN,
             description = "percolation out of the single horizonts"
             )
-            public JAMSDoubleArray perco_hor = new JAMSDoubleArray();
+            public JAMSDoubleArray perco_hor;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
             update = JAMSVarDescription.UpdateType.RUN,
             description = "evapotranspiration out of the single horizonts"
             )
-            public JAMSDoubleArray actETP_h = new JAMSDoubleArray();
+            public JAMSDoubleArray actETP_h;
     
      @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
             update = JAMSVarDescription.UpdateType.RUN,
             description = "mps diffusion between layers value"
             )
-            public JAMSDoubleArray w_layer_diff = new JAMSDoubleArray();
+            public JAMSDoubleArray w_layer_diff;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
@@ -471,7 +471,7 @@ import jams.model.*;
             update = JAMSVarDescription.UpdateType.RUN,
             description = "in cm/d soil hydraulic conductivity"
             )
-            public JAMSDoubleArray kf_h = new JAMSDoubleArray();
+            public JAMSDoubleArray kf_h;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
@@ -505,7 +505,7 @@ import jams.model.*;
             update = JAMSVarDescription.UpdateType.RUN,
             description = "Indicates whether roots can penetrate or not the soil layer [-]"
             )
-            public JAMSDoubleArray root_h = new JAMSDoubleArray(); 
+            public JAMSDoubleArray root_h; 
     
      @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,

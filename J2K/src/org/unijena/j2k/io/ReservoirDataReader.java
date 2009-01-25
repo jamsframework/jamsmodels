@@ -63,14 +63,14 @@ public class ReservoirDataReader extends JAMSComponent {
             update = JAMSVarDescription.UpdateType.RUN,
             description = "Array of data values for current time step"
             )
-            public JAMSDoubleArray dataArray = new JAMSDoubleArray();
+            public JAMSDoubleArray dataArray;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
             update = JAMSVarDescription.UpdateType.RUN,
             description = "data field descriptors"
             )
-            public JAMSStringArray dataNames = new JAMSStringArray();
+            public JAMSStringArray dataNames;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
@@ -193,7 +193,8 @@ public class ReservoirDataReader extends JAMSComponent {
         if(timeInterval != null){
             int timeUnit = timeInterval.getTimeUnit();
             JAMSCalendar tiStart = timeInterval.getStart();
-            JAMSCalendar date = new JAMSCalendar(tiStart.get(Calendar.YEAR), tiStart.get(Calendar.MONTH), tiStart.get(Calendar.DAY_OF_MONTH), startTime.get(Calendar.HOUR_OF_DAY), startTime.get(Calendar.MINUTE), startTime.get(Calendar.SECOND));
+            JAMSCalendar date = JAMSDataFactory.getCalendar();
+            date.set(tiStart.get(Calendar.YEAR), tiStart.get(Calendar.MONTH), tiStart.get(Calendar.DAY_OF_MONTH), startTime.get(Calendar.HOUR_OF_DAY), startTime.get(Calendar.MINUTE), startTime.get(Calendar.SECOND));
             
             while (startTime.before(date) && store.hasNext()) {
                 da = store.getNext();
@@ -232,7 +233,7 @@ public class ReservoirDataReader extends JAMSComponent {
             timeArray[i] = st.nextToken();
         }
         
-        JAMSCalendar cal = new JAMSCalendar();
+        JAMSCalendar cal = JAMSDataFactory.getCalendar();
         cal.setValue(timeArray[2]+"-"+timeArray[1]+"-"+timeArray[0]+" "+timeArray[3]+":"+timeArray[4]);
         return cal;
     }

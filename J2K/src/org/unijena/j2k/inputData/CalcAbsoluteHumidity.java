@@ -67,49 +67,49 @@ title="CalcAbsoluteHumidity",
             update = JAMSVarDescription.UpdateType.RUN,
             description = "Array of temperature station elevations"
             )
-            public JAMSDoubleArray tempElevation = new JAMSDoubleArray();
+            public JAMSDoubleArray tempElevation;
     
     @JAMSVarDescription(
     access = JAMSVarDescription.AccessType.WRITE,
             update = JAMSVarDescription.UpdateType.RUN,
             description = "Array of temperature station's x coordinate"
             )
-            public JAMSDoubleArray tempXCoord = new JAMSDoubleArray();
+            public JAMSDoubleArray tempXCoord;
     
     @JAMSVarDescription(
     access = JAMSVarDescription.AccessType.WRITE,
             update = JAMSVarDescription.UpdateType.RUN,
             description = "Array of temperature station's y coordinate"
             )
-            public JAMSDoubleArray tempYCoord = new JAMSDoubleArray();
+            public JAMSDoubleArray tempYCoord;
     
     @JAMSVarDescription(
     access = JAMSVarDescription.AccessType.WRITE,
             update = JAMSVarDescription.UpdateType.RUN,
             description = "Array of rhum station elevations"
             )
-            public JAMSDoubleArray rhumElevation = new JAMSDoubleArray();
+            public JAMSDoubleArray rhumElevation;
     
     @JAMSVarDescription(
     access = JAMSVarDescription.AccessType.WRITE,
             update = JAMSVarDescription.UpdateType.RUN,
             description = "Array of rhum station's x coordinate"
             )
-            public JAMSDoubleArray rhumXCoord = new JAMSDoubleArray();
+            public JAMSDoubleArray rhumXCoord;
     
     @JAMSVarDescription(
     access = JAMSVarDescription.AccessType.WRITE,
             update = JAMSVarDescription.UpdateType.RUN,
             description = "Array of rhum station's y coordinate"
             )
-            public JAMSDoubleArray rhumYCoord = new JAMSDoubleArray();
+            public JAMSDoubleArray rhumYCoord;
     
     @JAMSVarDescription(
     access = JAMSVarDescription.AccessType.WRITE,
             update = JAMSVarDescription.UpdateType.RUN,
             description = "rsqr for ahum stations"
             )
-            public JAMSDoubleArray regCoeffAhum = new JAMSDoubleArray();
+            public JAMSDoubleArray regCoeffAhum;
     
     /*
      *  Component run stages

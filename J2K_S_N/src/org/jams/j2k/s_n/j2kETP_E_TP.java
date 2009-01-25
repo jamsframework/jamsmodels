@@ -63,7 +63,7 @@ import jams.model.*;
             update = JAMSVarDescription.UpdateType.RUN,
             description = "HRU actual Evapotranspiration in mm"
             )
-            public JAMSDoubleArray actETP_h = new JAMSDoubleArray();
+            public JAMSDoubleArray actETP_h;
     
      @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
@@ -119,14 +119,14 @@ import jams.model.*;
             update = JAMSVarDescription.UpdateType.RUN,
             description = " actual evaporation in mm"
             )
-            public JAMSDoubleArray aEP_h = new JAMSDoubleArray();
+            public JAMSDoubleArray aEP_h;
      
      @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
             update = JAMSVarDescription.UpdateType.RUN,
             description = " actual evaporation in mm"
             )
-            public JAMSDoubleArray aTP_h = new JAMSDoubleArray();
+            public JAMSDoubleArray aTP_h;
      
      /*
      *  Component run stages

@@ -86,7 +86,7 @@ title="Time series capturer",
             update = JAMSVarDescription.UpdateType.RUN,
             description = "the captured time series"
             )
-            public JAMSDoubleArray timeSeries = new JAMSDoubleArray();
+            public JAMSDoubleArray timeSeries;
     
     private final int TOTAL_PERIOD = 0;
     private final int HYDROLOGICAL_YEAR = 1;

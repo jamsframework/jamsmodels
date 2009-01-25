@@ -66,7 +66,7 @@ import jams.model.*;
             update = JAMSVarDescription.UpdateType.RUN,
             description = "HRU statevar RD2 inflow"
             )
-            public JAMSDoubleArray inRD2_h = new JAMSDoubleArray();
+            public JAMSDoubleArray inRD2_h;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
@@ -101,7 +101,7 @@ import jams.model.*;
             update = JAMSVarDescription.UpdateType.RUN,
             description = "HRU statevar RD2 outflow"
             )
-            public JAMSDoubleArray outRD2_h = new JAMSDoubleArray();
+            public JAMSDoubleArray outRD2_h;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,

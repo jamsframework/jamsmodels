@@ -11,6 +11,7 @@ package org.unijena.j2k;
 
 import java.util.Locale;
 import jams.data.JAMSCalendar;
+import jams.data.JAMSDataFactory;
 
 /**
  *
@@ -26,7 +27,7 @@ public class TimeNumbers {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        JAMSCalendar time = new JAMSCalendar();
+        JAMSCalendar time = JAMSDataFactory.getCalendar();
         System.out.println("seconds: " + time.SECOND);
         System.out.println("Minutes: " + time.MINUTE);
         System.out.println("Hours: " + time.HOUR_OF_DAY);

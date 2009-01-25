@@ -49,7 +49,7 @@ import jams.model.*;
             update = JAMSVarDescription.UpdateType.RUN,
             description = "in cm depth of soil layer"
             )
-            public JAMSDoubleArray layerdepth = new JAMSDoubleArray();
+            public JAMSDoubleArray layerdepth;
     
     
     
@@ -58,42 +58,42 @@ import jams.model.*;
             update = JAMSVarDescription.UpdateType.RUN,
             description = "in kg/dm³ soil bulk density"
             )
-            public JAMSDoubleArray soil_bulk_density = new JAMSDoubleArray();
+            public JAMSDoubleArray soil_bulk_density;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
             update = JAMSVarDescription.UpdateType.RUN,
             description = " in % organic Carbon in soil"
             )
-            public JAMSDoubleArray C_org = new JAMSDoubleArray();
+            public JAMSDoubleArray C_org;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
             update = JAMSVarDescription.UpdateType.RUN,
             description = " NO3-Pool in kgN/ha"
             )
-            public JAMSDoubleArray NaCl_Pool = new JAMSDoubleArray();
+            public JAMSDoubleArray NaCl_Pool;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
             update = JAMSVarDescription.UpdateType.RUN,
             description = " Residue in Layer in kgN/ha"
             )
-            public JAMSDoubleArray Residue_pool = new JAMSDoubleArray();
+            public JAMSDoubleArray Residue_pool;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
             update = JAMSVarDescription.UpdateType.RUN,
             description = " N-Organic fresh Pool from Residue in kgN/ha"
             )
-            public JAMSDoubleArray NaCl_residue_pool_fresh = new JAMSDoubleArray();
+            public JAMSDoubleArray NaCl_residue_pool_fresh;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
             update = JAMSVarDescription.UpdateType.RUN,
             description = " Nitrate in interflow in added to HRU layer in kgN"
             )
-            public JAMSDoubleArray InterflowNaCl_in  = new JAMSDoubleArray();
+            public JAMSDoubleArray InterflowNaCl_in ;
    
     
     @JAMSVarDescription(
@@ -122,7 +122,7 @@ import jams.model.*;
             update = JAMSVarDescription.UpdateType.RUN,
             description = "flag plant existing yes or no " // attention its a boolean!
             )
-            public JAMSBoolean plantExisting = new JAMSBoolean();
+            public JAMSBoolean plantExisting;
      
       @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,

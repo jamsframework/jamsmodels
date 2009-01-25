@@ -83,7 +83,7 @@ import jams.model.*;
             update = JAMSVarDescription.UpdateType.RUN,
             description = "in mm depth of soil layer"
             )
-            public JAMSDoubleArray layerdepth = new JAMSDoubleArray();
+            public JAMSDoubleArray layerdepth;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
@@ -104,7 +104,7 @@ import jams.model.*;
             update = JAMSVarDescription.UpdateType.RUN,
             description = "Soil bulk density in g/cm³"
             )
-            public JAMSDoubleArray bulk_density_h = new JAMSDoubleArray();
+            public JAMSDoubleArray bulk_density_h;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
@@ -118,35 +118,35 @@ import jams.model.*;
             update = JAMSVarDescription.UpdateType.RUN,
             description = "actual LPS in portion of sto_LPS soil water content"
             )
-            public JAMSDoubleArray Sat_LPS = new JAMSDoubleArray();
+            public JAMSDoubleArray Sat_LPS;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
             update = JAMSVarDescription.UpdateType.RUN,
             description = "actual MPS in portion of sto_MPS soil water content"
             )
-            public JAMSDoubleArray Sat_MPS = new JAMSDoubleArray();
+            public JAMSDoubleArray Sat_MPS;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
             update = JAMSVarDescription.UpdateType.RUN,
             description = "maximum MPS  in l soil water content"
             )
-            public JAMSDoubleArray stohru_MPS = new JAMSDoubleArray();
+            public JAMSDoubleArray stohru_MPS;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
             update = JAMSVarDescription.UpdateType.RUN,
             description = "maximum LPS  in l soil water content"
             )
-            public JAMSDoubleArray stohru_LPS = new JAMSDoubleArray();
+            public JAMSDoubleArray stohru_LPS;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
             update = JAMSVarDescription.UpdateType.RUN,
             description = "maximum FPS  in l soil water content"
             )
-             public JAMSDoubleArray stohru_FPS = new JAMSDoubleArray();
+             public JAMSDoubleArray stohru_FPS;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
@@ -174,7 +174,7 @@ import jams.model.*;
             update = JAMSVarDescription.UpdateType.RUN,
             description = "soil temperature in different layerdepths in °C"
             )
-            public JAMSDoubleArray Soil_Temp_Layer = new JAMSDoubleArray();
+            public JAMSDoubleArray Soil_Temp_Layer;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
@@ -202,7 +202,7 @@ import jams.model.*;
             update = JAMSVarDescription.UpdateType.RUN,
             description = " Residue in Layer in kgN/ha"
             )
-            public JAMSDoubleArray Residue_pool = new JAMSDoubleArray();
+            public JAMSDoubleArray Residue_pool;
 
     
       @JAMSVarDescription(

@@ -81,14 +81,14 @@ import jams.model.*;
             update = JAMSVarDescription.UpdateType.RUN,
             description = "weights for IDW part of regionalisation"
             )
-            public JAMSDoubleArray statIDWeights = new JAMSDoubleArray();
+            public JAMSDoubleArray statIDWeights;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
             update = JAMSVarDescription.UpdateType.RUN,
             description = "position array to determine best weights"
             )
-            public JAMSIntegerArray statOrder = new JAMSIntegerArray();
+            public JAMSIntegerArray statOrder;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
@@ -113,8 +113,8 @@ import jams.model.*;
     }
     
     public void run() throws JAMSEntity.NoSuchAttributeException{
-        JAMSDoubleArray idwWeights = new JAMSDoubleArray();
-        JAMSIntegerArray wA = new JAMSIntegerArray();
+        JAMSDoubleArray idwWeights = JAMSDataFactory.getDoubleArray();
+        JAMSIntegerArray wA = JAMSDataFactory.getIntegerArray();
         double[] dist = null;
         if(equalWeights == null || !equalWeights.getValue()){
             if(latLong == null || !latLong.getValue()){
