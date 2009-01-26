@@ -113,7 +113,7 @@ import jams.model.*;
         }
         
         double latRad = org.unijena.j2k.mathematicalCalculations.MathematicalCalculations.deg2rad(lati);
-        JAMSCalendar time = JAMSDataFactory.getCalendar();
+        JAMSCalendar time = JAMSDataFactory.createCalendar();
         time.set(2000, 0, 1, 0, 0); //just a leap year, that's the reason for 2000
         if(tempRes.getValue().equals("m")){
             for(int i = 0; i < 12; i++){

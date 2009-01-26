@@ -75,7 +75,7 @@ public class J2KFunctions {
 
                 JAMSEntity e;
                 try {
-                    e = (JAMSEntity) JAMSDataFactory.getInstance(JAMSEntity.class);
+                    e = (JAMSEntity) JAMSDataFactory.createInstance(JAMSEntity.class);
                     tokenizer = new StringTokenizer(s, "\t");
 
                     String token;

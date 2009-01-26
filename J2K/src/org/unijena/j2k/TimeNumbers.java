@@ -27,7 +27,7 @@ public class TimeNumbers {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        JAMSCalendar time = JAMSDataFactory.getCalendar();
+        JAMSCalendar time = JAMSDataFactory.createCalendar();
         System.out.println("seconds: " + time.SECOND);
         System.out.println("Minutes: " + time.MINUTE);
         System.out.println("Hours: " + time.HOUR_OF_DAY);

@@ -115,7 +115,7 @@ public class DataReader extends JAMSComponent {
                 }
                 int timeUnit = timeInterval.getTimeUnit();
                 JAMSCalendar tiStart = timeInterval.getStart();
-                JAMSCalendar date = JAMSDataFactory.getCalendar();
+                JAMSCalendar date = JAMSDataFactory.createCalendar();
                 date.set(tiStart.get(Calendar.YEAR), tiStart.get(Calendar.MONTH), tiStart.get(Calendar.DAY_OF_MONTH), startTime.get(Calendar.HOUR_OF_DAY), startTime.get(Calendar.MINUTE), startTime.get(Calendar.SECOND));
 
                 while (startTime.before(date) && store.hasNext()) {
@@ -169,7 +169,7 @@ public class DataReader extends JAMSComponent {
             timeArray[i] = st.nextToken();
         }
         
-        JAMSCalendar cal = JAMSDataFactory.getCalendar();
+        JAMSCalendar cal = JAMSDataFactory.createCalendar();
         cal.setValue(timeArray[2]+"-"+timeArray[1]+"-"+timeArray[0]);
         return cal;
     }
