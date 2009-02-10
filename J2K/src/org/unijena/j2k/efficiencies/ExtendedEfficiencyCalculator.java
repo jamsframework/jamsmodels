@@ -37,6 +37,7 @@ import java.util.Comparator;
  *
  * @author Peter Krause
  */
+@SuppressWarnings("unchecked")
 @JAMSComponentDescription(
 title="ExtendedEfficiencyCalculator",
         author="Peter Krause",
@@ -158,7 +159,7 @@ title="ExtendedEfficiencyCalculator",
             update = JAMSVarDescription.UpdateType.RUN,
             description = "full set of predicted values"
             )
-            public JAMSDoubleArray predictionValues = new JAMSDoubleArray();
+            public JAMSDoubleArray predictionValues;
     
     private final int FOURIER = 13;
     private final int COSINE =  14;
@@ -393,7 +394,8 @@ title="ExtendedEfficiencyCalculator",
         }
         return true;
     }
-    
+
+
     double getSpikeFlowEff(double sim[],double obs[]){
         int n = sim.length;
         double combinedData[][] = new double[n][3];
