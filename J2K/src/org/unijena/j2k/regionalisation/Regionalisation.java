@@ -20,9 +20,11 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
  *
  */
-package org.unijena.j2k.regionalisation;
 
+package org.unijena.j2k.regionalisation;
 import java.io.*;
+//import jams.JAMS;
+//import jams.JAMSTools;
 import jams.data.*;
 import jams.model.*;
 
@@ -31,69 +33,142 @@ import jams.model.*;
  * @author Peter Krause
  */
 public class Regionalisation extends JAMSComponent {
-
-    @JAMSVarDescription (access = JAMSVarDescription.AccessType.READ,
-                         description = "Array of data values for current time step")
-    public JAMSDoubleArray dataArray;
-
-    @JAMSVarDescription (access = JAMSVarDescription.AccessType.READ,
-                         description = "Regression coefficients")
-    public JAMSDoubleArray regCoeff;
-
-    @JAMSVarDescription (access = JAMSVarDescription.AccessType.READ,
-                         description = "Array of station elevations")
-    public JAMSDoubleArray statElevation;
-
-    @JAMSVarDescription (access = JAMSVarDescription.AccessType.READ,
-                         description = "Array of station's weights")
-    public JAMSDoubleArray statWeights;
-
-    @JAMSVarDescription (access = JAMSVarDescription.AccessType.READ,
-                         description = "Array position of weights")
-    public JAMSIntegerArray statOrder;
-
-    @JAMSVarDescription (access = JAMSVarDescription.AccessType.WRITE,
-                         description = "regionalised data value")
-    public JAMSDouble dataValue;
-
-    @JAMSVarDescription (access = JAMSVarDescription.AccessType.READ,
-                         description = "Attribute name elevation")
-    public JAMSDouble entityElevation;
-
-    @JAMSVarDescription (access = JAMSVarDescription.AccessType.READ,
-                         description = "Number of IDW stations")
-    public JAMSInteger nidw;
-
-    @JAMSVarDescription (access = JAMSVarDescription.AccessType.READ,
-                         description = "Apply elevation correction to measured data")
-    public JAMSBoolean elevationCorrection;
-
-    @JAMSVarDescription (access = JAMSVarDescription.AccessType.READ,
-                         description = "Minimum r² value for elevation correction application")
-    public JAMSDouble rsqThreshold;
-
-    @JAMSVarDescription (access = JAMSVarDescription.AccessType.READ,
-                         description = "Absolute possible minimum value for data set")
-    public JAMSDouble fixedMinimum;
-
-    @JAMSVarDescription (access = JAMSVarDescription.AccessType.READ,
-                         description = "Caching configuration: 0 - write cache, 1 - use cache, 2 - caching off",
-                         defaultValue = "0")
-    public JAMSInteger dataCaching;
-
-    @JAMSVarDescription (access = JAMSVarDescription.AccessType.READ,
-                         description = "Result value if no value is available",
-                         defaultValue = "-9999.0")
-    public JAMSDouble noData;
-
+    
+    @JAMSVarDescription(
+    access = JAMSVarDescription.AccessType.READ,
+            update = JAMSVarDescription.UpdateType.INIT,
+            description = "Workspace directory name"
+            )
+            public JAMSString dirName;
+    
+    @JAMSVarDescription(
+    access = JAMSVarDescription.AccessType.READ,
+            update = JAMSVarDescription.UpdateType.RUN,
+            description = "Array of data values for current time step"
+            )
+            public JAMSDoubleArray dataArray;
+    
+    @JAMSVarDescription(
+    access = JAMSVarDescription.AccessType.READ,
+            update = JAMSVarDescription.UpdateType.RUN,
+            description = "Regression coefficients"
+            )
+            public JAMSDoubleArray regCoeff;
+    
+    @JAMSVarDescription(
+    access = JAMSVarDescription.AccessType.READ,
+            update = JAMSVarDescription.UpdateType.RUN,
+            description = "Array of station elevations"
+            )
+            public JAMSDoubleArray statElevation;
+    
+    @JAMSVarDescription(
+    access = JAMSVarDescription.AccessType.READ,
+            update = JAMSVarDescription.UpdateType.RUN,
+            description = "data set descriptor"
+            )
+            public JAMSString dataSetName;
+    
+    @JAMSVarDescription(
+    access = JAMSVarDescription.AccessType.READ,
+            update = JAMSVarDescription.UpdateType.RUN,
+            description = "Array of station's x coordinates"
+            )
+            public JAMSDoubleArray statX;
+    
+    @JAMSVarDescription(
+    access = JAMSVarDescription.AccessType.READ,
+            update = JAMSVarDescription.UpdateType.RUN,
+            description = "Array of station's y coordinates"
+            )
+            public JAMSDoubleArray statY;
+    
+    @JAMSVarDescription(
+    access = JAMSVarDescription.AccessType.READ,
+            update = JAMSVarDescription.UpdateType.RUN,
+            description = "Array of station's weights"
+            )
+            public JAMSDoubleArray statWeights;
+    
+    @JAMSVarDescription(
+    access = JAMSVarDescription.AccessType.READ,
+            update = JAMSVarDescription.UpdateType.RUN,
+            description = "Array position of weights"
+            )
+            public JAMSIntegerArray wArray;
+    
+    @JAMSVarDescription(
+    access = JAMSVarDescription.AccessType.READ,
+            update = JAMSVarDescription.UpdateType.INIT,
+            description = "Attribute name x coordinate (hru)"
+            )
+            public JAMSDouble unitX;
+    
+    @JAMSVarDescription(
+    access = JAMSVarDescription.AccessType.READ,
+            update = JAMSVarDescription.UpdateType.INIT,
+            description = "Attribute name y coordinate (hru)"
+            )
+            public JAMSDouble unitY;
+    
+    @JAMSVarDescription(
+    access = JAMSVarDescription.AccessType.WRITE,
+            update = JAMSVarDescription.UpdateType.RUN,
+            description = "regionalised data value"
+            )
+            public JAMSDouble dataValue;
+    
+    @JAMSVarDescription(
+    access = JAMSVarDescription.AccessType.READ,
+            update = JAMSVarDescription.UpdateType.RUN,
+            description = "Attribute name elevation"
+            )
+            public JAMSDouble entityElevation;
+    
+    @JAMSVarDescription(
+    access = JAMSVarDescription.AccessType.READ,
+            update = JAMSVarDescription.UpdateType.INIT,
+            description = "Number of IDW stations"
+            )
+            public JAMSInteger nidw;
+    
+    @JAMSVarDescription(
+    access = JAMSVarDescription.AccessType.READ,
+            update = JAMSVarDescription.UpdateType.INIT,
+            description = "Apply elevation correction to measured data"
+            )
+            public JAMSBoolean elevationCorrection;
+    
+    @JAMSVarDescription(
+    access = JAMSVarDescription.AccessType.READ,
+            update = JAMSVarDescription.UpdateType.INIT,
+            description = "Minimum rÂ² value for elevation correction application"
+            )
+            public JAMSDouble rsqThreshold;
+    
+    @JAMSVarDescription(
+    access = JAMSVarDescription.AccessType.READ,
+            update = JAMSVarDescription.UpdateType.INIT,
+            description = "Absolute possible minimum value for data set"
+            )
+            public JAMSDouble fixedMinimum;
+    
+    @JAMSVarDescription(
+    access = JAMSVarDescription.AccessType.READ,
+            update = JAMSVarDescription.UpdateType.INIT,
+            description = "Caching configuration: 0 - write cache, 1 - use cache, 2 - caching off",
+            defaultValue = "0")
+            public JAMSInteger dataCaching;
+    
     private File cacheFile;
-
+    private boolean useCache = false;
+    private boolean writeCache = false;
     transient private ObjectOutputStream writer;
-
     transient private ObjectInputStream reader;
-
-    public void init() throws IOException {
-
+    double NODATA = -9999.0;
+    
+    public void init() throws JAMSEntity.NoSuchAttributeException, IOException {
+        
         //first, check if cached data are available
         cacheFile = new File(getModel().getWorkspace().getTempDirectory(), this.getInstanceName() + ".cache");
 
@@ -102,14 +177,18 @@ public class Regionalisation extends JAMSComponent {
         }
 
         if (dataCaching.getValue() == 1) {
+
             reader = new ObjectInputStream(new BufferedInputStream(new FileInputStream(cacheFile)));
+
         } else if (dataCaching.getValue() == 0) {
             writer = new ObjectOutputStream(new BufferedOutputStream(new FileOutputStream(cacheFile)));
         }
     }
-
-    public void run() throws IOException {
+    
+    public void run() throws JAMSEntity.NoSuchAttributeException, IOException {
         //data is read from cache file
+        
+        System.out.println("hiiiiiiiieerr");
         if (dataCaching.getValue() == 1) {
             dataValue.setValue(reader.readDouble());
         } else {
@@ -125,6 +204,8 @@ public class Regionalisation extends JAMSComponent {
 
             double value = 0;
             double deltaElev = 0;
+            
+                      
             int nIDW = this.nidw.getValue();
 
             double[] data = new double[nIDW];
@@ -140,7 +221,7 @@ public class Regionalisation extends JAMSComponent {
 //@TODO: Recheck this for correct calculation, the Doug Boyle Problem!!
 
             //Retreiving data, elevations and weights
-            int[] wA = this.statOrder.getValue();
+            int[] wA = this.wArray.getValue();
             int counter = 0;
             int element = counter;
             boolean cont = true;
@@ -149,11 +230,11 @@ public class Regionalisation extends JAMSComponent {
             while (counter < nIDW && cont) {
                 int t = wA[element];
                 //check if data is valid or no data
-                if (sourceData[t] == noData.getValue()) {
+                if (sourceData[t] == NODATA) {
 
                     element++;
                     if (element >= wA.length) {
-                        getModel().getRuntime().println("BREAK1: too less data NIDW had been reduced!");
+                        System.out.println("BREAK1: too less data NIDW had been reduced!");
                         cont = false;
                     //value = NODATA;
                     } else {
@@ -167,11 +248,11 @@ public class Regionalisation extends JAMSComponent {
 
                     counter++;
                     element++;
-                if(element >= wA.length){
-                    //if(element <= nIDW)
-                        //System.out.println("NIDW has been reduced, because of too less valid data!");
-                    cont = false;
-                }
+                /*if(element >= wA.length){
+                if(element <= nIDW)
+                System.out.println("NIDW has been reduced, because of too less valid data!");
+                cont = false;
+                }*/
 
                 }
 
@@ -205,24 +286,23 @@ public class Regionalisation extends JAMSComponent {
                 }
             } else {
                 //System.out.println("All data are no-data values!");
-                getModel().getRuntime().println("Invalid dataset found while regionalizing data in component " + this.getInstanceName());
-                value = noData.getValue();
+                value = NODATA;
             }
 
             dataValue.setValue(value);
-
+            
             //Write cache file
             if (dataCaching.getValue() == 0) {
                 writer.writeDouble(value);
             }
         }
     }
-
+    
     public void cleanup() throws IOException {
-        if (dataCaching.getValue() == 0) {
+        if (!useCache && writeCache) {
             writer.flush();
             writer.close();
-        } else if (dataCaching.getValue() == 1) {
+        } else if(useCache && !writeCache){
             reader.close();
         }
     }
