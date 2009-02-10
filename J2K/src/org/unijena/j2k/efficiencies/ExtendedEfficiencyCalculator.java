@@ -290,7 +290,8 @@ title="ExtendedEfficiencyCalculator",
         
         Vector<Double> valVector = new Vector<Double>();
         Vector<Double> preVector = new Vector<Double>();
-        
+
+        this.predictionValues = JAMSDataFactory.createDoubleArray();
         this.predictionValues.setValue(preData);
         
         for(int i = this.interValStart; i < this.interValEnd; i++){
