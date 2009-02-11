@@ -71,7 +71,8 @@ import jams.model.*;
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
             update = JAMSVarDescription.UpdateType.RUN,
-            description = "HRU statevar groundwater excess"
+            description = "HRU statevar groundwater excess",
+            defaultValue= "0"
             )
             public JAMSDouble inGWExcess;
     
