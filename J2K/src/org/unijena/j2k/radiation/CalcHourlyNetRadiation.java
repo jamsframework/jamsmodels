@@ -52,13 +52,6 @@ import jams.model.*;
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
             update = JAMSVarDescription.UpdateType.RUN,
-            description = "fraction of sunshine in one hour"
-            )
-            public JAMSDouble sunFrac;
-    
-    @JAMSVarDescription(
-            access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "state variable temperature"
             )
             public JAMSDouble temp;
@@ -169,7 +162,6 @@ import jams.model.*;
             double temperature = temp.getValue();
             double rh = rhum.getValue();
             double sRad = solRad.getValue();
-            //double sunh = sunFrac.getValue();
             
             double sat_vapour_pressure = org.unijena.j2k.physicalCalculations.ClimatologicalVariables.calc_saturationVapourPressure(temperature);
             double act_vapour_pressure = org.unijena.j2k.physicalCalculations.ClimatologicalVariables.calc_vapourPressure(rh, sat_vapour_pressure);
