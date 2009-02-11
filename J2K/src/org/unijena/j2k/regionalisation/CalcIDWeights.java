@@ -113,6 +113,7 @@ import jams.model.*;
     }
     
     public void run() throws JAMSEntity.NoSuchAttributeException{
+        System.out.println("CalcIDWeights");
         JAMSDoubleArray idwWeights = JAMSDataFactory.createDoubleArray();
         JAMSIntegerArray wA = JAMSDataFactory.createIntegerArray();
         double[] dist = null;
