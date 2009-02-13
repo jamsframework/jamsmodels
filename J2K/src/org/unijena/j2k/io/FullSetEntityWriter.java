@@ -166,7 +166,7 @@ public class FullSetEntityWriter extends JAMSComponent {
                 //System.out.println("Primitive");
                 double da = ((JAMSDouble)entitySet.getCurrent().getObject(this.attributeName.getValue())).getValue();
                 double val = da / weightVal;
-                System.out.println("Val:" + val + " da: " + da);
+                //System.out.println("Val:" + val + " da: " + da);
                 writer.addData(""+val);
             }
             if(setCounter < (nEnts - 1)){
