@@ -53,6 +53,13 @@ import jams.model.*;
             description = "state variable mean temperature"
             )
             public JAMSDouble tmean;
+
+      @JAMSVarDescription(
+            access = JAMSVarDescription.AccessType.READ,
+            update = JAMSVarDescription.UpdateType.RUN,
+            description = "state variable maximum temperature"
+            )
+            public JAMSDouble tmax;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
@@ -101,14 +108,31 @@ import jams.model.*;
     public void run() throws JAMSEntity.NoSuchAttributeException, IOException {
         
             double tmeanVal = tmean.getValue();
+            double tmaxVal = tmax.getValue();
             double rhumVal = rhum.getValue();
             double areaVal = area.getValue();
             double h_factor = haudeFactor.getValue();
             double est = org.unijena.j2k.physicalCalculations.ClimatologicalVariables.calc_saturationVapourPressure(tmeanVal);
             //kPa -> hPa
             est = 10 * est;
-                        
-            double pETP = est * (1 - (rhumVal/100.)) * h_factor; 
+
+            //compute maximum humidity
+            double maxHum = est * 216.7 /(tmeanVal + 273.15);
+
+            //compute absolute humidity (with tmean)
+            double ahumVal = maxHum * (rhumVal / 100.);
+
+            //compute rhum from tmax and ahum
+            est = org.unijena.j2k.physicalCalculations.ClimatologicalVariables.calc_saturationVapourPressure(tmaxVal);
+            //kPa -> hPa
+            est = 10 * est;
+
+            maxHum = est * 216.7 /(tmaxVal + 273.15);
+
+            rhumVal = (ahumVal/maxHum)*100;
+
+            double pETP = est * (1 - (rhumVal/100.)) * h_factor;
+
             
             double aETP = 0;
             
