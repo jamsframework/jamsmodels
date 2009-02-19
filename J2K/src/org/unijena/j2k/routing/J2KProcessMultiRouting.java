@@ -182,8 +182,7 @@ title="J2KProcessRouting",
                     RD1in = RD1in + RD1out * polyWeight;
                     RD2in = RD2in + RD2out * polyWeight;
                     RG1in = RG1in + RG1out * polyWeight;
-                    RG2in = RG2in + RG2out * polyWeight;
-                    
+                    RG2in = RG2in + RG2out * polyWeight;                    
                     RD2in += inGWExcess.getValue();
                     
                     toPoly.setDouble("inRD1", RD1in);
