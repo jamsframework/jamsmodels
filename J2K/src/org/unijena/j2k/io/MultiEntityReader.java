@@ -21,7 +21,6 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
  *
  */
-
 package org.unijena.j2k.io;
 
 import java.io.BufferedReader;
@@ -33,6 +32,7 @@ import jams.model.*;
 import java.util.*;
 import jams.JAMS;
 import java.lang.Math.*;
+import jams.JAMSTools;
 
 /**
  *
@@ -40,85 +40,58 @@ import java.lang.Math.*;
  * 09.10.2008
  */
 public class MultiEntityReader extends JAMSComponent {
-    
-    @JAMSVarDescription(
-    access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.INIT,
-            description = "Workspace directory name"
-            )
-            public JAMSString dirName;
-    
-    @JAMSVarDescription(
-    access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.INIT,
-            description = "HRU parameter file name"
-            )
-            public JAMSString hruFileName;
-    
-    @JAMSVarDescription(
-    access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.INIT,
-            description = "Reach parameter file name"
-            )
-            public JAMSString reachFileName;
-    
-    @JAMSVarDescription(
-    access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.INIT,
-            description = "Parameter file name for topological linkage with receiver entities"
-            )
-            public JAMSString to_hru_FileName;
-    
-    @JAMSVarDescription(
-    access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.INIT,
-            description = "Parameter file name for weighting of receiver entity"
-            )
-            public JAMSString bfl_FileName;
-    
-    @JAMSVarDescription(
-    access = JAMSVarDescription.AccessType.WRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
-            description = "Collection of hru objects"
-            )
-            public JAMSEntityCollection hrus;
-    
-    @JAMSVarDescription(
-    access = JAMSVarDescription.AccessType.WRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
-            description = "Collection of reach objects"
-            )
-            public JAMSEntityCollection reaches;
-    
-    @JAMSVarDescription(
-    access = JAMSVarDescription.AccessType.WRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
-            description = "Collection of hru objects with their topology"
-            )
-            public JAMSEntityCollection topology;
-    
+
+    @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
+    update = JAMSVarDescription.UpdateType.INIT,
+    description = "HRU parameter file name")
+    public JAMSString hruFileName;
+    @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
+    update = JAMSVarDescription.UpdateType.INIT,
+    description = "Reach parameter file name")
+    public JAMSString reachFileName;
+    @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
+    update = JAMSVarDescription.UpdateType.INIT,
+    description = "Parameter file name for topological linkage with receiver entities")
+    public JAMSString to_hru_FileName;
+    @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
+    update = JAMSVarDescription.UpdateType.INIT,
+    description = "Parameter file name for weighting of receiver entity")
+    public JAMSString bfl_FileName;
+    @JAMSVarDescription(access = JAMSVarDescription.AccessType.WRITE,
+    update = JAMSVarDescription.UpdateType.RUN,
+    description = "Collection of hru objects")
+    public JAMSEntityCollection hrus;
+    @JAMSVarDescription(access = JAMSVarDescription.AccessType.WRITE,
+    update = JAMSVarDescription.UpdateType.RUN,
+    description = "Collection of reach objects")
+    public JAMSEntityCollection reaches;
+    @JAMSVarDescription(access = JAMSVarDescription.AccessType.WRITE,
+    update = JAMSVarDescription.UpdateType.RUN,
+    description = "Collection of hru objects with their topology")
+    public JAMSEntityCollection topology;
+
     public void init() throws JAMSEntity.NoSuchAttributeException {
-        
+
         //read hru parameter
-        hrus.setEntities(J2KFunctions.readParas(dirName.getValue() + "/" + hruFileName.getValue(), getModel()));
-        
+        hrus.setEntities(J2KFunctions.readParas(JAMSTools.CreateAbsoluteFileName(getModel().getWorkspaceDirectory().getPath(), hruFileName.getValue()), getModel()));
+
         //read reach parameter
-        reaches.setEntities(J2KFunctions.readParas(dirName.getValue() + "/" + reachFileName.getValue(), getModel()));
-        
+        reaches.setEntities(J2KFunctions.readParas(JAMSTools.CreateAbsoluteFileName(getModel().getWorkspaceDirectory().getPath(), reachFileName.getValue()), getModel()));
+
         //create object associations from id attributes for hrus and reaches
         createTopology();
-        
+
         //create total order on hrus and reaches that allows processing them subsequently
         getModel().getRuntime().println("Create ordered hru-list", JAMS.VERBOSE);
         createOrderedList(hrus, "to_poly");
         getModel().getRuntime().println("Create ordered reach-list", JAMS.VERBOSE);
         createOrderedList(reaches, "to_reach");
         getModel().getRuntime().println("Entities read successfull!", JAMS.VERBOSE);
-        
+
     }
-    
+
     private void createTopology() throws JAMSEntity.NoSuchAttributeException {
-        
+
         BufferedReader reader1;
         BufferedReader reader2;
         StringTokenizer tokenizer_to_hru;
@@ -127,144 +100,149 @@ public class MultiEntityReader extends JAMSComponent {
         HashMap<Double, JAMSEntity> reachMap = new HashMap<Double, JAMSEntity>();
         Iterator<JAMSEntity> hruIterator;
         Iterator<JAMSEntity> reachIterator;
-        
+
         JAMSEntity e, f, r;
-        
+
         Object[] attrs;
-        
+
         ArrayList<JAMSEntity> receiverPolys;
         ArrayList<JAMSEntity> receiverReaches;
         ArrayList<Double> receiverPolysWeights;
         ArrayList<Double> receiverReachesWeights;
         ArrayList<Double> receiverWeights;
         ArrayList<Double> receiverArea;
-        
+
         //put all entities into a HashMap with their ID as key
         hruIterator = hrus.getEntities().iterator();
         while (hruIterator.hasNext()) {
             e = hruIterator.next();
-            hruMap.put(e.getDouble("ID"),  e);
+            hruMap.put(e.getDouble("ID"), e);
         }
+
         reachIterator = reaches.getEntities().iterator();
         while (reachIterator.hasNext()) {
             e = reachIterator.next();
-            reachMap.put(e.getDouble("ID"),  e);
+            reachMap.put(e.getDouble("ID"), e);
         }
-        
+
+        //create empty entities, i.e. those that are linked to in case there is no linkage ;-)
+        JAMSEntity nullEntity = (JAMSEntity) JAMSDataFactory.createInstance(JAMSEntity.class, getModel().getRuntime());
+        nullEntity.setValue((HashMap<String, Object>) null);
+        reachMap.put(new Double(0), nullEntity);
+
         try {
-            reader1 = new BufferedReader(new FileReader(dirName.getValue() + "/" + to_hru_FileName.getValue()));
-            reader2 = new BufferedReader(new FileReader(dirName.getValue() + "/" + bfl_FileName.getValue()));
-            
+
+            reader1 = new BufferedReader(new FileReader(getModel().getWorkspaceDirectory().getPath() + "/" + to_hru_FileName.getValue()));
+            reader2 = new BufferedReader(new FileReader(getModel().getWorkspaceDirectory().getPath() + "/" + bfl_FileName.getValue()));
+
             String s = "#";
             while (s.startsWith("#")) {
                 s = reader1.readLine();
             }
-            
+
             String t = "#";
             while (t.startsWith("#")) {
                 t = reader2.readLine();
             }
-            
-            while ((s != null) && !s.startsWith("#"))  {
-                
+
+            while ((s != null) && !s.startsWith("#")) {
+
                 tokenizer_to_hru = new StringTokenizer(s, "\t");
                 double eID = Double.parseDouble(tokenizer_to_hru.nextToken());
                 double eBFl = Double.parseDouble(tokenizer_to_hru.nextToken());
                 String recIDs = tokenizer_to_hru.nextToken();
                 e = hruMap.get(eID);
-                
+
                 e.setDouble("BFl", eBFl);
-                
+
                 tokenizer_weights = new StringTokenizer(t, "\t");
                 double eID2 = Double.parseDouble(tokenizer_weights.nextToken());
                 double eBFl2 = Double.parseDouble(tokenizer_weights.nextToken());
                 String recWeights = tokenizer_weights.nextToken();
-                
+
                 //Checks if e1 and e2 are identical
-                //Die Tabellen topologie_to_hru und topologie_bfl m?ssen identisch sortiert sein
-                if (eID != eID2){
+                //Die Tabellen topologie_to_hru und topologie_bfl muessen identisch sortiert sein
+                if (eID != eID2) {
                     getModel().getRuntime().sendHalt("One of tables topologie_to_hru or topologie_bfl is missorted");
                 }
-                
+
                 receiverPolys = new ArrayList<JAMSEntity>();
                 receiverReaches = new ArrayList<JAMSEntity>();
                 receiverPolysWeights = new ArrayList<Double>();
                 receiverReachesWeights = new ArrayList<Double>();
                 receiverArea = new ArrayList<Double>();
-                
+
                 //Tokenizer for splitting on ","
                 StringTokenizer sTok = new StringTokenizer(recIDs, ","); //Tokenizer for receiver entities
                 StringTokenizer tTok = new StringTokenizer(recWeights, ","); //Tokenizer for receiver entities weights
-                
+
                 boolean tschuessnull = false;
                 double sumWeight = 1;
-                
-                while(sTok.hasMoreTokens() && tschuessnull == false){
+
+                while (sTok.hasMoreTokens() && tschuessnull == false) {
                     String stringID = sTok.nextToken();
                     double doubleID = Double.parseDouble(stringID);
                     String stringWeight = tTok.nextToken();
                     double doubleWeight = Double.parseDouble(stringWeight);
                     //double doubleWeight = Math.round(Double.parseDouble(stringWeight)*10000)/10000;
-                    
-                    sumWeight = Math.round((sumWeight - doubleWeight)*10000)/10000;
-                    
-                    if ((doubleID == 0 && doubleWeight != 0) || (doubleID != 0 && doubleWeight == 0)){
+
+                    sumWeight = Math.round((sumWeight - doubleWeight) * 10000) / 10000;
+
+                    if ((doubleID == 0 && doubleWeight != 0) || (doubleID != 0 && doubleWeight == 0)) {
                         getModel().getRuntime().sendHalt("No. of receivers and their weights do not match!");
                     }
-                    
+
                     //for receiver HRUs
-                    if (doubleID > 0){
+                    if (doubleID > 0) {
                         f = hruMap.get(doubleID);
                         receiverPolys.add(f);
                         receiverPolysWeights.add(doubleWeight);
                     }
-                    
+
                     //for receiver Reaches
-                    if (doubleID < 0){
+                    if (doubleID < 0) {
                         double reachID = doubleID * (-1);
                         r = reachMap.get(reachID);
                         receiverReaches.add(r);
                         receiverReachesWeights.add(doubleWeight);
                     }
-                    
-                    if (doubleID == 0){
+
+                    if (doubleID == 0) {
                         tschuessnull = true;
                     }
                 }
-                
+
                 sumWeight = Math.abs(sumWeight);
-                if (sumWeight >= 0.001){
+                if (sumWeight >= 0.001) {
                     System.out.println("Error in processing entity with ID " + eID);
                     getModel().getRuntime().sendHalt("Sum of weights is not equal 1! Process entity:" + eID);
                 }
-                
+
                 //converting the ArrayLists into Arrays
                 JAMSEntity[] to_poly_Array = receiverPolys.toArray(new JAMSEntity[receiverPolys.size()]);
                 JAMSEntity[] to_reach_Array = receiverReaches.toArray(new JAMSEntity[receiverReaches.size()]);
                 Double[] to_poly_weights_Array = receiverPolysWeights.toArray(new Double[receiverPolysWeights.size()]);
                 Double[] to_reach_weights_Array = receiverReachesWeights.toArray(new Double[receiverReachesWeights.size()]);
                 Double[] to_poly_bfl_Array = receiverArea.toArray(new Double[receiverPolysWeights.size()]);
-                
+
                 //creating new Objects for each entity
                 e.setObject("to_poly", to_poly_Array);
                 e.setObject("to_reach", to_reach_Array);
                 e.setObject("to_poly_weights", to_poly_weights_Array);
                 e.setObject("to_reach_weights", to_reach_weights_Array);
                 e.setObject("bfl_zirkel_betrag", to_poly_bfl_Array);
-                
+
                 sumWeight = 1;
-                
+
                 //next line
                 s = reader1.readLine();
                 t = reader2.readLine();
             }
-            
-        }
-        
-        catch (IOException ioe) {
+
+        } catch (IOException ioe) {
             getModel().getRuntime().handle(ioe);
         }
-        
+
         //associate the reach entities with their downstream entity
         reachIterator = reaches.getEntities().iterator();
         while (reachIterator.hasNext()) {
@@ -272,9 +250,9 @@ public class MultiEntityReader extends JAMSComponent {
             e.setObject("to_reach", reachMap.get(e.getDouble("to-reach")));
         }
     }
-    
+
     protected void createOrderedList(JAMSEntityCollection col, String asso) throws JAMSEntity.NoSuchAttributeException {
-        
+
         Iterator<JAMSEntity> entityIterator, entityIterator2, entityIterator3;
         JAMSEntity e, e_ziel, e_ziel_temp, e_temp, f;
         ArrayList<JAMSEntity> newList = new ArrayList<JAMSEntity>();
@@ -290,68 +268,69 @@ public class MultiEntityReader extends JAMSComponent {
         double bfl_zirkel = 0;
         double bfl_zirkel_temp = 0;
         double bfl_zirkel_min = 0;
-        
+        double umgelenkt_gesamt = 0;
+
         //Identifikation von Zirkeln
-        if ((asso.toString()).equals("to_poly")){
-            
+        if ((asso.toString()).equals("to_poly")) {
+
             entityIterator = col.getEntities().iterator();
             while (entityIterator.hasNext()) {
-                
+
                 mapChanged = true;
-                
+
                 entityIterator3 = col.getEntities().iterator();
                 while (entityIterator3.hasNext()) {
-                    
+
                     circleMap.put(entityIterator3.next(), new Integer(0));
                 }
-                
+
                 e = entityIterator.next();
                 circleMap.put(e, new Integer(1));
                 System.out.println("Analysing HRU " + e.getDouble("ID") + " for circle flows");
-                
+
                 while (mapChanged) {
-                    
+
                     mapChanged = false;
-                    
+
                     entityIterator2 = col.getEntities().iterator();
                     while (entityIterator2.hasNext()) {
-                        
+
                         bfl_zirkel = 0;
                         e_ziel = entityIterator2.next();
-                        
-                        if (circleMap.get(e_ziel) == 1){
-                            
+
+                        if (circleMap.get(e_ziel) == 1) {
+
                             mapChanged = true;
                             circleMap.put(e_ziel, new Integer(2));
-                            
+
                             JAMSEntity[] e_ziel_to_poly = (JAMSEntity[]) e_ziel.getObject("to_poly");
-                            
+
                             if (e_ziel_to_poly.length > 0) {
-                                
-                                for (int i = 0; i < e_ziel_to_poly.length; i++){
-                                    
+
+                                for (int i = 0; i < e_ziel_to_poly.length; i++) {
+
                                     f = e_ziel_to_poly[i];
-                                    
-                                    if (f != null){
-                                        
-                                        if (e.getDouble("ID") == f.getDouble("ID")){
-                                            
+
+                                    if (f != null) {
+
+                                        if (e.getDouble("ID") == f.getDouble("ID")) {
+
                                             zirkel = true;
-                                            
-                                            Double[] e_ziel_to_poly_weights = (Double[])e_ziel.getObject("to_poly_weights");
+
+                                            Double[] e_ziel_to_poly_weights = (Double[]) e_ziel.getObject("to_poly_weights");
                                             bfl_zirkel = e_ziel.getDouble("BFl") * e_ziel_to_poly_weights[i];
                                             bfl_zirkel_temp += bfl_zirkel;
                                             bfl_zirkel_min = bfl_zirkel_temp;
-                                            
-                                            //Es wird im Attribut to_poly_bfl vermerkt, wie gro? die beitragende Fl?che ist, die den Zirkel ausl?st
-                                            Double[] e_ziel_to_poly_bfl = (Double[])e_ziel.getObject("bfl_zirkel_betrag");
+
+                                            //Es wird im Attribut to_zirkel_betrag vermerkt, wie gross die beitragende Flaeche ist, die den Zirkel ausloest
+                                            Double[] e_ziel_to_poly_bfl = (Double[]) e_ziel.getObject("bfl_zirkel_betrag");
                                             e_ziel_to_poly_bfl[i] = bfl_zirkel;
                                             e_ziel.setObject("bfl_zirkel_betrag", e_ziel_to_poly_bfl);
-                                            
-                                        } else{
-                                            
-                                            if (circleMap.get(f) == 0){
-                                                
+
+                                        } else {
+
+                                            if (circleMap.get(f) == 0) {
+
                                                 circleMap.put(f, new Integer(1));
                                             }
                                         }
@@ -362,38 +341,39 @@ public class MultiEntityReader extends JAMSComponent {
                     }
                 }
             }
-            
-            if (zirkel){
-                
-                while (mapChanged2){
-                    
+
+            if (zirkel) {
+
+                while (mapChanged2) {
+
                     mapChanged2 = false;
-                    
+
                     e = null;
                     e_ziel_temp = null;
-                    
-                    //Finden der kleinsten zirkell?senden beitragenden Fl?che
+
+                    //Finden der kleinsten zirkelloesenden beitragenden Flaeche
                     entityIterator = col.getEntities().iterator();
                     while (entityIterator.hasNext()) {
-                        
+
                         e_temp = entityIterator.next();
-                        
-                        Double[] e_temp_to_poly_bfl = (Double[])e_temp.getObject("bfl_zirkel_betrag");
-                        
-                        if (e_temp_to_poly_bfl.length > 0){
-                            
+
+                        Double[] e_temp_to_poly_bfl = (Double[]) e_temp.getObject("bfl_zirkel_betrag");
+
+                        if (e_temp_to_poly_bfl.length > 0) {
+
                             for (int i = 0; i < e_temp_to_poly_bfl.length; i++) {
-                                
-                                if (e_temp_to_poly_bfl[i] != null){
-                                    
+
+                                if (e_temp_to_poly_bfl[i] != null) {
+
                                     bfl_zirkel = e_temp_to_poly_bfl[i];
-                                    
-                                    if (bfl_zirkel > 0){
-                                        
-                                        if (bfl_zirkel <= bfl_zirkel_min){
-                                            
+
+                                    if (bfl_zirkel > 0) {
+
+                                        //Wird die n?chste if-Anweisung ausgeklammert, erfolgt keine Suche nach der kleinsten zirkell?senden beitragenden Fl?che, sondern es erfolgt eine willk?rliche Auswahl
+                                        if (bfl_zirkel <= bfl_zirkel_min) {
+
                                             bfl_zirkel_min = bfl_zirkel;
-                                            
+
                                             JAMSEntity[] e_temp_to_poly = (JAMSEntity[]) e_temp.getObject("to_poly");
                                             e = e_temp_to_poly[i];
                                             e_ziel_temp = e_temp;
@@ -405,117 +385,118 @@ public class MultiEntityReader extends JAMSComponent {
                             }
                         }
                     }
-                    
-                    if (e != null){
-                        
+
+                    if (e != null) {
+
                         entityIterator3 = col.getEntities().iterator();
                         while (entityIterator3.hasNext()) {
-                            
+
                             circleMap.put(entityIterator3.next(), new Integer(0));
                         }
-                        
+
                         mapChanged = true;
                         gefunden = false;
-                        
+
                         circleMap.put(e, new Integer(1));
-                        
+
                         bfl_zirkel_min = bfl_zirkel_temp;
-                        
-                        Double[] e_ziel_temp_to_poly_bfl = (Double[])e_ziel_temp.getObject("bfl_zirkel_betrag");
+
+                        Double[] e_ziel_temp_to_poly_bfl = (Double[]) e_ziel_temp.getObject("bfl_zirkel_betrag");
                         e_ziel_temp_to_poly_bfl[arrayfeld_min] = null;
                         e_ziel_temp.setObject("bfl_zirkel_betrag", e_ziel_temp_to_poly_bfl);
-                        
-                        //Zirkelaufl?sung
+
+                        //Zirkelaufloesung
                         while (mapChanged && gefunden == false) {
-                            
+
                             mapChanged = false;
-                            
+
                             entityIterator2 = col.getEntities().iterator();
                             while (entityIterator2.hasNext()) {
-                                
+
                                 e_ziel = entityIterator2.next();
-                                
-                                if (circleMap.get(e_ziel) == 1){
-                                    
+
+                                if (circleMap.get(e_ziel) == 1) {
+
                                     circleMap.put(e_ziel, new Integer(2));
-                                    
+
                                     mapChanged = true;
-                                    
+
                                     JAMSEntity[] e_ziel_to_reach = (JAMSEntity[]) e_ziel.getObject("to_reach");
                                     JAMSEntity[] e_ziel_to_poly = (JAMSEntity[]) e_ziel.getObject("to_poly");
-                                    
+
                                     int arraylaenge_poly = 0;
-                                    
+
                                     for (int i = 0; i < e_ziel_to_poly.length; i++) {
-                                        
-                                        if (e_ziel_to_poly[i] != null){
-                                            
+
+                                        if (e_ziel_to_poly[i] != null) {
+
                                             arraylaenge_poly += 1;
                                         }
                                     }
-                                    
-                                    if (e_ziel.getDouble("ID") == e_ziel_temp.getDouble("ID")){
-                                        
+
+                                    if (e_ziel.getDouble("ID") == e_ziel_temp.getDouble("ID")) {
+
                                         gefunden = true;
-                                        
-                                        if (arraylaenge_poly + e_ziel_to_reach.length > 1){                                            
-                                            
-                                            Double[] e_ziel_to_poly_weights = (Double[])e_ziel.getObject("to_poly_weights");
-                                            Double[] e_ziel_to_reach_weights = (Double[])e_ziel.getObject("to_reach_weights");                                            
-                                            
-                                            //?bergabe des Wassers der zirkelausl?senden Fl?che an ggf. verkn?pfte Flie?gew?sserabschnitte
+
+                                        if (arraylaenge_poly + e_ziel_to_reach.length > 1) {
+
+                                            Double[] e_ziel_to_poly_weights = (Double[]) e_ziel.getObject("to_poly_weights");
+                                            Double[] e_ziel_to_reach_weights = (Double[]) e_ziel.getObject("to_reach_weights");
+
+                                            //Uebergabe des Wassers der zirkelausloesenden Flaeche an ggf. verknuepfte Fliessgewaesserabschnitte
                                             double e_ziel_to_poly_id = e_ziel_to_poly[arrayfeld_min].getDouble("ID");
-                                            
-                                            if (e_ziel_to_reach.length > 0){                                              
-                                                
+
+                                            if (e_ziel_to_reach.length > 0) {
+
                                                 e_ziel_to_reach_weights[0] = e_ziel_to_reach_weights[0] + e_ziel_to_poly_weights[arrayfeld_min];
                                                 e_ziel.setObject("to_reach_weights", e_ziel_to_reach_weights);
-                                                
+
                                                 double e_ziel_to_reach_id = e_ziel_to_reach[0].getDouble("ID");
-                                                System.out.println("HRU " + e_ziel.getDouble("ID") + ": Unterbrechung der Flie?beziehung zu HRU " + e_ziel_to_poly_id + ". Umleitung in das Flie?gew?ssersegment -" + e_ziel_to_reach_id);                                                
-                                                
-                                            }
-                                            //?bergabe des Wassers der zirkelausl?senden Fl?che an die anderen Flie?beziehungen der gleichen HRU
-                                            else if (arraylaenge_poly > 1){
-                                                
+                                                System.out.println("HRU " + e_ziel.getDouble("ID") + ": Unterbrechung der Fliessbeziehung zu HRU " + e_ziel_to_poly_id + ". Umleitung in das Fliessgewaessersegment -" + e_ziel_to_reach_id + "; Beitragende Flaeche: " + Math.round(e_ziel.getDouble("BFl") * e_ziel_to_poly_weights[arrayfeld_min] / 1000.) / 1000. + " qkm");
+
+                                            } //Uebergabe des Wassers der zirkelausloesenden Flaeche an die anderen Fliessbeziehungen der gleichen HRU
+                                            else if (arraylaenge_poly > 1) {
+
                                                 int anzahl = 0;
-                                                
+
                                                 for (int i = 0; i < e_ziel_to_poly.length; i++) {
-                                                    
-                                                    if (e_ziel_to_poly[i] != null && i != arrayfeld_min){
-                                                        
+
+                                                    if (e_ziel_to_poly[i] != null && i != arrayfeld_min) {
+
                                                         anzahl += 1;
                                                     }
                                                 }
-                                                
+
                                                 for (int i = 0; i < e_ziel_to_poly.length; i++) {
-                                                    
-                                                    if (e_ziel_to_poly[i] != null && i != arrayfeld_min){
-                                                        
+
+                                                    if (e_ziel_to_poly[i] != null && i != arrayfeld_min) {
+
                                                         e_ziel_to_poly_weights[i] = e_ziel_to_poly_weights[i] + e_ziel_to_poly_weights[arrayfeld_min] / anzahl;
                                                     }
                                                 }
-                                                
-                                                System.out.println("HRU " + e_ziel.getDouble("ID") + ": Unterbrechung der Flie?beziehung zu HRU " + e_ziel_to_poly_id + ". Verteilung des Wassers auf alle anderen Flie?beziehungen der HRU.");
+
+                                                System.out.println("HRU " + e_ziel.getDouble("ID") + ": Unterbrechung der Fliessbeziehung zu HRU " + e_ziel_to_poly_id + ". Verteilung des Wassers auf alle anderen Fliessbeziehungen der HRU;" + " Beitragende Flaeche: " + Math.round(e_ziel.getDouble("BFl") * e_ziel_to_poly_weights[arrayfeld_min] / 1000.) / 1000. + " qkm");
 
                                             }
-                                            
+
+                                            umgelenkt_gesamt += e_ziel.getDouble("BFl") * e_ziel_to_poly_weights[arrayfeld_min];
+
                                             e_ziel_to_poly[arrayfeld_min] = null;
                                             e_ziel_to_poly_weights[arrayfeld_min] = null;
                                             e_ziel.setObject("to_poly", e_ziel_to_poly);
                                             e_ziel.setObject("to_poly_weights", e_ziel_to_poly_weights);
-                                            
+
                                         }
                                     } else if (arraylaenge_poly > 0) {
-                                        
-                                        for (int i = 0; i < e_ziel_to_poly.length; i++){
-                                            
+
+                                        for (int i = 0; i < e_ziel_to_poly.length; i++) {
+
                                             f = e_ziel_to_poly[i];
-                                            
-                                            if (f != null){
-                                                
-                                                if (circleMap.get(f) == 0){
-                                                    
+
+                                            if (f != null) {
+
+                                                if (circleMap.get(f) == 0) {
+
                                                     circleMap.put(f, new Integer(1));
                                                 }
                                             }
@@ -526,81 +507,83 @@ public class MultiEntityReader extends JAMSComponent {
                         }
                     }
                 }
-                
-                //Abschlie?ende Kontrolle auf das Vorhandensein unaufl?sbarer Zirkel
+
+                //Abschliessende Kontrolle auf das Vorhandensein unaufloesbarer Zirkel
 /*/                entityIterator = col.getEntities().iterator();
                 while (entityIterator.hasNext()) {
- 
-                    mapChanged = true;
- 
-                    entityIterator3 = col.getEntities().iterator();
-                    while (entityIterator3.hasNext()) {
- 
-                        circleMap.put(entityIterator3.next(), new Integer(0));
-                    }
- 
-                    e = entityIterator.next();
-                    circleMap.put(e, new Integer(1));
-                    System.out.println("Analysing HRU " + e.getDouble("ID") + " for circle flows");
- 
-                    while (mapChanged) {
- 
-                        mapChanged = false;
- 
-                        entityIterator2 = col.getEntities().iterator();
-                        while (entityIterator2.hasNext()) {
- 
-                            e_ziel = entityIterator2.next();
- 
-                            if (circleMap.get(e_ziel) == 1){
- 
-                                circleMap.put(e_ziel, new Integer(2));
- 
-                                mapChanged = true;
- 
-                                JAMSEntity[] e_ziel_to_poly = (JAMSEntity[]) e_ziel.getObject("to_poly");
- 
-                                if (e_ziel_to_poly.length > 0) {
- 
-                                    for (int i = 0; i < e_ziel_to_poly.length; i++){
- 
-                                        f = e_ziel_to_poly[i];
- 
-                                        if (f != null){
- 
-                                            if (e.getDouble("ID") == f.getDouble("ID")){
- 
-                                                System.out.println("Non dissolvable circle released by HRU " + e.getDouble("ID"));
-                                                unaufloesbar = true;
- 
-                                            } else{
- 
-                                                if (circleMap.get(f) == 0){
- 
-                                                    circleMap.put(f, new Integer(1));
-                                                }
-                                            }
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    }
+
+                mapChanged = true;
+
+                entityIterator3 = col.getEntities().iterator();
+                while (entityIterator3.hasNext()) {
+
+                circleMap.put(entityIterator3.next(), new Integer(0));
+                }
+
+                e = entityIterator.next();
+                circleMap.put(e, new Integer(1));
+                System.out.println("Analysing HRU " + e.getDouble("ID") + " for circle flows");
+
+                while (mapChanged) {
+
+                mapChanged = false;
+
+                entityIterator2 = col.getEntities().iterator();
+                while (entityIterator2.hasNext()) {
+
+                e_ziel = entityIterator2.next();
+
+                if (circleMap.get(e_ziel) == 1){
+
+                circleMap.put(e_ziel, new Integer(2));
+
+                mapChanged = true;
+
+                JAMSEntity[] e_ziel_to_poly = (JAMSEntity[]) e_ziel.getObject("to_poly");
+
+                if (e_ziel_to_poly.length > 0) {
+
+                for (int i = 0; i < e_ziel_to_poly.length; i++){
+
+                f = e_ziel_to_poly[i];
+
+                if (f != null){
+
+                if (e.getDouble("ID") == f.getDouble("ID")){
+
+                System.out.println("Non dissolvable circle released by HRU " + e.getDouble("ID"));
+                unaufloesbar = true;
+
+                } else{
+
+                if (circleMap.get(f) == 0){
+
+                circleMap.put(f, new Integer(1));
+                }
+                }
+                }
+                }
+                }
+                }
+                }
+                }
                 }
                 if (unaufloesbar == true){
- 
-                    getModel().getRuntime().sendHalt("Some non-dissolvable circle relations in HRU pattern");
+
+                getModel().getRuntime().sendHalt("Some non-dissolvable circle relations in HRU pattern");
                 }/*/
+
+                //System.out.println("Umgelenkte Flaeche: " + Math.round(umgelenkt_gesamt / 10000.) / 100. + " qkm");
             }
         }
-        
+
         // Aufbau der Topologie
         mapChanged = true;
         entityIterator = col.getEntities().iterator();
         while (entityIterator.hasNext()) {
             depthMap.put(entityIterator.next(), new Integer(0));
         }
-        
+
         //put all collection elements (keys) and their maximum depth (values) into a HashMap
         while (mapChanged) {
             mapChanged = false;
@@ -608,45 +591,48 @@ public class MultiEntityReader extends JAMSComponent {
             while (entityIterator.hasNext()) {
                 e = entityIterator.next();
                 eDepth = depthMap.get(e);
-                
-                if ((asso.toString()).equals("to_poly")){
-                    
+
+                if ((asso.toString()).equals("to_poly")) {
+
                     JAMSEntity[] e_ziel_to_poly;
                     e_ziel_to_poly = (JAMSEntity[]) e.getObject(asso);
-                    
+
                     if (e_ziel_to_poly.length > 0) {
-                        
-                        for (int i = 0; i < e_ziel_to_poly.length; i++){
+
+                        for (int i = 0; i < e_ziel_to_poly.length; i++) {
                             f = e_ziel_to_poly[i];
-                            
-                            if (f != null){
+
+                            if (f != null) {
                                 fDepth = depthMap.get(f);
-                                
+
                                 if (fDepth.intValue() <= eDepth.intValue()) {
-                                    depthMap.put(f, new Integer(eDepth.intValue()+1));
+                                    depthMap.put(f, new Integer(eDepth.intValue() + 1));
                                     mapChanged = true;
                                 }
                             }
                         }
                     }
                 }
-                if ((asso.toString()).equals("to_reach")){
-                    
+                if ((asso.toString()).equals("to_reach")) {
+
                     JAMSEntity eff;
                     eff = (JAMSEntity) e.getObject(asso);
-                    
+                    if (eff.getValue() == null) {
+                        eff = null;
+                    }
+
                     if (eff != null) {
                         fDepth = depthMap.get(eff);
-                        
+
                         if (fDepth.intValue() <= eDepth.intValue()) {
-                            depthMap.put(eff, new Integer(eDepth.intValue()+1));
+                            depthMap.put(eff, new Integer(eDepth.intValue() + 1));
                             mapChanged = true;
                         }
                     }
                 }
             }
         }
-        
+
         //find out which is the max depth of all entities
         int maxDepth = 0;
         entityIterator = col.getEntities().iterator();
@@ -654,13 +640,13 @@ public class MultiEntityReader extends JAMSComponent {
             e = entityIterator.next();
             maxDepth = Math.max(maxDepth, depthMap.get(e).intValue());
         }
-        
+
         //create ArrayList of ArrayList objects, each element keeping the entities of one level
         ArrayList<ArrayList<JAMSEntity>> alList = new ArrayList<ArrayList<JAMSEntity>>();
-        for (int i=0; i<=maxDepth; i++) {
+        for (int i = 0; i <= maxDepth; i++) {
             alList.add(new ArrayList<JAMSEntity>());
         }
-        
+
         //fill the ArrayList objects within the ArrayList with entity objects
         entityIterator = col.getEntities().iterator();
         while (entityIterator.hasNext()) {
@@ -668,9 +654,9 @@ public class MultiEntityReader extends JAMSComponent {
             int depth = depthMap.get(e).intValue();
             alList.get(depth).add(e);
         }
-        
+
         //put the entities
-        for (int i=0; i<=maxDepth; i++) {
+        for (int i = 0; i <= maxDepth; i++) {
             entityIterator = alList.get(i).iterator();
             while (entityIterator.hasNext()) {
                 e = entityIterator.next();
