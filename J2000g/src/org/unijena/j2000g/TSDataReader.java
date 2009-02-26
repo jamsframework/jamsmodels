@@ -82,7 +82,7 @@ public class TSDataReader extends JAMSComponent {
             public JAMSString dataSetName;
     
    private JAMSTableDataStore store;
-    private JAMSTableDataArray da;
+   private JAMSTableDataArray da;
     
     public void init() {
         
@@ -150,16 +150,16 @@ public class TSDataReader extends JAMSComponent {
                 else if(timeUnit == JAMSCalendar.MONTH)
                     date.set(tiStart.get(Calendar.YEAR), tiStart.get(Calendar.MONTH), 1, 0, 0, 0);
             
-            
             while (startTime.before(date) && store.hasNext()) {
                 da = store.getNext();
-                if(timeUnit == JAMSCalendar.DAY_OF_YEAR)
+                if (timeUnit == JAMSCalendar.DAY_OF_YEAR) {
                     startTime.add(JAMSCalendar.DATE, 1);
-                else if(timeUnit == JAMSCalendar.HOUR_OF_DAY)
+                } else if (timeUnit == JAMSCalendar.HOUR_OF_DAY) {
                     startTime.add(JAMSCalendar.HOUR_OF_DAY, 1);
-                else if(timeUnit == JAMSCalendar.MONTH)
+                } else if (timeUnit == JAMSCalendar.MONTH) {
                     startTime.add(JAMSCalendar.MONTH, 1);
-                
+                }
+
             }
         }
         
