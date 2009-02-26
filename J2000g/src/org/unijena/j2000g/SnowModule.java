@@ -61,7 +61,6 @@ title="SnowModule",
             public JAMSDouble precip;
     
     
-    
     @JAMSVarDescription(
     access = JAMSVarDescription.AccessType.READ,
             update = JAMSVarDescription.UpdateType.RUN,
