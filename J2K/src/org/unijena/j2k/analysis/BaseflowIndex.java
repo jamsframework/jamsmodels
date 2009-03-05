@@ -83,10 +83,10 @@ import java.util.Vector;
     /*
      *  Component run stages
      */
-    private Vector monq = new Vector();
-    private Vector momq = new Vector();
-    private Vector basq = new Vector();
-    private Vector rank = new Vector();
+    private Vector<Double> monq = new Vector<Double>();
+    private Vector<Double> momq = new Vector<Double>();
+    private Vector<Double> basq = new Vector<Double>();
+    private Vector<Double> rank = new Vector<Double>();
     private int currentMonth = -1;
     private double actMinimum = 9999.9;
     private double actSum = 0;
