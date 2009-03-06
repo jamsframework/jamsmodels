@@ -23,39 +23,27 @@
  */
 package gov.usgs.thornthwaite;
 
-import org.unijena.jams.data.*;
-import org.unijena.jams.model.*;
+import jams.data.*;
+import jams.model.*;
 
 /**
  *
  * @author S. Kralisch
  */
 public class EntityPacker extends JAMSComponent {
-    
-    @JAMSVarDescription(
-            access = JAMSVarDescription.AccessType.READWRITE,
-            update = JAMSVarDescription.UpdateType.RUN
-            ) 
+
+    @JAMSVarDescription (access = JAMSVarDescription.AccessType.READWRITE)
     public JAMSEntity entity;
-    
-    @JAMSVarDescription(
-            access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.RUN
-            )
-            public JAMSDouble snowStorage;
-    
-    @JAMSVarDescription(
-            access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.RUN
-            )
-            public JAMSDouble prestor;
-    
-    @JAMSVarDescription(
-            access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.RUN
-            )
-            public JAMSDouble remain;
-    
+
+    @JAMSVarDescription (access = JAMSVarDescription.AccessType.READ)
+    public JAMSDouble snowStorage;
+
+    @JAMSVarDescription (access = JAMSVarDescription.AccessType.READ)
+    public JAMSDouble prestor;
+
+    @JAMSVarDescription (access = JAMSVarDescription.AccessType.READ)
+    public JAMSDouble remain;
+
     public void run() {
         entity.setDouble("snowStorage", snowStorage.getValue());
         entity.setDouble("prestor", prestor.getValue());

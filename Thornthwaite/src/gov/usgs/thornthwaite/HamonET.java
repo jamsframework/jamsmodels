@@ -20,107 +20,59 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
  *
  */
-
 package gov.usgs.thornthwaite;
 
-import org.unijena.jams.model.*;
-import org.unijena.jams.data.*;
-import java.io.*;
-import java.util.*;
-import org.jscience.physics.units.*;
-
+import jams.model.*;
+import jams.data.*;
 
 /**
  *
  * @author S. Kralisch
  */
 public class HamonET extends JAMSComponent {
-    
-    @JAMSVarDescription(
-            access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.RUN
-            )
-            public JAMSCalendar time;
-    
-    @JAMSVarDescription(
-            access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.RUN
-            )
-            public JAMSDouble temp;
-    
-    @JAMSVarDescription(
-            access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.RUN,
-            unit = "ft³ / s"
-            )
-            public JAMSDouble daylength;
 
-    @JAMSVarDescription(
-            access = JAMSVarDescription.AccessType.WRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
-            unit = "L/s"
-            )
-            public JAMSDouble potET;
-    
-    
-    // the number of days per months
-    final static int[] DAYS = {
-        31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31
-    };
+    @JAMSVarDescription (access = JAMSVarDescription.AccessType.READ)
+    public JAMSCalendar time;
 
-/*    
+    @JAMSVarDescription (access = JAMSVarDescription.AccessType.READ)
+    public JAMSDouble temp;
+
+    @JAMSVarDescription (access = JAMSVarDescription.AccessType.READ,
+                         unit = "ft³/s")
+    public JAMSDouble daylength;
+
+    @JAMSVarDescription (access = JAMSVarDescription.AccessType.WRITE,
+                         unit = "L/s")
+    public JAMSDouble potET;
+
+    /*
     public void init() {
-        System.out.println(potET.getUnit());
-        System.out.println(daylength.getUnit());
-        System.out.println(potET.getUnit().isCompatible(daylength.getUnit()));
-        Converter conv = daylength.getUnit().getConverterTo(potET.getUnit());
-        System.out.println(conv.convert(1));
+    System.out.println(potET.getUnit());
+    System.out.println(daylength.getUnit());
+    System.out.println(potET.getUnit().isCompatible(daylength.getUnit()));
+    Converter conv = daylength.getUnit().getConverterTo(potET.getUnit());
+    System.out.println(conv.convert(1));
     }
-*/
-    
-    public void run(){
+     */
+    public void run() {
 
-        double temp          = this.temp.getValue();
-        double daylength     = this.daylength.getValue();
-        int month         = this.time.get(JAMSCalendar.MONTH);
-        
+        double temp = this.temp.getValue();
+        double daylength = this.daylength.getValue();
+
         double Wt = 4.95 * Math.exp(0.062 * temp) / 100.;
-        double D2  = (daylength / 12.0) * (daylength / 12.0);
-//        double potET = 0.55 * DAYS[month] * D2 * Wt;
+        double D2 = (daylength / 12.0) * (daylength / 12.0);
         double potET = 0.55 * time.getActualMaximum(time.DAY_OF_MONTH) * D2 * Wt;
-        if (potET <= 0.0) 
+
+        if (potET <= 0.0) {
             potET = 0.0;
-        if (temp <= -1.0) 
-            potET = 0.0;
-        
-        potET *= 25.4;
-        
-        this.potET.setValue(potET);
-    }    
-    
-    public static void main(String[] args) {
-        
-        int a = 9;
-        int b = 8;
-        
-        int r=a/b;
-        while (r!=0) {
-            
-            a=b;
-            b=r;
-            r=a/b;
-            
         }
-        
-        int ggt;
-        while (a!=b);
-        if(a>b)
-            ggt = a-b;
-        else
-            ggt = b-a;
-                    
-        
-        System.out.println("b: " + ggt);
-        
+        if (temp <= -1.0) {
+            potET = 0.0;
+        }
+
+        potET *= 25.4;
+
+        this.potET.setValue(potET);
     }
+
 }

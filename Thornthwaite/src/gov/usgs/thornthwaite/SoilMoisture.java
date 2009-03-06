@@ -20,11 +20,10 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
  *
  */
-
 package gov.usgs.thornthwaite;
 
-import org.unijena.jams.model.*;
-import org.unijena.jams.data.*;
+import jams.model.*;
+import jams.data.*;
 import java.io.*;
 import java.util.*;
 
@@ -33,114 +32,90 @@ import java.util.*;
  * @author S. Kralisch
  */
 public class SoilMoisture extends JAMSComponent {
-    
-    @JAMSVarDescription(
-            access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.RUN
-            )
-            public JAMSDouble soilMoistStorCap;
 
-    @JAMSVarDescription(
-            access = JAMSVarDescription.AccessType.WRITE,
-            update = JAMSVarDescription.UpdateType.RUN
-            )
-            public JAMSDouble soilMoistStor;
+    @JAMSVarDescription (access = JAMSVarDescription.AccessType.READ)
+    public JAMSDouble soilMoistStorCap;
 
-    @JAMSVarDescription(
-            access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.RUN
-            )
-            public JAMSDouble potET;
-    
-    @JAMSVarDescription(
-            access = JAMSVarDescription.AccessType.WRITE,
-            update = JAMSVarDescription.UpdateType.RUN
-            )
-            public JAMSDouble surfaceRunoff;
-    
-    @JAMSVarDescription(
-            access = JAMSVarDescription.AccessType.WRITE,
-            update = JAMSVarDescription.UpdateType.RUN
-            )
-            public JAMSDouble pmpe;
+    @JAMSVarDescription (access = JAMSVarDescription.AccessType.WRITE)
+    public JAMSDouble soilMoistStor;
 
-    @JAMSVarDescription(
-            access = JAMSVarDescription.AccessType.WRITE,
-            update = JAMSVarDescription.UpdateType.RUN
-            )
-            public JAMSDouble actET;
-    
-    @JAMSVarDescription(
-            access = JAMSVarDescription.AccessType.WRITE,
-            update = JAMSVarDescription.UpdateType.RUN
-            )
-            public JAMSDouble dff;
-    
-    @JAMSVarDescription(
-            access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.RUN
-            )
-            public JAMSDouble temp;
-    
-    @JAMSVarDescription(
-            access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.RUN
-            )
-            public JAMSDouble precip;
-    
-    @JAMSVarDescription(
-            access = JAMSVarDescription.AccessType.READWRITE,
-            update = JAMSVarDescription.UpdateType.RUN
-            )
-            public JAMSDouble prestor;
-    
-    public void run(){
+    @JAMSVarDescription (access = JAMSVarDescription.AccessType.READ)
+    public JAMSDouble potET;
+
+    @JAMSVarDescription (access = JAMSVarDescription.AccessType.WRITE)
+    public JAMSDouble surfaceRunoff;
+
+    @JAMSVarDescription (access = JAMSVarDescription.AccessType.WRITE)
+    public JAMSDouble pmpe;
+
+    @JAMSVarDescription (access = JAMSVarDescription.AccessType.WRITE)
+    public JAMSDouble actET;
+
+    @JAMSVarDescription (access = JAMSVarDescription.AccessType.WRITE)
+    public JAMSDouble dff;
+
+    @JAMSVarDescription (access = JAMSVarDescription.AccessType.READ)
+    public JAMSDouble temp;
+
+    @JAMSVarDescription (access = JAMSVarDescription.AccessType.READ)
+    public JAMSDouble precip;
+
+    @JAMSVarDescription (access = JAMSVarDescription.AccessType.READWRITE)
+    public JAMSDouble prestor;
+
+    public void run() {
         // get the parameter values
         double soilMoistStorCap = this.soilMoistStorCap.getValue();
         double prestor = this.prestor.getValue();
-        
+
         // get the input values
-        double temp   = this.temp.getValue();
+        double temp = this.temp.getValue();
         double precip = this.precip.getValue();
-        double potET  = this.potET.getValue();
-        
+        double potET = this.potET.getValue();
+
         double pmpe = precip - potET;
-        
+
         double surfaceRunoff = 0.0;
         double soilMoistStor = 0.0;
         double actET = 0.0;
-        
+
         if (temp < 0.0 && pmpe > 0.0) {
             surfaceRunoff = 0.0;
             soilMoistStor = prestor;
             actET = 0.0;
         } else if (pmpe > 0.0 || pmpe == 0.0) {
-            
+
             actET = potET;
             //  SOIL MOISTURE RECHARGE
-            if (prestor < soilMoistStorCap) soilMoistStor = prestor + pmpe;
-            
+            if (prestor < soilMoistStorCap) {
+                soilMoistStor = prestor + pmpe;
+            }
+
             // SOIL MOISTURE STORAGE AT CAPACITY
-            if (prestor == soilMoistStorCap)
+            if (prestor == soilMoistStorCap) {
                 soilMoistStor = soilMoistStorCap;
-            if (soilMoistStor > soilMoistStorCap)
+            }
+            if (soilMoistStor > soilMoistStorCap) {
                 soilMoistStor = soilMoistStorCap;
+            }
             // CALCULATE SURPLUS
             surfaceRunoff = (prestor + pmpe) - soilMoistStorCap;
-            if (surfaceRunoff < 0.0)
+            if (surfaceRunoff < 0.0) {
                 surfaceRunoff = 0.0;
+            }
             //  CALCULATE MONTHLY CHANGE IN SOIL MOISTURE
             prestor = soilMoistStor;
         } else {
             soilMoistStor = prestor - Math.abs(pmpe * (prestor / soilMoistStorCap));
-            if (soilMoistStor < 0.0)
+            if (soilMoistStor < 0.0) {
                 soilMoistStor = 0.0;
+            }
             double delstor = soilMoistStor - prestor;
-            prestor =soilMoistStor;
-            actET = precip + (delstor * (-1.0)); 
+            prestor = soilMoistStor;
+            actET = precip + (delstor * (-1.0));
             surfaceRunoff = 0.0;
         }
-        
+
         //SETTING THE OUTPUT VARIABLES
         this.dff.setValue(potET - actET);
         this.pmpe.setValue(pmpe);
@@ -148,5 +123,5 @@ public class SoilMoisture extends JAMSComponent {
         this.soilMoistStor.setValue(soilMoistStor);
         this.actET.setValue(actET);
         this.prestor.setValue(prestor);
-    }    
+    }
 }

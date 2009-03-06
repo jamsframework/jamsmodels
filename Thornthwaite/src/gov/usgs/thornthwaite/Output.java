@@ -20,69 +20,45 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
  *
  */
-
 package gov.usgs.thornthwaite;
 
-import org.unijena.jams.model.*;
-import org.unijena.jams.data.*;
-import org.unijena.jams.io.*;
+import jams.model.*;
+import jams.data.*;
+import jams.io.*;
+import java.io.File;
 
 /**
  *
  * @author S. Kralisch
  */
 public class Output extends JAMSComponent {
-    
-    @JAMSVarDescription(
-            access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.RUN
-            )
-            public JAMSDouble daylength;
-    
-    @JAMSVarDescription(
-            access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.RUN
-            )
-            public JAMSCalendar time;
-    
-    @JAMSVarDescription(
-            access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.RUN
-            )
-            public JAMSDouble potET;
-    
-    @JAMSVarDescription(
-            access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.RUN
-            )
-            public JAMSDouble snowMelt;
-    
-    @JAMSVarDescription(
-            access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.RUN
-            )
-            public JAMSDouble runoff;
-    
-    @JAMSVarDescription(
-            access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.INIT
-            )
-            public JAMSString fileName;
-    
-    @JAMSVarDescription(
-            access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.RUN
-            )
-            public JAMSDouble soilMoistStor;
-    
-    
-    
-    
+
+    @JAMSVarDescription (access = JAMSVarDescription.AccessType.READ)
+    public JAMSDouble daylength;
+
+    @JAMSVarDescription (access = JAMSVarDescription.AccessType.READ)
+    public JAMSCalendar time;
+
+    @JAMSVarDescription (access = JAMSVarDescription.AccessType.READ)
+    public JAMSDouble potET;
+
+    @JAMSVarDescription (access = JAMSVarDescription.AccessType.READ)
+    public JAMSDouble snowMelt;
+
+    @JAMSVarDescription (access = JAMSVarDescription.AccessType.READ)
+    public JAMSDouble runoff;
+
+    @JAMSVarDescription (access = JAMSVarDescription.AccessType.READ)
+    public JAMSString fileName;
+
+    @JAMSVarDescription (access = JAMSVarDescription.AccessType.READ)
+    public JAMSDouble soilMoistStor;
+
     private GenericDataWriter writer;
-    
-    public void init(){
-        
-        writer = new GenericDataWriter(fileName.getValue());
+
+    public void init() {
+
+        writer = new GenericDataWriter(getModel().getWorkspace().getOutputDataDirectory().getPath() + File.separator + fileName.getValue());
 
         writer.addComment("Thornthwaite model output");
         writer.addComment("");
@@ -93,12 +69,11 @@ public class Output extends JAMSComponent {
         writer.addColumn("runoff");
         writer.addColumn("soilMoistStor");
         writer.writeHeader();
-        
+
     }
-    
-    
-    public void run(){
-        
+
+    public void run() {
+
         writer.addData(time);
         writer.addData(daylength);
         writer.addData(potET);
@@ -106,17 +81,16 @@ public class Output extends JAMSComponent {
         writer.addData(runoff);
         writer.addData(soilMoistStor);
         try {
-        writer.writeData();
-        } catch (org.unijena.jams.runtime.JAMSRuntimeException jre) {
-            System.out.println(jre.getMessage());
+            writer.writeData();
+        } catch (jams.runtime.RuntimeException jre) {
+            getModel().getRuntime().handle(jre);
         }
-        
+
     }
-    
-    public void cleanup(){
-        
+
+    public void cleanup() {
+
         writer.close();
 
     }
-    
 }

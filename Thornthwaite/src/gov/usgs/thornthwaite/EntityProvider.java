@@ -23,9 +23,9 @@
  */
 package gov.usgs.thornthwaite;
 
-import org.unijena.jams.data.*;
-import org.unijena.jams.model.*;
-import org.unijena.jams.io.*;
+import jams.data.*;
+import jams.model.*;
+import jams.io.*;
 import java.util.*;
 
 /**
@@ -33,57 +33,66 @@ import java.util.*;
  * @author S. Kralisch
  */
 public class EntityProvider extends JAMSComponent {
-    
-    @JAMSVarDescription(
-            access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.INIT
-            )
-            public JAMSString fileName;
-    
-    @JAMSVarDescription(
-            access = JAMSVarDescription.AccessType.WRITE,
-            update = JAMSVarDescription.UpdateType.INIT
-            )
-            public JAMSEntityCollection entities;
-    
-    
-    
+
+    @JAMSVarDescription (access = JAMSVarDescription.AccessType.READ)
+    public JAMSString fileName;
+
+    @JAMSVarDescription (access = JAMSVarDescription.AccessType.WRITE)
+    public JAMSEntityCollection entities;
+
     private JAMSTableDataStore store;
-    
-    public void init(){
-        
-        ArrayList <JAMSEntity> entityList = new ArrayList<JAMSEntity>();
-        
+
+    public void init() {
+
+        ArrayList<JAMSEntity> entityList = new ArrayList<JAMSEntity>();
+
         store = new GenericDataReader(fileName.getValue(), false, 4, 6);
-        
+
         while (store.hasNext()) {
-            
+
             JAMSEntity e = JAMSDataFactory.createEntity();
-            
+
             JAMSTableDataArray da = store.getNext();
             double[] vals = JAMSTableDataConverter.toDouble(da);
-            
-            e.setObject("latitude", new JAMSDouble(vals[0]));
-            e.setObject("soilMoistStorCap", new JAMSDouble(vals[1]));
-            e.setObject("snowStorage", new JAMSDouble(vals[2]));
-            e.setObject("runoffFactor", new JAMSDouble(vals[3]));
-            e.setObject("prestor", new JAMSDouble(vals[4]));
-            e.setObject("remain", new JAMSDouble(vals[5]));
-/*            
+
+            Attribute.Double d;
+
+            d = JAMSDataFactory.createDouble();
+            d.setValue(vals[0]);
+            e.setObject("latitude", d);
+
+            d = JAMSDataFactory.createDouble();
+            d.setValue(vals[1]);
+            e.setObject("soilMoistStorCap", d);
+
+            d = JAMSDataFactory.createDouble();
+            d.setValue(vals[2]);
+            e.setObject("snowStorage", d);
+
+            d = JAMSDataFactory.createDouble();
+            d.setValue(vals[3]);
+            e.setObject("runoffFactor", d);
+
+            d = JAMSDataFactory.createDouble();
+            d.setValue(vals[4]);
+            e.setObject("prestor", d);
+
+            d = JAMSDataFactory.createDouble();
+            d.setValue(vals[5]);
+            e.setObject("remain", d);
+            /*
             e.setDouble("latitude", vals[0]);
             e.setDouble("soilMoistStorCap", vals[1]);
             e.setDouble("snowStorage", vals[2]);
             e.setDouble("runoffFactor", vals[3]);
             e.setDouble("prestor", vals[4]);
             e.setDouble("remain", vals[5]);
-*/            
+             */
             entityList.add(e);
-            
+
         }
-        
+
         entities.setEntities(entityList);
-        
+
     }
-    
-    
 }

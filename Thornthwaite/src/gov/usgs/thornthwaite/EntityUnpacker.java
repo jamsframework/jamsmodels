@@ -23,57 +23,36 @@
  */
 package gov.usgs.thornthwaite;
 
-import org.unijena.jams.data.*;
-import org.unijena.jams.model.*;
+import jams.data.*;
+import jams.model.*;
 
 /**
  *
  * @author S. Kralisch
  */
 public class EntityUnpacker extends JAMSComponent {
-    
-    @JAMSVarDescription(
-            access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.RUN
-            ) 
+
+    @JAMSVarDescription (access = JAMSVarDescription.AccessType.READ)
     public JAMSEntity entity;
-    
-    @JAMSVarDescription(
-            access = JAMSVarDescription.AccessType.WRITE,
-            update = JAMSVarDescription.UpdateType.RUN
-            )
-            public JAMSDouble latitude = new JAMSDouble();
-    
-    @JAMSVarDescription(
-            access = JAMSVarDescription.AccessType.WRITE,
-            update = JAMSVarDescription.UpdateType.RUN
-            )
-            public JAMSDouble soilMoistStorCap = new JAMSDouble();    
-    
-    @JAMSVarDescription(
-            access = JAMSVarDescription.AccessType.WRITE,
-            update = JAMSVarDescription.UpdateType.RUN
-            )
-            public JAMSDouble snowStorage = new JAMSDouble();    
-    
-    @JAMSVarDescription(
-            access = JAMSVarDescription.AccessType.WRITE,
-            update = JAMSVarDescription.UpdateType.RUN
-            )
-            public JAMSDouble runoffFactor = new JAMSDouble();    
 
-    @JAMSVarDescription(
-            access = JAMSVarDescription.AccessType.WRITE,
-            update = JAMSVarDescription.UpdateType.RUN
-            )
-            public JAMSDouble prestor = new JAMSDouble();    
+    @JAMSVarDescription (access = JAMSVarDescription.AccessType.WRITE)
+    public JAMSDouble latitude;
 
-    @JAMSVarDescription(
-            access = JAMSVarDescription.AccessType.WRITE,
-            update = JAMSVarDescription.UpdateType.RUN
-            )
-            public JAMSDouble remain = new JAMSDouble();        
-    
+    @JAMSVarDescription (access = JAMSVarDescription.AccessType.WRITE)
+    public JAMSDouble soilMoistStorCap;
+
+    @JAMSVarDescription (access = JAMSVarDescription.AccessType.WRITE)
+    public JAMSDouble snowStorage;
+
+    @JAMSVarDescription (access = JAMSVarDescription.AccessType.WRITE)
+    public JAMSDouble runoffFactor;
+
+    @JAMSVarDescription (access = JAMSVarDescription.AccessType.WRITE)
+    public JAMSDouble prestor;
+
+    @JAMSVarDescription (access = JAMSVarDescription.AccessType.WRITE)
+    public JAMSDouble remain;
+
     public void run() throws Exception {
         this.latitude.setValue(entity.getDouble("latitude"));
         this.soilMoistStorCap.setValue(entity.getDouble("soilMoistStorCap"));

@@ -20,11 +20,10 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
  *
  */
-
 package gov.usgs.thornthwaite;
 
-import org.unijena.jams.model.*;
-import org.unijena.jams.data.*;
+import jams.model.*;
+import jams.data.*;
 import java.io.*;
 import java.util.*;
 
@@ -33,54 +32,35 @@ import java.util.*;
  * @author S. Kralisch
  */
 public class Runoff extends JAMSComponent {
-    
-    @JAMSVarDescription(
-            access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.RUN
-            )
-            public JAMSDouble runoffFactor;
-    
-    @JAMSVarDescription(
-            access = JAMSVarDescription.AccessType.READWRITE,
-            update = JAMSVarDescription.UpdateType.RUN
-            )
-            public JAMSDouble remain;
-    
-    @JAMSVarDescription(
-            access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.RUN
-            )
-            public JAMSDouble surfaceRunoff;
-    
-    @JAMSVarDescription(
-            access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.RUN
-            )
-            public JAMSDouble snowMelt;
-    
-    @JAMSVarDescription(
-            access = JAMSVarDescription.AccessType.WRITE,
-            update = JAMSVarDescription.UpdateType.RUN
-            )
-            public JAMSDouble runoff;
-    
-    @JAMSVarDescription(
-            access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.RUN
-            )
-            public JAMSDouble precip;
- 
-    
-    public void run(){
+
+    @JAMSVarDescription (access = JAMSVarDescription.AccessType.READ)
+    public JAMSDouble runoffFactor;
+
+    @JAMSVarDescription (access = JAMSVarDescription.AccessType.READWRITE)
+    public JAMSDouble remain;
+
+    @JAMSVarDescription (access = JAMSVarDescription.AccessType.READ)
+    public JAMSDouble surfaceRunoff;
+
+    @JAMSVarDescription (access = JAMSVarDescription.AccessType.READ)
+    public JAMSDouble snowMelt;
+
+    @JAMSVarDescription (access = JAMSVarDescription.AccessType.WRITE)
+    public JAMSDouble runoff;
+
+    @JAMSVarDescription (access = JAMSVarDescription.AccessType.READ)
+    public JAMSDouble precip;
+
+    public void run() {
         double runoffFactor = this.runoffFactor.getValue();
-        double surfaceRunoff= this.surfaceRunoff.getValue();
-        double snowmelt     = this.snowMelt.getValue();
-        double remain       = this.remain.getValue();
-        
+        double surfaceRunoff = this.surfaceRunoff.getValue();
+        double snowMelt = this.snowMelt.getValue();
+        double remain = this.remain.getValue();
+
         double ro1 = (surfaceRunoff + remain) * runoffFactor;
         remain = (surfaceRunoff + remain) * (1.0 - runoffFactor);
-        
-        this.runoff.setValue(ro1 + snowmelt);
+
+        this.runoff.setValue(ro1 + snowMelt);
         this.remain.setValue(remain);
     }
 }

@@ -20,58 +20,44 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
  *
  */
-
 package gov.usgs.thornthwaite;
 
-import org.unijena.jams.model.*;
-import org.unijena.jams.data.*;
-import org.unijena.jams.io.*;
-import java.io.*;
-import java.util.*;
+import jams.model.*;
+import jams.data.*;
+import jams.io.*;
+import java.io.File;
 
 /**
  *
  * @author S. Kralisch
  */
 public class Climate extends JAMSComponent {
-    
-    @JAMSVarDescription(
-            access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.INIT
-            )
-            public JAMSString fileName;
-    
-    @JAMSVarDescription(
-            access = JAMSVarDescription.AccessType.WRITE,
-            update = JAMSVarDescription.UpdateType.RUN
-            )
-            public JAMSDouble temp;
-    
-    @JAMSVarDescription(
-            access = JAMSVarDescription.AccessType.WRITE,
-            update = JAMSVarDescription.UpdateType.RUN
-            )
-            public JAMSDouble precip;
-    
-    
+
+    @JAMSVarDescription (access = JAMSVarDescription.AccessType.READ)
+    public JAMSString fileName;
+
+    @JAMSVarDescription (access = JAMSVarDescription.AccessType.WRITE)
+    public JAMSDouble temp;
+
+    @JAMSVarDescription (access = JAMSVarDescription.AccessType.WRITE)
+    public JAMSDouble precip;
+
     private JAMSTableDataStore store;
-    
-    public void init(){
-        store = new GenericDataReader(fileName.getValue(), true, 4, 6);
+
+    public void init() {
+        store = new GenericDataReader(getModel().getWorkspace().getInputDirectory().getPath() + File.separator + fileName.getValue(), false, 4, 6);
     }
-    
-    public void run(){
-        
+
+    public void run() {
+
         JAMSTableDataArray da = store.getNext();
         double[] vals = JAMSTableDataConverter.toDouble(da);
-        
-        this.temp.setValue(vals[0]);
-        this.precip.setValue(vals[1]);
+        this.temp.setValue(vals[1]);
+        this.precip.setValue(vals[2]);
 
     }
-    
-    public void cleanup(){
+
+    public void cleanup() {
         store.close();
     }
-    
 }

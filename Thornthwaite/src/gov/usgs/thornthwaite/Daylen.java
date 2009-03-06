@@ -20,57 +20,45 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
  *
  */
-
 package gov.usgs.thornthwaite;
 
-import org.unijena.jams.model.*;
-import org.unijena.jams.data.*;
-import java.io.*;
-import java.util.*;
+import jams.model.*;
+import jams.data.*;
 
 /**
  *
  * @author S. Kralisch
  */
 public class Daylen extends JAMSComponent {
-    
-    @JAMSVarDescription(
-            access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.RUN
-            )
-            public JAMSCalendar time;
-    
-    @JAMSVarDescription(
-            access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.RUN
-            )
-            public JAMSDouble latitude;
-    
-    @JAMSVarDescription(
-            access = JAMSVarDescription.AccessType.WRITE,
-            update = JAMSVarDescription.UpdateType.RUN
-            )
-            public JAMSDouble daylength;
-    
-    
+
+    @JAMSVarDescription (access = JAMSVarDescription.AccessType.READ)
+    public JAMSCalendar time;
+
+    @JAMSVarDescription (access = JAMSVarDescription.AccessType.READ)
+    public JAMSDouble latitude;
+
+    @JAMSVarDescription (access = JAMSVarDescription.AccessType.WRITE)
+    public JAMSDouble daylength;
+
     static final int[] DAYS = {
         15, 45, 74, 105, 135, 166, 196, 227, 258, 288, 319, 349
     };
-    
-    public void run(){
-        
-        int month         = this.time.get(JAMSCalendar.MONTH);
-        double latitude   = this.latitude.getValue();
-        
+
+    public void run() {
+
+        int month = this.time.get(JAMSCalendar.MONTH);
+        double latitude = this.latitude.getValue();
+
         double dayl = (double) DAYS[month] - 80.;
-        if (dayl < 0.0)
+        if (dayl < 0.0) {
             dayl = 285. + (double) DAYS[month];
-        
+        }
+
         double decr = 23.45 * Math.sin(dayl / 365. * 6.2832) * 0.017453;
         double alat = latitude * 0.017453;
-        double csh = (-0.02908 - Math.sin(decr) * Math.sin(alat)) /(Math.cos(decr) * Math.cos(alat));
+        double csh = (-0.02908 - Math.sin(decr) * Math.sin(alat)) / (Math.cos(decr) * Math.cos(alat));
         double dl = 24.0 * (1.570796 - Math.atan(csh / Math.sqrt(1. - csh * csh))) / Math.PI;
-        
+
         this.daylength.setValue(dl);
-    }    
+    }
 }

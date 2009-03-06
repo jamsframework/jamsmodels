@@ -20,11 +20,10 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
  *
  */
-
 package gov.usgs.thornthwaite;
 
-import org.unijena.jams.model.*;
-import org.unijena.jams.data.*;
+import jams.model.*;
+import jams.data.*;
 import java.io.*;
 import java.util.*;
 
@@ -33,60 +32,46 @@ import java.util.*;
  * @author S. Kralisch
  */
 public class Snow extends JAMSComponent {
-    
-    @JAMSVarDescription(
-            access = JAMSVarDescription.AccessType.READWRITE,
-            update = JAMSVarDescription.UpdateType.INIT
-            )
-            public JAMSDouble snowStorage;
-    
-    @JAMSVarDescription(
-            access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.RUN
-            )
-            public JAMSDouble potET;
-    
-    @JAMSVarDescription(
-            access = JAMSVarDescription.AccessType.WRITE,
-            update = JAMSVarDescription.UpdateType.RUN
-            )
-            public JAMSDouble snowMelt;
-    
-    @JAMSVarDescription(
-            access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.RUN
-            )
-            public JAMSDouble temp;
-    
-    @JAMSVarDescription(
-            access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.RUN,
-            unit = "mm"
-            )
-            public JAMSDouble precip;
-    
-    public void run(){
-        
+
+    @JAMSVarDescription (access = JAMSVarDescription.AccessType.READWRITE)
+    public JAMSDouble snowStorage;
+
+    @JAMSVarDescription (access = JAMSVarDescription.AccessType.READ)
+    public JAMSDouble potET;
+
+    @JAMSVarDescription (access = JAMSVarDescription.AccessType.WRITE)
+    public JAMSDouble snowMelt;
+
+    @JAMSVarDescription (access = JAMSVarDescription.AccessType.READ)
+    public JAMSDouble temp;
+
+    @JAMSVarDescription (access = JAMSVarDescription.AccessType.READ,
+                         unit = "mm")
+    public JAMSDouble precip;
+
+    public void run() {
+
         double snowStorage = this.snowStorage.getValue();
-        
-        double temp        = this.temp.getValue();
-        
-        double potET  = this.potET.getValue();
+
+        double temp = this.temp.getValue();
+
+        double potET = this.potET.getValue();
         double precip = this.precip.getValue();
         double pmpe = precip - potET;
-        
+
         double snowMelt = 0.0;
-        
+
         if (temp < 0.0 && pmpe > 0.0) {
             snowStorage = precip + snowStorage;
         }
-        
+
         if (snowStorage > 0.0 && temp >= 0.0) {
             snowMelt = snowStorage * 0.5;
             snowStorage = snowStorage * 0.5;
-        } else if (snowStorage == 0.0)
+        } else if (snowStorage == 0.0) {
             snowMelt = 0.0;
-        
+        }
+
         this.snowStorage.setValue(snowStorage);
         this.snowMelt.setValue(snowMelt);
     }
