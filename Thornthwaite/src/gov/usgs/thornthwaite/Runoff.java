@@ -24,32 +24,39 @@ package gov.usgs.thornthwaite;
 
 import jams.model.*;
 import jams.data.*;
-import java.io.*;
-import java.util.*;
 
 /**
  *
  * @author S. Kralisch
  */
+@JAMSComponentDescription (title = "Thorntwaite runoff",
+                           author = "Sven Kralisch",
+                           date = "30. September 2005",
+                           description = "This component calculates the runoff based on a runoff factor, tank storage, " +
+                           "surface runoff and snowmelt")
 public class Runoff extends JAMSComponent {
 
-    @JAMSVarDescription (access = JAMSVarDescription.AccessType.READ)
+    @JAMSVarDescription (access = JAMSVarDescription.AccessType.READ,
+    description="A factorn defining how much water leaves the model - the remain will be stored in the model"
+    )
     public JAMSDouble runoffFactor;
 
-    @JAMSVarDescription (access = JAMSVarDescription.AccessType.READWRITE)
+    @JAMSVarDescription (access = JAMSVarDescription.AccessType.READWRITE,
+    description="The remain, i.e. the models tank storage")
     public JAMSDouble remain;
 
-    @JAMSVarDescription (access = JAMSVarDescription.AccessType.READ)
+    @JAMSVarDescription (access = JAMSVarDescription.AccessType.READ,
+    description="Surface runoff water")
     public JAMSDouble surfaceRunoff;
 
-    @JAMSVarDescription (access = JAMSVarDescription.AccessType.READ)
+    @JAMSVarDescription (access = JAMSVarDescription.AccessType.READ,
+    description="Water coming from snow melt")
     public JAMSDouble snowMelt;
 
-    @JAMSVarDescription (access = JAMSVarDescription.AccessType.WRITE)
+    @JAMSVarDescription (access = JAMSVarDescription.AccessType.WRITE,
+    description="Simulated runoff as function of tank storage (remain), surface runoff water and snowmelt water")
     public JAMSDouble runoff;
 
-    @JAMSVarDescription (access = JAMSVarDescription.AccessType.READ)
-    public JAMSDouble precip;
 
     public void run() {
         double runoffFactor = this.runoffFactor.getValue();

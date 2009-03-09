@@ -24,44 +24,57 @@ package gov.usgs.thornthwaite;
 
 import jams.model.*;
 import jams.data.*;
-import java.io.*;
-import java.util.*;
 
 /**
  *
  * @author S. Kralisch
  */
+@JAMSComponentDescription (title = "Thorntwaite snowmelt",
+                           author = "Sven Kralisch",
+                           date = "30. September 2005",
+                           description = "This component calculates the soil moisture, actual ET and surface runoff based on " +
+"old soil moisture, potET, temperature and precipitation")
 public class SoilMoisture extends JAMSComponent {
 
-    @JAMSVarDescription (access = JAMSVarDescription.AccessType.READ)
+    @JAMSVarDescription (access = JAMSVarDescription.AccessType.READ,
+                         description = "Soil moisture storage capacity")
     public JAMSDouble soilMoistStorCap;
 
-    @JAMSVarDescription (access = JAMSVarDescription.AccessType.WRITE)
-    public JAMSDouble soilMoistStor;
-
-    @JAMSVarDescription (access = JAMSVarDescription.AccessType.READ)
+    @JAMSVarDescription (access = JAMSVarDescription.AccessType.READ,
+                         description = "Potential ET")
     public JAMSDouble potET;
 
-    @JAMSVarDescription (access = JAMSVarDescription.AccessType.WRITE)
-    public JAMSDouble surfaceRunoff;
-
-    @JAMSVarDescription (access = JAMSVarDescription.AccessType.WRITE)
-    public JAMSDouble pmpe;
-
-    @JAMSVarDescription (access = JAMSVarDescription.AccessType.WRITE)
-    public JAMSDouble actET;
-
-    @JAMSVarDescription (access = JAMSVarDescription.AccessType.WRITE)
-    public JAMSDouble dff;
-
-    @JAMSVarDescription (access = JAMSVarDescription.AccessType.READ)
+    @JAMSVarDescription (access = JAMSVarDescription.AccessType.READ,
+                         description = "Temperature")
     public JAMSDouble temp;
 
-    @JAMSVarDescription (access = JAMSVarDescription.AccessType.READ)
+    @JAMSVarDescription (access = JAMSVarDescription.AccessType.READ,
+                         description = "Precipitation")
     public JAMSDouble precip;
 
-    @JAMSVarDescription (access = JAMSVarDescription.AccessType.READWRITE)
+    @JAMSVarDescription (access = JAMSVarDescription.AccessType.READWRITE,
+                         description = "Old soil moisture")
     public JAMSDouble prestor;
+
+    @JAMSVarDescription (access = JAMSVarDescription.AccessType.WRITE,
+                         description = "Simulated soil moisture")
+    public JAMSDouble soilMoistStor;
+
+    @JAMSVarDescription (access = JAMSVarDescription.AccessType.WRITE,
+                         description = "Surface runoff")
+    public JAMSDouble surfaceRunoff;
+
+    @JAMSVarDescription (access = JAMSVarDescription.AccessType.WRITE,
+                         description = "Difference between precip and potential ET")
+    public JAMSDouble pmpe;
+
+    @JAMSVarDescription (access = JAMSVarDescription.AccessType.WRITE,
+                         description = "Actual ET")
+    public JAMSDouble actET;
+
+    @JAMSVarDescription (access = JAMSVarDescription.AccessType.WRITE,
+                         description = "Difference betwenn potential ET and actual ET")
+    public JAMSDouble dff;
 
     public void run() {
         // get the parameter values

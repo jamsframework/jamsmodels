@@ -29,15 +29,22 @@ import jams.data.*;
  *
  * @author S. Kralisch
  */
+@JAMSComponentDescription (title = "Thorntwaite daylength",
+                           author = "Sven Kralisch",
+                           date = "30. September 2005",
+                           description = "This component calculates the length of a day in the current month based on the latitude")
 public class Daylen extends JAMSComponent {
 
-    @JAMSVarDescription (access = JAMSVarDescription.AccessType.READ)
+    @JAMSVarDescription (access = JAMSVarDescription.AccessType.READ,
+                         description = "Current time")
     public JAMSCalendar time;
 
-    @JAMSVarDescription (access = JAMSVarDescription.AccessType.READ)
+    @JAMSVarDescription (access = JAMSVarDescription.AccessType.READ,
+                         description = "The models latitude")
     public JAMSDouble latitude;
 
-    @JAMSVarDescription (access = JAMSVarDescription.AccessType.WRITE)
+    @JAMSVarDescription (access = JAMSVarDescription.AccessType.WRITE,
+                         description = "Length of a day at the current time")
     public JAMSDouble daylength;
 
     static final int[] DAYS = {

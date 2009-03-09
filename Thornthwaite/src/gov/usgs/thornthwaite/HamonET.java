@@ -29,20 +29,26 @@ import jams.data.*;
  *
  * @author S. Kralisch
  */
+@JAMSComponentDescription (title = "Thorntwaite potET",
+                           author = "Sven Kralisch",
+                           date = "30. September 2005",
+                           description = "This component calculates the potential ET after Hamon based on time, temperature and day length")
 public class HamonET extends JAMSComponent {
 
-    @JAMSVarDescription (access = JAMSVarDescription.AccessType.READ)
+    @JAMSVarDescription (access = JAMSVarDescription.AccessType.READ,
+                         description = "Current time")
     public JAMSCalendar time;
 
-    @JAMSVarDescription (access = JAMSVarDescription.AccessType.READ)
+    @JAMSVarDescription (access = JAMSVarDescription.AccessType.READ,
+                         description = "Current temperature")
     public JAMSDouble temp;
 
     @JAMSVarDescription (access = JAMSVarDescription.AccessType.READ,
-                         unit = "ft³/s")
+                         description = "Length of a day in this month")
     public JAMSDouble daylength;
 
     @JAMSVarDescription (access = JAMSVarDescription.AccessType.WRITE,
-                         unit = "L/s")
+                         description = "Resulting potential ET")
     public JAMSDouble potET;
 
     /*
@@ -74,5 +80,4 @@ public class HamonET extends JAMSComponent {
 
         this.potET.setValue(potET);
     }
-
 }

@@ -31,15 +31,22 @@ import java.io.File;
  *
  * @author S. Kralisch
  */
+@JAMSComponentDescription (title = "Thorntwaite model climate reader",
+                           author = "Sven Kralisch",
+                           date = "30. September 2005",
+                           description = "This component reads timeseries of temperature and precipitation from an ASCII file")
 public class Climate extends JAMSComponent {
 
-    @JAMSVarDescription (access = JAMSVarDescription.AccessType.READ)
+    @JAMSVarDescription (access = JAMSVarDescription.AccessType.READ,
+                         description = "File containg the data")
     public JAMSString fileName;
 
-    @JAMSVarDescription (access = JAMSVarDescription.AccessType.WRITE)
+    @JAMSVarDescription (access = JAMSVarDescription.AccessType.WRITE,
+                         description = "Temperature read from the file")
     public JAMSDouble temp;
 
-    @JAMSVarDescription (access = JAMSVarDescription.AccessType.WRITE)
+    @JAMSVarDescription (access = JAMSVarDescription.AccessType.WRITE,
+                         description = "Precipitation read from the file")
     public JAMSDouble precip;
 
     private JAMSTableDataStore store;

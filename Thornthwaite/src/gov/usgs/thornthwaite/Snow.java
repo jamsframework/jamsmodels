@@ -24,30 +24,37 @@ package gov.usgs.thornthwaite;
 
 import jams.model.*;
 import jams.data.*;
-import java.io.*;
-import java.util.*;
 
 /**
  *
  * @author S. Kralisch
  */
+@JAMSComponentDescription (title = "Thorntwaite snowmelt",
+                           author = "Sven Kralisch",
+                           date = "30. September 2005",
+                           description = "This component calculates the snow melt based on a snow storage, potET, " +
+"temperature and precipitation")
 public class Snow extends JAMSComponent {
 
-    @JAMSVarDescription (access = JAMSVarDescription.AccessType.READWRITE)
+    @JAMSVarDescription (access = JAMSVarDescription.AccessType.READWRITE,
+                         description = "Amount of water currently stored as snow")
     public JAMSDouble snowStorage;
 
-    @JAMSVarDescription (access = JAMSVarDescription.AccessType.READ)
+    @JAMSVarDescription (access = JAMSVarDescription.AccessType.READ,
+                         description = "Current potential ET")
     public JAMSDouble potET;
 
-    @JAMSVarDescription (access = JAMSVarDescription.AccessType.WRITE)
-    public JAMSDouble snowMelt;
-
-    @JAMSVarDescription (access = JAMSVarDescription.AccessType.READ)
+    @JAMSVarDescription (access = JAMSVarDescription.AccessType.READ,
+                         description = "Current temperature")
     public JAMSDouble temp;
 
     @JAMSVarDescription (access = JAMSVarDescription.AccessType.READ,
-                         unit = "mm")
+                         description = "Current precipitation")
     public JAMSDouble precip;
+
+    @JAMSVarDescription (access = JAMSVarDescription.AccessType.WRITE,
+                         description = "Simulated snow melt water")
+    public JAMSDouble snowMelt;
 
     public void run() {
 

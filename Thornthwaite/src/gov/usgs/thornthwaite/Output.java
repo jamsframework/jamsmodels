@@ -31,28 +31,39 @@ import java.io.File;
  *
  * @author S. Kralisch
  */
+@JAMSComponentDescription (title = "Thorntwaite data output",
+                           author = "Sven Kralisch",
+                           date = "30. September 2005",
+                           description = "This component writes various model results to an ASCII file")
 public class Output extends JAMSComponent {
 
-    @JAMSVarDescription (access = JAMSVarDescription.AccessType.READ)
+    @JAMSVarDescription (access = JAMSVarDescription.AccessType.READ,
+                         description = "Calculated day length")
     public JAMSDouble daylength;
 
-    @JAMSVarDescription (access = JAMSVarDescription.AccessType.READ)
+    @JAMSVarDescription (access = JAMSVarDescription.AccessType.READ,
+                         description = "Model time")
     public JAMSCalendar time;
 
-    @JAMSVarDescription (access = JAMSVarDescription.AccessType.READ)
+    @JAMSVarDescription (access = JAMSVarDescription.AccessType.READ,
+                         description = "Simulated potET")
     public JAMSDouble potET;
 
-    @JAMSVarDescription (access = JAMSVarDescription.AccessType.READ)
+    @JAMSVarDescription (access = JAMSVarDescription.AccessType.READ,
+                         description = "Simulated snow melt")
     public JAMSDouble snowMelt;
 
-    @JAMSVarDescription (access = JAMSVarDescription.AccessType.READ)
+    @JAMSVarDescription (access = JAMSVarDescription.AccessType.READ,
+                         description = "Simulated runoff")
     public JAMSDouble runoff;
 
-    @JAMSVarDescription (access = JAMSVarDescription.AccessType.READ)
-    public JAMSString fileName;
-
-    @JAMSVarDescription (access = JAMSVarDescription.AccessType.READ)
+    @JAMSVarDescription (access = JAMSVarDescription.AccessType.READ,
+                         description = "Simulated soil moisture storage")
     public JAMSDouble soilMoistStor;
+
+    @JAMSVarDescription (access = JAMSVarDescription.AccessType.READ,
+                         description = "Output file name")
+    public JAMSString fileName;
 
     private GenericDataWriter writer;
 
@@ -89,8 +100,6 @@ public class Output extends JAMSComponent {
     }
 
     public void cleanup() {
-
         writer.close();
-
     }
 }
