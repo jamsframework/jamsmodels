@@ -798,7 +798,7 @@ import java.io.*;
             this.act_MPS = sat_MPS.getValue()[i] * sto_MPS;
             
             
-            this.runC_org = C_org.getValue()[i];
+            this.runC_org = C_org.getValue()[i] / 1.72;
             this.runNO3_Pool = NO3_Poolvals[i];
             this.runNH4_Pool = NH4_Pool.getValue()[i];
             this.runN_activ_pool = N_activ_pool.getValue()[i];
@@ -861,14 +861,20 @@ import java.io.*;
                 gamma_water = 0;
             }
             
-            
+
+            if (runSoil_Temp_Layer > 5){
             
             precalc_nit_vol = calc_nit_volati(i);
             
             runvolati_trans = calc_voltalisation();
             
             runnitri_trans = calc_nitrification();
-            
+
+            }else{
+            runvolati_trans = 0;
+            runnitri_trans = 0;
+            }
+
             Hum_trans = calc_Hum_trans();
             
             
@@ -1129,11 +1135,7 @@ import java.io.*;
         }
         // writing of pools
         double[] zerosetter = new double[layer];
-        i = 0;
-        while (i < layer){
-            zerosetter[i] = 0;
-            i++;
-        }
+       
         NO3_Pool.setValue(NO3_Poolvals);
         NH4_Pool.setValue(NH4_Poolvals);
         N_activ_pool.setValue(N_activ_poolvals);
@@ -1300,9 +1302,9 @@ import java.io.*;
             
             else{
                 
-                demandN_up_z[j] = upNO3_Pool - potN_up_z[j];
+                demandN_up_z[j] = demand1;
                 
-                upNO3_Pool = 0;
+                upNO3_Pool = upNO3_Pool - (upNO3_Pool * partroot[j]);
                 
             }
             
@@ -1435,24 +1437,18 @@ import java.io.*;
     
     private double calc_nitrification(){
         double nitri_trans = 0;
-        
-        if (runSoil_Temp_Layer > 5){
+                
             nitri_trans =  (frac_nitr /(frac_nitr + frac_vol)) * N_nit_vol;
-        } else if (runSoil_Temp_Layer <= 5){
-            nitri_trans = 0;
-        }
+        
         return nitri_trans;
         
     }
     
     private double calc_voltalisation(){
         double volati_trans = 0;
-        
-        if (runSoil_Temp_Layer > 5){
+                
             volati_trans =  (frac_vol /(frac_nitr + frac_vol)) * N_nit_vol;
-        } else if (runSoil_Temp_Layer <= 5){
-            volati_trans = 0;
-        }
+        
         return volati_trans;
     }
     
@@ -1471,7 +1467,7 @@ import java.io.*;
     
     private double calc_nitrateupmove(int j){
         double n_upmove = 0;
-        double runaEvap = aEP_h.getValue()[j];
+        double runaEvap = aEP_h.getValue()[j] * this.runarea;
         double sto_MPS = stohru_MPS.getValue()[j];
         double sto_LPS = stohru_LPS.getValue()[j];
         double sto_FPS = stohru_FPS.getValue()[j];
@@ -1493,7 +1489,7 @@ import java.io.*;
         double  mobilewater = 0;
         double  soilstorage = 0;
         
-        soilstorage = sto_LPS + sto_MPS + sto_FPS;
+        soilstorage = act_LPS + act_MPS + sto_FPS;
         if (i == 0) {
             mobilewater = (RD1_out_mm * runBeta_NO3) + RD2_out_mm + h_perco_mm + hor_by_infilt[i] + diffout[i] + 1.e-10;
         }
