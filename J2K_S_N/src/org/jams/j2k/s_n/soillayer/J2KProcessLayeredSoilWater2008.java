@@ -931,8 +931,21 @@ import jams.model.*;
         
 
         //calculate water fluxes
-        
-        flux_h_h1[h] = pot_flux * gradient_h_h1[h] / resistance_h_h1[h];
+
+
+
+
+        double flux = (pot_flux * gradient_h_h1[h] / resistance_h_h1[h]);
+
+
+
+                if (flux >= 0) {
+                    flux_h_h1[h] = Math.min(flux, pot_flux);
+                //flux_h1_h[h] = Math.min(Math.min(flux, pot_flux), maxflux);
+                } else {
+                    //flux_h1_h[h] = Math.max(Math.max(flux, -pot_flux), -maxflux);
+                    flux_h_h1[h] = Math.max(flux, -pot_flux);
+                }
         
         }else{
           
