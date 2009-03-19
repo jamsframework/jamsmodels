@@ -240,7 +240,7 @@ title="InitJ2KNSoillayer",
         
         while (i < layer){
             
-            runC_org = C_org.getValue()[i] / (1.72 * 2);
+            runC_org = C_org.getValue()[i] / 1.72;
             runsoil_bulk_density = soil_bulk_density.getValue()[i];
             runlayerdepth = layerdepth.getValue()[i] * 10; //from cm to mm
             hor_dept = hor_dept + runlayerdepth;

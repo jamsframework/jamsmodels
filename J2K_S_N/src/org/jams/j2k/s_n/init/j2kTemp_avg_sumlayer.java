@@ -102,9 +102,9 @@ import jams.model.*;
      */
     
     public void init() {
-        tmeanavg.setValue(0);
+/*        tmeanavg.setValue(0);
         tmeansum.setValue(0);
-        I.setValue(0);
+        I.setValue(0); */
         
         
         
