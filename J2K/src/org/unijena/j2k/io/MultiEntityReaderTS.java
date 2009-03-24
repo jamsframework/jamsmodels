@@ -257,7 +257,7 @@ public class MultiEntityReaderTS extends JAMSComponent {
         HashMap<JAMSEntity, Integer> fromIMap = new HashMap<JAMSEntity, Integer>();
         HashMap<JAMSEntity, Integer> depthMap = new HashMap<JAMSEntity, Integer>();
         Integer eDepth, fDepth;
-        boolean zirkel = false, mapChanged;
+        boolean aufloesbar = false, unaufloesbar = false, mapChanged;
 
         //Identifikation und Aufloesung von Zirkeln
         if ((asso.toString()).equals("to_poly")) {
@@ -266,11 +266,11 @@ public class MultiEntityReaderTS extends JAMSComponent {
 
             marke:
             while (entityIterator.hasNext()) {
-                if (zirkel == false) {
+                if (aufloesbar == false) {
                     e = entityIterator.next();
                 }
 
-                zirkel = false;
+                aufloesbar = false;
                 e_ziel_neu = e;
                 System.out.println("Untersuche HRU " + e.getDouble("ID") + " auf Zirkelbezuege");
 
@@ -302,8 +302,6 @@ public class MultiEntityReaderTS extends JAMSComponent {
                                 e_ziel.setObject("bfl", e_ziel_to_hru_bfl);
 
                                 if (e == e_ziel_to_hru[i]) {
-                                    zirkel = true;
-
                                     // Identifikation der kleinsten Beitragenden Flaeche
                                     JAMSEntity eZirkel = e_ziel, eBflMin = null;
                                     int iZirkel = i, iZirkelMin = -1, teilerMin = -1;
@@ -324,6 +322,7 @@ public class MultiEntityReaderTS extends JAMSComponent {
                                             Double[] eZirkel_to_hru_bfl = (Double[]) eZirkel.getObject("bfl");
                                             bflZirkel = eZirkel_to_hru_bfl[iZirkel];
                                             if (bflZirkelMin == -1 || bflZirkel < bflZirkelMin) {
+                                                aufloesbar = true;
                                                 bflZirkelMin = bflZirkel;
                                                 eBflMin = eZirkel;
                                                 iZirkelMin = iZirkel;
@@ -364,6 +363,9 @@ public class MultiEntityReaderTS extends JAMSComponent {
                                         eBflMin.setObject("to_poly", eBflMin_to_hru);
                                         eBflMin_to_hru_weights[iZirkelMin] = null;
                                         eBflMin.setObject("to_poly_weights", eBflMin_to_hru_weights);
+                                    } else {
+                                        unaufloesbar = true;
+                                        System.out.println("Nicht aufloesbarer Zirkel! Fliessbeziehung von HRU " + e_ziel.getDouble("ID") + " zu HRU " + e_ziel_to_hru[i].getDouble("ID") + " kann nicht unterbrochen werden.");
                                     }
                                     continue marke;
                                 }
@@ -392,6 +394,10 @@ public class MultiEntityReaderTS extends JAMSComponent {
                         e_ziel_neu = fromHruMap.get(e_ziel);
                     }
                 }
+            }
+            //Abbruch wegen nicht aufl?sbaren Zirkels
+            if (unaufloesbar == true) {
+                getModel().getRuntime().sendHalt("Nicht aufloesbare Zirkel in HRU-Muster");
             }
         }
 
