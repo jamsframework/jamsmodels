@@ -108,11 +108,6 @@ import jams.model.*;
         this.totQcbm.setValue(totOut);
         this.dirQcbm.setValue((dirQ.getValue() * cArea.getValue()) / (86400 * 1000));
         this.basQcbm.setValue((basQ.getValue() * cArea.getValue()) / (86400 * 1000));
-        
-        //System.out.println("Area:" + cArea.getValue());
-        //System.out.println("dirQ:" + dirQ.getValue());
-        //System.out.println("interflow:" + interflow.getValue());
-        //System.out.println("basQ:" + basQ.getValue());
     }
     
     public void cleanup() {
