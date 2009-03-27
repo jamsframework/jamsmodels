@@ -102,6 +102,14 @@ import jams.model.*;
             description = "total outflow mm"
             )
             public JAMSDouble totQmm;
+
+    @JAMSVarDescription(
+            access = JAMSVarDescription.AccessType.READ,
+            update = JAMSVarDescription.UpdateType.RUN,
+            description = "the actual time step",
+            defaultValue = "null"
+            )
+            public JAMSCalendar timeStep;
     
     /*
      *  Component run stages
@@ -112,27 +120,26 @@ import jams.model.*;
     }
     
     public void run() throws JAMSEntity.NoSuchAttributeException {
-        
+        long days = 1;
+        if(this.timeStep != null)
+            days = timeStep.getActualMaximum(timeStep.DAY_OF_MONTH);
         double totOut = 0;
+        
         if(this.interflow != null)
             totOut = this.dirQ.getValue() + this.interflow.getValue() + this.basQ.getValue();
         else
             totOut = this.dirQ.getValue() + this.basQ.getValue();
         
         this.totQmm.setValue(totOut);
-        //conversion from mm to m^3/time
-        totOut = (totOut * cArea.getValue()) / (86400 * 1000);
-        
+        //conversion from mm to m^3/s
+        totOut = (totOut * cArea.getValue()) / (86400 * 1000 * days);
         this.totQcbm.setValue(totOut);
-        this.dirQcbm.setValue((dirQ.getValue() * cArea.getValue()) / (86400 * 1000));
+        this.dirQcbm.setValue((dirQ.getValue() * cArea.getValue()) / (86400 * 1000 * days));
         if(this.interflow != null)
-            this.infQcbm.setValue((interflow.getValue() * cArea.getValue()) / (86400 * 1000));
-        this.basQcbm.setValue((basQ.getValue() * cArea.getValue()) / (86400 * 1000));
+            this.infQcbm.setValue((interflow.getValue() * cArea.getValue()) / (86400 * 1000 * days));
+        this.basQcbm.setValue((basQ.getValue() * cArea.getValue()) / (86400 * 1000 * days));
         
-        //System.out.println("Area:" + cArea.getValue());
-        //System.out.println("dirQ:" + dirQ.getValue());
-        //System.out.println("interflow:" + interflow.getValue());
-        //System.out.println("basQ:" + basQ.getValue());
+        
     }
     
     public void cleanup() {
