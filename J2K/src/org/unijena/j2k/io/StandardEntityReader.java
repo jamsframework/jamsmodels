@@ -22,12 +22,29 @@
  */
 package org.unijena.j2k.io;
 
-import org.unijena.j2k.*;
-import jams.data.*;
-import jams.model.*;
-import java.util.*;
+//import org.unijena.j2k.*;
+
 import jams.JAMS;
 import jams.JAMSTools;
+import jams.data.JAMSDataFactory;
+import jams.data.JAMSDouble;
+import jams.data.JAMSEntity;
+import jams.data.JAMSEntityCollection;
+import jams.data.JAMSString;
+import jams.model.JAMSComponent;
+import jams.model.JAMSVarDescription;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.Stack;
+import org.unijena.j2k.J2KFunctions;
+
+//import jams.data.*;
+//import jams.model.*;
+//import java.util.*;
+//import jams.JAMS;
+//import jams.JAMSTools;
 
 /**
  *

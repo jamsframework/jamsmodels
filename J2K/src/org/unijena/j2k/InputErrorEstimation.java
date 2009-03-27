@@ -29,7 +29,7 @@ import jams.data.*;
 
 /**
  *
- * @author S. Kralisch
+ * @author Peter Krause
  */
 @JAMSComponentDescription(
         title="InputErrorEstimation",
