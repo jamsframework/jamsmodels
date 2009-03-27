@@ -48,11 +48,27 @@ public class StandardEntityReader_1 extends JAMSComponent {
             description = "entity collection"
             )
             public JAMSEntityCollection entities;
+
+    @JAMSVarDescription(
+            access = JAMSVarDescription.AccessType.WRITE,
+            description = "Name of identifier",
+            defaultValue = "ID"
+            )
+            public JAMSString identName;
     
     public void init() throws JAMSEntity.NoSuchAttributeException {
        
         //read entity parameter        
         entities.setEntities(J2KFunctions.readParas(JAMSTools.CreateAbsoluteFileName(getModel().getWorkspaceDirectory().getPath(),entityFileName.getValue()), getModel()));
+
+        for (JAMSEntity e : entities.getEntityArray()) {
+            try {
+                e.setId((long) e.getDouble(identName.getValue()));
+            } catch (JAMSEntity.NoSuchAttributeException nsae) {
+                getModel().getRuntime().sendErrorMsg("Couldn't find attribute \"" + identName + "\" while reading J2K HRU parameter file (" + hruFileName.getValue() + ")!");
+            }
+        }
+
         int nEnt = entities.getEntityArray().length;
         getModel().getRuntime().println("Entities read and created successfull! ("+nEnt+")", JAMS.STANDARD);
         

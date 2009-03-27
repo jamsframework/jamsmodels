@@ -34,14 +34,25 @@ import jams.JAMSTools;
  * @author S. Kralisch
  */
 public class StandardEntityReader extends JAMSComponent {
-    
-    @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ, update = JAMSVarDescription.UpdateType.INIT, description = "HRU parameter file name")
+
+    @JAMSVarDescription (access = JAMSVarDescription.AccessType.READ,
+                         update = JAMSVarDescription.UpdateType.INIT,
+                         description = "HRU parameter file name")
     public JAMSString hruFileName;
-    @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ, update = JAMSVarDescription.UpdateType.INIT, description = "Reach parameter file name")
+
+    @JAMSVarDescription (access = JAMSVarDescription.AccessType.READ,
+                         update = JAMSVarDescription.UpdateType.INIT,
+                         description = "Reach parameter file name")
     public JAMSString reachFileName;
-    @JAMSVarDescription(access = JAMSVarDescription.AccessType.WRITE, update = JAMSVarDescription.UpdateType.RUN, description = "Collection of hru objects")
+
+    @JAMSVarDescription (access = JAMSVarDescription.AccessType.WRITE,
+                         update = JAMSVarDescription.UpdateType.RUN,
+                         description = "Collection of hru objects")
     public JAMSEntityCollection hrus;
-    @JAMSVarDescription(access = JAMSVarDescription.AccessType.WRITE, update = JAMSVarDescription.UpdateType.RUN, description = "Collection of reach objects")
+
+    @JAMSVarDescription (access = JAMSVarDescription.AccessType.WRITE,
+                         update = JAMSVarDescription.UpdateType.RUN,
+                         description = "Collection of reach objects")
     public JAMSEntityCollection reaches;
 
     public void init() throws JAMSEntity.NoSuchAttributeException {
@@ -59,6 +70,14 @@ public class StandardEntityReader extends JAMSComponent {
         //read reach parameter
         //reaches = new JAMSEntityCollection();
         reaches.setEntities(J2KFunctions.readParas(JAMSTools.CreateAbsoluteFileName(getModel().getWorkspaceDirectory().getPath(), reachFileName.getValue()), getModel()));
+
+        for (JAMSEntity e : reaches.getEntityArray()) {
+            try {
+                e.setId((long) e.getDouble("ID"));
+            } catch (JAMSEntity.NoSuchAttributeException nsae) {
+                getModel().getRuntime().sendErrorMsg("Couldn't find attribute \"ID\" while reading J2K HRU parameter file (" + hruFileName.getValue() + ")!");
+            }
+        }
 
         //create object associations from id attributes for hrus and reaches
         createTopology();
