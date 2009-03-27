@@ -65,7 +65,7 @@ public class StandardEntityReader_1 extends JAMSComponent {
             try {
                 e.setId((long) e.getDouble(identName.getValue()));
             } catch (JAMSEntity.NoSuchAttributeException nsae) {
-                getModel().getRuntime().sendErrorMsg("Couldn't find attribute \"" + identName + "\" while reading J2K HRU parameter file (" + hruFileName.getValue() + ")!");
+                getModel().getRuntime().sendErrorMsg("Couldn't find attribute \"" + identName + "\" while reading J2K HRU parameter file (" + entityFileName.getValue() + ")!");
             }
         }
 
