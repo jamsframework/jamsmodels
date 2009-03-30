@@ -53,9 +53,9 @@ import jams.model.*;
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
             update = JAMSVarDescription.UpdateType.RUN,
-            description = "The current hru entity"
+            description = "The current hru entities"
             )
-            public JAMSEntity entity;
+            public JAMSEntityCollection entities;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
@@ -549,7 +549,11 @@ import jams.model.*;
         double balET = 0;
         double sumactETP = 0;
         debug = false;
-        
+
+        long entityID = entities.getCurrent().getId();
+        if(entityID == 43)
+            System.out.println("stop!");
+
         //System.out.getRuntime().println("Processing HRU: " + entity.getDouble("ID"));
         //if(this.time.get(time.DATE) == 23 && this.time.get(time.MONTH)==10 && this.time.get(time.YEAR)==1989){
         //    if(entity.getDouble("ID") == 1027.0)
@@ -770,7 +774,7 @@ import jams.model.*;
         
         double balance = balIn + (balMPSstart - balMPSend)+(balLPSstart - balLPSend)+(balDPSstart - balDPSend) - balOut;
         if(Math.abs(balance) > 0.00001)
-            System.out.println("balance error at : " + time.toString() + " --> "+ balance);
+            System.out.println("balance error at : " + time.toString() + " --> "+ balance + " in entity: " + entities.getCurrent().getId());
         
         satMPS.setValue(this.run_satMPS);
         satLPS.setValue(this.run_satLPS);
