@@ -551,8 +551,8 @@ import jams.model.*;
         debug = false;
 
         long entityID = entities.getCurrent().getId();
-        if(entityID == 43)
-            System.out.println("stop!");
+        //if(entityID == 43)
+        //    System.out.println("stop!");
 
         //System.out.getRuntime().println("Processing HRU: " + entity.getDouble("ID"));
         //if(this.time.get(time.DATE) == 23 && this.time.get(time.MONTH)==10 && this.time.get(time.YEAR)==1989){
@@ -1362,6 +1362,9 @@ import jams.model.*;
         double LPSoutflow = potLPSoutflow;// * ( 1 / this.parameter.getDouble("lps_kfForm"));
         if(LPSoutflow > this.run_actLPS[hor])
             LPSoutflow = this.run_actLPS[hor];
+
+        if(LPSoutflow < 0)
+            LPSoutflow = 0;
         
         this.run_actLPS[hor] = this.run_actLPS[hor] - LPSoutflow;
         
