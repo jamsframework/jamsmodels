@@ -140,8 +140,8 @@ public class TSDataReader extends JAMSComponent {
             //metadata tags
             StringTokenizer strTok = new StringTokenizer(line, "\t");
             String token = strTok.nextToken();
-            while(token.compareTo("@dataVal") != 0){
-                if(token.compareTo("@dataValueAttribs") == 0){
+            while(token.toLowerCase().compareTo("@dataVal") != 0){
+                if(token.toLowerCase().compareTo("@dataValueAttribs") == 0){
                     line = reader.readLine();
                     headerLineCount++;
                     strTok = new StringTokenizer(line, "\t");
@@ -152,24 +152,24 @@ public class TSDataReader extends JAMSComponent {
                     strTok = new StringTokenizer(line, "\t");
                     token = strTok.nextToken();
                     headerLineCount++;
-                }else if(token.compareTo("@dataSetAttribs") == 0){
+                }else if(token.toLowerCase().compareTo("@dataSetAttribs") == 0){
                     int i = 0;
                     line = reader.readLine();
                     while(i < 4){
                         headerLineCount++;
                         strTok = new StringTokenizer(line, "\t ");
                         String desc = strTok.nextToken();
-                        if(desc.compareTo("missingDataVal") == 0){
+                        if(desc.toLowerCase().compareTo("missingDataVal") == 0){
                            missData = Double.parseDouble(strTok.nextToken()); 
-                        }else if(desc.compareTo("dataStart") == 0){
+                        }else if(desc.toLowerCase().compareTo("dataStart") == 0){
                            start = strTok.nextToken(); //date part
                            if(strTok.hasMoreTokens())  //potential time part
                                start = start + " " + strTok.nextToken();
-                        }else if(desc.compareTo("dataEnd") == 0){
+                        }else if(desc.toLowerCase().compareTo("dataEnd") == 0){
                            end = strTok.nextToken();   //date part
                            if(strTok.hasMoreTokens())  //potential time part
                                end = end + " " + strTok.nextToken();
-                        }else if(desc.compareTo("tres") == 0){
+                        }else if(desc.toLowerCase().compareTo("tres") == 0){
                            tres = strTok.nextToken(); 
                         }
                         i++;
@@ -177,7 +177,7 @@ public class TSDataReader extends JAMSComponent {
                         strTok = new StringTokenizer(line, "\t");
                         token = strTok.nextToken();
                     }   
-                }else if(token.compareTo("@statAttribVal") == 0){
+                }else if(token.toLowerCase().compareTo("@statAttribVal") == 0){
                     int i = 0;
                     line = reader.readLine();
                     while(i < 6){
@@ -186,27 +186,27 @@ public class TSDataReader extends JAMSComponent {
                        String desc = strTok.nextToken();
                        int nstat = strTok.countTokens();
                        
-                       if(desc.compareTo("name") == 0){
+                       if(desc.toLowerCase().compareTo("name") == 0){
                            name = new String[nstat];
                            for(int j = 0; j < nstat; j++)
                                name[j] = strTok.nextToken();
-                       }else if(desc.compareTo("ID") == 0){
+                       }else if(desc.toLowerCase().compareTo("id") == 0){
                            id = new String[nstat];
                            for(int j = 0; j < nstat; j++)
                                id[j] = strTok.nextToken();
-                       }else if(desc.compareTo("elevation") == 0){
+                       }else if(desc.toLowerCase().compareTo("elevation") == 0){
                            statelev = new double[nstat];
                            for(int j = 0; j < nstat; j++)
                                statelev[j] = Double.parseDouble(strTok.nextToken());
-                       }else if(desc.compareTo("x") == 0){
+                       }else if(desc.toLowerCase().compareTo("x") == 0){
                            statx = new double[nstat];
                            for(int j = 0; j < nstat; j++)
                                statx[j] = Double.parseDouble(strTok.nextToken());
-                       }else if(desc.compareTo("y") == 0){
+                       }else if(desc.toLowerCase().compareTo("y") == 0){
                            staty = new double[nstat];
                            for(int j = 0; j < nstat; j++)
                                staty[j] = Double.parseDouble(strTok.nextToken());
-                       }else if(desc.compareTo("dataColumn")==0){
+                       }else if(desc.toLowerCase().compareTo("dataColumn")==0){
                            //do nothing for the moment just counting
                            headerLineCount++;
                            headerLineCount++;
