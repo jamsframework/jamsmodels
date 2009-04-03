@@ -274,7 +274,10 @@ title="StandardEfficiencyCalculator",
             this.effTimeInterval.setEnd(model_ed);
             getModel().getRuntime().println("effEnddate was set equal to model enddate", JAMS.STANDARD);
         }
-        
+        if(eff_ed.before(model_sd)){
+            this.effTimeInterval.setEnd(model_ed);
+            getModel().getRuntime().println("effEnddate was set equal to model enddate", JAMS.STANDARD);
+        }
         /*if(eff_tres == eff_sd.DAY_OF_YEAR){
             this.effTsteps = (int)((edEff - sdEff) / (1000 * 60 * 60 * 24));
             this.effTsteps = this.effTsteps + 1;
