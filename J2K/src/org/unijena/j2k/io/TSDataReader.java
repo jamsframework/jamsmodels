@@ -140,8 +140,8 @@ public class TSDataReader extends JAMSComponent {
             //metadata tags
             StringTokenizer strTok = new StringTokenizer(line, "\t");
             String token = strTok.nextToken();
-            while(token.toLowerCase().compareTo("@dataVal") != 0){
-                if(token.toLowerCase().compareTo("@dataValueAttribs") == 0){
+            while(token.toLowerCase().compareTo("@dataval") != 0){
+                if(token.toLowerCase().compareTo("@datavalueattribs") == 0){
                     line = reader.readLine();
                     headerLineCount++;
                     strTok = new StringTokenizer(line, "\t");
@@ -152,20 +152,20 @@ public class TSDataReader extends JAMSComponent {
                     strTok = new StringTokenizer(line, "\t");
                     token = strTok.nextToken();
                     headerLineCount++;
-                }else if(token.toLowerCase().compareTo("@dataSetAttribs") == 0){
+                }else if(token.toLowerCase().compareTo("@datasetattribs") == 0){
                     int i = 0;
                     line = reader.readLine();
                     while(i < 4){
                         headerLineCount++;
                         strTok = new StringTokenizer(line, "\t ");
                         String desc = strTok.nextToken();
-                        if(desc.toLowerCase().compareTo("missingDataVal") == 0){
+                        if(desc.toLowerCase().compareTo("missingdataval") == 0){
                            missData = Double.parseDouble(strTok.nextToken()); 
-                        }else if(desc.toLowerCase().compareTo("dataStart") == 0){
+                        }else if(desc.toLowerCase().compareTo("datastart") == 0){
                            start = strTok.nextToken(); //date part
                            if(strTok.hasMoreTokens())  //potential time part
                                start = start + " " + strTok.nextToken();
-                        }else if(desc.toLowerCase().compareTo("dataEnd") == 0){
+                        }else if(desc.toLowerCase().compareTo("dataend") == 0){
                            end = strTok.nextToken();   //date part
                            if(strTok.hasMoreTokens())  //potential time part
                                end = end + " " + strTok.nextToken();
@@ -177,7 +177,7 @@ public class TSDataReader extends JAMSComponent {
                         strTok = new StringTokenizer(line, "\t");
                         token = strTok.nextToken();
                     }   
-                }else if(token.toLowerCase().compareTo("@statAttribVal") == 0){
+                }else if(token.toLowerCase().compareTo("@statattribval") == 0){
                     int i = 0;
                     line = reader.readLine();
                     while(i < 6){
@@ -206,7 +206,7 @@ public class TSDataReader extends JAMSComponent {
                            staty = new double[nstat];
                            for(int j = 0; j < nstat; j++)
                                staty[j] = Double.parseDouble(strTok.nextToken());
-                       }else if(desc.toLowerCase().compareTo("dataColumn")==0){
+                       }else if(desc.toLowerCase().compareTo("datacolumn")==0){
                            //do nothing for the moment just counting
                            headerLineCount++;
                            headerLineCount++;
