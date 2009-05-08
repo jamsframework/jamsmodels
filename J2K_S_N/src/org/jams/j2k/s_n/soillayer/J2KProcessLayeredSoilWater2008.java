@@ -550,7 +550,7 @@ import jams.model.*;
         double sumactETP = 0;
         debug = false;
 
-        long entityID = entities.getCurrent().getId();
+        //long entityID = entities.getCurrent().getId();
         //if(entityID == 43)
         //    System.out.println("stop!");
 
