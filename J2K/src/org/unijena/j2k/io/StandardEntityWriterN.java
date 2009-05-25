@@ -117,7 +117,7 @@ public class StandardEntityWriterN extends JAMSComponent {
         dateVals = new String[tsteps];
         
         //daily values
-        if(this.timeInterval.getTimeUnit() == 5){
+        if(this.timeInterval.getTimeUnit() == 6){
             //timeFormat = "%1$td.%1$tm.%1$tY";
             dateFormat = new SimpleDateFormat("dd.MM.yyyy");            
             aggMatrix = new double[tsteps][nEnts];

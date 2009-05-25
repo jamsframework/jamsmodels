@@ -32,7 +32,7 @@ public class TimeNumbers {
         System.out.println("seconds: " + time.SECOND);
         System.out.println("Minutes: " + time.MINUTE);
         System.out.println("Hours: " + time.HOUR_OF_DAY);
-        System.out.println("Days: " + time.DATE);
+        System.out.println("Day: " + time.DAY_OF_YEAR);
         System.out.println("Months: " + time.MONTH);
         System.out.println("Years: " + time.YEAR);
         
