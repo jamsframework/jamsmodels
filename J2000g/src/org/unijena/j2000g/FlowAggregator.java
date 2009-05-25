@@ -106,8 +106,7 @@ import jams.model.*;
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
             update = JAMSVarDescription.UpdateType.RUN,
-            description = "the actual time step",
-            defaultValue = "null"
+            description = "the actual time step"
             )
             public JAMSCalendar timeStep;
     

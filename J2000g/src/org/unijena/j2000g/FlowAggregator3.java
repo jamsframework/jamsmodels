@@ -1,6 +1,6 @@
 /*
- * J2KProcessGroundwater.java
- * Created on 25. November 2005, 16:54
+ * FlowAggregator.java
+ * Created on 28. November 2005, 10:01
  *
  * This file is part of JAMS
  * Copyright (C) 2005 FSU Jena, c0krpe
@@ -31,43 +31,42 @@ import jams.model.*;
  * @author c0krpe
  */
 @JAMSComponentDescription(
-        title="Groundwater",
-        author="Peter Krause",
-        description="Description"
+        title="Title",
+        author="Author",
+        description="Converts cumulative runoff volumes into flows"
         )
-        public class Groundwater extends JAMSComponent {
+        public class FlowAggregator3 extends JAMSComponent {
     
     /*
      *  Component variables
      */
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.INIT,
-            description = "recision coefficient k"
+            update = JAMSVarDescription.UpdateType.RUN,
+            description = "catchment area"
             )
-            public JAMSDouble k;
+            public JAMSDouble cArea;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
             update = JAMSVarDescription.UpdateType.RUN,
-            description = "groundwater recharge"
+            description = "the input variables to convert"
             )
-            public JAMSDouble gwRecharge;
-    
-    @JAMSVarDescription(
-            access = JAMSVarDescription.AccessType.READWRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
-            description = "groundwater storages"
-            )
-            public JAMSDouble storage;
+            public JAMSDouble[] inVars;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
             update = JAMSVarDescription.UpdateType.RUN,
-            description = "baseflow basQ"
+            description = "the converted output variables"
             )
-            public JAMSDouble basQ;
+            public JAMSDouble[] outVars;
     
+    @JAMSVarDescription(
+            access = JAMSVarDescription.AccessType.READ,
+            update = JAMSVarDescription.UpdateType.RUN,
+            description = "the actual time step"
+            )
+            public JAMSCalendar timeStep;
     
     /*
      *  Component run stages
@@ -78,24 +77,20 @@ import jams.model.*;
     }
     
     public void run() throws JAMSEntity.NoSuchAttributeException {
-       double storage = this.storage.getValue();
-       double input = this.gwRecharge.getValue();
-       
-       storage = storage + input;
-       
-       double outflow = (1. / this.k.getValue()) * storage;
-       storage = storage - outflow;
-       
-       this.storage.setValue(storage);
-       this.basQ.setValue(outflow);
-       
+        long days = 1;
+        if(this.timeStep != null)
+            days = timeStep.getActualMaximum(timeStep.DAY_OF_MONTH);
+        //double totOut = 0;
+
+        for(int i = 0; i < this.inVars.length; i++){
+            this.outVars[i].setValue((this.inVars[i].getValue() * this.cArea.getValue()) / (86400 * 1000 * days));
+        }
+
     }
     
     public void cleanup() {
         
     }
-    
-    
     
     
 }
