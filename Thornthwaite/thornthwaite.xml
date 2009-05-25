@@ -53,7 +53,6 @@
 </component>
 <component class="gov.usgs.thornthwaite.Runoff" name="Runoff">
 <var attribute="remain" context="TemporalContext" name="remain" value="150"/>
-<var attribute="precip" context="TemporalContext" name="precip"/>
 <var name="runoffFactor" value="0.1"/>
 <var attribute="runoff" context="TemporalContext" name="runoff"/>
 <var attribute="snowMelt" context="TemporalContext" name="snowMelt"/>
