@@ -26,8 +26,6 @@ import java.util.*;
 import java.io.*;
 import jams.data.*;
 import jams.model.JAMSModel;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /**
  *

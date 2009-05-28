@@ -23,7 +23,6 @@
 package org.unijena.j2k.io;
 
 //import org.unijena.j2k.*;
-
 import jams.JAMS;
 import jams.JAMSTools;
 import jams.data.JAMSDataFactory;
@@ -40,12 +39,6 @@ import java.util.Iterator;
 import java.util.Stack;
 import org.unijena.j2k.J2KFunctions;
 
-//import jams.data.*;
-//import jams.model.*;
-//import java.util.*;
-//import jams.JAMS;
-//import jams.JAMSTools;
-
 /**
  *
  * @author S. Kralisch
@@ -53,25 +46,22 @@ import org.unijena.j2k.J2KFunctions;
 public class StandardEntityReader extends JAMSComponent {
 
     @JAMSVarDescription (access = JAMSVarDescription.AccessType.READ,
-                         update = JAMSVarDescription.UpdateType.INIT,
                          description = "HRU parameter file name")
     public JAMSString hruFileName;
 
     @JAMSVarDescription (access = JAMSVarDescription.AccessType.READ,
-                         update = JAMSVarDescription.UpdateType.INIT,
                          description = "Reach parameter file name")
     public JAMSString reachFileName;
 
     @JAMSVarDescription (access = JAMSVarDescription.AccessType.WRITE,
-                         update = JAMSVarDescription.UpdateType.RUN,
                          description = "Collection of hru objects")
     public JAMSEntityCollection hrus;
 
     @JAMSVarDescription (access = JAMSVarDescription.AccessType.WRITE,
-                         update = JAMSVarDescription.UpdateType.RUN,
                          description = "Collection of reach objects")
     public JAMSEntityCollection reaches;
 
+    @Override
     public void init() throws JAMSEntity.NoSuchAttributeException {
         //to handle relative path names        
         hrus.setEntities(J2KFunctions.readParas(JAMSTools.CreateAbsoluteFileName(getModel().getWorkspaceDirectory().getPath(), hruFileName.getValue()), getModel()));
