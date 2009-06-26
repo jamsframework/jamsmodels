@@ -33,10 +33,10 @@ import jams.model.JAMSModel;
  */
 public class J2KFunctions {
 
-    public static ArrayList<JAMSEntity> readParas(String fileName, JAMSModel model) {
+    public static ArrayList<Attribute.Entity> readParas(String fileName, JAMSModel model) {
 
         BufferedReader reader;
-        ArrayList<JAMSEntity> entityList = new ArrayList<JAMSEntity>();
+        ArrayList<Attribute.Entity> entityList = new ArrayList<Attribute.Entity>();
         StringTokenizer tokenizer;
 
         try {

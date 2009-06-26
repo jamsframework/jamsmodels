@@ -399,8 +399,8 @@ import jams.model.*;
     }
     
     public void run() throws JAMSEntity.NoSuchAttributeException {
-        JAMSEntity entity = entities.getCurrent();
-        JAMSEntity DestReach = (JAMSEntity) entity.getObject("to_reach");
+        Attribute.Entity entity = entities.getCurrent();
+        Attribute.Entity DestReach = (Attribute.Entity) entity.getObject("to_reach");
 //        int datumjul = time.get(time.DAY_OF_YEAR);
         
         double deepsinkW = 0;

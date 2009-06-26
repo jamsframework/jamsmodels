@@ -25,6 +25,7 @@ package org.unijena.j2k.io;
 //import org.unijena.j2k.*;
 import jams.JAMS;
 import jams.JAMSTools;
+import jams.data.Attribute;
 import jams.data.JAMSDataFactory;
 import jams.data.JAMSDouble;
 import jams.data.JAMSEntity;
@@ -62,14 +63,14 @@ public class StandardEntityReader extends JAMSComponent {
     public JAMSEntityCollection reaches;
 
     @Override
-    public void init() throws JAMSEntity.NoSuchAttributeException {
+    public void init() throws Attribute.Entity.NoSuchAttributeException {
         //to handle relative path names        
         hrus.setEntities(J2KFunctions.readParas(JAMSTools.CreateAbsoluteFileName(getModel().getWorkspaceDirectory().getPath(), hruFileName.getValue()), getModel()));
 
-        for (JAMSEntity e : hrus.getEntityArray()) {
+        for (Attribute.Entity e : hrus.getEntityArray()) {
             try {
                 e.setId((long) e.getDouble("ID"));
-            } catch (JAMSEntity.NoSuchAttributeException nsae) {
+            } catch (Attribute.Entity.NoSuchAttributeException nsae) {
                 getModel().getRuntime().sendErrorMsg("Couldn't find attribute \"ID\" while reading J2K HRU parameter file (" + hruFileName.getValue() + ")!");
             }
         }
@@ -78,10 +79,10 @@ public class StandardEntityReader extends JAMSComponent {
         //reaches = new JAMSEntityCollection();
         reaches.setEntities(J2KFunctions.readParas(JAMSTools.CreateAbsoluteFileName(getModel().getWorkspaceDirectory().getPath(), reachFileName.getValue()), getModel()));
 
-        for (JAMSEntity e : reaches.getEntityArray()) {
+        for (Attribute.Entity e : reaches.getEntityArray()) {
             try {
                 e.setId((long) e.getDouble("ID"));
-            } catch (JAMSEntity.NoSuchAttributeException nsae) {
+            } catch (Attribute.Entity.NoSuchAttributeException nsae) {
                 getModel().getRuntime().sendErrorMsg("Couldn't find attribute \"ID\" while reading J2K HRU parameter file (" + hruFileName.getValue() + ")!");
             }
         }
@@ -99,8 +100,8 @@ public class StandardEntityReader extends JAMSComponent {
     }
 
     //do depth first search to find cycles
-    protected boolean cycleCheck(JAMSEntity node, Stack<JAMSEntity> searchStack, HashSet<JAMSDouble> closedList, HashSet<JAMSDouble> visitedList) throws JAMSEntity.NoSuchAttributeException {
-        JAMSEntity child_node;
+    protected boolean cycleCheck(Attribute.Entity node, Stack<Attribute.Entity> searchStack, HashSet<JAMSDouble> closedList, HashSet<JAMSDouble> visitedList) throws JAMSEntity.NoSuchAttributeException {
+        Attribute.Entity child_node;
 
         //current node allready in search stack -> circle found
         if (searchStack.indexOf(node) != -1) {
@@ -108,7 +109,7 @@ public class StandardEntityReader extends JAMSComponent {
 
             String cyc_output = new String();
             for (int i = index; i < searchStack.size(); i++) {
-                cyc_output += ((JAMSEntity) searchStack.get(i)).getDouble("ID") + " ";
+                cyc_output += ((Attribute.Entity) searchStack.get(i)).getDouble("ID") + " ";
             }
             getModel().getRuntime().println("Found circle with ids:" + cyc_output);
 
@@ -139,13 +140,13 @@ public class StandardEntityReader extends JAMSComponent {
         return false;
     }
 
-    protected boolean cycleCheck() throws JAMSEntity.NoSuchAttributeException {
-        Iterator<JAMSEntity> hruIterator;
+    protected boolean cycleCheck() throws Attribute.Entity.NoSuchAttributeException {
+        Iterator<Attribute.Entity> hruIterator;
 
         HashSet<JAMSDouble> closedList = new HashSet<JAMSDouble>();
         HashSet<JAMSDouble> visitedList = new HashSet<JAMSDouble>();
 
-        JAMSEntity start_node;
+        Attribute.Entity start_node;
 
         getModel().getRuntime().println("Cycle checking...");
 
@@ -157,7 +158,7 @@ public class StandardEntityReader extends JAMSComponent {
             start_node = hruIterator.next();
             //connected component of start_node allready processed?
             if (closedList.contains(start_node.getObject("ID")) == false) {
-                if (cycleCheck(start_node, new Stack<JAMSEntity>(), closedList, visitedList) == true) {
+                if (cycleCheck(start_node, new Stack<Attribute.Entity>(), closedList, visitedList) == true) {
                     result = true;
                 }
                 closedList.addAll(visitedList);
@@ -168,13 +169,13 @@ public class StandardEntityReader extends JAMSComponent {
         return result;
     }
 
-    protected void createTopology() throws JAMSEntity.NoSuchAttributeException {
+    protected void createTopology() throws Attribute.Entity.NoSuchAttributeException {
 
-        HashMap<Double, JAMSEntity> hruMap = new HashMap<Double, JAMSEntity>();
-        HashMap<Double, JAMSEntity> reachMap = new HashMap<Double, JAMSEntity>();
-        Iterator<JAMSEntity> hruIterator;
-        Iterator<JAMSEntity> reachIterator;
-        JAMSEntity e;
+        HashMap<Double, Attribute.Entity> hruMap = new HashMap<Double, Attribute.Entity>();
+        HashMap<Double, Attribute.Entity> reachMap = new HashMap<Double, Attribute.Entity>();
+        Iterator<Attribute.Entity> hruIterator;
+        Iterator<Attribute.Entity> reachIterator;
+        Attribute.Entity e;
 
         //put all entities into a HashMap with their ID as key
         hruIterator = hrus.getEntities().iterator();
@@ -189,7 +190,7 @@ public class StandardEntityReader extends JAMSComponent {
         }
 
         //create empty entities, i.e. those that are linked to in case there is no linkage ;-)
-        JAMSEntity nullEntity = (JAMSEntity) JAMSDataFactory.createEntity();
+        Attribute.Entity nullEntity = JAMSDataFactory.createEntity();
         nullEntity.setValue((HashMap<String, Object>) null);
         hruMap.put(new Double(0), nullEntity);
         reachMap.put(new Double(0), nullEntity);
@@ -220,12 +221,12 @@ public class StandardEntityReader extends JAMSComponent {
 
     }
 
-    protected void createOrderedList(JAMSEntityCollection col, String asso) throws JAMSEntity.NoSuchAttributeException {
+    protected void createOrderedList(JAMSEntityCollection col, String asso) throws Attribute.Entity.NoSuchAttributeException {
 
-        Iterator<JAMSEntity> hruIterator;
-        JAMSEntity e, f;
-        ArrayList<JAMSEntity> newList = new ArrayList<JAMSEntity>();
-        HashMap<JAMSEntity, Integer> depthMap = new HashMap<JAMSEntity, Integer>();
+        Iterator<Attribute.Entity> hruIterator;
+        Attribute.Entity e, f;
+        ArrayList<Attribute.Entity> newList = new ArrayList<Attribute.Entity>();
+        HashMap<Attribute.Entity, Integer> depthMap = new HashMap<Attribute.Entity, Integer>();
         Integer eDepth, fDepth;
         boolean mapChanged = true;
 
@@ -244,7 +245,7 @@ public class StandardEntityReader extends JAMSComponent {
             while (hruIterator.hasNext()) {
                 e = hruIterator.next();
 
-                f = (JAMSEntity) e.getObject(asso);
+                f = (Attribute.Entity) e.getObject(asso);
                 if (f.getValue() == null) {
                     f = null;
                 }
@@ -270,9 +271,9 @@ public class StandardEntityReader extends JAMSComponent {
         }
 
         //create ArrayList of ArrayList objects, each element keeping the entities of one level
-        ArrayList<ArrayList<JAMSEntity>> alList = new ArrayList<ArrayList<JAMSEntity>>();
+        ArrayList<ArrayList<Attribute.Entity>> alList = new ArrayList<ArrayList<Attribute.Entity>>();
         for (int i = 0; i <= maxDepth; i++) {
-            alList.add(new ArrayList<JAMSEntity>());
+            alList.add(new ArrayList<Attribute.Entity>());
         }
 
         //fill the ArrayList objects within the ArrayList with entity objects

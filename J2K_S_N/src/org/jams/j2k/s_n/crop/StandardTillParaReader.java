@@ -57,19 +57,19 @@ public class StandardTillParaReader extends JAMSComponent {
         JAMSEntityCollection till = JAMSDataFactory.createEntityCollection();
         till.setEntities(J2KFunctions.readParas(getModel().getWorkspaceDirectory().getPath()+"/"+tlFileName.getValue(), getModel()));
         
-        HashMap<Double, JAMSEntity> tlMap = new HashMap<Double, JAMSEntity>();
-        JAMSEntity tl, e;
+        HashMap<Double, Attribute.Entity> tlMap = new HashMap<Double, Attribute.Entity>();
+        Attribute.Entity tl, e;
         Object[] attrs;
         
         //put all entities into a HashMap with their ID as key
         
-        Iterator<JAMSEntity> tlIterator = till.getEntities().iterator();
+        Iterator<Attribute.Entity> tlIterator = till.getEntities().iterator();
         while (tlIterator.hasNext()) {
             tl = tlIterator.next();
             tlMap.put(tl.getDouble("ID"),  tl);//put all entities into a HashMap with their ID as key
                             }
         
-        Iterator<JAMSEntity> hruIterator = hrus.getEntities().iterator();
+        Iterator<Attribute.Entity> hruIterator = hrus.getEntities().iterator();
         while (hruIterator.hasNext()) {
             e = hruIterator.next();
             tl = tlMap.get(e.getDouble("tillID"));

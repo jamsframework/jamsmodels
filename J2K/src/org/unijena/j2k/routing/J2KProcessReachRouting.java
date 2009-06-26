@@ -258,23 +258,23 @@ import jams.model.*;
      *  Component run stages
      */
     
-    public void init() throws JAMSEntity.NoSuchAttributeException {
+    public void init() throws Attribute.Entity.NoSuchAttributeException {
         
     }
     
-    public void run() throws JAMSEntity.NoSuchAttributeException {
+    public void run() throws Attribute.Entity.NoSuchAttributeException {
         
-        JAMSEntity entity = entities.getCurrent();
+        Attribute.Entity entity = entities.getCurrent();
         
-        JAMSEntity DestReach = (JAMSEntity)entity.getObject("to_reach");
+        Attribute.Entity DestReach = (Attribute.Entity)entity.getObject("to_reach");
         if (DestReach.getValue() == null) {
             DestReach = null;
         }
-        JAMSEntity DestReservoir = null;
+        Attribute.Entity DestReservoir = null;
         
         try{
-            DestReservoir = (JAMSEntity)entity.getObject("to_reservoir");
-        }catch(JAMSEntity.NoSuchAttributeException e){
+            DestReservoir = (Attribute.Entity)entity.getObject("to_reservoir");
+        }catch(Attribute.Entity.NoSuchAttributeException e){
             DestReservoir = null;
         }
         
@@ -332,7 +332,7 @@ import jams.model.*;
             
             try{
                 addInDestIn = DestReach.getDouble("inAddIn");
-            }catch(jams.data.JAMSEntity.NoSuchAttributeException e){
+            }catch(jams.data.Attribute.Entity.NoSuchAttributeException e){
                 addInDestIn = 0;
             }
         }

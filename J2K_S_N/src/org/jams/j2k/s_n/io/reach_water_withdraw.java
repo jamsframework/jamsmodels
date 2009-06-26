@@ -144,7 +144,7 @@ title="Reach water  withdrawal",
     
     public void run() throws JAMSEntity.NoSuchAttributeException {
         
-        JAMSEntity entity = entities.getCurrent();
+        Attribute.Entity entity = entities.getCurrent();
         
         int runid =  (int)entity.getDouble("ID");
         

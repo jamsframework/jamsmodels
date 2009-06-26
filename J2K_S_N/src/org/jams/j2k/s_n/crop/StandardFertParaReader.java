@@ -57,19 +57,19 @@ public class StandardFertParaReader extends JAMSComponent {
         JAMSEntityCollection fert = JAMSDataFactory.createEntityCollection();
         fert.setEntities(J2KFunctions.readParas(getModel().getWorkspaceDirectory().getPath()+"/"+ftFileName.getValue(), getModel()));
         
-        HashMap<Double, JAMSEntity> ftMap = new HashMap<Double, JAMSEntity>();
-        JAMSEntity ft, e;
+        HashMap<Double, Attribute.Entity> ftMap = new HashMap<Double, Attribute.Entity>();
+        Attribute.Entity ft, e;
         Object[] attrs;
         
         //put all entities into a HashMap with their ID as key
         
-        Iterator<JAMSEntity> ftIterator = fert.getEntities().iterator();
+        Iterator<Attribute.Entity> ftIterator = fert.getEntities().iterator();
         while (ftIterator.hasNext()) {
             ft = ftIterator.next();
             ftMap.put(ft.getDouble("ID"),  ft);//put all entities into a HashMap with their ID as key
                             }
         
-        Iterator<JAMSEntity> hruIterator = hrus.getEntities().iterator();
+        Iterator<Attribute.Entity> hruIterator = hrus.getEntities().iterator();
         while (hruIterator.hasNext()) {
             e = hruIterator.next();
             ft = ftMap.get(e.getDouble("fertID"));

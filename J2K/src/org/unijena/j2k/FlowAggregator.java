@@ -89,11 +89,11 @@ import jams.model.*;
     final int ALL = 0;
     final int LAST = 1;
     
-    public void run() throws JAMSEntity.NoSuchAttributeException {
+    public void run() throws Attribute.Entity.NoSuchAttributeException {
         
         //eigentlich bräuchten wir hier einen ReachOutputWriter
         //jetzt aber erstmal quick and dirty nur den outflow reach!
-        JAMSEntity[] entities = reaches.getEntityArray();
+        Attribute.Entity[] entities = reaches.getEntityArray();
         double flow = 0;
         double out_flow = 0;
         if(this.reachEntity.getValue() == this.ALL){

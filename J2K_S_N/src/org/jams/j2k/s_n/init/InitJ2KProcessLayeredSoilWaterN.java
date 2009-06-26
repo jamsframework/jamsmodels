@@ -133,7 +133,7 @@ public class InitJ2KProcessLayeredSoilWaterN extends JAMSComponent {
     }
 
     public void run() throws JAMSEntity.NoSuchAttributeException {
-        JAMSEntity entity = entities.getCurrent();
+        Attribute.Entity entity = entities.getCurrent();
         //System.out.println("Entity: " + entity.getId());
         int horizons = (int) this.horizons.getValue();
         double rootDepth = this.rootDepth.getValue() * 10;

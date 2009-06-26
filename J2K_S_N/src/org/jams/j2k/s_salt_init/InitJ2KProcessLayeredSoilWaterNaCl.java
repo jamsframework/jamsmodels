@@ -192,7 +192,7 @@ import jams.model.*;
     }
     
     public void run() throws JAMSEntity.NoSuchAttributeException {
-        JAMSEntity entity = entities.getCurrent();
+        Attribute.Entity entity = entities.getCurrent();
         int horizons = (int)this.horizons.getValue();
         double rootDepth = this.rootDepth.getValue() * 10;
         double remRD = rootDepth;

@@ -52,25 +52,25 @@ public class StandardGroundwaterParaReader extends JAMSComponent {
     
     
     
-    public void init() throws JAMSEntity.NoSuchAttributeException {
+    public void init() throws Attribute.Entity.NoSuchAttributeException {
         
         //read gw parameter
         JAMSEntityCollection gwTypes = JAMSDataFactory.createEntityCollection();
         
         gwTypes.setEntities(J2KFunctions.readParas(JAMSTools.CreateAbsoluteFileName(getModel().getWorkspaceDirectory().getPath(),gwFileName.getValue()), getModel()));
         
-        HashMap<Double, JAMSEntity> gwMap = new HashMap<Double, JAMSEntity>();
-        JAMSEntity gw, e;
+        HashMap<Double, Attribute.Entity> gwMap = new HashMap<Double, Attribute.Entity>();
+        Attribute.Entity gw, e;
         Object[] attrs;
         
         //put all entities into a HashMap with their ID as key
-        Iterator<JAMSEntity> gwIterator = gwTypes.getEntities().iterator();
+        Iterator<Attribute.Entity> gwIterator = gwTypes.getEntities().iterator();
         while (gwIterator.hasNext()) {
             gw = gwIterator.next();
             gwMap.put(gw.getDouble("GID"),  gw);
         }
         
-        Iterator<JAMSEntity> hruIterator = hrus.getEntities().iterator();
+        Iterator<Attribute.Entity> hruIterator = hrus.getEntities().iterator();
         while (hruIterator.hasNext()) {
             e = hruIterator.next();
             //System.out.println("proc hru " + e.getDouble("ID"));

@@ -130,25 +130,25 @@ import jams.model.*;
             update = JAMSVarDescription.UpdateType.RUN,
             description = "Downstream hru entity"
             )
-            public JAMSEntity toPoly;
+            public Attribute.Entity toPoly;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
             update = JAMSVarDescription.UpdateType.RUN,
             description = "Downstream reach entity"
             )
-            public JAMSEntity toReach;
+            public Attribute.Entity toReach;
     
     /*
      *  Component run stages
      */
     
-    public void init() throws JAMSEntity.NoSuchAttributeException {
+    public void init() throws Attribute.Entity.NoSuchAttributeException {
     }
 
-    public void run() throws JAMSEntity.NoSuchAttributeException {
+    public void run() throws Attribute.Entity.NoSuchAttributeException {
 
-        JAMSEntity entity = entities.getCurrent();
+        Attribute.Entity entity = entities.getCurrent();
         
         //receiving polygon
         //JAMSEntity toPoly = (JAMSEntity) entity.getObject("to_poly");
@@ -157,10 +157,10 @@ import jams.model.*;
         //JAMSEntity toReach = (JAMSEntity) entity.getObject("to_reach");
                 
         //receiving reservoir
-        JAMSEntity toReservoir = null;
+        Attribute.Entity toReservoir = null;
         try{
-            toReservoir = (JAMSEntity)entity.getObject("to_reservoir");
-        }catch(JAMSEntity.NoSuchAttributeException e){
+            toReservoir = (Attribute.Entity)entity.getObject("to_reservoir");
+        }catch(Attribute.Entity.NoSuchAttributeException e){
             toReservoir = null;
         }
         double RD1out = outRD1.getValue();

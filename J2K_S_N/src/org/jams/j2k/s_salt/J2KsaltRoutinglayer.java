@@ -137,7 +137,7 @@ import jams.model.*;
     }
     
     public void run() throws JAMSEntity.NoSuchAttributeException {
-        JAMSEntity entity = entities.getCurrent();
+        Attribute.Entity entity = entities.getCurrent();
         //receiving polygon
         JAMSEntity toPoly = (JAMSEntity) entity.getObject("to_poly");
         //receiving reach

@@ -141,7 +141,7 @@ public class TSDataReader extends JAMSComponent {
         //calc offset if start date of time series and temporal context do not match
         if(timeInterval != null){
             int timeUnit = timeInterval.getTimeUnit();
-            JAMSCalendar tiStart = timeInterval.getStart();
+            Attribute.Calendar tiStart = timeInterval.getStart();
             JAMSCalendar date = JAMSDataFactory.createCalendar();
             if(timeUnit == JAMSCalendar.DAY_OF_YEAR)
                     date.set(tiStart.get(Calendar.YEAR), tiStart.get(Calendar.MONTH), tiStart.get(Calendar.DAY_OF_MONTH), 0, 0, 0);

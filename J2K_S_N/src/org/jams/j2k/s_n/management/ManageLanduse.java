@@ -110,7 +110,7 @@ public class ManageLanduse extends JAMSComponent {
     
     public void run() throws JAMSEntity.NoSuchAttributeException {
         
-        JAMSEntity entity = entities.getCurrent();
+        Attribute.Entity entity = entities.getCurrent();
         this.fertNO3N.setValue(0);
         this.fertNH4N.setValue(0);
         this.fertorgNactive.setValue(0);

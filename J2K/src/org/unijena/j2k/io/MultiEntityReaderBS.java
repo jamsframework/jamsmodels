@@ -90,21 +90,21 @@ public class MultiEntityReaderBS extends JAMSComponent {
 
     }
 
-    private void createTopology() throws JAMSEntity.NoSuchAttributeException {
+    private void createTopology() throws Attribute.Entity.NoSuchAttributeException {
 
         BufferedReader reader1;
         BufferedReader reader2;
         StringTokenizer tokenizer_to_hru;
         StringTokenizer tokenizer_weights;
-        HashMap<Double, JAMSEntity> hruMap = new HashMap<Double, JAMSEntity>();
-        HashMap<Double, JAMSEntity> reachMap = new HashMap<Double, JAMSEntity>();
-        Iterator<JAMSEntity> hruIterator;
-        Iterator<JAMSEntity> reachIterator;
+        HashMap<Double, Attribute.Entity> hruMap = new HashMap<Double, Attribute.Entity>();
+        HashMap<Double, Attribute.Entity> reachMap = new HashMap<Double, Attribute.Entity>();
+        Iterator<Attribute.Entity> hruIterator;
+        Iterator<Attribute.Entity> reachIterator;
 
-        JAMSEntity e, f, r;
+        Attribute.Entity e, f, r;
 
-        ArrayList<JAMSEntity> receiverPolys;
-        ArrayList<JAMSEntity> receiverReaches;
+        ArrayList<Attribute.Entity> receiverPolys;
+        ArrayList<Attribute.Entity> receiverReaches;
         ArrayList<Double> receiverPolysWeights;
         ArrayList<Double> receiverReachesWeights;
         ArrayList<Double> receiverArea;
@@ -123,7 +123,7 @@ public class MultiEntityReaderBS extends JAMSComponent {
         }
 
         //create empty entities, i.e. those that are linked to in case there is no linkage ;-)
-        JAMSEntity nullEntity = (JAMSEntity) JAMSDataFactory.createInstance(JAMSEntity.class, getModel().getRuntime());
+        Attribute.Entity nullEntity = JAMSDataFactory.createEntity();
         nullEntity.setValue((HashMap<String, Object>) null);
         reachMap.put(new Double(0), nullEntity);
 
@@ -163,8 +163,8 @@ public class MultiEntityReaderBS extends JAMSComponent {
                     getModel().getRuntime().sendHalt("One of tables topologie_to_hru or topologie_bfl is missorted");
                 }
 
-                receiverPolys = new ArrayList<JAMSEntity>();
-                receiverReaches = new ArrayList<JAMSEntity>();
+                receiverPolys = new ArrayList<Attribute.Entity>();
+                receiverReaches = new ArrayList<Attribute.Entity>();
                 receiverPolysWeights = new ArrayList<Double>();
                 receiverReachesWeights = new ArrayList<Double>();
                 receiverArea = new ArrayList<Double>();
@@ -248,13 +248,13 @@ public class MultiEntityReaderBS extends JAMSComponent {
         }
     }
 
-    protected void createOrderedList(JAMSEntityCollection col, String asso) throws JAMSEntity.NoSuchAttributeException {
+    protected void createOrderedList(JAMSEntityCollection col, String asso) throws Attribute.Entity.NoSuchAttributeException {
 
-        Iterator<JAMSEntity> entityIterator, entityIterator2, entityIterator3;
-        JAMSEntity e, e_ziel, e_ziel_temp, e_temp, f;
-        ArrayList<JAMSEntity> newList = new ArrayList<JAMSEntity>();
-        HashMap<JAMSEntity, Integer> depthMap = new HashMap<JAMSEntity, Integer>();
-        HashMap<JAMSEntity, Integer> circleMap = new HashMap<JAMSEntity, Integer>();
+        Iterator<Attribute.Entity> entityIterator, entityIterator2, entityIterator3;
+        Attribute.Entity e, e_ziel, e_ziel_temp, e_temp, f;
+        ArrayList<Attribute.Entity> newList = new ArrayList<Attribute.Entity>();
+        HashMap<Attribute.Entity, Integer> depthMap = new HashMap<Attribute.Entity, Integer>();
+        HashMap<Attribute.Entity, Integer> circleMap = new HashMap<Attribute.Entity, Integer>();
         Integer eDepth, fDepth;
         boolean mapChanged = true;
         boolean mapChanged2 = true;
@@ -590,8 +590,8 @@ public class MultiEntityReaderBS extends JAMSComponent {
 
                 if ((asso.toString()).equals("to_poly")) {
 
-                    JAMSEntity[] e_ziel_to_poly;
-                    e_ziel_to_poly = (JAMSEntity[]) e.getObject(asso);
+                    Attribute.Entity[] e_ziel_to_poly;
+                    e_ziel_to_poly = (Attribute.Entity[]) e.getObject(asso);
 
                     if (e_ziel_to_poly.length > 0) {
 
@@ -611,8 +611,8 @@ public class MultiEntityReaderBS extends JAMSComponent {
                 }
                 if ((asso.toString()).equals("to_reach")) {
 
-                    JAMSEntity eff;
-                    eff = (JAMSEntity) e.getObject(asso);
+                    Attribute.Entity eff;
+                    eff = (Attribute.Entity) e.getObject(asso);
                     if (eff.getValue() == null) {
                         eff = null;
                     }
@@ -638,10 +638,10 @@ public class MultiEntityReaderBS extends JAMSComponent {
         }
 
         //create ArrayList of ArrayList objects, each element keeping the entities of one level
-        ArrayList<ArrayList<JAMSEntity>> alList = new ArrayList<ArrayList<JAMSEntity>>();
+        ArrayList<ArrayList<Attribute.Entity>> alList = new ArrayList<ArrayList<Attribute.Entity>>();
 
         for (int i = 0; i <= maxDepth; i++) {
-            alList.add(new ArrayList<JAMSEntity>());
+            alList.add(new ArrayList<Attribute.Entity>());
         }
 
         //fill the ArrayList objects within the ArrayList with entity objects

@@ -75,9 +75,9 @@ import jams.model.*;
             public JAMSInteger aggregationType;
     
     
-    public void run() throws JAMSEntity.NoSuchAttributeException {
+    public void run() throws Attribute.Entity.NoSuchAttributeException {
         
-        JAMSEntity[] entities = hrus.getEntityArray();
+        Attribute.Entity[] entities = hrus.getEntityArray();
         
         double dataSum = 0, areaSum = 0, area = 0, data;
         

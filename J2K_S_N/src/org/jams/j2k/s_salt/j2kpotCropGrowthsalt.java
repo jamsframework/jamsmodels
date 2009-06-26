@@ -497,7 +497,7 @@ import java.util.ArrayList;
     }
     
     public void run() throws JAMSEntity.NoSuchAttributeException{
-        JAMSEntity entity = entities.getCurrent();
+        Attribute.Entity entity = entities.getCurrent();
         /* this.bp1 = crop.bp1; // Phosphate uptake parameter not used at the moment
         this.bp2 = crop.bp2;
         this.bp3 = crop.bp3;*/

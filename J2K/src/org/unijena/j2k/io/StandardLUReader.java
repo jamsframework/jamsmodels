@@ -58,18 +58,18 @@ public class StandardLUReader extends JAMSComponent {
         
         lus.setEntities(J2KFunctions.readParas(JAMSTools.CreateAbsoluteFileName(getModel().getWorkspaceDirectory().getPath(),luFileName.getValue()), getModel()));
         
-        HashMap<Double, JAMSEntity> luMap = new HashMap<Double, JAMSEntity>();
-        JAMSEntity lu, e;
+        HashMap<Double, Attribute.Entity> luMap = new HashMap<Double, Attribute.Entity>();
+        Attribute.Entity lu, e;
         Object[] attrs;
         
         //put all entities into a HashMap with their ID as key
-        Iterator<JAMSEntity> luIterator = lus.getEntities().iterator();
+        Iterator<Attribute.Entity> luIterator = lus.getEntities().iterator();
         while (luIterator.hasNext()) {
             lu = luIterator.next();
             luMap.put(lu.getDouble("LID"),  lu);
         }
         
-        Iterator<JAMSEntity> hruIterator = hrus.getEntities().iterator();
+        Iterator<Attribute.Entity> hruIterator = hrus.getEntities().iterator();
         while (hruIterator.hasNext()) {
             e = hruIterator.next();
             lu = luMap.get(e.getDouble("landuseID"));

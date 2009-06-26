@@ -101,7 +101,7 @@ import jams.model.*;
     
     public void run() throws JAMSEntity.NoSuchAttributeException {
         
-        JAMSEntity entity = entities.getCurrent();
+        Attribute.Entity entity = entities.getCurrent();
         double inflow = this.inflow.getValue();
         
         //only active for receiver reach

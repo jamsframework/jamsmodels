@@ -83,7 +83,7 @@ public class musle extends JAMSComponent {
         precipmus = Math.ceil(precipmus * 100) / 100;
         
             
-        JAMSEntity entity = entities.getCurrent();
+        Attribute.Entity entity = entities.getCurrent();
 
 
         this.run_outRD1 = outRD1.getValue();

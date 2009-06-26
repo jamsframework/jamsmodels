@@ -158,13 +158,13 @@ import jams.model.*;
      *  Component run stages
      */
     
-    public void init() throws JAMSEntity.NoSuchAttributeException {
+    public void init() throws Attribute.Entity.NoSuchAttributeException {
         
         
     }
     
-    public void run() throws JAMSEntity.NoSuchAttributeException {
-        JAMSEntity entity = entities.getCurrent();
+    public void run() throws Attribute.Entity.NoSuchAttributeException {
+        Attribute.Entity entity = entities.getCurrent();
         int horizons = (int)this.horizons.getValue();
         double rootDepth = this.rootDepth.getValue() * 10;
         double remRD = rootDepth;

@@ -336,11 +336,11 @@ public class StandardManagementParaReader extends JAMSComponent {
         Double hid, redu_fac;
         Integer rid;
         ArrayList<J2KSNCrop> rotation;
-        JAMSEntity hru;
-        HashMap<Double, JAMSEntity> hruMap = new HashMap<Double, JAMSEntity>();
+        Attribute.Entity hru;
+        HashMap<Double, Attribute.Entity> hruMap = new HashMap<Double, Attribute.Entity>();
         
         //put all entities into a HashMap with their ID as key
-        Iterator<JAMSEntity> hruIterator = hrus.getEntities().iterator();
+        Iterator<Attribute.Entity> hruIterator = hrus.getEntities().iterator();
         while (hruIterator.hasNext()) {
             hru = hruIterator.next();
             try {

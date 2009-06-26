@@ -58,19 +58,19 @@ public class StandardCropParaReader extends JAMSComponent {
         JAMSEntityCollection crops = JAMSDataFactory.createEntityCollection();
         crops.setEntities(J2KFunctions.readParas(getModel().getWorkspaceDirectory().getPath()+"/"+crFileName.getValue(), getModel()));
         
-        HashMap<Double, JAMSEntity> crMap = new HashMap<Double, JAMSEntity>();
-        JAMSEntity cr, e;
+        HashMap<Double, Attribute.Entity> crMap = new HashMap<Double, Attribute.Entity>();
+        Attribute.Entity cr, e;
         Object[] attrs;
         
         //put all entities into a HashMap with their ID as key
         
-        Iterator<JAMSEntity> crIterator = crops.getEntities().iterator();
+        Iterator<Attribute.Entity> crIterator = crops.getEntities().iterator();
         while (crIterator.hasNext()) {
             cr = crIterator.next();
             crMap.put(cr.getDouble("ID"),  cr);//put all entities into a HashMap with their ID as key
                             }
         
-        Iterator<JAMSEntity> hruIterator = hrus.getEntities().iterator();
+        Iterator<Attribute.Entity> hruIterator = hrus.getEntities().iterator();
         while (hruIterator.hasNext()) {
             e = hruIterator.next();
             cr = crMap.get(e.getDouble("cropID"));

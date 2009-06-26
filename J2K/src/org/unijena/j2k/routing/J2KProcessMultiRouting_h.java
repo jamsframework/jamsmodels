@@ -99,24 +99,24 @@ public class J2KProcessMultiRouting_h extends JAMSComponent {
 
     public void run() throws JAMSEntity.NoSuchAttributeException {
 
-        JAMSEntity entity = entities.getCurrent();
+        Attribute.Entity entity = entities.getCurrent();
 
         //receiving polygon
-        JAMSEntity[] toPolyArray = (JAMSEntity[]) entity.getObject("to_poly");
+        Attribute.Entity[] toPolyArray = (Attribute.Entity[]) entity.getObject("to_poly");
         //receiving reach
-        JAMSEntity[] toReachArray = (JAMSEntity[]) entity.getObject("to_reach");
+        Attribute.Entity[] toReachArray = (Attribute.Entity[]) entity.getObject("to_reach");
         //receiving reservoir
-        JAMSEntity toReservoir = null;
+        Attribute.Entity toReservoir = null;
 
         Double[] polyWeightsArray = (Double[]) entity.getObject("to_poly_weights");
         Double[] reachWeightsArray = (Double[]) entity.getObject("to_reach_weights");
 
-        JAMSEntity toPoly, toReach;
+        Attribute.Entity toPoly, toReach;
         double polyWeight, reachWeight;
 
         try {
-            toReservoir = (JAMSEntity) entity.getObject("to_reservoir");
-        } catch (JAMSEntity.NoSuchAttributeException e) {
+            toReservoir = (Attribute.Entity) entity.getObject("to_reservoir");
+        } catch (Attribute.Entity.NoSuchAttributeException e) {
             toReservoir = null;
         }
         double RD1out = outRD1.getValue();

@@ -51,24 +51,24 @@ public class LayeredSoilParaReader extends JAMSComponent {
     
     
     
-    public void init() throws JAMSEntity.NoSuchAttributeException {
+    public void init() throws Attribute.Entity.NoSuchAttributeException {
         
         //read soil parameters
         JAMSEntityCollection soilTypes = JAMSDataFactory.createEntityCollection();
         soilTypes.setEntities(J2KFunctions.readParas(JAMSTools.CreateAbsoluteFileName(getModel().getWorkspaceDirectory().getPath(),stFileName.getValue()), getModel()));
         
-        HashMap<Double, JAMSEntity> stMap = new HashMap<Double, JAMSEntity>();
-        JAMSEntity st, e;
+        HashMap<Double, Attribute.Entity> stMap = new HashMap<Double, Attribute.Entity>();
+        Attribute.Entity st, e;
         Object[] attrs;
         
         //put all entities into a HashMap with their ID as key
-        Iterator<JAMSEntity> stIterator = soilTypes.getEntities().iterator();
+        Iterator<Attribute.Entity> stIterator = soilTypes.getEntities().iterator();
         while (stIterator.hasNext()) {
             st = stIterator.next();
             stMap.put(st.getDouble("SID"),  st);
         }
         
-        Iterator<JAMSEntity> hruIterator = hrus.getEntities().iterator();
+        Iterator<Attribute.Entity> hruIterator = hrus.getEntities().iterator();
         while (hruIterator.hasNext()) {
             e = hruIterator.next();
             

@@ -192,14 +192,14 @@ import jams.model.*;
     double[] relComp;
     double[] runComp;
     double[] outComp;
-    JAMSEntity recReach = null;
+    Attribute.Entity recReach = null;
     double currVolume = 0;
     
     /*
      *  Component run stages
      */
     
-    public void init() throws JAMSEntity.NoSuchAttributeException {
+    public void init() throws Attribute.Entity.NoSuchAttributeException {
         relComp = new double[nComp];
         runComp = new double[nComp];
         outComp = new double[nComp];
@@ -216,7 +216,7 @@ import jams.model.*;
         
     }
     
-    public void run() throws JAMSEntity.NoSuchAttributeException {
+    public void run() throws Attribute.Entity.NoSuchAttributeException {
         
         //passing the file values to state vars
         for(int i = 0; i < this.inDataArray.getValue().length; i++){

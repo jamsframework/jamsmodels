@@ -90,21 +90,21 @@ public class MultiEntityReaderTS extends JAMSComponent {
 
     }
 
-    private void createTopology() throws JAMSEntity.NoSuchAttributeException {
+    private void createTopology() throws Attribute.Entity.NoSuchAttributeException {
 
         BufferedReader reader1;
         BufferedReader reader2;
         StringTokenizer tokenizer_to_hru;
         StringTokenizer tokenizer_weights;
-        HashMap<Double, JAMSEntity> hruMap = new HashMap<Double, JAMSEntity>();
-        HashMap<Double, JAMSEntity> reachMap = new HashMap<Double, JAMSEntity>();
-        Iterator<JAMSEntity> hruIterator;
-        Iterator<JAMSEntity> reachIterator;
+        HashMap<Double, Attribute.Entity> hruMap = new HashMap<Double, Attribute.Entity>();
+        HashMap<Double, Attribute.Entity> reachMap = new HashMap<Double, Attribute.Entity>();
+        Iterator<Attribute.Entity> hruIterator;
+        Iterator<Attribute.Entity> reachIterator;
 
-        JAMSEntity e, f, r;
+        Attribute.Entity e, f, r;
 
-        ArrayList<JAMSEntity> receiverHRUs;
-        ArrayList<JAMSEntity> receiverReaches;
+        ArrayList<Attribute.Entity> receiverHRUs;
+        ArrayList<Attribute.Entity> receiverReaches;
         ArrayList<Double> receiverHRUsWeights;
         ArrayList<Double> receiverReachesWeights;
         ArrayList<Double> receiverArea;
@@ -163,8 +163,8 @@ public class MultiEntityReaderTS extends JAMSComponent {
                     getModel().getRuntime().sendHalt("One of tables topologie_to_hru or topologie_bfl is missorted");
                 }
 
-                receiverHRUs = new ArrayList<JAMSEntity>();
-                receiverReaches = new ArrayList<JAMSEntity>();
+                receiverHRUs = new ArrayList<Attribute.Entity>();
+                receiverReaches = new ArrayList<Attribute.Entity>();
                 receiverHRUsWeights = new ArrayList<Double>();
                 receiverReachesWeights = new ArrayList<Double>();
                 receiverArea = new ArrayList<Double>();
@@ -247,15 +247,15 @@ public class MultiEntityReaderTS extends JAMSComponent {
         }
     }
 
-    protected void createOrderedList(JAMSEntityCollection col, String asso) throws JAMSEntity.NoSuchAttributeException {
+    protected void createOrderedList(JAMSEntityCollection col, String asso) throws Attribute.Entity.NoSuchAttributeException {
 
-        Iterator<JAMSEntity> entityIterator, entityIterator2;
-        JAMSEntity e = null, e_ziel, e_ziel_neu;
-        ArrayList<JAMSEntity> newList = new ArrayList<JAMSEntity>();
-        HashMap<JAMSEntity, Integer> statusMap = new HashMap<JAMSEntity, Integer>();
-        HashMap<JAMSEntity, JAMSEntity> fromHruMap = new HashMap<JAMSEntity, JAMSEntity>();
-        HashMap<JAMSEntity, Integer> fromIMap = new HashMap<JAMSEntity, Integer>();
-        HashMap<JAMSEntity, Integer> depthMap = new HashMap<JAMSEntity, Integer>();
+        Iterator<Attribute.Entity> entityIterator, entityIterator2;
+        Attribute.Entity e = null, e_ziel, e_ziel_neu;
+        ArrayList<Attribute.Entity> newList = new ArrayList<Attribute.Entity>();
+        HashMap<Attribute.Entity, Integer> statusMap = new HashMap<Attribute.Entity, Integer>();
+        HashMap<Attribute.Entity, Attribute.Entity> fromHruMap = new HashMap<Attribute.Entity, Attribute.Entity>();
+        HashMap<Attribute.Entity, Integer> fromIMap = new HashMap<Attribute.Entity, Integer>();
+        HashMap<Attribute.Entity, Integer> depthMap = new HashMap<Attribute.Entity, Integer>();
         Integer eDepth, fDepth;
         boolean aufloesbar = false, unaufloesbar = false, mapChanged;
 
@@ -276,7 +276,7 @@ public class MultiEntityReaderTS extends JAMSComponent {
 
                 entityIterator2 = col.getEntities().iterator();
                 while (entityIterator2.hasNext()) {
-                    JAMSEntity next = entityIterator2.next();
+                    Attribute.Entity next = entityIterator2.next();
                     statusMap.put(next, new Integer(0)); //Status 0: Noch nicht markiert, Status 1: Markiert, Bearbeitung aber noch nicht gestartet, Status -2: Bearbeitung gestartet, aber ncch nicht abgeschlossen, STatus -3: Bearabeitung abgeschlossen
                     fromHruMap.put(next, null);
                     fromIMap.put(next, new Integer(0));
@@ -287,7 +287,7 @@ public class MultiEntityReaderTS extends JAMSComponent {
                 while (statusMap.get(e) != -3) {
                     e_ziel = e_ziel_neu;
                     statusMap.put(e_ziel, new Integer(-2));
-                    JAMSEntity[] e_ziel_to_hru = (JAMSEntity[]) e_ziel.getObject("to_poly");
+                    Attribute.Entity[] e_ziel_to_hru = (Attribute.Entity[]) e_ziel.getObject("to_poly");
 
                     if (e_ziel_to_hru.length > 0) {
 
@@ -303,14 +303,14 @@ public class MultiEntityReaderTS extends JAMSComponent {
 
                                 if (e == e_ziel_to_hru[i]) {
                                     // Identifikation der kleinsten Beitragenden Flaeche
-                                    JAMSEntity eZirkel = e_ziel, eBflMin = null;
+                                    Attribute.Entity eZirkel = e_ziel, eBflMin = null;
                                     int iZirkel = i, iZirkelMin = -1, teilerMin = -1;
                                     double bflZirkel, bflZirkelMin = -1;
 
                                     while (eZirkel != null) {
 
-                                        JAMSEntity[] eZirkel_to_reach = (JAMSEntity[]) eZirkel.getObject("to_reach");
-                                        JAMSEntity[] eZirkel_to_hru = (JAMSEntity[]) eZirkel.getObject("to_poly");
+                                        Attribute.Entity[] eZirkel_to_reach = (Attribute.Entity[]) eZirkel.getObject("to_reach");
+                                        Attribute.Entity[] eZirkel_to_hru = (Attribute.Entity[]) eZirkel.getObject("to_poly");
 
                                         int eZirkel_to_hru_length = 0;
                                         for (int l = 0; l < eZirkel_to_hru.length; l++) {
@@ -465,10 +465,10 @@ public class MultiEntityReaderTS extends JAMSComponent {
         }
 
         //create ArrayList of ArrayList objects, each element keeping the entities of one level
-        ArrayList<ArrayList<JAMSEntity>> alList = new ArrayList<ArrayList<JAMSEntity>>();
+        ArrayList<ArrayList<Attribute.Entity>> alList = new ArrayList<ArrayList<Attribute.Entity>>();
 
         for (int i = 0; i <= maxDepth; i++) {
-            alList.add(new ArrayList<JAMSEntity>());
+            alList.add(new ArrayList<Attribute.Entity>());
         }
 
         //fill the ArrayList objects within the ArrayList with entity objects

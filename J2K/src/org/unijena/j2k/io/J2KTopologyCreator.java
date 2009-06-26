@@ -70,8 +70,8 @@ public class J2KTopologyCreator extends JAMSComponent {
     }
     
     //do depth first search to find cycles
-    protected boolean cycleCheck(JAMSEntity node,Stack<JAMSEntity> searchStack,HashSet<JAMSDouble> closedList,HashSet<JAMSDouble> visitedList) throws JAMSEntity.NoSuchAttributeException {
-        JAMSEntity child_node;
+    protected boolean cycleCheck(Attribute.Entity node,Stack<Attribute.Entity> searchStack,HashSet<JAMSDouble> closedList,HashSet<JAMSDouble> visitedList) throws JAMSEntity.NoSuchAttributeException {
+        Attribute.Entity child_node;
         
         //current node allready in search stack -> circle found
         if ( searchStack.indexOf(node) != -1) {
@@ -79,7 +79,7 @@ public class J2KTopologyCreator extends JAMSComponent {
             
             String cyc_output = new String();
             for (int i = index; i < searchStack.size(); i++) {
-                cyc_output += ((JAMSEntity)searchStack.get(i)).getDouble("ID") + " ";
+                cyc_output += ((Attribute.Entity)searchStack.get(i)).getDouble("ID") + " ";
             }
             getModel().getRuntime().println("Found circle with ids:" + cyc_output);
             
@@ -91,7 +91,7 @@ public class J2KTopologyCreator extends JAMSComponent {
         //now this node is visited
         visitedList.add((JAMSDouble)node.getObject("ID"));
         
-        child_node = (JAMSEntity)node.getObject("to_poly");
+        child_node = (Attribute.Entity)node.getObject("to_poly");
         
         if (child_node != null) {
             //push current node to search stack
@@ -106,13 +106,13 @@ public class J2KTopologyCreator extends JAMSComponent {
         return false;
     }
     
-    protected boolean cycleCheck() throws JAMSEntity.NoSuchAttributeException {
-        Iterator<JAMSEntity> hruIterator;
+    protected boolean cycleCheck() throws Attribute.Entity.NoSuchAttributeException {
+        Iterator<Attribute.Entity> hruIterator;
         
         HashSet<JAMSDouble> closedList = new HashSet<JAMSDouble>();
         HashSet<JAMSDouble> visitedList = new HashSet<JAMSDouble>();
         
-        JAMSEntity start_node;
+        Attribute.Entity start_node;
         
         getModel().getRuntime().println("Cycle checking...");
         
@@ -124,7 +124,7 @@ public class J2KTopologyCreator extends JAMSComponent {
             start_node = hruIterator.next();
             //connected component of start_node allready processed?
             if (closedList.contains(start_node.getObject("ID")) == false) {
-                if ( cycleCheck(start_node,new Stack<JAMSEntity>(),closedList,visitedList) == true) {
+                if ( cycleCheck(start_node,new Stack<Attribute.Entity>(),closedList,visitedList) == true) {
                     result = true;
                 }
                 closedList.addAll(visitedList);
@@ -135,18 +135,18 @@ public class J2KTopologyCreator extends JAMSComponent {
         return result;
     }
     
-    protected void createTopology() throws JAMSEntity.NoSuchAttributeException {
+    protected void createTopology() throws Attribute.Entity.NoSuchAttributeException {
         
-        HashMap<Double, JAMSEntity> hruMap = new HashMap<Double, JAMSEntity>();
-        HashMap<Double, JAMSEntity> reachMap = new HashMap<Double, JAMSEntity>();
-        HashMap<Double, JAMSEntity> reservoirMap = null;
+        HashMap<Double, Attribute.Entity> hruMap = new HashMap<Double, Attribute.Entity>();
+        HashMap<Double, Attribute.Entity> reachMap = new HashMap<Double, Attribute.Entity>();
+        HashMap<Double, Attribute.Entity> reservoirMap = null;
         if(this.reservoirs != null){
-            reservoirMap = new HashMap<Double, JAMSEntity>();
+            reservoirMap = new HashMap<Double, Attribute.Entity>();
         }
-        Iterator<JAMSEntity> hruIterator;
-        Iterator<JAMSEntity> reachIterator;
-        Iterator<JAMSEntity> reservoirIterator;
-        JAMSEntity e;
+        Iterator<Attribute.Entity> hruIterator;
+        Iterator<Attribute.Entity> reachIterator;
+        Iterator<Attribute.Entity> reservoirIterator;
+        Attribute.Entity e;
         
         //put all entities into a HashMap with their ID as key
         hruIterator = hrus.getEntities().iterator();
@@ -176,7 +176,7 @@ public class J2KTopologyCreator extends JAMSComponent {
             if(this.reservoirs != null){
                 try {
                     e.setObject("to_reservoir", reservoirMap.get(e.getDouble("to_reservoir")));
-                } catch (JAMSEntity.NoSuchAttributeException ex) {
+                } catch (Attribute.Entity.NoSuchAttributeException ex) {
                     //ex.printStackTrace();
                 }
             }
@@ -190,7 +190,7 @@ public class J2KTopologyCreator extends JAMSComponent {
             if(this.reservoirs != null){
                 try {
                     e.setObject("to_reservoir", reservoirMap.get(e.getDouble("to-reservoir")));
-                } catch (JAMSEntity.NoSuchAttributeException ex) {
+                } catch (Attribute.Entity.NoSuchAttributeException ex) {
                     //ex.printStackTrace();
                 }
             }
@@ -206,12 +206,12 @@ public class J2KTopologyCreator extends JAMSComponent {
         
     }
     
-    protected void createOrderedList(JAMSEntityCollection col, String asso) throws JAMSEntity.NoSuchAttributeException {
+    protected void createOrderedList(JAMSEntityCollection col, String asso) throws Attribute.Entity.NoSuchAttributeException {
         
-        Iterator<JAMSEntity> hruIterator;
-        JAMSEntity e, f;
-        ArrayList<JAMSEntity> newList = new ArrayList<JAMSEntity>();
-        HashMap<JAMSEntity, Integer> depthMap = new HashMap<JAMSEntity, Integer>();
+        Iterator<Attribute.Entity> hruIterator;
+        Attribute.Entity e, f;
+        ArrayList<Attribute.Entity> newList = new ArrayList<Attribute.Entity>();
+        HashMap<Attribute.Entity, Integer> depthMap = new HashMap<Attribute.Entity, Integer>();
         Integer eDepth, fDepth;
         boolean mapChanged = true;
         
@@ -230,7 +230,7 @@ public class J2KTopologyCreator extends JAMSComponent {
             while (hruIterator.hasNext()) {
                 e = hruIterator.next();
                 
-                f = (JAMSEntity) e.getObject(asso);
+                f = (Attribute.Entity) e.getObject(asso);
                 if (f != null) {
                     eDepth = depthMap.get(e);
                     fDepth = depthMap.get(f);
@@ -254,9 +254,9 @@ public class J2KTopologyCreator extends JAMSComponent {
         }
         
         //create ArrayList of ArrayList objects, each element keeping the entities of one level
-        ArrayList<ArrayList<JAMSEntity>> alList = new ArrayList<ArrayList<JAMSEntity>>();
+        ArrayList<ArrayList<Attribute.Entity>> alList = new ArrayList<ArrayList<Attribute.Entity>>();
         for (int i=0; i<=maxDepth; i++) {
-            alList.add(new ArrayList<JAMSEntity>());
+            alList.add(new ArrayList<Attribute.Entity>());
         }
         
         //fill the ArrayList objects within the ArrayList with entity objects

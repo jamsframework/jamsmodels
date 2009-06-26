@@ -58,19 +58,19 @@ public class StandardLMArableParaReader extends JAMSComponent {
         JAMSEntityCollection croprot = JAMSDataFactory.createEntityCollection();
         croprot.setEntities(J2KFunctions.readParas(getModel().getWorkspaceDirectory().getPath()+"/"+laFileName.getValue(), getModel()));
         
-        HashMap<Double, JAMSEntity> ctMap = new HashMap<Double, JAMSEntity>();
-        JAMSEntity ct, e;
+        HashMap<Double, Attribute.Entity> ctMap = new HashMap<Double, Attribute.Entity>();
+        Attribute.Entity ct, e;
         Object[] attrs;
         
         //put all entities into a HashMap with their ID as key
         
-        Iterator<JAMSEntity> ctIterator = croprot.getEntities().iterator();
+        Iterator<Attribute.Entity> ctIterator = croprot.getEntities().iterator();
         while (ctIterator.hasNext()) {
             ct = ctIterator.next();
             ctMap.put(ct.getDouble("ID"),  ct);//put all entities into a HashMap with their ID as key
                             }
         
-        Iterator<JAMSEntity> hruIterator = hrus.getEntities().iterator();
+        Iterator<Attribute.Entity> hruIterator = hrus.getEntities().iterator();
         while (hruIterator.hasNext()) {
             e = hruIterator.next();
             ct = ctMap.get(e.getDouble("croprotID"));

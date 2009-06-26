@@ -146,7 +146,7 @@ import jams.model.*;
     
     public void init()  throws JAMSEntity.NoSuchAttributeException {
         JAMSEntityEnumerator eEnum = hrus.getEntityEnumerator();
-        JAMSEntity[] entities = hrus.getEntityArray();
+        Attribute.Entity[] entities = hrus.getEntityArray();
         
         for (int i = 0; i < entities.length; i++) {
             entities[i].setDouble(aNameN_concRG1.getValue(), 2);
