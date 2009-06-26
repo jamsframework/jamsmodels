@@ -193,16 +193,16 @@ title="ExtendedEfficiencyCalculator",
         //some checking if time intervals correlate well
         //....
         //....                
-        JAMSCalendar model_sd = this.modelTimeInterval.getStart().clone();
-        JAMSCalendar model_ed = this.modelTimeInterval.getEnd().clone();
+        Attribute.Calendar model_sd = this.modelTimeInterval.getStart().clone();
+        Attribute.Calendar model_ed = this.modelTimeInterval.getEnd().clone();
         
         sdMod = model_sd.getTimeInMillis();
         
         long model_tsteps = 0;        
         model_tsteps = modelTimeInterval.getNumberOfTimesteps();
         
-        JAMSCalendar eff_sd = this.effTimeInterval.getStart().clone();
-        JAMSCalendar eff_ed = this.effTimeInterval.getEnd().clone();
+        Attribute.Calendar eff_sd = this.effTimeInterval.getStart().clone();
+        Attribute.Calendar eff_ed = this.effTimeInterval.getEnd().clone();
         eff_tres = this.effTimeInterval.getTimeUnit();
         sdEff = eff_sd.getTimeInMillis();
                 
@@ -237,8 +237,8 @@ title="ExtendedEfficiencyCalculator",
             this.interValStart =(int)((sdEff - sdMod) / (1000 * 60 * 60));
             this.interValEnd = this.interValStart + this.effTsteps;
         } else if(eff_tres == JAMSCalendar.MONTH){
-            JAMSCalendar modStart = modelTimeInterval.getStart().clone();
-            JAMSCalendar effStart = effTimeInterval.getStart().clone();
+            Attribute.Calendar modStart = modelTimeInterval.getStart().clone();
+            Attribute.Calendar effStart = effTimeInterval.getStart().clone();
             int startStep = 0;
             while(modStart.before(effStart)){
                 startStep++;
@@ -247,8 +247,8 @@ title="ExtendedEfficiencyCalculator",
             this.interValStart = startStep;
             this.interValEnd = this.interValStart + this.effTsteps;
         } else if(eff_tres == JAMSCalendar.YEAR){
-            JAMSCalendar modStart = modelTimeInterval.getStart().clone();
-            JAMSCalendar effStart = effTimeInterval.getStart().clone();
+            Attribute.Calendar modStart = modelTimeInterval.getStart().clone();
+            Attribute.Calendar effStart = effTimeInterval.getStart().clone();
             int startStep = 0;
             while(modStart.before(effStart)){
                 startStep++;

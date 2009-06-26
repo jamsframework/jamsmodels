@@ -29,6 +29,7 @@ import java.util.Vector;
 import jams.JAMS;
 import jams.data.*;
 import jams.model.*;
+import java.util.GregorianCalendar;
 
 /**
  *
@@ -115,8 +116,8 @@ title="Time series capturer",
         //....
         this.counter = 0;
         this.monthCount = 0;
-        JAMSCalendar model_sd = this.modelTimeInterval.getStart().clone();
-        JAMSCalendar model_ed = this.modelTimeInterval.getEnd().clone();
+        Attribute.Calendar model_sd = this.modelTimeInterval.getStart().clone();
+        Attribute.Calendar model_ed = this.modelTimeInterval.getEnd().clone();
         int model_tres = this.modelTimeInterval.getTimeUnit();
         long sdMod = model_sd.getTimeInMillis();
         long edMod = model_ed.getTimeInMillis();
@@ -127,8 +128,8 @@ title="Time series capturer",
         }*/
         model_tsteps = modelTimeInterval.getNumberOfTimesteps();
         
-        JAMSCalendar eff_sd = this.captureTimeInterval.getStart().clone();
-        JAMSCalendar eff_ed = this.captureTimeInterval.getEnd().clone();
+        Attribute.Calendar eff_sd = this.captureTimeInterval.getStart().clone();
+        Attribute.Calendar eff_ed = this.captureTimeInterval.getEnd().clone();
         int eff_tres = this.captureTimeInterval.getTimeUnit();
         long sdEff = eff_sd.getTimeInMillis();
         long edEff = eff_ed.getTimeInMillis();
@@ -163,15 +164,15 @@ title="Time series capturer",
         
         //determine start and end array index for timeInterval
         
-        if(eff_tres == eff_sd.DAY_OF_YEAR){
+        if(eff_tres == GregorianCalendar.DAY_OF_YEAR){
             this.interValStart =(int)((sdEff - sdMod) / (1000 * 60 * 60 * 24));
             this.interValEnd = this.interValStart + this.effTsteps;
-        } else if(eff_tres == eff_sd.HOUR_OF_DAY){
+        } else if(eff_tres == GregorianCalendar.HOUR_OF_DAY){
             this.interValStart =(int)((sdEff - sdMod) / (1000 * 60 * 60));
             this.interValEnd = this.interValStart + this.effTsteps;
-        } else if(eff_tres == eff_sd.MONTH){
-            JAMSCalendar modStart = modelTimeInterval.getStart().clone();
-            JAMSCalendar effStart = captureTimeInterval.getStart().clone();
+        } else if(eff_tres == GregorianCalendar.MONTH){
+            Attribute.Calendar modStart = modelTimeInterval.getStart().clone();
+            Attribute.Calendar effStart = captureTimeInterval.getStart().clone();
             int startStep = 0;
             while(modStart.before(effStart)){
                 startStep++;
@@ -179,9 +180,9 @@ title="Time series capturer",
             }
             this.interValStart = startStep;
             this.interValEnd = this.interValStart + this.effTsteps;
-        } else if(eff_tres == eff_sd.YEAR){
-            JAMSCalendar modStart = modelTimeInterval.getStart().clone();
-            JAMSCalendar effStart = captureTimeInterval.getStart().clone();
+        } else if(eff_tres == GregorianCalendar.YEAR){
+            Attribute.Calendar modStart = modelTimeInterval.getStart().clone();
+            Attribute.Calendar effStart = captureTimeInterval.getStart().clone();
             int startStep = 0;
             while(modStart.before(effStart)){
                 startStep++;

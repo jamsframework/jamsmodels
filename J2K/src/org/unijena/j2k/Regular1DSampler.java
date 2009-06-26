@@ -329,7 +329,7 @@ import jams.model.*;
     public void cleanup() {
         if (enable.getValue()) {
             int sampleCount = this.resolution.getValue();
-            JAMSCalendar timeStamp = this.modelTimeInterval.getStart();
+            Attribute.Calendar timeStamp = this.modelTimeInterval.getStart();
             for(int t = 0; t <= this.timeSteps; t++){
                 attribWriter.addData(timeStamp.toString());
                 timeStamp.add(modelTimeInterval.getTimeUnit(), 1);

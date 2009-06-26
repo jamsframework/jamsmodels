@@ -29,26 +29,28 @@ import jams.data.*;
  *
  * @author S. Kralisch
  */
+@JAMSComponentDescription(
+        title="WeightedSumAggregator",
+        author="Sven Kralisch",
+        description="Calculates the weighted sum of given values"
+        )
 public class WeightedSumAggregator extends JAMSComponent {
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.RUN,
-            description = "value attribute"
+            description = "The value(s) that shall be summed up"
             )
             public JAMSDouble[] value;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.RUN,
-            description = "weight attribute"
+            description = "A weight to be used to calculate the weighted sum"
             )
             public JAMSDouble weight;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
-            description = "sum attribute"
+            description = "The resulting weighted sum(s) of the given values"
             )
             public JAMSDouble[] sum;
     

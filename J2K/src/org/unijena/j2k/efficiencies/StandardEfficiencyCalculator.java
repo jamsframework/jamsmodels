@@ -30,6 +30,7 @@ import org.unijena.j2k.statistics.Regression;
 import jams.JAMS;
 import jams.data.*;
 import jams.model.*;
+import java.util.GregorianCalendar;
 
 /**
  *
@@ -51,14 +52,14 @@ title="StandardEfficiencyCalculator",
             update = JAMSVarDescription.UpdateType.RUN,
             description = "time"
             )
-            public JAMSCalendar time;
+            public Attribute.Calendar time;
     
     @JAMSVarDescription(
     access = JAMSVarDescription.AccessType.READ,
             update = JAMSVarDescription.UpdateType.INIT,
             description = "The model time interval"
             )
-            public JAMSTimeInterval modelTimeInterval;
+            public Attribute.TimeInterval modelTimeInterval;
     
     @JAMSVarDescription(
     access = JAMSVarDescription.AccessType.READ,
@@ -246,8 +247,8 @@ title="StandardEfficiencyCalculator",
         //....
         this.counter = 0;
         this.monthCount = 0;
-        JAMSCalendar model_sd = this.modelTimeInterval.getStart().clone();
-        JAMSCalendar model_ed = this.modelTimeInterval.getEnd().clone();
+        Attribute.Calendar model_sd = this.modelTimeInterval.getStart().clone();
+        Attribute.Calendar model_ed = this.modelTimeInterval.getEnd().clone();
         int model_tres = this.modelTimeInterval.getTimeUnit();
         long sdMod = model_sd.getTimeInMillis();
         long edMod = model_ed.getTimeInMillis();
@@ -258,8 +259,8 @@ title="StandardEfficiencyCalculator",
         }*/
         model_tsteps = modelTimeInterval.getNumberOfTimesteps();
         
-        JAMSCalendar eff_sd = this.effTimeInterval.getStart().clone();
-        JAMSCalendar eff_ed = this.effTimeInterval.getEnd().clone();
+        Attribute.Calendar eff_sd = this.effTimeInterval.getStart().clone();
+        Attribute.Calendar eff_ed = this.effTimeInterval.getEnd().clone();
         int eff_tres = this.effTimeInterval.getTimeUnit();
         long sdEff = eff_sd.getTimeInMillis();
         long edEff = eff_ed.getTimeInMillis();
@@ -297,29 +298,29 @@ title="StandardEfficiencyCalculator",
         
         //determine start and end array index for timeInterval
         
-        if(eff_tres == eff_sd.DAY_OF_YEAR){
+        if(eff_tres == GregorianCalendar.DAY_OF_YEAR){
             this.interValStart =(int)((sdEff - sdMod) / (1000 * 60 * 60 * 24));
             this.interValEnd = this.interValStart + this.effTsteps;
-        } else if(eff_tres == eff_sd.HOUR_OF_DAY){
+        } else if(eff_tres == GregorianCalendar.HOUR_OF_DAY){
             this.interValStart =(int)((sdEff - sdMod) / (1000 * 60 * 60));
             this.interValEnd = this.interValStart + this.effTsteps;
-        } else if(eff_tres == eff_sd.MONTH){
-            JAMSCalendar modStart = modelTimeInterval.getStart().clone();
-            JAMSCalendar effStart = effTimeInterval.getStart().clone();
+        } else if(eff_tres == GregorianCalendar.MONTH){
+            Attribute.Calendar modStart = modelTimeInterval.getStart().clone();
+            Attribute.Calendar effStart = effTimeInterval.getStart().clone();
             int startStep = 0;
             while(modStart.before(effStart)){
                 startStep++;
-                modStart.add(JAMSCalendar.MONTH,1);
+                modStart.add(GregorianCalendar.MONTH,1);
             }
             this.interValStart = startStep;
             this.interValEnd = this.interValStart + this.effTsteps;
-        } else if(eff_tres == eff_sd.YEAR){
-            JAMSCalendar modStart = modelTimeInterval.getStart().clone();
-            JAMSCalendar effStart = effTimeInterval.getStart().clone();
+        } else if(eff_tres == GregorianCalendar.YEAR){
+            Attribute.Calendar modStart = modelTimeInterval.getStart().clone();
+            Attribute.Calendar effStart = effTimeInterval.getStart().clone();
             int startStep = 0;
             while(modStart.before(effStart)){
                 startStep++;
-                modStart.add(JAMSCalendar.YEAR,1);
+                modStart.add(GregorianCalendar.YEAR,1);
             }
             this.interValStart = startStep;
             this.interValEnd = this.interValStart + this.effTsteps;
@@ -333,7 +334,7 @@ title="StandardEfficiencyCalculator",
     
     public void run() {
         if(monthly){
-            int month = time.get(time.MONTH) + 1;
+            int month = time.get(GregorianCalendar.MONTH) + 1;
             for(int i = 0; i < this.effMonthList.getValue().length; i++){
                 if(month == this.effMonthList.getValue()[i]){
                     this.valData[counter] = validation.getValue();

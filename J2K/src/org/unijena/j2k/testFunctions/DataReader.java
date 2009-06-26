@@ -114,7 +114,7 @@ public class DataReader extends JAMSComponent {
                     getModel().getRuntime().sendHalt("TSData start and end time of " + this.fileName.getValue() + " do not match current temporal context!");
                 }
                 int timeUnit = timeInterval.getTimeUnit();
-                JAMSCalendar tiStart = timeInterval.getStart();
+                Attribute.Calendar tiStart = timeInterval.getStart();
                 JAMSCalendar date = JAMSDataFactory.createCalendar();
                 date.set(tiStart.get(Calendar.YEAR), tiStart.get(Calendar.MONTH), tiStart.get(Calendar.DAY_OF_MONTH), startTime.get(Calendar.HOUR_OF_DAY), startTime.get(Calendar.MINUTE), startTime.get(Calendar.SECOND));
 

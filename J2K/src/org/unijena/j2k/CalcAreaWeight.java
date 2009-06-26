@@ -23,7 +23,6 @@
 
 package org.unijena.j2k;
 
-import jams.JAMS;
 import jams.model.*;
 import jams.data.*;
 
@@ -41,21 +40,18 @@ public class CalcAreaWeight extends JAMSComponent {
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "Entity area attribute"
             )
             public JAMSDouble entityArea;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "Catchment area attribute"
             )
             public JAMSDouble catchmentArea;    
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "Entity area weight"
             )
             public JAMSDouble areaWeight;
