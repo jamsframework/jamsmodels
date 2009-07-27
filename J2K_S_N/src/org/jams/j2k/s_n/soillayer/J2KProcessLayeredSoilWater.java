@@ -1223,6 +1223,9 @@ public class J2KProcessLayeredSoilWater extends JAMSComponent {
             }
         }
 
+         if (maxTrans > run_actMPS[hor]){
+            maxTrans = run_actMPS[hor];
+        }
 
         this.run_actMPS[hor] = this.run_actMPS[hor] - maxTrans;
 
