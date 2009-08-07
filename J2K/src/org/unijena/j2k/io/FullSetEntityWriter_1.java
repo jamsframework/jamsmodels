@@ -116,8 +116,7 @@ public class FullSetEntityWriter_1 extends JAMSComponent {
     public void run() throws JAMSEntity.NoSuchAttributeException {
        
         dateStr[tcounter] = this.time.toString();
-        JAMSEntityEnumerator ee = entitySet.getEntityEnumerator();
-        ee.reset();
+        entitySet.getEntityEnumerator().reset();
         
         int setCounter = 0;
         int entCounter = 0;
@@ -148,8 +147,8 @@ public class FullSetEntityWriter_1 extends JAMSComponent {
             }
 
             //writer.addData(""+entitySet.getCurrent().getDouble(this.attributeName.getValue()));
-            if(ee.hasNext() && (setCounter < nEnts)){
-                ee.next();
+            if(entitySet.getEntityEnumerator().hasNext() && (setCounter < nEnts)){
+                entitySet.getEntityEnumerator().next();
                 cont = true;
                 entCounter++;
             }else
