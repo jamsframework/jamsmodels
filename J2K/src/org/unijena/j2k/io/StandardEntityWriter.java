@@ -109,8 +109,7 @@ public class StandardEntityWriter extends JAMSComponent {
             } else{
                 //System.out.getRuntime().println("Primitive");
             }
-            JAMSEntityEnumerator enEnum = entities.getEntityEnumerator();
-            enEnum.reset();
+            entities.getEntityEnumerator().reset();
             boolean cont = true;
             while(cont){
                 for(int i = 0; i < length; i++){
@@ -119,8 +118,8 @@ public class StandardEntityWriter extends JAMSComponent {
                 if(length == 0){
                     writer.addColumn("HRU_"+(int)entities.getCurrent().getDouble("ID"));
                 }
-                if(enEnum.hasNext()){
-                    enEnum.next();
+                if(entities.getEntityEnumerator().hasNext()){
+                    entities.getEntityEnumerator().next();
                     cont = true;
                 }else
                     cont = false;
@@ -134,8 +133,7 @@ public class StandardEntityWriter extends JAMSComponent {
         //e.g. time.toString("%1$tY-%1$tm-%1$td %1$tH:%1$tM")
         writer.addData(time);
         
-        JAMSEntityEnumerator ee = entities.getEntityEnumerator();
-        ee.reset();
+        entities.getEntityEnumerator().reset();
         boolean cont = true;
         while(cont){
             Object ob = entities.getCurrent().getObject(this.attributeName.getValue());
@@ -167,8 +165,8 @@ public class StandardEntityWriter extends JAMSComponent {
                 writer.addData(""+val);
             }
             //writer.addData(""+entitySet.getCurrent().getDouble(this.attributeName.getValue()));
-            if(ee.hasNext()){
-                ee.next();
+            if(entities.getEntityEnumerator().hasNext()){
+                entities.getEntityEnumerator().next();
                 cont = true;
             }else
                 cont = false;
