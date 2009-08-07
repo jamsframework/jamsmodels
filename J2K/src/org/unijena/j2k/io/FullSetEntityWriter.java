@@ -106,8 +106,7 @@ public class FullSetEntityWriter extends JAMSComponent {
             //always write time
             writer.addColumn("date/time");
             
-            JAMSEntityEnumerator enEnum = entitySet.getEntityEnumerator();
-            enEnum.reset();
+            entitySet.getEntityEnumerator().reset();
             boolean cont = true;
             
             while(cont){
@@ -129,8 +128,8 @@ public class FullSetEntityWriter extends JAMSComponent {
                 }
                 
                 
-                if(enEnum.hasNext()){
-                    enEnum.next();
+                if(entitySet.getEntityEnumerator().hasNext()){
+                    entitySet.getEntityEnumerator().next();
                     cont = true;
                 }else
                     cont = false;
@@ -144,8 +143,7 @@ public class FullSetEntityWriter extends JAMSComponent {
         //e.g. time.toString("%1$tY-%1$tm-%1$td %1$tH:%1$tM")
         writer.addData(time);
         
-        JAMSEntityEnumerator ee = entitySet.getEntityEnumerator();
-        ee.reset();
+        entitySet.getEntityEnumerator().reset();
         int setCounter = 0;
         boolean cont = true;
         while(cont){
@@ -174,8 +172,8 @@ public class FullSetEntityWriter extends JAMSComponent {
             }
 
             //writer.addData(""+entitySet.getCurrent().getDouble(this.attributeName.getValue()));
-            if(ee.hasNext() && (setCounter < nEnts)){
-                ee.next();
+            if(entitySet.getEntityEnumerator().hasNext() && (setCounter < nEnts)){
+                entitySet.getEntityEnumerator().next();
                 cont = true;
             }else
                 cont = false;
