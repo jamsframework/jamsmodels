@@ -126,7 +126,7 @@ public class SelectiveEntityWriter extends JAMSComponent {
             //always write time
             writer.addColumn("date/time");
             
-            JAMSEntityEnumerator enEnum = entitySet.getEntityEnumerator();
+            EntityEnumerator enEnum = entitySet.getEntityEnumerator();
             enEnum.reset();
             boolean cont = true;
             
@@ -177,7 +177,7 @@ public class SelectiveEntityWriter extends JAMSComponent {
             
             writer.addData(time);
         
-        JAMSEntityEnumerator ee = entitySet.getEntityEnumerator();
+        EntityEnumerator ee = entitySet.getEntityEnumerator();
         ee.reset();
         int setCounter = 0;
         boolean cont = true;

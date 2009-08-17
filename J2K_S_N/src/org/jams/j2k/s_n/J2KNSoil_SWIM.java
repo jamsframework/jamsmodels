@@ -421,7 +421,7 @@ import jams.model.*;
    
    public void init() throws JAMSEntity.NoSuchAttributeException{
        
-//       JAMSEntityEnumerator eEnum = hrus.getEntityEnumerator();
+       EntityEnumerator eEnum = hrus.getEntityEnumerator();
        Attribute.Entity[] entities = hrus.getEntityArray();
        
        
