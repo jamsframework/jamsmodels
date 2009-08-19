@@ -113,7 +113,7 @@ import jams.model.*;
     
     public void run() throws JAMSEntity.NoSuchAttributeException {
         
-        JAMSEntity entity = entities.getCurrent();
+        Attribute.Entity entity = entities.getCurrent();
         
         double[] lai_vals = null; 
         double[] effH_vals = null;
