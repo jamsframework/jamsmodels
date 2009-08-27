@@ -73,7 +73,7 @@ public class StandardGroundwaterParaReader extends JAMSComponent {
         Iterator<Attribute.Entity> hruIterator = hrus.getEntities().iterator();
         while (hruIterator.hasNext()) {
             e = hruIterator.next();
-            //System.out.println("proc hru " + e.getDouble("ID"));
+
             gw = gwMap.get(e.getDouble("hgeoID"));
             e.setObject("hgeoType", gw);
             

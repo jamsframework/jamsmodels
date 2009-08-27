@@ -64,9 +64,11 @@ public class StandardEntityReader extends JAMSComponent {
 
     @Override
     public void init() throws Attribute.Entity.NoSuchAttributeException {
-        //to handle relative path names        
+        
+        //read hru parameter
         hrus.setEntities(J2KFunctions.readParas(JAMSTools.CreateAbsoluteFileName(getModel().getWorkspaceDirectory().getPath(), hruFileName.getValue()), getModel()));
 
+        //assign IDs to all hru entities
         for (Attribute.Entity e : hrus.getEntityArray()) {
             try {
                 e.setId((long) e.getDouble("ID"));
@@ -76,9 +78,9 @@ public class StandardEntityReader extends JAMSComponent {
         }
 
         //read reach parameter
-        //reaches = new JAMSEntityCollection();
         reaches.setEntities(J2KFunctions.readParas(JAMSTools.CreateAbsoluteFileName(getModel().getWorkspaceDirectory().getPath(), reachFileName.getValue()), getModel()));
 
+        //assign IDs to all reach entities
         for (Attribute.Entity e : reaches.getEntityArray()) {
             try {
                 e.setId((long) e.getDouble("ID"));
@@ -93,14 +95,14 @@ public class StandardEntityReader extends JAMSComponent {
         //create total order on hrus and reaches that allows processing them subsequently
         getModel().getRuntime().println("Create ordered hru-list", JAMS.VERBOSE);
         createOrderedList(hrus, "to_poly");
+        getModel().getRuntime().println("HRU entities read successfully", JAMS.STANDARD);
         getModel().getRuntime().println("Create ordered reach-list", JAMS.VERBOSE);
         createOrderedList(reaches, "to_reach");
-        getModel().getRuntime().println("Entities read successfull!", JAMS.VERBOSE);
-
+        getModel().getRuntime().println("Reach entities read successfully", JAMS.STANDARD);
     }
 
     //do depth first search to find cycles
-    protected boolean cycleCheck(Attribute.Entity node, Stack<Attribute.Entity> searchStack, HashSet<JAMSDouble> closedList, HashSet<JAMSDouble> visitedList) throws JAMSEntity.NoSuchAttributeException {
+    protected boolean cycleCheck(Attribute.Entity node, Stack<Attribute.Entity> searchStack, HashSet<Attribute.Double> closedList, HashSet<Attribute.Double> visitedList) throws JAMSEntity.NoSuchAttributeException {
         Attribute.Entity child_node;
 
         //current node allready in search stack -> circle found
@@ -143,8 +145,8 @@ public class StandardEntityReader extends JAMSComponent {
     protected boolean cycleCheck() throws Attribute.Entity.NoSuchAttributeException {
         Iterator<Attribute.Entity> hruIterator;
 
-        HashSet<JAMSDouble> closedList = new HashSet<JAMSDouble>();
-        HashSet<JAMSDouble> visitedList = new HashSet<JAMSDouble>();
+        HashSet<Attribute.Double> closedList = new HashSet<Attribute.Double>();
+        HashSet<Attribute.Double> visitedList = new HashSet<Attribute.Double>();
 
         Attribute.Entity start_node;
 
