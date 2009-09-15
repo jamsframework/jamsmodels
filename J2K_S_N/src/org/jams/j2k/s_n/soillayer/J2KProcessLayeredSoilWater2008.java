@@ -1361,7 +1361,9 @@ import jams.model.*;
    
 
         //Manfreds new
-        double potLPSoutflow = ((1 - (1 / (Math.pow(this.run_satHor[hor], 2) + alpha))) * this.run_actLPS[hor]) * (this.runkf_h[hor] / layerdepth.getValue()[hor]);
+        //double potLPSoutflow = ((1 - (1 / (Math.pow(this.run_satHor[hor], 2) + alpha))) * this.run_actLPS[hor]) * (this.runkf_h[hor] / layerdepth.getValue()[hor]);
+        //Peters second + kf and layerdepth
+        double potLPSoutflow = Math.pow(this.run_satHor[hor], alpha) * this.run_actLPS[hor] * (this.runkf_h[hor] / layerdepth.getValue()[hor]);
         //testing a simple function function out = 1/k * sto
         //double potLPSoutflow = 1 / alpha * this.act_LPS;//Math.pow(this.act_LPS, alpha);
         if(potLPSoutflow > this.run_actLPS[hor])
