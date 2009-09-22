@@ -83,7 +83,6 @@ public class J2KFunctions {
                         try {
                             //hopefully these are double values :-)
                             e.setDouble(attributeNames.get(i), Double.parseDouble(token));
-                            model.getRuntime().println(attributeNames.get(i) + ": " + token, JAMS.VVERBOSE);
                         } catch (NumberFormatException nfe) {
                             //most probably this happens because of string values within J2K parameter files
                             e.setObject(attributeNames.get(i), token);
