@@ -23,11 +23,11 @@
 
 package org.unijena.j2k.regionWK.AP0;
 
+import jams.JAMSConstants;
 import org.unijena.j2k.*;
 import jams.data.*;
 import jams.model.*;
 import java.util.*;
-import jams.JAMS;
 import jams.JAMSTools;
 
 /**
@@ -86,7 +86,7 @@ public class StandardLUReader extends JAMSComponent {
             
         }
        
-        getModel().getRuntime().println("Landuse parameter file processed ...", JAMS.VERBOSE);
+        getModel().getRuntime().println("Landuse parameter file processed ...", JAMSConstants.VERBOSE);
        
     }
     
