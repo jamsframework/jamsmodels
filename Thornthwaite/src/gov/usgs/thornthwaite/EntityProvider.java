@@ -44,7 +44,7 @@ public class EntityProvider extends JAMSComponent {
 
     public void init() {
 
-        ArrayList<JAMSEntity> entityList = new ArrayList<JAMSEntity>();
+        ArrayList<Attribute.Entity> entityList = new ArrayList<Attribute.Entity>();
 
         store = new GenericDataReader(fileName.getValue(), false, 4, 6);
 
