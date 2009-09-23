@@ -26,7 +26,7 @@ package org.unijena.j2k.io;
 import jams.data.*;
 import jams.model.*;
 import java.util.*;
-import jams.JAMS;
+import jams.JAMSConstants;
 
 /**
  *
@@ -61,11 +61,11 @@ public class J2KTopologyCreator extends JAMSComponent {
         createTopology();
         
         //create total order on hrus and reaches that allows processing them subsequently
-        getModel().getRuntime().println("Create ordered hru-list", JAMS.STANDARD);
+        getModel().getRuntime().println("Create ordered hru-list", JAMSConstants.STANDARD);
         createOrderedList(hrus, "to_poly");
-        getModel().getRuntime().println("Create ordered reach-list", JAMS.STANDARD);
+        getModel().getRuntime().println("Create ordered reach-list", JAMSConstants.STANDARD);
         createOrderedList(reaches, "to_reach");
-        getModel().getRuntime().println("Entities read successfull!", JAMS.STANDARD);
+        getModel().getRuntime().println("Entities read successfull!", JAMSConstants.STANDARD);
         
     }
     
@@ -197,7 +197,7 @@ public class J2KTopologyCreator extends JAMSComponent {
         }
         
         //check for cycles
-        if (this.getModel().getRuntime().getDebugLevel() >= JAMS.VVERBOSE) {
+        if (this.getModel().getRuntime().getDebugLevel() >= JAMSConstants.VVERBOSE) {
             if (cycleCheck() == true)
                 getModel().getRuntime().println("HRUs --> cycle found ... :( ");
             else

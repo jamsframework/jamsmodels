@@ -26,7 +26,7 @@ package org.unijena.j2k.efficiencies;
 import java.util.Locale;
 import java.util.Vector;
 
-import jams.JAMS;
+import jams.JAMSConstants;
 import jams.data.*;
 import jams.model.*;
 import java.util.ArrayList;
@@ -210,18 +210,18 @@ title="ExtendedEfficiencyCalculator",
         //otherwise it will be set to the model interval bounds
         if(eff_sd.before(model_sd)){
             this.effTimeInterval.setStart(model_sd);
-            getModel().getRuntime().println("effStartdate was set equal to model startdate", JAMS.STANDARD);
+            getModel().getRuntime().println("effStartdate was set equal to model startdate", JAMSConstants.STANDARD);
         }
         if(model_ed.before(eff_ed)){
             this.effTimeInterval.setEnd(model_ed);
-            getModel().getRuntime().println("effEnddate was set equal to model enddate", JAMS.STANDARD);
+            getModel().getRuntime().println("effEnddate was set equal to model enddate", JAMSConstants.STANDARD);
         }
         
         
         effTsteps = (int) effTimeInterval.getNumberOfTimesteps();
                         
-        getModel().getRuntime().println("effStartdate:\t" + eff_sd.toString(), JAMS.VERBOSE);
-        getModel().getRuntime().println("effEnddate:\t" + eff_ed.toString(), JAMS.VERBOSE);
+        getModel().getRuntime().println("effStartdate:\t" + eff_sd.toString(), JAMSConstants.VERBOSE);
+        getModel().getRuntime().println("effEnddate:\t" + eff_ed.toString(), JAMSConstants.VERBOSE);
                 
         valData = new double[(int)model_tsteps];
         preData = new double[(int)model_tsteps];   
@@ -282,11 +282,11 @@ title="ExtendedEfficiencyCalculator",
     }
     
     public void cleanup() {
-        getModel().getRuntime().println("", JAMS.STANDARD);
-        getModel().getRuntime().println("*************************************************************", JAMS.STANDARD);
-        getModel().getRuntime().println("Efficiencies for period:\t " + this.effTimeInterval.toString(), JAMS.STANDARD);
-        getModel().getRuntime().println("Sampler: " + this.getInstanceName(), JAMS.STANDARD);
-        getModel().getRuntime().println("*************************************************************", JAMS.STANDARD);
+        getModel().getRuntime().println("", JAMSConstants.STANDARD);
+        getModel().getRuntime().println("*************************************************************", JAMSConstants.STANDARD);
+        getModel().getRuntime().println("Efficiencies for period:\t " + this.effTimeInterval.toString(), JAMSConstants.STANDARD);
+        getModel().getRuntime().println("Sampler: " + this.getInstanceName(), JAMSConstants.STANDARD);
+        getModel().getRuntime().println("*************************************************************", JAMSConstants.STANDARD);
         
         Vector<Double> valVector = new Vector<Double>();
         Vector<Double> preVector = new Vector<Double>();
@@ -320,44 +320,44 @@ title="ExtendedEfficiencyCalculator",
                 double eff = //NashSutcliffe.efficiency(preData_1, valData_1, 1);
                         complexEfficiency(fourierTransform(realToComplexArray(preData_1)),fourierTransform(realToComplexArray(valData_1)),1.0);
                 this.effFourier.setValue(eff);
-                getModel().getRuntime().println("fourierEfficiency:\t\t" + String.format(Locale.US,"%.5f",eff), JAMS.STANDARD);
+                getModel().getRuntime().println("fourierEfficiency:\t\t" + String.format(Locale.US,"%.5f",eff), JAMSConstants.STANDARD);
             }else if(effMethod.getValue()[i] == this.COSINE){
                 double eff = cosineMetric(preData_1,valData_1);
                 this.effCosine.setValue(eff);
-                getModel().getRuntime().println("cosineMetric:\t\t" + String.format(Locale.US,"%.5f",eff), JAMS.STANDARD);
+                getModel().getRuntime().println("cosineMetric:\t\t" + String.format(Locale.US,"%.5f",eff), JAMSConstants.STANDARD);
             }else if(effMethod.getValue()[i] == this.SIMILB){
                 double eff = similB(preData_1,valData_1);
                 this.similB.setValue(eff);
-                getModel().getRuntime().println("similB:\t\t" + String.format(Locale.US,"%.5f",eff), JAMS.STANDARD);
+                getModel().getRuntime().println("similB:\t\t" + String.format(Locale.US,"%.5f",eff), JAMSConstants.STANDARD);
             }else if(effMethod.getValue()[i] == this.LHR_FOURIER){
                 double eff = LikelihoodRationFourierEfficiency(preData_1,valData_1);
                 this.LHReff.setValue(eff);
-                getModel().getRuntime().println("Likelihood Ration Fourier Efficiency:\t\t" + String.format(Locale.US,"%.5f",eff), JAMS.STANDARD);
+                getModel().getRuntime().println("Likelihood Ration Fourier Efficiency:\t\t" + String.format(Locale.US,"%.5f",eff), JAMSConstants.STANDARD);
             }else if(effMethod.getValue()[i] == this.LOWPASS_FOURIER){
                 double eff = //NashSutcliffe.efficiency(preData_1, valData_1, 1);
                         complexEfficiency(fourierTransform(realToComplexArray(preData_1)),fourierTransform(realToComplexArray(valData_1)),0.9);
                 this.effLowpassFourier.setValue(eff);
-                getModel().getRuntime().println("lowpass fourierEfficiency:\t\t" + String.format(Locale.US,"%.5f",eff), JAMS.STANDARD);
+                getModel().getRuntime().println("lowpass fourierEfficiency:\t\t" + String.format(Locale.US,"%.5f",eff), JAMSConstants.STANDARD);
             }else if(effMethod.getValue()[i] == this.HYDRO_EFF1){
                 double w1 = 1.0, w2 = 1.0, w3 = 1.0;
                 double spikeFlowEff = getSpikeFlowEff(preData_1,valData_1);
                 double baseFlowEff  = getBaseFlowEff(preData_1,valData_1);
                 double dynamicEff = getDynamicEff(preData_1,valData_1);
                 this.effHydro1.setValue( 1.0-((w1*spikeFlowEff + w2*baseFlowEff + w3*dynamicEff) / (w1+w2+w3)) );
-                getModel().getRuntime().println("effHydro1:\t\t" + String.format(Locale.US,"%.5f",effHydro1.getValue()), JAMS.STANDARD);
-                getModel().getRuntime().println("spike:\t\t" + String.format(Locale.US,"%.5f",spikeFlowEff), JAMS.STANDARD);
-                getModel().getRuntime().println("baseFlowEff:\t\t" + String.format(Locale.US,"%.5f",baseFlowEff), JAMS.STANDARD);
-                getModel().getRuntime().println("dynamicEff:\t\t" + String.format(Locale.US,"%.5f",dynamicEff), JAMS.STANDARD);
+                getModel().getRuntime().println("effHydro1:\t\t" + String.format(Locale.US,"%.5f",effHydro1.getValue()), JAMSConstants.STANDARD);
+                getModel().getRuntime().println("spike:\t\t" + String.format(Locale.US,"%.5f",spikeFlowEff), JAMSConstants.STANDARD);
+                getModel().getRuntime().println("baseFlowEff:\t\t" + String.format(Locale.US,"%.5f",baseFlowEff), JAMSConstants.STANDARD);
+                getModel().getRuntime().println("dynamicEff:\t\t" + String.format(Locale.US,"%.5f",dynamicEff), JAMSConstants.STANDARD);
             }else if(effMethod.getValue()[i] == this.HYDRO_EFF2){
                 double w1 = 1.0, w2 = 1.0, w3 = 1.0;
                 double spikeFlowEff = getSpikeFlowEff2(preData_1,valData_1);
                 double baseFlowEff  = getBaseFlowEff(preData_1,valData_1);
                 double totEff = totalEff(preData_1,valData_1);
                 this.effHydro2.setValue( 1.0-((w1*spikeFlowEff + w2*baseFlowEff + w3*totEff) / (w1+w2+w3)) );
-                getModel().getRuntime().println("effHydro2:\t\t" + String.format(Locale.US,"%.5f",effHydro2.getValue()), JAMS.STANDARD);
-                getModel().getRuntime().println("spike:\t\t" + String.format(Locale.US,"%.5f",spikeFlowEff), JAMS.STANDARD);
-                getModel().getRuntime().println("baseFlowEff:\t\t" + String.format(Locale.US,"%.5f",baseFlowEff), JAMS.STANDARD);
-                getModel().getRuntime().println("dynamicEff:\t\t" + String.format(Locale.US,"%.5f",totEff), JAMS.STANDARD);
+                getModel().getRuntime().println("effHydro2:\t\t" + String.format(Locale.US,"%.5f",effHydro2.getValue()), JAMSConstants.STANDARD);
+                getModel().getRuntime().println("spike:\t\t" + String.format(Locale.US,"%.5f",spikeFlowEff), JAMSConstants.STANDARD);
+                getModel().getRuntime().println("baseFlowEff:\t\t" + String.format(Locale.US,"%.5f",baseFlowEff), JAMSConstants.STANDARD);
+                getModel().getRuntime().println("dynamicEff:\t\t" + String.format(Locale.US,"%.5f",totEff), JAMSConstants.STANDARD);
             }
             
         }

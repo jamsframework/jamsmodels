@@ -25,7 +25,6 @@ package org.unijena.j2k;
 
 import java.util.Random;
 import java.util.StringTokenizer;
-import jams.JAMS;
 import jams.data.*;
 import jams.io.GenericDataWriter;
 import jams.model.*;

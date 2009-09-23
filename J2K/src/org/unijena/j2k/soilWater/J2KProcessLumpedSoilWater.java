@@ -23,7 +23,7 @@
 
 package org.unijena.j2k.soilWater;
 
-import jams.JAMS;
+import jams.JAMSConstants;
 import jams.data.*;
 import jams.model.*;
 

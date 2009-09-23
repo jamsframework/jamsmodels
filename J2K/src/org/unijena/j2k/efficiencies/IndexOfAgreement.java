@@ -9,7 +9,7 @@
 
 package org.unijena.j2k.efficiencies;
 
-import jams.JAMS;
+import jams.JAMSConstants;
 import jams.model.JAMSModel;
 
 /**

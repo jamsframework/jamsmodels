@@ -24,7 +24,7 @@
 package org.unijena.j2k.io;
 
 import org.unijena.j2k.*;
-import jams.JAMS;
+import jams.JAMSConstants;
 import jams.data.*;
 import jams.model.*;
 import java.util.*;
@@ -78,7 +78,7 @@ public class StandardGroundwaterParaReader extends JAMSComponent {
             e.setObject("hgeoType", gw);
             
             if(gw == null){
-                getModel().getRuntime().println("Groundwater unit defined in entity no. "+e.getDouble("ID")+ " is not defined in geo parameter table", JAMS.VERBOSE);
+                getModel().getRuntime().println("Groundwater unit defined in entity no. "+e.getDouble("ID")+ " is not defined in geo parameter table", JAMSConstants.VERBOSE);
             }
             attrs = gw.getKeys();
             
@@ -89,7 +89,7 @@ public class StandardGroundwaterParaReader extends JAMSComponent {
                     e.setObject((String)attrs[i], o);
             }
         }
-        getModel().getRuntime().println("Groundwater parameter file processed ...", JAMS.VERBOSE);
+        getModel().getRuntime().println("Groundwater parameter file processed ...", JAMSConstants.VERBOSE);
     }
     
     

@@ -24,7 +24,7 @@
 package org.unijena.j2k.io;
 
 import org.unijena.j2k.*;
-import jams.JAMS;
+import jams.JAMSConstants;
 import jams.data.*;
 import jams.model.*;
 import java.util.*;
@@ -91,7 +91,7 @@ public class StandardSoilParaReader extends JAMSComponent {
             
         }
         
-        getModel().getRuntime().println("Soil parameter file processed ...", JAMS.VERBOSE);
+        getModel().getRuntime().println("Soil parameter file processed ...", JAMSConstants.VERBOSE);
         
     }
     

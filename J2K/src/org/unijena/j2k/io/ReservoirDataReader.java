@@ -28,7 +28,7 @@ import jams.model.*;
 import jams.io.*;
 import java.util.*;
 import java.io.*;
-import jams.JAMS;
+import jams.JAMSConstants;
 import jams.JAMSTools;
 
 /**
@@ -207,7 +207,7 @@ public class ReservoirDataReader extends JAMSComponent {
             }
         }
         
-        getModel().getRuntime().println(" reservoir data file initalised ... ", JAMS.VERBOSE);
+        getModel().getRuntime().println(" reservoir data file initalised ... ", JAMSConstants.VERBOSE);
     }
     
     public void run() {

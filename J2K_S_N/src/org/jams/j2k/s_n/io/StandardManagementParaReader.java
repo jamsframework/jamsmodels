@@ -28,7 +28,7 @@ import jams.model.*;
 import java.util.*;
 import java.io.*;
 import org.jams.j2k.s_n.crop.*;
-import jams.JAMS;
+import jams.JAMSConstants;
 import jams.data.*;
 
 /**
@@ -395,12 +395,12 @@ public class StandardManagementParaReader extends JAMSComponent {
     
     public void run() {
         /*
-        HashMap<Integer, J2KSNFertilizer> ferts = readFertPara("C:\\jamsmodels\\JAMS-Application\\JAMS-Arnstadt\\parameter\\fert.par");
-        HashMap<Integer, J2KSNTillage> tills = readTillPara("C:\\jamsmodels\\JAMS-Application\\JAMS-Arnstadt\\parameter\\till.par");
-        HashMap<Integer, ArrayList<J2KSNLMArable>> managements = readManagementPara("C:\\jamsmodels\\JAMS-Application\\JAMS-Arnstadt\\parameter\\lmArable.par", tills, ferts);
-        HashMap<Integer, J2KSNCrop> crops = readCrops("C:\\jamsmodels\\JAMS-Application\\JAMS-Arnstadt\\parameter\\crop.par", managements);
-        HashMap<Integer, ArrayList<J2KSNCrop>> rotations = readRotations("C:\\jamsmodels\\JAMS-Application\\JAMS-Arnstadt\\parameter\\croprotation.par", crops);
-        linkCrops("C:\\jamsmodels\\JAMS-Application\\JAMS-Arnstadt\\parameter\\hrus_rot.par", rotations);
+        HashMap<Integer, J2KSNFertilizer> ferts = readFertPara("C:\\jamsmodels\\JAMSConstants-Application\\JAMSConstants-Arnstadt\\parameter\\fert.par");
+        HashMap<Integer, J2KSNTillage> tills = readTillPara("C:\\jamsmodels\\JAMSConstants-Application\\JAMSConstants-Arnstadt\\parameter\\till.par");
+        HashMap<Integer, ArrayList<J2KSNLMArable>> managements = readManagementPara("C:\\jamsmodels\\JAMSConstants-Application\\JAMSConstants-Arnstadt\\parameter\\lmArable.par", tills, ferts);
+        HashMap<Integer, J2KSNCrop> crops = readCrops("C:\\jamsmodels\\JAMSConstants-Application\\JAMSConstants-Arnstadt\\parameter\\crop.par", managements);
+        HashMap<Integer, ArrayList<J2KSNCrop>> rotations = readRotations("C:\\jamsmodels\\JAMSConstants-Application\\JAMSConstants-Arnstadt\\parameter\\croprotation.par", crops);
+        linkCrops("C:\\jamsmodels\\JAMSConstants-Application\\JAMSConstants-Arnstadt\\parameter\\hrus_rot.par", rotations);
          */
         
         HashMap<Integer, J2KSNFertilizer> ferts = readFertPara(getModel().getWorkspaceDirectory().getPath() + "/" + fertFileName.getValue());

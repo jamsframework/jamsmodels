@@ -26,7 +26,7 @@ package org.unijena.j2k.efficiencies;
 import java.util.Vector;
 
 import org.unijena.j2k.statistics.Regression;
-import jams.JAMS;
+import jams.JAMSConstants;
 import jams.data.*;
 import jams.model.*;
 
@@ -187,41 +187,41 @@ import jams.model.*;
     public void run() {
     	this.valData = this.validation.getValue();
         this.preData = this.prediction.getValue();
-        getModel().getRuntime().println("", JAMS.STANDARD);
-        getModel().getRuntime().println("*************************************************************", JAMS.STANDARD);
-        getModel().getRuntime().println("Efficiencies ", JAMS.STANDARD);
-        getModel().getRuntime().println("Sampler: " + this.getInstanceName(), JAMS.STANDARD);
-        getModel().getRuntime().println("*************************************************************", JAMS.STANDARD);
+        getModel().getRuntime().println("", JAMSConstants.STANDARD);
+        getModel().getRuntime().println("*************************************************************", JAMSConstants.STANDARD);
+        getModel().getRuntime().println("Efficiencies ", JAMSConstants.STANDARD);
+        getModel().getRuntime().println("Sampler: " + this.getInstanceName(), JAMSConstants.STANDARD);
+        getModel().getRuntime().println("*************************************************************", JAMSConstants.STANDARD);
         
         for(int i = 0; i < effMethod.getValue().length; i++){
             if(effMethod.getValue()[i] == this.E1){
                 double e1 = NashSutcliffe.efficiency(preData, valData, 1);
                 this.e1.setValue(e1);
-                getModel().getRuntime().println("e1:\t\t" + e1, JAMS.STANDARD);
+                getModel().getRuntime().println("e1:\t\t" + e1, JAMSConstants.STANDARD);
             }else if(effMethod.getValue()[i] == this.E2){
                 double e2 = NashSutcliffe.efficiency(preData, valData, 2);
                 this.e2.setValue(e2);
-                getModel().getRuntime().println("e2:\t\t" + e2, JAMS.STANDARD);
+                getModel().getRuntime().println("e2:\t\t" + e2, JAMSConstants.STANDARD);
             }else if(effMethod.getValue()[i] == this.LOG_E1){
                 double le1 = NashSutcliffe.logEfficiency(preData, valData, 1);
                 this.le1.setValue(le1);
-                getModel().getRuntime().println("log_e1:\t\t" + le1, JAMS.STANDARD);
+                getModel().getRuntime().println("log_e1:\t\t" + le1, JAMSConstants.STANDARD);
             }else if(effMethod.getValue()[i] == this.LOG_E2){
                 double le2 = NashSutcliffe.logEfficiency(preData, valData, 2);
                 this.le2.setValue(le2);
-                getModel().getRuntime().println("log_e2:\t\t" + le2, JAMS.STANDARD);
+                getModel().getRuntime().println("log_e2:\t\t" + le2, JAMSConstants.STANDARD);
             }else if(effMethod.getValue()[i] == this.IOA_1){
                 double ioa1 = IndexOfAgreement.calc_IOA(preData, valData, 1, getModel());
                 this.ioa1.setValue(ioa1);
-                getModel().getRuntime().println("ioa1:\t\t" + ioa1, JAMS.STANDARD);
+                getModel().getRuntime().println("ioa1:\t\t" + ioa1, JAMSConstants.STANDARD);
             }else if(effMethod.getValue()[i] == this.IOA_2){
                 double ioa2 = IndexOfAgreement.calc_IOA(preData, valData, 2, getModel());
                 this.ioa2.setValue(ioa2);
-                getModel().getRuntime().println("ioa2:\t\t" + ioa2, JAMS.STANDARD);
+                getModel().getRuntime().println("ioa2:\t\t" + ioa2, JAMSConstants.STANDARD);
             }else if(effMethod.getValue()[i] == this.R2){
                 double[] rCoeff = Regression.calcLinReg(valData, preData);
-                getModel().getRuntime().println("r²:\t\t" + rCoeff[2], JAMS.STANDARD);
-                getModel().getRuntime().println("grad:\t\t" + rCoeff[1], JAMS.STANDARD);
+                getModel().getRuntime().println("r²:\t\t" + rCoeff[2], JAMSConstants.STANDARD);
+                getModel().getRuntime().println("grad:\t\t" + rCoeff[1], JAMSConstants.STANDARD);
                 this.rsq.setValue(rCoeff[2]);
                 this.grad.setValue(rCoeff[1]);
             }else if(effMethod.getValue()[i] == this.WR2){
@@ -232,23 +232,23 @@ import jams.model.*;
                 else
                     wr = Math.pow(Math.abs(rCoeff[1]), -1.0) * rCoeff[2];
                 this.wrsq.setValue(wr);
-                getModel().getRuntime().println("wr²:\t\t" + wr, JAMS.STANDARD);
+                getModel().getRuntime().println("wr²:\t\t" + wr, JAMSConstants.STANDARD);
             }else if(effMethod.getValue()[i] == this.DSGRAD){
                 double dsGrad = DoubleSumAnalysis.dsGrad(valData, preData);
                 this.dsGrad.setValue(dsGrad);
-                getModel().getRuntime().println("dsGrad:\t\t" + dsGrad, JAMS.STANDARD);
+                getModel().getRuntime().println("dsGrad:\t\t" + dsGrad, JAMSConstants.STANDARD);
             }else if(effMethod.getValue()[i] == this.ABSVOLERROR){
                 double volErr = VolumeError.absVolumeError(valData, preData);
                 this.absVolErr.setValue(volErr);
-                getModel().getRuntime().println("absVolumeError:\t\t" + volErr, JAMS.STANDARD);
+                getModel().getRuntime().println("absVolumeError:\t\t" + volErr, JAMSConstants.STANDARD);
             }else if(effMethod.getValue()[i] == this.RMSE){
                 double rmse = PredictionErrors.rootMeanSquareError(valData, preData);
                 this.rmse.setValue(rmse);
-                getModel().getRuntime().println("RMSE:\t\t" + rmse, JAMS.STANDARD);
+                getModel().getRuntime().println("RMSE:\t\t" + rmse, JAMSConstants.STANDARD);
             }else if(effMethod.getValue()[i] == this.PBIAS){
                 double pbias = VolumeError.pbias(valData, preData);
                 this.pbias.setValue(pbias);
-                getModel().getRuntime().println("PBIAS:\t\t" + pbias, JAMS.STANDARD);
+                getModel().getRuntime().println("PBIAS:\t\t" + pbias, JAMSConstants.STANDARD);
             }  
         }
         

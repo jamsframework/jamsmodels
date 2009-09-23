@@ -38,7 +38,7 @@
 package org.unijena.j2k.radiation;
 
 import java.io.*;
-import jams.JAMS;
+import jams.JAMSConstants;
 import jams.data.*;
 import jams.model.*;
 
