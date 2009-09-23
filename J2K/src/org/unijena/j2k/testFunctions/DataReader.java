@@ -28,7 +28,7 @@ import jams.data.*;
 import jams.io.*;
 import java.io.*;
 import java.util.*;
-import jams.JAMSConstants;
+import jams.JAMS;
 
 /**
  *
@@ -127,7 +127,7 @@ public class DataReader extends JAMSComponent {
                     else if(timeUnit == JAMSCalendar.MONTH)
                         startTime.add(JAMSCalendar.MONTH, 1);
                 }
-                getModel().getRuntime().println(fileName.getValue() + " data file initalised ... ", JAMSConstants.VERBOSE);
+                getModel().getRuntime().println(fileName.getValue() + " data file initalised ... ", JAMS.VERBOSE);
             }
             
             

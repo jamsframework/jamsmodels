@@ -23,7 +23,7 @@
 package org.unijena.j2k.io;
 
 //import org.unijena.j2k.*;
-import jams.JAMSConstants;
+import jams.JAMS;
 import jams.JAMSTools;
 import jams.data.Attribute;
 import jams.data.JAMSDataFactory;
@@ -93,12 +93,12 @@ public class StandardEntityReader extends JAMSComponent {
         createTopology();
 
         //create total order on hrus and reaches that allows processing them subsequently
-        getModel().getRuntime().println("Create ordered hru-list", JAMSConstants.VERBOSE);
+        getModel().getRuntime().println("Create ordered hru-list", JAMS.VERBOSE);
         createOrderedList(hrus, "to_poly");
-        getModel().getRuntime().println("HRU entities read successfully", JAMSConstants.STANDARD);
-        getModel().getRuntime().println("Create ordered reach-list", JAMSConstants.VERBOSE);
+        getModel().getRuntime().println("HRU entities read successfully", JAMS.STANDARD);
+        getModel().getRuntime().println("Create ordered reach-list", JAMS.VERBOSE);
         createOrderedList(reaches, "to_reach");
-        getModel().getRuntime().println("Reach entities read successfully", JAMSConstants.STANDARD);
+        getModel().getRuntime().println("Reach entities read successfully", JAMS.STANDARD);
     }
 
     //do depth first search to find cycles
@@ -213,7 +213,7 @@ public class StandardEntityReader extends JAMSComponent {
         }
 
         //check for cycles
-        if (this.getModel().getRuntime().getDebugLevel() >= JAMSConstants.VVERBOSE) {
+        if (this.getModel().getRuntime().getDebugLevel() >= JAMS.VVERBOSE) {
             if (cycleCheck() == true) {
                 getModel().getRuntime().println("HRUs --> cycle found ... :( ");
             } else {

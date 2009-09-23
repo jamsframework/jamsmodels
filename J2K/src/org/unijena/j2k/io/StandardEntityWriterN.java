@@ -24,7 +24,7 @@
 package org.unijena.j2k.io;
 
 import java.util.Locale;
-import jams.JAMSConstants;
+import jams.JAMS;
 import jams.JAMSTools;
 import jams.data.*;
 import jams.model.*;
@@ -187,7 +187,7 @@ public class StandardEntityWriterN extends JAMSComponent {
     
     public void cleanup() throws JAMSEntity.NoSuchAttributeException {
         
-        getModel().getRuntime().println("Writing distributed output file ... may take a while ... please wait ...", JAMSConstants.STANDARD);
+        getModel().getRuntime().println("Writing distributed output file ... may take a while ... please wait ...", JAMS.STANDARD);
         getModel().getRuntime().println("Number of entities: " + nEnts + ", number of timeSteps: " + dateVals.length);
         try {
             //header
@@ -237,6 +237,6 @@ public class StandardEntityWriterN extends JAMSComponent {
             getModel().getRuntime().handle(jre);
         }
         writer.close();
-        getModel().getRuntime().println("Finished distributed output file ... you may continue ...", JAMSConstants.STANDARD);
+        getModel().getRuntime().println("Finished distributed output file ... you may continue ...", JAMS.STANDARD);
     }
 }

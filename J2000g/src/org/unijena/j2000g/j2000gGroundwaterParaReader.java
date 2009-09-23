@@ -24,7 +24,7 @@
 package org.unijena.j2000g;
 
 import org.unijena.j2k.*;
-import jams.JAMSConstants;
+import jams.JAMS;
 import jams.JAMSTools;
 import jams.data.*;
 import jams.model.*;
@@ -86,6 +86,6 @@ public class j2000gGroundwaterParaReader extends JAMSComponent {
                     e.setObject((String)attrs[i], o);
             }
         }
-        getModel().getRuntime().println("Groundwater parameter file processed ...", JAMSConstants.VERBOSE);
+        getModel().getRuntime().println("Groundwater parameter file processed ...", JAMS.VERBOSE);
     }
 }

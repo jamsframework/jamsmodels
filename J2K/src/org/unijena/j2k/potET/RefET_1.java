@@ -40,7 +40,7 @@
 package org.unijena.j2k.potET;
 
 import java.io.*;
-import jams.JAMSConstants;
+import jams.JAMS;
 import jams.data.*;
 import jams.model.*;
 

@@ -26,7 +26,7 @@ package org.unijena.j2k.io;
 import org.unijena.j2k.*;
 import jams.data.*;
 import jams.model.*;
-import jams.JAMSConstants;
+import jams.JAMS;
 import jams.JAMSTools;
 
 /**
@@ -70,7 +70,7 @@ public class StandardEntityReader_1 extends JAMSComponent {
         }
 
         int nEnt = entities.getEntityArray().length;
-        getModel().getRuntime().println("Entities read and created successfull! ("+nEnt+")", JAMSConstants.STANDARD);
+        getModel().getRuntime().println("Entities read and created successfull! ("+nEnt+")", JAMS.STANDARD);
         
         
     }

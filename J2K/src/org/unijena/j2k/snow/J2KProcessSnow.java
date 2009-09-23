@@ -48,7 +48,7 @@
 */
 package org.unijena.j2k.snow;
 
-import jams.JAMSConstants;
+import jams.JAMS;
 import jams.data.*;
 import jams.model.*;
 

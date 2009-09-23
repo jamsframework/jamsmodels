@@ -25,7 +25,7 @@ package org.unijena.j2k;
 
 import java.util.Random;
 import java.util.StringTokenizer;
-import jams.JAMSConstants;
+import jams.JAMS;
 import jams.data.*;
 import jams.io.GenericDataWriter;
 import jams.model.*;
@@ -333,7 +333,7 @@ import jams.model.*;
             }
         }
         long end = System.currentTimeMillis();
-        getModel().getRuntime().println("Exec time: " + (end-start) + " ms", JAMSConstants.STANDARD);
+        getModel().getRuntime().println("Exec time: " + (end-start) + " ms", JAMS.STANDARD);
     }
     
     public void run() {

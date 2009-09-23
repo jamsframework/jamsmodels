@@ -29,7 +29,7 @@ import jams.model.*;
 import jams.io.*;
 import java.util.*;
 import java.io.*;
-import jams.JAMSConstants;
+import jams.JAMS;
 
 /**
  *
@@ -163,7 +163,7 @@ public class TSDataReader extends JAMSComponent {
             }
         }
         
-        getModel().getRuntime().println(dataSetName.getValue() + " data file initalised ... ", JAMSConstants.VERBOSE);
+        getModel().getRuntime().println(dataSetName.getValue() + " data file initalised ... ", JAMS.VERBOSE);
     }
     
     public void run() {

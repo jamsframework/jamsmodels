@@ -23,14 +23,14 @@
 
 package org.unijena.j2k.regionWK.AP0;
 
-import jams.JAMSConstants;
-import jams.JAMSTools;
 import org.unijena.j2k.statistics.*;
 import jams.data.*;
 import jams.model.*;
 import jams.io.*;
 import java.util.*;
 import java.io.*;
+import jams.JAMS;
+import jams.JAMSTools;
 
 /**
  *
@@ -293,7 +293,7 @@ public class TSDataReader extends JAMSComponent {
             }
         }
         
-        getModel().getRuntime().println(dataSetName.getValue() + " data file initalised ... ", JAMSConstants.VERBOSE);
+        getModel().getRuntime().println(dataSetName.getValue() + " data file initalised ... ", JAMS.VERBOSE);
     }
     
     public void run() {

@@ -26,7 +26,7 @@ package org.unijena.j2k.io;
 import java.util.Locale;
 import java.util.Vector;
 
-import jams.JAMSConstants;
+import jams.JAMS;
 import jams.data.*;
 import jams.model.*;
 import java.util.GregorianCalendar;
@@ -138,11 +138,11 @@ title="Time series capturer",
         //otherwise it will be set to the model interval bounds
         if(eff_sd.before(model_sd)){
             this.captureTimeInterval.setStart(model_sd);
-            getModel().getRuntime().println("capture Startdate was set equal to model startdate", JAMSConstants.STANDARD);
+            getModel().getRuntime().println("capture Startdate was set equal to model startdate", JAMS.STANDARD);
         }
         if(model_ed.before(eff_ed)){
             this.captureTimeInterval.setEnd(model_ed);
-            getModel().getRuntime().println("capture Enddate was set equal to model enddate", JAMSConstants.STANDARD);
+            getModel().getRuntime().println("capture Enddate was set equal to model enddate", JAMS.STANDARD);
         }
         
         /*if(eff_tres == eff_sd.DAY_OF_YEAR){
@@ -154,8 +154,8 @@ title="Time series capturer",
         System.out.println("TS:"+effTsteps);
         //int ts = (int)tsteps;
         int ts = (int) this.getContext().getNumberOfIterations();
-        getModel().getRuntime().println("effStartdate:\t" + eff_sd.toString(), JAMSConstants.VERBOSE);
-        getModel().getRuntime().println("effEnddate:\t" + eff_ed.toString(), JAMSConstants.VERBOSE);
+        getModel().getRuntime().println("effStartdate:\t" + eff_sd.toString(), JAMS.VERBOSE);
+        getModel().getRuntime().println("effEnddate:\t" + eff_ed.toString(), JAMS.VERBOSE);
         
         
         captData = new double[effTsteps];

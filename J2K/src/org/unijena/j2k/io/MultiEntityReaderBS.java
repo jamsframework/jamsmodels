@@ -30,7 +30,7 @@ import org.unijena.j2k.*;
 import jams.data.*;
 import jams.model.*;
 import java.util.*;
-import jams.JAMSConstants;
+import jams.JAMS;
 import java.lang.Math.*;
 import jams.JAMSTools;
 
@@ -82,11 +82,11 @@ public class MultiEntityReaderBS extends JAMSComponent {
         createTopology();
 
         //create total order on hrus and reaches that allows processing them subsequently
-        getModel().getRuntime().println("Create ordered hru-list", JAMSConstants.VERBOSE);
+        getModel().getRuntime().println("Create ordered hru-list", JAMS.VERBOSE);
         createOrderedList(hrus, "to_poly");
-        getModel().getRuntime().println("Create ordered reach-list", JAMSConstants.VERBOSE);
+        getModel().getRuntime().println("Create ordered reach-list", JAMS.VERBOSE);
         createOrderedList(reaches, "to_reach");
-        getModel().getRuntime().println("Entities read successfull!", JAMSConstants.VERBOSE);
+        getModel().getRuntime().println("Entities read successfull!", JAMS.VERBOSE);
 
     }
 
