@@ -24,7 +24,7 @@
 package org.unijena.j2k.io;
 
 import java.io.IOException;
-import jams.JAMSTools;
+import jams.tools.JAMSTools;
 import jams.data.*;
 import jams.model.*;
 import jams.io.*;

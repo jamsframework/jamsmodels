@@ -24,7 +24,7 @@ package org.unijena.j2k.io;
 
 //import org.unijena.j2k.*;
 import jams.JAMS;
-import jams.JAMSTools;
+import jams.tools.JAMSTools;
 import jams.data.Attribute;
 import jams.data.JAMSDataFactory;
 import jams.data.JAMSDouble;

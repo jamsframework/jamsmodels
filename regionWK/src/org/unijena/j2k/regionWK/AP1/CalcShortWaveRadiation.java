@@ -24,7 +24,7 @@ package org.unijena.j2k.regionWK.AP1;
 
 import java.io.*;
 //import jams.JAMS;
-import jams.JAMSTools;
+import jams.tools.JAMSTools;
 import jams.data.*;
 import jams.model.*;
 

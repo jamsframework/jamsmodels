@@ -28,7 +28,7 @@ import jams.JAMS;
 import jams.data.*;
 import jams.model.*;
 import java.util.*;
-import jams.JAMSTools;
+import jams.tools.JAMSTools;
 
 /**
  *

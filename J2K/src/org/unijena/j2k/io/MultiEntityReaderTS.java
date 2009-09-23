@@ -32,7 +32,7 @@ import jams.model.*;
 import java.util.*;
 import jams.JAMS;
 import java.lang.Math.*;
-import jams.JAMSTools;
+import jams.tools.JAMSTools;
 
 /**
  *

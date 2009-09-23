@@ -25,7 +25,7 @@ package org.unijena.j2000g;
 
 import org.unijena.j2k.*;
 import jams.JAMS;
-import jams.JAMSTools;
+import jams.tools.JAMSTools;
 import jams.data.*;
 import jams.model.*;
 import java.util.*;

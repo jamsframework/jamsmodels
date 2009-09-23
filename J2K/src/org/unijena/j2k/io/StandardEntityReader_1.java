@@ -27,7 +27,7 @@ import org.unijena.j2k.*;
 import jams.data.*;
 import jams.model.*;
 import jams.JAMS;
-import jams.JAMSTools;
+import jams.tools.JAMSTools;
 
 /**
  *
