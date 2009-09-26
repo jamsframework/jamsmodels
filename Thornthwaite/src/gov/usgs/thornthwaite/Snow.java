@@ -38,23 +38,23 @@ public class Snow extends JAMSComponent {
 
     @JAMSVarDescription (access = JAMSVarDescription.AccessType.READWRITE,
                          description = "Amount of water currently stored as snow")
-    public JAMSDouble snowStorage;
+    public Attribute.Double snowStorage;
 
     @JAMSVarDescription (access = JAMSVarDescription.AccessType.READ,
                          description = "Current potential ET")
-    public JAMSDouble potET;
+    public Attribute.Double potET;
 
     @JAMSVarDescription (access = JAMSVarDescription.AccessType.READ,
                          description = "Current temperature")
-    public JAMSDouble temp;
+    public Attribute.Double temp;
 
     @JAMSVarDescription (access = JAMSVarDescription.AccessType.READ,
                          description = "Current precipitation")
-    public JAMSDouble precip;
+    public Attribute.Double precip;
 
     @JAMSVarDescription (access = JAMSVarDescription.AccessType.WRITE,
                          description = "Simulated snow melt water")
-    public JAMSDouble snowMelt;
+    public Attribute.Double snowMelt;
 
     public void run() {
 

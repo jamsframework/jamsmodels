@@ -280,7 +280,7 @@ title="Title",
             
             runEnumerator.reset();
             while(runEnumerator.hasNext() && doRun) {
-                JAMSComponent comp = runEnumerator.next();
+                Component comp = runEnumerator.next();
             }
         }
     }
@@ -359,7 +359,7 @@ title="Title",
         
         runEnumerator.reset();
         while(runEnumerator.hasNext() && doRun) {
-            JAMSComponent comp = runEnumerator.next();
+            Component comp = runEnumerator.next();
             //comp.updateInit();
             try {
                 comp.init();
@@ -371,7 +371,7 @@ title="Title",
         
         runEnumerator.reset();
         while(runEnumerator.hasNext() && doRun) {
-            JAMSComponent comp = runEnumerator.next();
+            Component comp = runEnumerator.next();
             //comp.updateRun();
             try {
                 comp.run();
@@ -382,7 +382,7 @@ title="Title",
         
         runEnumerator.reset();
         while(runEnumerator.hasNext() && doRun) {
-            JAMSComponent comp = runEnumerator.next();
+            Component comp = runEnumerator.next();
             try {
                 comp.cleanup();
             } catch (Exception e) {

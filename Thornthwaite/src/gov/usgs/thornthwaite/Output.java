@@ -39,31 +39,31 @@ public class Output extends JAMSComponent {
 
     @JAMSVarDescription (access = JAMSVarDescription.AccessType.READ,
                          description = "Calculated day length")
-    public JAMSDouble daylength;
+    public Attribute.Double daylength;
 
     @JAMSVarDescription (access = JAMSVarDescription.AccessType.READ,
                          description = "Model time")
-    public JAMSCalendar time;
+    public Attribute.Calendar time;
 
     @JAMSVarDescription (access = JAMSVarDescription.AccessType.READ,
                          description = "Simulated potET")
-    public JAMSDouble potET;
+    public Attribute.Double potET;
 
     @JAMSVarDescription (access = JAMSVarDescription.AccessType.READ,
                          description = "Simulated snow melt")
-    public JAMSDouble snowMelt;
+    public Attribute.Double snowMelt;
 
     @JAMSVarDescription (access = JAMSVarDescription.AccessType.READ,
                          description = "Simulated runoff")
-    public JAMSDouble runoff;
+    public Attribute.Double runoff;
 
     @JAMSVarDescription (access = JAMSVarDescription.AccessType.READ,
                          description = "Simulated soil moisture storage")
-    public JAMSDouble soilMoistStor;
+    public Attribute.Double soilMoistStor;
 
     @JAMSVarDescription (access = JAMSVarDescription.AccessType.READ,
                          description = "Output file name")
-    public JAMSString fileName;
+    public Attribute.String fileName;
 
     private GenericDataWriter writer;
 

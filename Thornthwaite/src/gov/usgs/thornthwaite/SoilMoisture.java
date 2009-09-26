@@ -38,43 +38,43 @@ public class SoilMoisture extends JAMSComponent {
 
     @JAMSVarDescription (access = JAMSVarDescription.AccessType.READ,
                          description = "Soil moisture storage capacity")
-    public JAMSDouble soilMoistStorCap;
+    public Attribute.Double soilMoistStorCap;
 
     @JAMSVarDescription (access = JAMSVarDescription.AccessType.READ,
                          description = "Potential ET")
-    public JAMSDouble potET;
+    public Attribute.Double potET;
 
     @JAMSVarDescription (access = JAMSVarDescription.AccessType.READ,
                          description = "Temperature")
-    public JAMSDouble temp;
+    public Attribute.Double temp;
 
     @JAMSVarDescription (access = JAMSVarDescription.AccessType.READ,
                          description = "Precipitation")
-    public JAMSDouble precip;
+    public Attribute.Double precip;
 
     @JAMSVarDescription (access = JAMSVarDescription.AccessType.READWRITE,
                          description = "Old soil moisture")
-    public JAMSDouble prestor;
+    public Attribute.Double prestor;
 
     @JAMSVarDescription (access = JAMSVarDescription.AccessType.WRITE,
                          description = "Simulated soil moisture")
-    public JAMSDouble soilMoistStor;
+    public Attribute.Double soilMoistStor;
 
     @JAMSVarDescription (access = JAMSVarDescription.AccessType.WRITE,
                          description = "Surface runoff")
-    public JAMSDouble surfaceRunoff;
+    public Attribute.Double surfaceRunoff;
 
     @JAMSVarDescription (access = JAMSVarDescription.AccessType.WRITE,
                          description = "Difference between precip and potential ET")
-    public JAMSDouble pmpe;
+    public Attribute.Double pmpe;
 
     @JAMSVarDescription (access = JAMSVarDescription.AccessType.WRITE,
                          description = "Actual ET")
-    public JAMSDouble actET;
+    public Attribute.Double actET;
 
     @JAMSVarDescription (access = JAMSVarDescription.AccessType.WRITE,
                          description = "Difference betwenn potential ET and actual ET")
-    public JAMSDouble dff;
+    public Attribute.Double dff;
 
     public void run() {
         // get the parameter values

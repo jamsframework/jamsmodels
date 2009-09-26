@@ -24,7 +24,10 @@ package gov.usgs.thornthwaite;
 
 import jams.model.*;
 import jams.data.*;
-import jams.io.*;
+import jams.io.GenericDataReader;
+import jams.io.JAMSTableDataArray;
+import jams.io.JAMSTableDataConverter;
+import jams.io.JAMSTableDataStore;
 import java.io.File;
 
 /**
@@ -39,15 +42,15 @@ public class Climate extends JAMSComponent {
 
     @JAMSVarDescription (access = JAMSVarDescription.AccessType.READ,
                          description = "File containg the data")
-    public JAMSString fileName;
+    public Attribute.String fileName;
 
     @JAMSVarDescription (access = JAMSVarDescription.AccessType.WRITE,
                          description = "Temperature read from the file")
-    public JAMSDouble temp;
+    public Attribute.Double temp;
 
     @JAMSVarDescription (access = JAMSVarDescription.AccessType.WRITE,
                          description = "Precipitation read from the file")
-    public JAMSDouble precip;
+    public Attribute.Double precip;
 
     private JAMSTableDataStore store;
 

@@ -33,25 +33,25 @@ import jams.model.*;
 public class EntityUnpacker extends JAMSComponent {
 
     @JAMSVarDescription (access = JAMSVarDescription.AccessType.READ)
-    public JAMSEntity entity;
+    public Attribute.Entity entity;
 
     @JAMSVarDescription (access = JAMSVarDescription.AccessType.WRITE)
-    public JAMSDouble latitude;
+    public Attribute.Double latitude;
 
     @JAMSVarDescription (access = JAMSVarDescription.AccessType.WRITE)
-    public JAMSDouble soilMoistStorCap;
+    public Attribute.Double soilMoistStorCap;
 
     @JAMSVarDescription (access = JAMSVarDescription.AccessType.WRITE)
-    public JAMSDouble snowStorage;
+    public Attribute.Double snowStorage;
 
     @JAMSVarDescription (access = JAMSVarDescription.AccessType.WRITE)
-    public JAMSDouble runoffFactor;
+    public Attribute.Double runoffFactor;
 
     @JAMSVarDescription (access = JAMSVarDescription.AccessType.WRITE)
-    public JAMSDouble prestor;
+    public Attribute.Double prestor;
 
     @JAMSVarDescription (access = JAMSVarDescription.AccessType.WRITE)
-    public JAMSDouble remain;
+    public Attribute.Double remain;
 
     public void run() throws Exception {
         this.latitude.setValue(entity.getDouble("latitude"));

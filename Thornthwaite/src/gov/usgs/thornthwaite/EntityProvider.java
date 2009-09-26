@@ -35,10 +35,10 @@ import java.util.*;
 public class EntityProvider extends JAMSComponent {
 
     @JAMSVarDescription (access = JAMSVarDescription.AccessType.READ)
-    public JAMSString fileName;
+    public Attribute.String fileName;
 
     @JAMSVarDescription (access = JAMSVarDescription.AccessType.WRITE)
-    public JAMSEntityCollection entities;
+    public Attribute.EntityCollection entities;
 
     private JAMSTableDataStore store;
 
@@ -50,7 +50,7 @@ public class EntityProvider extends JAMSComponent {
 
         while (store.hasNext()) {
 
-            JAMSEntity e = JAMSDataFactory.createEntity();
+            Attribute.Entity e = JAMSDataFactory.createEntity();
 
             JAMSTableDataArray da = store.getNext();
             double[] vals = JAMSTableDataConverter.toDouble(da);

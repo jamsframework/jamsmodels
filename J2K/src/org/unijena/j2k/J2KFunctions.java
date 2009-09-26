@@ -25,7 +25,7 @@ package org.unijena.j2k;
 import java.util.*;
 import java.io.*;
 import jams.data.*;
-import jams.model.JAMSModel;
+import jams.model.Model;
 
 /**
  *
@@ -33,7 +33,7 @@ import jams.model.JAMSModel;
  */
 public class J2KFunctions {
 
-    public static ArrayList<Attribute.Entity> readParas(String fileName, JAMSModel model) {
+    public static ArrayList<Attribute.Entity> readParas(String fileName, Model model) {
 
         BufferedReader reader;
         ArrayList<Attribute.Entity> entityList = new ArrayList<Attribute.Entity>();
@@ -104,7 +104,7 @@ public class J2KFunctions {
 
     }
 
-    public static ArrayList<JAMSEntity> createStationEntities(String fileName, JAMSModel model) {
+    public static ArrayList<JAMSEntity> createStationEntities(String fileName, Model model) {
         ArrayList<JAMSEntity> entityList = new ArrayList<JAMSEntity>();
         //handle the j2k metadata descriptions
         int headerLineCount = 0;

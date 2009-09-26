@@ -33,16 +33,16 @@ import jams.model.*;
 public class EntityPacker extends JAMSComponent {
 
     @JAMSVarDescription (access = JAMSVarDescription.AccessType.READWRITE)
-    public JAMSEntity entity;
+    public Attribute.Entity entity;
 
     @JAMSVarDescription (access = JAMSVarDescription.AccessType.READ)
-    public JAMSDouble snowStorage;
+    public Attribute.Double snowStorage;
 
     @JAMSVarDescription (access = JAMSVarDescription.AccessType.READ)
-    public JAMSDouble prestor;
+    public Attribute.Double prestor;
 
     @JAMSVarDescription (access = JAMSVarDescription.AccessType.READ)
-    public JAMSDouble remain;
+    public Attribute.Double remain;
 
     public void run() {
         entity.setDouble("snowStorage", snowStorage.getValue());

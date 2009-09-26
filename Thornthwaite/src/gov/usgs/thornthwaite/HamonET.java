@@ -24,6 +24,7 @@ package gov.usgs.thornthwaite;
 
 import jams.model.*;
 import jams.data.*;
+import java.util.Calendar;
 
 /**
  *
@@ -37,19 +38,19 @@ public class HamonET extends JAMSComponent {
 
     @JAMSVarDescription (access = JAMSVarDescription.AccessType.READ,
                          description = "Current time")
-    public JAMSCalendar time;
+    public Attribute.Calendar time;
 
     @JAMSVarDescription (access = JAMSVarDescription.AccessType.READ,
                          description = "Current temperature")
-    public JAMSDouble temp;
+    public Attribute.Double temp;
 
     @JAMSVarDescription (access = JAMSVarDescription.AccessType.READ,
                          description = "Length of a day in this month")
-    public JAMSDouble daylength;
+    public Attribute.Double daylength;
 
     @JAMSVarDescription (access = JAMSVarDescription.AccessType.WRITE,
                          description = "Resulting potential ET")
-    public JAMSDouble potET;
+    public Attribute.Double potET;
 
     /*
     public void init() {
@@ -67,7 +68,7 @@ public class HamonET extends JAMSComponent {
 
         double Wt = 4.95 * Math.exp(0.062 * temp) / 100.;
         double D2 = (daylength / 12.0) * (daylength / 12.0);
-        double potET = 0.55 * time.getActualMaximum(time.DAY_OF_MONTH) * D2 * Wt;
+        double potET = 0.55 * time.getActualMaximum(Calendar.DAY_OF_MONTH) * D2 * Wt;
 
         if (potET <= 0.0) {
             potET = 0.0;

@@ -39,23 +39,23 @@ public class Runoff extends JAMSComponent {
     @JAMSVarDescription (access = JAMSVarDescription.AccessType.READ,
     description="A factorn defining how much water leaves the model - the remain will be stored in the model"
     )
-    public JAMSDouble runoffFactor;
+    public Attribute.Double runoffFactor;
 
     @JAMSVarDescription (access = JAMSVarDescription.AccessType.READWRITE,
     description="The remain, i.e. the models tank storage")
-    public JAMSDouble remain;
+    public Attribute.Double remain;
 
     @JAMSVarDescription (access = JAMSVarDescription.AccessType.READ,
     description="Surface runoff water")
-    public JAMSDouble surfaceRunoff;
+    public Attribute.Double surfaceRunoff;
 
     @JAMSVarDescription (access = JAMSVarDescription.AccessType.READ,
     description="Water coming from snow melt")
-    public JAMSDouble snowMelt;
+    public Attribute.Double snowMelt;
 
     @JAMSVarDescription (access = JAMSVarDescription.AccessType.WRITE,
     description="Simulated runoff as function of tank storage (remain), surface runoff water and snowmelt water")
-    public JAMSDouble runoff;
+    public Attribute.Double runoff;
 
 
     public void run() {

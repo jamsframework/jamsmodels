@@ -83,7 +83,7 @@ title="InErrorContext",
             
             runEnumerator.reset();
             while(runEnumerator.hasNext() && doRun) {
-                JAMSComponent comp = runEnumerator.next();
+                Component comp = runEnumerator.next();
             }
         }
     }
@@ -98,7 +98,7 @@ title="InErrorContext",
     private void singleRun() {     
         runEnumerator.reset();
         while(runEnumerator.hasNext() && doRun) {
-            JAMSComponent comp = runEnumerator.next();
+            Component comp = runEnumerator.next();
             this.currentCount++;
             //comp.updateInit();
             try {
@@ -110,7 +110,7 @@ title="InErrorContext",
         
         runEnumerator.reset();
         while(runEnumerator.hasNext() && doRun) {
-            JAMSComponent comp = runEnumerator.next();
+            Component comp = runEnumerator.next();
             //comp.updateRun();
             try {
                 comp.run();
@@ -121,7 +121,7 @@ title="InErrorContext",
         
         runEnumerator.reset();
         while(runEnumerator.hasNext() && doRun) {
-            JAMSComponent comp = runEnumerator.next();
+            Component comp = runEnumerator.next();
             try {
                 comp.cleanup();
             } catch (Exception e) {

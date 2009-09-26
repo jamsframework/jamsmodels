@@ -24,6 +24,7 @@ package gov.usgs.thornthwaite;
 
 import jams.model.*;
 import jams.data.*;
+import java.util.Calendar;
 
 /**
  *
@@ -37,15 +38,15 @@ public class Daylen extends JAMSComponent {
 
     @JAMSVarDescription (access = JAMSVarDescription.AccessType.READ,
                          description = "Current time")
-    public JAMSCalendar time;
+    public Attribute.Calendar time;
 
     @JAMSVarDescription (access = JAMSVarDescription.AccessType.READ,
                          description = "The models latitude")
-    public JAMSDouble latitude;
+    public Attribute.Double latitude;
 
     @JAMSVarDescription (access = JAMSVarDescription.AccessType.WRITE,
                          description = "Length of a day at the current time")
-    public JAMSDouble daylength;
+    public Attribute.Double daylength;
 
     static final int[] DAYS = {
         15, 45, 74, 105, 135, 166, 196, 227, 258, 288, 319, 349
@@ -53,7 +54,7 @@ public class Daylen extends JAMSComponent {
 
     public void run() {
 
-        int month = this.time.get(JAMSCalendar.MONTH);
+        int month = this.time.get(Calendar.MONTH);
         double latitude = this.latitude.getValue();
 
         double dayl = (double) DAYS[month] - 80.;

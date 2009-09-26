@@ -302,7 +302,7 @@ import jams.model.*;
         
         runEnumerator.reset();
         while(runEnumerator.hasNext() && doRun) {
-            JAMSComponent comp = runEnumerator.next();
+            Component comp = runEnumerator.next();
             //comp.updateInit();
             try {
                 comp.init();
@@ -314,7 +314,7 @@ import jams.model.*;
         
         runEnumerator.reset();
         while(runEnumerator.hasNext() && doRun) {
-            JAMSComponent comp = runEnumerator.next();
+            Component comp = runEnumerator.next();
             //comp.updateRun();
             try {
                 comp.run();
@@ -325,7 +325,7 @@ import jams.model.*;
         
         runEnumerator.reset();
         while(runEnumerator.hasNext() && doRun) {
-            JAMSComponent comp = runEnumerator.next();
+            Component comp = runEnumerator.next();
             try {
                 comp.cleanup();
             } catch (Exception e) {
@@ -369,7 +369,7 @@ import jams.model.*;
             
             runEnumerator.reset();
             while(runEnumerator.hasNext() && doRun) {
-                JAMSComponent comp = runEnumerator.next();
+                Component comp = runEnumerator.next();
             }
         }
         
