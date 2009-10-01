@@ -174,7 +174,7 @@ public class InitJ2KProcessGroundwater_D_1_1_v02 extends JAMSComponent {
 
     public void run() throws JAMSEntity.NoSuchAttributeException {
 
-        JAMSEntity entity = hrus.getCurrent();
+        Attribute.Entity entity = hrus.getCurrent();
 
         run_area = area.getValue();                                 //[m]
         run_Kf_geo = Kf_geo.getValue();                             //[cm/d]

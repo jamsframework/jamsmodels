@@ -280,7 +280,7 @@ import jams.model.*;
     @SuppressWarnings("static-access")
     public void run() throws JAMSEntity.NoSuchAttributeException {
         
-        JAMSEntity entity = entities.getCurrent();
+        Attribute.Entity entity = entities.getCurrent();
         
         JAMSEntity DestReach = (JAMSEntity)entity.getObject("to_reach");
         if (DestReach.getValue() == null) {

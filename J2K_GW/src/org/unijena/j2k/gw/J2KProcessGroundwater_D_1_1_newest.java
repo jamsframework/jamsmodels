@@ -224,7 +224,7 @@ public class J2KProcessGroundwater_D_1_1_newest extends JAMSComponent {
 
     public void run() throws JAMSEntity.NoSuchAttributeException {
 
-        entity = entities.getCurrent();
+        Attribute.Entity entity = entities.getCurrent();
 
         this.run_maxRG2 = maxRG2.getValue();                //[l]
         this.run_actRG2 = actRG2.getValue();                //[l]

@@ -140,7 +140,7 @@ import jams.model.*;
     
     public void run() throws JAMSEntity.NoSuchAttributeException {
         
-        JAMSEntity entity = entities.getCurrent();
+        Attribute.Entity entity = entities.getCurrent();
         
             maxLakeStor.setValue(maxLakeDepth.getValue() * area.getValue() * 1000);
             actLakeStor.setValue(maxLakeStor.getValue() * initLakeStor.getValue());

@@ -57,10 +57,10 @@ public class J2KProcessGWRoutingPreparator_newest extends JAMSComponent {
 
     public void run() throws JAMSEntity.NoSuchAttributeException {
 
-        JAMSEntity e, f, r;
-        HashMap<JAMSEntity, ArrayList<JAMSEntity>> routingMap = new HashMap<JAMSEntity, ArrayList<JAMSEntity>>();
-        Iterator<JAMSEntity> hruIterator, routingIterator;
-        ArrayList<JAMSEntity> senderPolys;
+        Attribute.Entity e, f, r;
+        HashMap<Attribute.Entity, ArrayList<Attribute.Entity>> routingMap = new HashMap<Attribute.Entity, ArrayList<Attribute.Entity>>();
+        Iterator<Attribute.Entity> hruIterator, routingIterator;
+        ArrayList<Attribute.Entity> senderPolys;
 
         //put all entities into a HashMap with their ID as key
         hruIterator = hrus.getEntities().iterator();
@@ -72,7 +72,7 @@ public class J2KProcessGWRoutingPreparator_newest extends JAMSComponent {
                 getModel().getRuntime().println("Processing Entity: " + e.getDouble("ID"));
 
                 if (!routingMap.containsKey(f)) {
-                    routingMap.put(f, new ArrayList<JAMSEntity>());
+                    routingMap.put(f, new ArrayList<Attribute.Entity>());
                 }
                 senderPolys = routingMap.get(f);
                 senderPolys.add(e);
@@ -106,7 +106,7 @@ public class J2KProcessGWRoutingPreparator_newest extends JAMSComponent {
                 getModel().getRuntime().println("HRU: " + e.getDouble("ID"));
 
                 if (!routingMap.containsKey(f)) {
-                    routingMap.put(f, new ArrayList<JAMSEntity>());
+                    routingMap.put(f, new ArrayList<Attribute.Entity>());
                 }
                 senderPolys = routingMap.get(f);
                 senderPolys.add(e);

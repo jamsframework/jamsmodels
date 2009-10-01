@@ -292,7 +292,7 @@ import jams.model.*;
     
     public void run() throws JAMSEntity.NoSuchAttributeException {
         
-        JAMSEntity entity = entities.getCurrent();
+        Attribute.Entity entity = entities.getCurrent();
         
         getModel().getRuntime().println("Das ist ein See!");
         

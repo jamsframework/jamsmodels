@@ -98,7 +98,7 @@ public class J2KProcessGWRouting extends JAMSComponent {
 
     public void run() throws JAMSEntity.NoSuchAttributeException {
 
-        JAMSEntity entity = entities.getCurrent();
+        Attribute.Entity entity = entities.getCurrent();
 
         getModel().getRuntime().println("Current entity ID: " + (int) entity.getDouble("ID") + ".");
 
