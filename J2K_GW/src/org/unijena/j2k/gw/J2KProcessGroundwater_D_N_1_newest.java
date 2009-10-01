@@ -251,7 +251,7 @@ public class J2KProcessGroundwater_D_N_1_newest extends JAMSComponent {
             run_k_RG1, run_k_RG2, run_RG1_rec, run_RG2_rec, run_maxSoilStor, run_actSoilStor, run_slope, run_area,
             run_percolation, run_interflow, run_pot_RG1, run_pot_RG2, run_gwExcess, potOutflow,
             run_gwDepthUpper, run_gwDepthLower, run_gwTableUpper, run_gwTableLower, run_Peff, run_Kf_geo, run_gwArcLength, run_aqThickness,
-            run_gwFlowLength, run_baseHeigth, run_ARPosition, run_cf, old_gwTable, run_pre_outRG2, run_pre_actRG2, oR, reachBaseHeigth, run_gwTableLower_o;
+            run_gwFlowLength, run_baseHeigth, run_ARPosition, run_cf, old_gwTable, run_pre_outRG2, run_pre_actRG2, oR;
 
     JAMSEntity entity;
     /*
@@ -298,10 +298,7 @@ public class J2KProcessGroundwater_D_N_1_newest extends JAMSComponent {
         if (toPoly.getValue() != null) {
             this.run_gwTableLower = toPoly.getDouble("gwTable");        //[m]
         } else {
-            this.run_gwTableLower = toReach.getDouble("waterTable_NN");
-            this.run_gwTableLower_o = run_gwTableLower;
-            this.reachBaseHeigth = toReach.getDouble("MIN_H");
-            run_gwTableLower = run_gwTableLower - reachBaseHeigth + run_baseHeigth + run_aqThickness - 2;//[m] //nur Fake
+            this.run_gwTableLower = toReach.getDouble("waterTable_NN"); //[m]
         }
 
         this.run_gwTableUpper = gwTable.getValue();                     //[m]
@@ -486,9 +483,9 @@ public class J2KProcessGroundwater_D_N_1_newest extends JAMSComponent {
 
                 potOutflow = (this.run_area * reachArea * this.run_Peff /
                              (this.run_area * this.run_Peff + reachArea)) * gwDifference;
-                // double reachBaseHeigth = toReach.getDouble("MIN_H");
-                double H = 5 * ((this.run_gwTableUpper - this.run_baseHeigth) + (this.run_gwTableLower_o - reachBaseHeigth));  //Hier Summe der Wasserstände in HRU und Reach
-                double U = toReach.getDouble("width") + 2 * (toReach.getDouble("waterTable_NN") - reachBaseHeigth);                                               //Hier benetzter Umfang
+
+                double H = 5 * ((this.run_gwTableUpper - this.run_baseHeigth) + (this.run_gwTableLower - this.run_baseHeigth));  //Hier Summe der Wasserstände in HRU und Reach
+                double U = toReach.getDouble("width") + 2 * (toReach.getDouble("waterTable_NN") - toReach.getDouble("MEAN_H"));                                               //Hier benetzter Umfang
                 double alphaL = (2 * H * (run_Kf_geo)) / (this.gwFlowLength.getValue() + (2 * H / Math.PI) * Math.log(2 * H / (Math.PI * U / 2)));
                 rg2_out_m3 = 0.5 * alphaL * this.alphaC.getValue() * gwDifference * toReach.getDouble("length");
 
@@ -499,7 +496,7 @@ public class J2KProcessGroundwater_D_N_1_newest extends JAMSComponent {
             }
         } else {
            if (toPoly.getValue() != null) {
-               getModel().getRuntime().println("Groundwater-Table in Receiver-HRU is higher. " + entity.getDouble("ID"));
+               getModel().getRuntime().println("Groundwater-Table in Receiver-HRU is higher.");
            }else{
                getModel().getRuntime().println("Water-Table in Reach is higher.");
            }
