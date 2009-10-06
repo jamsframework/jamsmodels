@@ -253,7 +253,7 @@ public class J2KProcessGroundwater_D_N_1_newest extends JAMSComponent {
             run_gwDepthUpper, run_gwDepthLower, run_gwTableUpper, run_gwTableLower, run_Peff, run_Kf_geo, run_gwArcLength, run_aqThickness,
             run_gwFlowLength, run_baseHeigth, run_ARPosition, run_cf, old_gwTable, run_pre_outRG2, run_pre_actRG2, oR;
 
-    JAMSEntity entity;
+    
     /*
      *  Component run stages
      */
@@ -322,7 +322,7 @@ public class J2KProcessGroundwater_D_N_1_newest extends JAMSComponent {
 
         preOutRG2.setValue(this.run_pre_outRG2);
 
-        if (this.entity.getDouble("type") == 3){
+        if (entity.getDouble("type") == 3){
             actRG2.setValue(this.run_actRG2);
             inRG2.setValue(this.run_inRG2);
             outRG2.setValue(this.run_outRG2);
