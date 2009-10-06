@@ -16,7 +16,7 @@ import java.awt.Point;
 import jams.model.JAMSComponent;
 import jams.model.JAMSVarDescription;
 import jams.data.*;
-import jams.JAMSTools;
+import jams.tools.JAMSTools;
 /**
  *
  * @author sa63kul

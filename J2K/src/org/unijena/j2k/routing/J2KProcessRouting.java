@@ -194,6 +194,8 @@ import jams.model.*;
             outRG2.setValue(0);
             inGWExcess.setValue(0);
             
+            
+            
             toPoly.setDouble("inRD1", RD1in);
             toPoly.setDouble("inRD2", RD2in);
             toPoly.setDouble("inRG1", RG1in);

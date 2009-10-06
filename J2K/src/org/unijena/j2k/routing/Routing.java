@@ -5,16 +5,11 @@
 
 package org.unijena.j2k.routing;
 
-import java.io.BufferedReader;
-import java.io.FileReader;
-import java.io.BufferedWriter;
-import java.io.FileWriter;
-import java.util.StringTokenizer;
 import jams.data.*;
+import jams.data.Attribute.Entity;
 import jams.model.*;
 import java.util.ArrayList;
 import java.awt.Point;
-import javax.naming.directory.NoSuchAttributeException;
 
 
 
@@ -447,7 +442,7 @@ public void run()throws JAMSEntity.NoSuchAttributeException
         
         
         
-         JAMSEntity entity = entities.getCurrent();
+         Entity entity = entities.getCurrent();
         
         //receiving polygon
         //JAMSEntity toPoly = (JAMSEntity) entity.getObject("to_poly");

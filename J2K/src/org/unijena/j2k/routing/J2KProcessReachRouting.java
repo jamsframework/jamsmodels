@@ -254,6 +254,19 @@ import jams.model.*;
             description = "temporal resolution [d or h]"
             )
             public JAMSString tempRes;
+      @JAMSVarDescription(
+            access = JAMSVarDescription.AccessType.READWRITE,
+            update = JAMSVarDescription.UpdateType.RUN,
+            description = "Reach statevar RG2 storage"
+            )
+            public JAMSDouble reachID;   
+      @JAMSVarDescription(
+            access = JAMSVarDescription.AccessType.READWRITE,
+            update = JAMSVarDescription.UpdateType.RUN,
+            description = ""
+            )
+            public JAMSDouble speicher;  
+    
     /*
      *  Component run stages
      */
@@ -288,6 +301,7 @@ import jams.model.*;
         double RG1act = actRG1.getValue() + inRG1.getValue();
         double RG2act = actRG2.getValue() + inRG2.getValue();
         
+     
         double addInAct = actAddIn.getValue() + this.inAddIn.getValue();
         
         inRD1.setValue(0);
@@ -407,6 +421,13 @@ import jams.model.*;
         double channelStorage = RD1act + RD2act + RG1act + RG2act + addInAct;
         
         double cumOutflow = RD1out + RD2out + RG1out + RG2out + addInOut;
+        /*if (reachID.getValue()==800)
+        {System.out.println(RD1out);
+        System.out.println(RD2out);
+        System.out.println(RG1out);
+        System.out.println(RG2out);
+        }
+        */
         
         simRunoff.setValue(cumOutflow);
         this.channelStorage.setValue(channelStorage);
@@ -430,6 +451,7 @@ import jams.model.*;
         outRG2.setValue(RG2out);
         
         outAddIn.setValue(addInOut);
+        double verzoegerung;
         //reach
         if(DestReach != null && DestReservoir == null){
             DestReach.setDouble("inRD1",RD1DestIn);
@@ -455,7 +477,17 @@ import jams.model.*;
             catchmentRG2.setValue(RG2out);
             
             this.catchmentAddIn.setValue(addInOut);
-            catchmentSimRunoff.setValue(cumOutflow);
+            //neu verzoegerung
+            
+            
+            verzoegerung=speicher.getValue();
+            if (verzoegerung != 0)
+            {
+                catchmentSimRunoff.setValue(verzoegerung);
+                speicher.setValue(cumOutflow);
+            }
+            else
+            { catchmentSimRunoff.setValue(cumOutflow);}
         }
         
     }
@@ -478,7 +510,7 @@ import jams.model.*;
         double veloc = 0;
         
         /**
-         *transfering liter/d to m³/s
+         *transfering liter/d to m?/s
          **/
         double q_m = q / (1000 * secondsOfTimeStep);
         double rh = calcHydraulicRadius(afv, q_m, width);
