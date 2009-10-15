@@ -28,14 +28,14 @@ import jams.model.*;
 
 /**
  *
- * @author c0krpe
+ * @author c0krpe,sa63kul
  */
 @JAMSComponentDescription(
         title="Title",
         author="Author",
         description="Description"
         )
-        public class J2KProcessReachRouting extends JAMSComponent {
+        public class J2KProcessReachRoutingR extends JAMSComponent {
     
     /*
      *  Component variables
@@ -260,7 +260,12 @@ import jams.model.*;
             description = "Reach statevar RG2 storage"
             )
             public JAMSDouble reachID;   
-     
+      @JAMSVarDescription(
+            access = JAMSVarDescription.AccessType.READWRITE,
+            update = JAMSVarDescription.UpdateType.RUN,
+            description = ""
+            )
+            public JAMSDouble speicher;  
     
     /*
      *  Component run stages
@@ -475,8 +480,14 @@ import jams.model.*;
             //neu verzoegerung
             
             
-            
-            catchmentSimRunoff.setValue(cumOutflow);
+            verzoegerung=speicher.getValue();
+            if (verzoegerung != 0)
+            {
+                catchmentSimRunoff.setValue(verzoegerung);
+                speicher.setValue(cumOutflow);
+            }
+            else
+            { catchmentSimRunoff.setValue(cumOutflow);}
         }
         
     }
