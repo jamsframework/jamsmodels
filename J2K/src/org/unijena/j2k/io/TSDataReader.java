@@ -107,6 +107,22 @@ public class TSDataReader extends JAMSComponent {
             description = "Calculate regression coefficients? If not, regCoeff array stays empty!"
             )
             public JAMSBoolean skipRegression;
+
+    @JAMSVarDescription(
+            access = JAMSVarDescription.AccessType.WRITE,
+            update = JAMSVarDescription.UpdateType.RUN,
+            description = "Array of numerical station ids",
+            defaultValue=""
+            )
+            public JAMSDoubleArray statId;
+
+    @JAMSVarDescription(
+            access = JAMSVarDescription.AccessType.WRITE,
+            update = JAMSVarDescription.UpdateType.RUN,
+            description = "names of the stations",
+            defaultValue=""
+            )
+            public JAMSStringArray statNames;
     
     
     private JAMSTableDataStore store;
@@ -122,7 +138,8 @@ public class TSDataReader extends JAMSComponent {
         String end = null;
         double lowBound, uppBound, missData;
         
-        String[] name, id;
+        String[] name = null;
+        double[] id = null;
         double[] statx = null;
         double[] staty = null;
         double[] statelev = null;
@@ -191,9 +208,9 @@ public class TSDataReader extends JAMSComponent {
                            for(int j = 0; j < nstat; j++)
                                name[j] = strTok.nextToken();
                        }else if(desc.toLowerCase().compareTo("id") == 0){
-                           id = new String[nstat];
+                           id = new double[nstat];
                            for(int j = 0; j < nstat; j++)
-                               id[j] = strTok.nextToken();
+                               id[j] = Double.parseDouble(strTok.nextToken());
                        }else if(desc.toLowerCase().compareTo("elevation") == 0){
                            statelev = new double[nstat];
                            for(int j = 0; j < nstat; j++)
@@ -249,7 +266,8 @@ public class TSDataReader extends JAMSComponent {
         xCoord.setValue(statx);
         //yCoord.setValue(JAMSTableDataConverter.toDouble(da, 2));
         yCoord.setValue(staty);
-        
+        statId.setValue(id);
+        statNames.setValue(name);
         
         
         //calc offset if start date of time series and temporal context do not match
