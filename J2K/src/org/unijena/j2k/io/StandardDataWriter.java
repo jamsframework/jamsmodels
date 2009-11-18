@@ -74,7 +74,7 @@ public class StandardDataWriter extends JAMSComponent {
             update = JAMSVarDescription.UpdateType.RUN,
             description = "Output file attributes"
             )
-            public JAMSDoubleArray value;
+            public JAMSDouble[] value;
     
     @JAMSVarDescription(
     access = JAMSVarDescription.AccessType.READ,
@@ -144,8 +144,8 @@ public class StandardDataWriter extends JAMSComponent {
         //System.out.println(tu + " " + timeFormat);
         writer.addData(time.toString(dateFormat));
         
-        for (int i = 0; i < value.getValue().length; i++) {
-            writer.addData(value.getValue()[i], precision.getValue());
+        for (int i = 0; i < value.length; i++) {
+            writer.addData(value[i].getValue(), precision.getValue());
         }
         
         try {
