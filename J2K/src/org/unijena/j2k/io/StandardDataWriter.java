@@ -143,14 +143,13 @@ public class StandardDataWriter extends JAMSComponent {
         
         //System.out.println(tu + " " + timeFormat);
         writer.addData(time.toString(dateFormat));
-        double[] vals = value.getValue();
-        for (int i = 0; i < vals.length; i++) {
-            
-            writer.addData(vals[i]);
+        
+        for (int i = 0; i < value.getValue().length; i++) {
+            writer.addData(value.getValue()[i], precision.getValue());
         }
         
         try {
-            writer.writeData(prec);
+            writer.writeData();
         } catch (jams.runtime.RuntimeException jre) {
             getModel().getRuntime().println(jre.getMessage());
         }
