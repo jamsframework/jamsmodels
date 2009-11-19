@@ -192,7 +192,11 @@ public class PenmanMonteith extends JAMSComponent {
             } else if (this.tempRes.getValue().equals("m")) {
                 tempFactor = 86400;
             }
-            double Letp = this.calcETAllen(delta_s, netRad, G, pa, CP, est, ea, ra, rs, psy, tempFactor);
+            double Letp = 0;
+            if(rs > 0)
+                Letp = this.calcETAllen(delta_s, netRad, G, pa, CP, est, ea, ra, rs, psy, tempFactor);
+            else
+                Letp = this.calcPM(delta_s, netRad, G, pa, cp, est, ea, psy, tempFactor, wind);
 
             pET = Letp / latH;
             aET = 0;
@@ -232,6 +236,11 @@ public class PenmanMonteith extends JAMSComponent {
         }
     }
 
+    private double calcPM(double delta_s, double netRad, double G, double pa, double CP, double est, double ea, double psy, double tempFactor, double wind){
+        double fu = 0.35 * (0.5 + 0.54 * wind);
+        double Letp = (delta_s*(netRad-G)+(pa*CP*fu*(est-ea))*tempFactor)/(delta_s+psy);
+        return Letp;
+    }
     private double calcETAllen(double ds, double netRad, double G, double pa, double CP, double est, double ea, double ra, double rs, double psy, double tempFactor) {
 
         double Letp = (ds * (netRad - G) + ((pa * CP * (est - ea) / ra) * tempFactor)) / (ds + psy * (1 + rs / ra));
