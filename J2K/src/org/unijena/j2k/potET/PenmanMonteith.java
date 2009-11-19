@@ -256,27 +256,41 @@ public class PenmanMonteith extends JAMSComponent {
      */
     private static double calcRa(double eff_height, double wind_speed) {
         double ra;
-        if (wind_speed <= 0) {
-            wind_speed = 0.5;
+        //open water
+        if (eff_height == -1) {
+            ra = 1;
         }
-        if (eff_height < 10) {
-            //old equation, don't use this one
-            //ra = (1.5 * Math.pow(Math.log(2/(0.125 * eff_height)),2)) / (Math.pow(0.41,2) * wind_speed);
-            //J2K equation
-            //ra = (4.72 * Math.pow(Math.log(2.0 / (0.125 * eff_height)),2)) / (1 + 0.54 * wind_speed);
-            //LARSIM equation
-            //ra = (6.25 / wind_speed) * Math.pow(Math.log(2 / (0.1 * eff_height)), 2);
-            ra = (9.5 / wind_speed) * Math.pow(Math.log(2 / (0.1 * eff_height)), 2);
-        } else {
-            //ra = 64 / (1+0.54*wind_speed);//(Math.pow(0.41,2) * wind_speed);
-            ra = 20 / (Math.pow(0.41, 2) * wind_speed);
+        //other landuse
+        else {
+            if (wind_speed <= 0) {
+                wind_speed = 0.5;
+            }
+            if (eff_height < 10) {
+                //old equation, don't use this one
+                //ra = (1.5 * Math.pow(Math.log(2/(0.125 * eff_height)),2)) / (Math.pow(0.41,2) * wind_speed);
+                //J2K equation
+                //ra = (4.72 * Math.pow(Math.log(2.0 / (0.125 * eff_height)),2)) / (1 + 0.54 * wind_speed);
+                //LARSIM equation
+                //ra = (6.25 / wind_speed) * Math.pow(Math.log(2 / (0.1 * eff_height)), 2);
+                ra = (9.5 / wind_speed) * Math.pow(Math.log(2 / (0.1 * eff_height)), 2);
+            } else {
+                //ra = 64 / (1+0.54*wind_speed);//(Math.pow(0.41,2) * wind_speed);
+                ra = 20 / (Math.pow(0.41, 2) * wind_speed);
+            }
         }
         return ra;
     }
 
     private double calcRs(double LAI, double rsc, double rss) {
-        double A = Math.pow(0.7, LAI);
-        double rs = 1. / (((1 - A) / rsc) + ((A / rss)));
+        //open water
+        double rs = 0;
+        if(rsc == 0)
+            rs = -1;
+        //other landuse
+        else{
+            double A = Math.pow(0.7, LAI);
+            rs = 1. / (((1 - A) / rsc) + ((A / rss)));
+        }
 
         return rs;
     }
