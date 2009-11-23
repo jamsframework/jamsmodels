@@ -145,7 +145,8 @@ public class StandardDataWriter extends JAMSComponent {
         writer.addData(time.toString(dateFormat));
         
         for (int i = 0; i < value.length; i++) {
-            writer.addData(value[i].getValue(), precision.getValue());
+            
+            writer.addData(value[i].getValue(), prec);
         }
         
         try {

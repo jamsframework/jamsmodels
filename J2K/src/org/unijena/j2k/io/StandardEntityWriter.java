@@ -20,7 +20,6 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
  *
  */
-
 package org.unijena.j2k.io;
 
 import jams.tools.JAMSTools;
@@ -33,98 +32,90 @@ import jams.io.*;
  * @author S. Kralisch
  */
 public class StandardEntityWriter extends JAMSComponent {
-    
+
     /*
      *  Component variables
      */
-    
-    @JAMSVarDescription(
-            access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.RUN,
-            description = "EntitySet"
-            )
-            public JAMSEntityCollection entities;
-    
-    @JAMSVarDescription(
-            access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.RUN,
-            description = "Current time"
-            )
-            public JAMSCalendar time;
+    @JAMSVarDescription (access = JAMSVarDescription.AccessType.READ,
+                         update = JAMSVarDescription.UpdateType.RUN,
+                         description = "EntitySet")
+    public JAMSEntityCollection entities;
 
-    @JAMSVarDescription(
-            access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.INIT,
-            description = "Output file name"
-            )
-            public JAMSString fileName;
-        
-    @JAMSVarDescription(
-            access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.INIT,
-            description = "Output file header descriptions"
-            )
-            public JAMSString header;
-    
-    @JAMSVarDescription(
-            access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.INIT,
-            description = "Output file attribute names"
-            )
-            public JAMSString attributeName;
-    
-    @JAMSVarDescription(
-            access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.INIT,
-            description = "entity attribute name for weight [attName | none]"
-            )
-            public JAMSString weight;
-    
+    @JAMSVarDescription (access = JAMSVarDescription.AccessType.READ,
+                         update = JAMSVarDescription.UpdateType.RUN,
+                         description = "Current time")
+    public JAMSCalendar time;
+
+    @JAMSVarDescription (access = JAMSVarDescription.AccessType.READ,
+                         update = JAMSVarDescription.UpdateType.INIT,
+                         description = "Output file name")
+    public JAMSString fileName;
+
+    @JAMSVarDescription (access = JAMSVarDescription.AccessType.READ,
+                         update = JAMSVarDescription.UpdateType.INIT,
+                         description = "Output file header descriptions")
+    public JAMSString header;
+
+    @JAMSVarDescription (access = JAMSVarDescription.AccessType.READ,
+                         update = JAMSVarDescription.UpdateType.INIT,
+                         description = "Output file attribute names")
+    public JAMSString attributeName;
+
+    @JAMSVarDescription (access = JAMSVarDescription.AccessType.READ,
+                         update = JAMSVarDescription.UpdateType.INIT,
+                         description = "entity attribute name for weight [attName | none]")
+    public JAMSString weight;
+
     private GenericDataWriter writer;
+
     private boolean headerWritten;
     /*
      *  Component runstages
      */
-    
-    public void init() throws JAMSEntity.NoSuchAttributeException {        
-        writer = new GenericDataWriter(JAMSTools.CreateAbsoluteFileName(getModel().getWorkspaceDirectory().getPath(),fileName.getValue()));
-        
-        writer.addComment("J2K model output"+header.getValue());
-        
+
+    public void init() throws JAMSEntity.NoSuchAttributeException {
+        writer = new GenericDataWriter(JAMSTools.CreateAbsoluteFileName(getModel().getWorkspaceDirectory().getPath(), fileName.getValue()));
+
+        writer.addComment("J2K model output" + header.getValue());
+
         writer.addComment("");
-        
-        
+
+
     }
-    
+
     public void run() throws JAMSEntity.NoSuchAttributeException {
-        
-        if(!this.headerWritten){
+
+        EntityEnumerator ee = entities.getEntityEnumerator();
+
+        if (!this.headerWritten) {
             //always write time
             writer.addColumn("date/time");
             Object ob = entities.getCurrent().getObject(this.attributeName.getValue());
             int length = 0;
-            if(ob.getClass().getName().contains("DoubleArray")){
+            if (ob.getClass().getName().contains("DoubleArray")) {
                 //System.out.getRuntime().println("JAMSArray");
-                length = ((JAMSDoubleArray)entities.getCurrent().getObject(this.attributeName.getValue())).getValue().length;
-            } else{
+                length = ((JAMSDoubleArray) entities.getCurrent().getObject(this.attributeName.getValue())).getValue().length;
+            } else {
                 //System.out.getRuntime().println("Primitive");
             }
-            entities.getEntityEnumerator().reset();
+
+            ee.reset();
             boolean cont = true;
-            while(cont){
-                for(int i = 0; i < length; i++){
-                    writer.addColumn("HRU_"+(int)entities.getCurrent().getDouble("ID")+"["+i+"]");
+            while (cont) {
+                for (int i = 0; i < length; i++) {
+                    writer.addColumn("HRU_" + (int) entities.getCurrent().getId() + "[" + i + "]");
                 }
-                if(length == 0){
-                    writer.addColumn("HRU_"+(int)entities.getCurrent().getDouble("ID"));
+                if (length == 0) {
+                    writer.addColumn("HRU_" + (int) entities.getCurrent().getId());
                 }
-                if(entities.getEntityEnumerator().hasNext()){
-                    entities.getEntityEnumerator().next();
+                if (ee.hasNext()) {
+                    ee.next();
                     cont = true;
-                }else
+                } else {
                     cont = false;
+                }
             }
-            
+
             writer.writeHeader();
             this.headerWritten = true;
         }
@@ -132,57 +123,56 @@ public class StandardEntityWriter extends JAMSComponent {
         //the time also knows a toString() method with additional formatting parameters
         //e.g. time.toString("%1$tY-%1$tm-%1$td %1$tH:%1$tM")
         writer.addData(time);
-        
-        entities.getEntityEnumerator().reset();
+
+        ee.reset();
         boolean cont = true;
-        while(cont){
+        while (cont) {
             Object ob = entities.getCurrent().getObject(this.attributeName.getValue());
-            if(ob.getClass().getName().contains("DoubleArray")){
+            if (ob.getClass().getName().contains("DoubleArray")) {
                 //System.out.getRuntime().println("HRUNo: " +((JAMSDouble)entitySet.getCurrent().getObject("ID")).getValue());
-                double[] da = ((JAMSDoubleArray)entities.getCurrent().getObject(this.attributeName.getValue())).getValue();
-                for(int i = 0; i < da.length; i++){
+                double[] da = ((JAMSDoubleArray) entities.getCurrent().getObject(this.attributeName.getValue())).getValue();
+                for (int i = 0; i < da.length; i++) {
                     double val = 0;
-                    if(this.weight.getValue().equals("none")){
+                    if (this.weight.getValue().equals("none")) {
                         val = da[i];
+                    } else {
+                        double weight = (((JAMSDouble) entities.getCurrent().getObject(this.weight.getValue())).getValue());
+                        val = da[i] / weight;
                     }
-                    else{
-                         double weight = (((JAMSDouble)entities.getCurrent().getObject(this.weight.getValue())).getValue());
-                         val = da[i] / weight;
-                    }
-                    writer.addData(""+val);
+                    writer.addData("" + val);
                 }
-            } else{
+            } else {
                 //System.out.getRuntime().println("Primitive");
                 double val = 0;
-                double da = ((JAMSDouble)entities.getCurrent().getObject(this.attributeName.getValue())).getValue();
-                if(this.weight.getValue().equals("none")){
+                double da = ((JAMSDouble) entities.getCurrent().getObject(this.attributeName.getValue())).getValue();
+                if (this.weight.getValue().equals("none")) {
                     val = da;
-                }
-                else{
-                    double weight = (((JAMSDouble)entities.getCurrent().getObject(this.weight.getValue())).getValue());
+                } else {
+                    double weight = (((JAMSDouble) entities.getCurrent().getObject(this.weight.getValue())).getValue());
                     val = da / weight;
                 }
-                writer.addData(""+val);
+                writer.addData("" + val);
             }
             //writer.addData(""+entitySet.getCurrent().getDouble(this.attributeName.getValue()));
-            if(entities.getEntityEnumerator().hasNext()){
-                entities.getEntityEnumerator().next();
+            if (ee.hasNext()) {
+                ee.next();
                 cont = true;
-            }else
+            } else {
                 cont = false;
+            }
         }
-        
+
         try {
-            
+
             writer.writeData();
-            
+
         } catch (jams.runtime.RuntimeException jre) {
             getModel().getRuntime().handle(jre);
         }
     }
-    
+
     public void cleanup() {
-        
+
         writer.close();
     }
 }

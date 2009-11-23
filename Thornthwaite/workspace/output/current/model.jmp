@@ -1,7 +1,7 @@
-#JAMS model parameter file
-#User: nsk <Sven Kralisch>
+#JAMS-Modellparameterdatei
+#User: nsk
 #Model: Thornthwaite Model
-#Fri Sep 25 15:36:30 CEST 2009
+#Mon Oct 05 18:32:23 CEST 2009
 Runoff\ Plot.typeLeft=0
 Runoff\ Plot.titleLeft=Runoff
 SoilMoisture.soilMoistStorCap=200.0
