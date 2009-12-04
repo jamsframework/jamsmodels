@@ -35,7 +35,7 @@ author = "Peter Krause",
 description = "Calculates potential ETP according Penman-Monteith")
 public class Penman extends JAMSComponent {
 
-    public final double CP = 1.031E-3;
+    public final double CP = 1.031E-3; //MJ/kg°C
 
     public final double RSS = 150;
 
@@ -91,6 +91,11 @@ public class Penman extends JAMSComponent {
     update = JAMSVarDescription.UpdateType.RUN,
     description = "actual ET [mm/ timeUnit]")
     public JAMSDouble actET;
+
+    @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
+    update = JAMSVarDescription.UpdateType.INIT,
+    description = "et calibration parameter")
+    public JAMSDouble et_cal;
 
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
     update = JAMSVarDescription.UpdateType.INIT,
@@ -181,11 +186,11 @@ public class Penman extends JAMSComponent {
                 pET = 0;
             }
 
-            this.potET.setValue(pET);
+            this.potET.setValue(pET*et_cal.getValue());
             this.actET.setValue(aET);
             
             if (dataCaching.getValue() == 0) {
-                writer.writeDouble(pET);
+                writer.writeDouble(pET*et_cal.getValue());
             }
         }
     }
@@ -199,9 +204,11 @@ public class Penman extends JAMSComponent {
         }
     }
 
-    private double calcPM(double delta_s, double netRad, double G, double pa, double CP, double est, double ea, double psy, double tempFactor, double wind){
-        double fu = 0.35 * (0.5 + 0.54 * wind);
-        double Letp = (delta_s*(netRad-G) + ((pa*CP*fu*(est-ea))))/(delta_s+psy);
+    private double calcPM(double ds, double netRad, double G, double pa, double CP, double est, double ea, double psy, double tempFactor, double wind){
+        double fu = (0.27 + 0.2333 * wind);
+        //double Letp = (ds*(netRad-G) + ((pa*CP*fu*(est-ea))))/(delta_s+psy);
+        //double Letp = (ds * (netRad - G) + (pa * CP * (est - ea) * fu * tempFactor)) / (ds + psy);
+        double Letp = (ds * (netRad - G) + (pa * CP * (est - ea) * fu)) / (ds + psy);
         return Letp;
     }
     
