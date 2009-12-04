@@ -79,7 +79,15 @@ import jams.model.*;
             unit="L/m^2"
             )
             public JAMSDouble snow;
-    
+
+    @JAMSVarDescription(
+            access = JAMSVarDescription.AccessType.READ,
+            update = JAMSVarDescription.UpdateType.RUN,
+            description = "the total precip",
+            unit="L/m^2"
+            )
+            public JAMSDouble precip;
+
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
             update = JAMSVarDescription.UpdateType.RUN,
@@ -300,6 +308,7 @@ import jams.model.*;
         this.iceRunoff.setValue(q_ice);
         this.snowRunoff.setValue(q_snow);
         this.snowStorage.setValue(snowStor);
+        this.precip.setValue(this.rain.getValue()+this.snow.getValue());
     }
     
     public void cleanup()  throws IOException {

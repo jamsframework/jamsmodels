@@ -23,7 +23,7 @@
 /*
 
  */
-package org.unijena.lake;
+package org.unijena.j2k.lake;
 
 import jams.data.*;
 import jams.model.*;
@@ -44,6 +44,13 @@ import jams.model.*;
      */
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
+            update = JAMSVarDescription.UpdateType.RUN,
+            description = "HRU attribute name area"
+            )
+            public JAMSDouble area;
+
+    @JAMSVarDescription(
+            access = JAMSVarDescription.AccessType.READWRITE,
             update = JAMSVarDescription.UpdateType.RUN,
             description = "state variable rain"
             )
@@ -69,6 +76,20 @@ import jams.model.*;
             description = "state variable lake storage"
             )
             public JAMSDouble lakeStorage;
+
+     @JAMSVarDescription(
+            access = JAMSVarDescription.AccessType.READ,
+            update = JAMSVarDescription.UpdateType.RUN,
+            description = "inflow from catchment"
+            )
+            public JAMSDouble land_inflow;
+
+     @JAMSVarDescription(
+            access = JAMSVarDescription.AccessType.READ,
+            update = JAMSVarDescription.UpdateType.RUN,
+            description = "inflow from glaciers"
+            )
+            public JAMSDouble glacier_inflow;
     /*
      *  Component run stages
      */
@@ -79,10 +100,13 @@ import jams.model.*;
     
     public void run() throws JAMSEntity.NoSuchAttributeException{
         double ls = this.lakeStorage.getValue();
-        ls = ls + precip.getValue();
+        double run_precip = precip.getValue() * this.area.getValue();
+        
+        ls = ls + run_precip;
         ls = ls - potET.getValue();
 
         actET.setValue(potET.getValue());
+        precip.setValue(run_precip);
         lakeStorage.setValue(ls);
         
     }
