@@ -59,7 +59,7 @@ import jams.model.*;
     /*
      *  Component variables
      */
-    @JAMSVarDescription(
+   /* @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
             update = JAMSVarDescription.UpdateType.RUN,
             description = "hru"
@@ -79,7 +79,7 @@ import jams.model.*;
             description = "time"
             )
             public JAMSCalendar time;
-    
+    */
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
             update = JAMSVarDescription.UpdateType.RUN,
