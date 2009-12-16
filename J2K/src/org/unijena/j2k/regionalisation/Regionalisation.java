@@ -153,7 +153,7 @@ public class Regionalisation extends JAMSComponent {
 
                     element++;
                     if (element >= wA.length) {
-                        getModel().getRuntime().println("BREAK1: too less data NIDW had been reduced!");
+                        //getModel().getRuntime().println("BREAK1: too less data NIDW had been reduced!");
                         cont = false;
                     //value = NODATA;
                     } else {
