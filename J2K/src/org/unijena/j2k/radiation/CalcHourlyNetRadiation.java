@@ -179,10 +179,10 @@ import jams.model.*;
     }
     
     public void cleanup() throws IOException {
-        if (!useCache) {
+        if (dataCaching.getValue() == 0) {
             writer.flush();
             writer.close();
-        } else {
+        } else if(dataCaching.getValue() == 1) {
             reader.close();
         }
     }
