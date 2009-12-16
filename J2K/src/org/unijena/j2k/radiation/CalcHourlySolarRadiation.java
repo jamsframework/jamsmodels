@@ -108,7 +108,7 @@ import jams.model.*;
     
     
     private File cacheFile;
-    private boolean useCache = false;
+    //private boolean useCache = false;
     transient private ObjectOutputStream writer;
     transient private ObjectInputStream reader;
     
@@ -174,10 +174,10 @@ import jams.model.*;
     }
     
     public void cleanup() throws JAMSEntity.NoSuchAttributeException, IOException {
-        if (!useCache) {
+        if (dataCaching.getValue() == 0) {
             writer.flush();
             writer.close();
-        } else {
+        } else if(dataCaching.getValue() == 1) {
             reader.close();
         }
         
