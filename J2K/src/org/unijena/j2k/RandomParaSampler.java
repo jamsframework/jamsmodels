@@ -137,6 +137,7 @@ title="Title",
     
     
     public void init() {
+        super.init();
         if(enable.getValue()){
 //add more checks!!!
             //retreiving parameter names
