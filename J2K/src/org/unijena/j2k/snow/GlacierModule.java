@@ -60,7 +60,7 @@ import jams.model.*;
             access = JAMSVarDescription.AccessType.READ,
             update = JAMSVarDescription.UpdateType.RUN,
             description = "the actual air temperature",
-            unit="°C"
+            unit="Â°C"
             )
             public JAMSDouble temperature;
     
@@ -81,7 +81,7 @@ import jams.model.*;
             public JAMSDouble snow;
 
     @JAMSVarDescription(
-            access = JAMSVarDescription.AccessType.READ,
+            access = JAMSVarDescription.AccessType.READWRITE,
             update = JAMSVarDescription.UpdateType.RUN,
             description = "the total precip",
             unit="L/m^2"
@@ -151,6 +151,14 @@ import jams.model.*;
             unit = "L"
             )
             public JAMSDouble snowRunoff;
+
+    @JAMSVarDescription(
+            access = JAMSVarDescription.AccessType.WRITE,
+            update = JAMSVarDescription.UpdateType.RUN,
+            description = "remaining storage (only for balance calculation)",
+            unit = "L"
+            )
+            public JAMSDouble glacStorage;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
@@ -292,6 +300,7 @@ import jams.model.*;
             totalMelt = snowMelt + iceMelt;
             
         }
+        double allIn = snowMelt + this.rain.getValue();
         //route runoff inside glacier
         //snow routing
         double q_snow = this.snowRunofftm1.getValue() * Math.exp(-1/this.kSnow.getValue()) + (snowMelt + this.rain.getValue()) * (1-Math.exp(-1/this.kSnow.getValue()));
@@ -300,7 +309,9 @@ import jams.model.*;
         double q_ice = this.iceRunofftm1.getValue() * Math.exp(-1/this.kIce.getValue()) + iceMelt * (1-Math.exp(-1/this.kIce.getValue()));
         //calc total glacier runoff
         double tot_q = q_snow + q_ice;
-        
+
+        this.glacStorage.setValue(allIn - q_snow);
+
         //writing variables back
         this.snowRunofftm1.setValue(q_snow);
         this.iceRunofftm1.setValue(q_ice);
@@ -308,7 +319,7 @@ import jams.model.*;
         this.iceRunoff.setValue(q_ice);
         this.snowRunoff.setValue(q_snow);
         this.snowStorage.setValue(snowStor);
-        this.precip.setValue(this.rain.getValue()+this.snow.getValue());
+        this.precip.setValue(this.precip.getValue()*this.area.getValue());
     }
     
     public void cleanup()  throws IOException {

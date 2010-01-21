@@ -77,19 +77,12 @@ import jams.model.*;
             )
             public JAMSDouble lakeStorage;
 
-     @JAMSVarDescription(
-            access = JAMSVarDescription.AccessType.READ,
+    @JAMSVarDescription(
+            access = JAMSVarDescription.AccessType.READWRITE,
             update = JAMSVarDescription.UpdateType.RUN,
-            description = "inflow from catchment"
+            description = "state variable lake storage"
             )
-            public JAMSDouble land_inflow;
-
-     @JAMSVarDescription(
-            access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.RUN,
-            description = "inflow from glaciers"
-            )
-            public JAMSDouble glacier_inflow;
+            public JAMSDouble lakeChange;
     /*
      *  Component run stages
      */
@@ -108,6 +101,7 @@ import jams.model.*;
         actET.setValue(potET.getValue());
         precip.setValue(run_precip);
         lakeStorage.setValue(ls);
+        lakeChange.setValue(run_precip - potET.getValue());
         
     }
     

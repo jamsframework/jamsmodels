@@ -60,7 +60,7 @@ import jams.model.*;
             update = JAMSVarDescription.UpdateType.RUN,
             description = "the receiving reach"
             )
-            public JAMSEntity toReach;
+            public Attribute.Entity toReach;
     
     
     /*

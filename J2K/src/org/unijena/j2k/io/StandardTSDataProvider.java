@@ -62,13 +62,23 @@ import jams.model.*;
             )
             public JAMSInteger column;
 
+    @JAMSVarDescription(
+            access = JAMSVarDescription.AccessType.READ,
+            update = JAMSVarDescription.UpdateType.INIT,
+            description = "constant correction factor"
+            )
+            public JAMSDouble corr_factor;
+
     
     /*
      *  Component run stages
      */
     
     public void run() {
-        attribute.setValue(dataArray.getValue()[column.getValue() - 1]);
+        if(corr_factor != null)
+            attribute.setValue(dataArray.getValue()[column.getValue() - 1] * corr_factor.getValue());
+        else
+            attribute.setValue(dataArray.getValue()[column.getValue() - 1]);
     }
     
 }
