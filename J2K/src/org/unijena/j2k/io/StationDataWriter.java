@@ -12,6 +12,7 @@ import jams.model.*;
 import jams.io.*;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.Date;
 
 /**
  *
@@ -21,6 +22,8 @@ import java.text.SimpleDateFormat;
                           author = "Peter Krause",
                           description = "Writes standard ASCII timeseries data files")
 public class StationDataWriter extends JAMSComponent{
+    public static final String EMPTY_CHAR = "";
+    public static final String SEPARATOR = "\t";
     /*
      *  Component variables
      */
@@ -43,8 +46,48 @@ public class StationDataWriter extends JAMSComponent{
 
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
                         update = JAMSVarDescription.UpdateType.RUN,
-                        description = "the header information")
-    public JAMSStringArray headers;
+                        description = "the station names")
+    public JAMSStringArray statNames;
+
+    @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
+                        update = JAMSVarDescription.UpdateType.RUN,
+                        description = "the station Ids")
+    public JAMSDoubleArray statId;
+
+    @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
+                        update = JAMSVarDescription.UpdateType.RUN,
+                        description = "the station elevation")
+    public JAMSDoubleArray statElev;
+
+    @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
+                        update = JAMSVarDescription.UpdateType.RUN,
+                        description = "the station x-coordinates")
+    public JAMSDoubleArray statX;
+
+    @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
+                        update = JAMSVarDescription.UpdateType.RUN,
+                        description = "the station y-coordinates")
+    public JAMSDoubleArray statY;
+
+    @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
+                        update = JAMSVarDescription.UpdateType.INIT,
+                        description = "data set description [type min max unit]")
+    public JAMSString dataSetDesc;
+
+    @JAMSVarDescription(
+            access = JAMSVarDescription.AccessType.READ,
+            update = JAMSVarDescription.UpdateType.INIT,
+            description = "temporal resolution",
+            defaultValue=EMPTY_CHAR
+            )
+            public JAMSString tempRes;
+
+    @JAMSVarDescription(
+            access = JAMSVarDescription.AccessType.READ,
+            update = JAMSVarDescription.UpdateType.INIT,
+            description = "missing data value"
+            )
+            public JAMSDouble missDataValue;
 
     @JAMSVarDescription(
     access = JAMSVarDescription.AccessType.READ,
@@ -66,21 +109,8 @@ public class StationDataWriter extends JAMSComponent{
      *  Component run stages
      */
     public void init() throws JAMSEntity.NoSuchAttributeException {
-        writer = new GenericDataWriter(JAMSTools.CreateAbsoluteFileName(getModel().getWorkspace().getOutputDataDirectory().getPath(),fileName.getValue()));
-        //create and write a header first
-        int cols = this.headers.getValue().length + 1;
-        String[] hdr = new String[cols];
-        hdr[0] = "date";
-        for(int i = 1; i < cols; i++)
-            hdr[i] = this.headers.getValue()[i-1];
-        this.headers.setValue(hdr);
 
-        for (int i = 0; i < headers.getValue().length; i++) {
-            writer.addColumn(headers.getValue()[i]);
-        }
-
-        writer.writeHeader();
-
+        Date dt = new Date();
         int tu = this.timeInterval.getTimeUnit();
         String timeFormat = "%1$tY-%1$tm-%1$td %1$tH:%1$tM";
         dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm");
@@ -102,7 +132,71 @@ public class StationDataWriter extends JAMSComponent{
             dateFormat = new SimpleDateFormat("yyyy");
         }
         dateFormat.setTimeZone(JAMSCalendar.STANDARD_TIME_ZONE);
-    }
+
+        System.out.println("StationDataWriter. tres " + tempRes.getValue());
+        System.out.println("StationDataWriter. missDataValue " + missDataValue.getValue());
+
+        writer = new GenericDataWriter(JAMSTools.CreateAbsoluteFileName(getModel().getWorkspace().getOutputDataDirectory().getPath(),fileName.getValue()));
+        //create and write a header first
+
+        //write station meta data
+        writer.writeLine("#Calculated input data, generated: "+dt);
+        writer.writeLine(JAMSVarDescription.MD_DATAVALUEATTRIBS);
+        writer.writeLine(dataSetDesc.getValue());
+        writer.writeLine(JAMSVarDescription.MD_DATASETATTRIBS);
+        writer.writeLine(JAMSVarDescription.MD_MISSINGDATAVAL + SEPARATOR + missDataValue.getValue());
+        writer.writeLine(JAMSVarDescription.MD_DATASTART + SEPARATOR + timeInterval.getStart().toString(dateFormat));
+        writer.writeLine(JAMSVarDescription.MD_DATAEND + SEPARATOR + timeInterval.getEnd().toString(dateFormat));
+        writer.writeLine(JAMSVarDescription.MD_TEMP_RES + SEPARATOR + tempRes);
+        writer.writeLine(JAMSVarDescription.MD_STATATTRIBVAL);
+        writer.addColumn("name");
+        for (int i = 0; i < statNames.getValue().length; i++) {
+            writer.addColumn(statNames.getValue()[i]);
+        }
+        writer.writeHeader();
+        writer.write("ID");
+        for(int i = 0; i < statId.getValue().length; i++){
+            writer.write(SEPARATOR + statId.getValue()[i]);
+        }
+        writer.writeLine(EMPTY_CHAR);
+        writer.write("elevation");
+        for(int i = 0; i < statElev.getValue().length; i++){
+            writer.write(SEPARATOR + statElev.getValue()[i]);
+        }
+        writer.writeLine(EMPTY_CHAR);
+        writer.write("x");
+        for(int i = 0; i < statX.getValue().length; i++){
+            writer.write(SEPARATOR + statX.getValue()[i]);
+        }
+        writer.writeLine(EMPTY_CHAR);
+        writer.write("y");
+        for(int i = 0; i < statY.getValue().length; i++){
+            writer.write(SEPARATOR + statY.getValue()[i]);
+        }
+        writer.writeLine(EMPTY_CHAR);
+        writer.write("dataColumn");
+        for(int i = 0; i < statX.getValue().length; i++){
+            int col = i+1;
+            writer.write(SEPARATOR + col);
+        }
+        writer.writeLine(EMPTY_CHAR);
+        writer.writeLine(JAMSVarDescription.MD_DATAVAL);
+
+/*
+        int cols = this.headers.getValue().length + 1;
+        String[] hdr = new String[cols];
+        hdr[0] = "date";
+        for(int i = 1; i < cols; i++)
+            hdr[i] = this.headers.getValue()[i-1];
+        this.headers.setValue(hdr);
+
+        for (int i = 0; i < headers.getValue().length; i++) {
+            writer.addColumn(headers.getValue()[i]);
+        }
+        writer.writeHeader();
+*/
+
+ }
 
     public void run() throws JAMSEntity.NoSuchAttributeException {
         writer.addData(time.toString(dateFormat));
