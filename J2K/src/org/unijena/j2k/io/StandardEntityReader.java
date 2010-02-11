@@ -32,6 +32,7 @@ import jams.data.JAMSEntity;
 import jams.data.JAMSEntityCollection;
 import jams.data.JAMSString;
 import jams.model.JAMSComponent;
+import jams.model.JAMSComponentDescription;
 import jams.model.JAMSVarDescription;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -44,34 +45,59 @@ import org.unijena.j2k.J2KFunctions;
  *
  * @author S. Kralisch
  */
+@JAMSComponentDescription(title = "StandardEntityReader",
+author = "Sven Kralisch & Christian Fischer",
+description = "This component reads two ASCII files containing data of hru and "
++ "reach entities and creates two collections of entities accordingly. "
++ "1:n topologies between different entities are created based on provided "
++ "attribute names. Additionally, the topologies are checked for cycles.",
+date = "2010-01-29",
+version = "1.1")
 public class StandardEntityReader extends JAMSComponent {
 
-    @JAMSVarDescription (access = JAMSVarDescription.AccessType.READ,
-                         description = "HRU parameter file name")
-    public JAMSString hruFileName;
-
-    @JAMSVarDescription (access = JAMSVarDescription.AccessType.READ,
-                         description = "Reach parameter file name")
-    public JAMSString reachFileName;
-
-    @JAMSVarDescription (access = JAMSVarDescription.AccessType.WRITE,
-                         description = "Collection of hru objects")
-    public JAMSEntityCollection hrus;
-
-    @JAMSVarDescription (access = JAMSVarDescription.AccessType.WRITE,
-                         description = "Collection of reach objects")
-    public JAMSEntityCollection reaches;
+    @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
+    description = "HRU parameter file name")
+    public Attribute.String hruFileName;
+    @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
+    description = "Reach parameter file name")
+    public Attribute.String reachFileName;
+    @JAMSVarDescription(access = JAMSVarDescription.AccessType.WRITE,
+    description = "Collection of hru objects")
+    public Attribute.EntityCollection hrus;
+    @JAMSVarDescription(access = JAMSVarDescription.AccessType.WRITE,
+    description = "Collection of reach objects")
+    public Attribute.EntityCollection reaches;
+    @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
+    description = "Name of the attribute containing the HRU identifiers",
+    defaultValue = "ID")
+    public Attribute.String hruIDAttribute;
+    @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
+    description = "Name of the attribute containing the reach identifiers",
+    defaultValue = "ID")
+    public Attribute.String reachIDAttribute;
+    @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
+    description = "Name of the attribute describing the HRU to HRU relation in the input file",
+    defaultValue = "to_poly")
+    public Attribute.String hru2hruAttribute;
+    @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
+    description = "Name of the attribute describing the HRU to reach relation in the input file",
+    defaultValue = "to_reach")
+    public Attribute.String hru2reachAttribute;
+    @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
+    description = "Name of the attribute describing the reach to reach relation in the input file",
+    defaultValue = "to-reach")
+    public Attribute.String reach2reachAttribute;
 
     @Override
     public void init() throws Attribute.Entity.NoSuchAttributeException {
-        
+
         //read hru parameter
         hrus.setEntities(J2KFunctions.readParas(JAMSTools.CreateAbsoluteFileName(getModel().getWorkspaceDirectory().getPath(), hruFileName.getValue()), getModel()));
 
         //assign IDs to all hru entities
         for (Attribute.Entity e : hrus.getEntityArray()) {
             try {
-                e.setId((long) e.getDouble("ID"));
+                e.setId((long) e.getDouble(hruIDAttribute.getValue()));
             } catch (Attribute.Entity.NoSuchAttributeException nsae) {
                 getModel().getRuntime().sendErrorMsg("Couldn't find attribute \"ID\" while reading J2K HRU parameter file (" + hruFileName.getValue() + ")!");
             }
@@ -83,7 +109,7 @@ public class StandardEntityReader extends JAMSComponent {
         //assign IDs to all reach entities
         for (Attribute.Entity e : reaches.getEntityArray()) {
             try {
-                e.setId((long) e.getDouble("ID"));
+                e.setId((long) e.getDouble(reachIDAttribute.getValue()));
             } catch (Attribute.Entity.NoSuchAttributeException nsae) {
                 getModel().getRuntime().sendErrorMsg("Couldn't find attribute \"ID\" while reading J2K HRU parameter file (" + hruFileName.getValue() + ")!");
             }
@@ -118,11 +144,11 @@ public class StandardEntityReader extends JAMSComponent {
             return true;
         }
         //node in closed list? -> then skip it
-        if (closedList.contains(node.getObject("ID")) == true) {
+        if (closedList.contains(node.getId()) == true) {
             return false;
         }
         //now this node is visited
-        visitedList.add((JAMSDouble) node.getObject("ID"));
+        visitedList.add((JAMSDouble) node.getObject(hruIDAttribute.getValue()));
 
         child_node = (JAMSEntity) node.getObject("to_poly");
         if (child_node.getValue() == null) {
@@ -159,7 +185,7 @@ public class StandardEntityReader extends JAMSComponent {
         while (hruIterator.hasNext()) {
             start_node = hruIterator.next();
             //connected component of start_node allready processed?
-            if (closedList.contains(start_node.getObject("ID")) == false) {
+            if (closedList.contains(start_node.getId()) == false) {
                 if (cycleCheck(start_node, new Stack<Attribute.Entity>(), closedList, visitedList) == true) {
                     result = true;
                 }
@@ -183,12 +209,12 @@ public class StandardEntityReader extends JAMSComponent {
         hruIterator = hrus.getEntities().iterator();
         while (hruIterator.hasNext()) {
             e = hruIterator.next();
-            hruMap.put(e.getDouble("ID"), e);
+            hruMap.put(e.getDouble(hruIDAttribute.getValue()), e);
         }
         reachIterator = reaches.getEntities().iterator();
         while (reachIterator.hasNext()) {
             e = reachIterator.next();
-            reachMap.put(e.getDouble("ID"), e);
+            reachMap.put(e.getDouble(reachIDAttribute.getValue()), e);
         }
 
         //create empty entities, i.e. those that are linked to in case there is no linkage ;-)
@@ -201,15 +227,15 @@ public class StandardEntityReader extends JAMSComponent {
         hruIterator = hrus.getEntities().iterator();
         while (hruIterator.hasNext()) {
             e = hruIterator.next();
-            e.setObject("to_poly", hruMap.get(e.getDouble("to_poly")));
-            e.setObject("to_reach", reachMap.get(e.getDouble("to_reach")));
+            e.setObject("to_poly", hruMap.get(e.getDouble(hru2hruAttribute.getValue())));
+            e.setObject("to_reach", reachMap.get(e.getDouble(hru2reachAttribute.getValue())));
         }
 
         //associate the reach entities with their downstream entity
         reachIterator = reaches.getEntities().iterator();
         while (reachIterator.hasNext()) {
             e = reachIterator.next();
-            e.setObject("to_reach", reachMap.get(e.getDouble("to-reach")));
+            e.setObject("to_reach", reachMap.get(e.getDouble(reach2reachAttribute.getValue())));
         }
 
         //check for cycles
@@ -223,7 +249,7 @@ public class StandardEntityReader extends JAMSComponent {
 
     }
 
-    protected void createOrderedList(JAMSEntityCollection col, String asso) throws Attribute.Entity.NoSuchAttributeException {
+    protected void createOrderedList(Attribute.EntityCollection col, String asso) throws Attribute.Entity.NoSuchAttributeException {
 
         Iterator<Attribute.Entity> hruIterator;
         Attribute.Entity e, f;

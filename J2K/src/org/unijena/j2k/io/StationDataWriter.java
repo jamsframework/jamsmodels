@@ -150,14 +150,14 @@ public class StationDataWriter extends JAMSComponent{
 
             //write station meta data as header
             writer.writeLine("#Calculated input data, generated: "+dt);
-            writer.writeLine(JAMSVarDescription.MD_DATAVALUEATTRIBS);
+            writer.writeLine(TSDataReader.MD_DATAVALUEATTRIBS);
             writer.writeLine(dataSetDesc.getValue());
-            writer.writeLine(JAMSVarDescription.MD_DATASETATTRIBS);
-            writer.writeLine(JAMSVarDescription.MD_MISSINGDATAVAL + SEPARATOR + missDataValue.getValue());
-            writer.writeLine(JAMSVarDescription.MD_DATASTART + SEPARATOR + timeInterval.getStart().toString(dateFormat));
-            writer.writeLine(JAMSVarDescription.MD_DATAEND + SEPARATOR + timeInterval.getEnd().toString(dateFormat));
-            writer.writeLine(JAMSVarDescription.MD_TEMP_RES + SEPARATOR + tempRes);
-            writer.writeLine(JAMSVarDescription.MD_STATATTRIBVAL);
+            writer.writeLine(TSDataReader.MD_DATASETATTRIBS);
+            writer.writeLine(TSDataReader.MD_MISSINGDATAVAL + SEPARATOR + missDataValue.getValue());
+            writer.writeLine(TSDataReader.MD_DATASTART + SEPARATOR + timeInterval.getStart().toString(dateFormat));
+            writer.writeLine(TSDataReader.MD_DATAEND + SEPARATOR + timeInterval.getEnd().toString(dateFormat));
+            writer.writeLine(TSDataReader.MD_TEMP_RES + SEPARATOR + tempRes);
+            writer.writeLine(TSDataReader.MD_STATATTRIBVAL);
             writer.addColumn("name");
             for (int i = 0; i < statNames.getValue().length; i++) {
                 writer.addColumn(statNames.getValue()[i]);
@@ -189,7 +189,7 @@ public class StationDataWriter extends JAMSComponent{
                 writer.write(SEPARATOR + col);
             }
             writer.writeLine(EMPTY_CHAR);
-            writer.writeLine(JAMSVarDescription.MD_DATAVAL);
+            writer.writeLine(TSDataReader.MD_DATAVAL);
         } else {
 
             //create and write a header from station names

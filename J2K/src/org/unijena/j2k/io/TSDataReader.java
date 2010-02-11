@@ -140,6 +140,14 @@ public class TSDataReader extends JAMSComponent {
             )
             public JAMSDouble missDataValue;
 
+    public static final String MD_DATAEND = "dataend";
+    public static final String MD_DATASETATTRIBS = "@datasetattribs";
+    public static final String MD_DATASTART = "datastart";
+    public static final String MD_DATAVAL = "@dataval";
+    public static final String MD_DATAVALUEATTRIBS = "@datavalueattribs";
+    public static final String MD_MISSINGDATAVAL = "missingdataval";
+    public static final String MD_STATATTRIBVAL = "@statattribval";
+    public static final String MD_TEMP_RES = "tres";
     
     private JAMSTableDataStore store;
     private JAMSTableDataArray da;
@@ -173,8 +181,8 @@ public class TSDataReader extends JAMSComponent {
             //metadata tags
             StringTokenizer strTok = new StringTokenizer(line, "\t");
             String token = strTok.nextToken();
-            while(token.toLowerCase().compareTo(JAMSVarDescription.MD_DATAVAL) != 0){
-                if(token.toLowerCase().compareTo(JAMSVarDescription.MD_DATAVALUEATTRIBS) == 0){
+            while(token.toLowerCase().compareTo(MD_DATAVAL) != 0){
+                if(token.toLowerCase().compareTo(MD_DATAVALUEATTRIBS) == 0){
                     line = reader.readLine();
                     headerLineCount++;
                     strTok = new StringTokenizer(line, "\t");
@@ -185,24 +193,24 @@ public class TSDataReader extends JAMSComponent {
                     strTok = new StringTokenizer(line, "\t");
                     token = strTok.nextToken();
                     headerLineCount++;
-                }else if(token.toLowerCase().compareTo(JAMSVarDescription.MD_DATASETATTRIBS) == 0){
+                }else if(token.toLowerCase().compareTo(MD_DATASETATTRIBS) == 0){
                     int i = 0;
                     line = reader.readLine();
                     while(i < 4){
                         headerLineCount++;
                         strTok = new StringTokenizer(line, "\t ");
                         String desc = strTok.nextToken();
-                        if(desc.toLowerCase().compareTo(JAMSVarDescription.MD_MISSINGDATAVAL) == 0){
+                        if(desc.toLowerCase().compareTo(MD_MISSINGDATAVAL) == 0){
                            missData = Double.parseDouble(strTok.nextToken()); 
-                        }else if(desc.toLowerCase().compareTo(JAMSVarDescription.MD_DATASTART) == 0){
+                        }else if(desc.toLowerCase().compareTo(MD_DATASTART) == 0){
                            start = strTok.nextToken(); //date part
                            if(strTok.hasMoreTokens())  //potential time part
                                start = start + " " + strTok.nextToken();
-                        }else if(desc.toLowerCase().compareTo(JAMSVarDescription.MD_DATAEND) == 0){
+                        }else if(desc.toLowerCase().compareTo(MD_DATAEND) == 0){
                            end = strTok.nextToken();   //date part
                            if(strTok.hasMoreTokens())  //potential time part
                                end = end + " " + strTok.nextToken();
-                        }else if(desc.toLowerCase().compareTo(JAMSVarDescription.MD_TEMP_RES) == 0){
+                        }else if(desc.toLowerCase().compareTo(MD_TEMP_RES) == 0){
                            tres = strTok.nextToken(); 
                         }
                         i++;
@@ -210,7 +218,7 @@ public class TSDataReader extends JAMSComponent {
                         strTok = new StringTokenizer(line, "\t");
                         token = strTok.nextToken();
                     }   
-                }else if(token.toLowerCase().compareTo(JAMSVarDescription.MD_STATATTRIBVAL) == 0){
+                }else if(token.toLowerCase().compareTo(MD_STATATTRIBVAL) == 0){
                     int i = 0;
                     line = reader.readLine();
                     while(i < 6){
