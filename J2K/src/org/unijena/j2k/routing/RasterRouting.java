@@ -302,10 +302,10 @@ public void run()throws JAMSEntity.NoSuchAttributeException{
 	    System.out.println(e.toString());
 	}
           
-        ArrayList<ArrayList> acthrulist = new ArrayList<ArrayList>();
+        ArrayList<ArrayList<Point>> acthrulist = new ArrayList<ArrayList<Point>>();
         
         try
-        {acthrulist=(ArrayList<ArrayList>)information.getObject("hrulist");}
+        {acthrulist=(ArrayList<ArrayList<Point>>)information.getObject("hrulist");}
         catch (Exception e) {
 	    System.out.println(e.toString());
 	}

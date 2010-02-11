@@ -726,7 +726,7 @@ public double[][] SucheStruktur(double raster[][], int zeile, int spalte, int co
         return raster;
     }
     
-public double[][] Mapping(double raster[][],ArrayList anhang,int zeile, int spalte, int count,double actID,int hilf, int type)
+public double[][] Mapping(double raster[][],ArrayList<Point> anhang,int zeile, int spalte, int count,double actID,int hilf, int type)
 {
    //Die Variable "hilf" ist daf?r zust?ndig zu bestimmen, ob es die erste Zelle der Liste ist. Dort wird die HRU_ID angehangen.
    //Type 1 HRU
@@ -962,8 +962,8 @@ public int[][] Sort(int[][] dgm_sort, double[][] dgm)
      //Bestimmen der Abflussrichtung entlang des Fliessgewaessers 
      //Aufbau einer Datenstruktur zur Verwaltung der Fliessgewaesserabschnitte
       
-     ArrayList<ArrayList> reachlist = new ArrayList<ArrayList>();
-     ArrayList raster_in_reach = new ArrayList();
+     ArrayList<ArrayList<Point>> reachlist = new ArrayList<ArrayList<Point>>();
+     ArrayList<Point> raster_in_reach = new ArrayList<Point>();
      
      
     int count=0;
@@ -980,7 +980,7 @@ public int[][] Sort(int[][] dgm_sort, double[][] dgm)
                 //schauen, ob es sich um ein reach-Start-Pixel handelt
               if (flgew2[i][j]!=-1 && flgew2[i][j]!=123456)
                 {
-                raster_in_reach = new ArrayList(); //Neue Liste erzeugen
+                raster_in_reach = new ArrayList<Point>(); //Neue Liste erzeugen
                 count=0;   
                 //zaehlt, wieviele Nachbarpixel im flgew liegen um das Startpixel zu ermitteln
                 if (flgew2[i+1][j]==-1)
@@ -1123,8 +1123,8 @@ public int[][] Sort(int[][] dgm_sort, double[][] dgm)
      //Anlegen einer Datenstruktur die das spaetere Mapping zwischen verschiedenen 
      //raumlichen Diskretisierungen ermoeglichen soll. 
      
-     ArrayList<ArrayList> hrulist = new ArrayList<ArrayList>();
-     ArrayList raster_in_hru = new ArrayList();
+     ArrayList<ArrayList<Point>> hrulist = new ArrayList<ArrayList<Point>>();
+     ArrayList<Point> raster_in_hru = new ArrayList<Point>();
      
      //Aufbau der Datenstruktur  
         
@@ -1136,7 +1136,7 @@ public int[][] Sort(int[][] dgm_sort, double[][] dgm)
              if (hruraster[i][j]!=-1)
                 {
            
-                raster_in_hru = new ArrayList(); //Neue Liste erzeugen
+                raster_in_hru = new ArrayList<Point>(); //Neue Liste erzeugen
                 hruraster=Mapping(hruraster,raster_in_hru, i, j, count, hruraster[i][j],1,1);
                 hrulist.add(raster_in_hru);
                 count++;

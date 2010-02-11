@@ -358,10 +358,10 @@ public void run()throws JAMSEntity.NoSuchAttributeException
 	    System.out.println(e.toString());
 	}
           
-        ArrayList<ArrayList> acthrulist = new ArrayList<ArrayList>();
+        ArrayList<ArrayList<Point>> acthrulist = new ArrayList<ArrayList<Point>>();
         
         try
-        {acthrulist=(ArrayList<ArrayList>)information.getObject("hrulist");}
+        {acthrulist=(ArrayList<ArrayList<Point>>)information.getObject("hrulist");}
         catch (Exception e) {
 	    System.out.println(e.toString());
 	}
@@ -480,7 +480,7 @@ public void run()throws JAMSEntity.NoSuchAttributeException
       
           
             RD1act = (RD1act+RD1out)*koeff1;
-            RD2act=  (RD2act+RD2out)*koeff2;
+            RD2act=  (RD2act+RD2out+RD2in+inGWExcess.getValue())*koeff2;
             RG1act =  (RG1act+RG1out)*koeff3;
             RG2act =  (RG2act+RG2out)*koeff4;
             

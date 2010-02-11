@@ -71,10 +71,10 @@ public void run()throws JAMSEntity.NoSuchAttributeException
   
  
      
-     ArrayList<ArrayList> actreachlist = new ArrayList<ArrayList>();
+     ArrayList<ArrayList<Point>> actreachlist = new ArrayList<ArrayList<Point>>();
         
         try
-        {actreachlist=(ArrayList<ArrayList>)information.getObject("reachlist");}
+        {actreachlist=(ArrayList<ArrayList<Point>>)information.getObject("reachlist");}
         catch (Exception e) {
 	    System.out.println(e.toString());
 	}
@@ -121,6 +121,7 @@ public void run()throws JAMSEntity.NoSuchAttributeException
                     {
                         p=(Point)((ArrayList)actreachlist.get(j)).get(i);
                         Fuellstand_Reaches[p.x][p.y]=Fuellstand_Reaches[p.x][p.y]+RD1raster[p.x][p.y]+RD2raster[p.x][p.y]+RG1raster[p.x][p.y]+RG2raster[p.x][p.y];
+                        
                         RD1raster[p.x][p.y]=0;
                         RD2raster[p.x][p.y]=0;
                         RG1raster[p.x][p.y]=0;

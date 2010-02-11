@@ -164,10 +164,10 @@ public void run()throws JAMSEntity.NoSuchAttributeException
      double RG2_speicher;
  
      
-     ArrayList<ArrayList> actreachlist = new ArrayList<ArrayList>();
+     ArrayList<ArrayList<Point>> actreachlist = new ArrayList<ArrayList<Point>>();
         
         try
-        {actreachlist=(ArrayList<ArrayList>)information.getObject("reachlist");}
+        {actreachlist=(ArrayList<ArrayList<Point>>)information.getObject("reachlist");}
         catch (Exception e) {
 	    System.out.println(e.toString());
 	}

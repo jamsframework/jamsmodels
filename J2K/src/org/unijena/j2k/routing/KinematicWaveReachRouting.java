@@ -248,7 +248,7 @@ public void run()throws JAMSEntity.NoSuchAttributeException{
  if (timestep==1) {timestep=60*60*24;} //in seconds
  if (timestep==2) {timestep=60*60;}    //in seconds
  
- int rastersize=(int)modelrastersize.getValue();
+ int rastersize=100;//(int)modelrastersize.getValue();
 
 
         
@@ -310,10 +310,11 @@ public void run()throws JAMSEntity.NoSuchAttributeException{
            
        
           
-        ArrayList<ArrayList> actreachlist = new ArrayList<ArrayList>();
+        ArrayList<ArrayList<Point>> actreachlist = new ArrayList<ArrayList<Point>>();
         
         try
-        {actreachlist=(ArrayList<ArrayList>)information.getObject("reachlist");}
+            {
+            actreachlist=(ArrayList<ArrayList<Point>>)information.getObject("reachlist");}
         catch (Exception e) {
 	    System.out.println(e.toString());
 	}
@@ -399,22 +400,28 @@ public void run()throws JAMSEntity.NoSuchAttributeException{
             {
                  p=(Point)((ArrayList)actreachlist.get(j)).get(l);       
                  next=Routing[p.x][p.y];
-                 
-                 Q_in=fuellstand_reaches[p.x][p.y];                                      //Q_in (t,x) = Q_out (t-1,x-1)
+                 //fuellstand_reaches + seitlicher zufluss
+                 Q_in=fuellstand_reaches[p.x][p.y];                                 //Q_in (t,x) = Q_out (t-1,x-1)
+                 //Q_In[p.x][p.y]=fuellstand_reaches[p.x][p.y];
+                 //System.out.println(fuellstand_reaches[p.x][p.y]);
                  S_start=Q_In[p.x][p.y];
-                 Q_In[p.x][p.y]=0;                                                // Start Speicherzustand 
-                 A_start=S_start/(actreachinfo[2][p1.x]*rastersize);              // A(x,t), Annahme querschnitt ist ein Recheck
+                 //System.out.print("Q_in: ");System.out.println(Q_In[p.x][p.y]);
+                 Q_In[p.x][p.y]=0;                                                  // Start Speicherzustand 
+                 //System.out.print("actreachinfo[2][p1.x]: ");System.out.println(actreachinfo[2][p1.x]);
+                 // System.out.print("rastersize: ");System.out.println(rastersize);
+                 A_start=S_start/(actreachinfo[2][p1.x]*rastersize*1000);              // A(x,t), Annahme querschnitt ist ein Recheck
+                 //System.out.print("A_Start: ");System.out.println(A_start);
                  //A_start=Q_in/veloc;
                  S_end=S_start+Q_in+q;                                           //End Speicherzustand -->  abs(A_start-A_end)=Aenderung des Speichervolumens
-                 A_end=S_end/(actreachinfo[2][p1.x]*rastersize);                            //A(x,t+1)
+                 A_end=S_end/(actreachinfo[2][p1.x]*rastersize*1000);                            //A(x,t+1)
                  Q_out=q+Q_in+(-A_start+A_end)/timestep;                         //Kinematic Wave Approximation des Abflusses
                  fuellstand_reaches[p.x][p.y]=S_end-Q_out;
                  Q_In[next.x][next.y]= Q_In[next.x][next.y]+Q_out;
-                   
+                 // System.out.println(fuellstand_reaches[p.x][p.y]);
                  
             }
      }
-     
+      // System.out.println("Tag vorbei");
  
 //Pegel finden     
 Point pegel= new Point();
@@ -434,6 +441,7 @@ for (i=0;i<actflgew1.length;i++)
 Pegel_out=Q_In[pegel.x][pegel.y];  
 Q_In[pegel.x][pegel.y]=0; 
 catchmentSimRunoff.setValue(Pegel_out);   
+//System.out.println(Pegel_out);
 fuellstand.setObject("fuellstand_reaches", fuellstand_reaches);    
 fuellstand.setObject("Qin_reaches", Q_In);      
  //hier m?ssen noch die passenden Werte gesetzt werden   
