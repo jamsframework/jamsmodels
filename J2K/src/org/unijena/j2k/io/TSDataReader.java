@@ -26,6 +26,7 @@ package org.unijena.j2k.io;
 import org.unijena.j2k.statistics.*;
 import jams.data.*;
 import jams.model.*;
+import jams.workspace.stores.*;
 import jams.io.*;
 import java.util.*;
 import java.io.*;
@@ -37,6 +38,7 @@ import jams.tools.JAMSTools;
  * @author S. Kralisch
  */
 public class TSDataReader extends JAMSComponent {
+    public static final String SEPARATOR = "\t";
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
@@ -140,19 +142,12 @@ public class TSDataReader extends JAMSComponent {
             )
             public JAMSDouble missDataValue;
 
-    public static final String MD_DATAEND = "dataend";
-    public static final String MD_DATASETATTRIBS = "@datasetattribs";
-    public static final String MD_DATASTART = "datastart";
-    public static final String MD_DATAVAL = "@dataval";
-    public static final String MD_DATAVALUEATTRIBS = "@datavalueattribs";
-    public static final String MD_MISSINGDATAVAL = "missingdataval";
-    public static final String MD_STATATTRIBVAL = "@statattribval";
-    public static final String MD_TEMP_RES = "tres";
-    
     private JAMSTableDataStore store;
     private JAMSTableDataArray da;
     
+    @Override
     public void init() {
+        getModel().getRuntime().println(" start init " + dataFileName.getValue() + ".. ", JAMS.VERBOSE);
         
         //handle the j2k metadata descriptions
         int headerLineCount = 0;
@@ -177,84 +172,83 @@ public class TSDataReader extends JAMSComponent {
                 line = reader.readLine();
                 headerLineCount++;
             }
-            
             //metadata tags
-            StringTokenizer strTok = new StringTokenizer(line, "\t");
+            StringTokenizer strTok = new StringTokenizer(line,SEPARATOR);
             String token = strTok.nextToken();
-            while(token.toLowerCase().compareTo(MD_DATAVAL) != 0){
-                if(token.toLowerCase().compareTo(MD_DATAVALUEATTRIBS) == 0){
+            while (!token.equalsIgnoreCase(J2KTSDataStore.TAGNAME_DATAVAL)) {
+                if(token.equalsIgnoreCase(J2KTSDataStore.TAGNAME_DATAVALUEATTRIBS)){
                     line = reader.readLine();
                     headerLineCount++;
-                    strTok = new StringTokenizer(line, "\t");
+                    strTok = new StringTokenizer(line,SEPARATOR);
                     dataName = strTok.nextToken();
                     lowBound = Double.parseDouble(strTok.nextToken());
                     uppBound = Double.parseDouble(strTok.nextToken());
                     line = reader.readLine();
-                    strTok = new StringTokenizer(line, "\t");
+                    strTok = new StringTokenizer(line,SEPARATOR);
                     token = strTok.nextToken();
                     headerLineCount++;
-                }else if(token.toLowerCase().compareTo(MD_DATASETATTRIBS) == 0){
+                }else if(token.equalsIgnoreCase(J2KTSDataStore.TAGNAME_DATASETATTRIBS)){
                     int i = 0;
                     line = reader.readLine();
                     while(i < 4){
                         headerLineCount++;
                         strTok = new StringTokenizer(line, "\t ");
                         String desc = strTok.nextToken();
-                        if(desc.toLowerCase().compareTo(MD_MISSINGDATAVAL) == 0){
+                        if(desc.equalsIgnoreCase(J2KTSDataStore.TAGNAME_MISSINGDATAVAL)){
                            missData = Double.parseDouble(strTok.nextToken()); 
-                        }else if(desc.toLowerCase().compareTo(MD_DATASTART) == 0){
+                        }else if(desc.equalsIgnoreCase(J2KTSDataStore.TAGNAME_DATASTART)){
                            start = strTok.nextToken(); //date part
                            if(strTok.hasMoreTokens())  //potential time part
                                start = start + " " + strTok.nextToken();
-                        }else if(desc.toLowerCase().compareTo(MD_DATAEND) == 0){
+                        }else if(desc.equalsIgnoreCase(J2KTSDataStore.TAGNAME_DATAEND)){
                            end = strTok.nextToken();   //date part
                            if(strTok.hasMoreTokens())  //potential time part
                                end = end + " " + strTok.nextToken();
-                        }else if(desc.toLowerCase().compareTo(MD_TEMP_RES) == 0){
+                        }else if(desc.equalsIgnoreCase(J2KTSDataStore.TAGNAME_TEMP_RES)){
                            tres = strTok.nextToken(); 
                         }
                         i++;
                         line = reader.readLine();
-                        strTok = new StringTokenizer(line, "\t");
+                        strTok = new StringTokenizer(line,SEPARATOR);
                         token = strTok.nextToken();
                     }   
-                }else if(token.toLowerCase().compareTo(MD_STATATTRIBVAL) == 0){
+                }else if(token.equalsIgnoreCase(J2KTSDataStore.TAGNAME_STATATTRIBVAL)){
                     int i = 0;
                     line = reader.readLine();
                     while(i < 6){
                        headerLineCount++;
-                       strTok = new StringTokenizer(line, "\t");
+                       strTok = new StringTokenizer(line,SEPARATOR);
                        String desc = strTok.nextToken();
                        int nstat = strTok.countTokens();
                        
-                       if(desc.toLowerCase().compareTo("name") == 0){
+                       if(desc.equalsIgnoreCase("name")){
                            name = new String[nstat];
                            for(int j = 0; j < nstat; j++)
                                name[j] = strTok.nextToken();
-                       }else if(desc.toLowerCase().compareTo("id") == 0){
+                       }else if(desc.equalsIgnoreCase("id")){
                            id = new double[nstat];
                            for(int j = 0; j < nstat; j++)
                                id[j] = Double.parseDouble(strTok.nextToken());
-                       }else if(desc.toLowerCase().compareTo("elevation") == 0){
+                       }else if(desc.equalsIgnoreCase("elevation")){
                            statelev = new double[nstat];
                            for(int j = 0; j < nstat; j++)
                                statelev[j] = Double.parseDouble(strTok.nextToken());
-                       }else if(desc.toLowerCase().compareTo("x") == 0){
+                       }else if(desc.equalsIgnoreCase("x")){
                            statx = new double[nstat];
                            for(int j = 0; j < nstat; j++)
                                statx[j] = Double.parseDouble(strTok.nextToken());
-                       }else if(desc.toLowerCase().compareTo("y") == 0){
+                       }else if(desc.equalsIgnoreCase("y")){
                            staty = new double[nstat];
                            for(int j = 0; j < nstat; j++)
                                staty[j] = Double.parseDouble(strTok.nextToken());
-                       }else if(desc.toLowerCase().compareTo("datacolumn")==0){
+                       }else if(desc.equalsIgnoreCase("datacolumn")){
                            //do nothing for the moment just counting
                            headerLineCount++;
                            headerLineCount++;
                        }
                        i++;
                        line = reader.readLine();
-                       strTok = new StringTokenizer(line, "\t");
+                       strTok = new StringTokenizer(line,SEPARATOR);
                        token = strTok.nextToken();
                     }
                 }   
@@ -323,6 +317,7 @@ public class TSDataReader extends JAMSComponent {
         getModel().getRuntime().println(dataSetName.getValue() + " data file initalised ... ", JAMS.VERBOSE);
     }
     
+    @Override
     public void run() {
         
         dataArray.setValue(JAMSTableDataConverter.toDouble(store.getNext(), startColumn.getValue()));
@@ -353,6 +348,7 @@ public class TSDataReader extends JAMSComponent {
         return cal;
     }
     
+    @Override
     public void cleanup() {
         store.close();
     }

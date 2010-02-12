@@ -5,10 +5,12 @@
 
 package org.unijena.j2k.io;
 
+import jams.JAMS;
 import java.io.IOException;
 import jams.tools.JAMSTools;
 import jams.data.*;
 import jams.model.*;
+import jams.workspace.stores.*;
 import jams.io.*;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -119,8 +121,10 @@ public class StationDataWriter extends JAMSComponent{
     /*
      *  Component run stages
      */
+    @Override
     public void init() throws JAMSEntity.NoSuchAttributeException {
 
+        getModel().getRuntime().println(" start init " + fileName.getValue() + ".. ", JAMS.VERBOSE);
         Date dt = new Date();
         int tu = this.timeInterval.getTimeUnit();
         String timeFormat = "%1$tY-%1$tm-%1$td %1$tH:%1$tM";
@@ -150,14 +154,14 @@ public class StationDataWriter extends JAMSComponent{
 
             //write station meta data as header
             writer.writeLine("#Calculated input data, generated: "+dt);
-            writer.writeLine(TSDataReader.MD_DATAVALUEATTRIBS);
+            writer.writeLine(J2KTSDataStore.TAGNAME_DATAVALUEATTRIBS);
             writer.writeLine(dataSetDesc.getValue());
-            writer.writeLine(TSDataReader.MD_DATASETATTRIBS);
-            writer.writeLine(TSDataReader.MD_MISSINGDATAVAL + SEPARATOR + missDataValue.getValue());
-            writer.writeLine(TSDataReader.MD_DATASTART + SEPARATOR + timeInterval.getStart().toString(dateFormat));
-            writer.writeLine(TSDataReader.MD_DATAEND + SEPARATOR + timeInterval.getEnd().toString(dateFormat));
-            writer.writeLine(TSDataReader.MD_TEMP_RES + SEPARATOR + tempRes);
-            writer.writeLine(TSDataReader.MD_STATATTRIBVAL);
+            writer.writeLine(J2KTSDataStore.TAGNAME_DATASETATTRIBS);
+            writer.writeLine(J2KTSDataStore.TAGNAME_MISSINGDATAVAL + SEPARATOR + missDataValue.getValue());
+            writer.writeLine(J2KTSDataStore.TAGNAME_DATASTART + SEPARATOR + timeInterval.getStart().toString(dateFormat));
+            writer.writeLine(J2KTSDataStore.TAGNAME_DATAEND + SEPARATOR + timeInterval.getEnd().toString(dateFormat));
+            writer.writeLine(J2KTSDataStore.TAGNAME_TEMP_RES + SEPARATOR + tempRes);
+            writer.writeLine(J2KTSDataStore.TAGNAME_STATATTRIBVAL);
             writer.addColumn("name");
             for (int i = 0; i < statNames.getValue().length; i++) {
                 writer.addColumn(statNames.getValue()[i]);
@@ -189,7 +193,7 @@ public class StationDataWriter extends JAMSComponent{
                 writer.write(SEPARATOR + col);
             }
             writer.writeLine(EMPTY_CHAR);
-            writer.writeLine(TSDataReader.MD_DATAVAL);
+            writer.writeLine(J2KTSDataStore.TAGNAME_DATAVAL);
         } else {
 
             //create and write a header from station names
@@ -205,8 +209,10 @@ public class StationDataWriter extends JAMSComponent{
             }
             writer.writeHeader();
         }
+        getModel().getRuntime().println(" end init " + fileName.getValue() + ".. ", JAMS.VERBOSE);
     }
 
+    @Override
     public void run() throws JAMSEntity.NoSuchAttributeException {
         writer.addData(time.toString(dateFormat));
         for(int i = 0; i < values.getValue().length;i++){
@@ -220,6 +226,7 @@ public class StationDataWriter extends JAMSComponent{
 
     }
 
+    @Override
     public void cleanup() throws JAMSEntity.NoSuchAttributeException {
         try {
             writer.writer.flush();
