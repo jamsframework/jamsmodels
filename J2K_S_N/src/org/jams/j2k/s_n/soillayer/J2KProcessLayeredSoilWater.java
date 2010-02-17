@@ -320,7 +320,7 @@ public class J2KProcessLayeredSoilWater extends JAMSComponent {
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.WRITE,
     update = JAMSVarDescription.UpdateType.RUN,
     description = "max Root depth in soil in m")
-    public JAMSDouble soil_root;   
+    public JAMSDouble soil_root;
     //internal state variables
     double run_actDPS, run_satSoil1, run_inRain, run_inSnow,
             run_snowMelt, run_infiltration, run_latComp, run_vertComp, run_overlandflow, run_potETP, run_actETP, run_snowDepth, run_area, run_slope,
@@ -515,8 +515,8 @@ public class J2KProcessLayeredSoilWater extends JAMSComponent {
                 MobileWater = this.calcLPSoutflow(h);
             } else {
                 MobileWater = 0;
-            /** Distribution of MobileWater to the lateral (interflow) and
-             * vertical (percolation) flowpaths  */            //try {
+                /** Distribution of MobileWater to the lateral (interflow) and
+                 * vertical (percolation) flowpaths  */            //try {
             }
             this.calcIntfPercRates(MobileWater, h);
 
@@ -539,11 +539,11 @@ public class J2KProcessLayeredSoilWater extends JAMSComponent {
 
             /** updating saturations */
             this.calcSoilSaturations(false);
-        //System.out.getRuntime().println("end of horizon loop");
+            //System.out.getRuntime().println("end of horizon loop");
         }
         if (this.run_overlandflow < 0) {
             System.out.println("overlandflow is negative! --> " + this.run_overlandflow);
-        /** determining direct runoff from depression storage */
+            /** determining direct runoff from depression storage */
         }
         this.run_overlandflow = this.run_overlandflow + this.calcDirectRunoff();
 //        if (run_overlandflow > 0)
@@ -593,7 +593,7 @@ public class J2KProcessLayeredSoilWater extends JAMSComponent {
         infiltration_hor.setValue(infilhor);
         perco_hor.setValue(perchor);
         actETP_h.setValue(actETP_hor);
-    //System.out.getRuntime().println("RD2_out: " + this.run_outRD2[0] + "\t" + this.run_outRD2[1] + "\t" + this.run_outRD2[2]);
+        //System.out.getRuntime().println("RD2_out: " + this.run_outRD2[0] + "\t" + this.run_outRD2[1] + "\t" + this.run_outRD2[2]);
     }
 
     public void cleanup() {
@@ -911,7 +911,7 @@ public class J2KProcessLayeredSoilWater extends JAMSComponent {
 
                 if (flux >= 0) {
                     flux_h1_h[h] = Math.min(flux, pot_flux);
-                //flux_h1_h[h] = Math.min(Math.min(flux, pot_flux), maxflux);
+                    //flux_h1_h[h] = Math.min(Math.min(flux, pot_flux), maxflux);
                 } else {
                     //flux_h1_h[h] = Math.max(Math.max(flux, -pot_flux), -maxflux);
                     flux_h1_h[h] = Math.max(flux, -pot_flux);
@@ -1223,7 +1223,7 @@ public class J2KProcessLayeredSoilWater extends JAMSComponent {
             }
         }
 
-         if (maxTrans > run_actMPS[hor]){
+        if (maxTrans > run_actMPS[hor]) {
             maxTrans = run_actMPS[hor];
         }
 
@@ -1313,11 +1313,11 @@ public class J2KProcessLayeredSoilWater extends JAMSComponent {
         //testing if LPSsat might give a better behaviour
         if (this.run_satLPS[hor] == 1.0) {
             this.run_satLPS[hor] = 0.999999;
-        //original function
-        //double potLPSoutflow = this.act_LPS * (1. - Math.exp(-1*alpha/(1-this.sat_LPS)));
-        //peters second
-        //double potLPSoutflow = Math.pow(this.run_satHor[hor], alpha) * this.run_actLPS[hor];
-        //Manfreds new
+            //original function
+            //double potLPSoutflow = this.act_LPS * (1. - Math.exp(-1*alpha/(1-this.sat_LPS)));
+            //peters second
+            //double potLPSoutflow = Math.pow(this.run_satHor[hor], alpha) * this.run_actLPS[hor];
+            //Manfreds new
         }
         double potLPSoutflow = ((1 - (1 / (Math.pow(this.run_satHor[hor], 2) + alpha))) * this.run_actLPS[hor]) * (this.runkf_h[hor] / layerdepth.getValue()[hor]);
         //testing a simple function function out = 1/k * sto
@@ -1344,7 +1344,7 @@ public class J2KProcessLayeredSoilWater extends JAMSComponent {
                 part_perc = 1;
             } else if (part_perc < 0) {
                 part_perc = 0;
-            /** potential part of interflow */
+                /** potential part of interflow */
             }
             double part_intf = (1 - part_perc);
 
@@ -1422,7 +1422,7 @@ public class J2KProcessLayeredSoilWater extends JAMSComponent {
             RD2_output_factor = 1;
         } else if (RD2_output_factor < 0) {
             RD2_output_factor = 0;
-        /** real RD2 output */
+            /** real RD2 output */
         }
         double RD2_output = this.run_latComp * RD2_output_factor;
         /** rest is put back to LPS Storage */
@@ -1431,7 +1431,7 @@ public class J2KProcessLayeredSoilWater extends JAMSComponent {
         this.run_genRD2[h] = this.run_outRD2[h];// - this.in_RD2;
         if (this.run_genRD2[h] < 0) {
             this.run_genRD2[h] = 0;
-        //this.in_RD2 = 0;
+            //this.in_RD2 = 0;
         }
         this.run_latComp = 0;
         return true;
@@ -1446,7 +1446,7 @@ public class J2KProcessLayeredSoilWater extends JAMSComponent {
             RD1_output_factor = 1;
         } else if (RD1_output_factor < 0) {
             RD1_output_factor = 0;
-        /** real RD1 output */
+            /** real RD1 output */
         }
         double RD1_output = this.run_overlandflow * RD1_output_factor;
         /** rest is put back to dep. Storage */
@@ -1477,7 +1477,7 @@ public class J2KProcessLayeredSoilWater extends JAMSComponent {
 
         if (diffusion > this.run_actLPS[h]) {
             diffusion = this.run_actLPS[h];
-        /** MPS can take all the water from diffusion */
+            /** MPS can take all the water from diffusion */
         }
         if (diffusion < deltaMPS) {
             this.run_actMPS[h] = this.run_actMPS[h] + diffusion;

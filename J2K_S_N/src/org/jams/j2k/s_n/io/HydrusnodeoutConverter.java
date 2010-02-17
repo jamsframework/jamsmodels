@@ -103,6 +103,6 @@ public class HydrusnodeoutConverter {
     }
 
     public static void main(String[] args) {
-        HydrusnodeoutConverter.convert("C:/Programme/UCR/HYDRUS-1D/Projects/Direct/Lts_4_8/NOD_INF.OUT", "C:/Programme/UCR/HYDRUS-1D/Projects/Direct/Lts_4_8/NOD_INF.TXT");
+        HydrusnodeoutConverter.convert("C:/Programme/UCR/HYDRUS-1D/Projects/Direct/Tt_4_8/NOD_INF.OUT", "C:/Programme/UCR/HYDRUS-1D/Projects/Direct/Tt_4_8/NOD_INF.TXT");
     }
 }
