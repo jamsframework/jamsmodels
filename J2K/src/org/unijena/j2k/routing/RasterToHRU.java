@@ -149,7 +149,7 @@ public class RasterToHRU extends JAMSComponent {
     
 }
     
-    
+@SuppressWarnings("unchecked")    
 public void run()throws JAMSEntity.NoSuchAttributeException
 {  
      double ID=hruID.getValue();

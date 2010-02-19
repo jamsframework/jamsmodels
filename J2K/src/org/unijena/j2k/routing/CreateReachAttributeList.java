@@ -70,7 +70,7 @@ public class CreateReachAttributeList extends JAMSComponent {
 
 }
     
-    
+@SuppressWarnings("unchecked")    
 public void run()throws JAMSEntity.NoSuchAttributeException{
  
 // JAMSEntity entity = entities.getCurrent();

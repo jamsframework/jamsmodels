@@ -138,7 +138,7 @@ public class RasterToReach extends JAMSComponent {
 }
     
 
-   
+@SuppressWarnings("unchecked")   
 public void run()throws JAMSEntity.NoSuchAttributeException
 {  
      double ID=reachID.getValue();

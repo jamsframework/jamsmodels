@@ -223,7 +223,7 @@ public void init()
     
 }
     
-    
+@SuppressWarnings("unchecked")    
 public void run()throws JAMSEntity.NoSuchAttributeException
 {
      

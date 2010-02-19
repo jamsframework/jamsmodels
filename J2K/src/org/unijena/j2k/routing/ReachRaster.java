@@ -54,7 +54,7 @@ public class ReachRaster extends JAMSComponent {
     
 }
     
-
+@SuppressWarnings("unchecked")
 public void run()throws JAMSEntity.NoSuchAttributeException
 {  
 
