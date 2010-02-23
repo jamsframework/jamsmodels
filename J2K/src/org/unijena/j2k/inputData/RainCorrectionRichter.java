@@ -22,6 +22,7 @@
  */
 package org.unijena.j2k.inputData;
 
+import jams.JAMS;
 import jams.data.*;
 import jams.io.GenericDataWriter;
 import jams.model.*;
@@ -238,7 +239,7 @@ public class RainCorrectionRichter extends JAMSComponent {
 
                         element++;
                         if (element >= wArray.length) {
-                            System.out.println("BREAK1: too less data NIDW had been reduced!");
+                            getModel().getRuntime().println("BREAK1: too less data NIDW had been reduced!", JAMS.VERBOSE);
                             cont = false;
                         //value = NODATA;
                         } else {
