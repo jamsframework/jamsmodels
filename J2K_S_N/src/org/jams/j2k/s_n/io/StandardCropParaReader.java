@@ -55,7 +55,7 @@ public class StandardCropParaReader extends JAMSComponent {
     public void init() throws JAMSEntity.NoSuchAttributeException {
         
         //read crop parameter
-        JAMSEntityCollection crops = JAMSDataFactory.createEntityCollection();
+        Attribute.EntityCollection crops = JAMSDataFactory.createEntityCollection();
         crops.setEntities(J2KFunctions.readParas(getModel().getWorkspaceDirectory().getPath()+"/"+crFileName.getValue(), getModel()));
         
         HashMap<Double, Attribute.Entity> crMap = new HashMap<Double, Attribute.Entity>();
