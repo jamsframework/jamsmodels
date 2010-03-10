@@ -159,7 +159,7 @@ title="ExtendedEfficiencyCalculator",
             update = JAMSVarDescription.UpdateType.RUN,
             description = "full set of predicted values"
             )
-            public JAMSDoubleArray predictionValues;
+            public Attribute.DoubleArray predictionValues;
     
     private final int FOURIER = 13;
     private final int COSINE =  14;

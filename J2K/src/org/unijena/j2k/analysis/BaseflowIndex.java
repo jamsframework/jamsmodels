@@ -50,7 +50,7 @@ import java.util.Vector;
             update = JAMSVarDescription.UpdateType.RUN,
             description = "the current time step"
             )
-            public JAMSCalendar time;
+            public Attribute.Calendar time;
 
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
@@ -94,7 +94,7 @@ import java.util.Vector;
 
     public void run(){
         //check month
-        int actMonth = time.get(time.MONTH);
+        int actMonth = time.get(JAMSCalendar.MONTH);
         if(currentMonth < 0)
             currentMonth = actMonth;
 

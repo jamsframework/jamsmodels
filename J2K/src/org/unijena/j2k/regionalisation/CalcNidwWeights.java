@@ -106,7 +106,7 @@ import jams.model.*;
     }
     
     public void run() throws JAMSEntity.NoSuchAttributeException{
-        JAMSDoubleArray idwWeights = JAMSDataFactory.createDoubleArray();
+        Attribute.DoubleArray idwWeights = JAMSDataFactory.createDoubleArray();
         if(equalWeights == null || !equalWeights.getValue()){
         	idwWeights.setValue(org.unijena.j2k.statistics.IDW.calcNidwWeights(entityX.getValue(), entityY.getValue(), statX.getValue(), statY.getValue(), pidw.getValue(), nidw.getValue()));
         }

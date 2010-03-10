@@ -175,8 +175,8 @@ public class ReservoirDataReader extends JAMSComponent {
         store = new GenericDataReader(getModel().getWorkspaceDirectory().getPath()+"/"+dataFileName.getValue(), false, headerLineCount+1);
         
 
-        JAMSCalendar startTime = parseJ2KTime(start);
-        JAMSCalendar endTime = parseJ2KTime(end);
+        Attribute.Calendar startTime = parseJ2KTime(start);
+        Attribute.Calendar endTime = parseJ2KTime(end);
 
         if(timeInterval != null){
             //check if the time series start and end date match the temporal context's time interval
@@ -193,7 +193,7 @@ public class ReservoirDataReader extends JAMSComponent {
         if(timeInterval != null){
             int timeUnit = timeInterval.getTimeUnit();
             Attribute.Calendar tiStart = timeInterval.getStart();
-            JAMSCalendar date = JAMSDataFactory.createCalendar();
+            Attribute.Calendar date = JAMSDataFactory.createCalendar();
             date.set(tiStart.get(Calendar.YEAR), tiStart.get(Calendar.MONTH), tiStart.get(Calendar.DAY_OF_MONTH), startTime.get(Calendar.HOUR_OF_DAY), startTime.get(Calendar.MINUTE), startTime.get(Calendar.SECOND));
             
             while (startTime.before(date) && store.hasNext()) {
@@ -216,7 +216,7 @@ public class ReservoirDataReader extends JAMSComponent {
         
     }
     
-    private JAMSCalendar parseJ2KTime(String timeString) {
+    private Attribute.Calendar parseJ2KTime(String timeString) {
         
         //Array keeping values for year, month, day, hour, minute
         String[] timeArray = new String[5];
@@ -233,7 +233,7 @@ public class ReservoirDataReader extends JAMSComponent {
             timeArray[i] = st.nextToken();
         }
         
-        JAMSCalendar cal = JAMSDataFactory.createCalendar();
+        Attribute.Calendar cal = JAMSDataFactory.createCalendar();
         cal.setValue(timeArray[2]+"-"+timeArray[1]+"-"+timeArray[0]+" "+timeArray[3]+":"+timeArray[4]);
         return cal;
     }

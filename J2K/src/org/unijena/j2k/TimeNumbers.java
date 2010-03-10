@@ -9,8 +9,9 @@
 
 package org.unijena.j2k;
 
-import java.util.Locale;
+import jams.data.Attribute;
 import jams.data.JAMSCalendar;
+import java.util.Locale;
 import jams.data.JAMSDataFactory;
 
 
@@ -28,13 +29,13 @@ public class TimeNumbers {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        JAMSCalendar time = JAMSDataFactory.createCalendar();
-        System.out.println("seconds: " + time.SECOND);
-        System.out.println("Minutes: " + time.MINUTE);
-        System.out.println("Hours: " + time.HOUR_OF_DAY);
-        System.out.println("Day: " + time.DAY_OF_YEAR);
-        System.out.println("Months: " + time.MONTH);
-        System.out.println("Years: " + time.YEAR);
+        Attribute.Calendar time = JAMSDataFactory.createCalendar();
+        System.out.println("seconds: " + JAMSCalendar.SECOND);
+        System.out.println("Minutes: " + JAMSCalendar.MINUTE);
+        System.out.println("Hours: " + JAMSCalendar.HOUR_OF_DAY);
+        System.out.println("Day: " + JAMSCalendar.DAY_OF_YEAR);
+        System.out.println("Months: " + JAMSCalendar.MONTH);
+        System.out.println("Years: " + JAMSCalendar.YEAR);
         
         double x1 = 4;
         double x2 = 2;

@@ -85,13 +85,13 @@ public class DataReader extends JAMSComponent {
             StringTokenizer strTok = new StringTokenizer(line, "\t");
             String desc = strTok.nextToken();
             String start = strTok.nextToken();
-            JAMSCalendar startTime = parseTime(start);
+            Attribute.Calendar startTime = parseTime(start);
             
             line = reader.readLine();
             strTok = new StringTokenizer(line, "\t");
             desc = strTok.nextToken();
             String end = strTok.nextToken();
-            JAMSCalendar endTime = parseTime(end);
+            Attribute.Calendar endTime = parseTime(end);
             
             //read column headings
             line = reader.readLine();
@@ -115,7 +115,7 @@ public class DataReader extends JAMSComponent {
                 }
                 int timeUnit = timeInterval.getTimeUnit();
                 Attribute.Calendar tiStart = timeInterval.getStart();
-                JAMSCalendar date = JAMSDataFactory.createCalendar();
+                Attribute.Calendar date = JAMSDataFactory.createCalendar();
                 date.set(tiStart.get(Calendar.YEAR), tiStart.get(Calendar.MONTH), tiStart.get(Calendar.DAY_OF_MONTH), startTime.get(Calendar.HOUR_OF_DAY), startTime.get(Calendar.MINUTE), startTime.get(Calendar.SECOND));
 
                 while (startTime.before(date) && store.hasNext()) {
@@ -154,7 +154,7 @@ public class DataReader extends JAMSComponent {
         store.close();
     }
     
-    private JAMSCalendar parseTime(String timeString) {
+    private Attribute.Calendar parseTime(String timeString) {
         
         //Array keeping values for year, month, day
         String[] timeArray = new String[3];
@@ -169,7 +169,7 @@ public class DataReader extends JAMSComponent {
             timeArray[i] = st.nextToken();
         }
         
-        JAMSCalendar cal = JAMSDataFactory.createCalendar();
+        Attribute.Calendar cal = JAMSDataFactory.createCalendar();
         cal.setValue(timeArray[2]+"-"+timeArray[1]+"-"+timeArray[0]);
         return cal;
     }

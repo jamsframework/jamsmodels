@@ -113,8 +113,8 @@ import jams.model.*;
     }
     
     public void run() throws JAMSEntity.NoSuchAttributeException{
-        JAMSDoubleArray idwWeights = JAMSDataFactory.createDoubleArray();
-        JAMSIntegerArray wA = JAMSDataFactory.createIntegerArray();
+        Attribute.DoubleArray idwWeights = JAMSDataFactory.createDoubleArray();
+        Attribute.IntegerArray wA = JAMSDataFactory.createIntegerArray();
         double[] dist = null;
         if(equalWeights == null || !equalWeights.getValue()){
             if(latLong == null || !latLong.getValue()){

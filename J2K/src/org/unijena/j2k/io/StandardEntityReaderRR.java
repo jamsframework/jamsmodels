@@ -161,7 +161,7 @@ public class StandardEntityReaderRR extends JAMSComponent {
         }
 
         //create empty entities, i.e. those that are linked to in case there is no linkage ;-)
-        JAMSEntity nullEntity = JAMSDataFactory.createEntity();
+        Attribute.Entity nullEntity = JAMSDataFactory.createEntity();
         nullEntity.setValue((HashMap<String, Object>) null);
         hruMap.put(new Double(0), nullEntity);
         reachMap.put(new Double(0), nullEntity);
