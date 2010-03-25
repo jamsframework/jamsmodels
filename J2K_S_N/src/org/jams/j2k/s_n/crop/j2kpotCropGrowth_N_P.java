@@ -38,7 +38,7 @@ title="j2kCropGrowth",
         description="Module for calculation of crop growth according to the algorithms of SWAT"
         )
         
-        public class j2kpotCropGrowth extends JAMSComponent {
+        public class j2kpotCropGrowth_N_P extends JAMSComponent {
     
     /*
      *  Component variables
@@ -115,6 +115,13 @@ title="j2kCropGrowth",
             description = "Fraction of nitrogen in the plant optimal biomass at the current growth's stage"
             )
             public JAMSDouble FNPlant;
+
+        @JAMSVarDescription(
+    access = JAMSVarDescription.AccessType.READWRITE,
+            update = JAMSVarDescription.UpdateType.RUN,
+            description = "Fraction of phosphorous in the plant optimal biomass at the current growth's stage"
+            )
+            public JAMSDouble FPPlant;
     
     @JAMSVarDescription(
     access = JAMSVarDescription.AccessType.READWRITE,
@@ -137,6 +144,13 @@ title="j2kCropGrowth",
             description = "Nitrogen added residue pool after harvesting [kg N/ha]"
             )
             public JAMSDouble Addresidue_pooln;
+
+        @JAMSVarDescription(
+    access = JAMSVarDescription.AccessType.WRITE,
+            update = JAMSVarDescription.UpdateType.RUN,
+            description = "Phosphorous added residue pool after harvesting [kg N/ha]"
+            )
+            public JAMSDouble Addresidue_poolp;
     
     @JAMSVarDescription(
     access = JAMSVarDescription.AccessType.READWRITE,
@@ -165,6 +179,13 @@ title="j2kCropGrowth",
             description = "Actual N content in plants biomass [kg N/ha]"
             )
             public JAMSDouble BioNoptAct;
+
+    @JAMSVarDescription(
+    access = JAMSVarDescription.AccessType.READWRITE,
+            update = JAMSVarDescription.UpdateType.RUN,
+            description = "Actual P content in plants biomass [kg P/ha]"
+            )
+            public JAMSDouble BioPoptAct;
     
     
     @JAMSVarDescription(
@@ -203,6 +224,13 @@ title="j2kCropGrowth",
             description = "Actual N content in yield [absolut]"
             )
             public JAMSDouble NYield;
+
+    @JAMSVarDescription(
+    access = JAMSVarDescription.AccessType.WRITE,
+            update = JAMSVarDescription.UpdateType.RUN,
+            description = "Actual P content in yield [absolut]"
+            )
+            public JAMSDouble PYield;
     
     @JAMSVarDescription(
     access = JAMSVarDescription.AccessType.WRITE,
@@ -210,6 +238,13 @@ title="j2kCropGrowth",
             description = "Actual N content in yield [kg N/ha]"
             )
             public JAMSDouble NYield_ha;
+
+    @JAMSVarDescription(
+    access = JAMSVarDescription.AccessType.WRITE,
+            update = JAMSVarDescription.UpdateType.RUN,
+            description = "Actual P content in yield [kg N/ha]"
+            )
+            public JAMSDouble PYield_ha;
     
     
     @JAMSVarDescription(
@@ -218,6 +253,14 @@ title="j2kCropGrowth",
             description = "Actual N in Biomass "
             )
             public JAMSDouble BioNAct;
+
+
+    @JAMSVarDescription(
+    access = JAMSVarDescription.AccessType.READWRITE,
+            update = JAMSVarDescription.UpdateType.RUN,
+            description = "Actual P in Biomass "
+            )
+            public JAMSDouble BioPAct;
     
     @JAMSVarDescription(
     access = JAMSVarDescription.AccessType.READWRITE,
@@ -353,28 +396,25 @@ title="j2kCropGrowth",
     private double area_ha;
     private double sc1_LAI;
     private double sc2_LAI;
-    private double sc3_Nbio;
-    private double sc4_Nbio;
+
     
     private double frLAImx_act;
     private double lai_act;
     private double fnplant_act;
-    
+    private double fpplant_act;
     private double addresidue_pool;
     private double addresidue_pooln;
+    private double addresidue_poolp;
     private double hc_act;
     
     private double idc;
-    private double phu_50;
     private double phu;
     private double fphu_act;
     private double phu_daily;
     
-    private double phu_Xi;
-    private double aTransP;
-    private double pTransP;
+
     
-    private double int_lai;
+
     private double mlai1;
     private double mlai;
     private double mlai2;
@@ -382,10 +422,9 @@ title="j2kCropGrowth",
     
     private double frgrw1;
     private double frgrw2;
-    private double frLAImx;
-    private double frLAImx_actnew;
+
     private double frLAImx_Xi;
-    private double LAI_actnew;
+
     private double solrad;
     private double rue;
     private double leco;
@@ -395,47 +434,50 @@ title="j2kCropGrowth",
     private double frroot_act;
     private double zrootd_act;
     
-    private double zrootd;
+
     
     private double bn1;
     private double bn2;
     private double bn3;
+
+    private double bp1;
+    private double bp2;
+    private double bp3;
+
     
-    private double betaN;
+
     private double hvsti;
     private double cnyld;
+    private double cpyld;
     
     private double cid;
     private double bioNopt_act;
+    private double bioPopt_act;
     private double bioN_act;
-    private double bio_act;
+    private double bioP_act;
+
     private double bio_opt;
-    
-    private double bioopt_ha;
+
     private double hi_act;
     private double bioag_act;
     private double yldN;
     private double yldN_ha;
+    private double yldP;
+    private double yldP_ha;
     private double yield;
     
     private double tmean;
     private double Tbase;
     private double Topt;
-    private double julday;
     
     public double famount;
     public boolean plant;
     public int harvest;
     public double fracharvest;
     public double fracharvestn;
-    
+    public double fracharvestp;
     private double LAI_delta;
     private double frLAImx_delta;
-    
-    private double enty_id;
-    private double soil_no3;
-    private double bioNopt_accumu ;
-    private double Ndemand_accumu;
     
     private double bio_opt_delta;
     
@@ -467,6 +509,8 @@ title="j2kCropGrowth",
         yield = 0;
         yldN = 0; /* N Content from the above biomass */
         yldN_ha = 0;
+        yldP = 0; /* N Content from the above biomass */
+        yldP_ha = 0;
         this.tmean = Tmean.getValue();
         this.fphu_act = FPHUact.getValue();
         this.phu_daily = PHUact.getValue();
@@ -484,9 +528,11 @@ title="j2kCropGrowth",
         this.zrootd_act = ZRootD.getValue();
         
         this.fnplant_act = FNPlant.getValue();
+        this.fpplant_act = FPPlant.getValue();
         this.bioNopt_act = BioNoptAct.getValue(); /*actual biomass in kg/ha, optimal conditions */
-        
+        this.bioPopt_act = BioPoptAct.getValue();
         this.bioN_act = BioNAct.getValue(); /*actual biomass in kg/ha adapted by stress*/
+        this.bioP_act = BioPAct.getValue(); /*actual biomass in kg/ha adapted by stress*/
         this.hi_act = HarvIndex.getValue();;
         this.bioag_act = BioagAct.getValue();
         this.bio_opt = BioAct.getValue();
@@ -523,9 +569,14 @@ title="j2kCropGrowth",
         this.Topt = crop.topt; //Optimal growth temperature
         this.Tbase = crop.tbase;
         this.cnyld = crop.cnyld;
+        this.cpyld = crop.cpyld;
         this.bn1 = crop.bn1; //Normal fraction of N in the plant biomass at the emergence
         this.bn2 = crop.bn2; //Normal fraction of N in the plant biomass at 50% of plant growth
         this.bn3 = crop.bn3; //Normal fraction of N in the plant biomass near harvest
+        this.bp1 = crop.bp1; //Normal fraction of P in the plant biomass at the emergence
+        this.bp2 = crop.bp2; //Normal fraction of P in the plant biomass at 50% of plant growth
+        this.bp3 = crop.bp3; //Normal fraction of P in the plant biomass near harvest
+        
         cropid.setValue(cid);
         
         /*ArrayList<J2KSNLMArable> managementList = currentCrop.managementList;
@@ -547,7 +598,9 @@ title="j2kCropGrowth",
             zrootd_act = 1000;  /* daily root development [mm] */
             
             fnplant_act = 0; /* daily fraction of N in plant biomass */
+            fpplant_act = 0; /* daily fraction of P in plant biomass */
             bioNopt_act = 0;
+            bioPopt_act = 0;
             bio_opt = 0; /*Plants optimal biomass */
             
             
@@ -557,11 +610,12 @@ title="j2kCropGrowth",
             
             fphu_act = 0;
             bioN_act = 0; /*actual biomass in kg/ha adapted by stress*/
+            bioP_act = 0; /*actual biomass in kg/ha adapted by stress*/
             frLAImx_Xi = 0;
             //residue_pool = 0;
             this.addresidue_pool = 0;
             this.addresidue_pooln = 0;
-            
+            this.addresidue_poolp = 0;
             
         }else if (plantExisting.getValue()) {
             calc_phu();
@@ -570,13 +624,16 @@ title="j2kCropGrowth",
             hc_act = calc_canopy();
             calc_root();
             calc_nuptake();
+            calc_puptake();
            
             // time
             this.addresidue_pool = 0;
             this.addresidue_pooln = 0;
+            this.addresidue_poolp = 0;
             if (doHarvest.getValue()){
                 calc_cropyield();
-                calc_cropyield_ha();
+                calc_cropyield_ha_N();
+                calc_cropyield_ha_P();
                 calc_residues();
                 doHarvest.setValue(false);            
             }
@@ -599,6 +656,7 @@ title="j2kCropGrowth",
             
             fnplant_act = 0; /* daily fraction of N in plant biomass */
             bioNopt_act = 0;
+            bioPopt_act = 0;
             bio_opt = 0; /*Plants optimal biomass */
            
             bio_opt_delta = 0;
@@ -611,6 +669,7 @@ title="j2kCropGrowth",
             //residue_pool = 0;
             this.addresidue_pool = 0;
             this.addresidue_pooln = 0;
+            this.addresidue_poolp = 0;
             plantStateReset.setValue(false);
             
             
@@ -636,6 +695,7 @@ title="j2kCropGrowth",
         
         FNPlant.setValue(fnplant_act); /* daily fraction of N in plant biomass */
         BioNoptAct.setValue(bioNopt_act);
+        BioPoptAct.setValue(bioPopt_act);
         BioAct.setValue(bio_opt); /*Plants optimal biomass */
         
         
@@ -644,12 +704,16 @@ title="j2kCropGrowth",
         BioagAct.setValue(bioag_act);
         BioYield.setValue(yield);
         NYield.setValue(yldN); /* N Content from the above biomass */
+        PYield.setValue(yldP); /* P Content from the above biomass */
         NYield_ha.setValue(yldN_ha);
+        PYield_ha.setValue(yldP_ha);
         FPHUact.setValue(fphu_act);
         BioNAct.setValue(bioN_act); /*actual biomass in kg/ha adapted by stress*/
+        BioPAct.setValue(bioP_act); /*actual biomass in kg/ha adapted by stress*/
         frLAImx_xi.setValue(frLAImx_Xi);
         Addresidue_pool.setValue(addresidue_pool);
         Addresidue_pooln.setValue(addresidue_pooln);
+        Addresidue_poolp.setValue(addresidue_poolp);
         if (this.idc == 3 || this.idc == 6 || this.idc == 7) {
             plantStateReset.setValue(false);
         }else{
@@ -963,96 +1027,54 @@ title="j2kCropGrowth",
         
         //new Implementation by Manfred Fink
         
-        if (this.bn1 > this.bn2 && this.bn2 > this.bn3 && this.bn3 > 0){
-            
-            double s1 = 0;
-            double s2 = 0;
-            double n1 = 0;
-            double n2 = 0;
-            
-            s1 = Math.log((0.5/(1-((this.bn2 - this.bn3)/(this.bn1 - this.bn3))))-0.5);
-            s2 = Math.log((1/(1-((0.0001)/(this.bn1 - this.bn3))))-1);
-            n2 = (s1 - s2)/0.5;
-            n1 = Math.log((0.5/(1-((this.bn2 - this.bn3)/(this.bn1 - this.bn3))))-0.5) + (n2 * 0.5);
-            
-            this.fnplant_act = ((this.bn1 - this.bn3) * (1 - (this.fphu_act/(this.fphu_act + Math.exp(n1 - n2 * this.fphu_act)))))  +  this.bn3;
-         
-            if (harvesttype.getValue() == 2){
-                fnplant_act = this.bn3;
+        
+     if (bn1 > bn2 && bn2 > bn3 && bn3 > 0) {
+            double s1 = Math.log((0.5 / (1 - ((bn2 - bn3) / (bn1 - bn3)))) - 0.5);
+            double s2 = Math.log((1 / (1 - ((0.0001) / (bn1 - bn3)))) - 1);
+            double n2 = (s1 - s2) / 0.5;
+            double n1 = Math.log((0.5 / (1 - ((bn2 - bn3) / (bn1 - bn3)))) - 0.5) + (n2 * 0.5);
+            fnplant_act = ((bn1 - bn3) * (1 - (fphu_act / (fphu_act + Math.exp(n1 - n2 * fphu_act))))) + bn3;
+            if (harvesttype.getValue() == 2) {
+                fnplant_act = bn3;
             }
-               
-        }else{
+        } else {
             fnplant_act = 0.01;
         }
-        
-        // this.test = b1 * y + this.bn3;
-        //System.out.println(" sc1_Nbio: " +sc1_Nbio + " sc2_Nbio: " + sc2_Nbio +  "test" + test + " - ");
-        /*
-         *
-         */
-        //double t17= frn_sub1 *(1- this.fphu_act / this.fphu_act + Math.exp(sc1_Nbio - sc2_Nbio * this.fphu_act)) + this.bn3;
-        //System.out.println("nUptake factors: " +  t17 +" "+  t16 +" "+  t15 +"  "+  sc1_Nbio +"  "+  sc2_Nbio +"  ");
-       /* if (x==0)
-            System.out.println("ARGH");
-        
-        frLAImx_act = this.fphu_act / x;
-        System.out.println(sc1_LAI + " - " + sc_minus + " - " + x);*/
-        
-        
-        ///this.fnplant_act = frn_sub1 * t17 + this.bn3;
-        //       (1 -(this.fphu_act / t4)) + this.bn3;
-        /*if (idValue.getValue() == 6) {
-            System.out.println("t9: " + t9 + " t10: " + t10 +  " t4: " +t4 + " fnplant_act: " +
-                     fnplant_act + " fphu_act: " + fphu_act +  " sc1_Nbio: " + sc1_Nbio + " sc2_Nbio: " + sc2_Nbio + " _");
-        }
-         
         // Determing the mass of N that should be stored in the plant biomass on a given day
         // whereas the fnplant is the optimal fraction of nitrogen in the plant biomass for the current growth stage
         // and bio_act is the total plant biomass on a given day [kg/ha]
-         
         /* Mass N stored in the optimal plant biomass on a given day */
-        
-        bioNopt_act = this.fnplant_act * this.bio_opt;
-//         System.out.println("bioNopt_act = " + bioNopt_act);
-        
-        
-        //  if (idValue.getValue() == 6) {
-        //    System.out.println (" bioNopt_act: " + bioNopt_act + " - ");
-        // }
-        // Plant nitrogen demand
-        // by taking the difference between the nitrogen content
-        // of the optimal plants biomass and the actual N content of the plants biomass
-        
-        // double bioN_act;
-        // bioN_act = bioN_act + actN_uprun; //
-        //Ndemand_act = bioNopt_act - bioN_act; //@todo: declare the actual N content according to the
-        
-        
-        // @todo should we take depth distribution into account? probably not as this point
-        // N uptake within the soil profile
-        
-        /*if (this.betaN == 1) {
-         
-            double Nup_layer = zrootd_act;
-         
-        }else if (betaN > 1 ){
-         
-            double Nup_layer = this.betaN / zrootd_act * 100;
-         
-        }else if (betaN == 0 ){
-         
-            double Nup_layer = 0.1;
-         
-            double Nup_depth = Ndemand_act / (1 - Math.exp(-betaN)) * (1-Math.exp(-betaN * this.rdmx / zrootd_act));
-        }*/
+        bioNopt_act = fnplant_act * bio_opt;
         return true;
-        
     }
 // Nitrogen fixation
 // used when nitrate levels in the root zone are insufficient to meet the demand
     
 // Phosphorus uptake
-  
+    private boolean calc_puptake(){
+
+         if (bp1 > bp2 && bp2 > bp3 && bp3 > 0) {
+            double s1 = Math.log((0.5 / (1 - ((bp2 - bp3) / (bp1 - bp3)))) - 0.5);
+            double s2 = Math.log((1 / (1 - ((0.0001) / (bp1 - bp3)))) - 1);
+            double n2 = (s1 - s2) / 0.5;
+            double n1 = Math.log((0.5 / (1 - ((bp2 - bp3) / (bp1 - bp3)))) - 0.5) + (n2 * 0.5);
+            fpplant_act = ((bp1 - bp3) * (1 - (fphu_act / (fphu_act + Math.exp(n1 - n2 * fphu_act))))) + bp3;
+            if (harvesttype.getValue() == 2) {
+                fnplant_act = bp3;
+            }
+        } else {
+            fpplant_act = 0.001;
+        }
+        // Determing the mass of P that should be stored in the plant biomass on a given day
+        // whereas the fnplant is the optimal fraction of phosphorous in the plant biomass for the current growth stage
+        // and bio_act is the total plant biomass on a given day [kg/ha]
+        /* Mass P stored in the optimal plant biomass on a given day */
+        bioPopt_act = fpplant_act * bio_opt;
+        return true;
+    }
+        
+        
+
 // Crop Yield
     private boolean calc_cropyield(){
         if (this.idc == 3 || this.idc == 6 || this.idc == 7 || (this.idc == 8) )  {
@@ -1099,6 +1121,7 @@ title="j2kCropGrowth",
             // whereas cnyld is the fraction of N being removed by the field crop
             
             this.yldN = bioN_act * (this.yield/bio_opt);
+            this.yldP = bioP_act * (this.yield/bio_opt);
             /*
             this.yldN = this.cnyld * this.yield;
             if (this.yldN > bioN_act){
@@ -1118,9 +1141,10 @@ title="j2kCropGrowth",
                 bio_opt = 0;
             }
             bioN_act = bioN_act - this.yldN;
-            
+            bioP_act = bioP_act - this.yldP;
             fracharvest = 1 - (yield / bio_opt);
             fracharvestn = 1 - (yldN / bioN_act);
+            fracharvestp = 1 - (yldP / bioP_act);
             
             
             
@@ -1184,42 +1208,68 @@ title="j2kCropGrowth",
             if (this.yldN > bioN_act * (yldN / ( this.yldN + ((bio_opt - yield) * (this.bn3 / 2.0))))   ){
                 yldN = bioN_act * (yldN / ( this.yldN + ((bio_opt - yield) * (this.bn3 / 2.0))));
             }
+
+            this.yldP = this.cpyld * this.yield;
+
+            if (this.yldP > bioP_act * (yldP / ( this.yldP + ((bio_opt - yield) * (this.bp3 / 2.0))))   ){
+                yldP = bioP_act * (yldP / ( this.yldP + ((bio_opt - yield) * (this.bp3 / 2.0))));
+            }
+
             //System.out.println (" Julianischer Tag "+ JAMSCalendar.DAY_OF_YEAR + " hi_act: " + hi_act +  " hvsti: " + hvsti +  " fphu: " + fphu_act + " yldN " + yldN + " yield " + yield);
             //double yldP = this.cpyld * yield;
             
             fracharvest = 1 - (yield / bio_opt);
             fracharvestn = 1 - (yldN / bioN_act);
+            fracharvestp = 1 - (yldP / bioP_act);
         }
         return true;
     }
-    private double calc_cropyield_ha()  {
-        
+    private double calc_cropyield_ha_N()  {
+
         this.yldN_ha = this.yldN * area_ha / 10000;
-        
+
         return yldN_ha;
+
+  
+    }
+
+    private double calc_cropyield_ha_P()  {
+
+        this.yldP_ha = this.yldP * area_ha / 10000;
+
+        return yldP_ha;
+
     }
     
     private boolean calc_residues()  {
         if ( this.idc == 7) {
             this.addresidue_pool =  this.yield;
             this.addresidue_pooln = this.yldN;
+            this.addresidue_poolp = this.yldP;
         } else if ( this.idc == 1 || this.idc == 2 || this.idc == 4 || this.idc == 5) {
             this.addresidue_pool =  this.bio_opt - this.yield  ;
             this.addresidue_pooln = this.bioN_act - this.yldN;
+            this.addresidue_poolp = this.bioP_act - this.yldP;
         } else if ( this.idc == 6 || this.idc == 3){
             this.addresidue_pool =  this.yield * 0.1;
             this.addresidue_pooln = this.yldN * 0.1;
+            this.addresidue_poolp = this.yldP * 0.1;
             this.addresidue_pool = Math.min(this.addresidue_pool, this.bio_opt);
             this.addresidue_pooln = Math.min(this.addresidue_pooln, this.bioN_act);
+            this.addresidue_poolp = Math.min(this.addresidue_poolp, this.bioP_act);
             this.bio_opt = this.bio_opt - this.addresidue_pool;
             this.bioN_act = this.bioN_act - this.addresidue_pooln;
+            this.bioP_act = this.bioP_act - this.addresidue_poolp;
         } else if  ( this.idc == 8) {
             this.addresidue_pool =  this.yield * 0.1;
             this.addresidue_pooln = this.yldN * 0.1;
+            this.addresidue_poolp = this.yldP * 0.1;
             this.addresidue_pool = Math.min(this.addresidue_pool, this.bio_opt);
             this.addresidue_pooln = Math.min(this.addresidue_pooln, this.bioN_act);
+            this.addresidue_poolp = Math.min(this.addresidue_poolp, this.bioP_act);
             this.bio_opt = this.bio_opt - this.addresidue_pool;
             this.bioN_act = this.bioN_act - this.addresidue_pooln;
+            this.bioP_act = this.bioP_act - this.addresidue_poolp;
             
         }
         return true;
