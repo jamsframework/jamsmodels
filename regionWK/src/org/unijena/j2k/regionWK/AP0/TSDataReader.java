@@ -24,12 +24,20 @@
 package org.unijena.j2k.regionWK.AP0;
 
 import org.unijena.j2k.statistics.*;
-import jams.data.*;
 import jams.model.*;
 import jams.io.*;
 import java.util.*;
 import java.io.*;
 import jams.JAMS;
+import jams.data.Attribute;
+import jams.data.JAMSBoolean;
+import jams.data.JAMSCalendar;
+import jams.data.JAMSDataFactory;
+import jams.data.JAMSDoubleArray;
+import jams.data.JAMSInteger;
+import jams.data.JAMSString;
+import jams.data.JAMSStringArray;
+import jams.data.JAMSTimeInterval;
 import jams.tools.JAMSTools;
 
 /**
@@ -243,8 +251,8 @@ public class TSDataReader extends JAMSComponent {
         store = new GenericDataReader(JAMSTools.CreateAbsoluteFileName(getModel().getWorkspaceDirectory().getPath(),dataFileName.getValue()), false, headerLineCount+1);
         
 
-        JAMSCalendar startTime = parseJ2KTime(start);
-        JAMSCalendar endTime = parseJ2KTime(end);
+        jams.data.Attribute.Calendar startTime = parseJ2KTime(start);
+        jams.data.Attribute.Calendar endTime = parseJ2KTime(end);
         
         if(timeInterval != null){
             //check if the time series start and end date match the temporal context's time interval
@@ -272,7 +280,7 @@ public class TSDataReader extends JAMSComponent {
         if(timeInterval != null){
             int timeUnit = timeInterval.getTimeUnit();
             Attribute.Calendar tiStart = timeInterval.getStart();
-            JAMSCalendar date = JAMSDataFactory.createCalendar();
+            jams.data.Attribute.Calendar date = JAMSDataFactory.createCalendar();
             if(timeUnit == JAMSCalendar.DAY_OF_YEAR) {
                     date.set(tiStart.get(Calendar.YEAR), tiStart.get(Calendar.MONTH), tiStart.get(Calendar.DAY_OF_MONTH), 0, 0, 0);
             } else if(timeUnit == JAMSCalendar.HOUR_OF_DAY) {
@@ -304,7 +312,7 @@ public class TSDataReader extends JAMSComponent {
         }
     }
     
-    private static JAMSCalendar parseJ2KTime(String timeString) {
+    private static jams.data.Attribute.Calendar parseJ2KTime(String timeString) {
         
         //Array keeping values for year, month, day, hour, minute
         String[] timeArray = new String[5];
@@ -321,7 +329,7 @@ public class TSDataReader extends JAMSComponent {
             timeArray[i] = st.nextToken();
         }
         
-        JAMSCalendar cal = JAMSDataFactory.createCalendar();
+        jams.data.Attribute.Calendar cal = JAMSDataFactory.createCalendar();
         cal.setValue(timeArray[2]+"-"+timeArray[1]+"-"+timeArray[0]+" "+timeArray[3]+":"+timeArray[4]);
         return cal;
     }
