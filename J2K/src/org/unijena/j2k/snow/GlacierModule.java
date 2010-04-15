@@ -159,6 +159,14 @@ import jams.model.*;
             unit = "L"
             )
             public JAMSDouble glacStorage;
+
+    @JAMSVarDescription(
+            access = JAMSVarDescription.AccessType.WRITE,
+            update = JAMSVarDescription.UpdateType.INIT,
+            description = "mass balance",
+            unit = "L"
+            )
+            public JAMSDouble massBalance;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
@@ -240,6 +248,8 @@ import jams.model.*;
         //retreive the actual states and input
         double snowStor = this.snowStorage.getValue();
         double temp = this.temperature.getValue();
+        double glacIn = this.rain.getValue() + this.snow.getValue();
+        double glacOut = 0;
         
         int n = 0;
         if (this.tempRes.getValue().equals("d")) {
@@ -311,6 +321,7 @@ import jams.model.*;
         double tot_q = q_snow + q_ice;
 
         this.glacStorage.setValue(allIn - q_snow);
+        glacOut = tot_q;
 
         //writing variables back
         this.snowRunofftm1.setValue(q_snow);
@@ -320,6 +331,7 @@ import jams.model.*;
         this.snowRunoff.setValue(q_snow);
         this.snowStorage.setValue(snowStor);
         this.precip.setValue(this.precip.getValue()*this.area.getValue());
+        this.massBalance.setValue(glacIn - glacOut);
     }
     
     public void cleanup()  throws IOException {

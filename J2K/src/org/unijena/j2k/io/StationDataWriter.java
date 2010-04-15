@@ -128,7 +128,6 @@ public class StationDataWriter extends JAMSComponent{
         Date dt = new Date();
         int tu = this.timeInterval.getTimeUnit();
         String timeFormat = "%1$tY-%1$tm-%1$td %1$tH:%1$tM";
-        dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm");
         //hourly values
         if(tu == 11) {
             timeFormat = "%1$td.%1$tm.%1$tY %1$tH:%1$tM";

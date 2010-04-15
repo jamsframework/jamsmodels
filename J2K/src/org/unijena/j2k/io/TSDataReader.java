@@ -319,7 +319,6 @@ public class TSDataReader extends JAMSComponent {
     
     @Override
     public void run() {
-        
         dataArray.setValue(JAMSTableDataConverter.toDouble(store.getNext(), startColumn.getValue()));
         if (!skipRegression.getValue()) {
             regCoeff.setValue(Regression.calcLinReg(elevation.getValue(), dataArray.getValue()));

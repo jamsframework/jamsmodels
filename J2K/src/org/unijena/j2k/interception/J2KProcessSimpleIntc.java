@@ -1,0 +1,192 @@
+/*
+ * J2KProcessSimpleIntc.java
+ * Created on 15. April 2009, 10:52
+ *
+ * This file is part of JAMS
+ * Copyright (C) 2005 FSU Jena, c0krpe
+ *
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License
+ * as published by the Free Software Foundation; either version 2
+ * of the License, or (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
+ *
+ */
+
+package org.unijena.j2k.interception;
+
+import jams.data.*;
+import jams.model.*;
+
+/**
+ *
+ * @author Peter Krause
+ */
+@JAMSComponentDescription(
+        title="J2KProcessInterception",
+        author="Peter Krause",
+        description="Calculates daily interception based on DICKINSON 1984"
+        )
+        public class J2KProcessSimpleIntc extends JAMSComponent {
+    
+    /*
+     *  Component variables
+     */
+   
+    @JAMSVarDescription(
+            access = JAMSVarDescription.AccessType.READ,
+            update = JAMSVarDescription.UpdateType.RUN,
+            description = "attribute area"
+            )
+            public JAMSDouble area;
+    
+    @JAMSVarDescription(
+            access = JAMSVarDescription.AccessType.READ,
+            update = JAMSVarDescription.UpdateType.RUN,
+            description = "state variable precipitation"
+            )
+            public JAMSDouble precip;
+    
+    @JAMSVarDescription(
+            access = JAMSVarDescription.AccessType.READ,
+            update = JAMSVarDescription.UpdateType.RUN,
+            description = "state variable potET"
+            )
+            public JAMSDouble potET;
+    
+    @JAMSVarDescription(
+            access = JAMSVarDescription.AccessType.READWRITE,
+            update = JAMSVarDescription.UpdateType.RUN,
+            description = "state variable actET"
+            )
+            public JAMSDouble actET;
+    
+    @JAMSVarDescription(
+            access = JAMSVarDescription.AccessType.READ,
+            update = JAMSVarDescription.UpdateType.RUN,
+            description = "state variable LAI"
+            )
+            public JAMSDouble actLAI;
+    
+    @JAMSVarDescription(
+            access = JAMSVarDescription.AccessType.READ,
+            update = JAMSVarDescription.UpdateType.INIT,
+            description = "Interception parameter alpha"
+            )
+            public JAMSDouble alpha;
+    
+    @JAMSVarDescription(
+            access = JAMSVarDescription.AccessType.WRITE,
+            update = JAMSVarDescription.UpdateType.RUN,
+            description = "state variable net-precipitation"
+            )
+            public JAMSDouble netPrecip;
+    
+    @JAMSVarDescription(
+            access = JAMSVarDescription.AccessType.WRITE,
+            update = JAMSVarDescription.UpdateType.RUN,
+            description = "state variable throughfall"
+            )
+            public JAMSDouble throughfall;
+    
+    @JAMSVarDescription(
+            access = JAMSVarDescription.AccessType.WRITE,
+            update = JAMSVarDescription.UpdateType.RUN,
+            description = "state variable dy-interception"
+            )
+            public JAMSDouble interception;
+    
+    @JAMSVarDescription(
+            access = JAMSVarDescription.AccessType.READWRITE,
+            update = JAMSVarDescription.UpdateType.RUN,
+            description = "state variable interception storage"
+            )
+            public JAMSDouble intercStorage;
+    /*
+     *  Component run stages
+     */
+    
+    public void init() throws JAMSEntity.NoSuchAttributeException{
+        this.intercStorage.setValue(0);
+    }
+    
+    public void run() throws JAMSEntity.NoSuchAttributeException{
+        
+        double alpha = this.alpha.getValue();
+        double out_throughfall = 0;
+        double out_interception = 0;
+        
+        double in_precip = precip.getValue();
+        double in_potETP = potET.getValue();
+        double in_actETP = actET.getValue();
+        
+        double in_LAI = this.actLAI.getValue();
+        double in_Area = area.getValue();
+        
+        double out_InterceptionStorage = intercStorage.getValue();
+        double out_actETP = in_actETP;
+        
+        double deltaETP = in_potETP - in_actETP;
+        
+        //determinining maximal interception capacity of actual day
+        double maxIntcCap = (in_LAI * alpha) * in_Area;
+        
+        //determining the potential storage volume for daily Interception
+        double deltaIntc = maxIntcCap - out_InterceptionStorage;
+        
+        //reducing rain and filling of Interception storage
+        if(deltaIntc > 0){
+            //double save_rain = sum_precip;
+            if(in_precip > deltaIntc){
+                out_InterceptionStorage = maxIntcCap;
+                in_precip = in_precip - deltaIntc;
+                out_throughfall = out_throughfall + in_precip;
+                out_interception = deltaIntc;
+                deltaIntc = 0;
+            } else{
+                out_InterceptionStorage = (out_InterceptionStorage + in_precip);
+                out_interception = in_precip;
+                in_precip = 0;
+            }
+        } else{
+            out_throughfall = out_throughfall + in_precip;
+        }
+        
+        //depletion of interception storage; beside the throughfall from above interc.
+        //storage can only be depleted by evapotranspiration
+        if(deltaETP > 0){
+            if(out_InterceptionStorage > deltaETP){
+                out_InterceptionStorage = out_InterceptionStorage - deltaETP;
+                out_actETP = in_actETP + deltaETP;
+                deltaETP = 0;
+                
+            } else{
+                deltaETP = deltaETP - out_InterceptionStorage;
+                out_actETP = in_actETP + (in_potETP - deltaETP);
+                out_InterceptionStorage = 0;
+            }
+        } else{
+            out_actETP = deltaETP;
+        }
+        
+        this.netPrecip.setValue(out_throughfall);
+        this.actET.setValue(out_actETP);
+        this.intercStorage.setValue(out_InterceptionStorage);
+        this.interception.setValue(out_interception);
+        this.throughfall.setValue(out_throughfall);
+        
+    }
+    
+    public void cleanup() {
+        this.intercStorage.setValue(0);
+    }
+    
+}
