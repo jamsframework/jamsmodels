@@ -27,10 +27,13 @@ import org.unijena.j2k.statistics.*;
 import jams.data.*;
 import jams.model.*;
 import jams.workspace.stores.*;
-import jams.io.*;
 import java.util.*;
 import java.io.*;
 import jams.JAMS;
+import jams.io.GenericDataReader;
+import jams.io.JAMSTableDataArray;
+import jams.io.JAMSTableDataConverter;
+import jams.io.JAMSTableDataStore;
 import jams.tools.JAMSTools;
 
 /**
