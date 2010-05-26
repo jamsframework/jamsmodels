@@ -24,16 +24,12 @@ package org.unijena.j2k.io;
 
 //import org.unijena.j2k.*;
 import jams.JAMS;
-import jams.tools.JAMSTools;
 import jams.data.Attribute;
 import jams.data.JAMSDataFactory;
-import jams.data.JAMSDouble;
-import jams.data.JAMSEntity;
-import jams.data.JAMSEntityCollection;
-import jams.data.JAMSString;
 import jams.model.JAMSComponent;
 import jams.model.JAMSComponentDescription;
 import jams.model.JAMSVarDescription;
+import jams.tools.FileTools;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -85,14 +81,14 @@ public class StandardEntityReader extends JAMSComponent {
     public Attribute.String hru2reachAttribute;
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
     description = "Name of the attribute describing the reach to reach relation in the input file",
-    defaultValue = "to-reach")
+    defaultValue = "to_reach")
     public Attribute.String reach2reachAttribute;
 
     @Override
     public void init() throws Attribute.Entity.NoSuchAttributeException {
 
         //read hru parameter
-        hrus.setEntities(J2KFunctions.readParas(JAMSTools.CreateAbsoluteFileName(getModel().getWorkspaceDirectory().getPath(), hruFileName.getValue()), getModel()));
+        hrus.setEntities(J2KFunctions.readParas(FileTools.createAbsoluteFileName(getModel().getWorkspaceDirectory().getPath(), hruFileName.getValue()), getModel()));
 
         //assign IDs to all hru entities
         for (Attribute.Entity e : hrus.getEntityArray()) {
@@ -104,7 +100,7 @@ public class StandardEntityReader extends JAMSComponent {
         }
 
         //read reach parameter
-        reaches.setEntities(J2KFunctions.readParas(JAMSTools.CreateAbsoluteFileName(getModel().getWorkspaceDirectory().getPath(), reachFileName.getValue()), getModel()));
+        reaches.setEntities(J2KFunctions.readParas(FileTools.createAbsoluteFileName(getModel().getWorkspaceDirectory().getPath(), reachFileName.getValue()), getModel()));
 
         //assign IDs to all reach entities
         for (Attribute.Entity e : reaches.getEntityArray()) {
@@ -120,15 +116,15 @@ public class StandardEntityReader extends JAMSComponent {
 
         //create total order on hrus and reaches that allows processing them subsequently
         getModel().getRuntime().println("Create ordered hru-list", JAMS.VERBOSE);
-        createOrderedList(hrus, "to_poly");
+        createOrderedList(hrus, hru2hruAttribute.getValue());
         getModel().getRuntime().println("HRU entities read successfully", JAMS.STANDARD);
         getModel().getRuntime().println("Create ordered reach-list", JAMS.VERBOSE);
-        createOrderedList(reaches, "to_reach");
+        createOrderedList(reaches, reach2reachAttribute.getValue());
         getModel().getRuntime().println("Reach entities read successfully", JAMS.STANDARD);
     }
 
     //do depth first search to find cycles
-    protected boolean cycleCheck(Attribute.Entity node, Stack<Attribute.Entity> searchStack, HashSet<Attribute.Double> closedList, HashSet<Attribute.Double> visitedList) throws JAMSEntity.NoSuchAttributeException {
+    protected boolean cycleCheck(Attribute.Entity node, Stack<Attribute.Entity> searchStack, HashSet<Long> closedList, HashSet<Long> visitedList) throws Attribute.Entity.NoSuchAttributeException {
         Attribute.Entity child_node;
 
         //current node allready in search stack -> circle found
@@ -137,7 +133,7 @@ public class StandardEntityReader extends JAMSComponent {
 
             String cyc_output = new String();
             for (int i = index; i < searchStack.size(); i++) {
-                cyc_output += ((Attribute.Entity) searchStack.get(i)).getDouble("ID") + " ";
+                cyc_output += ((Attribute.Entity) searchStack.get(i)).getId() + " ";
             }
             getModel().getRuntime().println("Found circle with ids:" + cyc_output);
 
@@ -148,10 +144,10 @@ public class StandardEntityReader extends JAMSComponent {
             return false;
         }
         //now this node is visited
-        visitedList.add((JAMSDouble) node.getObject(hruIDAttribute.getValue()));
+        visitedList.add(node.getId());
 
-        child_node = (JAMSEntity) node.getObject("to_poly");
-        if (child_node.getValue() == null) {
+        child_node = (Attribute.Entity) node.getObject(hru2hruAttribute.getValue());
+        if ((child_node != null) && (child_node.getValue() == null)) {
             child_node = null;
         }
 
@@ -171,8 +167,8 @@ public class StandardEntityReader extends JAMSComponent {
     protected boolean cycleCheck() throws Attribute.Entity.NoSuchAttributeException {
         Iterator<Attribute.Entity> hruIterator;
 
-        HashSet<Attribute.Double> closedList = new HashSet<Attribute.Double>();
-        HashSet<Attribute.Double> visitedList = new HashSet<Attribute.Double>();
+        HashSet<Long> closedList = new HashSet<Long>();
+        HashSet<Long> visitedList = new HashSet<Long>();
 
         Attribute.Entity start_node;
 
@@ -203,7 +199,7 @@ public class StandardEntityReader extends JAMSComponent {
         HashMap<Double, Attribute.Entity> reachMap = new HashMap<Double, Attribute.Entity>();
         Iterator<Attribute.Entity> hruIterator;
         Iterator<Attribute.Entity> reachIterator;
-        Attribute.Entity e;
+        Attribute.Entity e, toPoly, toReach;
 
         //put all entities into a HashMap with their ID as key
         hruIterator = hrus.getEntities().iterator();
@@ -227,21 +223,38 @@ public class StandardEntityReader extends JAMSComponent {
         hruIterator = hrus.getEntities().iterator();
         while (hruIterator.hasNext()) {
             e = hruIterator.next();
-            e.setObject("to_poly", hruMap.get(e.getDouble(hru2hruAttribute.getValue())));
-            e.setObject("to_reach", reachMap.get(e.getDouble(hru2reachAttribute.getValue())));
+            toPoly = hruMap.get(e.getDouble(hru2hruAttribute.getValue()));
+            toReach = reachMap.get(e.getDouble(hru2reachAttribute.getValue()));
+
+            if ((toPoly == null) || (toReach == null)) {
+                getModel().getRuntime().sendErrorMsg("Topological neighbour for HRU with ID "
+                        + e.getId() + " could not be found. This may cause errors!");
+            }
+
+            e.setObject(hru2hruAttribute.getValue(), toPoly);
+            e.setObject(hru2reachAttribute.getValue(), toReach);
+
         }
 
         //associate the reach entities with their downstream entity
         reachIterator = reaches.getEntities().iterator();
         while (reachIterator.hasNext()) {
             e = reachIterator.next();
-            e.setObject("to_reach", reachMap.get(e.getDouble(reach2reachAttribute.getValue())));
+
+            toReach = reachMap.get(e.getDouble(reach2reachAttribute.getValue()));
+
+            if (toReach == null) {
+                getModel().getRuntime().sendErrorMsg("Topological neighbour for reach with ID "
+                        + e.getId() + " could not be found. This may cause errors!");
+            }
+
+            e.setObject(reach2reachAttribute.getValue(), toReach);
         }
 
         //check for cycles
         if (this.getModel().getRuntime().getDebugLevel() >= JAMS.VVERBOSE) {
             if (cycleCheck() == true) {
-                getModel().getRuntime().println("HRUs --> cycle found ... :( ");
+                getModel().getRuntime().sendHalt("HRUs --> cycle found ... :( ");
             } else {
                 getModel().getRuntime().println("HRUs --> no cycle found");
             }
@@ -263,8 +276,6 @@ public class StandardEntityReader extends JAMSComponent {
             depthMap.put(hruIterator.next(), new Integer(0));
         }
 
-        int numHRUs = col.getEntities().size();
-
         //put all collection elements (keys) and their depth (values) into a HashMap
         int maxDepth = 0;
         while (mapChanged) {
@@ -274,9 +285,7 @@ public class StandardEntityReader extends JAMSComponent {
                 e = hruIterator.next();
 
                 f = (Attribute.Entity) e.getObject(asso);
-                if(f == null)
-                    System.out.println("Entity without receiver!!");
-                if (f.getValue() == null) {
+                if ((f != null) && (f.getValue() == null)) {
                     f = null;
                 }
 
