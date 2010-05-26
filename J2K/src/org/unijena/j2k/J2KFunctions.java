@@ -54,7 +54,13 @@ public class J2KFunctions {
             Vector<String> attributeNames = new Vector<String>();
             tokenizer = new StringTokenizer(s, "\t");
             while (tokenizer.hasMoreTokens()) {
-                attributeNames.add(tokenizer.nextToken());
+                String aName = tokenizer.nextToken();
+
+                // this is just a bloody workaround for old J2000 reach parameter files
+                if (aName.equals("to-reach")) {
+                    aName = "to_reach";
+                }
+                attributeNames.add(aName);
             }
 
             //process lower boundaries
@@ -71,27 +77,24 @@ public class J2KFunctions {
 
             while ((s != null) && !s.startsWith("#")) {
 
-                JAMSEntity e;
-                try {
-                    e = (JAMSEntity) JAMSDataFactory.createInstance(JAMSEntity.class);
-                    tokenizer = new StringTokenizer(s, "\t");
+                Attribute.Entity e;
 
-                    String token;
-                    for (int i = 0; i < attributeNames.size(); i++) {
-                        token = tokenizer.nextToken();
-                        try {
-                            //hopefully these are double values :-)
-                            e.setDouble(attributeNames.get(i), Double.parseDouble(token));
-                        } catch (NumberFormatException nfe) {
-                            //most probably this happens because of string values within J2K parameter files
-                            e.setObject(attributeNames.get(i), token);
-                        }
+                e = JAMSDataFactory.createEntity();
+                tokenizer = new StringTokenizer(s, "\t");
+
+                String token;
+                for (int i = 0; i < attributeNames.size(); i++) {
+                    token = tokenizer.nextToken();
+                    try {
+                        //hopefully these are double values :-)
+                        e.setDouble(attributeNames.get(i), Double.parseDouble(token));
+                    } catch (NumberFormatException nfe) {
+                        //most probably this happens because of string values within J2K parameter files
+                        e.setObject(attributeNames.get(i), token);
                     }
-
-                    entityList.add(e);
-                } catch (InstantiationException ex) {
-                } catch (IllegalAccessException ex) {
                 }
+
+                entityList.add(e);
 
                 s = reader.readLine();
             }
@@ -104,8 +107,8 @@ public class J2KFunctions {
 
     }
 
-    public static ArrayList<JAMSEntity> createStationEntities(String fileName, Model model) {
-        ArrayList<JAMSEntity> entityList = new ArrayList<JAMSEntity>();
+    public static ArrayList<Attribute.Entity> createStationEntities(String fileName, Model model) {
+        ArrayList<Attribute.Entity> entityList = new ArrayList<Attribute.Entity>();
         //handle the j2k metadata descriptions
         int headerLineCount = 0;
         String dataName = null;
