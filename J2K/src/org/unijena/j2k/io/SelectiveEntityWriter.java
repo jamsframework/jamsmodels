@@ -107,12 +107,13 @@ public class SelectiveEntityWriter extends JAMSComponent {
     public void run() throws JAMSEntity.NoSuchAttributeException {
         int[] entSet = this.eIDs.getValue();
         int numEntities = entSet.length;
+        EntityEnumerator ee = entitySet.getEntityEnumerator();
         
         if(!this.headerWritten){
             //always write time
             writer.addColumn("date/time");
             
-            entitySet.getEntityEnumerator().reset();
+            ee.reset();
             boolean cont = true;
             
             while(cont){
@@ -143,8 +144,8 @@ public class SelectiveEntityWriter extends JAMSComponent {
                     }
                     
                 }
-                if(entitySet.getEntityEnumerator().hasNext()){
-                    entitySet.getEntityEnumerator().next();
+                if(ee.hasNext()){
+                    ee.next();
                     cont = true;
                 }else
                     cont = false;
@@ -158,7 +159,7 @@ public class SelectiveEntityWriter extends JAMSComponent {
         //e.g. time.toString("%1$tY-%1$tm-%1$td %1$tH:%1$tM")
         writer.addData(time);
         
-        entitySet.getEntityEnumerator().reset();
+        ee.reset();
         int setCounter = 0;
         boolean cont = true;
         while(cont){
@@ -195,8 +196,8 @@ public class SelectiveEntityWriter extends JAMSComponent {
                 }
             }
             //writer.addData(""+entitySet.getCurrent().getDouble(this.attributeName.getValue()));
-            if(entitySet.getEntityEnumerator().hasNext() && (setCounter < numEntities)){
-                entitySet.getEntityEnumerator().next();
+            if(ee.hasNext() && (setCounter < numEntities)){
+                ee.next();
                 cont = true;
             }else
                 cont = false;
