@@ -32,7 +32,7 @@ import jams.model.*;
 import java.util.*;
 import jams.JAMS;
 import java.lang.Math.*;
-import jams.tools.JAMSTools;
+import jams.tools.FileTools;
 
 /**
  *
@@ -70,8 +70,29 @@ public class MultiEntityReaderTS extends JAMSComponent {
     description = "Collection of hru objects with their topology")
     public JAMSEntityCollection topology;
 
-    public void init() throws JAMSEntity.NoSuchAttributeException {
+    @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
+    description = "Name of the attribute containing the HRU identifiers",
+    defaultValue = "ID")
+    public Attribute.String hruIDAttribute;
+    @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
+    description = "Name of the attribute containing the reach identifiers",
+    defaultValue = "ID")
+    public Attribute.String reachIDAttribute;
+    @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
+    description = "Name of the attribute describing the HRU to HRU relation in the input file",
+    defaultValue = "to_poly")
+    public Attribute.String hru2hruAttribute;
+    @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
+    description = "Name of the attribute describing the HRU to reach relation in the input file",
+    defaultValue = "to_reach")
+    public Attribute.String hru2reachAttribute;
+    @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
+    description = "Name of the attribute describing the reach to reach relation in the input file",
+    defaultValue = "to_reach")
+    public Attribute.String reach2reachAttribute;
 
+    public void init() throws JAMSEntity.NoSuchAttributeException {
+        /*
         //read hru parameter
         hrus.setEntities(J2KFunctions.readParas(JAMSTools.CreateAbsoluteFileName(getModel().getWorkspaceDirectory().getPath(), hruFileName.getValue()), getModel()));
 
@@ -86,7 +107,42 @@ public class MultiEntityReaderTS extends JAMSComponent {
         createOrderedList(hrus, "to_poly");
         getModel().getRuntime().println("Create ordered reach-list", JAMS.VERBOSE);
         createOrderedList(reaches, "to_reach");
-        getModel().getRuntime().println("Entities read successfull!", JAMS.VERBOSE);
+        getModel().getRuntime().println("Entities read successfull!", JAMS.VERBOSE);*/
+
+        //read hru parameter
+        hrus.setEntities(J2KFunctions.readParas(FileTools.createAbsoluteFileName(getModel().getWorkspaceDirectory().getPath(), hruFileName.getValue()), getModel()));
+
+        //assign IDs to all hru entities
+        for (Attribute.Entity e : hrus.getEntityArray()) {
+            try {
+                e.setId((long) e.getDouble(hruIDAttribute.getValue()));
+            } catch (Attribute.Entity.NoSuchAttributeException nsae) {
+                getModel().getRuntime().sendErrorMsg("Couldn't find attribute \"ID\" while reading J2K HRU parameter file (" + hruFileName.getValue() + ")!");
+            }
+        }
+
+        //read reach parameter
+        reaches.setEntities(J2KFunctions.readParas(FileTools.createAbsoluteFileName(getModel().getWorkspaceDirectory().getPath(), reachFileName.getValue()), getModel()));
+
+        //assign IDs to all reach entities
+        for (Attribute.Entity e : reaches.getEntityArray()) {
+            try {
+                e.setId((long) e.getDouble(reachIDAttribute.getValue()));
+            } catch (Attribute.Entity.NoSuchAttributeException nsae) {
+                getModel().getRuntime().sendErrorMsg("Couldn't find attribute \"ID\" while reading J2K HRU parameter file (" + hruFileName.getValue() + ")!");
+            }
+        }
+
+        //create object associations from id attributes for hrus and reaches
+        createTopology();
+
+        //create total order on hrus and reaches that allows processing them subsequently
+        getModel().getRuntime().println("Create ordered hru-list", JAMS.VERBOSE);
+        createOrderedList(hrus, hru2hruAttribute.getValue());
+        getModel().getRuntime().println("HRU entities read successfully", JAMS.STANDARD);
+        getModel().getRuntime().println("Create ordered reach-list", JAMS.VERBOSE);
+        createOrderedList(reaches, reach2reachAttribute.getValue());
+        getModel().getRuntime().println("Reach entities read successfully", JAMS.STANDARD);
 
     }
 
@@ -101,7 +157,7 @@ public class MultiEntityReaderTS extends JAMSComponent {
         Iterator<Attribute.Entity> hruIterator;
         Iterator<Attribute.Entity> reachIterator;
 
-        Attribute.Entity e, f, r;
+        Attribute.Entity e, f, r, toPoly, toReach;
 
         ArrayList<Attribute.Entity> receiverHRUs;
         ArrayList<Attribute.Entity> receiverReaches;
@@ -109,7 +165,7 @@ public class MultiEntityReaderTS extends JAMSComponent {
         ArrayList<Double> receiverReachesWeights;
         ArrayList<Double> receiverArea;
 
-        //put all entities into a HashMap with their ID as key
+       /* //put all entities into a HashMap with their ID as key
         hruIterator = hrus.getEntities().iterator();
         while (hruIterator.hasNext()) {
             e = hruIterator.next();
@@ -120,10 +176,44 @@ public class MultiEntityReaderTS extends JAMSComponent {
         while (reachIterator.hasNext()) {
             e = reachIterator.next();
             reachMap.put(e.getDouble("ID"), e);
+        }*/
+
+        //put all entities into a HashMap with their ID as key
+        hruIterator = hrus.getEntities().iterator();
+        while (hruIterator.hasNext()) {
+            e = hruIterator.next();
+            hruMap.put(e.getDouble(hruIDAttribute.getValue()), e);
+        }
+        reachIterator = reaches.getEntities().iterator();
+        while (reachIterator.hasNext()) {
+            e = reachIterator.next();
+            reachMap.put(e.getDouble(reachIDAttribute.getValue()), e);
         }
 
-        //create empty entities, i.e. those that are linked to in case there is no linkage ;-)
+
         Attribute.Entity nullEntity = JAMSDataFactory.createEntity();
+        nullEntity.setValue((HashMap<String, Object>) null);
+        hruMap.put(new Double(0), nullEntity);
+        reachMap.put(new Double(0), nullEntity);
+         //associate the hru entities with their downstream entity
+        hruIterator = hrus.getEntities().iterator();
+        while (hruIterator.hasNext()) {
+            e = hruIterator.next();
+            toPoly = hruMap.get(e.getDouble(hru2hruAttribute.getValue()));
+            toReach = reachMap.get(e.getDouble(hru2reachAttribute.getValue()));
+
+            if ((toPoly == null) || (toReach == null)) {
+                getModel().getRuntime().sendErrorMsg("Topological neighbour for HRU with ID "
+                        + e.getId() + " could not be found. This may cause errors!");
+            }
+
+            e.setObject(hru2hruAttribute.getValue(), toPoly);
+            e.setObject(hru2reachAttribute.getValue(), toReach);
+
+        }
+
+
+        //create empty entities, i.e. those that are linked to in case there is no linkage ;-)
         nullEntity.setValue((HashMap<String, Object>) null);
         reachMap.put(new Double(0), nullEntity);
 
@@ -239,11 +329,27 @@ public class MultiEntityReaderTS extends JAMSComponent {
             getModel().getRuntime().handle(ioe);
         }
 
-        //associate the reach entities with their downstream entity
+        /*//associate the reach entities with their downstream entity
         reachIterator = reaches.getEntities().iterator();
         while (reachIterator.hasNext()) {
             e = reachIterator.next();
             e.setObject("to_reach", reachMap.get(e.getDouble("to-reach")));
+        }*/
+
+
+        //associate the reach entities with their downstream entity
+        reachIterator = reaches.getEntities().iterator();
+        while (reachIterator.hasNext()) {
+            e = reachIterator.next();
+
+            toReach = reachMap.get(e.getDouble(reach2reachAttribute.getValue()));
+
+            if (toReach == null) {
+                getModel().getRuntime().sendErrorMsg("Topological neighbour for reach with ID "
+                        + e.getId() + " could not be found. This may cause errors!");
+            }
+
+            e.setObject(reach2reachAttribute.getValue(), toReach);
         }
     }
 
@@ -272,7 +378,7 @@ public class MultiEntityReaderTS extends JAMSComponent {
 
                 aufloesbar = false;
                 e_ziel_neu = e;
-                System.out.println("Untersuche HRU " + e.getDouble("ID") + " auf Zirkelbezuege");
+                //System.out.println("Untersuche HRU " + e.getDouble("ID") + " auf Zirkelbezuege");
 
                 entityIterator2 = col.getEntities().iterator();
                 while (entityIterator2.hasNext()) {
