@@ -56,7 +56,7 @@ import jams.model.*;
             public JAMSDouble precip;
     
     @JAMSVarDescription(
-            access = JAMSVarDescription.AccessType.READ,
+            access = JAMSVarDescription.AccessType.READWRITE,
             update = JAMSVarDescription.UpdateType.RUN,
             description = "state variable potET"
             )
@@ -82,13 +82,6 @@ import jams.model.*;
             description = "Interception parameter alpha"
             )
             public JAMSDouble alpha;
-    
-    @JAMSVarDescription(
-            access = JAMSVarDescription.AccessType.WRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
-            description = "state variable net-precipitation"
-            )
-            public JAMSDouble netPrecip;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
@@ -124,8 +117,8 @@ import jams.model.*;
         double out_throughfall = 0;
         double out_interception = 0;
         
-        double in_precip = precip.getValue();
-        double in_potETP = potET.getValue();
+        double in_precip = precip.getValue() * area.getValue();
+        double in_potETP = potET.getValue() * area.getValue();
         double in_actETP = actET.getValue();
         
         double in_LAI = this.actLAI.getValue();
@@ -177,8 +170,8 @@ import jams.model.*;
             out_actETP = deltaETP;
         }
         
-        this.netPrecip.setValue(out_throughfall);
         this.actET.setValue(out_actETP);
+        this.potET.setValue(in_potETP);
         this.intercStorage.setValue(out_InterceptionStorage);
         this.interception.setValue(out_interception);
         this.throughfall.setValue(out_throughfall);
