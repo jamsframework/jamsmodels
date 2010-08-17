@@ -32,7 +32,7 @@ import jams.model.*;
 @JAMSComponentDescription(title = "J2KProcessRouting",
 author = "Peter Krause",
 description = "Passes the output of the entities as input to the respective reach or unit")
-public class J2KProcessGWRouting extends JAMSComponent {
+public class J2KProcessGWRouting_v02 extends JAMSComponent {
 
     /*
      *  Component variables
@@ -85,6 +85,18 @@ public class J2KProcessGWRouting extends JAMSComponent {
     update = JAMSVarDescription.UpdateType.RUN,
     description = "The current hru entity")
     public JAMSEntityCollection entities;
+        @JAMSVarDescription(
+            access = JAMSVarDescription.AccessType.READWRITE,
+            update = JAMSVarDescription.UpdateType.RUN,
+            description = "Downstream hru entity"
+            )
+            public Attribute.Entity toPoly;
+        @JAMSVarDescription(
+            access = JAMSVarDescription.AccessType.READWRITE,
+            update = JAMSVarDescription.UpdateType.RUN,
+            description = "Downstream reach entity"
+            )
+            public Attribute.Entity toReach;
     /*
      *  Component run stages
      */
@@ -102,34 +114,50 @@ public class J2KProcessGWRouting extends JAMSComponent {
 
         getModel().getRuntime().println("Current entity ID: " + (int) entity.getDouble("ID") + ".");
 
-        fP = (JAMSEntity[]) entity.getObject("from_poly");
+        //fP = (JAMSEntity[]) entity.getObject("from_poly");
 
-        gradientNew = new double[fP.length];
+        //gradientNew = new double[fP.length];
 
         run_RG2act = this.actRG2.getValue();
         run_area = this.area.getValue();
         int oR = outflowReduction.getValue();
 
-        //is there any upstream HRU?
-        if (fP.length != 0) {
-            sumRG2in = 0;
-            sumRG2in_new = 0;
-            // Calculation of the accumulated potential input from upstream HRUs
-            for (int i = 0; i < fP.length; i++) {
-                sumRG2in = fP[i].getDouble("outRG2") + sumRG2in;
-            }
+        // Übergabe des ausfließenden Grundwassers an den Unterlieger (falls vorhanden)
+        if(toPoly.getValue() != null){
+            //double RG1out = outRG1.getValue();
+            double RG2out = outRG2.getValue();
 
-            //Calculation of the potential GW-Levels
-            updateGWTable(sumRG2in);
-            if (oR != 0) {
-                gradientNew = calcGradientReduction();
-                run_RG2act = recalcDarcyGWOut(gradientNew);
-                updateGWTable(sumRG2in_new);
-            }
+            //double RG1in = toPoly.getDouble("inRG1");
+            double RG2in = toPoly.getDouble("inRG2");
+
+            //RG1in = RG1in + RG1out;
+            RG2in = RG2in + RG2out;
+
+            updateGWTable(RG2out);
+
+            toPoly.setDouble("inRG2", RG2in);
+            outRG2.setValue(0);
+
+        }else if(toReach.getValue() != null){
+            double RG2out = outRG2.getValue();
+            double RG2in = toReach.getDouble("inRG2");
+            RG2in = RG2in + RG2out;
+            RG2out = 0;
+            outRG2.setValue(RG2out);
+            toReach.setDouble("inRG2", RG2in);
+        }else{
+            getModel().getRuntime().println("Current entity ID: " + (int)entity.getDouble("ID") + " has no receiver.");
         }
 
-        actRG2.setValue(run_RG2act);
-        inRG2.setValue(sumRG2in_new);
+        if (oR != 0) {
+            gradientNew = calcGradientReduction();
+            run_RG2act = recalcDarcyGWOut(gradientNew);
+            updateGWTable(sumRG2in_new);
+        }
+        
+
+        // actRG2.setValue(run_RG2act);
+        // inRG2.setValue(sumRG2in_new);
     }
 
     private boolean updateGWTable(double sumRG2In) throws JAMSEntity.NoSuchAttributeException {
@@ -147,7 +175,7 @@ public class J2KProcessGWRouting extends JAMSComponent {
         }
          */
 
-        gwVolume = (run_RG2act + sumRG2In) / 1000;
+        gwVolume = (run_RG2act - sumRG2In) / 1000;
 
         run_gwDepthLower = gwVolume / run_area / run_Peff;
         run_gwTableLower = run_gwDepthLower + run_baseHeigth;  // + baseHeigth

@@ -31,8 +31,8 @@ import jams.model.*;
  */
 @JAMSComponentDescription(title = "J2KGroundwater",
 author = "Peter Krause modifications Daniel Varga",
-description = "Umgeschrieben um RG2_GW und RG1_GW zu integrieren.")
-public class J2KProcessGroundwater_D_N_1_newest extends JAMSComponent {
+description = "Description")
+public class J2KProcessGroundwater_D_N_1_v01_1 extends JAMSComponent {
 
     /*
      *  Component variables
@@ -49,88 +49,88 @@ public class J2KProcessGroundwater_D_N_1_newest extends JAMSComponent {
 
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
     update = JAMSVarDescription.UpdateType.RUN,
-    description = "maximum RG1_GW storage")
-    public JAMSDouble maxRG1_GW;
+    description = "maximum RG1 storage")
+    public JAMSDouble maxRG1;
 
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
     update = JAMSVarDescription.UpdateType.RUN,
-    description = "maximum RG2_GW storage")
-    public JAMSDouble maxRG2_GW;
+    description = "maximum GW storage")
+    public JAMSDouble maxGW;
 
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
     update = JAMSVarDescription.UpdateType.RUN,
-    description = "recision coefficient k RG1_GW")
-    public JAMSDouble kRG1_GW;
+    description = "recision coefficient k RG1")
+    public JAMSDouble kRG1;
 
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
     update = JAMSVarDescription.UpdateType.RUN,
-    description = "recision coefficient k RG2_GW")
-    public JAMSDouble kRG2_GW;
+    description = "recision coefficient k GW")
+    public JAMSDouble kGW;
 
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READWRITE,
     update = JAMSVarDescription.UpdateType.RUN,
-    description = "actual RG1_GW storage")
-    public JAMSDouble actRG1_GW;
+    description = "actual RG1 storage")
+    public JAMSDouble actRG1;
 
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READWRITE,
     update = JAMSVarDescription.UpdateType.RUN,
-    description = "actual RG2_GW storage")
-    public JAMSDouble actRG2_GW;
+    description = "actual GW storage")
+    public JAMSDouble actGW;
 
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READWRITE,
     update = JAMSVarDescription.UpdateType.RUN,
-    description = "RG1_GW inflow")
-    public JAMSDouble inRG1_GW;
+    description = "RG1 inflow")
+    public JAMSDouble inRG1;
 
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READWRITE,
     update = JAMSVarDescription.UpdateType.RUN,
-    description = "RG2_GW inflow")
-    public JAMSDouble inRG2_GW;
+    description = "GW inflow")
+    public JAMSDouble inGW;
 
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.WRITE,
     update = JAMSVarDescription.UpdateType.RUN,
-    description = "RG1_GW outflow")
-    public JAMSDouble outRG1_GW;
+    description = "RG1 outflow")
+    public JAMSDouble outRG1;
 
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.WRITE,
     update = JAMSVarDescription.UpdateType.RUN,
-    description = "RG2_GW outflow")
-    public JAMSDouble outRG2_GW;
+    description = "GW outflow")
+    public JAMSDouble outGW;
 
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.WRITE,
     update = JAMSVarDescription.UpdateType.RUN,
-    description = "RG1_GW generation")
-    public JAMSDouble genRG1_GW;
+    description = "RG1 generation")
+    public JAMSDouble genRG1;
 
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.WRITE,
     update = JAMSVarDescription.UpdateType.RUN,
-    description = "RG2_GW generation")
-    public JAMSDouble genRG2_GW;
+    description = "GW generation")
+    public JAMSDouble genGW;
 
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.WRITE,
     update = JAMSVarDescription.UpdateType.RUN,
-    description = "RG2_GW saturation")
-    public JAMSDouble satRG2_GW;
+    description = "GW saturation")
+    public JAMSDouble satGW;
 
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READWRITE,
     update = JAMSVarDescription.UpdateType.RUN,
-    description = "actual RG2_GW storage")
-    public JAMSDouble pot_actRG2_GW;
+    description = "actual GW storage")
+    public JAMSDouble pot_actGW;
 
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READWRITE,
     update = JAMSVarDescription.UpdateType.RUN,
-    description = "RG2_GW inflow")
-    public JAMSDouble pot_inRG2_GW;
+    description = "GW inflow")
+    public JAMSDouble pot_inGW;
 
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.WRITE,
     update = JAMSVarDescription.UpdateType.RUN,
-    description = "RG2_GW outflow")
-    public JAMSDouble pot_outRG2_GW;
+    description = "GW outflow")
+    public JAMSDouble pot_outGW;
 
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.WRITE,
     update = JAMSVarDescription.UpdateType.RUN,
-    description = "RG2_GW generation")
-    public JAMSDouble pot_genRG2_GW;
+    description = "GW generation")
+    public JAMSDouble pot_genGW;
 
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
     update = JAMSVarDescription.UpdateType.RUN,
@@ -154,18 +154,18 @@ public class J2KProcessGroundwater_D_N_1_newest extends JAMSComponent {
 
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
     update = JAMSVarDescription.UpdateType.INIT,
-    description = "RG1_GW correction factor")
-    public JAMSDouble gwRG1_GWFact;
+    description = "RG1 correction factor")
+    public JAMSDouble gwRG1Fact;
 
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
     update = JAMSVarDescription.UpdateType.INIT,
-    description = "RG2_GW correction factor")
-    public JAMSDouble gwRG2_GWFact;
+    description = "GW correction factor")
+    public JAMSDouble gwGWFact;
 
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
     update = JAMSVarDescription.UpdateType.INIT,
-    description = "RG1_GW RG2_GW distribution factor")
-    public JAMSDouble gwRG1_GWRG2_GWdist;
+    description = "RG1 GW distribution factor")
+    public JAMSDouble gwRG1GWdist;
 
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
     update = JAMSVarDescription.UpdateType.INIT,
@@ -174,7 +174,7 @@ public class J2KProcessGroundwater_D_N_1_newest extends JAMSComponent {
 
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
     update = JAMSVarDescription.UpdateType.INIT,
-    description = "Flow width between adjacent entities (Fließbreite)")
+    description = "Flow width between adjacent entities (Flie?breite)")
     public JAMSDouble gwFlowWidth;
 
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.WRITE,
@@ -219,7 +219,7 @@ public class J2KProcessGroundwater_D_N_1_newest extends JAMSComponent {
 
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.WRITE,
     update = JAMSVarDescription.UpdateType.RUN,
-    description = "potential RG2_GW-Level, real RG2_GW-Level would be calculated in the RG2_GWRouting-module")
+    description = "potential GW-Level, real GW-Level would be calculated in the GWRouting-module")
     public JAMSDouble pot_gwTable;
 
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
@@ -234,24 +234,24 @@ public class J2KProcessGroundwater_D_N_1_newest extends JAMSComponent {
 
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.WRITE,
     update = JAMSVarDescription.UpdateType.RUN,
-    description = "Calculation Factor for each HRU (static geographic variables) for use in RG2_GWRouting-module")
+    description = "Calculation Factor for each HRU (static geographic variables) for use in GWRouting-module")
     public JAMSDouble calcFactor;
 
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.WRITE,
     update = JAMSVarDescription.UpdateType.RUN,
     description = "Inflow + Percolation - StorageDifference")
-    public JAMSDouble preOutRG2_GW;
+    public JAMSDouble preOutGW;
 
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.WRITE,
     update = JAMSVarDescription.UpdateType.RUN,
     description = "Inflow + Percolation - StorageDifference")
-    public JAMSDouble preActRG2_GW;
+    public JAMSDouble preActGW;
 
-    double run_maxRG1_GW, run_maxRG2_GW, run_actRG1_GW, run_actRG2_GW, run_inRG1_GW, run_inRG2_GW, run_outRG1_GW, run_outRG2_GW, run_genRG1_GW, run_genRG2_GW, run_satRG2_GW,
-            run_k_RG1_GW, run_k_RG2_GW, run_RG1_GW_rec, run_RG2_GW_rec, run_maxSoilStor, run_actSoilStor, run_slope, run_area,
-            run_percolation, run_interflow, run_pot_RG1_GW, run_pot_RG2_GW, run_gwExcess, potOutflow,
+    double run_maxRG1, run_maxGW, run_actRG1, run_actGW, run_inRG1, run_inGW, run_outRG1, run_outGW, run_genRG1, run_genGW, run_satGW,
+            run_k_RG1, run_k_GW, run_RG1_rec, run_GW_rec, run_maxSoilStor, run_actSoilStor, run_slope, run_area,
+            run_percolation, run_interflow, run_pot_RG1, run_pot_GW, run_gwExcess, potOutflow,
             run_gwDepthUpper, run_gwDepthLower, run_gwTableUpper, run_gwTableLower, run_Peff, run_Kf_geo, run_gwFlowWidth, run_aqThickness,
-            run_gwFlowLength, run_baseHeigth, run_ARPosition, run_cf, old_gwTable, run_pre_outRG2_GW, run_pre_actRG2_GW, oR, actualEntityID;
+            run_gwFlowLength, run_baseHeigth, run_ARPosition, run_cf, old_gwTable, run_pre_outGW, run_pre_actGW, oR, actualEntityID;
 
     
     /*
@@ -265,45 +265,45 @@ public class J2KProcessGroundwater_D_N_1_newest extends JAMSComponent {
 
         Attribute.Entity entity = entities.getCurrent();
 
-        // Percolation wird gelesen (geht später direkt in RG2_GW)
+        // Percolation wird gelesen (geht sp?ter direkt in GW)
         this.run_percolation = percolation.getValue();
         
-        // diverse Parameter für RG1_GW (wird noch eingebaut)
+        // diverse Parameter f?r RG1 (wird noch eingebaut)
         this.run_slope = slope.getValue();
-        this.run_inRG1_GW = inRG1_GW.getValue();                  //[l]
+        this.run_inRG1 = inRG1.getValue();                  //[l]
         this.run_gwExcess = gwExcess.getValue();            //[l]
         this.run_maxSoilStor = maxSoilStorage.getValue();
         this.run_actSoilStor = actSoilStorage.getValue();
 
-        // Lesen aller notwendigen Parameter für das Grundwasser
-        this.run_maxRG2_GW = maxRG2_GW.getValue();                //[l]
-        this.run_actRG2_GW = actRG2_GW.getValue();                //[l]
+        // Lesen aller notwendigen Parameter f?r das Grundwasser
+        this.run_maxGW = maxGW.getValue();                //[l]
+        this.run_actGW = actGW.getValue();                //[l]
         
-        this.run_inRG2_GW = inRG2_GW.getValue();                  //[l]
-        this.run_k_RG2_GW = kRG2_GW.getValue();
+        this.run_inGW = inGW.getValue();                  //[l]
+        this.run_k_GW = kGW.getValue();
         this.run_Peff = Peff.getValue();                    //[-]
         this.run_Kf_geo = Kf_geo.getValue();                //[m/s]
         this.run_gwFlowLength = gwFlowLength.getValue();    //[m]
         this.run_gwFlowWidth = gwFlowWidth.getValue();      //[m]
         this.run_aqThickness = aqThickness.getValue();      //[m]
-        this.run_baseHeigth = baseHeigth.getValue();        //[m ü NN]
+        this.run_baseHeigth = baseHeigth.getValue();        //[m ? NN]
 
         this.actualEntityID = entity.getDouble("ID");
 
-        // Setzen von notwendigen Parametern für das Grundwaser
-        this.run_outRG1_GW = 0;
-        this.run_genRG1_GW = 0;
+        // Setzen von notwendigen Parametern f?r das Grundwaser
+        this.run_outRG1 = 0;
+        this.run_genRG1 = 0;
 
-        this.run_outRG2_GW = 0;
-        this.run_genRG2_GW = 0;
+        this.run_outGW = 0;
+        this.run_genGW = 0;
 
-        /*this.pot_actRG2_GW.setValue(this.run_actRG2_GW);
-        this.pot_outRG2_GW.setValue(this.run_outRG2_GW);
-        this.pot_genRG2_GW.setValue(this.run_genRG2_GW);
-        this.pot_inRG2_GW.setValue(this.run_inRG2_GW);*/
+        /*this.pot_actGW.setValue(this.run_actGW);
+        this.pot_outGW.setValue(this.run_outGW);
+        this.pot_genGW.setValue(this.run_genGW);
+        this.pot_inGW.setValue(this.run_inGW);*/
 
         // Berechnung des Recession-Coeffifient (wird nicht gebraucht)
-        // this.run_RG2_GW_rec = this.run_k_RG2_GW * this.gwRG2_GWFact.getValue();
+        // this.run_GW_rec = this.run_k_GW * this.gwGWFact.getValue();
 
         // Lesen des Grundwasserstandes vom Unterlieger
         if (toPoly.getValue() != null) {
@@ -315,66 +315,69 @@ public class J2KProcessGroundwater_D_N_1_newest extends JAMSComponent {
         // Lesen des Grundwasserstandes in der aktuellen HRU
         this.run_gwTableUpper = gwTable.getValue();                     //[m]
 
-        // Zwischenspeichern des "alten" Grundwasserstandes (Zeitpunkt t-1) zu späteren Vergleichszwecken
+        // Zwischenspeichern des "alten" Grundwasserstandes (Zeitpunkt t-1) zu sp?teren Vergleichszwecken
         this.old_gwTable = this.run_gwTableUpper;
 
-        
+        if (actualEntityID == 10){
+            getModel().getRuntime().println("ID: " + actualEntityID);
+        }
+
         //this.replenishSoilStor();     // Kapillarer Aufstieg
         
-        this.redistRG1_GW_RG2_GW_in();        // inRG1_GW und inRG2_GW werden zwischen RG1_GW und RG2_GW aufgeteilt
+        this.redistRG1_GW_in();        // inRG1 und inGW werden zwischen RG1 und GW aufgeteilt
 
         this.updategwTable();           // das Wasser von t-1 wurde verteilt, neuer Wasserstand!
 
         this.replenishSoilStor();
-        this.distRG1_GW_RG2_GW();             // in Abhängigkeit der Topographie wird das Perkolationswasser zwischen RG1_GW und RG2_GW verteilt
-                                        // hier alles Perkolationswaser geht in den RG2_GW
+        this.distRG1_GW();             // in Abh?ngigkeit der Topographie wird das Perkolationswasser zwischen RG1 und GW verteilt
+                                        // hier alles Perkolationswaser geht in den GW
         //this.calcDeepSink();
-        //this.calcExpRG2_GWout();
-        this.calcDarcyRG2_GWout();          // Berechnung des potentiellen RG2_GW-Ausflusses nach DARCY, ohne Berücksichtigung weiterer lateraler Zuflüsse
+        //this.calcExpGWout();
+        this.calcDarcyGWout();          // Berechnung des potentiellen GW-Ausflusses nach DARCY, ohne Ber?cksichtigung weiterer lateraler Zufl?sse
                                         // Berechnungsbasis bildet die Wasserspiegellagendifferenz zum Zeitpunkt t-1
 
-        this.updategwTable();           // Berechnung des potentiellen RG2_GW-Standes, wenn outRG2_GW tatsächlich abgegeben werde sollte
+        this.updategwTable();           // Berechnung des potentiellen GW-Standes, wenn outGW tats?chlich abgegeben werde sollte
 
-        this.run_satRG2_GW = this.run_actRG2_GW / this.run_maxRG2_GW ;
+        this.run_satGW = this.run_actGW / this.run_maxGW ;
 
-        actRG1_GW.setValue(this.run_actRG1_GW);
-        outRG1_GW.setValue(this.run_outRG1_GW);
-        genRG1_GW.setValue(this.run_genRG1_GW);
-        inRG1_GW.setValue(this.run_inRG1_GW);
+        actRG1.setValue(this.run_actRG1);
+        outRG1.setValue(this.run_outRG1);
+        genRG1.setValue(this.run_genRG1);
+        inRG1.setValue(this.run_inRG1);
 
-        //preOutRG2_GW.setValue(this.run_pre_outRG2_GW);
+        //preOutGW.setValue(this.run_pre_outGW);
 
-        actRG2_GW.setValue(this.run_actRG2_GW);
-        inRG2_GW.setValue(this.run_inRG2_GW);
-        outRG2_GW.setValue(this.run_outRG2_GW);
-        genRG2_GW.setValue(this.run_genRG2_GW);
-        satRG2_GW.setValue(this.run_satRG2_GW);
+        actGW.setValue(this.run_actGW);
+        inGW.setValue(this.run_inGW);
+        outGW.setValue(this.run_outGW);
+        genGW.setValue(this.run_genGW);
+        satGW.setValue(this.run_satGW);
         gwTable.setValue(this.run_gwTableUpper);
 
         /*
         // Wenn Unterlieger eine Reach ist:
         if (entity.getDouble("type") == 3){
-            actRG2_GW.setValue(this.run_actRG2_GW);
-            inRG2_GW.setValue(this.run_inRG2_GW);
-            outRG2_GW.setValue(this.run_outRG2_GW);
-            genRG2_GW.setValue(this.run_genRG2_GW);
+            actGW.setValue(this.run_actGW);
+            inGW.setValue(this.run_inGW);
+            outGW.setValue(this.run_outGW);
+            genGW.setValue(this.run_genGW);
             gwTable.setValue(this.run_gwTableUpper);
 
         // wenn Unterlieger eine HRU ist
         }else{
-            preActRG2_GW.setValue(this.run_pre_actRG2_GW);
-            actRG2_GW.setValue(this.run_actRG2_GW);
-            inRG2_GW.setValue(this.run_inRG2_GW);
-            outRG2_GW.setValue(this.run_outRG2_GW);
-            genRG2_GW.setValue(this.run_genRG2_GW);
+            preActGW.setValue(this.run_pre_actGW);
+            actGW.setValue(this.run_actGW);
+            inGW.setValue(this.run_inGW);
+            outGW.setValue(this.run_outGW);
+            genGW.setValue(this.run_genGW);
             
             //Grundidee: Errechnen eines potentiellen Ausflusses, 
-            //der in Abhängigkeit der Gradienten der beteiligten HRUs im RoutingModul
+            //der in Abh?ngigkeit der Gradienten der beteiligten HRUs im RoutingModul
             // weiter verteilt wird.
-            pot_actRG2_GW.setValue(this.run_actRG2_GW);
-            pot_outRG2_GW.setValue(this.run_outRG2_GW);
-            pot_genRG2_GW.setValue(this.run_genRG2_GW);
-            pot_inRG2_GW.setValue(this.run_inRG2_GW);
+            pot_actGW.setValue(this.run_actGW);
+            pot_outGW.setValue(this.run_outGW);
+            pot_genGW.setValue(this.run_genGW);
+            pot_inGW.setValue(this.run_inGW);
             pot_gwTable.setValue(this.run_gwTableUpper);
             gwTable.setValue(this.run_gwTableUpper);
             
@@ -397,51 +400,51 @@ public class J2KProcessGroundwater_D_N_1_newest extends JAMSComponent {
         } else {
             sat_SoilStor = 0.000001;
         }
-        if (this.run_actRG2_GW > deltaSoilStor) {
+        if (this.run_actGW > deltaSoilStor) {
             double alpha = this.gwCapRise.getValue();
             inSoilStor = (deltaSoilStor) * (1. - Math.exp(-1 * alpha / sat_SoilStor));
         }
 
         this.run_actSoilStor = this.run_actSoilStor + inSoilStor;
-        this.run_actRG2_GW = this.run_actRG2_GW - inSoilStor;
+        this.run_actGW = this.run_actGW - inSoilStor;
 
         return true;
     }
 
-    private boolean redistRG1_GW_RG2_GW_in() {
-        if (this.run_inRG1_GW > 0) {
-            double deltaRG1_GW = this.run_maxRG1_GW - this.run_actRG1_GW;
-            if (this.run_inRG1_GW <= deltaRG1_GW) {
-                this.run_actRG1_GW = this.run_actRG1_GW + this.run_inRG1_GW;
-                this.run_inRG1_GW = 0;
+    private boolean redistRG1_GW_in() {
+        if (this.run_inRG1 > 0) {
+            double deltaRG1 = this.run_maxRG1 - this.run_actRG1;
+            if (this.run_inRG1 <= deltaRG1) {
+                this.run_actRG1 = this.run_actRG1 + this.run_inRG1;
+                this.run_inRG1 = 0;
             } else {
-                this.run_actRG1_GW = this.run_maxRG1_GW;
-                this.run_outRG1_GW = this.run_outRG1_GW + this.run_inRG1_GW - deltaRG1_GW;
-                this.run_inRG1_GW = 0;
+                this.run_actRG1 = this.run_maxRG1;
+                this.run_outRG1 = this.run_outRG1 + this.run_inRG1 - deltaRG1;
+                this.run_inRG1 = 0;
             }
         }
 
-        if (this.run_inRG2_GW > 0) {
-            double deltaRG2_GW = this.run_maxRG2_GW - this.run_actRG2_GW;
-            if (this.run_inRG2_GW <= deltaRG2_GW) {
-                this.run_actRG2_GW = this.run_actRG2_GW + this.run_inRG2_GW;
-                //this.run_pre_actRG2_GW = run_actRG2_GW;
-                this.run_inRG2_GW = 0;
+        if (this.run_inGW > 0) {
+            double deltaGW = this.run_maxGW - this.run_actGW;
+            if (this.run_inGW <= deltaGW) {
+                this.run_actGW = this.run_actGW + this.run_inGW;
+                //this.run_pre_actGW = run_actGW;
+                this.run_inGW = 0;
             } else {
-                this.run_actRG2_GW = this.run_maxRG2_GW;
-                this.run_outRG2_GW = this.run_outRG2_GW + this.run_inRG2_GW - deltaRG2_GW;
-                //this.run_pre_outRG2_GW = run_outRG2_GW;
-                //this.run_pre_actRG2_GW = run_actRG2_GW;
-                this.run_inRG2_GW = 0;
+                this.run_actGW = this.run_maxGW;
+                this.run_outGW = this.run_outGW + this.run_inGW - deltaGW;
+                //this.run_pre_outGW = run_outGW;
+                //this.run_pre_actGW = run_actGW;
+                this.run_inGW = 0;
             }
         }
 
         return true;
     }
 
-    private boolean distRG1_GW_RG2_GW() {
+    private boolean distRG1_GW() {
         double slope_weight = Math.tan(this.run_slope * (Math.PI / 180.));
-        double gradh = (1 - slope_weight) * this.gwRG1_GWRG2_GWdist.getValue();
+        double gradh = 1;//((1 - slope_weight) * 1  // this.gwRG1GWdist.getValue());
 
         if (gradh < 0) {
             gradh = 0;
@@ -449,76 +452,88 @@ public class J2KProcessGroundwater_D_N_1_newest extends JAMSComponent {
             gradh = 1;
         }
 
-        this.run_pot_RG1_GW = ((1 - gradh) * this.run_percolation);
-        this.run_pot_RG2_GW = (gradh * this.run_percolation);
+        this.run_pot_RG1 = ((1 - gradh) * this.run_percolation);
+        this.run_pot_GW = (gradh * this.run_percolation);
 
-        this.run_actRG1_GW = this.run_actRG1_GW + this.run_pot_RG1_GW;
-        this.run_actRG2_GW = this.run_actRG2_GW + this.run_pot_RG2_GW;
+        this.run_actRG1 = this.run_actRG1 + this.run_pot_RG1;
+        this.run_actGW = this.run_actGW + this.run_pot_GW;
 
         /** testing if inflows can be stored in groundwater storages */
-        // Ändern des Maximalen Speichers für RG1... enspricht der dicke der ungesättigten Zone zwischen Grundwasserspiegellage und Boden
-        double old_maxRG1 = this.run_maxRG1_GW;
-        this.run_maxRG1_GW =  (run_aqThickness - run_gwTableUpper - run_baseHeigth) * run_area * run_Peff * 1000;   //[l]
-
-        double maxRG1change = old_maxRG1 - this.run_maxRG1_GW;
-        
-        double delta_RG2_GW = this.run_actRG2_GW - this.run_maxRG2_GW;
-        if (run_maxRG1_GW != 0){
-            if (delta_RG2_GW > 0) {
-                this.run_actRG1_GW = this.run_actRG1_GW + delta_RG2_GW;
-                this.run_actRG2_GW = this.run_maxRG2_GW;
-                this.run_pot_RG1_GW = run_pot_RG1_GW + delta_RG2_GW;
-                this.run_pot_RG2_GW = run_pot_RG2_GW - delta_RG2_GW;
+        double delta_GW = this.run_actGW - this.run_maxGW;
+        if (delta_GW > 0) {
+            /*this.run_actRG1 = this.run_actRG1 + delta_GW;
+            this.run_actGW = this.run_maxGW;
+            this.run_pot_RG1 = run_pot_RG1 + delta_GW;
+            this.run_pot_GW = run_pot_GW - delta_GW;
             }
+            double delta_RG1 = this.run_actRG1 - this.run_maxRG1;
+            
+            
+            if (delta_RG1 > 0) {*/
+            this.run_gwExcess = this.run_gwExcess + delta_GW;  //delta_RG1;
+            this.run_actGW = this.run_maxGW;
+            //this.run_actRG1 = this.run_maxRG1;
         }
-                 
-        double delta_RG1_GW = this.run_actRG1_GW - this.run_maxRG1_GW;
-                     
-        if (delta_RG1_GW > 0) {
-            this.run_gwExcess = this.run_gwExcess + delta_RG1_GW;
-            this.run_actRG1_GW = this.run_maxRG1_GW;
-        }
-
-        this.run_pre_outRG2_GW = this.run_outRG2_GW;
-        this.run_pre_actRG2_GW = this.run_actRG2_GW;
+        this.run_pre_outGW = this.run_outGW;
+        this.run_pre_actGW = this.run_actGW;
 
         return true;
     }
 
-    private boolean calcDarcyRG2_GWout() throws JAMSEntity.NoSuchAttributeException {
+    private boolean calcDarcyGWout() throws JAMSEntity.NoSuchAttributeException {
 
-        // Ausfluss auf RG1_GW noch alte Variante
-        double k_rg1 = 1 / this.run_RG1_GW_rec;
+        // Ausfluss auf RG1 noch alte Variante
+        double k_rg1 = 1 / this.run_RG1_rec;
         if (k_rg1 > 1) {
             k_rg1 = 1;
         }
-        double rg1_out = k_rg1 * this.run_actRG1_GW;
-        this.run_actRG1_GW = this.run_actRG1_GW - rg1_out;
-        this.run_outRG1_GW = this.run_outRG1_GW + rg1_out;
+        double rg1_out = k_rg1 * this.run_actRG1;
+        this.run_actRG1 = this.run_actRG1 - rg1_out;
+        this.run_outRG1 = this.run_outRG1 + rg1_out;
 
-        double RG2_GW_out_m3 = 0;
-        double RG2_GW_out = 0;
+        double GW_out_m3 = 0;
+        double GW_out = 0;
+
+        double actHRU1 = (this.run_gwTableUpper - this.run_baseHeigth) * run_area * run_Peff * 1000;
+
+        double diffActGW = run_actGW - actHRU1;
 
         double gwDifference = this.run_gwTableUpper - this.run_gwTableLower;
 
-        //Ausfluss aus RG2_GW mit Darcy-Gleichung
+        double diffVolume = gwDifference * run_area * run_Peff * 1000;
+
+
+
+        //Ausfluss aus GW mit Darcy-Gleichung
         //if (this.run_gwTableUpper >= this.run_gwTableLower) {
             if (toPoly.getValue() != null) {
                     if (gwDifference < 0) {
                         getModel().getRuntime().println("Negativer Gradient zur HRU! Entity:" + actualEntityID);
                         gwDifference = 0;
                     }
-                    potOutflow = (this.run_area * toPoly.getDouble("area") * this.run_Peff * toPoly.getDouble("Peff") /
-                                 (this.run_area * this.run_Peff + toPoly.getDouble("area") * toPoly.getDouble("Peff"))) * gwDifference;
+                    double A1 = this.run_area * this.run_Peff;                          //[m²]
+                    double A2 = toPoly.getDouble("area") * toPoly.getDouble("Peff");    //[m²]
+                                       
+                    double newHeight = gwDifference * (A1 /(A1 + A2));                  //[m]
 
-                    double gwFlowArea = this.run_gwFlowWidth * (this.run_gwTableUpper - this.run_baseHeigth);
-                    run_cf = gwFlowArea * this.run_Kf_geo / this.run_gwFlowLength;
+                    potOutflow = (gwDifference - newHeight) * A1;                       //[m³]
 
-                    RG2_GW_out_m3 = run_cf * gwDifference;
-                    //[m³/s]   = [m²]       * [m/s]           * [m]          / [m]
-                    if (RG2_GW_out_m3 > potOutflow) {
-                        RG2_GW_out_m3 = potOutflow;
-                        getModel().getRuntime().println("Alles raus!");
+                    double potOut_l = (gwDifference - newHeight) * run_area * run_Peff * 1000;
+
+                    double diff = run_actGW - potOut_l;
+
+                    //potOutflow = (this.run_area * toPoly.getDouble("area") * this.run_Peff * toPoly.getDouble("Peff") /
+                    //             (this.run_area * this.run_Peff + toPoly.getDouble("area") * toPoly.getDouble("Peff"))) * gwDifference;
+
+                    double gwFlowArea = this.run_gwFlowWidth * (this.run_gwTableUpper - this.run_baseHeigth);   //[m²]
+                    run_cf = gwFlowArea * this.run_Kf_geo / this.run_gwFlowLength;                              //[m²/s]
+
+                    GW_out_m3 = run_cf * (gwDifference - newHeight);  //[m³/s]
+                    //GW_out_m3 = run_cf * (gwDifference -newHeight);
+                    //[m?/s]   = [m?]       * [m/s]           * [m]          / [m]
+                    if (GW_out_m3 > potOutflow) {
+                        GW_out_m3 = potOutflow;
+                        getModel().getRuntime().println("Alles raus!" + actualEntityID);
                     }
 
             } else {
@@ -532,21 +547,54 @@ public class J2KProcessGroundwater_D_N_1_newest extends JAMSComponent {
                     getModel().getRuntime().println("Negativer Gradient! Entity:" + actualEntityID);
                     gwDifference = 0;
                 }
-                potOutflow = (this.run_area * reachArea * this.run_Peff /
-                             (this.run_area * this.run_Peff + reachArea)) * gwDifference;
+                double A1 = this.run_area * this.run_Peff;
+                double A2 = reachArea;
 
-                double H = 5 * ((this.run_gwTableUpper - this.run_baseHeigth) + (this.run_gwTableLower - this.run_baseHeigth));  //Hier Summe der Wasserstände in HRU und Reach
+                double newHeight = gwDifference * (A1 /(A1 + A2));
+
+                potOutflow = (gwDifference - newHeight) * A1;
+
+                //double potOutflow = (this.run_area * reachArea * this.run_Peff /
+                //             (this.run_area * this.run_Peff + reachArea)) * gwDifference;
+/*
+                double H = 5 * ((this.run_gwTableUpper - this.run_baseHeigth) + (this.run_gwTableLower - this.run_baseHeigth));  //Hier Summe der Wasserst?nde in HRU und Reach
                 double U = toReach.getDouble("width") + 2 * (toReach.getDouble("waterTable_NN") - toReach.getDouble("MEAN_H"));                                               //Hier benetzter Umfang
                 double alphaL = (2 * H * (run_Kf_geo)) / (this.gwFlowLength.getValue() + (2 * H / Math.PI) * Math.log(2 * H / (Math.PI * U / 2)));
-                RG2_GW_out_m3 = 0.5 * alphaL * this.alphaC.getValue() * gwDifference * toReach.getDouble("length");
+                //GW_out_m3 = 0.5 * alphaL * this.alphaC.getValue() * (gwDifference - newHeight) * this.run_gwFlowWidth; //toReach.getDouble("length");
 
-                if (RG2_GW_out_m3 > potOutflow) {
-                    RG2_GW_out_m3 = potOutflow;
-                    getModel().getRuntime().println("Alles raus!"  + actualEntityID);
+                GW_out_m3 = 0.5 * alphaL * this.alphaC.getValue() * gwDifference * this.run_gwFlowWidth; //toReach.getDouble("length");
+*/
+
+                //DARCY:
+                double gwFlowArea = this.run_gwFlowWidth * (gwDifference);
+                run_cf = gwFlowArea * this.run_Kf_geo / this.run_gwFlowLength;
+
+                GW_out_m3 = this.alphaC.getValue() * run_cf * gwDifference;
+
+                //Methode nach MILES 1985
+/*              if (gwDifference < 0) {
+                getModel().getRuntime().println("Negativer Gradient! Entity:" + actualEntityID);
+                gwDifference = 0;
                 }
-                if (RG2_GW_out_m3 < 0) {
-                    RG2_GW_out_m3 = 0;
-                    getModel().getRuntime().println("Negativer Ausfluss! Entity:" + actualEntityID);
+                //Nahbereich: Zone I... etwa Gerinnebreite
+                double riverBase = toReach.getDouble("MEAN_H");
+                double riverDepth = toReach.getDouble("waterTable_NN") - riverBase;
+                double aqUnderRiver = riverBase - this.run_baseHeigth;
+                if (aqUnderRiver < 1){
+                getModel().getRuntime().println("Aquiferbasis < 1 m! Reach:" + toReach.getDouble("ID"));
+                }
+                double C = 5.0 *((0.5 * toReach.getDouble("width")) + riverDepth)/(aqUnderRiver + riverDepth);
+
+                GW_out_m3 = run_Kf_geo * gwDifference * C;
+*/
+
+                if (GW_out_m3 > potOutflow) {
+                    GW_out_m3 = potOutflow;
+                    getModel().getRuntime().println("Alles raus in Reach!"  + actualEntityID);
+                }
+                if (GW_out_m3 < 0) {
+                    GW_out_m3 = 0;
+                   getModel().getRuntime().println("Negativer Ausfluss! Entity:" + actualEntityID);
                 
                }
             }
@@ -558,22 +606,22 @@ public class J2KProcessGroundwater_D_N_1_newest extends JAMSComponent {
            }
         }*/
 
-        RG2_GW_out = RG2_GW_out_m3 * 86400 * 1000;     //[l/d]
+        GW_out = GW_out_m3 * 1000;     //[l/d]
        
-        if (this.run_actRG2_GW >= RG2_GW_out) {
-        	this.run_actRG2_GW = this.run_actRG2_GW - RG2_GW_out;
+        if (this.run_actGW >= GW_out) {
+        	this.run_actGW = this.run_actGW - GW_out;
         } else {
-            RG2_GW_out = this.run_actRG2_GW;
-            this.run_actRG2_GW = 0;
+            GW_out = this.run_actGW;
+            this.run_actGW = 0;
         }
-        this.run_outRG2_GW = this.run_outRG2_GW + RG2_GW_out;
+        this.run_outGW = this.run_outGW + GW_out;
 
-        this.run_genRG2_GW = RG2_GW_out;
+        this.run_genGW = GW_out;
 
         return true;
     }
 
-    private double calcPotRG2_GWOutflow(double gwDifference) throws JAMSEntity.NoSuchAttributeException {
+    private double calcPotGWOutflow(double gwDifference) throws JAMSEntity.NoSuchAttributeException {
         //potOutflow = A1 * (deltaH - H1) = A2 * H2; mit H1 = H2
         potOutflow = this.run_area / (this.run_area + toPoly.getDouble("area")) * gwDifference;
         return potOutflow;
@@ -584,20 +632,20 @@ public class J2KProcessGroundwater_D_N_1_newest extends JAMSComponent {
         double gwVolume;
         /*if (toPoly.getValue() != null) {
             run_area = toPoly.getDouble("area");
-            gwVolume = toPoly.getDouble("actRG2_GW") / 1000;
+            gwVolume = toPoly.getDouble("actGW") / 1000;
 
             if (gwVolume < 0) {
                 gwVolume = 0;
             }
 
-            gwVolume = gwVolume + (this.run_outRG2_GW / 1000);
+            gwVolume = gwVolume + (this.run_outGW / 1000);
 
             this.run_gwDepthLower = gwVolume / run_area / toPoly.getDouble("Peff");
             this.run_gwTableLower = run_gwDepthLower + this.run_baseHeigth;
             toPoly.setDouble("pot_gwTable", this.run_gwTableLower);
         }*/
-        run_area = this.area.getValue();
-        gwVolume = this.run_actRG2_GW / 1000;
+        run_area = this.area.getValue();    //[m²]
+        gwVolume = this.run_actGW / 1000;   
 
         this.run_gwDepthUpper = gwVolume / run_area / this.run_Peff;
         this.run_gwTableUpper = run_gwDepthUpper + this.run_baseHeigth;
@@ -611,28 +659,28 @@ public class J2KProcessGroundwater_D_N_1_newest extends JAMSComponent {
  			<component class="org.jams.j2k.s_n.J2KProcessGroundwater" name="J2KProcessGroundwater">
 				<jamsvar name="area" provider="HRUContext" providervar="currentEntity.area"/>
 				<jamsvar name="slope" provider="HRUContext" providervar="currentEntity.slope"/>
-				<jamsvar name="maxRG1_GW" provider="HRUContext" providervar="currentEntity.maxRG1_GW"/>
-				<jamsvar name="maxRG2_GW" provider="HRUContext" providervar="currentEntity.maxRG2_GW"/>
-				<jamsvar name="kRG1_GW" provider="HRUContext" providervar="currentEntity.RG1_GW_k"/>
-				<jamsvar name="kRG2_GW" provider="HRUContext" providervar="currentEntity.RG2_GW_k"/>
-				<jamsvar name="actRG1_GW" provider="HRUContext" providervar="currentEntity.actRG1_GW"/>
-				<jamsvar name="actRG2_GW" provider="HRUContext" providervar="currentEntity.actRG2_GW"/>
-				<jamsvar name="inRG1_GW" provider="HRUContext" providervar="currentEntity.inRG1_GW"/>
-				<jamsvar name="inRG2_GW" provider="HRUContext" providervar="currentEntity.inRG2_GW"/>
-				<jamsvar name="outRG1_GW" provider="HRUContext" providervar="currentEntity.outRG1_GW"/>
-				<jamsvar name="outRG2_GW" provider="HRUContext" providervar="currentEntity.outRG2_GW"/>
-				<jamsvar name="genRG1_GW" provider="HRUContext" providervar="currentEntity.genRG1_GW"/>
-				<jamsvar name="genRG2_GW" provider="HRUContext" providervar="currentEntity.genRG2_GW"/>
+				<jamsvar name="maxRG1" provider="HRUContext" providervar="currentEntity.maxRG1"/>
+				<jamsvar name="maxGW" provider="HRUContext" providervar="currentEntity.maxGW"/>
+				<jamsvar name="kRG1" provider="HRUContext" providervar="currentEntity.RG1_k"/>
+				<jamsvar name="kGW" provider="HRUContext" providervar="currentEntity.GW_k"/>
+				<jamsvar name="actRG1" provider="HRUContext" providervar="currentEntity.actRG1"/>
+				<jamsvar name="actGW" provider="HRUContext" providervar="currentEntity.actGW"/>
+				<jamsvar name="inRG1" provider="HRUContext" providervar="currentEntity.inRG1"/>
+				<jamsvar name="inGW" provider="HRUContext" providervar="currentEntity.inGW"/>
+				<jamsvar name="outRG1" provider="HRUContext" providervar="currentEntity.outRG1"/>
+				<jamsvar name="outGW" provider="HRUContext" providervar="currentEntity.outGW"/>
+				<jamsvar name="genRG1" provider="HRUContext" providervar="currentEntity.genRG1"/>
+				<jamsvar name="genGW" provider="HRUContext" providervar="currentEntity.genGW"/>
 				<jamsvar name="percolation" provider="HRUContext" providervar="currentEntity.percolation"/>
 				<jamsvar name="interflow" provider="HRUContext" providervar="currentEntity.outRD2"/>
 				<jamsvar name="maxSoilStorage" provider="HRUContext" providervar="currentEntity.maxMPS"/>
 				<jamsvar name="actSoilStorage" provider="HRUContext" providervar="currentEntity.actMPS"/>
-				<jamsvar name="pot_RG1_GW" provider="HRUContext" providervar="currentEntity.pot_RG1_GW"/>
-				<jamsvar name="pot_RG2_GW" provider="HRUContext" providervar="currentEntity.pot_RG2_GW"/>
+				<jamsvar name="pot_RG1" provider="HRUContext" providervar="currentEntity.pot_RG1"/>
+				<jamsvar name="pot_GW" provider="HRUContext" providervar="currentEntity.pot_GW"/>
 				<jamsvar name="partint" provider="HRUContext" providervar="currentEntity.partint"/>
-				<jamsvar name="gwRG1_GWRG2_GWdist" value="0.8"/>
-				<jamsvar name="gwRG1_GWFact" value="1.0"/>
-				<jamsvar name="gwRG2_GWFact" value="1.0"/>
+				<jamsvar name="gwRG1GWdist" value="0.8"/>
+				<jamsvar name="gwRG1Fact" value="1.0"/>
+				<jamsvar name="gwGWFact" value="1.0"/>
 				<jamsvar name="gwCapRise" value="0.0"/>
 			</component>
  */

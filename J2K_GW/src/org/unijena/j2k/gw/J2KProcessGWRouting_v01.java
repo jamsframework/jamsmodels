@@ -32,7 +32,7 @@ import jams.model.*;
 @JAMSComponentDescription(title = "J2KProcessRouting",
 author = "Peter Krause",
 description = "Passes the output of the entities as input to the respective reach or unit")
-public class J2KProcessGWRouting extends JAMSComponent {
+public class J2KProcessGWRouting_v01 extends JAMSComponent {
 
     /*
      *  Component variables
@@ -44,7 +44,7 @@ public class J2KProcessGWRouting extends JAMSComponent {
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READWRITE,
     update = JAMSVarDescription.UpdateType.RUN,
     description = "HRU statevar RG2 outflow")
-    public JAMSDouble outRG2;
+    public JAMSDouble outRG2;                                                   //not used
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READWRITE,
     update = JAMSVarDescription.UpdateType.RUN,
     description = "sum attribute")
@@ -88,9 +88,10 @@ public class J2KProcessGWRouting extends JAMSComponent {
     /*
      *  Component run stages
      */
-    double[] gradientNew;
-    double gwVolume, run_area, run_Peff, run_gwTableUpper, run_gwTableLower, run_gwDepthUpper, run_gwDepthLower, run_baseHeigth,
-            pot_gwTable, sumRG2in, sumRG2in_new, run_RG2act;
+    double[]    gradientNew;
+    double      gwVolume, run_area, run_Peff, run_gwTableUpper, run_gwTableLower, run_gwDepthUpper, run_gwDepthLower, run_baseHeigth,
+                pot_gwTable, sumRG2in, sumRG2in_new, run_RG2act, run_outRG2;
+    int         oR;
     //JAMSEntity[] fP;
 
     public void init() throws JAMSEntity.NoSuchAttributeException {
@@ -100,58 +101,104 @@ public class J2KProcessGWRouting extends JAMSComponent {
 
         Attribute.Entity entity = entities.getCurrent();
 
-        getModel().getRuntime().println("Current entity ID: " + (int) entity.getDouble("ID") + ".");
+        //getModel().getRuntime().println("Current entity ID: " + (int) entity.getDouble("ID") + ".");
 
-        fP = (JAMSEntity[]) entity.getObject("from_poly");
+        fP = (JAMSEntity[]) entity.getObject("from_poly");        
+        
+        //aktuelle Entity:
+        run_RG2act = this.actRG2.getValue();
+
+        run_area = this.area.getValue();
+        run_Peff = Peff.getValue();
+        run_baseHeigth = baseHeigth.getValue();
+        
+        //Oberlieger:
+        
+        
+        
 
         gradientNew = new double[fP.length];
-
-        run_RG2act = this.actRG2.getValue();
-        run_area = this.area.getValue();
-        int oR = outflowReduction.getValue();
-
-        //is there any upstream HRU?
-        if (fP.length != 0) {
-            sumRG2in = 0;
+        oR = this.outflowReduction.getValue();
+        
+        if (fP.length != 0) {   //is there any sender-HRU?
             sumRG2in_new = 0;
-            // Calculation of the accumulated potential input from upstream HRUs
+
+            // Calculation of the accumulated input
             for (int i = 0; i < fP.length; i++) {
-                sumRG2in = fP[i].getDouble("outRG2") + sumRG2in;
+                sumRG2in_new = fP[i].getDouble("pot_outRG2") + sumRG2in_new;
             }
+
+            //sumRG2in_new ist nun der Zwischenspeicher aus dem verteilt wird
+            gwVolume = (run_RG2act + sumRG2in_new) / 1000;
 
             //Calculation of the potential GW-Levels
-            updateGWTable(sumRG2in);
+            boolean flag = true;
+
             if (oR != 0) {
+                updateGWTable(flag);
                 gradientNew = calcGradientReduction();
-                run_RG2act = recalcDarcyGWOut(gradientNew);
-                updateGWTable(sumRG2in_new);
+            }else{
+                for (int i = 0; i < fP.length; i++) {
+                    
+                    //es wird der Gradient von Zeitschritt t-1 unverändert verwendet
+                    gradientNew[i] = fP[i].getDouble("gwTable") - gwTable.getValue();
+
+                }
+            
+            flag = false;           //neue Grundwasserspiegellage auf Basis der neu berechneten Zuflüsse
+
+            run_RG2act = recalcDarcyGWOut(gradientNew);
+            gwVolume = (run_RG2act + sumRG2in_new) / 1000;
+            updateGWTable(flag);
             }
-        }
+            }else{            double newActRG2;
+            double newGenRG2;
+                double newOutRG2;
+                double newGWTable;
+                for (int i = 0; i < fP.length; i++) {
+                    newOutRG2 = 0;
+                    newActRG2 = fP[i].getDouble("pot_actRG2");
+                    newGenRG2 = fP[i].getDouble("pot_genRG2");
+                    newGWTable = fP[i].getDouble("pot_gwTable");
+                    fP[i].setDouble("actRG2", newActRG2);
+                    fP[i].setDouble("outRG2", newOutRG2);
+                    fP[i].setDouble("genRG2", newGenRG2);
+                    fP[i].setDouble("gwTable", newGWTable);
+                }
+
+
+            }
 
         actRG2.setValue(run_RG2act);
         inRG2.setValue(sumRG2in_new);
     }
 
-    private boolean updateGWTable(double sumRG2In) throws JAMSEntity.NoSuchAttributeException {
+    private boolean updateGWTable(boolean flag) throws JAMSEntity.NoSuchAttributeException {
 
-        run_area = area.getValue();
-        run_Peff = Peff.getValue();
-        run_baseHeigth = baseHeigth.getValue();
-        /*
-        for (int i = 0; i < fromPoly.length; i++) {
-        gwVolume = fromPoly[i].getDouble("actRG2") / 1000;
-        gwVolume = gwVolume - (sumRG2In / 1000);
-        run_gwDepthUpper = gwVolume / fromPoly[i].getDouble("area") / fromPoly[i].getDouble("Peff");
-        run_gwTableUpper = run_gwDepthUpper + fromPoly[i].getDouble("baseHeigth");
-        fromPoly[i].setDouble("pot_gwTable", run_gwTableUpper);
+        for (int i = 0; i < fP.length; i++) {
+           if (flag){
+           }else{
+               gwVolume = fP[i].getDouble("actRG2") / 1000;
+               run_gwDepthUpper = gwVolume / fP[i].getDouble("area") / fP[i].getDouble("Peff");
+               run_gwTableUpper = run_gwDepthUpper + fP[i].getDouble("baseHeigth");
+           }
+           
+           if (flag){               
+           }else{
+                fP[i].setDouble("gwTable", run_gwTableUpper);
+           }
         }
-         */
-
-        gwVolume = (run_RG2act + sumRG2In) / 1000;
+        
+        gwVolume = run_RG2act / 1000;
 
         run_gwDepthLower = gwVolume / run_area / run_Peff;
-        run_gwTableLower = run_gwDepthLower + run_baseHeigth;  // + baseHeigth
-        pot_gwTable = run_gwTableLower;
+        run_gwTableLower = run_gwDepthLower + run_baseHeigth;
+
+        if (flag){
+            pot_gwTable = run_gwTableLower;
+        }else{
+            gwTable.setValue(run_gwTableLower);
+        }
 
         return true;
     }
@@ -171,14 +218,23 @@ public class J2KProcessGWRouting extends JAMSComponent {
     private double recalcDarcyGWOut(double[] gradientNew) throws JAMSEntity.NoSuchAttributeException {
         double rg2out_new;
         double rg2act_new;
+
+        if (this.run_gwTableUpper >= this.run_gwTableLower){
         sumRG2in_new = 0;
         for (int i = 0; i < fP.length; i++) {
             rg2out_new = (fP[i].getDouble("calcFactor") * gradientNew[i]) * 86400 * 1000;
-            rg2act_new = fP[i].getDouble("actRG2") + fP[i].getDouble("outRG2") - rg2out_new;
+            //rg2act_new = fP[i].getDouble("actRG2") - rg2out_new;
+            rg2act_new = fP[i].getDouble("pot_actRG2") - rg2out_new;
             fP[i].setDouble("actRG2", rg2act_new);
-            fP[i].setDouble("outRG2", rg2out_new);
+            double rg2out_sum = fP[i].getDouble("preOutRG2") + rg2out_new;
+            fP[i].setDouble("outRG2", rg2out_sum);
+            fP[i].setDouble("genRG2", rg2out_new);
             sumRG2in_new = sumRG2in_new + rg2out_new;
         }
+        }else{
+            getModel().getRuntime().println("Groundwater-Table in Receiver-HRU is higher.");
+        }
+
         rg2act_new = run_RG2act + sumRG2in_new;
         return rg2act_new;
     }

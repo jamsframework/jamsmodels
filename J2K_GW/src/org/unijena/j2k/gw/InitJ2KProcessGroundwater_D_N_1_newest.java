@@ -34,7 +34,7 @@ import java.lang.Math.*;
 @JAMSComponentDescription(title = "J2KGroundwater",
 author = "Peter Krause modifications Daniel Varga",
 description = "Description")
-public class InitJ2KProcessGroundwater_D_N_1_v01 extends JAMSComponent {
+public class InitJ2KProcessGroundwater_D_N_1_newest extends JAMSComponent {
 
     /*
      *  Component variables
@@ -43,6 +43,11 @@ public class InitJ2KProcessGroundwater_D_N_1_v01 extends JAMSComponent {
     update = JAMSVarDescription.UpdateType.RUN,
     description = "The current hru entity")
     public JAMSEntityCollection hrus;
+    
+    @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
+    update = JAMSVarDescription.UpdateType.RUN,
+    description = "The elevation of the current hru entity")
+    public JAMSDouble elevation;
 
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
     update = JAMSVarDescription.UpdateType.RUN,
@@ -71,8 +76,13 @@ public class InitJ2KProcessGroundwater_D_N_1_v01 extends JAMSComponent {
 
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.WRITE,
     update = JAMSVarDescription.UpdateType.RUN,
-    description = "maximum RG2 storage")
-    public JAMSDouble maxRG2;
+    description = "maximum GW storage")
+    public JAMSDouble maxGW;
+
+    @JAMSVarDescription(access = JAMSVarDescription.AccessType.WRITE,
+    update = JAMSVarDescription.UpdateType.RUN,
+    description = "maximum GW storage")
+    public JAMSDouble satGW;
 
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.WRITE,
     update = JAMSVarDescription.UpdateType.RUN,
@@ -81,8 +91,8 @@ public class InitJ2KProcessGroundwater_D_N_1_v01 extends JAMSComponent {
 
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.WRITE,
     update = JAMSVarDescription.UpdateType.RUN,
-    description = "actual RG2 storage")
-    public JAMSDouble actRG2;
+    description = "actual GW storage")
+    public JAMSDouble actGW;
 
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
     update = JAMSVarDescription.UpdateType.INIT,
@@ -91,8 +101,8 @@ public class InitJ2KProcessGroundwater_D_N_1_v01 extends JAMSComponent {
 
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
     update = JAMSVarDescription.UpdateType.INIT,
-    description = "relative initial RG2 storage")
-    public JAMSDouble initRG2;
+    description = "relative initial GW storage")
+    public JAMSDouble initGW;
     
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READWRITE,
     update = JAMSVarDescription.UpdateType.RUN,
@@ -143,11 +153,6 @@ public class InitJ2KProcessGroundwater_D_N_1_v01 extends JAMSComponent {
     description = "adapted Kf_geo")
     public JAMSDouble Kf_geo_adapt;
 
-    @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
-    update = JAMSVarDescription.UpdateType.RUN,
-    description = "Thickness of the aquifer")
-    public JAMSDouble aqThickness;
-
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READWRITE,
     update = JAMSVarDescription.UpdateType.RUN,
     description = "Height of the aquifer base in m + NN")
@@ -157,11 +162,16 @@ public class InitJ2KProcessGroundwater_D_N_1_v01 extends JAMSComponent {
     update = JAMSVarDescription.UpdateType.RUN,
     description = "Adaptation of Height of the aquifer base in m")
     public JAMSDouble baseHeigth_v;
+    
+    @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
+    update = JAMSVarDescription.UpdateType.RUN,
+    description = "Minimum Depth of the aquifer in m")
+    public JAMSDouble minimumAQ_h;
 
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READWRITE,
     update = JAMSVarDescription.UpdateType.RUN,
     description = "Groundwater outflow")
-    public JAMSDouble pot_outRG2;
+    public JAMSDouble pot_outGW;
 
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.WRITE,
     update = JAMSVarDescription.UpdateType.RUN,
@@ -171,17 +181,22 @@ public class InitJ2KProcessGroundwater_D_N_1_v01 extends JAMSComponent {
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.WRITE,
     update = JAMSVarDescription.UpdateType.RUN,
     description = "Height of potential groundwater Table (in Init the same as gwTable")
-    public JAMSDouble preOutRG2;
+    public JAMSDouble preOutGW;
     
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.WRITE,
     update = JAMSVarDescription.UpdateType.RUN,
     description = "Height of potential groundwater Table (in Init the same as gwTable")
-    public JAMSDouble preActRG2;
+    public JAMSDouble preActGW;
 
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
     update = JAMSVarDescription.UpdateType.RUN,
-    description = "Height of potential groundwater Table (in Init the same as gwTable")
+    description = "Flowlength")
     public JAMSDouble fll;
+
+    @JAMSVarDescription(access = JAMSVarDescription.AccessType.WRITE,
+    update = JAMSVarDescription.UpdateType.RUN,
+    description = "Thickness of the Aquifer")
+    public JAMSDouble aqThickness;
 
 
 
@@ -190,7 +205,7 @@ public class InitJ2KProcessGroundwater_D_N_1_v01 extends JAMSComponent {
      */
 
     double run_area, run_Peff, run_Kf_geo, run_KfAdaptation, run_aqThickness, run_baseHeigth,  upFL, downFL, run_Kf_geo_adapted, run_gwFlowLength,
-           run_gwDepth, run_gwTable, run_actRG2, run_maxRG2;
+           run_gwDepth, run_gwTable, run_actGW, run_maxGW, run_satGW;
        
 
     public void init() throws JAMSEntity.NoSuchAttributeException {
@@ -202,11 +217,14 @@ public class InitJ2KProcessGroundwater_D_N_1_v01 extends JAMSComponent {
         run_area = area.getValue();                                 //[m]
         run_Kf_geo = Kf_geo.getValue();                             //[cm/d]
         run_KfAdaptation = KfAdaptation.getValue();                 //[-]
-        run_aqThickness = aqThickness.getValue();                   //[m]
         run_baseHeigth = baseHeigth.getValue();                     //[m]
         
         double run_baseHeigth_v = baseHeigth_v.getValue();          //[m ü NN]
 
+        double min_AQ_h = minimumAQ_h.getValue();
+        
+        double HRU_elev = elevation.getValue();
+        
         //Berechnung der Fließlänge, bzw. der Fließdistanz von HRU zu HRU
         upFL = fll.getValue();
 
@@ -215,6 +233,7 @@ public class InitJ2KProcessGroundwater_D_N_1_v01 extends JAMSComponent {
         }
         else if (toReach.getValue() != null) {
             downFL = 0;
+
         }
 	else {
 	    getModel().getRuntime().println("Current entity has no receiver.");
@@ -241,40 +260,52 @@ public class InitJ2KProcessGroundwater_D_N_1_v01 extends JAMSComponent {
         
         run_gwFlowLength = (upFL / 2) + (downFL / 2);
 
-        //Anpassung des Durchlässigkeitsbeiwerts mit Kalibrierungsfaktor und Umrechnung von [cm/d] auf [m/s]
-        run_Kf_geo_adapted = run_Kf_geo * run_KfAdaptation / 100 /(60 * 60 * 24);
+        //Anpassung des Durchlässigkeitsbeiwerts mit Kalibrierungsfaktor und Umrechnung von [cm/d] auf [m/d]
+        run_Kf_geo_adapted = run_Kf_geo * run_KfAdaptation / 100 /86400;
         
         //Bestimmung der Porosität nach Hölting s. 86
         run_Peff = 0.462 + 0.045 * Math.log(run_Kf_geo_adapted);
         if (run_Peff < 0.01){
             run_Peff = 0.01;
         }
-
+        run_Kf_geo_adapted = run_Kf_geo_adapted * 86400;
         //Anpassung der Aquifersohle durch Kalibrierfaktor
-        run_baseHeigth = run_baseHeigth + run_baseHeigth_v;
-                
-        //Berechnung des Initialzustandes
-        run_maxRG2 = run_aqThickness * run_area * run_Peff * 1000;  //[l]
-        run_actRG2 = run_maxRG2 * initRG2.getValue();
 
-        run_gwDepth = run_actRG2 / 1000 / run_area / run_Peff;      //Mächtigkeit in [m]
+        run_baseHeigth = run_baseHeigth + run_baseHeigth_v;
+        
+        run_aqThickness = HRU_elev - run_baseHeigth;
+        
+        if (run_aqThickness < min_AQ_h){
+            run_baseHeigth = HRU_elev - min_AQ_h;
+            run_aqThickness = min_AQ_h;
+        }
+        
+        //Berechnung des Initialzustandes
+        run_maxGW = run_aqThickness * run_area * run_Peff * 1000;  //[l]
+        run_actGW = run_maxGW * initGW.getValue();
+
+        run_satGW = run_actGW / run_maxGW;
+
+        run_gwDepth = run_actGW / 1000 / run_area / run_Peff;      //Mächtigkeit in [m]
         
         run_gwTable = run_gwDepth + run_baseHeigth;                 //Grundwasserspiegellage in [m ü NN]
 
 
         //Setzen der Parameter
         baseHeigth.setValue(run_baseHeigth);                        //[m ü NN]
+        aqThickness.setValue(run_aqThickness);                        //[m ü NN]
         gwFlowLength.setValue(run_gwFlowLength);                    //[m]
         gwTable.setValue(run_gwTable);                              //[m]
         pot_gwTable.setValue(run_gwTable);                          //[m ü NN]
         Kf_geo_adapt.setValue(run_Kf_geo_adapted);                  //[m/s]
         Peff.setValue(run_Peff);                                    //[-]
         actRG1.setValue(0);                                         //[l]
-        actRG2.setValue(run_actRG2);                                //[l]
-        maxRG2.setValue(run_maxRG2);                                //[l]
-        pot_outRG2.setValue(0);                                     //[l]
-        preOutRG2.setValue(0);                                      //[l]
-        preActRG2.setValue(run_actRG2);                             //[l]
+        actGW.setValue(run_actGW);                                //[l]
+        maxGW.setValue(run_maxGW);                                //[l]
+        satGW.setValue(run_satGW);
+        pot_outGW.setValue(0);                                     //[l]
+        preOutGW.setValue(0);                                      //[l]
+        preActGW.setValue(run_actGW);                             //[l]
     }
 
     public void cleanup() {

@@ -37,7 +37,7 @@ import jams.model.*;
         author="Peter Krause",
         description="Description"
         )
-        public class J2KLakeModule extends JAMSComponent {
+        public class J2KLakeModule1 extends JAMSComponent {
     
     /*
      *  Component variables
@@ -277,11 +277,56 @@ import jams.model.*;
             )
             public JAMSDouble satLPS;
 
+
+    @JAMSVarDescription(access = JAMSVarDescription.AccessType.READWRITE,
+    update = JAMSVarDescription.UpdateType.RUN,
+    description = "Downstream hru entity")
+    public JAMSEntity toPoly;
+
+    @JAMSVarDescription(access = JAMSVarDescription.AccessType.READWRITE,
+    update = JAMSVarDescription.UpdateType.RUN,
+    description = "Downstream reach entity")
+    public JAMSEntity toReach;
+
+    @JAMSVarDescription(access = JAMSVarDescription.AccessType.READWRITE,
+    update = JAMSVarDescription.UpdateType.RUN,
+    description = "Groundwater Level")
+    public JAMSDouble gwTable;
+
+    @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
+    update = JAMSVarDescription.UpdateType.RUN,
+    description = "estimated Porosity")
+    public JAMSDouble Peff;
+    @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
+    update = JAMSVarDescription.UpdateType.RUN,
+    description = "estimated hydraulic conductivity in m/d")
+    public JAMSDouble Kf_geo;
+
+    @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
+    update = JAMSVarDescription.UpdateType.RUN,
+    description = "Thickness of the Aquifer")
+    public JAMSDouble aqThickness;
+
+    @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
+    update = JAMSVarDescription.UpdateType.RUN,
+    description = "Heigth of the Aquifer Base in m + NN")
+    public JAMSDouble baseHeigth;
+
+    @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
+    update = JAMSVarDescription.UpdateType.INIT,
+    description = "Length of the border arc between adjacent entities")
+    public JAMSDouble gwArcLength;
+
+    @JAMSVarDescription(access = JAMSVarDescription.AccessType.WRITE,
+    update = JAMSVarDescription.UpdateType.RUN,
+    description = "Distance between adjacent entities")
+    public JAMSDouble gwFlowLength;
     
     
-    double run_lakeArea, run_KfGeo, run_cloggingFactor, run_maxRG1, run_maxRG2, run_actRD1, run_actRD2, run_actRG1, run_actRG2, run_actLakeStor, run_actLakeDepth, lakeInflow, lakeOutflow, run_inRain, run_inSnow, run_potET, run_actET, run_inRD1, run_inRD2, run_inRG1, run_inRG2, run_outRG1, run_outRG2, run_genRG1, run_genRG2,
+    double run_lakeArea, run_Kf_geo, run_cloggingFactor, run_maxRG1, run_maxRG2, run_actRD1, run_actRD2, run_actRG1, run_actRG2, run_actLakeStor, run_actLakeDepth, lakeInflow, lakeOutflow, run_inRain, run_inSnow, run_potET, run_actET, run_inRD1, run_inRD2, run_inRG1, run_inRG2, run_outRG1, run_outRG2, run_genRG1, run_genRG2,
            run_k_RG1, run_k_RG2, run_RG1_rec, run_RG2_rec, run_maxSoilStor, run_actSoilStor, run_slope,
-           run_percolation, run_gwExcess, run_satMPS, run_satLPS;
+           run_percolation, run_gwExcess, run_satMPS, run_satLPS, run_gwTableLower, run_gwTableUpper, potOutflow, run_Peff, run_gwArcLength, run_aqThickness,
+            run_gwFlowLength, run_baseHeigth;
     /*
      *  Component run stages
      */
@@ -296,8 +341,7 @@ import jams.model.*;
         getModel().getRuntime().println("Das ist ein See!");
 
         //Reading Variables and Parameters
-
-        
+ 
         //Reading state Variables
         this.run_actLakeStor = actLakeStor.getValue();
         this.run_actLakeDepth = actLakeDepth.getValue();
@@ -333,9 +377,14 @@ import jams.model.*;
         
         this.run_lakeArea = area.getValue();
         this.run_slope = slope.getValue();
+        this.run_gwFlowLength = gwFlowLength.getValue();
+        this.run_gwArcLength = gwArcLength.getValue();
+        this.run_aqThickness = aqThickness.getValue();
+        this.run_baseHeigth = baseHeigth.getValue();
         
         //Reading parameters
-        this.run_KfGeo = entity.getDouble("Kf_geo");
+        this.run_Kf_geo = Kf_geo.getValue();
+        this.run_Peff = Peff.getValue();
                 
         this.run_cloggingFactor = cloggingFactor.getValue();
         
@@ -344,9 +393,7 @@ import jams.model.*;
         
         this.run_RG1_rec = this.run_k_RG1 * this.gwRG1Fact.getValue();
         this.run_RG2_rec = this.run_k_RG2 * this.gwRG2Fact.getValue();     
-        
-        double Receiver = entity.getDouble("to_poly");
-        
+               
         this.calcVirtStorages();
         this.calcLakeStorage();
         
@@ -354,6 +401,18 @@ import jams.model.*;
         //this.calcDeepSink();
         //this.calcExpGWout();
         this.calcLinGWout();
+
+        if (toPoly.getValue() != null) {
+            this.run_gwTableLower = toPoly.getDouble("gwTable");        //[m]
+        } else {
+            this.run_gwTableLower = toReach.getDouble("waterTable_NN"); //[m]
+        }
+
+
+        this.run_gwTableUpper = gwTable.getValue();                     //[m]
+
+
+        this.calcDarcyGWout();
         
         this.calcLakeStorage();
 
@@ -463,7 +522,7 @@ import jams.model.*;
     private boolean calcLinGWout(){
         
         double lakeBankCut = this.run_actLakeDepth * 300; //Annahme: Seebreite = 300 m
-        double potOutflow = this.run_cloggingFactor * lakeBankCut * 100 * this.run_KfGeo; // * I ( (Ha - Hb) / l ) //* 100 um auf Liter zu kommen
+        double potOutflow = this.run_cloggingFactor * lakeBankCut * 100 * this.run_Kf_geo; // * I ( (Ha - Hb) / l ) //* 100 um auf Liter zu kommen
         
         this.run_actRG1 = 0.3 * potOutflow;
         this.run_actRG2 = 0.7 * potOutflow;
@@ -490,4 +549,57 @@ import jams.model.*;
         
         return true;
     }
+    private boolean calcDarcyGWout() throws JAMSEntity.NoSuchAttributeException {
+
+        // Ausfluss auf RG1 noch alte Variante
+        double k_rg1 = 1 / this.run_RG1_rec;
+        if (k_rg1 > 1) {
+            k_rg1 = 1;
+        }
+        double rg1_out = k_rg1 * this.run_actRG1;
+        this.run_actRG1 = this.run_actRG1 - rg1_out;
+        this.run_outRG1 = this.run_outRG1 + rg1_out;
+
+        double rg2_out_m3 = 0;
+        double rg2_out = 0;
+        double gwDifference = this.run_gwTableUpper - this.run_gwTableLower;
+
+        //Ausfluss aus RG2 mit Darcy-Gleichung
+        if (this.run_gwTableUpper >= this.run_gwTableLower) {
+            if (toPoly.getValue() != null) {
+
+                    potOutflow = (this.run_lakeArea * toPoly.getDouble("area") * this.run_Peff * toPoly.getDouble("Peff") /
+                                 (this.run_lakeArea * this.run_Peff + toPoly.getDouble("area") * toPoly.getDouble("Peff"))) * gwDifference;
+
+                    double gwFlowArea = this.run_gwArcLength * (this.run_gwTableUpper - this.run_baseHeigth);
+                    rg2_out_m3 = gwFlowArea * this.run_Kf_geo * gwDifference / this.run_gwFlowLength;
+                    //[m³/s]   = [m²]       * [m/s]           * [m]          / [m]
+                    if (rg2_out_m3 > potOutflow) {
+                        rg2_out_m3 = potOutflow;
+                        getModel().getRuntime().println("Alles raus!");
+                    }
+            }
+        } else {
+           if (toPoly.getValue() != null) {
+               getModel().getRuntime().println("Groundwater-Table in Receiver-HRU is higher.");
+
+            }
+        }
+
+        rg2_out = rg2_out_m3 * 86400 * 1000;     //[l/d]
+
+        if (this.run_actRG2 >= rg2_out) {
+        	this.run_actRG2 = this.run_actRG2 - rg2_out;
+        } else {
+            rg2_out = this.run_actRG2;
+            this.run_actRG2 = 0;
+        }
+        this.run_outRG2 = this.run_outRG2 + rg2_out;
+
+        this.run_genRG2 = rg2_out;
+
+        return true;
+    }
+
 }
+

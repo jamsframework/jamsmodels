@@ -103,7 +103,14 @@ import jams.model.*;
             description = "Reach statevar RG2 inflow"
             )
             public JAMSDouble inRG2;
-    
+
+   @JAMSVarDescription(
+            access = JAMSVarDescription.AccessType.READWRITE,
+            update = JAMSVarDescription.UpdateType.RUN,
+            description = "Reach statevar RG2 inflow"
+            )
+            public JAMSDouble inGW;
+
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
             update = JAMSVarDescription.UpdateType.RUN,
@@ -139,7 +146,14 @@ import jams.model.*;
             description = "Reach statevar RG2 outflow"
             )
             public JAMSDouble outRG2;
-    
+
+        @JAMSVarDescription(
+            access = JAMSVarDescription.AccessType.WRITE,
+            update = JAMSVarDescription.UpdateType.RUN,
+            description = "Reach statevar RG2 outflow"
+            )
+            public JAMSDouble outGW;
+
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
             update = JAMSVarDescription.UpdateType.RUN,
@@ -182,7 +196,12 @@ import jams.model.*;
             description = "Reach statevar RG2 storage"
             )
             public JAMSDouble actRG2;
-    
+    @JAMSVarDescription(
+            access = JAMSVarDescription.AccessType.READWRITE,
+            update = JAMSVarDescription.UpdateType.RUN,
+            description = "Reach statevar RG2 storage"
+            )
+            public JAMSDouble actGW;
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
             update = JAMSVarDescription.UpdateType.RUN,
@@ -288,7 +307,9 @@ import jams.model.*;
     public void run() throws JAMSEntity.NoSuchAttributeException {
         
         Attribute.Entity entity = entities.getCurrent();
-        
+
+        double actualEntityID = entity.getDouble("ID");
+
         JAMSEntity DestReach = (JAMSEntity)entity.getObject("to_reach");
         if (DestReach.getValue() == null) {
             DestReach = null;
@@ -310,6 +331,7 @@ import jams.model.*;
         double RD2act = actRD2.getValue() + inRD2.getValue();
         double RG1act = actRG1.getValue() + inRG1.getValue();
         double RG2act = actRG2.getValue() + inRG2.getValue();
+        double GWact = actGW.getValue() + inGW.getValue();
         
         double addInAct = actAddIn.getValue() + this.inAddIn.getValue();
         
@@ -317,6 +339,7 @@ import jams.model.*;
         inRD2.setValue(0);
         inRG1.setValue(0);
         inRG2.setValue(0);
+        inGW.setValue(0);
         
         inAddIn.setValue(0);
         
@@ -324,6 +347,7 @@ import jams.model.*;
         actRD2.setValue(0);
         actRG1.setValue(0);
         actRG2.setValue(0);
+        actGW.setValue(0);
         
         actAddIn.setValue(0);
         
@@ -331,6 +355,7 @@ import jams.model.*;
         double RD2DestIn = 0;
         double RG1DestIn = 0;
         double RG2DestIn = 0;
+        double GWDestIn = 0;
         double addInDestIn = 0;
         
         if(DestReach == null && DestReservoir == null){
@@ -338,7 +363,7 @@ import jams.model.*;
             RD2DestIn = 0;//entity.getDouble(aNameCatchmentOutRD2.getValue());
             RG1DestIn = 0;//entity.getDouble(aNameCatchmentOutRG1.getValue());
             RG2DestIn = 0;//entity.getDouble(aNameCatchmentOutRG2.getValue());
-            
+            GWDestIn = 0;
             addInDestIn = 0;
         } 
         else if(DestReservoir != null){
@@ -352,7 +377,7 @@ import jams.model.*;
             RD2DestIn = DestReach.getDouble("inRD2");
             RG1DestIn = DestReach.getDouble("inRG1");
             RG2DestIn = DestReach.getDouble("inRG2");
-            
+            GWDestIn = DestReach.getDouble("inGW");
             try{
                 addInDestIn = DestReach.getDouble("inAddIn");
             }catch(jams.data.JAMSEntity.NoSuchAttributeException e){
@@ -360,7 +385,7 @@ import jams.model.*;
             }
         }
         
-        double q_act_tot = RD1act + RD2act + RG1act + RG2act + addInAct;
+        double q_act_tot = RD1act + RD2act + RG1act + RG2act + GWact + addInAct;
         
         //int ID = (int)entity.getDouble("ID");
         // System.out.getRuntime().println("Processing reach: " + ID);
@@ -369,6 +394,7 @@ import jams.model.*;
             outRD2.setValue(0);
             outRG1.setValue(0);
             outRG2.setValue(0);
+            outGW.setValue(0);
             
             this.outAddIn.setValue(0);
             
@@ -381,7 +407,7 @@ import jams.model.*;
         double RD2_part = RD2act / q_act_tot;
         double RG1_part = RG1act / q_act_tot;
         double RG2_part = RG2act / q_act_tot;
-        
+        double GW_part = GWact / q_act_tot;
         double addInPart = addInAct / q_act_tot;
         
         //calculation of flow velocity
@@ -408,7 +434,7 @@ import jams.model.*;
         double RD2out = q_act_out * RD2_part;
         double RG1out = q_act_out * RG1_part;
         double RG2out = q_act_out * RG2_part;
-        
+        double GWout = q_act_out * GW_part;
         double addInOut = q_act_out * addInPart;
         
         //transferring runoff from this reach to the next one or a reservoir
@@ -416,6 +442,7 @@ import jams.model.*;
         RD2DestIn = RD2DestIn + RD2out;
         RG1DestIn = RG1DestIn + RG1out;
         RG2DestIn = RG2DestIn + RG2out;
+        GWDestIn = GWDestIn + GWout;
         
         addInDestIn = addInDestIn + addInOut;
         
@@ -424,17 +451,17 @@ import jams.model.*;
         RD2act = RD2act - q_act_out * RD2_part;
         RG1act = RG1act - q_act_out * RG1_part;
         RG2act = RG2act - q_act_out * RG2_part;
-        
+        GWact = GWact - q_act_out * GW_part;
         addInAct = addInAct - q_act_out * addInPart;
         
-        double run_channelStorage = RD1act + RD2act + RG1act + RG2act + addInAct;
+        double run_channelStorage = RD1act + RD2act + RG1act + RG2act + GWact + addInAct;
 
         //Berechnung der Wasserspiegellage
         double q_m = q_act_tot / (1000 * sec_inTStep);
         double run_waterDepth = (q_m / flow_veloc) / run_width;
         double run_waterTable_NN = baseHeigth.getValue() + run_waterDepth;
 
-        double cumOutflow = RD1out + RD2out + RG1out + RG2out + addInOut;
+        double cumOutflow = RD1out + RD2out + RG1out + RG2out + GWout + addInOut;
         
         simRunoff.setValue(cumOutflow);
         channelStorage.setValue(run_channelStorage);
@@ -443,21 +470,23 @@ import jams.model.*;
         inRD2.setValue(0);
         inRG1.setValue(0);
         inRG2.setValue(0);
-        
+        inGW.setValue(0);
+
         inAddIn.setValue(0);
         
         actRD1.setValue(RD1act);
         actRD2.setValue(RD2act);
         actRG1.setValue(RG1act);
         actRG2.setValue(RG2act);
-        
+        actGW.setValue(GWact);
+
         actAddIn.setValue(addInAct);
         
         outRD1.setValue(RD1out);
         outRD2.setValue(RD2out);
         outRG1.setValue(RG1out);
         outRG2.setValue(RG2out);
-        
+        outGW.setValue(GWout);
         outAddIn.setValue(addInOut);
 
         waterDepth.setValue(run_waterDepth);
@@ -469,7 +498,7 @@ import jams.model.*;
             DestReach.setDouble("inRD2",RD2DestIn);
             DestReach.setDouble("inRG1",RG1DestIn);
             DestReach.setDouble("inRG2",RG2DestIn);
-            
+            DestReach.setDouble("inGW",GWDestIn);
             DestReach.setDouble("inAddIn", addInDestIn);
             
         }
@@ -485,6 +514,7 @@ import jams.model.*;
             catchmentRD1.setValue(RD1out);
             catchmentRD2.setValue(RD2out);
             catchmentRG1.setValue(RG1out);
+            RG2out = RG2out + GWout;
             catchmentRG2.setValue(RG2out);
             
             this.catchmentAddIn.setValue(addInOut);
