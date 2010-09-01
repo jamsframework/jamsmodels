@@ -68,14 +68,14 @@ import jams.model.*;
             public JAMSDouble k1;
     
     @JAMSVarDescription(
-            access = JAMSVarDescription.AccessType.READWRITE,
+            access = JAMSVarDescription.AccessType.WRITE,
             update = JAMSVarDescription.UpdateType.RUN,
             description = "groundwater storages of cascade 1"
             )
             public JAMSDoubleArray gwStor1;
 
     @JAMSVarDescription(
-            access = JAMSVarDescription.AccessType.READWRITE,
+            access = JAMSVarDescription.AccessType.WRITE,
             update = JAMSVarDescription.UpdateType.RUN,
             description = "total groundwater storage content of cascade 1"
             )
@@ -103,14 +103,14 @@ import jams.model.*;
             public JAMSDouble k2;
 
     @JAMSVarDescription(
-            access = JAMSVarDescription.AccessType.READWRITE,
+            access = JAMSVarDescription.AccessType.WRITE,
             update = JAMSVarDescription.UpdateType.RUN,
             description = "groundwater storages of cascade 2"
             )
             public JAMSDoubleArray gwStor2;
 
     @JAMSVarDescription(
-            access = JAMSVarDescription.AccessType.READWRITE,
+            access = JAMSVarDescription.AccessType.WRITE,
             update = JAMSVarDescription.UpdateType.RUN,
             description = "total groundwater storage content of cascade 2"
             )
@@ -146,14 +146,14 @@ import jams.model.*;
         double[] stor1 = new double[this.n1.getValue()];
         for(int i = 0; i < this.n1.getValue(); i++)
             stor1[i] = 0;
-        gwStor1 = JAMSDataFactory.createDoubleArray();
+        //gwStor1 = JAMSDataFactory.createDoubleArray();
         gwStor1.setValue(stor1);
 
         //cascade 2 setup
         double[] stor2 = new double[this.n2.getValue()];
         for(int i = 0; i < this.n2.getValue(); i++)
             stor2[i] = 0;
-        gwStor2 = JAMSDataFactory.createDoubleArray();
+        //gwStor2 = JAMSDataFactory.createDoubleArray();
         gwStor2.setValue(stor2);
     }
     

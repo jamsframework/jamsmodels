@@ -88,6 +88,13 @@ title="SnowModule",
             description = "the snowmelt output"
             )
             public JAMSDouble snowMelt;
+
+    @JAMSVarDescription(
+    access = JAMSVarDescription.AccessType.WRITE,
+            update = JAMSVarDescription.UpdateType.RUN,
+            description = "the snow amount of rainfall"
+            )
+            public JAMSDouble snow;
     
     @JAMSVarDescription(
     access = JAMSVarDescription.AccessType.WRITE,
@@ -116,9 +123,16 @@ title="SnowModule",
             double snowStorage = this.snowStorage.getValue();
             double precip = this.precip.getValue() * this.area.getValue();
             this.precip.setValue(precip);
-            double tmin = this.tmin.getValue();
+            double tmin, tmax = 0;
             double tmean = this.tmean.getValue();
-            double tmax = this.tmax.getValue();
+            if(this.tmin != null)
+                tmin = this.tmin.getValue();
+            else
+                tmin = this.tmean.getValue();
+            if(this.tmax != null)
+                tmax = this.tmax.getValue();
+            else
+                tmax = this.tmean.getValue();
             double snowMelt = 0;
             
             double accuTemp = (tmin + tmean) / 2;
@@ -127,6 +141,7 @@ title="SnowModule",
             //accumulation
             if(accuTemp <= this.t_thres.getValue()){
                 snowStorage = snowStorage + precip;
+                this.snow.setValue(precip);
                 precip = 0;
             }
             //snow melt
