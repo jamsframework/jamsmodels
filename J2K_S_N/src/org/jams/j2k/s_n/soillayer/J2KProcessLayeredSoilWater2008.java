@@ -661,7 +661,7 @@ import jams.model.*;
         this.calcInfImperv(sealedGrade.getValue());
         this.calcSoilSaturations(false);
         /** determining maximal infiltration rate */
-        double maxInf = this.calcMaxInfiltration(time.get(time.MONTH)+1);
+        double maxInf = this.calcMaxInfiltration(time.get(JAMSCalendar.MONTH)+1);
         if(maxInf < this.run_infiltration){
             //System.out.getRuntime().println("maxInf:");
             double deltaInf = this.run_infiltration - maxInf;
@@ -805,6 +805,7 @@ import jams.model.*;
         //System.out.getRuntime().println("RD2_out: " + this.run_outRD2[0] + "\t" + this.run_outRD2[1] + "\t" + this.run_outRD2[2]);
     }
     
+    @Override
     public void cleanup() {
         
     }
@@ -958,6 +959,7 @@ import jams.model.*;
         
         this.run_actMPS[h] = this.run_actMPS[h] + flux_h_h1[h];
         this.run_actMPS[h+1] = this.run_actMPS[h+1] - flux_h_h1[h];
+
         
     }
         
@@ -1024,12 +1026,12 @@ import jams.model.*;
     }
     
     private double[] calcMPSEvapotranslayer(boolean debug, int nhor){ //author: Manfred Fink; Method after SWAT
-        double[] horETP = new double[nhor];
+        double[] horETP_local = new double[nhor];
         double sumlayer = 0;
         int i = 0;
         double runrootdepth = (rootdepth.getValue() * 1000) + 10;
         double[] partroot = new double[nhor];
-        double rootlayer = 0;
+      
         double runLAI = LAI.getValue();
         double pTransp = 0;
         double pEvap = 0;
@@ -1037,12 +1039,7 @@ import jams.model.*;
         double[] evapo_hord = new double[nhor];
         double[] transp_hor = new double[nhor];
         double[] evapo_hor = new double[nhor];
-        double[] transdemand = new double[nhor];
-        double[] evapodemand = new double[nhor];
-        double[] compevapo = new double[nhor];
-        double[] comptrans = new double[nhor];
-        double sumevapodemand = 0;
-        double sumtransdemand = 0;
+
         
         double horbal = 0;
         double test = 0;
@@ -1069,16 +1066,16 @@ import jams.model.*;
             if (runrootdepth > runlayerdepth[0]){
                 if (runrootdepth > runlayerdepth[i] && root_h.getValue()[i] == 1.0){
                     partroot[i] = 1 ;
-                    rootlayer = i;
+                    
                 }else if (runrootdepth > runlayerdepth[i - 1] && root_h.getValue()[i] == 1.0){
                     partroot[i] = (runrootdepth - runlayerdepth[i - 1]) /  (runlayerdepth[i] - runlayerdepth[i - 1]);
-                    rootlayer = i;
+                    
                 }else {
                     partroot[i] = 0;
                 }
             }else if (i == 0){
                 partroot[i] = runrootdepth /  runlayerdepth[0];
-                rootlayer = i;
+               
             }
             i++;
             
@@ -1201,10 +1198,10 @@ import jams.model.*;
             horETP[i] =  transp_hor[i] + comptrans[i] + evapo_hor[i] + compevapo[i];
             */
             
-            horETP[i] =  transp_hor[i] + evapo_hor[i];
+            horETP_local[i] =  transp_hor[i] + evapo_hor[i];
             
             if (debug) {
-                horbal = horbal + horETP[i];
+                horbal = horbal + horETP_local[i];
                 test =  deltaETP - horbal;
                 
             }
@@ -1219,7 +1216,7 @@ import jams.model.*;
         
         
         this.soil_root.setValue(soilroot/1000);
-        return horETP;
+        return horETP_local;
     }
     
     
