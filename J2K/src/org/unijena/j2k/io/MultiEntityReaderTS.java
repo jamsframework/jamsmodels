@@ -117,7 +117,7 @@ public class MultiEntityReaderTS extends JAMSComponent {
             try {
                 e.setId((long) e.getDouble(hruIDAttribute.getValue()));
             } catch (Attribute.Entity.NoSuchAttributeException nsae) {
-                getModel().getRuntime().sendErrorMsg("Couldn't find attribute \"ID\" while reading J2K HRU parameter file (" + hruFileName.getValue() + ")!");
+                getModel().getRuntime().sendErrorMsg("Couldn't find attribute \"ID\" while reading J2K HRUu parameter file (" + hruFileName.getValue() + ")!");
             }
         }
 
@@ -129,7 +129,7 @@ public class MultiEntityReaderTS extends JAMSComponent {
             try {
                 e.setId((long) e.getDouble(reachIDAttribute.getValue()));
             } catch (Attribute.Entity.NoSuchAttributeException nsae) {
-                getModel().getRuntime().sendErrorMsg("Couldn't find attribute \"ID\" while reading J2K HRU parameter file (" + hruFileName.getValue() + ")!");
+                getModel().getRuntime().sendErrorMsg("Couldn't find attribute \"ID\" while reading J2K Reach parameter file (" + reachFileName.getValue() + ")!");
             }
         }
 
