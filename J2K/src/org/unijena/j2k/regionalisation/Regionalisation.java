@@ -24,6 +24,7 @@ package org.unijena.j2k.regionalisation;
 
 import java.io.*;
 import jams.data.*;
+import jams.io.BufferedFileReader;
 import jams.model.*;
 
 /**
@@ -89,8 +90,11 @@ public class Regionalisation extends JAMSComponent {
     private File cacheFile;
 
     transient private ObjectOutputStream writer;
-
     transient private ObjectInputStream reader;
+
+    double[] data = null;
+    double[] weights = null;
+    double[] elev = null;
 
     public void init() throws IOException {
 
@@ -100,18 +104,22 @@ public class Regionalisation extends JAMSComponent {
         if (!cacheFile.exists() && (dataCaching.getValue() == 1)) {
             getModel().getRuntime().sendHalt(this.getInstanceName() + ": data caching is switched on but no cache file available!");
         }
-
         if (dataCaching.getValue() == 1) {
             reader = new ObjectInputStream(new BufferedInputStream(new FileInputStream(cacheFile)));
         } else if (dataCaching.getValue() == 0) {
             writer = new ObjectOutputStream(new BufferedOutputStream(new FileOutputStream(cacheFile)));
         }
+        int nIDW = this.nidw.getValue();
+        data = new double[nIDW];
+        weights = new double[nIDW];
+        elev = new double[nIDW];
     }
 
     public void run() throws IOException {
         //data is read from cache file
         if (dataCaching.getValue() == 1) {
             dataValue.setValue(reader.readDouble());
+
         } else {
             double[] regCoeff = this.regCoeff.getValue();
             double gradient = regCoeff[1];
@@ -126,10 +134,7 @@ public class Regionalisation extends JAMSComponent {
             double value = 0;
             double deltaElev = 0;
             int nIDW = this.nidw.getValue();
-
-            double[] data = new double[nIDW];
-            double[] weights = new double[nIDW];
-            double[] elev = new double[nIDW];
+            
             //make sure that the arrays are intialized with 0s
             for (int i = 0; i < nIDW; i++) {
                 data[i] = 0;
@@ -224,6 +229,15 @@ public class Regionalisation extends JAMSComponent {
             writer.close();
         } else if (dataCaching.getValue() == 1) {
             reader.close();
+        }
+    }
+
+     private void readObject(ObjectInputStream objIn) throws IOException, ClassNotFoundException {
+        objIn.defaultReadObject();
+        if (dataCaching.getValue() == 1) {
+            getModel().getRuntime().sendHalt(this.getInstanceName() + ": data caching not available in snapshot mode");
+        } else if (dataCaching.getValue() == 0) {
+            writer = new ObjectOutputStream(new BufferedOutputStream(new FileOutputStream(cacheFile,true)));
         }
     }
 }

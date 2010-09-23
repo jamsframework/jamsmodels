@@ -26,6 +26,7 @@ import jams.data.*;
 import jams.model.*;
 import jams.workspace.DataSetDefinition;
 import jams.workspace.stores.InputDataStore;
+import java.io.IOException;
 import java.util.ArrayList;
 import org.unijena.j2k.statistics.IDW;
 
@@ -80,12 +81,11 @@ public class IDWWeightCalculator extends JAMSComponent {
     private double[] statX;
 
     private double[] statY;
-
+    InputDataStore store = null;
     /*
      *  Component run stages
      */
-    public void init() {
-        InputDataStore store = null;
+    public void init() {        
         if (dataStoreID != null) {
             store = getModel().getWorkspace().getInputDataStore(dataStoreID.getValue());
         }
@@ -145,6 +145,13 @@ public class IDWWeightCalculator extends JAMSComponent {
             sw[i] = 0;
         }
         statWeights.setValue(sw);
+        if (store!=null){
+            try{
+                store.close();
+            }catch(IOException ioe){
+                ioe.printStackTrace();
+            }
+        }
     }
 
     private double[] listToDoubleArray(ArrayList<Object> list) {
