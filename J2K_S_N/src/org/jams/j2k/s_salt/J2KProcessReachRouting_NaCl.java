@@ -444,7 +444,7 @@ import jams.model.*;
         ActRG2_NaCl.setValue(0);
         
         double RD1DestIn, RD2DestIn, RG1DestIn, RG2DestIn, RD1DestIn_NaCl, RD2DestIn_NaCl, RG1DestIn_NaCl, RG2DestIn_NaCl;
-        if(entity.getObject("to_reach") == null){
+        if((DestReach == null) || (DestReach.getId() == -1)){
             RD1DestIn = 0;//entity.getDouble(aNameCatchmentOutRD1.getValue());
             RD2DestIn = 0;//entity.getDouble(aNameCatchmentOutRD2.getValue());
             RG1DestIn = 0;//entity.getDouble(aNameCatchmentOutRG1.getValue());
@@ -460,12 +460,12 @@ import jams.model.*;
             RD2DestIn = DestReach.getDouble("inRD2");
             RG1DestIn = DestReach.getDouble("inRG1");
             RG2DestIn = DestReach.getDouble("inRG2");
-            
+
             RD1DestIn_NaCl = DestReach.getDouble("SurfaceNaCl_in");
             RD2DestIn_NaCl = DestReach.getDouble("InterflowNaCl_sum");
             RG1DestIn_NaCl = DestReach.getDouble("NaCl_RG1_in");
             RG2DestIn_NaCl = DestReach.getDouble("NaCl_RG2_in");
-            
+
         }
         
         double q_act_tot = RD1act + RD2act + RG1act + RG2act;
@@ -667,7 +667,7 @@ import jams.model.*;
         System.out.println(RD1out + " RD1out " + RD2out + " RD2out "+ RG1out +" RG1out " + RG2out +" RG2out ");
  
         }*/
-        if(entity.getObject("to_reach") != null){
+        if((DestReach != null) && (DestReach.getId() != -1)){
             DestReach.setDouble("inRD1",RD1DestIn);
             DestReach.setDouble("inRD2",RD2DestIn);
             DestReach.setDouble("inRG1",RG1DestIn);

@@ -153,7 +153,7 @@ import jams.model.*;
         double reachNRD2in = 0;
 //        System.out.println("NRD2out: " + NRD2out);
         
-       if(toPoly != null){
+       if((toPoly != null && toPoly.getId() != -1)){
             double[] srcDepth = ((JAMSDoubleArray)entity.getObject("depth_h")).getValue();
             double[] recDepth = ((JAMSDoubleArray)toPoly.getObject("depth_h")).getValue();
             int srcHors = srcDepth.length;
