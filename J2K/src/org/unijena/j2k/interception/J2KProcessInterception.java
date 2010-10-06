@@ -15,10 +15,8 @@ import jams.model.*;
         title="J2KProcessInterception",
         author="Peter Krause",
         description="Calculates daily interception based on DICKINSON 1984",
-        //process="Interception",
         version="1.0",
-        date="2010-09-07"
-    
+        date="2010-09-07"    
         )
 
         public class J2KProcessInterception extends JAMSComponent {
@@ -29,8 +27,7 @@ import jams.model.*;
             description = "attribute area",
             unit = "m^2",
             lowerBound= 0,
-            upperBound =1000000,
-            defaultValue=""
+            upperBound =1000000
             )
             public JAMSDouble area;
     
@@ -39,8 +36,7 @@ import jams.model.*;
             description = "state variable mean tempeature",
             unit = "°C",
             lowerBound= -70,
-            upperBound = 70,
-            defaultValue=""
+            upperBound = 70
             )
             public JAMSDouble tmean;
     
@@ -49,8 +45,7 @@ import jams.model.*;
             description = "state variable rain",
             unit = "L",
             lowerBound= 0,
-            upperBound =100,
-            defaultValue=""
+            upperBound =100
             )
             public JAMSDouble rain;
     
@@ -59,8 +54,7 @@ import jams.model.*;
             description = "state variable snow",
             unit = "L",
             lowerBound= 0,
-            upperBound =100,
-            defaultValue=""
+            upperBound =100
             )
             public JAMSDouble snow;
     
@@ -69,8 +63,7 @@ import jams.model.*;
             description = "state variable potET",
             unit = "L",
             lowerBound= 0,
-            upperBound =100,
-            defaultValue=""
+            upperBound =100
             )
             public JAMSDouble potET;
     
@@ -79,8 +72,7 @@ import jams.model.*;
             description = "state variable actET",
             unit = "L",
             lowerBound= 0,
-            upperBound =100,
-            defaultValue=""
+            upperBound =100
             )
             public JAMSDouble actET;
     
@@ -89,8 +81,7 @@ import jams.model.*;
             description = "state variable LAI",
             unit = "mm*m^-2",
             lowerBound= 0,
-            upperBound =100,
-            defaultValue=""
+            upperBound =100
             )
             public JAMSDouble actLAI;
     
@@ -99,8 +90,7 @@ import jams.model.*;
             description = "Snow parameter TRS",
             unit = "°C",
             lowerBound= -10,
-            upperBound =10,
-            defaultValue=""
+            upperBound =10
             )
             public JAMSDouble snow_trs;
     
@@ -109,8 +99,7 @@ import jams.model.*;
             description = "Snow parameter TRANS",
             unit = "°C",
             lowerBound= -10,
-            upperBound =10,
-            defaultValue=""
+            upperBound =10
             )
             public JAMSDouble snow_trans;
     
@@ -119,8 +108,7 @@ import jams.model.*;
             description = "Interception parameter a_rain",
             unit = "mm*m^-2",
             lowerBound= 0,
-            upperBound =10,
-            defaultValue=""
+            upperBound =10
             )
             public JAMSDouble a_rain;
     
@@ -129,8 +117,7 @@ import jams.model.*;
             description = "Interception parameter a_snow",
             unit = "mm*m^-2",
             lowerBound= 0,
-            upperBound =10,
-            defaultValue=""
+            upperBound =10
             )
             public JAMSDouble a_snow;
     
@@ -139,8 +126,7 @@ import jams.model.*;
             description = "state variable net-rain",
             unit = "L",
             lowerBound= 0,
-            upperBound =100,
-            defaultValue=""
+            upperBound =100
             )
             public JAMSDouble netRain;
     
@@ -149,8 +135,7 @@ import jams.model.*;
             description = "state variable net-snow",
             unit = "L",
             lowerBound= 0,
-            upperBound =100,
-            defaultValue=""
+            upperBound =100
             )
             public JAMSDouble netSnow;
     
@@ -159,8 +144,7 @@ import jams.model.*;
             description = "state variable throughfall",
             unit = "L",
             lowerBound= 0,
-            upperBound =100,
-            defaultValue=""
+            upperBound =100
             )
             public JAMSDouble throughfall;
     
@@ -169,8 +153,7 @@ import jams.model.*;
             description = "state variable dy-interception",
             unit = "L",
             lowerBound= 0,
-            upperBound =100,
-            defaultValue=""
+            upperBound =100
             )
             public JAMSDouble interception;
     
@@ -179,8 +162,7 @@ import jams.model.*;
             description = "state variable interception storage",
             unit = "L",
             lowerBound= 0,
-            upperBound =100,
-            defaultValue=""
+            upperBound =100
             )
             public JAMSDouble intercStorage;
     /*
