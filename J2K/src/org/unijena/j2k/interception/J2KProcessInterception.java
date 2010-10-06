@@ -15,7 +15,7 @@ import jams.model.*;
         title="J2KProcessInterception",
         author="Peter Krause",
         description="Calculates daily interception based on DICKINSON 1984",
-        process="Interception",
+        //process="Interception",
         version="1.0",
         date="2010-09-07"
     
