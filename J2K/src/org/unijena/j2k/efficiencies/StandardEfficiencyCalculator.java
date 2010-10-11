@@ -218,6 +218,7 @@ title="StandardEfficiencyCalculator",
     private final int ABSVOLERROR = 10;
     private final int RMSE = 11;
     private final int PBIAS = 12;
+    private final int PBIAS2 = 13;
     
     private final int TOTAL_PERIOD = 0;
     private final int HYDROLOGICAL_YEAR = 1;
@@ -439,6 +440,10 @@ title="StandardEfficiencyCalculator",
                 double pbias = VolumeError.pbias(valData_1, preData_1);
                 this.pbias.setValue(pbias);
                 getModel().getRuntime().println("PBIAS:\t\t" + String.format(Locale.US,"%.5f",pbias), JAMS.STANDARD);
+            }else if(effMethod.getValue()[i] == this.PBIAS2){
+                double pbias = VolumeError.pbias2(valData_1, preData_1);
+                this.pbias.setValue(pbias);
+                getModel().getRuntime().println("PBIAS2 (abs diff):\t\t" + String.format(Locale.US,"%.5f",pbias), JAMS.STANDARD);
             }
             
         }
