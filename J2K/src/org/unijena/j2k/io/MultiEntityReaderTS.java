@@ -23,9 +23,7 @@
  */
 package org.unijena.j2k.io;
 
-import java.io.BufferedReader;
-import java.io.FileReader;
-import java.io.IOException;
+import java.io.*;
 import org.unijena.j2k.*;
 import jams.data.*;
 import jams.model.*;
@@ -33,10 +31,11 @@ import java.util.*;
 import jams.JAMS;
 import java.lang.Math.*;
 import jams.tools.FileTools;
+import javax.swing.JOptionPane;
 
 /**
  *
- * @author S. Kralisch, f?r mehrdimensionale Topologie modifiziert von D.Varga und B.Pfennig
+ * @author S. Kralisch, fuer mehrdimensionale Topologie modifiziert von D.Varga und B.Pfennig
  * 09.10.2008
  */
 public class MultiEntityReaderTS extends JAMSComponent {
@@ -55,7 +54,7 @@ public class MultiEntityReaderTS extends JAMSComponent {
     public JAMSString to_hru_FileName;
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
     update = JAMSVarDescription.UpdateType.INIT,
-    description = "Parameter file name for weighting of receiver entity")
+    description = "Parameter file name for weighting of contribution area to receiver entities")
     public JAMSString bfl_FileName;
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.WRITE,
     update = JAMSVarDescription.UpdateType.RUN,
@@ -70,52 +69,15 @@ public class MultiEntityReaderTS extends JAMSComponent {
     description = "Collection of hru objects with their topology")
     public JAMSEntityCollection topology;
 
-    @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
-    description = "Name of the attribute containing the HRU identifiers",
-    defaultValue = "ID")
-    public Attribute.String hruIDAttribute;
-    @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
-    description = "Name of the attribute containing the reach identifiers",
-    defaultValue = "ID")
-    public Attribute.String reachIDAttribute;
-    @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
-    description = "Name of the attribute describing the HRU to HRU relation in the input file",
-    defaultValue = "to_poly")
-    public Attribute.String hru2hruAttribute;
-    @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
-    description = "Name of the attribute describing the HRU to reach relation in the input file",
-    defaultValue = "to_reach")
-    public Attribute.String hru2reachAttribute;
-    @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
-    description = "Name of the attribute describing the reach to reach relation in the input file",
-    defaultValue = "to_reach")
-    public Attribute.String reach2reachAttribute;
+    public void init() throws JAMSEntity.NoSuchAttributeException, FileNotFoundException, IOException {
 
-    public void init() throws JAMSEntity.NoSuchAttributeException {
-        /*
-        //read hru parameter
-        hrus.setEntities(J2KFunctions.readParas(JAMSTools.CreateAbsoluteFileName(getModel().getWorkspaceDirectory().getPath(), hruFileName.getValue()), getModel()));
-
-        //read reach parameter
-        reaches.setEntities(J2KFunctions.readParas(JAMSTools.CreateAbsoluteFileName(getModel().getWorkspaceDirectory().getPath(), reachFileName.getValue()), getModel()));
-
-        //create object associations from id attributes for hrus and reaches
-        createTopology();
-
-        //create total order on hrus and reaches that allows processing them subsequently
-        getModel().getRuntime().println("Create ordered hru-list", JAMS.VERBOSE);
-        createOrderedList(hrus, "to_poly");
-        getModel().getRuntime().println("Create ordered reach-list", JAMS.VERBOSE);
-        createOrderedList(reaches, "to_reach");
-        getModel().getRuntime().println("Entities read successfull!", JAMS.VERBOSE);*/
-
-        //read hru parameter
+         //read hru parameter
         hrus.setEntities(J2KFunctions.readParas(FileTools.createAbsoluteFileName(getModel().getWorkspaceDirectory().getPath(), hruFileName.getValue()), getModel()));
 
         //assign IDs to all hru entities
         for (Attribute.Entity e : hrus.getEntityArray()) {
             try {
-                e.setId((long) e.getDouble(hruIDAttribute.getValue()));
+                e.setId((long) e.getDouble(hruFileName.getValue()));
             } catch (Attribute.Entity.NoSuchAttributeException nsae) {
                 getModel().getRuntime().sendErrorMsg("Couldn't find attribute \"ID\" while reading J2K HRUu parameter file (" + hruFileName.getValue() + ")!");
             }
@@ -127,435 +89,432 @@ public class MultiEntityReaderTS extends JAMSComponent {
         //assign IDs to all reach entities
         for (Attribute.Entity e : reaches.getEntityArray()) {
             try {
-                e.setId((long) e.getDouble(reachIDAttribute.getValue()));
+                e.setId((long) e.getDouble(reachFileName.getValue()));
             } catch (Attribute.Entity.NoSuchAttributeException nsae) {
                 getModel().getRuntime().sendErrorMsg("Couldn't find attribute \"ID\" while reading J2K Reach parameter file (" + reachFileName.getValue() + ")!");
             }
         }
-
         //create object associations from id attributes for hrus and reaches
         createTopology();
 
         //create total order on hrus and reaches that allows processing them subsequently
-        getModel().getRuntime().println("Create ordered hru-list", JAMS.VERBOSE);
-        createOrderedList(hrus, hru2hruAttribute.getValue());
-        getModel().getRuntime().println("HRU entities read successfully", JAMS.STANDARD);
         getModel().getRuntime().println("Create ordered reach-list", JAMS.VERBOSE);
-        createOrderedList(reaches, reach2reachAttribute.getValue());
-        getModel().getRuntime().println("Reach entities read successfully", JAMS.STANDARD);
+        createOrderedList(reaches, "to_reach");
+        getModel().getRuntime().println("Create ordered hru-list", JAMS.VERBOSE);
+        createOrderedList(hrus, "to_poly");
+        getModel().getRuntime().println("Entities read successfull!", JAMS.VERBOSE);
 
     }
 
-    private void createTopology() throws Attribute.Entity.NoSuchAttributeException {
+    private void createTopology() throws JAMSEntity.NoSuchAttributeException {
 
-        BufferedReader reader1;
-        BufferedReader reader2;
-        StringTokenizer tokenizer_to_hru;
-        StringTokenizer tokenizer_weights;
+        BufferedReader reader1, reader2;
         HashMap<Double, Attribute.Entity> hruMap = new HashMap<Double, Attribute.Entity>();
         HashMap<Double, Attribute.Entity> reachMap = new HashMap<Double, Attribute.Entity>();
         Iterator<Attribute.Entity> hruIterator;
         Iterator<Attribute.Entity> reachIterator;
-
-        Attribute.Entity e, f, r, toPoly, toReach;
-
-        ArrayList<Attribute.Entity> receiverHRUs;
-        ArrayList<Attribute.Entity> receiverReaches;
-        ArrayList<Double> receiverHRUsWeights;
-        ArrayList<Double> receiverReachesWeights;
-        ArrayList<Double> receiverArea;
-
-       /* //put all entities into a HashMap with their ID as key
-        hruIterator = hrus.getEntities().iterator();
-        while (hruIterator.hasNext()) {
-            e = hruIterator.next();
-            hruMap.put(e.getDouble("ID"), e);
-        }
-
-        reachIterator = reaches.getEntities().iterator();
-        while (reachIterator.hasNext()) {
-            e = reachIterator.next();
-            reachMap.put(e.getDouble("ID"), e);
-        }*/
+        Attribute.Entity aktuelleHRU, aktuellerReach, zielHRU, zielReach;
+        ArrayList<Attribute.Entity> toHRUsArrayList;
+        ArrayList<Attribute.Entity> toReachesArrayList;
+        ArrayList<Double> toHRUsWeightsArrayList, toReachesWeightsArrayList, toHRUsBFlArrayList;
 
         //put all entities into a HashMap with their ID as key
         hruIterator = hrus.getEntities().iterator();
         while (hruIterator.hasNext()) {
-            e = hruIterator.next();
-            hruMap.put(e.getDouble(hruIDAttribute.getValue()), e);
+            aktuelleHRU = hruIterator.next();
+            hruMap.put(aktuelleHRU.getDouble("ID"), aktuelleHRU);
         }
+
         reachIterator = reaches.getEntities().iterator();
         while (reachIterator.hasNext()) {
-            e = reachIterator.next();
-            reachMap.put(e.getDouble(reachIDAttribute.getValue()), e);
+            aktuellerReach = reachIterator.next();
+            reachMap.put(aktuellerReach.getDouble("ID"), aktuellerReach);
         }
 
-
+        //create empty entities, i.e. those that are linked to in case there is no linkage ;-)
+        /*JAMSEntity nullEntity = (JAMSEntity) JAMSDataFactory.createInstance(JAMSEntity.class, getModel().getRuntime());
+        nullEntity.setValue((HashMap<String, Object>) null);
+        reachMap.put(new Integer(0), nullEntity);*/
+        
         Attribute.Entity nullEntity = JAMSDataFactory.createEntity();
         nullEntity.setValue((HashMap<String, Object>) null);
         hruMap.put(new Double(0), nullEntity);
         reachMap.put(new Double(0), nullEntity);
-         //associate the hru entities with their downstream entity
-        hruIterator = hrus.getEntities().iterator();
-        while (hruIterator.hasNext()) {
-            e = hruIterator.next();
-            toPoly = hruMap.get(e.getDouble(hru2hruAttribute.getValue()));
-            toReach = reachMap.get(e.getDouble(hru2reachAttribute.getValue()));
-
-            if ((toPoly == null) || (toReach == null)) {
-                getModel().getRuntime().sendErrorMsg("Topological neighbour for HRU with ID "
-                        + e.getId() + " could not be found. This may cause errors!");
-            }
-
-            e.setObject(hru2hruAttribute.getValue(), toPoly);
-            e.setObject(hru2reachAttribute.getValue(), toReach);
-
-        }
-
-
-        //create empty entities, i.e. those that are linked to in case there is no linkage ;-)
-        nullEntity.setValue((HashMap<String, Object>) null);
-        reachMap.put(new Double(0), nullEntity);
-
+        
         try {
-
             reader1 = new BufferedReader(new FileReader(getModel().getWorkspaceDirectory().getPath() + "/" + to_hru_FileName.getValue()));
             reader2 = new BufferedReader(new FileReader(getModel().getWorkspaceDirectory().getPath() + "/" + bfl_FileName.getValue()));
 
-            String s = "#";
-            while (s.startsWith("#")) {
-                s = reader1.readLine();
+            String toHRUsLine = "#";
+            while (toHRUsLine.startsWith("#")) {
+                toHRUsLine = reader1.readLine();
             }
 
-            String t = "#";
-            while (t.startsWith("#")) {
-                t = reader2.readLine();
+            String toHRUsWeightsLine = "#";
+            while (toHRUsWeightsLine.startsWith("#")) {
+                toHRUsWeightsLine = reader2.readLine();
             }
 
-            while ((s != null) && !s.startsWith("#")) {
+            while ((toHRUsLine != null) && !toHRUsLine.startsWith("#")) {
+                //String zeichenkette = "\t";
+                String zeichenkette = ",-8888.000,";
 
-                tokenizer_to_hru = new StringTokenizer(s, "\t");
-                double eID = Double.parseDouble(tokenizer_to_hru.nextToken());
-                double eBFl = Double.parseDouble(tokenizer_to_hru.nextToken());
-                String recIDs = tokenizer_to_hru.nextToken();
-                e = hruMap.get(eID);
+                String[] toHRUsSplitArray = toHRUsLine.split(zeichenkette);
+                String[] toHRUsWeightsSplitArray = toHRUsWeightsLine.split(zeichenkette);
 
-                e.setDouble("BFl", eBFl);
+                int HRUsID = Integer.parseInt(toHRUsSplitArray[0]);
+                double HRUsBFl = Double.parseDouble(toHRUsSplitArray[1]);
+                String toHRUsString = toHRUsSplitArray[2];
 
-                tokenizer_weights = new StringTokenizer(t, "\t");
-                double eID2 = Double.parseDouble(tokenizer_weights.nextToken());
-                double eBFl2 = Double.parseDouble(tokenizer_weights.nextToken());
-                String recWeights = tokenizer_weights.nextToken();
+                aktuelleHRU = hruMap.get(HRUsID);
+                aktuelleHRU.setDouble("BFLDouble", HRUsBFl);
 
-                //Checks if e1 and e2 are identical
+                int HRUsID2 = Integer.parseInt(toHRUsWeightsSplitArray[0]);
+                String toHRUsWeightsString = toHRUsWeightsSplitArray[2];
+
                 //Die Tabellen topologie_to_hru und topologie_bfl muessen identisch sortiert sein
-                if (eID != eID2) {
-                    getModel().getRuntime().sendHalt("One of tables topologie_to_hru or topologie_bfl is missorted");
+                if (HRUsID != HRUsID2) {
+                    System.out.println("Tabellen sind nicht gleich sortiert.");
+                    JOptionPane.showMessageDialog(null, "Tabellen sind nicht gleich sortiert.");
+                    System.exit(-1);
                 }
 
-                receiverHRUs = new ArrayList<Attribute.Entity>();
-                receiverReaches = new ArrayList<Attribute.Entity>();
-                receiverHRUsWeights = new ArrayList<Double>();
-                receiverReachesWeights = new ArrayList<Double>();
-                receiverArea = new ArrayList<Double>();
+                toHRUsArrayList = new ArrayList<Attribute.Entity>();
+                toReachesArrayList = new ArrayList<Attribute.Entity>();
 
-                //Tokenizer for splitting on ","
-                StringTokenizer sTok = new StringTokenizer(recIDs, ","); //Tokenizer for receiver entities
-                StringTokenizer tTok = new StringTokenizer(recWeights, ","); //Tokenizer for receiver entities weights
+                toHRUsWeightsArrayList = new ArrayList<Double>();
+                toReachesWeightsArrayList = new ArrayList<Double>();
+
+                toHRUsBFlArrayList = new ArrayList<Double>();
+
+                //Tokenizer zum Unterteilen bei ","
+                StringTokenizer toHRUsToken = new StringTokenizer(toHRUsString, ","); //Tokenizer fuer Empfaenger-HRUs
+                StringTokenizer toHRUsWeightsToken = new StringTokenizer(toHRUsWeightsString, ","); //Tokenizer fuer die Wichtungen der Empfaenger-HRUs
 
                 boolean tschuessnull = false;
-                double sumWeight = 1;
+                double sumWeights = 1;
 
-                while (sTok.hasMoreTokens() && tschuessnull == false) {
-                    String stringID = sTok.nextToken();
-                    double doubleID = Double.parseDouble(stringID);
-                    String stringWeight = tTok.nextToken();
-                    double doubleWeight = Double.parseDouble(stringWeight);
+                while (toHRUsToken.hasMoreTokens() && tschuessnull == false) {
+                    String stringID = toHRUsToken.nextToken();
+                    double toHRUsID = Double.parseDouble(stringID);
 
-                    sumWeight = Math.round((sumWeight - doubleWeight) * 10000) / 10000;
+                    String stringWeight = toHRUsWeightsToken.nextToken();
+                    double toHRUsWeight = Double.parseDouble(stringWeight);
 
-                    if ((doubleID == 0 && doubleWeight != 0) || (doubleID != 0 && doubleWeight == 0)) {
-                        getModel().getRuntime().sendHalt("No. of receivers and their weights do not match!");
+                    sumWeights = 0.0001 * Math.round((sumWeights - toHRUsWeight) * 10000);
+
+                    if ((toHRUsID == 0 && toHRUsWeight != 0) || (toHRUsID != 0 && toHRUsWeight == 0)) {
+                        System.out.println("Fehler bei HRU " + HRUsID + ". Anzahl der Empfaenger-HRUs und der Wichtungen stimmen nicht ueberein.");
+                        JOptionPane.showMessageDialog(null, "Fehler bei HRU " + HRUsID + ". Anzahl der Empfaenger-HRUs und der Wichtungen stimmen nicht ueberein.");
+                        System.exit(-1);
                     }
 
                     //for receiver HRUs
-                    if (doubleID > 0) {
-                        f = hruMap.get(doubleID);
-                        receiverHRUs.add(f);
-                        receiverHRUsWeights.add(doubleWeight);
+                    if (toHRUsID > 0) {
+                        zielHRU = hruMap.get(toHRUsID);
+                        toHRUsArrayList.add(zielHRU);
+                        toHRUsWeightsArrayList.add(toHRUsWeight);
                     }
 
                     //for receiver Reaches
-                    if (doubleID < 0) {
-                        double reachID = doubleID * (-1);
-                        r = reachMap.get(reachID);
-                        receiverReaches.add(r);
-                        receiverReachesWeights.add(doubleWeight);
+                    if (toHRUsID < 0) {
+                        double toReachesID = toHRUsID * (-1);
+                        zielReach = reachMap.get(toReachesID);
+                        toReachesArrayList.add(zielReach);
+                        toReachesWeightsArrayList.add(toHRUsWeight);
                     }
 
-                    if (doubleID == 0) {
+                    if (toHRUsID == 0) {
                         tschuessnull = true;
                     }
                 }
 
-                sumWeight = Math.abs(sumWeight);
-                if (sumWeight >= 0.001) {
-                    System.out.println("Error in processing entity with ID " + eID);
-                    getModel().getRuntime().sendHalt("Sum of weights is not equal 1! Process entity:" + eID);
+                sumWeights = Math.abs(sumWeights);
+                if (sumWeights >= 0.001) {
+                    System.out.println("Fehler bei HRU " + HRUsID + ". Summe der einzelnen Gewichte ungleich 1");
+                    JOptionPane.showMessageDialog(null, "Fehler bei HRU " + HRUsID + ". Summe der einzelnen Gewichte ungleich 1");
+                    System.exit(-1);
                 }
 
                 //converting the ArrayLists into Arrays
-                JAMSEntity[] to_hru_Array = receiverHRUs.toArray(new JAMSEntity[receiverHRUs.size()]);
-                JAMSEntity[] to_reach_Array = receiverReaches.toArray(new JAMSEntity[receiverReaches.size()]);
-                Double[] to_hru_weights_Array = receiverHRUsWeights.toArray(new Double[receiverHRUsWeights.size()]);
-                Double[] to_reach_weights_Array = receiverReachesWeights.toArray(new Double[receiverReachesWeights.size()]);
-                Double[] to_hru_bfl_Array = receiverArea.toArray(new Double[receiverHRUsWeights.size()]);
+                JAMSEntity[] toHRUsArray = toHRUsArrayList.toArray(new JAMSEntity[toHRUsArrayList.size()]);
+                JAMSEntity[] toReachesArray = toReachesArrayList.toArray(new JAMSEntity[toReachesArrayList.size()]);
+
+                Double[] toHRUsWeightsArray = toHRUsWeightsArrayList.toArray(new Double[toHRUsWeightsArrayList.size()]);
+                Double[] toReachesWeightsArray = toReachesWeightsArrayList.toArray(new Double[toReachesWeightsArrayList.size()]);
+
+                Double[] toHRUsBflArray = toHRUsBFlArrayList.toArray(new Double[toHRUsWeightsArrayList.size()]);
 
                 //creating new Objects for each entity
-                e.setObject("to_poly", to_hru_Array);
-                e.setObject("to_reach", to_reach_Array);
-                e.setObject("to_poly_weights", to_hru_weights_Array);
-                e.setObject("to_reach_weights", to_reach_weights_Array);
-                e.setObject("bfl", to_hru_bfl_Array);
+                aktuelleHRU.setObject("to_poly", toHRUsArray);
+                aktuelleHRU.setObject("to_reach", toReachesArray);
 
-                sumWeight = 1;
+                aktuelleHRU.setObject("to_poly_weights", toHRUsWeightsArray);
+                aktuelleHRU.setObject("to_reach_weights", toReachesWeightsArray);
 
-                //next line
-                s = reader1.readLine();
-                t = reader2.readLine();
+                aktuelleHRU.setObject("bfl", toHRUsBflArray);
+
+                sumWeights = 1;
+
+                //Auslesen der jeweils naechsten Zeile
+                toHRUsLine = reader1.readLine();
+                toHRUsWeightsLine = reader2.readLine();
             }
 
         } catch (IOException ioe) {
             getModel().getRuntime().handle(ioe);
         }
 
-        /*//associate the reach entities with their downstream entity
-        reachIterator = reaches.getEntities().iterator();
-        while (reachIterator.hasNext()) {
-            e = reachIterator.next();
-            e.setObject("to_reach", reachMap.get(e.getDouble("to-reach")));
-        }*/
-
-
         //associate the reach entities with their downstream entity
         reachIterator = reaches.getEntities().iterator();
         while (reachIterator.hasNext()) {
-            e = reachIterator.next();
-
-            toReach = reachMap.get(e.getDouble(reach2reachAttribute.getValue()));
-
-            if (toReach == null) {
-                getModel().getRuntime().sendErrorMsg("Topological neighbour for reach with ID "
-                        + e.getId() + " could not be found. This may cause errors!");
-            }
-
-            e.setObject(reach2reachAttribute.getValue(), toReach);
+            aktuellerReach = reachIterator.next();
+            aktuellerReach.setObject("to_reach", reachMap.get((int)aktuellerReach.getDouble("to-reach")));
         }
     }
 
-    protected void createOrderedList(JAMSEntityCollection col, String asso) throws Attribute.Entity.NoSuchAttributeException {
+    protected void createOrderedList(JAMSEntityCollection hrus, String asso) throws JAMSEntity.NoSuchAttributeException, FileNotFoundException, IOException {
 
-        Iterator<Attribute.Entity> entityIterator, entityIterator2;
-        Attribute.Entity e = null, e_ziel, e_ziel_neu;
-        ArrayList<Attribute.Entity> newList = new ArrayList<Attribute.Entity>();
-        HashMap<Attribute.Entity, Integer> statusMap = new HashMap<Attribute.Entity, Integer>();
-        HashMap<Attribute.Entity, Attribute.Entity> fromHruMap = new HashMap<Attribute.Entity, Attribute.Entity>();
-        HashMap<Attribute.Entity, Integer> fromIMap = new HashMap<Attribute.Entity, Integer>();
+
+        Iterator<Attribute.Entity> hruIterator;
+        Iterator<Attribute.Entity> hruIterator2;
+
+        Attribute.Entity aktuelleHRU = null;
+        ArrayList<Attribute.Entity> hruList = new ArrayList<Attribute.Entity>();
+
+        HashMap<JAMSEntity, Integer> statusMap = new HashMap<JAMSEntity, Integer>();
+        HashMap<JAMSEntity, JAMSEntity> fromHRUMap = new HashMap<JAMSEntity, JAMSEntity>();
+        HashMap<JAMSEntity, Integer> fromIMap = new HashMap<JAMSEntity, Integer>();
+        
         HashMap<Attribute.Entity, Integer> depthMap = new HashMap<Attribute.Entity, Integer>();
+
         Integer eDepth, fDepth;
-        boolean aufloesbar = false, unaufloesbar = false, mapChanged;
+        boolean aufloesbar = false, unaufloesbar = false, geaendert;
+        BufferedWriter writer2;
 
         //Identifikation und Aufloesung von Zirkeln
-        if ((asso.toString()).equals("to_poly")) {
+        /*/if ((asso.toString()).equals("to_poly")) {
 
-            entityIterator = col.getEntities().iterator();
+            writer2 = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(getModel().getWorkspaceDirectory().getPath() + "/unaufloesbareZirkel.txt")));
+
+            JAMSEntity aktuelleHRU = null;
+
+            hruIterator = hrus.getEntities().iterator();
 
             marke:
-            while (entityIterator.hasNext()) {
+            while (hruIterator.hasNext()) {
                 if (aufloesbar == false) {
-                    e = entityIterator.next();
+                    aktuelleHRU = hruIterator.next();
                 }
+
+                System.out.println("Untersuche HRU " + (int)aktuelleHRU.getDouble("ID") + " auf Zirkelbezuege");
 
                 aufloesbar = false;
-                e_ziel_neu = e;
-                //System.out.println("Untersuche HRU " + e.getDouble("ID") + " auf Zirkelbezuege");
+                JAMSEntity zielHRU_neu = aktuelleHRU;
 
-                entityIterator2 = col.getEntities().iterator();
-                while (entityIterator2.hasNext()) {
-                    Attribute.Entity next = entityIterator2.next();
-                    statusMap.put(next, new Integer(0)); //Status 0: Noch nicht markiert, Status 1: Markiert, Bearbeitung aber noch nicht gestartet, Status -2: Bearbeitung gestartet, aber ncch nicht abgeschlossen, STatus -3: Bearabeitung abgeschlossen
-                    fromHruMap.put(next, null);
-                    fromIMap.put(next, new Integer(0));
+                hruIterator2 = hrus.getEntities().iterator();
+                while (hruIterator2.hasNext()) {
+                    JAMSEntity initialisierungHRU = hruIterator2.next();
+                    statusMap.put(initialisierungHRU, new Integer(0)); //Status 0: Noch nicht markiert, Status 1: Markiert, Bearbeitung aber noch nicht gestartet, Status -2: Bearbeitung gestartet, aber ncch nicht abgeschlossen, STatus -3: Bearabeitung abgeschlossen
+                    fromHRUMap.put(initialisierungHRU, null);
+                    fromIMap.put(initialisierungHRU, new Integer(0));
                 }
 
-                statusMap.put(e, new Integer(1));
+                while (statusMap.get(aktuelleHRU) != -3) {
+                    JAMSEntity zielHRU = zielHRU_neu;
 
-                while (statusMap.get(e) != -3) {
-                    e_ziel = e_ziel_neu;
-                    statusMap.put(e_ziel, new Integer(-2));
-                    Attribute.Entity[] e_ziel_to_hru = (Attribute.Entity[]) e_ziel.getObject("to_poly");
+                    statusMap.put(zielHRU, new Integer(-2));
+                    JAMSEntity[] zielHRU_toHRU = (JAMSEntity[]) zielHRU.getObject("to_poly");
 
-                    if (e_ziel_to_hru.length > 0) {
+                    if (zielHRU_toHRU.length > 0) {
 
-                        for (int i = 0; i < e_ziel_to_hru.length; i++) {
+                        for (int i = 0; i < zielHRU_toHRU.length; i++) {
+                            JAMSEntity untersuchteHRU = zielHRU_toHRU[i];
 
-                            if (e_ziel_to_hru[i] != null) {
-                                double bfl_weitergabe = 0;
-                                Double[] e_ziel_to_hru_weights = (Double[]) e_ziel.getObject("to_poly_weights");
-                                bfl_weitergabe = e_ziel.getDouble("BFl") * e_ziel_to_hru_weights[i];
-                                Double[] e_ziel_to_hru_bfl = (Double[]) e_ziel.getObject("bfl");
-                                e_ziel_to_hru_bfl[i] = bfl_weitergabe;
-                                e_ziel.setObject("bfl", e_ziel_to_hru_bfl);
+                            if (untersuchteHRU != null) {
 
-                                if (e == e_ziel_to_hru[i]) {
+                                Double[] zielHRUsWeights = (Double[]) zielHRU.getObject("to_poly_weights");
+                                Double[] zielHRU_toHRU_BFl = (Double[]) zielHRU.getObject("bfl");
+                                zielHRU_toHRU_BFl[i] = zielHRU.getDouble("BFLDouble") * zielHRUsWeights[i];
+                                zielHRU.setObject("bfl", zielHRU_toHRU_BFl);
+
+                                if (aktuelleHRU == untersuchteHRU) {
                                     // Identifikation der kleinsten Beitragenden Flaeche
-                                    Attribute.Entity eZirkel = e_ziel, eBflMin = null;
+                                    JAMSEntity zirkelHRU = zielHRU, HRU_BflMin = null;
                                     int iZirkel = i, iZirkelMin = -1, teilerMin = -1;
                                     double bflZirkel, bflZirkelMin = -1;
 
-                                    while (eZirkel != null) {
+                                    while (zirkelHRU != null) {
+                                        JAMSEntity[] zirkelHRU_toReaches = (JAMSEntity[]) zirkelHRU.getObject("to_reach");
+                                        JAMSEntity[] zirkelHRU_toHRU = (JAMSEntity[]) zirkelHRU.getObject("to_poly");
 
-                                        Attribute.Entity[] eZirkel_to_reach = (Attribute.Entity[]) eZirkel.getObject("to_reach");
-                                        Attribute.Entity[] eZirkel_to_hru = (Attribute.Entity[]) eZirkel.getObject("to_poly");
-
-                                        int eZirkel_to_hru_length = 0;
-                                        for (int l = 0; l < eZirkel_to_hru.length; l++) {
-                                            if (eZirkel_to_hru[l] != null) {
-                                                eZirkel_to_hru_length += 1;
+                                        int zirkelHRU_Richtungen = 0;
+                                        for (int l = 0; l < zirkelHRU_toHRU.length; l++) {
+                                            
+                                            if (zirkelHRU_toHRU[l] != null) {
+                                                zirkelHRU_Richtungen += 1;
                                             }
                                         }
-                                        if (eZirkel_to_hru_length + eZirkel_to_reach.length > 1) {
-                                            Double[] eZirkel_to_hru_bfl = (Double[]) eZirkel.getObject("bfl");
-                                            bflZirkel = eZirkel_to_hru_bfl[iZirkel];
+                                        
+                                        if (zirkelHRU_Richtungen + zirkelHRU_toReaches.length > 1) {
+                                            Double[] zirkelHRU_toHRU_BFl = (Double[]) zirkelHRU.getObject("bfl");
+                                            bflZirkel = zirkelHRU_toHRU_BFl[iZirkel];
+                                            
                                             if (bflZirkelMin == -1 || bflZirkel < bflZirkelMin) {
                                                 aufloesbar = true;
                                                 bflZirkelMin = bflZirkel;
-                                                eBflMin = eZirkel;
+                                                HRU_BflMin = zirkelHRU;
                                                 iZirkelMin = iZirkel;
-                                                teilerMin = eZirkel_to_hru_length;
+                                                teilerMin = zirkelHRU_Richtungen;
                                             }
                                         }
-                                        iZirkel = fromIMap.get(eZirkel);
-                                        eZirkel = fromHruMap.get(eZirkel);
+                                        iZirkel = fromIMap.get(zirkelHRU);
+                                        zirkelHRU = fromHRUMap.get(zirkelHRU);
                                     }
+
                                     //Zirkelaufloesung
-                                    if (eBflMin != null && iZirkelMin != -1 && teilerMin != -1) {
+                                    if (HRU_BflMin != null && iZirkelMin != -1 && teilerMin != -1) {
 
-                                        JAMSEntity[] eBflMin_to_reach = (JAMSEntity[]) eBflMin.getObject("to_reach");
-                                        JAMSEntity[] eBflMin_to_hru = (JAMSEntity[]) eBflMin.getObject("to_poly");
-                                        Double[] eBflMin_to_reach_weights = (Double[]) eBflMin.getObject("to_reach_weights");
-                                        Double[] eBflMin_to_hru_weights = (Double[]) eBflMin.getObject("to_poly_weights");
+                                        JAMSEntity[] HRU_BFlMin_toHRUs = (JAMSEntity[]) HRU_BflMin.getObject("to_poly");
+                                        JAMSEntity[] HRU_BFlMin_toReaches = (JAMSEntity[]) HRU_BflMin.getObject("to_reach");                                        
 
-                                        double eBflMin_to_hruId = eBflMin_to_hru[iZirkelMin].getDouble("ID");
+                                        Double[] HRU_BFlMin_toHRUsWeights = (Double[]) HRU_BflMin.getObject("to_poly_weights");
+                                        Double[] HRU_BFlMin_toReachesWeights = (Double[]) HRU_BflMin.getObject("to_reach_weights");                                        
 
-                                        if (eBflMin_to_reach.length > 0) {
-                                            double eBflMin_to_reachId = eBflMin_to_reach[0].getDouble("ID");
+                                        int HRU_BFlMin_toHRUsID = (int)HRU_BFlMin_toHRUs[iZirkelMin].getDouble("ID");
+
+                                        if (HRU_BFlMin_toReaches.length > 0) {
+                                            int HRU_BFlMin_toReachesID = (int)HRU_BFlMin_toReaches[0].getDouble("ID");
 
                                             //Uebergabe des Wassers der zirkelausloesenden Flaeche an ggf. verknuepfte Fliessgewaesserabschnitte
-                                            eBflMin_to_reach_weights[0] = eBflMin_to_reach_weights[0] + eBflMin_to_hru_weights[iZirkelMin];
-                                            eBflMin.setObject("to_reach_weights", eBflMin_to_reach_weights);
+                                            HRU_BFlMin_toReachesWeights[0] = HRU_BFlMin_toReachesWeights[0] + HRU_BFlMin_toHRUsWeights[iZirkelMin];
+                                            HRU_BflMin.setObject("to_reach_weights", HRU_BFlMin_toReachesWeights);
 
-                                            System.out.println("HRU " + eBflMin.getDouble("ID") + ": Unterbrechung der Fliessbeziehung zu HRU " + eBflMin_to_hruId + ". Umleitung in das Fliessgewaessersegment -" + eBflMin_to_reachId + "; Beitragende Flaeche: " + Math.round(eBflMin.getDouble("BFl") * eBflMin_to_hru_weights[iZirkelMin] / 1000.) / 1000. + " qkm");
+                                            System.out.println("HRU " + (int)HRU_BflMin.getDouble("ID") + ": Unterbrechung der Fliessbeziehung zu HRU " + HRU_BFlMin_toHRUsID + ". Umleitung in das Fliessgewaessersegment -" + HRU_BFlMin_toReachesID + "; Beitragende Flaeche: " + Math.round(HRU_BflMin.getDouble("BFLDouble") * HRU_BFlMin_toHRUsWeights[iZirkelMin] / 1000.) / 1000. + " qkm");
                                         } else {
+
                                             //Uebergabe des Wassers der zirkelausloesenden Flaeche an die anderen Fliessbeziehungen der gleichen HRU
-                                            for (int s = 0; s < eBflMin_to_hru.length; s++) {
-                                                if (eBflMin_to_hru[s] != null && s != iZirkelMin) {
-                                                    eBflMin_to_hru_weights[s] = eBflMin_to_hru_weights[s] + eBflMin_to_hru_weights[iZirkelMin] / (teilerMin - 1);
+                                            for (int s = 0; s < HRU_BFlMin_toHRUs.length; s++) {
+                                                
+                                                if (HRU_BFlMin_toHRUs[s] != null && s != iZirkelMin) {
+                                                    HRU_BFlMin_toHRUsWeights[s] = HRU_BFlMin_toHRUsWeights[s] + HRU_BFlMin_toHRUsWeights[iZirkelMin] / (teilerMin - 1);
                                                 }
                                             }
-                                            System.out.println("HRU " + eBflMin.getDouble("ID") + ": Unterbrechung der Fliessbeziehung zu HRU " + eBflMin_to_hruId + ". Verteilung des Wassers auf alle anderen Fliessbeziehungen der HRU;" + " Beitragende Flaeche: " + Math.round(eBflMin.getDouble("BFl") * eBflMin_to_hru_weights[iZirkelMin] / 1000.) / 1000. + " qkm");
+                                            System.out.println("HRU " + (int)HRU_BflMin.getDouble("ID") + ": Unterbrechung der Fliessbeziehung zu HRU " + HRU_BFlMin_toHRUsID + ". Verteilung des Wassers auf alle anderen Fliessbeziehungen der HRU;" + " Beitragende Flaeche: " + Math.round(HRU_BflMin.getDouble("BFLDouble") * HRU_BFlMin_toHRUsWeights[iZirkelMin] / 1000.) / 1000. + " qkm");
                                         }
-                                        eBflMin_to_hru[iZirkelMin] = null;
-                                        eBflMin.setObject("to_poly", eBflMin_to_hru);
-                                        eBflMin_to_hru_weights[iZirkelMin] = null;
-                                        eBflMin.setObject("to_poly_weights", eBflMin_to_hru_weights);
+                                        HRU_BFlMin_toHRUs[iZirkelMin] = null;
+                                        HRU_BflMin.setObject("to_poly", HRU_BFlMin_toHRUs);
+                                        HRU_BFlMin_toHRUsWeights[iZirkelMin] = null;
+                                        HRU_BflMin.setObject("to_poly_weights", HRU_BFlMin_toHRUsWeights);
                                     } else {
                                         unaufloesbar = true;
-                                        System.out.println("Nicht aufloesbarer Zirkel! Fliessbeziehung von HRU " + e_ziel.getDouble("ID") + " zu HRU " + e_ziel_to_hru[i].getDouble("ID") + " kann nicht unterbrochen werden.");
+                                        System.out.println("Nicht aufloesbarer Zirkel! Fliessbeziehung von HRU " + (int)zielHRU.getDouble("ID") + " zu HRU " + (int)zielHRU_toHRU[i].getDouble("ID") + " kann nicht unterbrochen werden.");
+                                        //JOptionPane.showMessageDialog(null, "Nicht aufloesbarer Zirkel! Fliessbeziehung von HRU " + (int)zielHRU.getDouble("ID") + " zu HRU " + (int)zielHRU_toHRU[i].getDouble("ID") + " kann nicht unterbrochen werden.");
+                                        writer2.write("Nicht aufloesbarer Zirkel! Fliessbeziehung von HRU " + (int)zielHRU.getDouble("ID") + " zu HRU " + (int)zielHRU_toHRU[i].getDouble("ID") + " kann nicht unterbrochen werden.");
+                                        writer2.newLine();
                                     }
-                                    continue marke;
+                                    continue marke; //Die Sprungmarke ist deshalb notwendig, da eine Fliessbeziehung unterbrochen wurde und deshalb der Weg beim Backtracking nicht zurueckverfolgt werden koennte. Deshalb wird die Entitaet erneut von vorn abgearbeitet.
                                 }
-                                if (statusMap.get(e_ziel_to_hru[i]) == 0) {
-                                    statusMap.put(e_ziel_to_hru[i], new Integer(1));
-                                    fromHruMap.put(e_ziel_to_hru[i], e_ziel);
-                                    fromIMap.put(e_ziel_to_hru[i], new Integer(i));
+
+                                if (statusMap.get(untersuchteHRU) == 0) {
+                                    statusMap.put(untersuchteHRU, new Integer(1));
+                                    fromHRUMap.put(untersuchteHRU, zielHRU);
+                                    fromIMap.put(untersuchteHRU, new Integer(i));
                                 }
                             }
                         }
-                        for (int i = 0; i < e_ziel_to_hru.length; i++) {
-                            if (statusMap.get(e_ziel_to_hru[i]) != null && statusMap.get(e_ziel_to_hru[i]) == 1) {
-                                e_ziel_neu = e_ziel_to_hru[i];
+
+                        for (int i = 0; i < zielHRU_toHRU.length; i++) {
+                            JAMSEntity tempHRU = zielHRU_toHRU[i];
+
+                            if (statusMap.get(tempHRU) != null && statusMap.get(tempHRU) == 1 && zielHRU == fromHRUMap.get(tempHRU)) {
+                                zielHRU_neu = tempHRU;
                             }
                         }
                     }
+
                     //Backtracking
-                    int anzahl = 0;
-                    for (int i = 0; i < e_ziel_to_hru.length; i++) {
-                        if (statusMap.get(e_ziel_to_hru[i]) != null && statusMap.get(e_ziel_to_hru[i]) >= 0) {
-                            anzahl += 1;
+                    int freieRichtungen = 0;
+
+                    for (int i = 0; i < zielHRU_toHRU.length; i++) {
+                        JAMSEntity tempHRU2 = zielHRU_toHRU[i];
+
+                        if (statusMap.get(tempHRU2) != null && statusMap.get(tempHRU2) >= 0) {
+
+                            if (statusMap.get(tempHRU2) == 1 && zielHRU == fromHRUMap.get(tempHRU2)) {
+                                freieRichtungen += 1;
+                            }
                         }
                     }
-                    if (anzahl == 0) {
-                        statusMap.put(e_ziel, new Integer(-3));
-                        e_ziel_neu = fromHruMap.get(e_ziel);
+
+                    if (freieRichtungen == 0) {
+                        statusMap.put(zielHRU, new Integer(-3));
+                        zielHRU_neu = fromHRUMap.get(zielHRU);
                     }
                 }
             }
-            //Abbruch wegen nicht aufl?sbaren Zirkels
+
+            writer2.close();
+
+            //Abbruch wegen nicht aufloesbaren Zirkels
             if (unaufloesbar == true) {
-                getModel().getRuntime().sendHalt("Nicht aufloesbare Zirkel in HRU-Muster");
+                System.out.println("Nicht aufloesbare Zirkel in HRU-Muster");
+                JOptionPane.showMessageDialog(null, "Nicht aufloesbare Zirkel in HRU-Muster");
+                System.exit(-1);
+            } else {
+                new File((getModel().getWorkspaceDirectory().getPath() + "/unaufloesbareZirkel.txt")).delete();
             }
-        }
+        }/*/
 
         // Aufbau der Topologie
-        mapChanged = true;
-        entityIterator = col.getEntities().iterator();
-        while (entityIterator.hasNext()) {
-            depthMap.put(entityIterator.next(), new Integer(0));
+        geaendert = true;
+        
+        hruIterator = hrus.getEntities().iterator();
+        while (hruIterator.hasNext()) {
+            depthMap.put(hruIterator.next(), new Integer(0));
         }
 
         //put all collection elements (keys) and their maximum depth (values) into a HashMap
-        while (mapChanged) {
-            mapChanged = false;
-            entityIterator = col.getEntities().iterator();
-            while (entityIterator.hasNext()) {
-                e = entityIterator.next();
-                eDepth = depthMap.get(e);
+        while (geaendert) {
+            geaendert = false;
+            
+            hruIterator = hrus.getEntities().iterator();
+            while (hruIterator.hasNext()) {
+                aktuelleHRU = hruIterator.next();
+                eDepth = depthMap.get(aktuelleHRU);
 
                 if ((asso.toString()).equals("to_poly")) {
+                    JAMSEntity[] aktuelleHRU_toHRUs = (JAMSEntity[]) aktuelleHRU.getObject(asso);
 
-                    JAMSEntity[] e_ziel_to_hru;
-                    e_ziel_to_hru = (JAMSEntity[]) e.getObject(asso);
+                    if (aktuelleHRU_toHRUs.length > 0) {
 
-                    if (e_ziel_to_hru.length > 0) {
+                        for (int i = 0; i < aktuelleHRU_toHRUs.length; i++) {
 
-                        for (int i = 0; i < e_ziel_to_hru.length; i++) {
-
-                            if (e_ziel_to_hru[i] != null) {
-                                fDepth = depthMap.get(e_ziel_to_hru[i]);
+                            if (aktuelleHRU_toHRUs[i] != null) {
+                                fDepth = depthMap.get(aktuelleHRU_toHRUs[i]);
 
                                 if (fDepth.intValue() <= eDepth.intValue()) {
-                                    depthMap.put(e_ziel_to_hru[i], new Integer(eDepth.intValue() + 1));
-                                    mapChanged = true;
+                                    depthMap.put(aktuelleHRU_toHRUs[i], new Integer(eDepth.intValue() + 1));
+                                    geaendert = true;
                                 }
                             }
                         }
                     }
                 }
-                if ((asso.toString()).equals("to_reach")) {
 
-                    JAMSEntity eff;
-                    eff = (JAMSEntity) e.getObject(asso);
-                    if (eff.getValue() == null) {
-                        eff = null;
+                if ((asso.toString()).equals("to_reach")) {
+                    JAMSEntity aktuelleHRU_toReaches = (JAMSEntity) aktuelleHRU.getObject(asso);
+
+                    if (aktuelleHRU_toReaches.getValue() == null) {
+                        aktuelleHRU_toReaches = null;
                     }
 
-                    if (eff != null) {
-                        fDepth = depthMap.get(eff);
+                    if (aktuelleHRU_toReaches != null) {
+                        fDepth = depthMap.get(aktuelleHRU_toReaches);
 
                         if (fDepth.intValue() <= eDepth.intValue()) {
-                            depthMap.put(eff, new Integer(eDepth.intValue() + 1));
-                            mapChanged = true;
+                            depthMap.put(aktuelleHRU_toReaches, new Integer(eDepth.intValue() + 1));
+                            geaendert = true;
                         }
                     }
                 }
@@ -564,36 +523,37 @@ public class MultiEntityReaderTS extends JAMSComponent {
 
         //find out which is the max depth of all entities
         int maxDepth = 0;
-        entityIterator = col.getEntities().iterator();
-        while (entityIterator.hasNext()) {
-            e = entityIterator.next();
-            maxDepth = Math.max(maxDepth, depthMap.get(e).intValue());
-        }
 
+        hruIterator = hrus.getEntities().iterator();
+        while (hruIterator.hasNext()) {
+            aktuelleHRU = hruIterator.next();
+            maxDepth = Math.max(maxDepth, depthMap.get(aktuelleHRU).intValue());
+        }
         //create ArrayList of ArrayList objects, each element keeping the entities of one level
+        //ArrayList<ArrayList<JAMSEntity>> alList = new ArrayList<ArrayList<JAMSEntity>>();
         ArrayList<ArrayList<Attribute.Entity>> alList = new ArrayList<ArrayList<Attribute.Entity>>();
+
 
         for (int i = 0; i <= maxDepth; i++) {
             alList.add(new ArrayList<Attribute.Entity>());
         }
 
         //fill the ArrayList objects within the ArrayList with entity objects
-        entityIterator = col.getEntities().iterator();
-
-        while (entityIterator.hasNext()) {
-            e = entityIterator.next();
-            int depth = depthMap.get(e).intValue();
-            alList.get(depth).add(e);
+        hruIterator = hrus.getEntities().iterator();
+        while (hruIterator.hasNext()) {
+            aktuelleHRU = hruIterator.next();
+            int depth = depthMap.get(aktuelleHRU).intValue();
+            alList.get(depth).add(aktuelleHRU);
         }
 
-        //put the entities
         for (int i = 0; i <= maxDepth; i++) {
-            entityIterator = alList.get(i).iterator();
-            while (entityIterator.hasNext()) {
-                e = entityIterator.next();
-                newList.add(e);
+
+            hruIterator = alList.get(i).iterator();
+            while (hruIterator.hasNext()) {
+                aktuelleHRU = hruIterator.next();
+                hruList.add(aktuelleHRU);
             }
         }
-        col.setEntities(newList);
+        hrus.setEntities(hruList);
     }
 }
