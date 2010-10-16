@@ -95,6 +95,7 @@ public class FullSetEntityWriter extends JAMSComponent {
         writer.addComment("J2K model output"+header.getValue());
         
         writer.addComment("");
+        headerWritten = false;
     }
     
     @Override
