@@ -25,6 +25,7 @@ package org.unijena.j2k.io;
 
 import jams.tools.JAMSTools;
 import jams.data.*;
+import jams.data.Attribute.Entity;
 import jams.model.*;
 import jams.io.*;
 
@@ -82,57 +83,50 @@ public class FullSetEntityWriter extends JAMSComponent {
     
    
     private GenericDataWriter writer;
-    private String[] attrs;
     private boolean headerWritten;
-    int nEnts = 0;
     /*
      *  Component runstages
      */
     
+    @Override
     public void init() throws JAMSEntity.NoSuchAttributeException {
         writer = new GenericDataWriter(JAMSTools.CreateAbsoluteFileName(getModel().getWorkspaceDirectory().getPath(),fileName.getValue()));
         
         writer.addComment("J2K model output"+header.getValue());
         
         writer.addComment("");
-        
-        nEnts = this.entitySet.getEntityArray().length;
-        
-        
     }
     
+    @Override
     public void run() throws JAMSEntity.NoSuchAttributeException {
         if(!this.headerWritten){
             //always write time
             writer.addColumn("date/time");
-            
-            entitySet.getEntityEnumerator().reset();
-            boolean cont = true;
-            
-            while(cont){
-                Object ob = entitySet.getCurrent().getObject(this.attributeName.getValue());
+            EntityEnumerator enumerator = entitySet.getEntityEnumerator();
+            boolean firstIteration = true;
+            while(firstIteration || enumerator.hasNext()){
+                Entity entity = null;
+                if (firstIteration){
+                    entity = entitySet.getCurrent();
+                    firstIteration = false;
+                } else
+                    entity = enumerator.next();
+                Object ob = entity.getObject(this.attributeName.getValue());
                 int length = 0;
                 //output variable is of type array
                 if(ob.getClass().getName().contains("DoubleArray")){
                     //System.out.println("JAMSArray");
-                    length = ((JAMSDoubleArray)entitySet.getCurrent().getObject(this.attributeName.getValue())).getValue().length;
+                    length = ((JAMSDoubleArray)entity.getObject(this.attributeName.getValue())).getValue().length;
                     //output variable is a single value
                 } else{
                     length = 0;
                 }
                 for(int i = 0; i < length; i++){
-                    writer.addColumn("HRU_"+(int)entitySet.getCurrent().getDouble("ID")+"["+i+"]");
+                    writer.addColumn("HRU_"+(int)entity.getDouble("ID")+"["+i+"]");
                 }
                 if(length == 0){
-                    writer.addColumn("HRU_"+(int)entitySet.getCurrent().getDouble("ID"));
+                    writer.addColumn("HRU_"+(int)entity.getDouble("ID"));
                 }
-                
-                
-                if(entitySet.getEntityEnumerator().hasNext()){
-                    entitySet.getEntityEnumerator().next();
-                    cont = true;
-                }else
-                    cont = false;
             }
             
             writer.writeHeader();
@@ -144,39 +138,37 @@ public class FullSetEntityWriter extends JAMSComponent {
         writer.addData(time);
         
         entitySet.getEntityEnumerator().reset();
-        int setCounter = 0;
-        boolean cont = true;
-        while(cont){
-            
+        
+        boolean firstIteration = true;
+        EntityEnumerator enumerator = entitySet.getEntityEnumerator();
+        while(firstIteration || enumerator.hasNext()){
+            Entity entity = null;
+            if (firstIteration) {
+                entity = entitySet.getCurrent();
+                firstIteration = false;
+            } else {
+                entity = enumerator.next();
+            }
             double weightVal = 1.0;
             if(!this.weight.getValue().equals("none")){
-                weightVal = (((JAMSDouble)entitySet.getCurrent().getObject(this.weight.getValue())).getValue());
+                weightVal = (((JAMSDouble)entity.getObject(this.weight.getValue())).getValue());
             }
-            Object ob = entitySet.getCurrent().getObject(this.attributeName.getValue());
+            Object ob = entity.getObject(this.attributeName.getValue());
             if(ob.getClass().getName().contains("DoubleArray")){
                 //System.out.println("HRUNo: " +((JAMSDouble)entitySet.getCurrent().getObject("ID")).getValue());
-                double[] da = ((JAMSDoubleArray)entitySet.getCurrent().getObject(this.attributeName.getValue())).getValue();
+                double[] da = ((JAMSDoubleArray)entity.getObject(this.attributeName.getValue())).getValue();
                 for(int i = 0; i < da.length; i++){
                     double val = da[i] / weightVal;
                     writer.addData(""+val);
                 }
             } else{
                 //System.out.println("Primitive");
-                double da = ((JAMSDouble)entitySet.getCurrent().getObject(this.attributeName.getValue())).getValue();
+                double da = ((JAMSDouble)entity.getObject(this.attributeName.getValue())).getValue();
                 double val = da / weightVal;
                 //System.out.println("Val:" + val + " da: " + da);
                 writer.addData(""+val);
-            }
-            if(setCounter < (nEnts - 1)){
-                setCounter++;
-            }
-
-            //writer.addData(""+entitySet.getCurrent().getDouble(this.attributeName.getValue()));
-            if(entitySet.getEntityEnumerator().hasNext() && (setCounter < nEnts)){
-                entitySet.getEntityEnumerator().next();
-                cont = true;
-            }else
-                cont = false;
+            }            
+            //writer.addData(""+entitySet.getCurrent().getDouble(this.attributeName.getValue()));            
         }
         
         try {
@@ -186,6 +178,7 @@ public class FullSetEntityWriter extends JAMSComponent {
         }
     }
     
+    @Override
     public void cleanup() {
         
         writer.close();
