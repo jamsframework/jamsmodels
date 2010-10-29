@@ -21,14 +21,10 @@
  *
  */
 
-package org.unijena.hydronet;
+package unijena.hydronet;
 
-import org.unijena.j2k.*;
-import org.unijena.jams.data.*;
-import org.unijena.jams.model.*;
-import java.util.*;
-import org.unijena.jams.JAMS;
-import org.unijena.hydronet.*;
+import jams.data.*;
+import jams.model.*;
 
 /**
  *
@@ -51,6 +47,7 @@ public class Multiply extends JAMSComponent {
 	    public JAMSDouble multiplier;
 
 
+    @Override
     public void run() throws JAMSEntity.NoSuchAttributeException {
 	double mul = multiplier.getValue();
     

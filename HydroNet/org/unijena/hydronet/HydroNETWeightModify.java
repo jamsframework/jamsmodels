@@ -21,13 +21,12 @@
  *
  */
 
-package org.unijena.hydronet;
+package unijena.hydronet;
 
-import org.unijena.j2k.*;
-import org.unijena.jams.data.*;
-import org.unijena.jams.model.*;
+import jams.data.*;
+import jams.data.Attribute.Entity;
+import jams.model.*;
 import java.util.*;
-import org.unijena.jams.JAMS;
 
 /**
  *
@@ -48,9 +47,9 @@ public class HydroNETWeightModify extends JAMSComponent {
     
     public void run() throws JAMSEntity.NoSuchAttributeException { 	
 	DistNeuron dist_neuron;
-	Iterator<JAMSEntity> Iterator = entities.getEntities().iterator();
+	Iterator<Entity> Iterator = entities.getEntities().iterator();
 	while (Iterator.hasNext()) {
-	    JAMSEntity entity = Iterator.next();
+	    Entity entity = Iterator.next();
 	    	    
 	    dist_neuron = (DistNeuron)entity.getObject("DIST_NEURON");
 	    dist_neuron.modifyWeight();

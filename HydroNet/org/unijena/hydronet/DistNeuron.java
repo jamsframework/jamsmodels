@@ -22,13 +22,7 @@
  */
 
 
-package org.unijena.hydronet;
-
-import java.util.Enumeration;
-import java.util.Vector;
-import javax.swing.*;
-import java.io.FileWriter;
-import org.unijena.jams.JAMS;
+package unijena.hydronet;
 /**
  *
  * @author Christian Fischer

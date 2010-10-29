@@ -1,4 +1,4 @@
-package org.unijena.hydronet;
+package unijena.hydronet;
 
 /* This software is in the public domain.
    Bryan Lewis

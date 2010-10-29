@@ -22,12 +22,7 @@
  */
 
 
-package org.unijena.hydronet;
-
-import java.util.Enumeration;
-import java.util.Vector;
-import javax.swing.*;
-import java.io.FileWriter;
+package unijena.hydronet;
 
 /**
  *

@@ -21,14 +21,14 @@
  *
  */
 
-package org.unijena.hydronet;
+package unijena.hydronet;
 
 import org.unijena.j2k.*;
-import org.unijena.jams.data.*;
-import org.unijena.jams.model.*;
+import jams.data.*;
+import jams.model.*;
 import java.util.*;
-import org.unijena.jams.JAMS;
-import org.unijena.hydronet.*;
+import jams.JAMS;
+import jams.data.Attribute.Entity;
 
 /**
  *
@@ -71,6 +71,7 @@ public class StandardNitrogenFlowReader extends JAMSComponent {
             )
             public JAMSEntityCollection hrus;
             
+    @Override
 public void init() throws JAMSEntity.NoSuchAttributeException {
 	StringTokenizer tok = new StringTokenizer(ScenarioFileNames.getValue(), ";");
         
@@ -84,14 +85,14 @@ public void init() throws JAMSEntity.NoSuchAttributeException {
 	FlowData[N] = new JAMSEntityCollection();
 	FlowData[N].setEntities(J2KFunctions.readParas(dirName.getValue()+"/"+ScenarioISTFileName.getValue(), getModel()));
 	
-        HashMap<Double, JAMSEntity[]> fdMap = new HashMap<Double, JAMSEntity[]>();
-        JAMSEntity fd, e;
-	JAMSEntity[] field_fd;
+        HashMap<Double, Entity[]> fdMap = new HashMap<Double, Entity[]>();
+        Entity fd, e;
+	Entity[] field_fd;
         Object[] attrs;
         		
 	for (int i=0;i<N+1;i++) {
 	    //put all entities into a HashMap with their ID as key
-	    Iterator<JAMSEntity> fdIterator = FlowData[i].getEntities().iterator();	    
+	    Iterator<Entity> fdIterator = FlowData[i].getEntities().iterator();	    
 		    
 	    while (fdIterator.hasNext()) {
 		fd = fdIterator.next();
@@ -106,7 +107,7 @@ public void init() throws JAMSEntity.NoSuchAttributeException {
 	    }
 	}
                	
-        Iterator<JAMSEntity> hruIterator = hrus.getEntities().iterator();
+        Iterator<Entity> hruIterator = hrus.getEntities().iterator();
         while (hruIterator.hasNext()) {
         	
             e = hruIterator.next();

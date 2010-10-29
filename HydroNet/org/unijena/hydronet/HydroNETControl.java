@@ -33,12 +33,10 @@
  * @author:      Christian Fischer
  */
 
-package org.unijena.hydronet;
+package unijena.hydronet;
 
-import org.unijena.jams.model.*;
-import org.unijena.jams.data.*;
-import org.unijena.jams.JAMS;
-import org.unijena.j2k.*;
+import jams.model.*;
+import jams.data.*;
 
 @JAMSComponentDescription(
         title="HydroNETControl",
@@ -85,9 +83,10 @@ public class HydroNETControl extends JAMSContext {
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
             update = JAMSVarDescription.UpdateType.RUN,
-            description = "momentum"
+            description = "momentum",
+            defaultValue="0.9"
             )
-            public JAMSDouble momentum = new JAMSDouble(0.9);  
+            public JAMSDouble momentum;  
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
@@ -189,6 +188,7 @@ public class HydroNETControl extends JAMSContext {
 	
     }
     
+    @Override
     public void init () {
 		
 	iteration = 0;
@@ -201,7 +201,7 @@ public class HydroNETControl extends JAMSContext {
 	
 	runEnumerator.reset();
         while(runEnumerator.hasNext() && doRun) {
-            JAMSComponent comp = runEnumerator.next();
+            Component comp = runEnumerator.next();
             //comp.
             try {
                 comp.init();
@@ -218,16 +218,17 @@ public class HydroNETControl extends JAMSContext {
 			
 	runEnumerator.reset();
         while(runEnumerator.hasNext() && doRun) {
-            JAMSComponent comp = runEnumerator.next();
+            Component comp = runEnumerator.next();
             //comp.updateRun();
             try {
                 comp.run();
             } catch (Exception e) {
-                
+                System.out.println(e.toString());
             }
         }	
     }
     
+    @Override
     public void run () {
 	try {
 	    while (hasNext()) {
@@ -236,7 +237,7 @@ public class HydroNETControl extends JAMSContext {
 		}
 	    
 	    for (int i=hrus.getEntities().size()-1;i>=0;i--) {
-		JAMSEntity e = hrus.getEntities().get(i);
+		JAMSEntity e = (JAMSEntity)hrus.getEntities().get(i);
 	    
 		DistNeuron d = (DistNeuron)e.getObject("DIST_NEURON");
 	
@@ -253,13 +254,14 @@ public class HydroNETControl extends JAMSContext {
 	}		
     }
     
+    @Override
     public void cleanup() {
 	if (runEnumerator == null) {
             runEnumerator = super.getChildrenEnumerator();
         }
 	runEnumerator.reset();
         while(runEnumerator.hasNext() && doRun) {
-            JAMSComponent comp = runEnumerator.next();
+            Component comp = runEnumerator.next();
             try {
                 comp.cleanup();
             } catch (Exception e) {

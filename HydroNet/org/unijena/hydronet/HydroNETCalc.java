@@ -21,13 +21,10 @@
  *
  */
 
-package org.unijena.hydronet;
+package unijena.hydronet;
 
-import org.unijena.j2k.*;
-import org.unijena.jams.data.*;
-import org.unijena.jams.model.*;
-import java.util.*;
-import org.unijena.jams.JAMS;
+import jams.data.*;
+import jams.model.*;
 
 /**
  *
@@ -56,10 +53,12 @@ public class HydroNETCalc extends JAMSComponent {
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
             update = JAMSVarDescription.UpdateType.RUN,
-            description = "largest accepted nitrogen value"
+            description = "largest accepted nitrogen value",
+            defaultValue= "0.0"
             )
             public JAMSDouble nitrogen_goal;    
     
+    @Override
     public void run() throws JAMSEntity.NoSuchAttributeException {            
 	DistNeuron NitrogenOutNeuron = (DistNeuron)NitrogenOutEntity.getObject("NEURON");
 	DistNeuron CostOutNeuron = (DistNeuron)CostOutEntity.getObject("NEURON");

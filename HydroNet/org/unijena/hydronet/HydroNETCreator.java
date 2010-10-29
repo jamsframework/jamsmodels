@@ -21,13 +21,12 @@
  *
  */
 
-package org.unijena.hydronet;
+package unijena.hydronet;
 
-import org.unijena.j2k.*;
-import org.unijena.jams.data.*;
-import org.unijena.jams.model.*;
+import jams.data.*;
+import jams.data.Attribute.Entity.NoSuchAttributeException;
+import jams.model.*;
 import java.util.*;
-import org.unijena.jams.JAMS;
 
 /**
  *
@@ -59,13 +58,14 @@ public class HydroNETCreator extends JAMSComponent {
     DistNeuron NitrogenOutNeuron = new DistNeuron();
     DistNeuron CostOutNeuron = new DistNeuron();
     
+    @Override
     public void init() throws JAMSEntity.NoSuchAttributeException {        
         JAMSEntity e,downstreamPoly;
 	ArrayList<JAMSEntity> list = new ArrayList<JAMSEntity>();
         NONeuron nitr_neuron;
         CostNeuron cost_neuron;
         DistNeuron dist_neuron;
-        Neuron downstream_neuron;
+        Neuron downstream_neuron=null;
         	
         getModel().getRuntime().println("Setup HydroNET");
          
@@ -85,7 +85,7 @@ public class HydroNETCreator extends JAMSComponent {
         GenericFunction gen_id2 = new GenericFunction(lin_id2);
         //setup net
         for (int i=hrus.getEntities().size()-1;i>=0;i--) {
-            e = hrus.getEntities().get(i);
+            e = (JAMSEntity)hrus.getEntities().get(i);
 	    e.setDouble("reduction",0.0);
             //setup nitrogen neuron for each hru
             nitr_neuron = new NONeuron();
@@ -95,14 +95,20 @@ public class HydroNETCreator extends JAMSComponent {
 	    
             downstreamPoly = (JAMSEntity)e.getObject("to_poly");
             //look if id is in hashmap
-            if ( downstreamPoly == null ) {		
+            if ( downstreamPoly == null || downstreamPoly.getId()==-1) {
                 nitr_neuron.setDownstreamNeuron(null,0);
                 nitr_neuron.setOutputNeuron(NitrogenOutNeuron,1.0);
+                getModel().getRuntime().println("Last HRU in cascade:" + e.getId());
             }
             else {
-                downstream_neuron = (Neuron)downstreamPoly.getObject("NITROGEN_NEURON");
+                try{
+                    downstream_neuron = (Neuron)downstreamPoly.getObject("NITROGEN_NEURON");
+                }catch(NoSuchAttributeException e2){
+                    getModel().getRuntime().println("WARNING: Downstream Neuron = Null");
+                }
                 if (downstream_neuron == null)
                     getModel().getRuntime().println("WARNING: Downstream Neuron = Null");
+
                 nitr_neuron.setDownstreamNeuron(downstream_neuron,e.getDouble("interflow_weight"));
                 nitr_neuron.setOutputNeuron(NitrogenOutNeuron,e.getDouble("percolation_weight"));
             }

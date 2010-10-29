@@ -21,10 +21,11 @@
  *
  */
 
-package org.unijena.hydronet;
+package unijena.hydronet;
 
-import org.unijena.jams.data.*;
-import org.unijena.jams.model.*;
+import jams.data.*;
+import jams.data.Attribute.Entity;
+import jams.model.*;
 
 /**
  *
@@ -43,9 +44,10 @@ public class HydroNETBackPropagate extends JAMSComponent {
             )
             public JAMSEntityCollection entities;
     
+    @Override
     public void run() throws JAMSEntity.NoSuchAttributeException { 	
 	for (int i=entities.getEntities().size()-1;i>=0;i--) {
-	    JAMSEntity entity = entities.getEntities().get(i);
+	    Entity entity = entities.getEntities().get(i);
 	    ((NONeuron)entity.getObject("NITROGEN_NEURON")).backpropagate();
 	    ((CostNeuron)entity.getObject("COST_NEURON")).backpropagate();
 	    ((DistNeuron)entity.getObject("DIST_NEURON")).backpropagate();	

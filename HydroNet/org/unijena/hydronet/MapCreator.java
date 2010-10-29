@@ -1,5 +1,6 @@
-package org.unijena.hydronet;
+package unijena.hydronet;
 
+import jams.data.Attribute.Entity;
 import java.awt.BorderLayout;
 import java.awt.Component;
 import java.awt.event.ActionEvent;
@@ -7,22 +8,7 @@ import java.awt.event.ActionListener;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-import org.geotools.feature.Feature;
-import org.unijena.jams.data.JAMSEntity;
-import org.unijena.jams.data.JAMSEntityCollection;
-import org.unijena.jams.data.JAMSInteger;
-import org.unijena.jams.data.JAMSString;
-import org.unijena.jams.data.JAMSStringArray;
-import org.unijena.jams.model.JAMSVarDescription;
 
-import com.vividsolutions.jts.geom.Coordinate;
-import com.vividsolutions.jts.geom.Envelope;
-import com.vividsolutions.jts.geom.LineString;
-import com.vividsolutions.jts.geom.MultiLineString;
-import com.vividsolutions.jts.geom.MultiPoint;
-import com.vividsolutions.jts.geom.MultiPolygon;
-import com.vividsolutions.jts.geom.Point;
-import com.vividsolutions.jts.geom.Polygon;
 import java.awt.Container;
 import java.awt.FlowLayout;
 import java.awt.event.MouseEvent;
@@ -37,48 +23,19 @@ import org.jfree.chart.plot.XYPlot;
 import org.jfree.chart.renderer.xy.DefaultXYItemRenderer;
 import org.jfree.data.xy.XYSeries;
 import org.jfree.data.xy.XYSeriesCollection;
+import org.opengis.feature.simple.SimpleFeature;
+import unijena.hydronet.ActivationFunction;
+import unijena.hydronet.DistNeuron;
+import unijena.hydronet.GenericFunction;
+import unijena.hydronet.LinApprox;
+import unijena.hydronet.Matrix;
+import unijena.hydronet.NONeuron;
 
 
 /*
  * @author C. Fischer
  */
-public class MapCreator extends jams.components.gui.MapCreator {
-    @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ, update = JAMSVarDescription.UpdateType.INIT, description = "Name of SLD-File containing layer style information")
-    public JAMSString stylesFileName;
-    
-    @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ, update = JAMSVarDescription.UpdateType.INIT, description = "ID of a style in the SLD-File")
-    public JAMSInteger styleID;
-    
-    @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ, update = JAMSVarDescription.UpdateType.INIT, description = "Data file directory name")
-    public JAMSString dirName;
-    
-    @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ, update = JAMSVarDescription.UpdateType.RUN, description = "Collection of hru objects")
-    public JAMSEntityCollection hrus;
-    
-    @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ, update = JAMSVarDescription.UpdateType.INIT, description = "Name of hru attribute to add for mapping")
-    public JAMSStringArray showAttr;
-    
-    @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ, update = JAMSVarDescription.UpdateType.INIT, description = "Number of ranges for classification attribute")
-    public JAMSStringArray numOfRanges;
-    
-    @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ, update = JAMSVarDescription.UpdateType.INIT, description = "Color shading the ranges")
-    public JAMSStringArray rangeColor;
-    
-    @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ, update = JAMSVarDescription.UpdateType.INIT, description = "Name of shapefile to add as a layer to the map")
-    public JAMSString shapeFileName1;
-    
-    @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ, update = JAMSVarDescription.UpdateType.INIT, description = "Name of shapefile to add as a layer to the map")
-    public JAMSString shapeFileName2;
-    
-    @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ, update = JAMSVarDescription.UpdateType.INIT, description = "Name of shapefile to add as a layer to the map")
-    public JAMSString shapeFileName3;
-    
-    @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ, update = JAMSVarDescription.UpdateType.INIT, description = "Colors for extra shapefiles")
-    public JAMSStringArray shapeColors;
-    
-    @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ, update = JAMSVarDescription.UpdateType.RUN, description = "Original shape file name")
-    public JAMSString baseShape;
-    	
+public class MapCreator extends jams.components.gui.MapCreator {               	
     private JTextArea idfield;		
     private JFreeChart chart;
     private XYPlot plot;
@@ -91,29 +48,19 @@ public class MapCreator extends jams.components.gui.MapCreator {
     private JLabel cur_input;
 	
     @SuppressWarnings("unchecked")
-    public void run() throws Exception {
-        super.hrus = hrus;
-        super.stylesFileName = stylesFileName;
-        super.styleID = styleID;
-        super.dirName = dirName;
-        super.showAttr = showAttr;
-        super.numOfRanges = numOfRanges;
-        super.rangeColor = rangeColor;
-        super.shapeFileName1 = shapeFileName1;
-        super.shapeFileName2 = shapeFileName2;
-        super.shapeFileName3 = shapeFileName3;
-        super.shapeColors = shapeColors;
-        super.baseShape = baseShape;
+    @Override
+    public void run() throws Exception {       
         super.run();
         
         createPanel();
 	}
     
+    @Override
         public void mouseClicked(MouseEvent e) {
             super.mouseClicked(e);
             
             try {
-		Feature f = this.getSelectedFeature();
+		SimpleFeature f = this.getSelectedFeature();
 		if (f != null) {
 		    ShowActFunction(new Double(f.getID()).intValue());
 		}
@@ -180,6 +127,7 @@ public class MapCreator extends jams.components.gui.MapCreator {
 		downstreamID = new JButton("-");
 		
 		downstreamID.addActionListener(new ActionListener() {
+                @Override
 		    public void actionPerformed(ActionEvent e)
 		    {
 			try {
@@ -216,6 +164,7 @@ public class MapCreator extends jams.components.gui.MapCreator {
                                 6, 6);       //xPad, yPad
 
 		bShow.addActionListener(new ActionListener() {
+                @Override
 		    public void actionPerformed(ActionEvent e)
 		    {
 			try {
@@ -236,7 +185,7 @@ public class MapCreator extends jams.components.gui.MapCreator {
     }
 	    
     void ShowActFunction(int id) throws Exception {	    
-	JAMSEntity e = null;
+	Entity e = null;
 	for (int i = 0;i<hrus.getEntities().size();i++) {
 	    e = hrus.getEntities().get(i);
 	    if (e.getDouble("ID") == id)

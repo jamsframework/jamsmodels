@@ -21,7 +21,7 @@
  *
  */
 
-package org.unijena.hydronet;
+package unijena.hydronet;
 
 //import org.unijena.j2k.hydronet.Regression;
 /**
