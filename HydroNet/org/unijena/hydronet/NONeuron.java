@@ -22,7 +22,7 @@
  */
 
 
-package unijena.hydronet;
+package org.unijena.hydronet;
 
 import java.util.Enumeration;
 import java.util.Vector;
