@@ -21,8 +21,7 @@
  *
  */
 
-package unijena.hydronet;
-
+package org.unijena.hydronet;
 import org.unijena.j2k.*;
 import jams.data.*;
 import jams.model.*;

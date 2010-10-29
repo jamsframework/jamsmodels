@@ -33,7 +33,7 @@
  * @author:      Christian Fischer
  */
 
-package unijena.hydronet;
+package org.unijena.hydronet;
 
 import jams.model.*;
 import jams.data.*;

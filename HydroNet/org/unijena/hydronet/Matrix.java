@@ -1,4 +1,4 @@
-package unijena.hydronet;
+package org.unijena.hydronet;
 /* Matrix.java
 
  Author: Bryan Lewis

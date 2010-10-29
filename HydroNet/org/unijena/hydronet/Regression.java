@@ -33,7 +33,7 @@
  * @author:      Sven Kralisch
  */
 
-package unijena.hydronet;
+package org.unijena.hydronet;
 
 
 

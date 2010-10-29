@@ -21,7 +21,7 @@
  *
  */
 
-package unijena.hydronet;
+package org.unijena.hydronet;
 
 /**
  *

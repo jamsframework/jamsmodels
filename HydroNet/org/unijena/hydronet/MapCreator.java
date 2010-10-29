@@ -1,4 +1,4 @@
-package unijena.hydronet;
+package org.unijena.hydronet;
 
 import jams.data.Attribute.Entity;
 import java.awt.BorderLayout;
