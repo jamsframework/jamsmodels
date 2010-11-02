@@ -30,19 +30,28 @@ import jams.data.*;
  *
  * @author S. Kralisch
  */
+
+@JAMSComponentDescription(
+        title="Sum Aggregator",
+        author="Sven Kralisch",
+        description="Takes a list of double values as input and adds each "
+        + "element to a corresponding element of an equally sized list of "
+        + "output values. Can be used to sum up any given number of double "
+        + "values over a number of iteration steps.",
+        version="1.0_0",
+        date="2010-10-28"
+        )
 public class SumAggregator extends JAMSComponent {
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.RUN,
-            description = "value attribute"
+            description = "list of input values"
             )
             public JAMSDouble[] value;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
-            description = "sum attribute"
+            description = "list of sum values"
             )
             public JAMSDouble[] sum;
     
