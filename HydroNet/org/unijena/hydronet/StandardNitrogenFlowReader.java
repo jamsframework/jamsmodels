@@ -38,13 +38,6 @@ public class StandardNitrogenFlowReader extends JAMSComponent {
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
             update = JAMSVarDescription.UpdateType.INIT,
-            description = "Data file directory name"
-            )
-            public JAMSString dirName;
-    
-    @JAMSVarDescription(
-            access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.INIT,
             description = "Soil types parameter file name"
             )
             public JAMSString Scenario0pFileName;
@@ -71,7 +64,7 @@ public class StandardNitrogenFlowReader extends JAMSComponent {
             public JAMSEntityCollection hrus;
             
     @Override
-public void init() throws JAMSEntity.NoSuchAttributeException {
+    public void init() throws JAMSEntity.NoSuchAttributeException {
 	StringTokenizer tok = new StringTokenizer(ScenarioFileNames.getValue(), ";");
         
 	int N = tok.countTokens();
@@ -79,10 +72,10 @@ public void init() throws JAMSEntity.NoSuchAttributeException {
 	
 	for (int i=0;i<N;i++) {
 	    FlowData[i] = new JAMSEntityCollection();
-	    FlowData[i].setEntities(J2KFunctions.readParas(dirName.getValue()+"/"+tok.nextToken(), getModel()));
+	    FlowData[i].setEntities(J2KFunctions.readParas(getModel().getWorkspacePath()+"/"+tok.nextToken(), getModel()));
 	}
 	FlowData[N] = new JAMSEntityCollection();
-	FlowData[N].setEntities(J2KFunctions.readParas(dirName.getValue()+"/"+ScenarioISTFileName.getValue(), getModel()));
+	FlowData[N].setEntities(J2KFunctions.readParas(getModel().getWorkspacePath()+"/"+ScenarioISTFileName.getValue(), getModel()));
 	
         HashMap<Double, Entity[]> fdMap = new HashMap<Double, Entity[]>();
         Entity fd, e;

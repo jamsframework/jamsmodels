@@ -24,12 +24,6 @@ import org.jfree.chart.renderer.xy.DefaultXYItemRenderer;
 import org.jfree.data.xy.XYSeries;
 import org.jfree.data.xy.XYSeriesCollection;
 import org.opengis.feature.simple.SimpleFeature;
-import unijena.hydronet.ActivationFunction;
-import unijena.hydronet.DistNeuron;
-import unijena.hydronet.GenericFunction;
-import unijena.hydronet.LinApprox;
-import unijena.hydronet.Matrix;
-import unijena.hydronet.NONeuron;
 
 
 /*
