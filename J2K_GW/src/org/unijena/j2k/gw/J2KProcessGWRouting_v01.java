@@ -39,12 +39,12 @@ public class J2KProcessGWRouting_v01 extends JAMSComponent {
      */
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READWRITE,
     update = JAMSVarDescription.UpdateType.RUN,
-    description = "HRU statevar RG2 inflow")
-    public JAMSDouble inRG2;
+    description = "HRU statevar GW inflow")
+    public JAMSDouble inGW;
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READWRITE,
     update = JAMSVarDescription.UpdateType.RUN,
-    description = "HRU statevar RG2 outflow")
-    public JAMSDouble outRG2;                                                   //not used
+    description = "HRU statevar GW outflow")
+    public JAMSDouble outGW;                                                   //not used
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READWRITE,
     update = JAMSVarDescription.UpdateType.RUN,
     description = "sum attribute")
@@ -63,8 +63,8 @@ public class J2KProcessGWRouting_v01 extends JAMSComponent {
     public JAMSDouble Peff;
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READWRITE,
     update = JAMSVarDescription.UpdateType.RUN,
-    description = "actual RG2 storage")
-    public JAMSDouble actRG2;
+    description = "actual GW storage")
+    public JAMSDouble actGW;
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READWRITE,
     update = JAMSVarDescription.UpdateType.RUN,
     description = "Groundwater Level")
@@ -88,10 +88,10 @@ public class J2KProcessGWRouting_v01 extends JAMSComponent {
     /*
      *  Component run stages
      */
-    double[]    gradientNew;
-    double      gwVolume, run_area, run_Peff, run_gwTableUpper, run_gwTableLower, run_gwDepthUpper, run_gwDepthLower, run_baseHeigth,
-                pot_gwTable, sumRG2in, sumRG2in_new, run_RG2act, run_outRG2;
-    int         oR;
+    double[] gradientNew;
+    double gwVolume, run_area, run_Peff, run_gwTableUpper, run_gwTableLower, run_gwDepthUpper, run_gwDepthLower, run_baseHeigth,
+            pot_gwTable, sumGWin, sumGWin_new, run_GWact, run_outGW, old_GWact;
+    int oR;
     //JAMSEntity[] fP;
 
     public void init() throws JAMSEntity.NoSuchAttributeException {
@@ -101,103 +101,110 @@ public class J2KProcessGWRouting_v01 extends JAMSComponent {
 
         Attribute.Entity entity = entities.getCurrent();
 
-        //getModel().getRuntime().println("Current entity ID: " + (int) entity.getDouble("ID") + ".");
+        fP = (JAMSEntity[]) entity.getObject("from_poly");
 
-        fP = (JAMSEntity[]) entity.getObject("from_poly");        
-        
-        //aktuelle Entity:
-        run_RG2act = this.actRG2.getValue();
-
+        //aktuelle HRU
+        run_GWact = this.actGW.getValue();
         run_area = this.area.getValue();
         run_Peff = Peff.getValue();
+        if (run_Peff == 0){
+            getModel().getRuntime().println("Current entity ID: " + (int) entity.getDouble("ID") + "Peff = 0");
+        }
         run_baseHeigth = baseHeigth.getValue();
-        
+
         //Oberlieger:
-        
-        
-        
+
 
         gradientNew = new double[fP.length];
         oR = this.outflowReduction.getValue();
-        
-        if (fP.length != 0) {   //is there any sender-HRU?
-            sumRG2in_new = 0;
 
-            // Calculation of the accumulated input
+        if (fP.length != 0) {   //is there any sender-HRU? Wenn kein Oberlieger, dann gibt es auch nichts zu tun.
+            sumGWin_new = 0;
+
+            // Calculation of the accumulated input...  Hier wird zusammengefasst, was von oben zufließen könnte.
             for (int i = 0; i < fP.length; i++) {
-                sumRG2in_new = fP[i].getDouble("pot_outRG2") + sumRG2in_new;
+                sumGWin_new = fP[i].getDouble("pot_outGW") + sumGWin_new;
             }
 
-            //sumRG2in_new ist nun der Zwischenspeicher aus dem verteilt wird
-            gwVolume = (run_RG2act + sumRG2in_new) / 1000;
+            //sumGWin_new ist nun der Zwischenspeicher aus dem verteilt wird
+
+            // double new_gwVolume = (run_GWact + sumGWin_new) / 1000;
+            // der aktuelle Speicherinhalt wird um den zufließenden Betrag erhöht. Damit erhöht sich automatisch die
+            // Grundwasserspiegellage. Es besteht nun die Möglichkeit zu entscheiden, ob eine Gradientenreduktion
+            // auf Basis dieses vränderten Wasserstandes durchgeführt werden soll oder nicht.
+            old_GWact = run_GWact;
+            run_GWact = (run_GWact + sumGWin_new);
 
             //Calculation of the potential GW-Levels
-            boolean flag = true;
-
-            if (oR != 0) {
-                updateGWTable(flag);
-                gradientNew = calcGradientReduction();
-            }else{
-                for (int i = 0; i < fP.length; i++) {
-                    
-                    //es wird der Gradient von Zeitschritt t-1 unverändert verwendet
-                    gradientNew[i] = fP[i].getDouble("gwTable") - gwTable.getValue();
-
-                }
+            boolean flag = false;
             
-            flag = false;           //neue Grundwasserspiegellage auf Basis der neu berechneten Zuflüsse
-
-            run_RG2act = recalcDarcyGWOut(gradientNew);
-            gwVolume = (run_RG2act + sumRG2in_new) / 1000;
-            updateGWTable(flag);
-            }
-            }else{            double newActRG2;
-            double newGenRG2;
-                double newOutRG2;
-                double newGWTable;
-                for (int i = 0; i < fP.length; i++) {
-                    newOutRG2 = 0;
-                    newActRG2 = fP[i].getDouble("pot_actRG2");
-                    newGenRG2 = fP[i].getDouble("pot_genRG2");
-                    newGWTable = fP[i].getDouble("pot_gwTable");
-                    fP[i].setDouble("actRG2", newActRG2);
-                    fP[i].setDouble("outRG2", newOutRG2);
-                    fP[i].setDouble("genRG2", newGenRG2);
-                    fP[i].setDouble("gwTable", newGWTable);
+            updateGWTable(flag);  // wie würden die GW-Stände sein, wenn tatsächlich inGW fließen würde.
+            
+            if (oR != 0) {
+                gradientNew = calcGradientReduction();  // Reduktion: JA
+            } else {
+                for (int i = 0; i < fP.length; i++) {   // Reduktion: NEIN
+                    //es wird der Gradient von Zeitschritt t-1 unverändert verwendet
+                    gradientNew[i] = fP[i].getDouble("gwTable") - gwTable.getValue();   //fP("gwTable") = old_gwTable!
+                    if (gradientNew[i] < 0) {
+                        getModel().getRuntime().println("Negativer Gradient!");
+                    }
                 }
-
-
             }
+            
+            run_GWact = recalcDarcyGWOut(gradientNew);  // Neuberechnung nötig, da eventuell mehr als eine HRU von oben zufließt!
+            
+            //gwVolume = (run_GWact + sumGWin_new)/1000;
+            flag = true;                                //neue Grundwasserspiegellage auf Basis der neu berechneten Zuflüsse
 
-        actRG2.setValue(run_RG2act);
-        inRG2.setValue(sumRG2in_new);
+            updateGWTable(flag);
+/*
+            double newActGW;
+            double newGenGW;
+            double newOutGW;
+            double newGWTable;
+            for (int i = 0; i < fP.length; i++) {
+                newOutGW = 0;
+                newActGW = fP[i].getDouble("pot_actGW");
+                newGenGW = fP[i].getDouble("pot_genGW");
+                newGWTable = fP[i].getDouble("pot_gwTable");
+                fP[i].setDouble("actGW", newActGW);
+                fP[i].setDouble("outGW", newOutGW);
+                fP[i].setDouble("genGW", newGenGW);
+                fP[i].setDouble("gwTable", newGWTable);
+            }*/
+            actGW.setValue(run_GWact);
+            inGW.setValue(sumGWin_new);
+        }
     }
 
     private boolean updateGWTable(boolean flag) throws JAMSEntity.NoSuchAttributeException {
 
         for (int i = 0; i < fP.length; i++) {
-           if (flag){
-           }else{
-               gwVolume = fP[i].getDouble("actRG2") / 1000;
-               run_gwDepthUpper = gwVolume / fP[i].getDouble("area") / fP[i].getDouble("Peff");
-               run_gwTableUpper = run_gwDepthUpper + fP[i].getDouble("baseHeigth");
-           }
-           
-           if (flag){               
-           }else{
+            if (flag) {
+                gwVolume = fP[i].getDouble("actGW") / 1000;
+                run_gwDepthUpper = gwVolume / fP[i].getDouble("area") / fP[i].getDouble("Peff");
+                run_gwTableUpper = run_gwDepthUpper + fP[i].getDouble("baseHeigth");
                 fP[i].setDouble("gwTable", run_gwTableUpper);
-           }
+                if (run_gwTableUpper < 0){
+                    getModel().getRuntime().println("Negative Wasserspiegellage.");
+                }
+            }
         }
-        
-        gwVolume = run_RG2act / 1000;
+
+        gwVolume = run_GWact / 1000;
 
         run_gwDepthLower = gwVolume / run_area / run_Peff;
         run_gwTableLower = run_gwDepthLower + run_baseHeigth;
 
-        if (flag){
-            pot_gwTable = run_gwTableLower;
-        }else{
+        if (run_gwTableLower < 0){
+            getModel().getRuntime().println("Negative Wasserspiegellage.");
+        }
+
+        if (flag) {
             gwTable.setValue(run_gwTableLower);
+        } else {
+            pot_gwTable = run_gwTableLower;
         }
 
         return true;
@@ -210,33 +217,84 @@ public class J2KProcessGWRouting_v01 extends JAMSComponent {
         for (int i = 0; i < fP.length; i++) {
             gradientPre = fP[i].getDouble("gwTable") - gwTable.getValue();
             gradientPost = fP[i].getDouble("pot_gwTable") - pot_gwTable;
-            gradientNew[i] = (gradientPre + gradientPost) / 2;
+
+            if (gradientPost < 0) {
+                getModel().getRuntime().println("Negative PostGradient.");
+                gradientPost = 0;
+            }
+
+            if (oR == 1) {   //Mittelwert
+                gradientNew[i] = (gradientPre + gradientPost) / 2;
+            } else {          //Integral der Exponentialfunktion y = a*e^(cx)
+                double a = gradientPre;
+                double m = (gradientPost - gradientPre) / 1;  // dx/dy, dy ist 1 da der Zeitschtitt ein Tag ist
+                if (m > 0) {            // Ansteigender Grundwassserstand
+                    m = m * (-1);
+                    double c = m / a;
+                    gradientNew[i] = a + (a - (a / c * Math.exp(c) - a / c));
+                                if (gradientNew[i] < 0) {
+                getModel().getRuntime().println("Negative Gradient.");
+                gradientNew[i] = 0;
+            }
+                } else if (m < 0){      // Fallender Grundwasserstand
+                    double c = m / a;
+                    gradientNew[i] = a / c * Math.exp(c) - a / c;
+                if (gradientNew[i] < 0) {
+                getModel().getRuntime().println("Negative Gradient.");
+                gradientNew[i] = 0;
+            }
+                } else {                // Grundwasserstand vorher und nachher ist gleich
+                    gradientNew[i] = 0;
+                }
+            }
         }
         return gradientNew;
     }
 
     private double recalcDarcyGWOut(double[] gradientNew) throws JAMSEntity.NoSuchAttributeException {
-        double rg2out_new;
-        double rg2act_new;
+        double GWout_new;
+        double GWact_new;
 
-        if (this.run_gwTableUpper >= this.run_gwTableLower){
-        sumRG2in_new = 0;
-        for (int i = 0; i < fP.length; i++) {
-            rg2out_new = (fP[i].getDouble("calcFactor") * gradientNew[i]) * 86400 * 1000;
-            //rg2act_new = fP[i].getDouble("actRG2") - rg2out_new;
-            rg2act_new = fP[i].getDouble("pot_actRG2") - rg2out_new;
-            fP[i].setDouble("actRG2", rg2act_new);
-            double rg2out_sum = fP[i].getDouble("preOutRG2") + rg2out_new;
-            fP[i].setDouble("outRG2", rg2out_sum);
-            fP[i].setDouble("genRG2", rg2out_new);
-            sumRG2in_new = sumRG2in_new + rg2out_new;
-        }
-        }else{
+        //this.run_gwTableUpper = 0;
+        sumGWin_new = 0;    //Neuberechnung des zufließenden Wassers!
+        if (this.run_gwTableUpper >= this.run_gwTableLower) {
+            sumGWin_new = 0;    //Neuberechnung des zufließenden Wassers!
+            double GWout_sum = 0;
+
+            for (int i = 0; i < fP.length; i++) {
+                if (fP[i].getDouble("hgeoID") != 1){ //alle Flächen, die außerhalb des Squifers liegen geben ihr RG2 als GW ab
+                    GWout_new = fP[i].getDouble("outRG2");
+                    
+                }else{
+                GWout_new = (fP[i].getDouble("calcFactor") * gradientNew[i]) * 1000;
+                if (GWout_new < 0) {
+                    getModel().getRuntime().println("MIST.");
+                    GWout_new = 0;
+                }
+
+                //GWact_new = fP[i].getDouble("actGW") - GWout_new;
+
+                GWout_sum = fP[i].getDouble("preOutGW") + GWout_new;
+                }
+
+                if (GWout_new > fP[i].getDouble("actGW")){
+                    GWout_new = fP[i].getDouble("actGW");
+                }
+                GWact_new = fP[i].getDouble("actGW") - GWout_new;
+
+                fP[i].setDouble("actGW", GWact_new);
+                fP[i].setDouble("outGW", GWout_sum);
+                fP[i].setDouble("genGW", GWout_new);
+                
+                sumGWin_new = sumGWin_new + GWout_sum;
+           }
+        } else {
             getModel().getRuntime().println("Groundwater-Table in Receiver-HRU is higher.");
         }
 
-        rg2act_new = run_RG2act + sumRG2in_new;
-        return rg2act_new;
+        GWact_new = old_GWact + sumGWin_new;
+
+        return GWact_new;
     }
 
     public void cleanup() {

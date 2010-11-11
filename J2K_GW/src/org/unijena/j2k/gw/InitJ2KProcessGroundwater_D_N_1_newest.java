@@ -258,17 +258,21 @@ public class InitJ2KProcessGroundwater_D_N_1_newest extends JAMSComponent {
         //Berechnung mit abgeleiteter Flieﬂl‰nge... die Flieﬂdistanz zwischen zwei HRUs entspricht 
         //der Summe der halbierten Flieﬂl‰ngen der HRUs
         
-        run_gwFlowLength = (upFL / 2) + (downFL / 2);
+        //run_gwFlowLength = (upFL / 2) + (downFL / 2);
+        run_gwFlowLength = upFL; //Erstmal ein test...
 
-        //Anpassung des Durchl‰ssigkeitsbeiwerts mit Kalibrierungsfaktor und Umrechnung von [cm/d] auf [m/d]
-        run_Kf_geo_adapted = run_Kf_geo * run_KfAdaptation / 100 /86400;
+        //Anpassung des Durchl‰ssigkeitsbeiwerts mit Kalibrierungsfaktor und Umrechnung von [cm/d] auf [m/s]
+        run_Kf_geo_adapted = run_Kf_geo * run_KfAdaptation / 100;
         
         //Bestimmung der Porosit‰t nach Hˆlting s. 86
-        run_Peff = 0.462 + 0.045 * Math.log(run_Kf_geo_adapted);
+        run_Peff = 0.462 + 0.045 * Math.log(run_Kf_geo_adapted / 86400);
         if (run_Peff < 0.01){
             run_Peff = 0.01;
         }
-        run_Kf_geo_adapted = run_Kf_geo_adapted * 86400;
+
+        // und wieder zur¸ck!
+        //run_Kf_geo_adapted = run_Kf_geo_adapted * 86400; // Entf‰llt wegen Modifikation von Zeile 265 und 268
+
         //Anpassung der Aquifersohle durch Kalibrierfaktor
 
         run_baseHeigth = run_baseHeigth + run_baseHeigth_v;
@@ -283,6 +287,10 @@ public class InitJ2KProcessGroundwater_D_N_1_newest extends JAMSComponent {
         //Berechnung des Initialzustandes
         run_maxGW = run_aqThickness * run_area * run_Peff * 1000;  //[l]
         run_actGW = run_maxGW * initGW.getValue();
+
+        if (run_actGW <= 0) {
+	    getModel().getRuntime().println("Act GW <= 0.");
+	}
 
         run_satGW = run_actGW / run_maxGW;
 
