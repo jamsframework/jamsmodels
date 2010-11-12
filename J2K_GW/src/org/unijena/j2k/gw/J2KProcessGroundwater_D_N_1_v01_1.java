@@ -486,7 +486,7 @@ public class J2KProcessGroundwater_D_N_1_v01_1 extends JAMSComponent {
         //if (this.run_gwTableUpper >= this.run_gwTableLower) {
             if (toPoly.getValue() != null) {
                     if (gwDifference < 0) {
-                        getModel().getRuntime().println("Negativer Gradient zur HRU! Entity:" + actualEntityID);
+                        //getModel().getRuntime().println("Negativer Gradient zur HRU! Entity:" + actualEntityID);
                         gwDifference = 0;
 
                     }
@@ -507,7 +507,7 @@ public class J2KProcessGroundwater_D_N_1_v01_1 extends JAMSComponent {
 
                         if (GW_out_m3 > maxOutflow) {
                             GW_out_m3 = maxOutflow;
-                            getModel().getRuntime().println("Alles raus!" + actualEntityID);
+                            //getModel().getRuntime().println("Alles raus!" + actualEntityID);
                         
                 }
             } else {
@@ -518,7 +518,7 @@ public class J2KProcessGroundwater_D_N_1_v01_1 extends JAMSComponent {
 
                 double reachArea = toReach.getDouble("width") * toReach.getDouble("length");
                 if (gwDifference < 0) {
-                    getModel().getRuntime().println("Negativer Gradient! Entity:" + actualEntityID);
+                    //getModel().getRuntime().println("Negativer Gradient! Entity:" + actualEntityID);
                     gwDifference = 0;
                 }
                 double A1 = this.run_area * this.run_Peff;
@@ -563,11 +563,11 @@ public class J2KProcessGroundwater_D_N_1_v01_1 extends JAMSComponent {
 
                 if (GW_out_m3 > maxOutflow) {
                     GW_out_m3 = maxOutflow;
-                    getModel().getRuntime().println("Alles raus in Reach!"  + actualEntityID);
+                    //getModel().getRuntime().println("Alles raus in Reach!"  + actualEntityID);
                 }
                 if (GW_out_m3 < 0) {
                     GW_out_m3 = 0;
-                   getModel().getRuntime().println("Negativer Ausfluss! Entity:" + actualEntityID);
+                   //getModel().getRuntime().println("Negativer Ausfluss! Entity:" + actualEntityID);
                 
                }
             }

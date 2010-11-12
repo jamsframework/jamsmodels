@@ -396,7 +396,7 @@ public class J2KProcessGroundwater_D_1_1_newest extends JAMSComponent {
                     //[m³/s]   = [m²]       * [m/s]           * [m]          / [m]
                     if (rg2_out_m3 > potOutflow) {
                         rg2_out_m3 = potOutflow;
-                        getModel().getRuntime().println("Alles raus!");
+                        //getModel().getRuntime().println("Alles raus!");
                     }
 
             } else {
@@ -417,14 +417,14 @@ public class J2KProcessGroundwater_D_1_1_newest extends JAMSComponent {
 
                 if (rg2_out_m3 > potOutflow) {
                     rg2_out_m3 = potOutflow;
-                    getModel().getRuntime().println("Alles raus!");
+                    //getModel().getRuntime().println("Alles raus!");
                 }
             }
         } else {
            if (toPoly.getValue() != null) {
-               getModel().getRuntime().println("Groundwater-Table in Receiver-HRU is higher.");
+               //getModel().getRuntime().println("Groundwater-Table in Receiver-HRU is higher.");
            }else{
-               getModel().getRuntime().println("Water-Table in Reach is higher.");
+               //getModel().getRuntime().println("Water-Table in Reach is higher.");
            }
         }
 

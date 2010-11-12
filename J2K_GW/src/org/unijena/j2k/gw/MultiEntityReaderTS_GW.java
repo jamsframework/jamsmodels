@@ -186,7 +186,7 @@ public class MultiEntityReaderTS_GW extends JAMSComponent {
                 //Checks if e1 and e2 are identical
                 //Die Tabellen topologie_to_hru und topologie_bfl muessen identisch sortiert sein
                 if (eID != eID2) {
-                    getModel().getRuntime().sendHalt("One of tables topologie_to_hru or topologie_bfl is missorted");
+                    //getModel().getRuntime().sendHalt("One of tables topologie_to_hru or topologie_bfl is missorted");
                 }
 
                 receiverHRUs = new ArrayList<Attribute.Entity>();
@@ -211,7 +211,7 @@ public class MultiEntityReaderTS_GW extends JAMSComponent {
                     sumWeight = Math.round((sumWeight - doubleWeight) * 10000) / 10000;
 
                     if ((doubleID == 0 && doubleWeight != 0) || (doubleID != 0 && doubleWeight == 0)) {
-                        getModel().getRuntime().sendHalt("No. of receivers and their weights do not match!");
+                        //getModel().getRuntime().sendHalt("No. of receivers and their weights do not match!");
                     }
 
                     //for receiver HRUs
@@ -236,8 +236,8 @@ public class MultiEntityReaderTS_GW extends JAMSComponent {
 
                 sumWeight = Math.abs(sumWeight);
                 if (sumWeight >= 0.001) {
-                    System.out.println("Error in processing entity with ID " + eID);
-                    getModel().getRuntime().sendHalt("Sum of weights is not equal 1! Process entity:" + eID);
+                    //System.out.println("Error in processing entity with ID " + eID);
+                    //getModel().getRuntime().sendHalt("Sum of weights is not equal 1! Process entity:" + eID);
                 }
 
                 //converting the ArrayLists into Arrays
@@ -298,7 +298,7 @@ public class MultiEntityReaderTS_GW extends JAMSComponent {
 
                 aufloesbar = false;
                 e_ziel_neu = e;
-                System.out.println("Untersuche HRU " + e.getDouble("ID") + " auf Zirkelbezuege");
+                //System.out.println("Untersuche HRU " + e.getDouble("ID") + " auf Zirkelbezuege");
 
                 entityIterator2 = col.getEntities().iterator();
                 while (entityIterator2.hasNext()) {
@@ -375,7 +375,7 @@ public class MultiEntityReaderTS_GW extends JAMSComponent {
                                             eBflMin_to_reach_weights[0] = eBflMin_to_reach_weights[0] + eBflMin_to_hru_weights[iZirkelMin];
                                             eBflMin.setObject("to_reach_weights", eBflMin_to_reach_weights);
 
-                                            System.out.println("HRU " + eBflMin.getDouble("ID") + ": Unterbrechung der Fliessbeziehung zu HRU " + eBflMin_to_hruId + ". Umleitung in das Fliessgewaessersegment -" + eBflMin_to_reachId + "; Beitragende Flaeche: " + Math.round(eBflMin.getDouble("BFl") * eBflMin_to_hru_weights[iZirkelMin] / 1000.) / 1000. + " qkm");
+                                            //System.out.println("HRU " + eBflMin.getDouble("ID") + ": Unterbrechung der Fliessbeziehung zu HRU " + eBflMin_to_hruId + ". Umleitung in das Fliessgewaessersegment -" + eBflMin_to_reachId + "; Beitragende Flaeche: " + Math.round(eBflMin.getDouble("BFl") * eBflMin_to_hru_weights[iZirkelMin] / 1000.) / 1000. + " qkm");
                                         } else {
                                             //Uebergabe des Wassers der zirkelausloesenden Flaeche an die anderen Fliessbeziehungen der gleichen HRU
                                             for (int s = 0; s < eBflMin_to_hru.length; s++) {
@@ -383,7 +383,7 @@ public class MultiEntityReaderTS_GW extends JAMSComponent {
                                                     eBflMin_to_hru_weights[s] = eBflMin_to_hru_weights[s] + eBflMin_to_hru_weights[iZirkelMin] / (teilerMin - 1);
                                                 }
                                             }
-                                            System.out.println("HRU " + eBflMin.getDouble("ID") + ": Unterbrechung der Fliessbeziehung zu HRU " + eBflMin_to_hruId + ". Verteilung des Wassers auf alle anderen Fliessbeziehungen der HRU;" + " Beitragende Flaeche: " + Math.round(eBflMin.getDouble("BFl") * eBflMin_to_hru_weights[iZirkelMin] / 1000.) / 1000. + " qkm");
+                                            //System.out.println("HRU " + eBflMin.getDouble("ID") + ": Unterbrechung der Fliessbeziehung zu HRU " + eBflMin_to_hruId + ". Verteilung des Wassers auf alle anderen Fliessbeziehungen der HRU;" + " Beitragende Flaeche: " + Math.round(eBflMin.getDouble("BFl") * eBflMin_to_hru_weights[iZirkelMin] / 1000.) / 1000. + " qkm");
                                         }
                                         eBflMin_to_hru[iZirkelMin] = null;
                                         eBflMin.setObject("to_poly", eBflMin_to_hru);
@@ -391,7 +391,7 @@ public class MultiEntityReaderTS_GW extends JAMSComponent {
                                         eBflMin.setObject("to_poly_weights", eBflMin_to_hru_weights);
                                     } else {
                                         unaufloesbar = true;
-                                        System.out.println("Nicht aufloesbarer Zirkel! Fliessbeziehung von HRU " + e_ziel.getDouble("ID") + " zu HRU " + e_ziel_to_hru[i].getDouble("ID") + " kann nicht unterbrochen werden.");
+                                        //System.out.println("Nicht aufloesbarer Zirkel! Fliessbeziehung von HRU " + e_ziel.getDouble("ID") + " zu HRU " + e_ziel_to_hru[i].getDouble("ID") + " kann nicht unterbrochen werden.");
                                     }
                                     continue marke;
                                 }
@@ -423,7 +423,7 @@ public class MultiEntityReaderTS_GW extends JAMSComponent {
             }
             //Abbruch wegen nicht aufl?sbaren Zirkels
             if (unaufloesbar == true) {
-                getModel().getRuntime().sendHalt("Nicht aufloesbare Zirkel in HRU-Muster");
+                //getModel().getRuntime().sendHalt("Nicht aufloesbare Zirkel in HRU-Muster");
             }
         }
 
