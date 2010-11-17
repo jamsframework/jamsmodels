@@ -39,7 +39,9 @@ import java.util.GregorianCalendar;
 @JAMSComponentDescription(
 title="StandardEfficiencyCalculator",
         author="Peter Krause",
-        description="Calculates various efficiency measures"
+        description="Calculates various efficiency measures",
+        version="1.0_0",
+        date="2010-10-29"
         )
         public class StandardEfficiencyCalculator extends JAMSComponent {
     
@@ -50,7 +52,7 @@ title="StandardEfficiencyCalculator",
     @JAMSVarDescription(
     access = JAMSVarDescription.AccessType.READ,
             update = JAMSVarDescription.UpdateType.RUN,
-            description = "time"
+            description = "the current modelling time step"
             )
             public Attribute.Calendar time;
     
@@ -64,21 +66,21 @@ title="StandardEfficiencyCalculator",
     @JAMSVarDescription(
     access = JAMSVarDescription.AccessType.READ,
             update = JAMSVarDescription.UpdateType.INIT,
-            description = "The efficiency time interval"
+            description = "The efficiency time interval, a subset of modelTimeInterval"
             )
             public JAMSTimeInterval effTimeInterval;
     
     @JAMSVarDescription(
     access = JAMSVarDescription.AccessType.READ,
             update = JAMSVarDescription.UpdateType.INIT,
-            description = "The months to be evaluated interval"
+            description = "comma separated list of months (1-12) which should be evaluated, can be left out if not needed"
             )
             public JAMSIntegerArray effMonthList;
     
     @JAMSVarDescription(
     access = JAMSVarDescription.AccessType.READ,
             update = JAMSVarDescription.UpdateType.INIT,
-            description = "Efficiency method used"
+            description = "a comma separated list of integer values indicating which efficiency criteria should be computed"
             )
             public JAMSIntegerArray effMethod;
     
@@ -100,7 +102,9 @@ title="StandardEfficiencyCalculator",
     access = JAMSVarDescription.AccessType.WRITE,
             update = JAMSVarDescription.UpdateType.RUN,
             description = "Nash-Sutcliffe-efficiency with power 1.0",
-            defaultValue= "0"
+            unit="n/a",
+            lowerBound = -9999,
+            upperBound = 1
             )
             public JAMSDouble e1;
     
@@ -108,7 +112,9 @@ title="StandardEfficiencyCalculator",
     access = JAMSVarDescription.AccessType.WRITE,
             update = JAMSVarDescription.UpdateType.RUN,
             description = "Nash-Sutcliffe-efficiency with power 2.0",
-            defaultValue= "0"
+            unit="n/a",
+            lowerBound = -9999,
+            upperBound = 1
             )
             public JAMSDouble e2;
     
@@ -116,7 +122,9 @@ title="StandardEfficiencyCalculator",
     access = JAMSVarDescription.AccessType.WRITE,
             update = JAMSVarDescription.UpdateType.RUN,
             description = "logarithmic Nash-Sutcliffe-efficiency with power 1.0",
-            defaultValue= "0"
+            unit="n/a",
+            lowerBound = -9999,
+            upperBound = 1
             )
             public JAMSDouble le1;
     
@@ -124,7 +132,9 @@ title="StandardEfficiencyCalculator",
     access = JAMSVarDescription.AccessType.WRITE,
             update = JAMSVarDescription.UpdateType.RUN,
             description = "logarithmic Nash-Sutcliffe-efficiency with power 2.0",
-            defaultValue= "0"
+            unit="n/a",
+            lowerBound = -9999,
+            upperBound = 1
             )
             public JAMSDouble le2;
     
@@ -132,7 +142,9 @@ title="StandardEfficiencyCalculator",
     access = JAMSVarDescription.AccessType.WRITE,
             update = JAMSVarDescription.UpdateType.RUN,
             description = "Willmot's index of agreement with power 1.0",
-            defaultValue= "0"
+            unit="n/a",
+            lowerBound = 0,
+            upperBound = 1
             )
             public JAMSDouble ioa1;
     
@@ -140,15 +152,19 @@ title="StandardEfficiencyCalculator",
     access = JAMSVarDescription.AccessType.WRITE,
             update = JAMSVarDescription.UpdateType.RUN,
             description = "Willmot's index of agreement with power 2.0",
-            defaultValue= "0"
+            unit="n/a",
+            lowerBound = 0,
+            upperBound = 1
             )
             public JAMSDouble ioa2;
     
     @JAMSVarDescription(
     access = JAMSVarDescription.AccessType.WRITE,
             update = JAMSVarDescription.UpdateType.RUN,
-            description = "coefficient of determination r²",
-            defaultValue= "0"
+            description = "coefficient of determination r^2",
+            unit="n/a",
+            lowerBound = 0,
+            upperBound = 1
             )
             public JAMSDouble rsq;
     
@@ -156,22 +172,28 @@ title="StandardEfficiencyCalculator",
     access = JAMSVarDescription.AccessType.WRITE,
             update = JAMSVarDescription.UpdateType.RUN,
             description = "gradient of linear regression",
-            defaultValue= "0"
+            unit="n/a",
+            lowerBound = 0,
+            upperBound = 9999
             )
             public JAMSDouble grad;
     
     @JAMSVarDescription(
     access = JAMSVarDescription.AccessType.WRITE,
             update = JAMSVarDescription.UpdateType.RUN,
-            description = "weighted r²"
-            )
+            description = "weighted rsq",
+            unit="n/a",
+            lowerBound = 0,
+            upperBound = 1)
             public JAMSDouble wrsq;
     
     @JAMSVarDescription(
     access = JAMSVarDescription.AccessType.WRITE,
             update = JAMSVarDescription.UpdateType.RUN,
             description = "gradient of double sum regression",
-            defaultValue= "0"
+            unit="n/a",
+            lowerBound = 0,
+            upperBound = 9999
             )
             public JAMSDouble dsGrad;
     
@@ -179,7 +201,9 @@ title="StandardEfficiencyCalculator",
     access = JAMSVarDescription.AccessType.WRITE,
             update = JAMSVarDescription.UpdateType.RUN,
             description = "absolute volume error",
-            defaultValue= "0"
+            unit="same as values",
+            lowerBound = 0,
+            upperBound = 9999
             )
             public JAMSDouble absVolErr;
     
@@ -187,7 +211,9 @@ title="StandardEfficiencyCalculator",
     access = JAMSVarDescription.AccessType.WRITE,
             update = JAMSVarDescription.UpdateType.RUN,
             description = "root mean square error",
-            defaultValue= "0"
+            unit="same as values",
+            lowerBound = 0,
+            upperBound = 9999
             )
             public JAMSDouble rmse;
     
@@ -195,9 +221,21 @@ title="StandardEfficiencyCalculator",
     access = JAMSVarDescription.AccessType.WRITE,
             update = JAMSVarDescription.UpdateType.RUN,
             description = "percent bias",
-            defaultValue= "0"
+            unit="%",
+            lowerBound = 0,
+            upperBound = 9999
             )
             public JAMSDouble pbias;
+
+    @JAMSVarDescription(
+    access = JAMSVarDescription.AccessType.WRITE,
+            update = JAMSVarDescription.UpdateType.RUN,
+            description = "absolute percent bias",
+            unit="%",
+            lowerBound = 0,
+            upperBound = 9999
+            )
+            public JAMSDouble apbias;
     
     @JAMSVarDescription(
     access = JAMSVarDescription.AccessType.WRITE,
@@ -218,7 +256,7 @@ title="StandardEfficiencyCalculator",
     private final int ABSVOLERROR = 10;
     private final int RMSE = 11;
     private final int PBIAS = 12;
-    private final int PBIAS2 = 13;
+    private final int APBIAS = 13;
     
     private final int TOTAL_PERIOD = 0;
     private final int HYDROLOGICAL_YEAR = 1;
@@ -326,7 +364,6 @@ title="StandardEfficiencyCalculator",
             this.interValStart = startStep;
             this.interValEnd = this.interValStart + this.effTsteps;
         }
-        int junk = 0;
         
         if(this.effMonthList != null){
             this.monthly = true;
@@ -411,7 +448,7 @@ title="StandardEfficiencyCalculator",
                 getModel().getRuntime().println("ioa2:\t\t" + String.format(Locale.US,"%.5f",ioa2), JAMS.STANDARD);
             }else if(effMethod.getValue()[i] == this.R2){
                 double[] rCoeff = Regression.calcLinReg(valData_1, preData_1);
-                getModel().getRuntime().println("r²:\t\t" + String.format(Locale.US,"%.5f",rCoeff[2]), JAMS.STANDARD);
+                getModel().getRuntime().println("rsq:\t\t" + String.format(Locale.US,"%.5f",rCoeff[2]), JAMS.STANDARD);
                 getModel().getRuntime().println("grad:\t\t" + String.format(Locale.US,"%.5f",rCoeff[1]), JAMS.STANDARD);
                 this.rsq.setValue(rCoeff[2]);
                 this.grad.setValue(rCoeff[1]);
@@ -423,7 +460,7 @@ title="StandardEfficiencyCalculator",
                 else
                     wr = Math.pow(Math.abs(rCoeff[1]), -1.0) * rCoeff[2];
                 this.wrsq.setValue(wr);
-                getModel().getRuntime().println("wr²:\t\t" + String.format(Locale.US,"%.5f",wr), JAMS.STANDARD);
+                getModel().getRuntime().println("wrsq:\t\t" + String.format(Locale.US,"%.5f",wr), JAMS.STANDARD);
             }else if(effMethod.getValue()[i] == this.DSGRAD){
                 double dsGrad = DoubleSumAnalysis.dsGrad(valData_1, preData_1);
                 this.dsGrad.setValue(dsGrad);
@@ -440,10 +477,10 @@ title="StandardEfficiencyCalculator",
                 double pbias = VolumeError.pbias(valData_1, preData_1);
                 this.pbias.setValue(pbias);
                 getModel().getRuntime().println("PBIAS:\t\t" + String.format(Locale.US,"%.5f",pbias), JAMS.STANDARD);
-            }else if(effMethod.getValue()[i] == this.PBIAS2){
-                double pbias = VolumeError.pbias2(valData_1, preData_1);
-                this.pbias.setValue(pbias);
-                getModel().getRuntime().println("PBIAS2 (abs diff):\t\t" + String.format(Locale.US,"%.5f",pbias), JAMS.STANDARD);
+            }else if(effMethod.getValue()[i] == this.APBIAS){
+                double apbias = VolumeError.pbias2(valData_1, preData_1);
+                this.apbias.setValue(apbias);
+                getModel().getRuntime().println("APBIAS:\t\t" + String.format(Locale.US,"%.5f",pbias), JAMS.STANDARD);
             }
             
         }
