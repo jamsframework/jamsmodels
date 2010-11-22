@@ -190,12 +190,14 @@ public class HydroNETControl extends JAMSContext {
     
     @Override
     public void init () {
-		
-	iteration = 0;
-	
+        iteration = 0;
+
 	DistNeuron.alpha = momentum.getValue();
 	DistNeuron.eta = learningrate.getValue();
-	if (runEnumerator == null) {
+        
+        super.init();
+	
+	/*if (runEnumerator == null) {
             runEnumerator = super.getChildrenEnumerator();
         }
 	
@@ -208,7 +210,7 @@ public class HydroNETControl extends JAMSContext {
             } catch (Exception e) {
                 
             }
-        }
+        }*/
     }
     
     public void singleRun() {  		

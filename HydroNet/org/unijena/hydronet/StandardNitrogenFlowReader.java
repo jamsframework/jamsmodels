@@ -33,6 +33,7 @@ import jams.data.Attribute.Entity;
  *
  * @author C. Fischer
  */
+
 public class StandardNitrogenFlowReader extends JAMSComponent {
     
     @JAMSVarDescription(

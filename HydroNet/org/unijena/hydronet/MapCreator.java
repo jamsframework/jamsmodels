@@ -11,11 +11,13 @@ import javax.swing.JPanel;
 
 import java.awt.Container;
 import java.awt.FlowLayout;
-import java.awt.event.MouseEvent;
+import java.util.Iterator;
 import javax.swing.JFrame;
 import javax.swing.JTextArea;
 import javax.swing.Spring;
 import javax.swing.SpringLayout;
+import org.geotools.gui.swing.event.SelectionChangeListener;
+import org.geotools.gui.swing.event.SelectionChangedEvent;
 import org.jfree.chart.ChartPanel;
 import org.jfree.chart.JFreeChart;
 import org.jfree.chart.axis.NumberAxis;
@@ -46,40 +48,24 @@ public class MapCreator extends jams.components.gui.MapCreator {
     public void run() throws Exception {       
         super.run();
         
-        createPanel();
-	}
-    
-    @Override
-        public void mouseClicked(MouseEvent e) {
-            super.mouseClicked(e);
-            
-            try {
-		SimpleFeature f = this.getSelectedFeature();
+        this.addSelectionChangeListener(new SelectionChangeListener(){
+            @Override
+            public void selectionChanged(SelectionChangedEvent evt){
+                try {
+		SimpleFeature f = getSelectedFeature();
 		if (f != null) {
 		    ShowActFunction(new Double(f.getID()).intValue());
 		}
 	    }
 	    catch (Exception e1) {
-		this.getContext().getModel().getRuntime().println(e1.toString());
+		getContext().getModel().getRuntime().println(e1.toString());
 	    }
-        }
-        
-	/*protected void getFeature(java.awt.geom.Point2D p) throws IOException {
-	    super.getFeature(p);
-	    
-	    try {
-		Feature f = this.getSelectedFeature();
-		if (f != null) {
-		    ShowActFunction(new Double(f.getID()).intValue());
-		}
-	    }
-	    catch (Exception e) {
-		this.getContext().getModel().getRuntime().println(e.toString());
-	    }
-	}*/
-	
-				
-	
+            }
+        });
+
+        createPanel();
+	}
+                	
 	protected void createPanel() {	    			    
 	    //super.createPanel();
 	    
@@ -175,13 +161,16 @@ public class MapCreator extends jams.components.gui.MapCreator {
 		frame.setVisible(true);	    	    
 	    } catch (Exception e) {
 		this.getContext().getModel().getRuntime().println(e.toString());
-	}     
+	}
+
+
     }
 	    
     void ShowActFunction(int id) throws Exception {	    
-	Entity e = null;
+	Entity e = null;        
 	for (int i = 0;i<hrus.getEntities().size();i++) {
 	    e = hrus.getEntities().get(i);
+                        
 	    if (e.getDouble("ID") == id)
 		break;
 	}
@@ -204,7 +193,10 @@ public class MapCreator extends jams.components.gui.MapCreator {
 	percolation_weight.setText((new Double(((NONeuron)e.getObject("NITROGEN_NEURON")).getOutputWeight())).toString());
 	ist_input.setText((new Double(((DistNeuron)e.getObject("DIST_NEURON")).getInitalExternInput())).toString());
 	cur_input.setText((new Double(((DistNeuron)e.getObject("DIST_NEURON")).getInput())).toString());
-	downstreamID.setText(new Integer((new Double(e.getDouble("ID"))).intValue()).toString());
+        //if (e.getDouble("to_poly")
+        Entity dsEntity = (Entity)e.getObject("to_poly");
+        if (dsEntity!=null)
+            downstreamID.setText(new Integer((new Double(dsEntity.getId())).intValue()).toString());
     }
     /* Used by makeCompactGrid. */
     private static SpringLayout.Constraints getConstraintsForCell(
