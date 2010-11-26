@@ -1139,9 +1139,9 @@ import java.util.ArrayList;
             {
                 this.yield = bio_opt * (1 - (1/(1+ hi_act)));
             }
-            if (idValue.getValue() == 6) {
-                System.out.println(" hi_act: " + hi_act +  " hvsti: " + hvsti +  " fphu: " + fphu_act + " - ");
-            }
+           // if (idValue.getValue() == 6) {
+             //   System.out.println(" hi_act: " + hi_act +  " hvsti: " + hvsti +  " fphu: " + fphu_act + " - ");
+           // }
             // Amounts of nitrogen [kg N/ha](and who wants P) to be removed from the field
             // whereas cnyld is the fraction of N being removed by the field crop
             

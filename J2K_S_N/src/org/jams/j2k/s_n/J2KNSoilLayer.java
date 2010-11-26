@@ -25,9 +25,6 @@ package org.jams.j2k.s_n;
 
 import jams.data.*;
 import jams.model.*;
-import jams.io.*;
-import java.util.*;
-import java.io.*;
 
 /**
  *
@@ -36,7 +33,9 @@ import java.io.*;
 @JAMSComponentDescription(
         title="J2KNSoilLayer",
         author="Manfred Fink",
-        description="Calculates Nitrogen transformation Processes in Soil. Method after SWAT2000 with minor adaptions"
+        description="Calculates Nitrogen transformation Processes in Soil. Method after SWAT2000 with adaptions",
+        version="1.0",
+        date="2010-11-22"
         )
         public class J2KNSoilLayer extends JAMSComponent  {
 
@@ -47,528 +46,777 @@ import java.io.*;
 
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.RUN,
-            description = "HRU attribute name area in m²"
+            description = "attribute area",
+            unit = "m^2",
+            lowerBound = 0,
+            upperBound = 1000000000
             )
             public JAMSDouble area;
 
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.RUN,
-            description = " number of soil layers [-]"
+            description = " number of soil layers",
+            unit = "-",
+            lowerBound = 0,
+            upperBound = 100
             )
             public JAMSDouble Layer;
 
 
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.RUN,
-            description = "in cm depth of soil layer"
+            description = "depth of soil layer",
+            unit = "cm",
+            lowerBound = 0,
+            upperBound = 10000
             )
             public JAMSDoubleArray layerdepth;
 
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.RUN,
-            description = "in cm depth of soil profile"
+            description = "depth of soil profile",
+            unit = "cm",
+            lowerBound = 0,
+            upperBound = 100000
             )
             public JAMSDouble totaldepth;
 
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.RUN,
-            description = "in m actual depth of roots"
+            description = "in m actual depth of roots",
+            unit = "m",
+            lowerBound = 0,
+            upperBound = 100
             )
             public JAMSDouble rootdepth;
 
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.RUN,
-            description = "in kg/dm³ soil bulk density"
+            description = "soil bulk density",
+            unit = "kg*dm^3^-1",
+            lowerBound = 0,
+            upperBound = 20
             )
             public JAMSDoubleArray soil_bulk_density;
 
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.RUN,
-            description = "actual LPS in portion of sto_LPS soil water content"
+            description = "actual LPS in portion of sto_LPS soil water content",
+            unit = "-",
+            lowerBound = 0,
+            upperBound = 1
             )
             public JAMSDoubleArray sat_LPS;
 
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.RUN,
-            description = "actual MPS in portion of sto_MPS soil water content"
+            description = "actual MPS in portion of sto_MPS soil water content",
+            unit = "-",
+            lowerBound = 0,
+            upperBound = 1
             )
             public JAMSDoubleArray sat_MPS;
 
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.RUN,
-            description = "maximum MPS  in l soil water content"
+            description = "maximum MPS (Middle Pore Storage) soil water content",
+            unit = "L",
+            lowerBound = 0,
+            upperBound = 2000
             )
             public JAMSDoubleArray stohru_MPS;
 
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.RUN,
-            description = "maximum LPS  in l soil water content"
+            description = "maximum LPS (Large Pore Storage) soil water content",
+            unit = "L",
+            lowerBound = 0,
+            upperBound = 2000
             )
             public JAMSDoubleArray stohru_LPS;
 
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.RUN,
-            description = "maximum FPS  in l soil water content"
+            description = "maximum FPS (Fine Pore Storage) soil water content",
+            unit = "L",
+            lowerBound = 0,
+            upperBound = 2000
             )
             public JAMSDoubleArray stohru_FPS;
 
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.RUN,
-            description = "soil temperature in layerdepth in °C"
+            description = "soil temperature in layerdepth",
+            unit = "�C",
+            lowerBound = -70,
+            upperBound = 70
             )
             public JAMSDoubleArray Soil_Temp_Layer;
 
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.RUN,
-            description = " in % organic Carbon in soil"
+            description = "portion of organic Carbon in soil" ,
+            unit = "%",
+            lowerBound = 0,
+            upperBound = 100
             )
             public JAMSDoubleArray C_org;
 
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
-            description = " NO3-Pool in kgN/ha"
+            description = "NO3-Pool, N content in layer",
+            unit = "kg*ha^-1",
+            lowerBound = 0,
+            upperBound = 10000
             )
             public JAMSDoubleArray NO3_Pool;
 
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
-            description = " NH4-Pool in kgN/ha"
+            description = "NH4-Pool, N content in layer",
+            unit = "kg*ha^-1",
+            lowerBound = 0,
+            upperBound = 10000
             )
             public JAMSDoubleArray NH4_Pool;
 
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
-            description = " N-Organic Pool with reactive organic matter in kgN/ha"
+            description = "N-Organic Pool with reactive organic matter, N content in layer",
+            unit = "kg*ha^-1",
+            lowerBound = 0,
+            upperBound = 100000
             )
             public JAMSDoubleArray N_activ_pool;
 
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
-            description = " N-Organic Pool with stable organic matter in kgN/ha"
+            description = "N-Organic Pool with stable organic matter, N content in layer",
+            unit = "kg*ha^-1",
+            lowerBound = 0,
+            upperBound = 1000000
             )
             public JAMSDoubleArray N_stabel_pool;
 
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
-            description = " sum of N-Organic Pool with reactive organic matter in kgN/ha"
+            description = "sum of N-Organic Pool with reactive organic matter, N content in the entire soil profile",
+            unit = "kg*ha^-1",
+            lowerBound = 0,
+            upperBound = 1000000
             )
             public JAMSDouble sN_activ_pool;
 
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
-            description = " sum of N-Organic Pool with stable organic matter in kgN/ha"
+            description = "sum of N-Organic Pool with stable organic matter, N content in the entire soil profile",
+            unit = "kg*ha^-1",
+            lowerBound = 0,
+            upperBound = 10000000
             )
             public JAMSDouble sN_stabel_pool;
 
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
-            description = "sum of NO3-Pool in kgN/ha"
+            description = "sum of NO3-Pool, N content in the entire soil profile",
+            unit = "kg*ha^-1",
+            lowerBound = 0,
+            upperBound = 10000
             )
             public JAMSDouble sNO3_Pool;
 
 
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
-            description = " sum of NH4-Pool in kgN/ha"
+            description = "sum of NH4-Pool, N content in the entire soil profile",
+            unit = "kg*ha^-1",
+            lowerBound = 0,
+            upperBound = 10000
             )
             public JAMSDouble sNH4_Pool;
 
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
-            description = " sum of NResiduePool in kgN/ha"
+            description = "sum of NResiduePool, N content in the entire soil profile",
+            unit = "kg*ha^-1",
+            lowerBound = 0,
+            upperBound = 100000
             )
             public JAMSDouble sNResiduePool;
 
 
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
-            description = " sum of interflowNabs in kgN/ha",
-            defaultValue="0"
+            description = "sum of soil layers of N in interflow absolute leaving the HRU",
+            unit = "kg",
+            lowerBound = 0,
+            upperBound = 100000000
             )
             public JAMSDouble sinterflowNabs;
 
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
-            description = " sum of interflowN in kgN/ha"
+            description = "sum of soil layers of N in interflow leaving the HRU",
+            unit = "kg*ha^-1",
+            lowerBound = 0,
+            upperBound = 10000
             )
             public JAMSDouble sinterflowN;
 
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
-            description = " Residue in Layer in kgN/ha"
+            description = "Residue biomass in layer",
+            unit = "kg*ha^-1",
+            lowerBound = 0,
+            upperBound = 1000000
             )
             public JAMSDoubleArray Residue_pool;
 
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
-            description = " N-Organic fresh Pool from Residue in kgN/ha"
+            description = "N-Organic fresh Pool from Residue, N content in layer",
+            unit = "kg*ha^-1",
+            lowerBound = 0,
+            upperBound = 1000000
             )
             public JAMSDoubleArray N_residue_pool_fresh;
 
 
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.RUN,
-            description = " actual evaporation in mm"
+            description = "actual evaporation in Layer",
+            unit = "L",
+            lowerBound = 0,
+            upperBound = 100000000
             )
             public JAMSDoubleArray aEP_h;
 
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.RUN,
-            description = "mps diffusion between layers value"
+            description = "mps diffusion between layers value",
+            unit = "L",
+            lowerBound = 0,
+            upperBound = 100000000
             )
             public JAMSDoubleArray w_layer_diff;
 
 
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.RUN,
-            description = " surface runoff in l"
+            description = "surface runoff leaving the HRU",
+            unit = "L",
+            lowerBound = 0,
+            upperBound = 1000000000
             )
             public JAMSDouble RD1_out;
 
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.RUN,
-            description = " interflow in l"
+            description = "interflow leaving the HRU in every layer",
+            unit = "L",
+            lowerBound = 0,
+            upperBound = 100000000
             )
             public JAMSDoubleArray RD2_out;
 
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.RUN,
-            description = " percolation in l"
+            description = "percolation leaving the HRU",
+            unit = "L",
+            lowerBound = 0,
+            upperBound = 1000000000
             )
             public JAMSDouble D_perco ;
 
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
-            description = " voltalisation rate from NH4_Pool in kgN/ha"
+            description = "voltalisation rate from NH4_Pool in N leaving the HRU",
+            unit = "kg*ha^-1",
+            lowerBound = 0,
+            upperBound = 1000
             )
             public JAMSDouble Volati_trans;
 
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
-            description = " NH4 fertilizer rate in kgN/ha"
+            description = "NH4 fertilizer rate in N",
+            unit = "kg*ha^-1",
+            lowerBound = 0,
+            upperBound = 1000
             )
             public JAMSDouble NH4inp;
 
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
-            description = " nitrification rate from  NO3_Pool in kgN/ha"
+            description = "nitrification rate from  NO3_Pool in N",
+            unit = "kg*ha^-1",
+            lowerBound = 0,
+            upperBound = 1000
             )
             public JAMSDouble Nitri_trans;
 
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
-            description = " denitrification rate from  NO3_Pool in kgN/ha"
+            description = "denitrification rate from  NO3_Pool in N leaving the HRU",
+            unit = "kg*ha^-1",
+            lowerBound = 0,
+            upperBound = 1000
             )
             public JAMSDouble Denit_trans;
 
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
-            description = " Nitrate in surface runoff in  in kgN/ha"
+            description = "Nitrate in surface runoff in N leaving the HRU",
+            unit = "kg*ha^-1",
+            lowerBound = 0,
+            upperBound = 100000
             )
             public JAMSDouble SurfaceN;
 
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
-            description = " Nitrate in interflow in  in kgN/ha"
+            description = "Nitrate in interflow in N leaving the HRU for each layer",
+            unit = "kg*ha^-1",
+            lowerBound = 0,
+            upperBound = 100000
             )
             public JAMSDoubleArray InterflowN;
 
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
-            description = " Nitrate in percolation in kgN/ha"
+            description = "Nitrate in percolation in N",
+            unit = "kg*ha^-1",
+            lowerBound = 0,
+            upperBound = 100000
             )
             public JAMSDouble PercoN;
 
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
-            description = " Nitrate in surface runoff in kgN"
+            description = "Nitrate in surface runoff in N absolute leaving the HRU",
+            unit = "kg",
+            lowerBound = 0,
+            upperBound = 1000000000
             )
             public JAMSDouble SurfaceNabs;
 
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
-            description = " Nitrate in interflow in in kgN"
+            description = "Nitrate in interflow in N absolute leaving the HRU",
+            unit = "kg",
+            lowerBound = 0,
+            upperBound = 1000000000
             )
             public JAMSDoubleArray InterflowNabs;
 
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
-            description = " Nitrate in percolation in in kgN"
+            description = "Nitrate in percolation in N absolute leaving the HRU",
+            unit = "kg",
+            lowerBound = 0,
+            upperBound = 1000000000
             )
             public JAMSDouble PercoNabs;
 
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
-            description = " Nitrate in surface runoff added to HRU layer in in kgN"
+            description = "Nitrate in surface runoff added to HRU layer in N",
+            unit = "kg",
+            lowerBound = 0,
+            upperBound = 1000000000
             )
             public JAMSDouble SurfaceN_in;
 
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.RUN,
-            description = " Nitrate in interflow in added to HRU layer in kgN"
+            description = "Nitrate in interflow in added to HRU layer in N",
+            unit = "kg",
+            lowerBound = 0,
+            upperBound = 1000000000
             )
             public JAMSDoubleArray InterflowN_in;
 
 
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.RUN,
-            description = "potential nitrogen content of plants in kgN/ha"
+            description = "potential nitrogen content of plants in N",
+            unit = "kg*ha^-1",
+            lowerBound = 0,
+            upperBound = 10000
             )
             public JAMSDouble BioNoptAct;
 
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
-            description = "actual nitrate nitrogen content of plants in kgN/ha"
+            description = "actual nitrate nitrogen content of plants in N",
+            unit = "kg*ha^-1",
+            lowerBound = 0,
+            upperBound = 10000
             )
             public JAMSDouble BioNAct;
 
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
-            description = "actual nitrate uptake of plants in kgN/ha"
+            description = "actual nitrate uptake of plants in N",
+            unit = "kg*ha^-1",
+            lowerBound = 0,
+            upperBound = 1000
             )
             public JAMSDouble actnup;
 
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.RUN,
-            description = "intfiltration poritions for the single horizonts in l"
+            description = "intfiltration poritions for the single horizonts",
+            unit = "L",
+            lowerBound = 0,
+            upperBound = 10000000
             )
             public JAMSDoubleArray infiltration_hor;
 
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.RUN,
-            description = "percolation out ouf the single horizonts in l"
+            description = "percolation out ouf the single horizonts",
+            unit = "L",
+            lowerBound = 0,
+            upperBound = 10000000
             )
             public JAMSDoubleArray perco_hor;
 
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.RUN,
-            description = "percolation out ouf the single horizonts in l"
+            description = "percolation out ouf the single horizonts",
+            unit = "L",
+            lowerBound = 0,
+            upperBound = 1000000
             )
             public JAMSDoubleArray actETP_h;
 
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
-            description = " Nitrate input due to Fertilisation in kgN/ha"
+            description = " Nitrate input due to Fertilisation in N",
+            unit = "kg*ha^-1",
+            lowerBound = 0,
+            upperBound = 10000
             )
             public JAMSDouble fertNO3;
 
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.RUN,
-            description = " Ammonium input due to Fertilisation in kgN/ha"
+            description = " Ammonium input due to Fertilisation in N",
+            unit = "kg*ha^-1",
+            lowerBound = 0,
+            upperBound = 10000
             )
             public JAMSDouble fertNH4;
 
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.RUN,
-            description = " Stable organig N input due to Fertilisation in kgN/ha"
+            description = " Stable organig N input due to Fertilisation in N",
+            unit = "kg*ha^-1",
+            lowerBound = 0,
+            upperBound = 10000
             )
             public JAMSDouble fertstableorg;
 
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.RUN,
-            description = " Activ organig N input due to Fertilisation in kgN/ha"
+            description = " Activ organig N input due to Fertilisation in N",
+            unit = "kg*ha^-1",
+            lowerBound = 0,
+            upperBound = 10000
             )
             public JAMSDouble fertactivorg;
 
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
-            description = "Sum of N input due fertilisation and deposition in kgN/ha"
+            description = "Sum of N input due fertilisation and deposition in N",
+            unit = "kg*ha^-1",
+            lowerBound = 0,
+            upperBound = 10000
             )
             public JAMSDouble sum_Ninput;
 
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.RUN,
-            description = "Current organic fertilizer amount added to residue pool"
+            description = "Current organic fertilizer amount added to residue pool",
+            unit = "kg*ha^-1",
+            lowerBound = 0,
+            upperBound = 100000
             )
             public JAMSDouble fertorgNfresh;
 
 
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.RUN,
-            description = " Input of plant residues kg/ha"
+            description = " Input of plant residues",
+            unit = "kg*ha^-1",
+            lowerBound = 0,
+            upperBound = 1000000
             )
             public JAMSDouble inp_biomass;
 
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.RUN,
-            description = "Nitrogen input of plant residues in kgN/ha"
+            description = "Nitrogen input of plant residues in N",
+            unit = "kg*ha^-1",
+            lowerBound = 0,
+            upperBound = 10000
             )
             public JAMSDouble inpN_biomass;
 
-
-    // constants and calibration parameter
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.INIT,
-            description = " rate constant between N_activ_pool and N_stabel_pool = 0.00001"
-            )
-            public JAMSDouble Beta_trans;
-
-    @JAMSVarDescription(
-            access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.INIT,
-            description = " rate factor between N_activ_pool and NO3_Pool to be calibrated 0.001 - 0.003"
-            )
-            public JAMSDouble Beta_min;
-
-    @JAMSVarDescription(
-            access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.INIT,
-            description = " rate factor between Residue_pool and NO3_Pool to be calibrated 0.1 - 0.02"
-            )
-            public JAMSDouble Beta_rsd;
-
-    @JAMSVarDescription(
-            access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.INIT,
-            description = " percolation coefitient to calibrate = 0.2"
-            )
-            public JAMSDouble Beta_NO3;
-
-    @JAMSVarDescription(
-            access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.INIT,
-            description = "nitrogen uptake distribution parameter to calibrate = 1 - 15"
-            )
-            public JAMSDouble Beta_Ndist;
-
-    @JAMSVarDescription(
-            access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.INIT,
-            description = "infiltration bypass parameter to calibrate = 0 - 1"
-            )
-            public JAMSDouble infil_conc_factor;
-
-    @JAMSVarDescription(
-            access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.INIT,
-            description = "denitrfcation saturation factor normally at 0.95 to calibrate 0 - 1"
-            )
-            public JAMSDouble denitfac;
-
-
-    @JAMSVarDescription(
-            access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.INIT,
-            description = "concentration of Nitrate in rain = 0 - 0.05 kgN/(mm * ha)"
-            )
-            public JAMSDouble deposition_factor;
-
-    @JAMSVarDescription(
-            access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.RUN,
-            description = "precipitation in mm"
+            description = "precipitation",
+            unit = "mm",
+            lowerBound = 0,
+            upperBound = 1000
             )
             public JAMSDouble precip;
 
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "Current time"
             )
             public JAMSCalendar time;
 
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "indicates dormancy of plants"
             )
             public JAMSBoolean dormancy;
 
-   @JAMSVarDescription(
-            access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.RUN,
-            description = "Indicates PIADIN application"
-            )
-            public JAMSInteger piadin;
-
-
-    @JAMSVarDescription(
+        @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
-            description = "time in days since the last PIADIN application"
+            description = "time since the last PIADIN application",
+            unit = "d",
+            lowerBound = 0,
+            upperBound = 400
             )
             public JAMSInteger App_time;
 
     @JAMSVarDescription(
-            access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.RUN,
-            description = "Indicates fertilazation optimization with plant demand"
-            )
-            public JAMSDouble opti;
-
-    @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
-            description = "Mineral nitrogen content in the soil profile down to 60 cm depth"
+            description = "Mineral nitrogen content in the soil profile down to 60 cm depth in N",
+            unit = "kg*ha^-1",
+            lowerBound = 0,
+            upperBound = 10000
             )
             public JAMSDouble nmin;
 
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.RUN,
-            description = "Indicates whether roots can penetrate or not the soil layer [-]"
+            description = "Indicates whether roots can penetrate or not the soil layer",
+            unit = "-",
+            lowerBound = 0,
+            upperBound = 1
             )
             public JAMSDoubleArray root_h;
 
+    @JAMSVarDescription(
+            access = JAMSVarDescription.AccessType.READ,
+            description = "Anmount of sediments entering the HRU",
+            unit = "kg",
+            lowerBound = 0,
+            upperBound = 1000000000
+            )
+            public JAMSDouble sedi_in;
 
+    @JAMSVarDescription(
+            access = JAMSVarDescription.AccessType.READ,
+            description = "Anmount of sediments leaving the HRU",
+            unit = "kg",
+            lowerBound = 0,
+            upperBound = 1000000000
+            )
+            public JAMSDouble sedi_out;
+
+
+    @JAMSVarDescription(
+            access = JAMSVarDescription.AccessType.READ,
+            description = "NH4 in surface runoff added to HRU in N",
+            unit = "kg",
+            lowerBound = 0,
+            upperBound = 1000000000
+            )
+            public JAMSDouble NH4_in;
+
+    @JAMSVarDescription(
+            access = JAMSVarDescription.AccessType.READ,
+            description = "Residue-N in surface runoff added to HRU in N",
+            unit = "kg",
+            lowerBound = 0,
+            upperBound = 1000000000
+            )
+            public JAMSDouble residue_in;
+
+    @JAMSVarDescription(
+            access = JAMSVarDescription.AccessType.READ,
+            description = "Activ-N in surface runoff added to HRU in N",
+            unit = "kg",
+            lowerBound = 0,
+            upperBound = 1000000000
+            )
+            public JAMSDouble activ_in;
+
+    @JAMSVarDescription(
+            access = JAMSVarDescription.AccessType.READ,
+            description = "Stable-N in surface runoff added to HRU in N",
+            unit = "kg",
+            lowerBound = 0,
+            upperBound = 1000000000
+            )
+            public JAMSDouble stabel_in;
+
+        @JAMSVarDescription(
+            access = JAMSVarDescription.AccessType.WRITE,
+            description = "NH4 in surface runoff leaving the HRU in N",
+            unit = "kg",
+            lowerBound = 0,
+            upperBound = 1000000000
+            )
+            public JAMSDouble NH4_out;
+
+    @JAMSVarDescription(
+            access = JAMSVarDescription.AccessType.WRITE,
+            description = "Residue-N in surface runoff leaving the HRU in N",
+            unit = "kg",
+            lowerBound = 0,
+            upperBound = 1000000000
+            )
+            public JAMSDouble residue_out;
+
+    @JAMSVarDescription(
+            access = JAMSVarDescription.AccessType.WRITE,
+            description = "Activ-N in surface runoff leaving the HRU in N",
+            unit = "kg",
+            lowerBound = 0,
+            upperBound = 1000000000
+            )
+            public JAMSDouble activ_out;
+
+    @JAMSVarDescription(
+            access = JAMSVarDescription.AccessType.WRITE,
+            description = "Stable-N in surface runoff leaving the HRU in N",
+            unit = "kg",
+            lowerBound = 0,
+            upperBound = 1000000000
+            )
+            public JAMSDouble stabel_out;
+
+
+
+    // constants and calibration parameter
+    @JAMSVarDescription(
+            access = JAMSVarDescription.AccessType.READ,
+            description = "rate constant between N_activ_pool and N_stabel_pool = 0.00001",
+            unit = "-",
+            lowerBound = 0.00001,
+            upperBound = 0.00001,
+            defaultValue = "0.00001"
+            )
+            public JAMSDouble Beta_trans;
+
+    @JAMSVarDescription(
+            access = JAMSVarDescription.AccessType.READ,
+            description = "rate factor between N_activ_pool and NO3_Pool to be calibrated",
+            unit = "-",
+            lowerBound = 0.001,
+            upperBound = 0.003,
+            defaultValue = "0.002"
+            )
+            public JAMSDouble Beta_min;
+
+    @JAMSVarDescription(
+            access = JAMSVarDescription.AccessType.READ,
+            description = "rate factor between Residue_pool and NO3_Pool to be calibrated",
+            unit = "-",
+            lowerBound = 0.1,
+            upperBound = 0.02,
+            defaultValue = "0.03"
+            )
+            public JAMSDouble Beta_rsd;
+
+    @JAMSVarDescription(
+            access = JAMSVarDescription.AccessType.READ,
+            description = "percolation coefitient to calibrate",
+            unit = "-",
+            lowerBound = 0.0,
+            upperBound = 1,
+            defaultValue = "0.2"
+            )
+            public JAMSDouble Beta_NO3;
+
+    @JAMSVarDescription(
+            access = JAMSVarDescription.AccessType.READ,
+            description = "nitrogen uptake distribution parameter to calibrate",
+            unit = "-",
+            lowerBound = 1,
+            upperBound = 15,
+            defaultValue = "1"
+            )
+            public JAMSDouble Beta_Ndist;
+
+    @JAMSVarDescription(
+            access = JAMSVarDescription.AccessType.READ,
+            description = "infiltration bypass parameter to calibrate = 0 - 1",
+            unit = "-",
+            lowerBound = 0,
+            upperBound = 1,
+            defaultValue = "1"
+            )
+            public JAMSDouble infil_conc_factor;
+
+    @JAMSVarDescription(
+            access = JAMSVarDescription.AccessType.READ,
+            description = "denitrfcation saturation factor to calibrate",
+            unit = "-",
+            lowerBound = 0.7,
+            upperBound = 1,
+            defaultValue = "0.91"
+            )
+            public JAMSDouble denitfac;
+
+
+    @JAMSVarDescription(
+            access = JAMSVarDescription.AccessType.READ,
+            description = "concentration of Nitrate in rain in N",
+            unit = "kg*mm^-1*ha^-1",
+            lowerBound = 0,
+            upperBound = 0.1,
+            defaultValue = "0.03"
+            )
+            public JAMSDouble deposition_factor;
+
+    @JAMSVarDescription(
+            access = JAMSVarDescription.AccessType.READ,
+            description = "Enrichment factor for sediment bounded N-Pools",
+            unit = "-",
+            lowerBound = 1,
+            upperBound = 10,
+            defaultValue = "1"
+            )
+            public JAMSDouble enrichment;
+
+
+   @JAMSVarDescription(
+            access = JAMSVarDescription.AccessType.READ,
+            description = "Indicates PIADIN application",
+            unit = "-",
+            lowerBound = 0,
+            upperBound = 1,
+            defaultValue = "0"
+            )
+            public JAMSInteger piadin;
+
+   @JAMSVarDescription(
+            access = JAMSVarDescription.AccessType.READ,
+            description = "Indicates fertilazation optimization with plant demand",
+            unit = "-",
+            lowerBound = 0,
+            upperBound = 1,
+            defaultValue = "0"
+            )
+            public JAMSInteger opti;
 
 
 

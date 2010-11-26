@@ -1043,9 +1043,9 @@ import jams.model.*;
         
         double horbal = 0;
         double test = 0;
-        
-        // drifferentiation between evaporation and transpiration
         double deltaETP = this.run_potETP - this.run_actETP;
+        // drifferentiation between evaporation and transpiration
+        
         if (runLAI <= 3){
             pTransp = (deltaETP * runLAI) / 3;
         } else if (runLAI > 3){
