@@ -9,24 +9,35 @@ import java.util.ArrayList;
 import lm.Componet.Vector.LMArableVector;
 import lm.Componet.Vector.LMFertVector;
 import lm.Componet.Vector.LMTillVector;
+import lm.Componet.Vector.LMArableID;
 
 /**
  *
  * @author Jens Wipprich ==> jens.wipprich (at) uni-jena.de
  */
 public class lmArable implements LMArableVector {
+
+    private ArableID AID;
+    private CropVector CID;
+    private String Date;
+    private TillVector TID;
+    private FertVector FID;
+    private Double FAmount;
+    private Boolean PLANT;
+    private Boolean HARVEST;
+    private Double FRACHARV;
     
     
     public lmArable (ArrayList<String> a){
         
     }
 
-    public LMArableVector getVector() {
-        throw new UnsupportedOperationException("Not supported yet.");
-    }
+    public lmArable(){
 
-    public LMArableVector createEmpty() {
-        throw new UnsupportedOperationException("Not supported yet.");
+
+    }
+    public LMArableVector getVector() {
+        return this;
     }
 
     public Boolean CeckIfCorrect() {
@@ -34,71 +45,83 @@ public class lmArable implements LMArableVector {
     }
 
     public Boolean isEmpty() {
-        throw new UnsupportedOperationException("Not supported yet.");
+        if (CID.getID()==0){
+            return true;
+        }else{
+            return false;
+        }
     }
 
-    public void setCID(LMFertVector Vector) {
-        throw new UnsupportedOperationException("Not supported yet.");
+
+
+    public void setAID(LMArableID ID){
+        this.AID=ID;
+    }
+    public LMArableID getAID(){
+        return this.AID;
+    }
+    public void setCID(CropVector Vector) {
+        this.CID=Vector;
     }
 
-    public LMFertVector getCID() {
-        throw new UnsupportedOperationException("Not supported yet.");
+    public CropVector getCID() {
+        return this.CID;
     }
 
     public void setDate(String s) {
-        throw new UnsupportedOperationException("Not supported yet.");
+        this.Date=s;
     }
 
     public String getDate() {
-        throw new UnsupportedOperationException("Not supported yet.");
+        return this.Date;
     }
 
-    public void setTID(LMTillVector Vector) {
-        throw new UnsupportedOperationException("Not supported yet.");
+    public void setTID(TillVector Vector) {
+        this.TID=Vector;
     }
 
-    public LMTillVector getTID() {
-        throw new UnsupportedOperationException("Not supported yet.");
+    public TillVector getTID() {
+        return this.TID;
     }
 
-    public void setFID(LMFertVector Vector) {
-        throw new UnsupportedOperationException("Not supported yet.");
+    public void setFID(FertVector Vector) {
+        this.FID=Vector;
     }
 
-    public LMFertVector getFID() {
-        throw new UnsupportedOperationException("Not supported yet.");
+    public FertVector getFID() {
+        return this.FID;
     }
 
     public void setFAmount(Double d) {
-        throw new UnsupportedOperationException("Not supported yet.");
+        this.FAmount=d;
     }
 
     public Double getFAmount() {
-        throw new UnsupportedOperationException("Not supported yet.");
+        return this.FAmount;
     }
 
     public void setPLANT(Boolean b) {
-        throw new UnsupportedOperationException("Not supported yet.");
+        this.PLANT=b;
     }
 
     public Boolean getPLANT() {
-        throw new UnsupportedOperationException("Not supported yet.");
+        return this.PLANT;
     }
 
     public void setHARVEST(Boolean b) {
-        throw new UnsupportedOperationException("Not supported yet.");
+        this.HARVEST=b;
     }
 
     public Boolean getHARVEST() {
-        throw new UnsupportedOperationException("Not supported yet.");
+        return this.HARVEST;
     }
 
     public void setFRACHARV(Double d) {
-        throw new UnsupportedOperationException("Not supported yet.");
+        this.FRACHARV=d;
     }
 
     public Double getFRACHARV() {
-        throw new UnsupportedOperationException("Not supported yet.");
+        return this.FRACHARV;
     }
 
 

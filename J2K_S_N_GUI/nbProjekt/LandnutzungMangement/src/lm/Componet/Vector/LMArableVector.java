@@ -20,9 +20,12 @@ public interface LMArableVector {
     public Boolean isEmpty();
 
     //Getter and Setter Methods
+    //Getter And Setter ------>AID
+    public void setAID(LMArableID ID);
+    public LMArableID getAID();
     //Getter and Setter -----> CID
-    public void setCID(LMFertVector Vector);  
-    public LMFertVector getCID();
+    public void setCID(LMCropVector Vector);
+    public LMCropVector getCID();
     //Getter and Setter ----->Date
     public void setDate(String s);
     public String getDate();
