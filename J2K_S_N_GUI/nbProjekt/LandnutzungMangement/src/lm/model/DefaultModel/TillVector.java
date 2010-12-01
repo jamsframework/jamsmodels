@@ -1,8 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
-
 package lm.model.DefaultModel;
 
 import java.util.ArrayList;
@@ -13,67 +8,79 @@ import lm.Componet.Vector.LMTillVector;
  * @author Jens Wipprich ==> jens.wipprich (at) uni-jena.de
  */
 public class TillVector implements LMTillVector {
+    
+    private int ID;
+    private String tillnm;
+    private String desc;
+    private Double effmix;
+    private Double deptil;
+
+
+    public TillVector(){
+     this.ID=0;
+     this.tillnm="";
+     this.desc="";
+     this.effmix=0.0;
+     this.deptil=0.0;
+    }
 
     public TillVector (ArrayList<String> a){
-        
+     this.ID=Integer.parseInt(a.get(0));
+     this.tillnm=a.get(1);
+     this.desc=a.get(2);
+     this.effmix=Double.valueOf(a.get(3));
+     this.deptil=Double.valueOf(a.get(4));
     }
 
     public LMTillVector getVector() {
-        throw new UnsupportedOperationException("Not supported yet.");
+        return this;
     }
-
-    public LMTillVector createEmpty() {
-        throw new UnsupportedOperationException("Not supported yet.");
-    }
-
     public Boolean CeckIfCorrect() {
         throw new UnsupportedOperationException("Not supported yet.");
     }
 
     public Boolean isEmpty() {
-        throw new UnsupportedOperationException("Not supported yet.");
+        if(this.ID==0){
+            return true;
+        }else{
+            return false;
+        }
     }
-
+    //Getter And Setter Methods
+    //Getter And Setter ------->TID
     public void setTID(int i) {
-        throw new UnsupportedOperationException("Not supported yet.");
+        this.ID=i;
     }
-
-    public int getTID() {
-        throw new UnsupportedOperationException("Not supported yet.");
+     public int getTID() {
+        return this.ID;
     }
-
+    //Getter And Setter ------->tillnm
     public void settillnm(String s) {
-        throw new UnsupportedOperationException("Not supported yet.");
+        this.tillnm="";
     }
-
     public String gettillnm() {
-        throw new UnsupportedOperationException("Not supported yet.");
+        return this.tillnm;
     }
-
+    //Getter And Setter ------->desc
     public void setdesc(String s) {
-        throw new UnsupportedOperationException("Not supported yet.");
+        this.desc=s;
     }
-
     public String getdesc() {
-        throw new UnsupportedOperationException("Not supported yet.");
+        return this.desc;
     }
-
+    //Getter And Setter ------->effmix
     public void seteffmix(Double d) {
-        throw new UnsupportedOperationException("Not supported yet.");
+        this.effmix=d;
     }
-
     public Double geteffmix() {
-        throw new UnsupportedOperationException("Not supported yet.");
+        return this.effmix;
     }
-
+    //Getter And Setter ------->deptil
     public void setdeptil(Double d) {
-        throw new UnsupportedOperationException("Not supported yet.");
+        this.deptil=d;
     }
-
     public Double getdeptil() {
-        throw new UnsupportedOperationException("Not supported yet.");
+        return this.deptil;
     }
-
-
 
 }

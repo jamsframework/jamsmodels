@@ -15,6 +15,10 @@ import lm.Componet.Vector.LMCropVector;
 public class CropVector implements LMCropVector {
 
 
+    public CropVector(){
+        
+    }
+
     public CropVector(ArrayList<String> a){
 
     }

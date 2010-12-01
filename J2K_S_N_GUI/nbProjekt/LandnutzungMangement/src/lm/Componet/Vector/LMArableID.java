@@ -1,8 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
-
 package lm.Componet.Vector;
 
 /**
@@ -11,14 +6,11 @@ package lm.Componet.Vector;
  */
 public interface LMArableID {
 
-
-    public int ID=0;
-    public int Stufe=0;
-    public int maxStufe=0;
-
     public Boolean isEmpty();
 
     public Boolean isLast();
+
+    public Boolean CeckIfCorrect();
 
 
     //Getter And Setter MEthods

@@ -1,12 +1,4 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
-
 package lm.Componet.Vector;
-
-import java.util.ArrayList;
-
 /**
  *
  * @author Jens Wipprich ==> jens.wipprich (at) uni-jena.de
@@ -19,6 +11,7 @@ public interface LMFertVector {
 
     public Boolean CeckIfCorrect();
 
+    //Setter And Getter Methods
     //Setter And Getter  ---->ID
     public void setID(int i);
     public int getID();
