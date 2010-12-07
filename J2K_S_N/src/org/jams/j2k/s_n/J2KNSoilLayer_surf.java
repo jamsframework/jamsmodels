@@ -704,8 +704,6 @@ import jams.model.*;
             )
             public JAMSDouble stabel_out;
 
-
-
     // constants and calibration parameter
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
