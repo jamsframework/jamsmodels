@@ -59,23 +59,20 @@ public class MultiRoutingMusle extends JAMSComponent {
     /*
      *  Component run stages
      */
-    public void init() throws JAMSEntity.NoSuchAttributeException {
-    }
-
-    public void run() throws JAMSEntity.NoSuchAttributeException {
+    public void run() throws Attribute.Entity.NoSuchAttributeException {
 
         Attribute.Entity entity = entities.getCurrent();
 
         //receiving polygon
-        JAMSEntity[] toPolyArray = (JAMSEntity[]) entity.getObject("to_poly");
+        Attribute.Entity[] toPolyArray = (Attribute.Entity[]) entity.getObject("to_poly");
         //receiving reach
-        JAMSEntity[] toReachArray = (JAMSEntity[]) entity.getObject("to_reach");
+        Attribute.Entity[] toReachArray = (Attribute.Entity[]) entity.getObject("to_reach");
        
 
         Double[] polyWeightsArray = (Double[]) entity.getObject("to_poly_weights");
         Double[] reachWeightsArray = (Double[]) entity.getObject("to_reach_weights");
 
-        JAMSEntity toPoly, toReach;
+        Attribute.Entity toPoly, toReach;
         double polyWeight, reachWeight;
 
         
@@ -134,9 +131,11 @@ public class MultiRoutingMusle extends JAMSComponent {
             }
         }
 
-        sedout = 0;
-        
-        outsed.setValue(sedout);
+        //sedout = 0;
+        //sedout = sedout * 0.05;
+        //System.out.println(sedout);
+
+        //outsed.setValue(sedout);
         if (keinziel == false) {
             getModel().getRuntime().println("Current entity ID: " + (int) entity.getDouble("ID") + " has no receiver.");
         }
