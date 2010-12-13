@@ -197,7 +197,7 @@ import jams.model.*;
             lowerBound = 0,
             upperBound = 1000000
             )
-            public JAMSDoubleArray N_stabel_pool;
+            public JAMSDoubleArray N_stable_pool;
 
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
@@ -215,7 +215,7 @@ import jams.model.*;
             lowerBound = 0,
             upperBound = 10000000
             )
-            public JAMSDouble sN_stabel_pool;
+            public JAMSDouble sN_stable_pool;
 
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
@@ -666,7 +666,7 @@ import jams.model.*;
             lowerBound = 0,
             upperBound = 1000000000
             )
-            public JAMSDouble stabel_in;
+            public JAMSDouble stable_in;
 
         @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
@@ -702,12 +702,12 @@ import jams.model.*;
             lowerBound = 0,
             upperBound = 1000000000
             )
-            public JAMSDouble stabel_out;
+            public JAMSDouble stable_out;
 
     // constants and calibration parameter
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            description = "rate constant between N_activ_pool and N_stabel_pool = 0.00001",
+            description = "rate constant between N_activ_pool and N_stable_pool = 0.00001",
             unit = "-",
             lowerBound = 0.00001,
             upperBound = 0.00001,
@@ -839,7 +839,7 @@ import jams.model.*;
     private double runNO3_Pool;
     private double runNH4_Pool;
     private double runN_activ_pool;
-    private double runN_stabel_pool;
+    private double runN_stable_pool;
     private double runN_residue_pool_fresh;
     private double runResidue_pool;
     private double RD1_out_mm;
@@ -875,7 +875,7 @@ import jams.model.*;
     private double N_nit_vol = 0;       /** NH4 that is converted to  NO3 Pool or volatilation . */
     private double frac_nitr = 0;       /** Fraction of N_nit_vol that is nitrification */
     private double frac_vol = 0;        /** Fraction of N_nit_vol that is volatilasation */
-    private double Hum_trans; /*transformation rate from NOrg_acti_Pool to N_stabel_pool and back in kgN/ha */
+    private double Hum_trans; /*transformation rate from NOrg_acti_Pool to N_stable_pool and back in kgN/ha */
     private double Hum_act_min; /*mirelaization rate from NOrg_acti_Pool to NO3_Pool in kgN/ha */
     private double runnitri_trans = 0; /*nitrifikation rate from NH4_Pool to NO3_Pool in kgN/ha*/
     private double delta_ntr = 0; /*residue decomposition factor */
@@ -920,7 +920,7 @@ import jams.model.*;
         double suminterflowN = 0;
         double sumN_residue_pool = 0;
         double sumN_activ_pool = 0;
-        double sumN_stabel_pool = 0;
+        double sumN_stable_pool = 0;
         double h_infilt_mm_sum = 0;
         double Sumvolati_trans = 0;
         double Sumdenit_trans = 0;
@@ -937,7 +937,7 @@ import jams.model.*;
         runlayerdepth = new double[layer];
         double[] NH4_Poolvals = new double[layer];
         double[] N_activ_poolvals = new double[layer];
-        double[] N_stabel_poolvals = new double[layer];
+        double[] N_stable_poolvals = new double[layer];
         double[] N_residue_pool_freshvals = new double[layer];
         double[] Residue_poolvals = new double[layer];
         double[] interflowNvals = new double[layer];
@@ -1043,7 +1043,7 @@ import jams.model.*;
             this.runNO3_Pool = NO3_Poolvals[i];
             this.runNH4_Pool = NH4_Pool.getValue()[i];
             this.runN_activ_pool = N_activ_pool.getValue()[i];
-            this.runN_stabel_pool = N_stabel_pool.getValue()[i];
+            this.runN_stable_pool = N_stable_pool.getValue()[i];
             this.runN_residue_pool_fresh = N_residue_pool_fresh.getValue()[i];
             this.runResidue_pool = Residue_pool.getValue()[i];
 
@@ -1133,10 +1133,10 @@ import jams.model.*;
             }
 
 
-            runN_stabel_pool = runN_stabel_pool + Hum_trans;
+            runN_stable_pool = runN_stable_pool + Hum_trans;
 
-            if (runN_stabel_pool < 0){
-                runN_stabel_pool = 0;
+            if (runN_stable_pool < 0){
+                runN_stable_pool = 0;
             }
 
             runN_activ_pool = runN_activ_pool - Hum_trans;
@@ -1170,18 +1170,18 @@ import jams.model.*;
 
                 runResidue_pool = runResidue_pool - (delta_ntr * runResidue_pool) + ((residue_in.getValue()* 10000) / runarea );
                 runNH4_Pool = runNH4_Pool + ((NH4_in.getValue()* 10000) / runarea );
-                runN_stabel_pool = runN_stabel_pool  + ((stabel_in.getValue()* 10000) / runarea );
+                runN_stable_pool = runN_stable_pool  + ((stable_in.getValue()* 10000) / runarea );
                 runN_activ_pool = runN_activ_pool  + ((activ_in.getValue()* 10000) / runarea );
                 
 
                 residue_out.setValue(calc_surfaceNpool(runResidue_pool));
                 NH4_out.setValue(calc_surfaceNpool(runNH4_Pool));
-                stabel_out.setValue(calc_surfaceNpool(runN_stabel_pool));
+                stable_out.setValue(calc_surfaceNpool(runN_stable_pool));
                 activ_out.setValue(calc_surfaceNpool(runN_activ_pool));
 
                 runResidue_pool = runResidue_pool - residue_out.getValue();
                 runNH4_Pool = runNH4_Pool - NH4_out.getValue();
-                runN_stabel_pool = runN_stabel_pool - stabel_out.getValue();
+                runN_stable_pool = runN_stable_pool - stable_out.getValue();
                 runN_activ_pool = runN_activ_pool - activ_out.getValue();
 
 
@@ -1192,7 +1192,7 @@ import jams.model.*;
 
 
 
-                runN_stabel_pool = runN_stabel_pool + fertstableorg.getValue();
+                runN_stable_pool = runN_stable_pool + fertstableorg.getValue();
 
                 Nactiverespool = 0.2 * (delta_ntr * runN_residue_pool_fresh);
                 runN_activ_pool = runN_activ_pool + fertactivorg.getValue() + Nactiverespool;
@@ -1297,7 +1297,7 @@ import jams.model.*;
             NO3_Poolvals[i] = runNO3_Pool;
             NH4_Poolvals[i] = runNH4_Pool;
             N_activ_poolvals[i] = runN_activ_pool;
-            N_stabel_poolvals[i] = runN_stabel_pool;
+            N_stable_poolvals[i] = runN_stable_pool;
             N_residue_pool_freshvals[i] = runN_residue_pool_fresh;
             Residue_poolvals[i] = runResidue_pool;
             interflowNvals[i] = runinterflowN;
@@ -1305,7 +1305,7 @@ import jams.model.*;
             percoNvals[i] = runpercoN;
             percoNabsvals[i] = runpercoNabs;
             // time;
-            sumN_stabel_pool = runN_stabel_pool + sumN_stabel_pool;
+            sumN_stable_pool = runN_stable_pool + sumN_stable_pool;
             sumN_activ_pool = runN_activ_pool + sumN_activ_pool;
             sumNH4_Pool = runNH4_Pool + sumNH4_Pool;
             sumN_residue_pool = sumN_residue_pool + runN_residue_pool_fresh;
@@ -1335,10 +1335,10 @@ import jams.model.*;
 
                 Nbalance[i] = NO3_Poolalt[i] + a_deposition + runsurfaceN_in + runnitri_trans + Hum_act_min + sum_Nupmove + runinterflowN_in + fertNO3.getValue() + NO3respool +
                         + NH4_Pool.getValue()[i] + fertNH4.getValue()
-                        + N_stabel_pool.getValue()[i] + N_activ_pool.getValue()[i] + N_residue_pool_fresh.getValue()[i] + fertactivorg.getValue() + fertstableorg.getValue() + Nactiverespool
+                        + N_stable_pool.getValue()[i] + N_activ_pool.getValue()[i] + N_residue_pool_fresh.getValue()[i] + fertactivorg.getValue() + fertstableorg.getValue() + Nactiverespool
                         - (runNO3_Pool + plantup_hor[i] + rundenit_trans + runsurfaceN + percoNvals[i] + runinterflowN
                         + runNH4_Pool + runvolati_trans + runnitri_trans +
-                        runN_activ_pool + runN_stabel_pool + runN_residue_pool_fresh);
+                        runN_activ_pool + runN_stable_pool + runN_residue_pool_fresh);
 
             }else{
 
@@ -1397,7 +1397,7 @@ import jams.model.*;
         NO3_Pool.setValue(NO3_Poolvals);
         NH4_Pool.setValue(NH4_Poolvals);
         N_activ_pool.setValue(N_activ_poolvals);
-        N_stabel_pool.setValue(N_stabel_poolvals);
+        N_stable_pool.setValue(N_stable_poolvals);
         N_residue_pool_fresh.setValue(N_residue_pool_freshvals);
         Residue_pool.setValue(Residue_poolvals);
         // writing of fluxes
@@ -1415,7 +1415,7 @@ import jams.model.*;
         Volati_trans.setValue(Sumvolati_trans);
         Denit_trans.setValue(Sumdenit_trans);
         Nitri_trans.setValue(Sumnitri_trans);
-        sN_stabel_pool.setValue(sumN_stabel_pool);
+        sN_stable_pool.setValue(sumN_stable_pool);
         sN_activ_pool.setValue(sumN_activ_pool);
         sNH4_Pool.setValue(sumNH4_Pool);
         sNO3_Pool.setValue(sumNO3_Pool);
@@ -1667,7 +1667,7 @@ import jams.model.*;
         double N_Hum_trans = 0;
 
 
-        N_Hum_trans = runBeta_trans * (runN_activ_pool * ((1 / fr_actN) -1) - runN_stabel_pool);
+        N_Hum_trans = runBeta_trans * (runN_activ_pool * ((1 / fr_actN) -1) - runN_stable_pool);
 
         return N_Hum_trans;
     }
@@ -1875,7 +1875,7 @@ import jams.model.*;
                                 <jamsvar name="NO3_Pool" provider="HRUContext" providervar="currentEntity.NO3_Pool"/>
                                 <jamsvar name="NH4_Pool" provider="HRUContext" providervar="currentEntity.NH4_Pool"/>
                                 <jamsvar name="N_activ_pool" provider="HRUContext" providervar="currentEntity.N_activ_pool"/>
-                                <jamsvar name="N_stabel_pool" provider="HRUContext" providervar="currentEntity.N_stabel_pool"/>
+                                <jamsvar name="N_stable_pool" provider="HRUContext" providervar="currentEntity.N_stable_pool"/>
                                 <jamsvar name="Residue_pool" provider="HRUContext" providervar="currentEntity.residue_pool"/>
                                 <jamsvar name="N_residue_pool_fresh" provider="HRUContext" providervar="currentEntity.N_residue_pool_fresh"/>
                                 <jamsvar name="Volati_trans" provider="HRUContext" providervar="currentEntity.Volati_rate"/>
