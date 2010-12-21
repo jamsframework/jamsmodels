@@ -86,6 +86,13 @@ public class SelectiveEntityWriter extends JAMSComponent {
             description = "per area"
             )
             public JAMSBoolean perArea;
+
+    @JAMSVarDescription(
+    access = JAMSVarDescription.AccessType.READ,
+            update = JAMSVarDescription.UpdateType.INIT,
+            description = "Output data precision"
+            )
+            public JAMSInteger precision;
     
     private GenericDataWriter writer;
     private String[] attrs;
@@ -183,13 +190,13 @@ public class SelectiveEntityWriter extends JAMSComponent {
                     double[] da = ((JAMSDoubleArray)entitySet.getCurrent().getObject(this.attributeName.getValue())).getValue();
                     for(int i = 0; i < da.length; i++){
                         double val = da[i] / area;
-                        writer.addData(""+val);
+                        writer.addData(val, precision.getValue());
                     }
                 } else {
                     //System.out.println("Primitive");
                     double da = ((JAMSDouble)entitySet.getCurrent().getObject(this.attributeName.getValue())).getValue();
                     double val = da / area;
-                    writer.addData(""+val);
+                    writer.addData(val, precision.getValue());
                 }
                 if (setCounter < (numEntities - 1)) {
                     setCounter++;

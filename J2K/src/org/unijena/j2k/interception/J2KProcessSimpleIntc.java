@@ -119,7 +119,7 @@ import jams.model.*;
         
         double in_precip = precip.getValue() * area.getValue();
         double in_potETP = potET.getValue() * area.getValue();
-        double in_actETP = actET.getValue();
+        double in_actETP = 0;
         
         double in_LAI = this.actLAI.getValue();
         double in_Area = area.getValue();

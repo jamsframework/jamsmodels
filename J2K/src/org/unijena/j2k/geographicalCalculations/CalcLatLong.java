@@ -1,5 +1,5 @@
 /*
- * CalcAdditionalHRUAttribs.java
+ * CalcLatLong.java
  * Created on 24. November 2005, 11:46
  *
  * This file is part of JAMS
@@ -31,7 +31,7 @@ import jams.model.*;
  * @author Peter Krause
  */
 @JAMSComponentDescription(
-        title="CalcAdditionalHRUAttribs",
+        title="CalcLatLonge",
         author="Peter Krause",
         description="Calculates additional attributes from existent ones"
         )
@@ -64,35 +64,50 @@ import jams.model.*;
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
             update = JAMSVarDescription.UpdateType.RUN,
-            description = "entity slope"
+            description = "entity slope",
+            unit="degree",
+            lowerBound = 0,
+            upperBound = 90.0
             )
             public JAMSDouble slope;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
             update = JAMSVarDescription.UpdateType.RUN,
-            description = "entity aspect"
+            description = "entity aspect",
+            unit="degree from north",
+            lowerBound = 0,
+            upperBound = 360
             )
             public JAMSDouble aspect;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
             update = JAMSVarDescription.UpdateType.RUN,
-            description = "entity latidute"
+            description = "entity latitute",
+            unit="degree",
+            lowerBound = 0,
+            upperBound = 90.0
             )
             public JAMSDouble latitude;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
             update = JAMSVarDescription.UpdateType.RUN,
-            description = "entity longitude"
+            description = "entity longitude",
+            unit="degree",
+            lowerBound = 0,
+            upperBound = 180.0
             )
             public JAMSDouble longitude;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
             update = JAMSVarDescription.UpdateType.RUN,
-            description = "entity slopeAspectCorrectionFactor"
+            description = "entity slopeAspectCorrectionFactor",
+            unit="n/a",
+            lowerBound = 0,
+            upperBound = 1000.0
             )
             public JAMSDoubleArray slAsCfArray;
     

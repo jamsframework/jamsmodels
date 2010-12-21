@@ -1,5 +1,5 @@
 /*
- * CalcAdditionalHRUAttribs.java
+ * CalcExtraterrRadiation.java
  * Created on 24. November 2005, 11:46
  *
  * This file is part of JAMS
@@ -33,7 +33,7 @@ import jams.model.*;
  * @author Peter Krause
  */
 @JAMSComponentDescription(
-        title="CalcAdditionalHRUAttribs",
+        title="CalcExtraterrRadiation",
         author="Peter Krause",
         description="Calculates additional attributes from existent ones"
         )
@@ -45,28 +45,39 @@ import jams.model.*;
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
             update = JAMSVarDescription.UpdateType.RUN,
-            description = "entity latidute [deg]"
+            description = "entity latidute [deg]",
+            unit="degree",
+            lowerBound = 0,
+            upperBound = 90
             )
             public JAMSDouble latitude;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
             update = JAMSVarDescription.UpdateType.RUN,
-            description = "entity longitude [deg]"
+            description = "entity longitude [deg]",
+             unit="degree",
+            lowerBound = 0,
+            upperBound = 180
             )
             public JAMSDouble longitude;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
             update = JAMSVarDescription.UpdateType.INIT,
-            description = "longitude of time zone [deg]"
+            description = "longitude of time zone [deg]",
+            unit="degree",
+            lowerBound = 0,
+            upperBound = 180,
+            defaultValue = "-15"
             )
             public JAMSDouble longTZ;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
             update = JAMSVarDescription.UpdateType.INIT,
-            description = "temporal resolution [d | h | m]"
+            description = "temporal resolution [d | h | m]",
+            unit="n/a"
             )
             public JAMSString tempRes;
     
@@ -80,7 +91,10 @@ import jams.model.*;
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
             update = JAMSVarDescription.UpdateType.RUN,
-            description = "extraterrestric radiation of each time step of the year [MJ/m² timeUnit]"
+            description = "extraterrestric radiation of each time step of the year [MJ/m² timeUnit]",
+            unit="MJ / m^2 timeUnit",
+            lowerBound = 0,
+            upperBound = 10000000
             )
             public JAMSDoubleArray extRadArray;
     

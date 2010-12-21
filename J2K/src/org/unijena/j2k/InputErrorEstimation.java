@@ -59,12 +59,26 @@ public class InputErrorEstimation extends JAMSComponent {
             description = "maximum relative error"
             )
             public JAMSDouble maxRelError;
+
+    @JAMSVarDescription(
+            access = JAMSVarDescription.AccessType.READ,
+            update = JAMSVarDescription.UpdateType.RUN,
+            description = "sign (0 = +/-; 1 = +; -1 = -)"
+            )
+            public JAMSInteger sign;
+
     
     Random generator = new Random();
     double missingDataVal = -9999;
     
     public void run() {
-        boolean pos = generator.nextBoolean();
+        boolean pos = true;
+        if(sign.getValue() == 0)
+            pos = generator.nextBoolean();
+        else if(sign.getValue() == 1)
+            pos = true;
+        else if(sign.getValue() == -1)
+            pos = false;
 
         double[] inDat = this.inData.getValue();
         double[] outDat = new double[inDat.length];

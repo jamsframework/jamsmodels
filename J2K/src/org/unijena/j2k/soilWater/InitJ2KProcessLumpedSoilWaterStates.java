@@ -1,5 +1,5 @@
 /*
- * J2KProcessLumpedSoilWater.java
+ * InitJ2KProcessLumpedSoilWaterStates.java
  * Created on 25. November 2005, 13:21
  *
  * This file is part of JAMS
@@ -31,9 +31,11 @@ import jams.model.*;
  * @author Peter Krause
  */
 @JAMSComponentDescription(
-        title="J2KProcessLumpedSoilWater",
+        title="InitJ2KProcessLumpedSoilWaterStates",
         author="Peter Krause",
-        description="Calculates soil water balance for each HRU without vertical layers"
+        description="Initalises the states of the lumpedSoilWater module",
+        version="1.0_0",
+        date="2010-10-29"
         )
         public class InitJ2KProcessLumpedSoilWaterStates extends JAMSComponent {
     
@@ -44,28 +46,37 @@ import jams.model.*;
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
             update = JAMSVarDescription.UpdateType.RUN,
-            description = "The current hru entity"
+            description = "The model entity set"
             )
             public JAMSEntityCollection entities;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
             update = JAMSVarDescription.UpdateType.RUN,
-            description = "attribute area"
+            description = "attribute area",
+            unit="m^2"
             )
             public JAMSDouble area;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
             update = JAMSVarDescription.UpdateType.INIT,
-            description = "field capacity adaptation factor"
+            description = "field capacity adaptation factor",
+            unit="n/a",
+            lowerBound = 0,
+            upperBound = 1000000,
+            defaultValue = "1.0"
             )
             public JAMSDouble FCAdaptation;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
             update = JAMSVarDescription.UpdateType.INIT,
-            description = "air capacity adaptation factor"
+            description = "air capacity adaptation factor",
+            unit="n/a",
+            lowerBound = 0,
+            upperBound = 1000000,
+            defaultValue = "1.0"
             )
             public JAMSDouble ACAdaptation;
     
@@ -73,70 +84,102 @@ import jams.model.*;
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
             update = JAMSVarDescription.UpdateType.RUN,
-            description = "HRU statevar rooting depth"
+            description = "HRU statevar rooting depth",
+            unit="dm",
+            lowerBound = 0,
+            upperBound = 1000000
             )
             public JAMSDouble rootDepth;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
             update = JAMSVarDescription.UpdateType.RUN,
-            description = "HRU attribute maximum MPS"
+            description = "HRU attribute maximum MPS",
+            unit="L",
+            lowerBound = 0,
+            upperBound = 1000000
             )
             public JAMSDouble maxMPS;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
             update = JAMSVarDescription.UpdateType.RUN,
-            description = "HRU attribute maximum LPS"
+            description = "HRU attribute maximum LPS",
+            unit="L",
+            lowerBound = 0,
+            upperBound = 1000000
             )
             public JAMSDouble maxLPS;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
             update = JAMSVarDescription.UpdateType.RUN,
-            description = "HRU state var actual MPS"
+            description = "HRU state var actual MPS",
+            unit="L",
+            lowerBound = 0,
+            upperBound = 1000000
             )
             public JAMSDouble actMPS;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
             update = JAMSVarDescription.UpdateType.RUN,
-            description = "HRU state var actual LPS"
+            description = "HRU state var actual LPS",
+            unit="L",
+            lowerBound = 0,
+            upperBound = 1000000
             )
             public JAMSDouble actLPS;
    
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
             update = JAMSVarDescription.UpdateType.RUN,
-            description = "HRU state var saturation of MPS"
+            description = "HRU state var saturation of MPS",
+            unit="n/a",
+            lowerBound = 0,
+            upperBound = 1
             )
             public JAMSDouble satMPS;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
             update = JAMSVarDescription.UpdateType.RUN,
-            description = "HRU state var saturation of LPS"
+            description = "HRU state var saturation of LPS",
+            unit="n/a",
+            lowerBound = 0,
+            upperBound = 1
             )
             public JAMSDouble satLPS;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
             update = JAMSVarDescription.UpdateType.RUN,
-            description = "HRU state var saturation of whole soil"
+            description = "HRU state var saturation of whole soil",
+            unit="n/a",
+            lowerBound = 0,
+            upperBound = 1
             )
             public JAMSDouble satSoil;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
             update = JAMSVarDescription.UpdateType.INIT,
-            description = "start saturation of LPS"
+            description = "start saturation of LPS",
+            unit="n/a",
+            lowerBound = 0,
+            upperBound = 1,
+            defaultValue = "0.0"
             )
             public JAMSDouble satStartLPS;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
             update = JAMSVarDescription.UpdateType.INIT,
-            description = "start saturation of MPS"
+            description = "start saturation of MPS",
+            unit="n/a",
+            lowerBound = 0,
+            upperBound = 1,
+            defaultValue = "0.0"
             )
             public JAMSDouble satStartMPS;
     
@@ -181,8 +224,6 @@ import jams.model.*;
         
         this.maxMPS.setValue(mxMPS);
         this.maxLPS.setValue(mxLPS);
-        //this.actMPS.setValue(acMPS);
-        //this.actLPS.setValue(acLPS);
         this.satMPS.setValue(this.actMPS.getValue()/mxMPS);
         this.satLPS.setValue(this.actLPS.getValue()/mxLPS);
         this.satSoil.setValue((this.actMPS.getValue()+this.actLPS.getValue()) / (mxMPS+mxLPS));

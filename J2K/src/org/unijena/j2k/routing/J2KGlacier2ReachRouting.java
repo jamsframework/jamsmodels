@@ -37,7 +37,7 @@ import jams.model.*;
         "reach as component RD1"
         )
         public class J2KGlacier2ReachRouting extends JAMSComponent {
-    
+
     /*
      *  Component variables
      */
@@ -47,37 +47,70 @@ import jams.model.*;
             description = "Collection of reach objects"
             )
             public JAMSEntityCollection reaches;
-    
+
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
             update = JAMSVarDescription.UpdateType.RUN,
             description = "HRU statevar glacier melt outflow"
             )
-            public JAMSDouble glacMelt;
-    
+            public JAMSDouble glacierRunoff;
+
+     @JAMSVarDescription(
+            access = JAMSVarDescription.AccessType.READWRITE,
+            update = JAMSVarDescription.UpdateType.RUN,
+            description = "HRU RD1 from upper HRUs"
+            )
+            public JAMSDouble inRD1;
+
      @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
             update = JAMSVarDescription.UpdateType.RUN,
             description = "the receiving reach"
             )
             public Attribute.Entity toReach;
-    
-    
+
+     @JAMSVarDescription(
+            access = JAMSVarDescription.AccessType.READWRITE,
+            update = JAMSVarDescription.UpdateType.RUN,
+            description = "the receiving glacier HRU"
+            )
+            public Attribute.Entity toPoly;
+
+     /*@JAMSVarDescription(
+            access = JAMSVarDescription.AccessType.READ,
+            update = JAMSVarDescription.UpdateType.RUN,
+            description = "The reach collection"
+            )
+            public JAMSEntityCollection entities;*/
+
     /*
      *  Component run stages
      */
-    
+
     public void init() throws JAMSEntity.NoSuchAttributeException {
     }
 
     public void run() throws JAMSEntity.NoSuchAttributeException {
-        double gm = glacMelt.getValue();
-        double RD1in = toReach.getDouble("inRD1");
-        RD1in = RD1in + gm;
-        toReach.setDouble("inRD1", RD1in);     
+        double gm = glacierRunoff.getValue();
+        //Attribute.Entity ent = entities.getCurrent();
+        //long id = ent.getId();
+        //System.out.println("ID: " + ent.getId());
+        if (toPoly.getValue() != null) {
+            double RD1inside = this.inRD1.getValue();
+            double RD1in = toPoly.getDouble("inRD1");
+            RD1in = RD1in + gm + RD1inside;
+            inRD1.setValue(0);
+            toPoly.setDouble("inRD1", RD1in);
+        } else if(toReach.getValue() != null){
+            double RD1inside = this.inRD1.getValue();
+            double RD1in = toReach.getDouble("inRD1");
+            RD1in = RD1in + gm + RD1inside;
+            toReach.setDouble("inRD1", RD1in);
+        }
     }
-    
+
     public void cleanup() {
-        
+
     }
 }
+

@@ -135,6 +135,14 @@ import jams.model.*;
             unit = "L"
             )
             public JAMSDouble glacierRunoff;
+
+    @JAMSVarDescription(
+            access = JAMSVarDescription.AccessType.WRITE,
+            update = JAMSVarDescription.UpdateType.RUN,
+            description = "total runoff of unit",
+            unit = "L"
+            )
+            public JAMSDouble dirQ;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
@@ -251,11 +259,13 @@ import jams.model.*;
         double glacIn = this.rain.getValue() + this.snow.getValue();
         double glacOut = 0;
         
-        int n = 0;
+        double n = 0;
         if (this.tempRes.getValue().equals("d")) {
             n = 1;
         } else if (this.tempRes.getValue().equals("h")) {
             n = 24;
+        } else if (this.tempRes.getValue().equals("m")) {
+            n = 1 / 30;
         }
         //calc potential snow accumulation
         if (this.snow.getValue() > 0) {
@@ -327,6 +337,7 @@ import jams.model.*;
         this.snowRunofftm1.setValue(q_snow);
         this.iceRunofftm1.setValue(q_ice);
         this.glacierRunoff.setValue(tot_q);
+        this.dirQ.setValue(tot_q);
         this.iceRunoff.setValue(q_ice);
         this.snowRunoff.setValue(q_snow);
         this.snowStorage.setValue(snowStor);

@@ -13,7 +13,6 @@ import jams.data.Attribute;
 import jams.data.JAMSCalendar;
 import java.util.Locale;
 import jams.data.JAMSDataFactory;
-import java.util.Calendar;
 
 
 /**

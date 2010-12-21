@@ -151,7 +151,7 @@ title="Time series capturer",
         }*/
         effTsteps = (int) captureTimeInterval.getNumberOfTimesteps();
         
-        System.out.println("TS:"+effTsteps);
+        //System.out.println("TS:"+effTsteps);
         //int ts = (int)tsteps;
         int ts = (int) this.getContext().getNumberOfIterations();
         getModel().getRuntime().println("effStartdate:\t" + eff_sd.toString(), JAMS.VERBOSE);

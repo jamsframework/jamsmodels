@@ -33,7 +33,13 @@ import jams.model.*;
 @JAMSComponentDescription(
         title="J2KGroundwater",
         author="Peter Krause",
-        description="Description"
+        description="Initialises the J2KGroundwater module by multiplying the "
+        + "maximum storage capacity of the two groundwater storages RG1 and RG2"
+        + "by the area of the respective modelling unit to provide them with"
+        + "absolute storage capacity values in litres. Secondly the actual"
+        + "content of the two storages can be set to a relative amount.",
+        version="1.0_0",
+        date="2010-10-29"
         )
         public class InitJ2KProcessGroundwater extends JAMSComponent {
     
@@ -44,55 +50,58 @@ import jams.model.*;
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
             update = JAMSVarDescription.UpdateType.RUN,
-            description = "The current hru entity"
+            description = "The collection of model entities"
             )
             public JAMSEntityCollection entities;
     
     @JAMSVarDescription(
-            access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.RUN,
-            description = "attribute area"
-            )
-            public JAMSDouble area;
-    
-    @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
             update = JAMSVarDescription.UpdateType.RUN,
-            description = "maximum RG1 storage"
+            description = "maximum RG1 storage",
+            unit="L"
             )
             public JAMSDouble maxRG1;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
             update = JAMSVarDescription.UpdateType.RUN,
-            description = "maximum RG2 storage"
+            description = "maximum RG2 storage",
+            unit="L"
             )
             public JAMSDouble maxRG2;
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
             update = JAMSVarDescription.UpdateType.RUN,
-            description = "actual RG1 storage"
+            description = "actual RG1 storage",
+            unit="L"
             )
             public JAMSDouble actRG1;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
             update = JAMSVarDescription.UpdateType.RUN,
-            description = "actual RG2 storage"
+            description = "actual RG2 storage",
+            unit="L"
             )
             public JAMSDouble actRG2;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
             update = JAMSVarDescription.UpdateType.INIT,
-            description = "relative initial RG1 storage"
+            description = "relative initial RG1 storage",
+            unit="n/a",
+            lowerBound = 0,
+            upperBound = 1.0
             )
             public JAMSDouble initRG1;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
             update = JAMSVarDescription.UpdateType.INIT,
-            description = "relative initial RG2 storage"
+            description = "relative initial RG2 storage",
+            unit="n/a",
+            lowerBound = 0,
+            upperBound = 1.0
             )
             public JAMSDouble initRG2;
     
@@ -108,9 +117,9 @@ import jams.model.*;
     public void run() throws Attribute.Entity.NoSuchAttributeException {
         
         Attribute.Entity entity = entities.getCurrent();
-        
-        maxRG1.setValue(entity.getDouble("RG1_max") * area.getValue());
-        maxRG2.setValue(entity.getDouble("RG2_max") * area.getValue());
+        double area = entity.getDouble("area");
+        maxRG1.setValue(entity.getDouble("RG1_max") * area);
+        maxRG2.setValue(entity.getDouble("RG2_max") * area);
         
         actRG1.setValue(maxRG1.getValue() * initRG1.getValue());
         actRG2.setValue(maxRG2.getValue() * initRG2.getValue());       

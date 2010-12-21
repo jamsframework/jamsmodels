@@ -15,7 +15,6 @@ import jams.io.*;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.StringTokenizer;
 
 /**
  *
@@ -24,7 +23,7 @@ import java.util.StringTokenizer;
 @JAMSComponentDescription(title = "StationDataWriter",
                           author = "Peter Krause",
                           description = "Writes standard ASCII timeseries data files")
-public class StationDataWriter extends JAMSComponent{
+public class StationDataWriter_new extends JAMSComponent{
     public static final String EMPTY_CHAR = "";
     public static final String SEPARATOR = "\t";
     /*
@@ -42,35 +41,12 @@ public class StationDataWriter extends JAMSComponent{
                         description = "time")
     public JAMSCalendar time;
 
-    @JAMSVarDescription(access = JAMSVarDescription.AccessType.READWRITE,
-                        update = JAMSVarDescription.UpdateType.RUN,
-                        description = "the data values")
-    public JAMSDoubleArray values;
-
-    @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
-                        update = JAMSVarDescription.UpdateType.RUN,
-                        description = "the station names")
-    public JAMSStringArray statNames;
-
-    @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
-                        update = JAMSVarDescription.UpdateType.RUN,
-                        description = "the station Ids")
-    public JAMSIntegerArray statId;
-
-    @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
-                        update = JAMSVarDescription.UpdateType.RUN,
-                        description = "the station elevation")
-    public JAMSDoubleArray statElev;
-
-    @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
-                        update = JAMSVarDescription.UpdateType.RUN,
-                        description = "the station x-coordinates")
-    public JAMSDoubleArray statX;
-
-    @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
-                        update = JAMSVarDescription.UpdateType.RUN,
-                        description = "the station y-coordinates")
-    public JAMSDoubleArray statY;
+   @JAMSVarDescription(
+            access = JAMSVarDescription.AccessType.READ,
+            update = JAMSVarDescription.UpdateType.INIT,
+            description = "EntitySet"
+            )
+            public JAMSEntityCollection entitySet;
 
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
                         update = JAMSVarDescription.UpdateType.INIT,
@@ -84,6 +60,14 @@ public class StationDataWriter extends JAMSComponent{
             defaultValue=EMPTY_CHAR
             )
             public JAMSString tempRes;
+
+    @JAMSVarDescription(
+            access = JAMSVarDescription.AccessType.READ,
+            update = JAMSVarDescription.UpdateType.INIT,
+            description = "the name of the attribute to write",
+            defaultValue=EMPTY_CHAR
+            )
+            public JAMSString value;
 
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
@@ -103,11 +87,6 @@ public class StationDataWriter extends JAMSComponent{
                         update = JAMSVarDescription.UpdateType.INIT,
                         description = "Output file name")
     public JAMSString fileName;
-
-    @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
-                        update = JAMSVarDescription.UpdateType.INIT,
-                        description = "Data store description")
-    public JAMSString xmlDSD;
 
     /**
      * this attribute controls, whether an input header is written or only 1 simple header-line
@@ -129,7 +108,7 @@ public class StationDataWriter extends JAMSComponent{
      */
     @Override
     public void init() throws JAMSEntity.NoSuchAttributeException {
-        
+        int ent = this.entitySet.getEntityArray().length;
         getModel().getRuntime().println(" start init " + fileName.getValue() + ".. ", JAMS.VERBOSE);
         Date dt = new Date();
         int tu = this.timeInterval.getTimeUnit();
@@ -156,7 +135,6 @@ public class StationDataWriter extends JAMSComponent{
         writer = new GenericDataWriter(JAMSTools.CreateAbsoluteFileName(getModel().getWorkspace().getOutputDataDirectory().getPath(),fileName.getValue()));
         String inputHeader = withInputHeader.getValue();
         if (inputHeader != null && inputHeader.equalsIgnoreCase("true")) {
-
             //write station meta data as header
             writer.writeLine("#Calculated input data, generated: "+dt);
             writer.writeLine(J2KTSDataStore.TAGNAME_DATAVALUEATTRIBS);
@@ -168,32 +146,33 @@ public class StationDataWriter extends JAMSComponent{
             writer.writeLine(J2KTSDataStore.TAGNAME_TEMP_RES + SEPARATOR + tempRes);
             writer.writeLine(J2KTSDataStore.TAGNAME_STATATTRIBVAL);
             writer.addColumn("name");
-            for (int i = 0; i < statNames.getValue().length; i++) {
-                writer.addColumn(statNames.getValue()[i]);
+
+            for (int i = 0; i < ent; i++) {
+                writer.addColumn((String)this.entitySet.getEntities().get(i).getObject("NAME"));
             }
             writer.writeHeader();
             writer.write("ID");
-            for(int i = 0; i < statId.getValue().length; i++){
-                writer.write(SEPARATOR + statId.getValue()[i]);
+            for(int i = 0; i < ent; i++){
+                writer.write(SEPARATOR + this.entitySet.getEntities().get(i).getInt("ID"));
             }
             writer.writeLine(EMPTY_CHAR);
             writer.write("elevation");
-            for(int i = 0; i < statElev.getValue().length; i++){
-                writer.write(SEPARATOR + statElev.getValue()[i]);
+            for(int i = 0; i < ent; i++){
+                writer.write(SEPARATOR + this.entitySet.getEntities().get(i).getDouble("ELEVATION"));
             }
             writer.writeLine(EMPTY_CHAR);
             writer.write("x");
-            for(int i = 0; i < statX.getValue().length; i++){
-                writer.write(SEPARATOR + statX.getValue()[i]);
+            for(int i = 0; i < ent; i++){
+                writer.write(SEPARATOR + this.entitySet.getEntities().get(i).getDouble("X"));
             }
             writer.writeLine(EMPTY_CHAR);
             writer.write("y");
-            for(int i = 0; i < statY.getValue().length; i++){
-                writer.write(SEPARATOR + statY.getValue()[i]);
+            for(int i = 0; i < ent; i++){
+                writer.write(SEPARATOR +  this.entitySet.getEntities().get(i).getDouble("Y"));
             }
             writer.writeLine(EMPTY_CHAR);
             writer.write("dataColumn");
-            for(int i = 0; i < statX.getValue().length; i++){
+            for(int i = 0; i < ent; i++){
                 int col = i+1;
                 writer.write(SEPARATOR + col);
             }
@@ -202,16 +181,16 @@ public class StationDataWriter extends JAMSComponent{
         } else {
 
             //create and write a header from station names
-            int cols = this.statNames.getValue().length + 1;
+            int cols = ent + 1;
             String[] hdr = new String[cols];
             hdr[0] = "date";
             for(int i = 1; i < cols; i++)
-                hdr[i] = this.statNames.getValue()[i-1];
-            this.statNames.setValue(hdr);
+                hdr[i] = (String)this.entitySet.getEntities().get(i-1).getObject("NAME");
+            //this.statNames.setValue(hdr);
 
-            for (int i = 0; i < statNames.getValue().length; i++) {
-                writer.addColumn(statNames.getValue()[i]);
-            }
+            //for (int i = 0; i < statNames.getValue().length; i++) {
+            //    writer.addColumn(statNames.getValue()[i]);
+            //}
             writer.writeHeader();
         }
         getModel().getRuntime().println(" end init " + fileName.getValue() + ".. ", JAMS.VERBOSE);
@@ -219,17 +198,16 @@ public class StationDataWriter extends JAMSComponent{
 
     @Override
     public void run() throws JAMSEntity.NoSuchAttributeException {
+        int ent = this.entitySet.getEntityArray().length;
         writer.addData(time.toString(dateFormat));
-        for(int i = 0; i < values.getValue().length;i++){
-            writer.addData(values.getValue()[i], precision.getValue());
+        for(int i = 0; i < ent;i++){
+            writer.addData(this.entitySet.getEntities().get(i).getDouble(value.getValue()), precision.getValue());
         }
         try {
             writer.writeData();
         } catch (jams.runtime.RuntimeException jre) {
             getModel().getRuntime().println(jre.getMessage());
         }
-        double[] n = null;
-        values.setValue(n);
 
     }
 
@@ -238,21 +216,6 @@ public class StationDataWriter extends JAMSComponent{
         try {
             writer.writer.flush();
             writer.writer.close();
-        } catch (IOException ex) {
-        }
-        StringTokenizer st = new StringTokenizer(this.dataSetDesc.getValue(), " ");
-        String dispName = st.nextToken();
-
-        GenericDataWriter xmlWri = new GenericDataWriter(JAMSTools.CreateAbsoluteFileName(getModel().getWorkspace().getOutputDataDirectory().getPath(),xmlDSD.getValue()));
-        xmlWri.writeLine("<?xml version=\"1.0\" encoding=\"ISO-8859-1\" standalone=\"no\"?>");
-        xmlWri.writeLine("<j2ktsdatastore>");
-        xmlWri.writeLine("<parsetime value=\"false\" />");
-        xmlWri.writeLine("<dumptimeformat value=\"yyyy-MM-dd HH:mm\" />");
-        xmlWri.writeLine("<displayname>"+dispName+"</displayname>");
-        xmlWri.writeLine("</j2ktsdatastore>");
-        try {
-            xmlWri.writer.flush();
-            xmlWri.writer.close();
         } catch (IOException ex) {
         }
     }
