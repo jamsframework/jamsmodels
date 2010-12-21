@@ -28,31 +28,34 @@ import jams.data.*;
 
 /**
  *
- * @author S. Kralisch
+ * @author Peter Krause
  */
 @JAMSComponentDescription(
         title="CalcAreaWeight",
         author="Peter Krause",
-        description="Calculates the area weight"
+        description="Calculates a relative area weight as a fraction between the entitie's area and the area of the catchment"
         )
         
 public class CalcAreaWeight extends JAMSComponent {
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            description = "Entity area attribute"
+            description = "the area of the single entity",
+            unit = "m^2"
             )
             public JAMSDouble entityArea;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            description = "Catchment area attribute"
+            description = "the area of the catchment",
+            unit = "m^2"
             )
             public JAMSDouble catchmentArea;    
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
-            description = "Entity area weight"
+            description = "the relative area weight of the entity",
+            unit = "m^2"
             )
             public JAMSDouble areaWeight;
     
