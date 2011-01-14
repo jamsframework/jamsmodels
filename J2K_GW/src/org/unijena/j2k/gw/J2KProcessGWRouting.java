@@ -22,7 +22,6 @@
  */
 package org.unijena.j2k.gw;
 
-import org.unijena.j2k.development.*;
 import jams.data.*;
 import jams.model.*;
 
