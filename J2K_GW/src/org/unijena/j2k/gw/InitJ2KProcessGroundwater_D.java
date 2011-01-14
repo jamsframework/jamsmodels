@@ -168,9 +168,9 @@ public class InitJ2KProcessGroundwater_D extends JAMSComponent {
     @JAMSVarDescription(
         access = JAMSVarDescription.AccessType.WRITE,
         description = "adapted Kf_geo",
-        unit = "m/s",
+        unit = "m/d",
         lowerBound= 0.0,
-        upperBound = 0.1
+        upperBound = 8640
         )
         public JAMSDouble Kf_geo_adapt;
 
