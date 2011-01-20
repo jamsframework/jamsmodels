@@ -41,7 +41,7 @@ import jams.model.*;
      *  Component variables
      */
     
- @JAMSVarDescription(
+    @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
             update = JAMSVarDescription.UpdateType.RUN,
             description = "HRU actual Transpiration in mm"
