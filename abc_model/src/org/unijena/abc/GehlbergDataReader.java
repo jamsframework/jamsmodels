@@ -23,9 +23,18 @@
 
 package org.unijena.abc;
 
-import org.unijena.jams.model.*;
-import org.unijena.jams.data.*;
-import org.unijena.jams.io.*;
+import jams.data.Attribute;
+import jams.data.JAMSCalendar;
+import jams.data.JAMSDataFactory;
+import jams.data.JAMSDouble;
+import jams.data.JAMSString;
+import jams.data.JAMSTimeInterval;
+import jams.io.GenericDataReader;
+import jams.io.JAMSTableDataArray;
+import jams.io.JAMSTableDataConverter;
+import jams.io.JAMSTableDataStore;
+import jams.model.JAMSComponent;
+import jams.model.JAMSVarDescription;
 import java.io.*;
 import java.util.*;
 
@@ -117,14 +126,15 @@ public class GehlbergDataReader extends JAMSComponent {
         } catch (IOException ioe) {
             getModel().getRuntime().handle(ioe);
         }
-        JAMSCalendar startTime = parseTime(startEntry);
-        JAMSCalendar endTime = parseTime(endEntry);
+        Attribute.Calendar startTime = parseTime(startEntry);
+        Attribute.Calendar endTime = parseTime(endEntry);
         store = new GenericDataReader(fileName.getValue(), true, 1, 4);
         //calc offset if start date of time series and temporal context do not match
         if(timeInterval != null){
             int timeUnit = timeInterval.getTimeUnit();
-            JAMSCalendar tiStart = timeInterval.getStart();
-            JAMSCalendar date = new JAMSCalendar(tiStart.get(Calendar.YEAR), tiStart.get(Calendar.MONTH), tiStart.get(Calendar.DAY_OF_MONTH), startTime.get(Calendar.HOUR_OF_DAY), startTime.get(Calendar.MINUTE),startTime.get(Calendar.SECOND));
+            Attribute.Calendar tiStart = timeInterval.getStart();
+            Attribute.Calendar date = JAMSDataFactory.createCalendar();
+            date.set(tiStart.get(Calendar.YEAR), tiStart.get(Calendar.MONTH), tiStart.get(Calendar.DAY_OF_MONTH), startTime.get(Calendar.HOUR_OF_DAY), startTime.get(Calendar.MINUTE),startTime.get(Calendar.SECOND));
             while (startTime.before(date) && store.hasNext()) {
                 JAMSTableDataArray da = store.getNext();
                 if(timeUnit == JAMSCalendar.MONTH)
@@ -151,7 +161,7 @@ public class GehlbergDataReader extends JAMSComponent {
         store.close();
     }
     
-    private JAMSCalendar parseTime(String timeString) {
+    private Attribute.Calendar parseTime(String timeString) {
         
         //Array keeping values for year, month, day, hour, minute
         String[] timeArray = new String[5];
@@ -168,7 +178,7 @@ public class GehlbergDataReader extends JAMSComponent {
             timeArray[i] = st.nextToken();
         }
         
-        JAMSCalendar cal = new JAMSCalendar();
+        Attribute.Calendar cal = JAMSDataFactory.createCalendar();
         cal.setValue(timeArray[0]+"-"+timeArray[1]+"-"+timeArray[2]+" "+timeArray[3]+":"+timeArray[4]);
         return cal;
     }

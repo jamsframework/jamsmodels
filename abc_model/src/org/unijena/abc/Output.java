@@ -23,9 +23,12 @@
 
 package org.unijena.abc;
 
-import org.unijena.jams.model.*;
-import org.unijena.jams.data.*;
-import org.unijena.jams.io.*;
+import jams.data.JAMSCalendar;
+import jams.data.JAMSDouble;
+import jams.data.JAMSString;
+import jams.io.GenericDataWriter;
+import jams.model.JAMSComponent;
+import jams.model.JAMSVarDescription;
 
 /**
  *
@@ -146,7 +149,7 @@ public class Output extends JAMSComponent {
         
         try {
             writer.writeData();
-        } catch (org.unijena.jams.runtime.JAMSRuntimeException jre) {
+        } catch (Exception jre) {
             System.out.println(jre.getMessage());
         }
         

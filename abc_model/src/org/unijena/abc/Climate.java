@@ -23,11 +23,16 @@
 
 package org.unijena.abc;
 
-import org.unijena.jams.model.*;
-import org.unijena.jams.data.*;
-import org.unijena.jams.io.*;
-import java.io.*;
-import java.util.*;
+import jams.data.JAMSDouble;
+import jams.data.JAMSDoubleArray;
+import jams.data.JAMSString;
+import jams.data.JAMSStringArray;
+import jams.io.GenericDataReader;
+import jams.io.JAMSTableDataArray;
+import jams.io.JAMSTableDataConverter;
+import jams.io.JAMSTableDataStore;
+import jams.model.JAMSComponent;
+import jams.model.JAMSVarDescription;
 
 /**
  *
@@ -99,13 +104,13 @@ public class Climate extends JAMSComponent {
             access = JAMSVarDescription.AccessType.WRITE,
             update = JAMSVarDescription.UpdateType.RUN
             )
-            public JAMSDoubleArray data = new JAMSDoubleArray();
+            public JAMSDoubleArray data;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
             update = JAMSVarDescription.UpdateType.RUN
             )
-            public JAMSStringArray dataNames = new JAMSStringArray();
+            public JAMSStringArray dataNames;
     
     
     

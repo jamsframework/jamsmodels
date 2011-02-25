@@ -23,9 +23,13 @@
 
 package org.unijena.abc;
 
+import jams.data.JAMSCalendar;
+import jams.data.JAMSDouble;
+import jams.data.JAMSEntity;
+import jams.model.JAMSComponent;
+import jams.model.JAMSComponentDescription;
+import jams.model.JAMSVarDescription;
 import java.io.*;
-import org.unijena.jams.data.*;
-import org.unijena.jams.model.*;
 
 /**
  *

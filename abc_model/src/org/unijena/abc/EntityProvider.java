@@ -23,9 +23,19 @@
  */
 package org.unijena.abc;
 
-import org.unijena.jams.data.*;
-import org.unijena.jams.model.*;
-import org.unijena.jams.io.*;
+import jams.data.Attribute;
+import jams.data.Attribute.Entity;
+import jams.data.JAMSDataFactory;
+import jams.data.JAMSDouble;
+import jams.data.JAMSEntity;
+import jams.data.JAMSEntityCollection;
+import jams.data.JAMSString;
+import jams.io.GenericDataReader;
+import jams.io.JAMSTableDataArray;
+import jams.io.JAMSTableDataConverter;
+import jams.io.JAMSTableDataStore;
+import jams.model.JAMSComponent;
+import jams.model.JAMSVarDescription;
 import java.util.*;
 
 /**
@@ -52,23 +62,36 @@ public class EntityProvider extends JAMSComponent {
     
     public void init(){
         
-        ArrayList <JAMSEntity> entityList = new ArrayList<JAMSEntity>();
+        ArrayList <Entity> entityList = new ArrayList<Entity>();
         
         store = new GenericDataReader(fileName.getValue(), false, 4, 6);
         
         while (store.hasNext()) {
             
-            JAMSEntity e = JAMSDataFactory.createEntity();
+            Entity e = JAMSDataFactory.createEntity();
             
             JAMSTableDataArray da = store.getNext();
             double[] vals = JAMSTableDataConverter.toDouble(da);
-            
-            e.setObject("latitude", new JAMSDouble(vals[0]));
-            e.setObject("soilMoistStorCap", new JAMSDouble(vals[1]));
-            e.setObject("snowStorage", new JAMSDouble(vals[2]));
-            e.setObject("runoffFactor", new JAMSDouble(vals[3]));
-            e.setObject("prestor", new JAMSDouble(vals[4]));
-            e.setObject("remain", new JAMSDouble(vals[5]));
+
+            Attribute.Double d;
+            d = JAMSDataFactory.createDouble();
+            d.setValue(vals[0]);
+            e.setObject("latitude", d);
+            d = JAMSDataFactory.createDouble();
+            d.setValue(vals[1]);
+            e.setObject("soilMoistStorCap", d);
+            d = JAMSDataFactory.createDouble();
+            d.setValue(vals[2]);
+            e.setObject("snowStorage", d);
+            d = JAMSDataFactory.createDouble();
+            d.setValue(vals[3]);
+            e.setObject("runoffFactor", d);
+            d = JAMSDataFactory.createDouble();
+            d.setValue(vals[4]);
+            e.setObject("prestor", d);
+            d = JAMSDataFactory.createDouble();
+            d.setValue(vals[5]);
+            e.setObject("remain", d);
 /*            
             e.setDouble("latitude", vals[0]);
             e.setDouble("soilMoistStorCap", vals[1]);

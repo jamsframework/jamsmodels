@@ -9,9 +9,11 @@
 
 package org.unijena.abc;
 
-import org.unijena.jams.data.*;
-import org.unijena.jams.data.JAMSEntity.NoSuchAttributeException;
-import org.unijena.jams.model.*;
+import jams.data.JAMSDouble;
+import jams.data.JAMSEntity;
+import jams.model.JAMSComponent;
+import jams.model.JAMSComponentDescription;
+import jams.model.JAMSVarDescription;
 
 /**
  *

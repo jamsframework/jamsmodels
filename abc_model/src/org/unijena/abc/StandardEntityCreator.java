@@ -23,10 +23,13 @@
 
 package org.unijena.abc;
 
-import org.unijena.jams.data.*;
-import org.unijena.jams.model.*;
-import java.util.*;
-import org.unijena.jams.JAMS;
+import jams.data.Attribute.Entity;
+import jams.data.JAMSDataFactory;
+import jams.data.JAMSEntity;
+import jams.data.JAMSEntityCollection;
+import jams.model.JAMSComponent;
+import jams.model.JAMSVarDescription;
+import java.util.ArrayList;
 
 /**
  *
@@ -73,9 +76,9 @@ public class StandardEntityCreator extends JAMSComponent {
         
         //read hru parameter
         spObj = new JAMSEntityCollection();
-        ArrayList <JAMSEntity> entityList = new ArrayList<JAMSEntity>();
+        ArrayList <Entity> entityList = new ArrayList<Entity>();
         for(int i = 0; i < 3; i++){
-            JAMSEntity e = JAMSDataFactory.createEntity();
+            Entity e = JAMSDataFactory.createEntity();
             entityList.add(e);
         }
         spObj.setEntities(entityList);

@@ -23,11 +23,14 @@
 
 package org.unijena.abc;
 
-import org.unijena.jams.model.*;
-import org.unijena.jams.data.*;
-import org.unijena.jams.io.*;
-import java.io.*;
-import java.util.*;
+import jams.data.JAMSDouble;
+import jams.data.JAMSString;
+import jams.io.GenericDataReader;
+import jams.io.JAMSTableDataArray;
+import jams.io.JAMSTableDataConverter;
+import jams.io.JAMSTableDataStore;
+import jams.model.JAMSComponent;
+import jams.model.JAMSVarDescription;
 
 /**
  *

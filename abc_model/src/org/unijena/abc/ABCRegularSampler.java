@@ -23,12 +23,18 @@
 
 package org.unijena.abc;
 
+import jams.data.JAMSBoolean;
+import jams.data.JAMSDouble;
+import jams.data.JAMSInteger;
+import jams.data.JAMSString;
+import jams.io.GenericDataWriter;
+import jams.model.Component;
+import jams.model.JAMSComponent;
+import jams.model.JAMSComponentDescription;
+import jams.model.JAMSContext;
+import jams.model.JAMSVarDescription;
 import java.util.Random;
 import java.util.StringTokenizer;
-import org.unijena.jams.JAMS;
-import org.unijena.jams.data.*;
-import org.unijena.jams.io.GenericDataWriter;
-import org.unijena.jams.model.*;
 
 /**
  *
@@ -180,7 +186,7 @@ import org.unijena.jams.model.*;
         
         runEnumerator.reset();
         while(runEnumerator.hasNext() && doRun) {
-            JAMSComponent comp = runEnumerator.next();
+            Component comp = runEnumerator.next();
             try {
                 comp.init();
             } catch (Exception e) {
@@ -191,7 +197,7 @@ import org.unijena.jams.model.*;
         
         runEnumerator.reset();
         while(runEnumerator.hasNext() && doRun) {
-            JAMSComponent comp = runEnumerator.next();
+            Component comp = runEnumerator.next();
             try {
                 comp.run();
             } catch (Exception e) {
@@ -201,7 +207,7 @@ import org.unijena.jams.model.*;
         
         runEnumerator.reset();
         while(runEnumerator.hasNext() && doRun) {
-            JAMSComponent comp = runEnumerator.next();
+            Component comp = runEnumerator.next();
             try {
                 comp.cleanup();
             } catch (Exception e) {
@@ -241,7 +247,7 @@ import org.unijena.jams.model.*;
                     writer.addData(this.effMethod[e].getValue());
                 try{
                     writer.writeData();
-                }catch(org.unijena.jams.runtime.JAMSRuntimeException e){
+                }catch(Exception e){
                     
                 }
                 /*
@@ -260,7 +266,7 @@ import org.unijena.jams.model.*;
             
             runEnumerator.reset();
             while(runEnumerator.hasNext() && doRun) {
-                JAMSComponent comp = runEnumerator.next();
+                Component comp = runEnumerator.next();
                 try {
                     //comp.cleanup();
                 } catch (Exception e) {
