@@ -31,7 +31,7 @@ import jams.model.*;
  *
  * @author Peter Krause
  */
-@JAMSComponentDescription(title = "HargreavesSamani ET",
+@JAMSComponentDescription(title = "CalcPotentialETSamani",
 author = "Peter Krause",
 description = "Calculates potential ET according to Hargreaves Samani")
 public class HargreavesSamani extends JAMSComponent {
