@@ -32,7 +32,7 @@ import jams.data.*;
  */
 
 @JAMSComponentDescription(
-        title="Sum Aggregator",
+        title="Sum aggregator",
         author="Sven Kralisch",
         description="Takes a list of double values as input and adds each "
         + "element to a corresponding element of an equally sized list of "
@@ -47,13 +47,13 @@ public class SumAggregator extends JAMSComponent {
             access = JAMSVarDescription.AccessType.READ,
             description = "list of input values"
             )
-            public JAMSDouble[] value;
+            public Attribute.Double[] value;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
             description = "list of sum values"
             )
-            public JAMSDouble[] sum;
+            public Attribute.Double[] sum;
     
 
     
