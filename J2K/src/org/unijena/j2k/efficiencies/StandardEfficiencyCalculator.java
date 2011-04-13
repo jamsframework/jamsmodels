@@ -480,7 +480,7 @@ title="StandardEfficiencyCalculator",
             }else if(effMethod.getValue()[i] == this.APBIAS){
                 double apbias = VolumeError.pbias2(valData_1, preData_1);
                 this.apbias.setValue(apbias);
-                getModel().getRuntime().println("APBIAS:\t\t" + String.format(Locale.US,"%.5f",pbias), JAMS.STANDARD);
+                getModel().getRuntime().println("APBIAS:\t\t" + String.format(Locale.US,"%.5f",apbias), JAMS.STANDARD);
             }
             
         }
