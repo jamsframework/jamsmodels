@@ -27,16 +27,17 @@ public class UTMConversion {
             public void run() {
                 
                 double[] xy = new double[2];
-                double[] latLong = {54.016666,7.883333};
+                double[] latLong = {-31.4459,-64.5148};
                 
                 //for(int i = 0; i < 10; i++){
                     xy = latLong2UTM(latLong[0], latLong[1]);
-                    //System.out.println("X: " + xy[0] + " Y: " + xy[1]);
+                    System.out.println("X: " + xy[0] + " Y: " + xy[1]);
 
                     String zoneStr = getZoneStr(latLong[0], latLong[1]);
+                    System.out.println("ZoneStr: " + zoneStr);
                     int zone = getZoneNumber(latLong[0], latLong[1]);
                     latLong = utm2LatLong(xy[0], xy[1], zoneStr);
-                    //System.out.println("Lat: " + latLong[0] + " Long: " + latLong[1]);
+                    System.out.println("Lat: " + latLong[0] + " Long: " + latLong[1]);
                 //}
             }
         });
