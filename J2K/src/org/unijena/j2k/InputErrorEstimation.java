@@ -90,7 +90,7 @@ public class InputErrorEstimation extends JAMSComponent {
             if(!pos)
                 error = error * -1;
             if(inDat[i] != missingDataVal)
-                outDat[i] = inDat[i] + (inDat[i] * error);
+                outDat[i] = inDat[i] + (Math.abs(inDat[i]) * error);
             else
                 outDat[i] = inDat[i];
         }
