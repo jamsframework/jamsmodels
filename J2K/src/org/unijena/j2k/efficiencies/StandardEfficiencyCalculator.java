@@ -121,7 +121,7 @@ title="StandardEfficiencyCalculator",
     @JAMSVarDescription(
     access = JAMSVarDescription.AccessType.WRITE,
             update = JAMSVarDescription.UpdateType.RUN,
-            description = "logarithmic Nash-Sutcliffe-efficiency with power 1.0",
+            description = "Nash-Sutcliffe-efficiency from logarithmic values with power 1.0",
             unit="n/a",
             lowerBound = -9999,
             upperBound = 1
@@ -131,7 +131,7 @@ title="StandardEfficiencyCalculator",
     @JAMSVarDescription(
     access = JAMSVarDescription.AccessType.WRITE,
             update = JAMSVarDescription.UpdateType.RUN,
-            description = "logarithmic Nash-Sutcliffe-efficiency with power 2.0",
+            description = "Nash-Sutcliffe-efficiency  from logarithmic values with power 2.0",
             unit="n/a",
             lowerBound = -9999,
             upperBound = 1
