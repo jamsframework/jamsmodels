@@ -31,9 +31,12 @@ import jams.model.*;
  *
  * @author Peter Krause
  */
-@JAMSComponentDescription(title = "RainCorrection_Richter",
-                          author = "Peter Krause",
-                          description = "Applies correction according to RICHTER 1985 for measured daily precip sums")
+@JAMSComponentDescription(
+        title = "RainCorrection_Richter",
+        author = "Peter Krause",
+        description = "Applies correction according to RICHTER 1985 for measured daily precip sums",
+        version="1.0_0",
+        date="2011-05-30")
 public class RainCorrectionRichter extends JAMSComponent {
 
     /*
@@ -51,27 +54,30 @@ public class RainCorrectionRichter extends JAMSComponent {
 
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
                         update = JAMSVarDescription.UpdateType.RUN,
-                        description = "temperature for the correction function")
+                        description = "temperature for the correction function",
+                        unit = "°C")
     public JAMSDoubleArray temperature;
 
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.WRITE,
                         update = JAMSVarDescription.UpdateType.RUN,
-                        description = "corrected precip values")
+                        description = "corrected precip values",
+                        unit = "mm")
     public JAMSDoubleArray rcorr;
 
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
                         update = JAMSVarDescription.UpdateType.RUN,
-                        description = "Array of temperature station elevations")
+                        description = "array of temperature station elevations",
+                        unit = "m")
     public JAMSDoubleArray tempElevation;
 
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
                         update = JAMSVarDescription.UpdateType.RUN,
-                        description = "Array of temperature station's x coordinate")
+                        description = "array of temperature station's x coordinate")
     public JAMSDoubleArray tempXCoord;
 
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
                         update = JAMSVarDescription.UpdateType.RUN,
-                        description = "Array of temperature station's y coordinate")
+                        description = "array of temperature station's y coordinate")
     public JAMSDoubleArray tempYCoord;
 
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
@@ -81,17 +87,18 @@ public class RainCorrectionRichter extends JAMSComponent {
 
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
                         update = JAMSVarDescription.UpdateType.RUN,
-                        description = "Array of precip station elevations")
+                        description = "array of precip station elevations",
+                        unit = "m")
     public JAMSDoubleArray rainElevation;
 
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
                         update = JAMSVarDescription.UpdateType.RUN,
-                        description = "Array of precip station's x coordinate")
+                        description = "array of precip station's x coordinate")
     public JAMSDoubleArray rainXCoord;
 
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
                         update = JAMSVarDescription.UpdateType.RUN,
-                        description = "Array of precip station's y coordinate")
+                        description = "array of precip station's y coordinate")
     public JAMSDoubleArray rainYCoord;
 
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
@@ -111,12 +118,18 @@ public class RainCorrectionRichter extends JAMSComponent {
 
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
                         update = JAMSVarDescription.UpdateType.RUN,
-                        description = "snow_trs")
+                        description = "snow_trs",
+                        upperBound = 5.0,
+                        lowerBound = -5.0,
+                        unit = "°C")
     public JAMSDouble snow_trs;
 
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
                         update = JAMSVarDescription.UpdateType.RUN,
-                        description = "snow_trans")
+                        description = "snow_trans",
+                        upperBound = 10,
+                        lowerBound = 0,
+                        unit = "K")
     public JAMSDouble snow_trans;
 
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
@@ -253,11 +266,7 @@ public class RainCorrectionRichter extends JAMSComponent {
 
                         counter++;
                         element++;
-                    /*if(element >= wA.length){
-                    if(element <= nIDW)
-                    System.out.println("NIDW has been reduced, because of too less valid data!");
-                    cont = false;
-                    }*/
+                   
 
                     }
 
