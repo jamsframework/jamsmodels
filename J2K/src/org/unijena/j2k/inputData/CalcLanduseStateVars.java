@@ -19,16 +19,7 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
  *
- */
-/*
-<component class="org.unijena.j2k.inputData.CalcLanduseStateVars" name="CalcLanduseStateVars">
-    <jamsvar name="entity" provider="InitHRUContext" providervar="currentEntity"/>
-    <jamsvar name="LAIArray" provider="InitHRUContext" providervar="currentEntity.LAIArray"/>
-    <jamsvar name="effHArray" provider="InitHRUContext" providervar="currentEntity.effHArray"/>
-    <jamsvar name="rsc0Array" provider="InitHRUContext" providervar="currentEntity.rsc0Array"/>
-    <jamsvar name="elevation" provider="InitHRUContext" providervar="currentEntity.elevation"/>
-</component>
-*/        
+ */   
 package org.unijena.j2k.inputData;
 
 import jams.data.*;
@@ -41,7 +32,11 @@ import jams.model.*;
 @JAMSComponentDescription(
         title="CalcLanduseStateVars",
         author="Peter Krause",
-        description="Calculates landuse state variables for each entity"
+        description="Calculates landuse state variables for a modelling unit"
+        + "The calculation is done for a standard year (i.e. 366 days or 8784 hours)."
+        + "The module can be used in hourly, daily and monthly resolution.",
+        version="1.0_0",
+        date="2011-05-30"
         )
         public class CalcLanduseStateVars extends JAMSComponent {
     
@@ -51,35 +46,41 @@ import jams.model.*;
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
             update = JAMSVarDescription.UpdateType.RUN,
-            description = "The current hru entity"
+            description = "The current spatial entity"
             )
             public JAMSEntityCollection entities;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
             update = JAMSVarDescription.UpdateType.RUN,
-            description = "HRU statevar LAI values (366)"
+            description = "Array with LAI values for a standard year"
             )
             public JAMSDoubleArray LAIArray;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
             update = JAMSVarDescription.UpdateType.RUN,
-            description = "HRU statevar eff. Height values (366)"
+            description = "Array with eff. Height values for a standard year"
             )
             public JAMSDoubleArray effHArray;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
             update = JAMSVarDescription.UpdateType.RUN,
-            description = "Monthly stomata resistance values"
+            description = "Monthly stomata resistance values",
+            lowerBound = 0,
+            upperBound = 150,
+            unit = "s / m"
             )
             public JAMSDoubleArray rsc0Array;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
             update = JAMSVarDescription.UpdateType.RUN,
-            description = "HRU attribute name elevation"
+            description = "elevation of the spatial modelling entity",
+            lowerBound = 0,
+            //upperBound = 150,
+            unit = "m"
             )
             public JAMSDouble elevation;
     
