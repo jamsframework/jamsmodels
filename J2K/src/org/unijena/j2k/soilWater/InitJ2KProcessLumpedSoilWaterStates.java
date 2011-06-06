@@ -64,7 +64,7 @@ import jams.model.*;
             description = "field capacity adaptation factor",
             unit="n/a",
             lowerBound = 0,
-            upperBound = 1000000,
+            //upperBound = 1000000,
             defaultValue = "1.0"
             )
             public JAMSDouble FCAdaptation;
@@ -75,7 +75,7 @@ import jams.model.*;
             description = "air capacity adaptation factor",
             unit="n/a",
             lowerBound = 0,
-            upperBound = 1000000,
+            //upperBound = 1000000,
             defaultValue = "1.0"
             )
             public JAMSDouble ACAdaptation;
@@ -86,8 +86,8 @@ import jams.model.*;
             update = JAMSVarDescription.UpdateType.RUN,
             description = "HRU statevar rooting depth",
             unit="dm",
-            lowerBound = 0,
-            upperBound = 1000000
+            lowerBound = 0
+            //upperBound = 1000000
             )
             public JAMSDouble rootDepth;
     
@@ -96,8 +96,8 @@ import jams.model.*;
             update = JAMSVarDescription.UpdateType.RUN,
             description = "HRU attribute maximum MPS",
             unit="L",
-            lowerBound = 0,
-            upperBound = 1000000
+            lowerBound = 0
+            //upperBound = 1000000
             )
             public JAMSDouble maxMPS;
     
@@ -106,8 +106,8 @@ import jams.model.*;
             update = JAMSVarDescription.UpdateType.RUN,
             description = "HRU attribute maximum LPS",
             unit="L",
-            lowerBound = 0,
-            upperBound = 1000000
+            lowerBound = 0
+            //upperBound = 1000000
             )
             public JAMSDouble maxLPS;
     
@@ -116,8 +116,8 @@ import jams.model.*;
             update = JAMSVarDescription.UpdateType.RUN,
             description = "HRU state var actual MPS",
             unit="L",
-            lowerBound = 0,
-            upperBound = 1000000
+            lowerBound = 0
+            //upperBound = 1000000
             )
             public JAMSDouble actMPS;
     
@@ -126,8 +126,8 @@ import jams.model.*;
             update = JAMSVarDescription.UpdateType.RUN,
             description = "HRU state var actual LPS",
             unit="L",
-            lowerBound = 0,
-            upperBound = 1000000
+            lowerBound = 0
+            //upperBound = 1000000
             )
             public JAMSDouble actLPS;
    
