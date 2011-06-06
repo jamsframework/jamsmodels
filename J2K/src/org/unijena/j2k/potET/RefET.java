@@ -48,7 +48,9 @@ import jams.model.*;
  */
 @JAMSComponentDescription(title = "CalcDailyETP_PenmanMonteith",
 author = "Peter Krause",
-description = "Calculates potential ETP after Penman-Monteith")
+description = "Calculates FAO grass reference ET",
+version="1.0_0",
+date="2011-05-30")
 public class RefET extends JAMSComponent {
 
     /*
@@ -63,36 +65,70 @@ public class RefET extends JAMSComponent {
     update = JAMSVarDescription.UpdateType.INIT,
     description = "temporal resolution [d | h | m]")
     public JAMSString tempRes;
-
-    @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
-    update = JAMSVarDescription.UpdateType.RUN,
-    description = "state variable wind")
-    public JAMSDouble wind;
-
-    @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
-    update = JAMSVarDescription.UpdateType.RUN,
-    description = "state variable mean temperature")
-    public JAMSDouble tmean;
-
-    @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
-    update = JAMSVarDescription.UpdateType.RUN,
-    description = "state variable relative humidity")
-    public JAMSDouble rhum;
-
-    @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
-    update = JAMSVarDescription.UpdateType.RUN,
-    description = "state variable net radiation")
-    public JAMSDouble netRad;
-
-    @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
-    update = JAMSVarDescription.UpdateType.RUN,
-    description = "attribute elevation")
-    public JAMSDouble elevation;
-
-    @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
-    update = JAMSVarDescription.UpdateType.RUN,
-    description = "attribute area")
-    public JAMSDouble area;
+    
+    @JAMSVarDescription(
+            access = JAMSVarDescription.AccessType.READ,
+            update = JAMSVarDescription.UpdateType.RUN,
+            description = "state variable wind",
+            unit="m/s"
+            )
+            public JAMSDouble wind;
+    
+    @JAMSVarDescription(
+            access = JAMSVarDescription.AccessType.READ,
+            update = JAMSVarDescription.UpdateType.RUN,
+            description = "state variable mean temperature",
+            unit="°C"
+            )
+            public JAMSDouble tmean;
+    
+    @JAMSVarDescription(
+            access = JAMSVarDescription.AccessType.READ,
+            update = JAMSVarDescription.UpdateType.RUN,
+            description = "state variable relative humidity",
+            unit="%"
+            )
+            public JAMSDouble rhum;
+    
+    @JAMSVarDescription(
+            access = JAMSVarDescription.AccessType.READ,
+            update = JAMSVarDescription.UpdateType.RUN,
+            description = "state variable net radiation",
+            unit="MJ m^-2 d^-1"
+            )
+            public JAMSDouble netRad;
+    
+    @JAMSVarDescription(
+            access = JAMSVarDescription.AccessType.READ,
+            update = JAMSVarDescription.UpdateType.RUN,
+            description = "state extraterrestric radiation",
+            unit="MJ m^-2 d^-1"
+            )
+            public JAMSDouble extRad;
+    
+    @JAMSVarDescription(
+            access = JAMSVarDescription.AccessType.READ,
+            update = JAMSVarDescription.UpdateType.RUN,
+            description = "state variable solar radiation",
+            unit="MJ m^-2 d^-1"
+            )
+            public JAMSDouble solRad;
+    
+    @JAMSVarDescription(
+            access = JAMSVarDescription.AccessType.READ,
+            update = JAMSVarDescription.UpdateType.RUN,
+            description = "attribute elevation",
+            unit="m"
+            )
+            public JAMSDouble elevation;
+    
+    @JAMSVarDescription(
+            access = JAMSVarDescription.AccessType.READ,
+            update = JAMSVarDescription.UpdateType.RUN,
+            description = "attribute area",
+            unit="m²"
+            )
+            public JAMSDouble area;
 
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.WRITE,
     update = JAMSVarDescription.UpdateType.RUN,
