@@ -58,6 +58,8 @@ import jams.model.*;
             access = JAMSVarDescription.AccessType.WRITE,
             update = JAMSVarDescription.UpdateType.RUN,
             description = "maximum RG1 storage",
+            lowerBound = 0,
+            //upperBound = infinity,
             unit="L"
             )
             public JAMSDouble maxRG1;
@@ -66,6 +68,8 @@ import jams.model.*;
             access = JAMSVarDescription.AccessType.WRITE,
             update = JAMSVarDescription.UpdateType.RUN,
             description = "maximum RG2 storage",
+            lowerBound = 0,
+            //upperBound = infinity,
             unit="L"
             )
             public JAMSDouble maxRG2;
@@ -73,6 +77,8 @@ import jams.model.*;
             access = JAMSVarDescription.AccessType.WRITE,
             update = JAMSVarDescription.UpdateType.RUN,
             description = "actual RG1 storage",
+            lowerBound = 0,
+            //upperBound = infinity,
             unit="L"
             )
             public JAMSDouble actRG1;
@@ -81,6 +87,8 @@ import jams.model.*;
             access = JAMSVarDescription.AccessType.WRITE,
             update = JAMSVarDescription.UpdateType.RUN,
             description = "actual RG2 storage",
+            lowerBound = 0,
+            //upperBound = infinity,
             unit="L"
             )
             public JAMSDouble actRG2;
@@ -89,9 +97,10 @@ import jams.model.*;
             access = JAMSVarDescription.AccessType.READ,
             update = JAMSVarDescription.UpdateType.INIT,
             description = "relative initial RG1 storage",
-            unit="n/a",
             lowerBound = 0,
-            upperBound = 1.0
+            upperBound = 1.0,
+            unit="n/a",
+            defaultValue = "0.0"
             )
             public JAMSDouble initRG1;
     
@@ -99,9 +108,10 @@ import jams.model.*;
             access = JAMSVarDescription.AccessType.READ,
             update = JAMSVarDescription.UpdateType.INIT,
             description = "relative initial RG2 storage",
-            unit="n/a",
             lowerBound = 0,
-            upperBound = 1.0
+            upperBound = 1.0,
+            unit="n/a",
+            defaultValue = "0.0"
             )
             public JAMSDouble initRG2;
     
