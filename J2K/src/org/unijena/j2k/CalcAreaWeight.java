@@ -33,7 +33,11 @@ import jams.data.*;
 @JAMSComponentDescription(
         title="CalcAreaWeight",
         author="Peter Krause",
-        description="Calculates a relative area weight as a fraction between the entitie's area and the area of the catchment"
+        description="Calculates a relative area weight as a fraction between "
+        + "the spatial entitie's area and the sum of the area of all spatial"
+        + "entities (i.e. the area of the catchment)",
+        version="1.0_0",
+        date="2011-05-30"
         )
         
 public class CalcAreaWeight extends JAMSComponent {
@@ -55,11 +59,11 @@ public class CalcAreaWeight extends JAMSComponent {
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
             description = "the relative area weight of the entity",
-            unit = "m^2"
+            unit = "n/a"
             )
             public JAMSDouble areaWeight;
     
     public void run() {
-        areaWeight.setValue(catchmentArea.getValue()/entityArea.getValue());
+        areaWeight.setValue(catchmentArea.getValue() / entityArea.getValue());
     }
 }
