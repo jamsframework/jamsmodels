@@ -37,7 +37,9 @@ import jams.model.*;
 @JAMSComponentDescription(
         title="CalcDailyETP_PenmanMonteith",
         author="Peter Krause",
-        description="Calculates potential ETP after Penman-Monteith"
+        description="Calculates potential ETP after Penman-Monteith",
+        version="1.0_0",
+        date="2011-05-30"
         )
     
     public class CalcRefET extends JAMSComponent {
@@ -56,77 +58,88 @@ import jams.model.*;
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
             update = JAMSVarDescription.UpdateType.RUN,
-            description = "state variable wind"
+            description = "state variable wind",
+            unit="m/s"
             )
             public JAMSDouble wind;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
             update = JAMSVarDescription.UpdateType.RUN,
-            description = "state variable minimum temperature"
+            description = "state variable minimum temperature",
+            unit="°C"
             )
             public JAMSDouble tmin;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
             update = JAMSVarDescription.UpdateType.RUN,
-            description = "state variable mean temperature"
+            description = "state variable mean temperature",
+            unit="°C"
             )
             public JAMSDouble tmean;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
             update = JAMSVarDescription.UpdateType.RUN,
-            description = "state variable maximum temperature"
+            description = "state variable maximum temperature",
+            unit="°C"
             )
             public JAMSDouble tmax;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
             update = JAMSVarDescription.UpdateType.RUN,
-            description = "state variable relative humidity"
+            description = "state variable relative humidity",
+            unit="%"
             )
             public JAMSDouble rhum;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
             update = JAMSVarDescription.UpdateType.RUN,
-            description = "state variable net radiation"
+            description = "state variable net radiation",
+            unit="MJ m^-2 d^-1"
             )
             public JAMSDouble netRad;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
             update = JAMSVarDescription.UpdateType.RUN,
-            description = "state extraterrestric radiation"
+            description = "state extraterrestric radiation",
+            unit="MJ m^-2 d^-1"
             )
             public JAMSDouble extRad;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
             update = JAMSVarDescription.UpdateType.RUN,
-            description = "state variable solar radiation"
+            description = "state variable solar radiation",
+            unit="MJ m^-2 d^-1"
             )
             public JAMSDouble solRad;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
             update = JAMSVarDescription.UpdateType.RUN,
-            description = "attribute elevation"
+            description = "attribute elevation",
+            unit="m"
             )
             public JAMSDouble elevation;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
             update = JAMSVarDescription.UpdateType.RUN,
-            description = "attribute area"
+            description = "attribute area",
+            unit="m²"
             )
             public JAMSDouble area;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
             update = JAMSVarDescription.UpdateType.RUN,
-            description = "reference potential ETP [mm/timeUnit]"
+            description = "reference potential ETP [mm]",
+            unit="mm d^-1"
             )
             public JAMSDouble refET;
     
@@ -140,7 +153,7 @@ import jams.model.*;
     }
     
     public void run() throws JAMSEntity.NoSuchAttributeException, IOException {
-            final double CP = 0.001031; //Specific heat of air [MJ kg-1 �C-1]
+            final double CP = 0.001031; //Specific heat of air [MJ kg-1 �C-1]
             final double albedo = 0.23; //according to Allen et al.
             final double rc = 70; //according to Allen et al.
             final double clearSkyTrans = 0.75; //according to Donatelli
