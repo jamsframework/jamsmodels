@@ -33,9 +33,15 @@ import jams.model.*;
  * @author Peter Krause
  */
 @JAMSComponentDescription(
+        
         title="CalcExtraterrRadiation",
         author="Peter Krause",
-        description="Calculates additional attributes from existent ones"
+        description="Calculates the extraterrestial incoming radiation for a"
+        + "a standard year (i.e. 366 days or 8784 hours). The calculation is done"
+        + "for the geographical location defined by latitude and longitude."
+        + "The module can be used in hourly, daily and monthly resolution.",
+        version="1.0_0",
+        date="2011-05-30"
         )
         public class CalcExtraterrRadiation extends JAMSComponent {
     
@@ -93,8 +99,8 @@ import jams.model.*;
             update = JAMSVarDescription.UpdateType.RUN,
             description = "extraterrestric radiation of each time step of the year [MJ/m² timeUnit]",
             unit="MJ / m^2 timeUnit",
-            lowerBound = 0,
-            upperBound = 10000000
+            lowerBound = 0
+            //upperBound = 10000000
             )
             public JAMSDoubleArray extRadArray;
     
@@ -149,7 +155,7 @@ import jams.model.*;
                     double sunsetHourAngle = org.unijena.j2k.physicalCalculations.DailySolarRadiationCalculationMethods.calc_SunsetHourAngle(latRad, declination);
                     extRadiation[i] = org.unijena.j2k.physicalCalculations.DailySolarRadiationCalculationMethods.calc_DailyExtraterrestrialRadiation(solarConstant,
                             invRelDistEarthSun, sunsetHourAngle, latRad, declination);
-                    //time.add(time.DATE, 1);
+                   
                 }else if(tempRes.getValue().equals("h")){
                     while(hour < 24){
                         double midTimeHourAngle = org.unijena.j2k.physicalCalculations.HourlySolarRadiationCalculationMethods.calc_midTimeHourAngle(hour, julDay, longi, longiTZ, false);
@@ -158,7 +164,7 @@ import jams.model.*;
                         int idx = i * 24 + hour;
                         extRadiation[idx] = org.unijena.j2k.physicalCalculations.HourlySolarRadiationCalculationMethods.calc_HourlyExtraterrestrialRadiation(solarConstant, invRelDistEarthSun, startTimeHourAngle, endTimeHourAngle, latRad, declination);
                         hour++;
-                        //time.add(time.HOUR_OF_DAY, 1);
+                        
                     }
                 }
             }
