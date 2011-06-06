@@ -19,7 +19,7 @@ public class DoubleSumAnalysis {
     public DoubleSumAnalysis() {
     }
     
-    public static double dsGrad(double[] prediction, double[] validation){
+    public static double dsGrad(double[] validation, double[] prediction){
         double dsGrad = 0;
         int dsLength = prediction.length;
         
@@ -35,7 +35,7 @@ public class DoubleSumAnalysis {
             cumVali[i] = cv;
         }
         
-        //interc., grad., r²
+        //interc., grad., rï¿½
         double[] regCoef = org.unijena.j2k.statistics.Regression.calcLinReg(cumVali, cumPred);
         
         return regCoef[1];
