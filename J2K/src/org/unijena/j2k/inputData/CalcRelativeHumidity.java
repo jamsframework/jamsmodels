@@ -33,7 +33,9 @@ import jams.model.*;
 @JAMSComponentDescription(
         title="CalcRelativeHumidity",
         author="Peter Krause",
-        description="Calculates relative humidity from temperature and absolute humidity"
+        description="Calculates relative humidity from temperature and absolute humidity",
+        version="1.0_0",
+        date="2011-05-30"
         )
         public class CalcRelativeHumidity extends JAMSComponent {
     
@@ -44,21 +46,24 @@ import jams.model.*;
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
             update = JAMSVarDescription.UpdateType.RUN,
-            description = "state variable mean tempeature"
+            description = "state variable mean tempeature",
+            unit = "°C"
             )
             public JAMSDouble tmean;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
             update = JAMSVarDescription.UpdateType.RUN,
-            description = "state variable absolute humidity"
+            description = "state variable absolute humidity",
+            unit = "g / m³"
             )
             public JAMSDouble ahum;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
             update = JAMSVarDescription.UpdateType.RUN,
-            description = "state variable relative humidity"
+            description = "state variable relative humidity",
+            unit = "%"
             )
             public JAMSDouble rhum;
     
