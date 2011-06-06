@@ -50,7 +50,10 @@ import jams.model.*;
 @JAMSComponentDescription(
         title="J2KArrayGrabber",
         author="Peter Krause",
-        description=""
+        description="This component selects data values from arrays representing"
+        + "a standard year.",
+        version="1.0_0",
+        date="2011-05-30"
         )
         public class J2KArrayGrabber extends JAMSComponent {
     
