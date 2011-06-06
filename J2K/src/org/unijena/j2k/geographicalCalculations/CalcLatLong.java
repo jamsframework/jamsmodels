@@ -33,20 +33,20 @@ import jams.model.*;
 @JAMSComponentDescription(
         title="CalcLatLonge",
         author="Peter Krause",
-        description="Calculates additional attributes from existent ones"
+        description="Handling of geographical coordination system and conversion"
+        + "into lat-long values. The module can handle UTM or Gauss-Krueger "
+        + "coordinates. Additionally, a slope-aspect correction factor for a "
+        + "standard year is calculated which considers the specific slope-aspect"
+        + "combination of a spatial modelling unit and the implication for e.g."
+        + "incoming radiation.",
+        version="1.0_0",
+        date="2011-05-30"
         )
         public class CalcLatLong extends JAMSComponent {
     
     /*
      *  Component variables
      */
-    @JAMSVarDescription(
-            access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.RUN,
-            description = "The current hru entity"
-            )
-            public JAMSEntityCollection entities;
-    
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
             update = JAMSVarDescription.UpdateType.RUN,
