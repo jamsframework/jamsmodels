@@ -35,9 +35,11 @@ import jams.model.*;
  *
  * @author c0krpe
  */
-@JAMSComponentDescription(title = "Title",
-author = "Author",
-description = "Description")
+@JAMSComponentDescription(title = "CalcDailySolarRadiation",
+author = "Peter Krause",
+description = "Calculates solar radiation for daily or monthly timesteps",
+version="1.0_0",
+date="2011-05-30")
 public class CalcDailySolarRadiation extends JAMSComponent {
 
     /*
@@ -50,12 +52,14 @@ public class CalcDailySolarRadiation extends JAMSComponent {
 
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
     update = JAMSVarDescription.UpdateType.RUN,
-    description = "state variable sunshine hours [h/d]")
+    description = "state variable sunshine hours",
+    unit = "h/d")
     public JAMSDouble sunh;
 
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.WRITE,
     update = JAMSVarDescription.UpdateType.RUN,
     description = "Maximum sunshine duration in h",
+    unit = "h/d",
     defaultValue = "0")
     public JAMSDouble sunhmax;
 
@@ -66,38 +70,47 @@ public class CalcDailySolarRadiation extends JAMSComponent {
 
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
     update = JAMSVarDescription.UpdateType.RUN,
-    description = "attribute latitude [deg]")
+    description = "attribute latitude",
+    unit = "deg")
     public JAMSDouble latitude;
 
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
     update = JAMSVarDescription.UpdateType.RUN,
-    description = "daily extraterrestic radiation [MJ/m²d]")
+    description = "daily extraterrestic radiation",
+    unit = "MJ / mÂ² d")
     public JAMSDouble actExtRad;
 
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.WRITE,
     update = JAMSVarDescription.UpdateType.RUN,
-    description = "daily solar radiation [MJ/m²d]")
+    description = "daily solar radiation",
+    unit = "MJ / mÂ² d")
     public JAMSDouble solRad;
 
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
     update = JAMSVarDescription.UpdateType.INIT,
-    description = "Angstrom factor a")
+    description = "Angstrom factor a",
+    lowerBound = 0,
+    upperBound = 1,
+    defaultValue = "0.25")
     public JAMSDouble angstrom_a;
 
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
     update = JAMSVarDescription.UpdateType.INIT,
-    description = "Angstrom factor b")
+    description = "Angstrom factor b",
+    lowerBound = 0,
+    upperBound = 1,
+    defaultValue = "0.5")
     public JAMSDouble angstrom_b;
 
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
     update = JAMSVarDescription.UpdateType.INIT,
-    description = "temporal resolution [d | h | m]")
+    description = "temporal resolution [d | m]")
     public JAMSString tempRes;
 
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
     update = JAMSVarDescription.UpdateType.INIT,
     description = "Caching configuration: 0 - write cache, 1 - use cache, 2 - caching off",
-    defaultValue = "0")
+    defaultValue = "2")
     public JAMSInteger dataCaching;
 
     private File cacheFile;
