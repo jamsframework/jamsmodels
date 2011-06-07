@@ -33,7 +33,9 @@ import jams.model.*;
 @JAMSComponentDescription(
         title="CalcRainSnowParts",
         author="Peter Krause",
-        description="Divides precip into rain and snow based on mean temperature"
+        description="Distributes precipitation into rain and snow based on air temperature",
+        version="1.0_0",
+        date="2011-05-30"
         )
         public class CalcRainSnowParts extends JAMSComponent {
     
@@ -43,56 +45,70 @@ import jams.model.*;
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
             update = JAMSVarDescription.UpdateType.RUN,
-            description = "HRU attribute name area"
+            description = "HRU attribute name area",
+            unit = "m"
             )
             public JAMSDouble area;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
             update = JAMSVarDescription.UpdateType.INIT,
-            description = "Snow parameter TRS"
+            description = "Snow parameter TRS",
+            lowerBound = -10.0,
+            upperBound = 10.0,
+            defaultValue = "0.0",
+            unit = "°C"
             )
             public JAMSDouble snow_trs;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
             update = JAMSVarDescription.UpdateType.INIT,
-            description = "Snow parameter TRANS"
+            description = "Snow parameter TRANS",
+            lowerBound = 0.0,
+            upperBound = 5.0,
+            defaultValue = "2.0",
+            unit = "K"
             )
             public JAMSDouble snow_trans;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
             update = JAMSVarDescription.UpdateType.RUN,
-            description = "state variable min temperature or mean"
+            description = "state variable min temperature or mean",
+            unit = "°C"
             )
             public JAMSDouble tmin;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
             update = JAMSVarDescription.UpdateType.RUN,
-            description = "state variable mean temperature"
+            description = "state variable mean temperature",
+            unit = "°C"
             )
             public JAMSDouble tmean;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
             update = JAMSVarDescription.UpdateType.RUN,
-            description = "state variable precipitation"
+            description = "state variable precipitation",
+            unit = "mm"
             )
             public JAMSDouble precip;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
             update = JAMSVarDescription.UpdateType.RUN,
-            description = "state variable rain"
+            description = "state variable rain",
+            unit = "L"
             )
             public JAMSDouble rain;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
             update = JAMSVarDescription.UpdateType.RUN,
-            description = "state variable snow"
+            description = "state variable snow",
+            unit = "L"
             )
             public JAMSDouble snow;
     
@@ -100,7 +116,8 @@ import jams.model.*;
             access = JAMSVarDescription.AccessType.WRITE,
             update = JAMSVarDescription.UpdateType.RUN,
             description = "save variable rain",
-            defaultValue= "0"
+            defaultValue= "0",
+            unit = "L"
             )
             public JAMSDouble svRain;
     
@@ -108,7 +125,8 @@ import jams.model.*;
             access = JAMSVarDescription.AccessType.WRITE,
             update = JAMSVarDescription.UpdateType.RUN,
             description = "save variable snow",
-            defaultValue= "0"
+            defaultValue= "0",
+            unit = "L"
             )
             public JAMSDouble svSnow;
     
@@ -133,7 +151,7 @@ import jams.model.*;
         else if(pSnow < 0)
             pSnow = 0;
         
-        //converting mm/m� to absolute litres
+        //converting mm/m² to absolute litres
         double precip = this.precip.getValue() * this.area.getValue();
         if (precip < 0){
            precip = 0; 
