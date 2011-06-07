@@ -33,7 +33,9 @@ import jams.model.*;
 @JAMSComponentDescription(
         title="J2KGroundwater",
         author="Peter Krause",
-        description="Description"
+        description="A two-component groundwater module",
+        version="1.0_0",
+        date="2011-05-30"
         )
         public class J2KProcessGroundwater extends JAMSComponent {
     
@@ -44,154 +46,180 @@ import jams.model.*;
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
             update = JAMSVarDescription.UpdateType.RUN,
-            description = "attribute area"
-            )
-            public JAMSDouble area;
-    
-    @JAMSVarDescription(
-            access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.RUN,
-            description = "attribute slope"
+            description = "attribute slope",
+            unit = "deg"
             )
             public JAMSDouble slope;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
             update = JAMSVarDescription.UpdateType.RUN,
-            description = "maximum RG1 storage"
+            description = "maximum RG1 storage",
+            unit = "L"
             )
             public JAMSDouble maxRG1;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
             update = JAMSVarDescription.UpdateType.RUN,
-            description = "maximum RG2 storage"
+            description = "maximum RG2 storage",
+            unit = "L"
             )
             public JAMSDouble maxRG2;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
             update = JAMSVarDescription.UpdateType.RUN,
-            description = "recision coefficient k RG1"
+            description = "recision coefficient k RG1",
+            lowerBound = 1.0,
+            upperBound = 500.0,
+            defaultValue = "10.0"
             )
             public JAMSDouble kRG1;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
             update = JAMSVarDescription.UpdateType.RUN,
-            description = "recision coefficient k RG2"
+            description = "recision coefficient k RG2",
+            lowerBound = 1.0,
+            upperBound = 700.0,
+            defaultValue = "10.0"
             )
             public JAMSDouble kRG2;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
             update = JAMSVarDescription.UpdateType.RUN,
-            description = "actual RG1 storage"
+            description = "actual RG1 storage",
+            unit = "L"
             )
             public JAMSDouble actRG1;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
             update = JAMSVarDescription.UpdateType.RUN,
-            description = "actual RG2 storage"
+            description = "actual RG2 storage",
+            unit = "L"
             )
             public JAMSDouble actRG2;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
             update = JAMSVarDescription.UpdateType.RUN,
-            description = "RG1 inflow"
+            description = "RG1 inflow",
+            unit = "L"
             )
             public JAMSDouble inRG1;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
             update = JAMSVarDescription.UpdateType.RUN,
-            description = "RG2 inflow"
+            description = "RG2 inflow",
+            unit = "L"
             )
             public JAMSDouble inRG2;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
             update = JAMSVarDescription.UpdateType.RUN,
-            description = "RG1 outflow"
+            description = "RG1 outflow",
+            unit = "L"
             )
             public JAMSDouble outRG1;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
             update = JAMSVarDescription.UpdateType.RUN,
-            description = "RG2 outflow"
+            description = "RG2 outflow",
+            unit = "L"
             )
             public JAMSDouble outRG2;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
             update = JAMSVarDescription.UpdateType.RUN,
-            description = "RG1 generation"
+            description = "RG1 generation",
+            unit = "L"
             )
             public JAMSDouble genRG1;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
             update = JAMSVarDescription.UpdateType.RUN,
-            description = "RG2 generation"
+            description = "RG2 generation",
+            unit = "L"
             )
             public JAMSDouble genRG2;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
             update = JAMSVarDescription.UpdateType.RUN,
-            description = "percolation"
+            description = "percolation",
+            unit = "L"
             )
             public JAMSDouble percolation;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
             update = JAMSVarDescription.UpdateType.RUN,
-            description = "gwExcess"
+            description = "gwExcess",
+            unit = "L"
             )
             public JAMSDouble gwExcess;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
             update = JAMSVarDescription.UpdateType.RUN,
-            description = "maximum soil storage"
+            description = "maximum soil storage",
+            unit = "L"
             )
             public JAMSDouble maxSoilStorage;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
             update = JAMSVarDescription.UpdateType.RUN,
-            description = "actual soil storage"
+            description = "actual soil storage",
+            unit = "L"
             )
             public JAMSDouble actSoilStorage;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
             update = JAMSVarDescription.UpdateType.INIT,
-            description = "RG1 correction factor"
+            description = "RG1 correction factor",
+            lowerBound = 0.0,
+            upperBound = 10.0,
+            defaultValue = "1.0"
             )
             public JAMSDouble gwRG1Fact;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
             update = JAMSVarDescription.UpdateType.INIT,
-            description = "RG2 correction factor"
+            description = "RG2 correction factor",
+            lowerBound = 0.0,
+            upperBound = 10.0,
+            defaultValue = "1.0"
             )
             public JAMSDouble gwRG2Fact;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
             update = JAMSVarDescription.UpdateType.INIT,
-            description = "RG1 RG2 distribution factor"
+            description = "RG1 RG2 distribution factor",
+            lowerBound = 0.0,
+            upperBound = 10.0,
+            defaultValue = "1.0"
             )
             public JAMSDouble gwRG1RG2dist;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
             update = JAMSVarDescription.UpdateType.INIT,
-            description = "capilary rise factor"
+            description = "capilary rise factor",
+            lowerBound = 0.0,
+            upperBound = 10.0,
+            defaultValue = "0.0"
             )
             public JAMSDouble gwCapRise;
     
