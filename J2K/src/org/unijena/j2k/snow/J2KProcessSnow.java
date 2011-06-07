@@ -20,32 +20,6 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
  *
  */
-/*
-<component class="org.unijena.j2k.snow.J2KProcessSnow" name="J2KProcessSnow">
-    <jamsvar name="area" provider="HRUContext" providervar="currentEntity.area"/>
-    <jamsvar name="actSlAsCf" provider="HRUContext" providervar="currentEntity.actSlAsCf"/>
-    <jamsvar name="minTemp" provider="HRUContext" providervar="currentEntity.tmean"/>
-    <jamsvar name="meanTemp" provider="HRUContext" providervar="currentEntity.tmean"/>
-    <jamsvar name="maxTemp" provider="HRUContext" providervar="currentEntity.tmean"/>
-    <jamsvar name="netRain" provider="HRUContext" providervar="currentEntity.netRain"/>
-    <jamsvar name="netSnow" provider="HRUContext" providervar="currentEntity.netSnow"/>
-    <jamsvar name="snowTotSWE" provider="HRUContext" providervar="currentEntity.snowTotSWE"/>
-    <jamsvar name="drySWE" provider="HRUContext" providervar="currentEntity.drySWE"/>
-    <jamsvar name="totDens" provider="HRUContext" providervar="currentEntity.totDens"/>
-    <jamsvar name="dryDens" provider="HRUContext" providervar="currentEntity.dryDens"/>
-    <jamsvar name="snowDepth" provider="HRUContext" providervar="currentEntity.snowDepth"/>
-    <jamsvar name="snowAge" provider="HRUContext" providervar="currentEntity.snowAge"/>
-    <jamsvar name="snowColdContent" provider="HRUContext" providervar="currentEntity.snowColdContent"/>
-    <jamsvar name="snowMelt" provider="HRUContext" providervar="currentEntity.snowMelt"/>
-    <jamsvar name="snow_trs" globvar="snow_trs"/>
-    <jamsvar name="snow_trans" globvar="snow_trans"/>
-    <jamsvar name="t_factor" value="0.7"/>
-    <jamsvar name="r_factor" value="0.008"/>
-    <jamsvar name="g_factor" value="4.04"/>
-    <jamsvar name="snowCritDens" value="0.45"/>
-    <jamsvar name="ccf_factor" value="0.001"/>
-</component>
-*/
 package org.unijena.j2k.snow;
 
 import jams.JAMS;
@@ -59,8 +33,9 @@ import jams.model.*;
 @JAMSComponentDescription(
         title="J2KProcessSnow",
         author="Peter Krause",
-        description="Calculates the snow course"
-        )
+        description="Calculates snow accumulation, metamorphosis and melt",
+        version="1.0_0",
+        date="2011-05-30")
         public class J2KProcessSnow extends JAMSComponent {
     
     /*
@@ -76,14 +51,15 @@ import jams.model.*;
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
             update = JAMSVarDescription.UpdateType.RUN,
-            description = "The current hru entity"
+            description = "The current spatial modelling entity"
             )
             public JAMSEntity entity;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
             update = JAMSVarDescription.UpdateType.RUN,
-            description = "attribute area"
+            description = "attribute area",
+            unit = "m²"
             )
             public JAMSDouble area;
     
@@ -97,77 +73,88 @@ import jams.model.*;
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
             update = JAMSVarDescription.UpdateType.RUN,
-            description = "minimum temperature if available, else mean temp"
+            description = "minimum temperature if available, else mean temp",
+            unit = "°C"
             )
             public JAMSDouble minTemp;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
             update = JAMSVarDescription.UpdateType.RUN,
-            description = "mean temperature"
+            description = "mean temperature",
+            unit = "°C"
             )
             public JAMSDouble meanTemp;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
             update = JAMSVarDescription.UpdateType.RUN,
-            description = "maximum temperature if available, else mean temp"
+            description = "maximum temperature if available, else mean temp",
+            unit = "°C"
             )
             public JAMSDouble maxTemp;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
             update = JAMSVarDescription.UpdateType.RUN,
-            description = "state variable net rain"
+            description = "state variable net rain",
+            unit = "L"
             )
             public JAMSDouble netRain;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
             update = JAMSVarDescription.UpdateType.RUN,
-            description = "state variable net snow"
+            description = "state variable net snow",
+            unit = "L"
             )
             public JAMSDouble netSnow;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
             update = JAMSVarDescription.UpdateType.RUN,
-            description = "total snow water equivalent"
+            description = "total snow water equivalent",
+            unit = "L"
             )
             public JAMSDouble snowTotSWE;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
             update = JAMSVarDescription.UpdateType.RUN,
-            description = "dry snow water equivalent"
+            description = "dry snow water equivalent",
+            unit = "L"
             )
             public JAMSDouble drySWE;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
             update = JAMSVarDescription.UpdateType.RUN,
-            description = "total snow density"
+            description = "total snow density",
+            unit = "g cm^-3"
             )
             public JAMSDouble totDens;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
             update = JAMSVarDescription.UpdateType.RUN,
-            description = "dry snow density"
+            description = "dry snow density",
+            unit = "g cm^-3"
             )
             public JAMSDouble dryDens;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
             update = JAMSVarDescription.UpdateType.RUN,
-            description = "snow depth"
+            description = "snow depth",
+            unit = "mm"
             )
             public JAMSDouble snowDepth;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
             update = JAMSVarDescription.UpdateType.RUN,
-            description = "snow age"
+            description = "snow age",
+            unit = "d"
             )
             public JAMSDouble snowAge;
     
@@ -181,7 +168,8 @@ import jams.model.*;
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
             update = JAMSVarDescription.UpdateType.RUN,
-            description = "daily snow melt"
+            description = "daily snow melt",
+            unit = "L"
             )
             public JAMSDouble snowMelt;
     
@@ -189,58 +177,66 @@ import jams.model.*;
             access = JAMSVarDescription.AccessType.READ,
             update = JAMSVarDescription.UpdateType.INIT,
             description = "base temperature",
-            defaultValue="0"
+            lowerBound = -10.0,
+            upperBound = 10.0,
+            defaultValue="0",
+            unit = "°C"
             )
             public JAMSDouble baseTemp;
-    
-    /*@JAMSVarDescription(
-            access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.INIT,
-            description = "Snow parameter TRANS"
-            )
-            public JAMSDouble snow_trans;*/
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
             update = JAMSVarDescription.UpdateType.INIT,
-            description = "temperature factor for snowmelt"
+            description = "temperature factor for snowmelt",
+            lowerBound = 0.0,
+            upperBound = 20.0,
+            defaultValue="1",
+            unit = "mm °C^-1"
             )
             public JAMSDouble t_factor;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
             update = JAMSVarDescription.UpdateType.INIT,
-            description = "rain factor for snowmelt"
+            description = "rain factor for snowmelt",
+            lowerBound = 0.0,
+            upperBound = 20.0,
+            defaultValue="1",
+            unit = "°C^-1"
             )
             public JAMSDouble r_factor;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
             update = JAMSVarDescription.UpdateType.INIT,
-            description = "ground factor for snowmelt"
+            description = "ground factor for snowmelt",
+            lowerBound = 0.0,
+            upperBound = 20.0,
+            defaultValue="1",
+            unit = "mm"
             )
             public JAMSDouble g_factor;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
             update = JAMSVarDescription.UpdateType.INIT,
-            description = "critical density"
+            description = "critical density",
+            lowerBound = 0.0,
+            upperBound = 1.0,
+            defaultValue="0.45",
+            unit = "g cm^-3"
             )
             public JAMSDouble snowCritDens;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
             update = JAMSVarDescription.UpdateType.INIT,
-            description = "cold content factor"
+            description = "cold content factor",
+            lowerBound = 0.0,
+            upperBound = 5.0,
+            defaultValue="0.01"
             )
             public JAMSDouble ccf_factor;
-    
-    @JAMSVarDescription(
-            access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.INIT,
-            description = "0 - ddf, 1 - complex"
-            )
-            public JAMSInteger snowMeltFormula;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
