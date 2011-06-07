@@ -32,7 +32,9 @@ import jams.model.*;
  */
 @JAMSComponentDescription(title = "CalcDailyETP_PenmanMonteith",
 author = "Peter Krause",
-description = "Calculates potential ETP according Penman-Monteith")
+description = "Calculates potential ETP according Penman-Monteith",
+version="1.0_0",
+date="2011-05-30")
 public class PenmanMonteith extends JAMSComponent {
 
     public final double CP = 1.031E-3;
@@ -54,37 +56,44 @@ public class PenmanMonteith extends JAMSComponent {
 
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
     update = JAMSVarDescription.UpdateType.RUN,
-    description = "state variable wind")
+    description = "state variable wind",
+            unit="m/s")
     public JAMSDouble wind;
 
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
     update = JAMSVarDescription.UpdateType.RUN,
-    description = "state variable mean temperature")
+    description = "state variable mean temperature",
+    unit="°C")
     public JAMSDouble tmean;
 
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
     update = JAMSVarDescription.UpdateType.RUN,
-    description = "state variable relative humidity")
+    description = "state variable relative humidity",
+    unit="%")
     public JAMSDouble rhum;
 
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
     update = JAMSVarDescription.UpdateType.RUN,
-    description = "state variable net radiation")
+    description = "state variable net radiation",
+    unit="MJ m^-2 d^-1")
     public JAMSDouble netRad;
 
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
     update = JAMSVarDescription.UpdateType.RUN,
-    description = "state variable rsc0")
+    description = "state variable rsc0",
+    unit="m s^-1")
     public JAMSDouble actRsc0;
 
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
     update = JAMSVarDescription.UpdateType.RUN,
-    description = "attribute elevation")
+    description = "attribute elevation",
+    unit="m")
     public JAMSDouble elevation;
 
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
     update = JAMSVarDescription.UpdateType.RUN,
-    description = "attribute area")
+    description = "attribute area",
+    unit="m²")
     public JAMSDouble area;
 
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
@@ -94,27 +103,32 @@ public class PenmanMonteith extends JAMSComponent {
 
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
     update = JAMSVarDescription.UpdateType.RUN,
-    description = "state variable effective height")
+    description = "state variable effective height",
+    unit="m")
     public JAMSDouble actEffH;
 
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.WRITE,
     update = JAMSVarDescription.UpdateType.RUN,
-    description = "potential ET [mm/ timeUnit]")
+    description = "potential ET [mm/ timeUnit]",
+    unit="mm d^-1")
     public JAMSDouble potET;
 
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.WRITE,
     update = JAMSVarDescription.UpdateType.RUN,
-    description = "actual ET [mm/ timeUnit]")
+    description = "actual ET [mm/ timeUnit]",
+    unit="mm d^-1")
     public JAMSDouble actET;
 
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.WRITE,
     update = JAMSVarDescription.UpdateType.RUN,
-    description = "rs")
+    description = "rs",
+    unit="s m^-1")
     public JAMSDouble rs;
 
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.WRITE,
     update = JAMSVarDescription.UpdateType.RUN,
-    description = "ra")
+    description = "ra",
+    unit="s m^-1")
     public JAMSDouble ra;
 
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
