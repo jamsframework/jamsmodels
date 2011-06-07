@@ -33,7 +33,9 @@ import jams.model.*;
 @JAMSComponentDescription(
         title="Title",
         author="Author",
-        description="Description"
+        description="Calculates flow processes in the river network by a simplified kinematic wave approach",
+        version="1.0_0",
+        date="2011-05-30"
         )
         public class J2KProcessReachRouting extends JAMSComponent {
     
@@ -51,21 +53,24 @@ import jams.model.*;
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
             update = JAMSVarDescription.UpdateType.RUN,
-            description = "attribute length"
+            description = "attribute length",
+            unit = "m"
             )
             public JAMSDouble length;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
             update = JAMSVarDescription.UpdateType.RUN,
-            description = "attribute slope"
+            description = "attribute slope",
+            unit = "deg"
             )
             public JAMSDouble slope;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
             update = JAMSVarDescription.UpdateType.RUN,
-            description = "attribute width"
+            description = "attribute width",
+            unit = "m"
             )
             public JAMSDouble width;
     
@@ -79,35 +84,40 @@ import jams.model.*;
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
             update = JAMSVarDescription.UpdateType.RUN,
-            description = "Reach statevar RD1 inflow"
+            description = "RD1 inflow to reach",
+            unit = "L"
             )
             public JAMSDouble inRD1;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
             update = JAMSVarDescription.UpdateType.RUN,
-            description = "Reach statevar RD2 inflow"
+            description = "RD2 inflow to reach",
+            unit = "L"
             )
             public JAMSDouble inRD2;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
             update = JAMSVarDescription.UpdateType.RUN,
-            description = "Reach statevar RG1 inflow"
+            description = "RG1 inflow to reach",
+            unit = "L"
             )
             public JAMSDouble inRG1;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
             update = JAMSVarDescription.UpdateType.RUN,
-            description = "Reach statevar RG2 inflow"
+            description = "RG2 inflow to reach",
+            unit = "L"
             )
             public JAMSDouble inRG2;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
             update = JAMSVarDescription.UpdateType.RUN,
-            description = "Reach statevar additional inflow",
+            description = "additional inflow to reach",
+            unit = "L",
             defaultValue= "0"
             )
             public JAMSDouble inAddIn;
@@ -115,35 +125,40 @@ import jams.model.*;
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
             update = JAMSVarDescription.UpdateType.RUN,
-            description = "Reach statevar RD1 outflow"
+            description = "RD1 outflow from reach",
+            unit = "L"
             )
             public JAMSDouble outRD1;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
             update = JAMSVarDescription.UpdateType.RUN,
-            description = "Reach statevar RD2 outflow"
+            description = "RD2 outflow from reach",
+            unit = "L"
             )
             public JAMSDouble outRD2;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
             update = JAMSVarDescription.UpdateType.RUN,
-            description = "Reach statevar RG1 outflow"
+            description = "RG1 outflow from reach",
+            unit = "L"
             )
             public JAMSDouble outRG1;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
             update = JAMSVarDescription.UpdateType.RUN,
-            description = "Reach statevar RG2 outflow"
+            description = "RG2 outflow from reach",
+            unit = "L"
             )
             public JAMSDouble outRG2;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
             update = JAMSVarDescription.UpdateType.RUN,
-            description = "Reach statevar additional outflow",
+            description = "additional outflow from reach",
+            unit = "L",
             defaultValue= "0"
             )
             public JAMSDouble outAddIn;
@@ -151,42 +166,48 @@ import jams.model.*;
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
             update = JAMSVarDescription.UpdateType.RUN,
-            description = "Reach statevar simulated Runoff"
+            description = "simulated runoff from reach",
+            unit = "L"
             )
             public JAMSDouble simRunoff;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
             update = JAMSVarDescription.UpdateType.RUN,
-            description = "Reach statevar RD1 storage"
+            description = "RD1 storage inside reach",
+            unit = "L"
             )
             public JAMSDouble actRD1;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
             update = JAMSVarDescription.UpdateType.RUN,
-            description = "Reach statevar RD2 storage"
+            description = "RD2 storage inside reach",
+            unit = "L"
             )
             public JAMSDouble actRD2;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
             update = JAMSVarDescription.UpdateType.RUN,
-            description = "Reach statevar RG1 storage"
+            description = "RG1 storage inside reach",
+            unit = "L"
             )
             public JAMSDouble actRG1;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
             update = JAMSVarDescription.UpdateType.RUN,
-            description = "Reach statevar RG2 storage"
+            description = "RG2 storage inside reach",
+            unit = "L"
             )
             public JAMSDouble actRG2;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
             update = JAMSVarDescription.UpdateType.RUN,
-            description = "Reach statevar additional inflow storage",
+            description = "additional inflow storage inside reach",
+            unit = "L",
             defaultValue= "0"
             )
             public JAMSDouble actAddIn;
@@ -194,42 +215,50 @@ import jams.model.*;
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
             update = JAMSVarDescription.UpdateType.RUN,
-            description = "Channel storage"
+            description = "Channel storage inside reach",
+            unit = "L"
             )
             public JAMSDouble channelStorage;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
             update = JAMSVarDescription.UpdateType.INIT,
-            description = "flow routing coefficient TA"
+            description = "flow routing coefficient TA",
+            lowerBound = 0.0,
+            upperBound = 50.0,
+            defaultValue = "1.0"
             )
             public JAMSDouble flowRouteTA;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
             update = JAMSVarDescription.UpdateType.RUN,
-            description = "Catchment outlet RD1 storage"
+            description = "Catchment outlet RD1 storage",
+            unit = "L"
             )
             public JAMSDouble catchmentRD1;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
             update = JAMSVarDescription.UpdateType.RUN,
-            description = "Catchment outlet RD2 storage"
+            description = "Catchment outlet RD2 storage",
+            unit = "L"
             )
             public JAMSDouble catchmentRD2;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
             update = JAMSVarDescription.UpdateType.RUN,
-            description = "Catchment outlet RG1 storage"
+            description = "Catchment outlet RG1 storage",
+            unit = "L"
             )
             public JAMSDouble catchmentRG1;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
             update = JAMSVarDescription.UpdateType.RUN,
-            description = "Catchment outlet RG2 storage"
+            description = "Catchment outlet RG2 storage",
+            unit = "L"
             )
             public JAMSDouble catchmentRG2;
     
@@ -237,6 +266,7 @@ import jams.model.*;
             access = JAMSVarDescription.AccessType.WRITE,
             update = JAMSVarDescription.UpdateType.RUN,
             description = "Catchment additional input outlet storage",
+            unit = "L",
             defaultValue= "0"
             )
             public JAMSDouble catchmentAddIn;
@@ -244,7 +274,8 @@ import jams.model.*;
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
             update = JAMSVarDescription.UpdateType.RUN,
-            description = "Catchment outlet RG2 storage"
+            description = "Catchment outlet RG2 storage",
+            unit = "L"
             )
             public JAMSDouble catchmentSimRunoff;
     
