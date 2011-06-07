@@ -33,7 +33,9 @@ import jams.model.*;
 @JAMSComponentDescription(
         title="J2KProcessRouting",
         author="Peter Krause",
-        description="Passes the output of the entities as input to the respective reach or unit"
+        description="Passes the output of the entities as input to the respective reach or unit",
+        version="1.0_0",
+        date="2011-05-30"
         )
         public class J2KProcessRouting extends JAMSComponent {
     
@@ -43,7 +45,7 @@ import jams.model.*;
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
             update = JAMSVarDescription.UpdateType.RUN,
-            description = "The current hru entity"
+            description = "The spatial modelling entities"
             )
             public JAMSEntityCollection entities;
     
@@ -64,35 +66,40 @@ import jams.model.*;
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
             update = JAMSVarDescription.UpdateType.RUN,
-            description = "HRU statevar RD1 inflow"
+            description = "RD1 inflow to modelling entity",
+            unit = "L"
             )
             public JAMSDouble inRD1;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
             update = JAMSVarDescription.UpdateType.RUN,
-            description = "HRU statevar RD2 inflow"
+            description = "RD2 inflow to modelling entity",
+            unit = "L"
             )
             public JAMSDouble inRD2;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
             update = JAMSVarDescription.UpdateType.RUN,
-            description = "HRU statevar RG1 inflow"
+            description = "RG1 inflow to modelling entity",
+            unit = "L"
             )
             public JAMSDouble inRG1;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
             update = JAMSVarDescription.UpdateType.RUN,
-            description = "HRU statevar RG2 inflow"
+            description = "RG2 inflow to modelling entity",
+            unit = "L"
             )
             public JAMSDouble inRG2;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
             update = JAMSVarDescription.UpdateType.RUN,
-            description = "HRU statevar groundwater excess",
+            description = "groundwater excess as input to modelling entity",
+            unit = "L",
             defaultValue= "0"
             )
             public JAMSDouble inGWExcess;
@@ -100,28 +107,32 @@ import jams.model.*;
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
             update = JAMSVarDescription.UpdateType.RUN,
-            description = "HRU statevar RD1 outflow"
+            description = "RD1 outflow from modellig entity",
+            unit = "L"
             )
             public JAMSDouble outRD1;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
             update = JAMSVarDescription.UpdateType.RUN,
-            description = "HRU statevar RD2 outflow"
+            description = "RD2 outflow from modellig entity",
+            unit = "L"
             )
             public JAMSDouble outRD2;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
             update = JAMSVarDescription.UpdateType.RUN,
-            description = "HRU statevar RG1 outflow"
+            description = "RG1 outflow from modellig entity",
+            unit = "L"
             )
             public JAMSDouble outRG1;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
             update = JAMSVarDescription.UpdateType.RUN,
-            description = "HRU statevar RG2 outflow"
+            description = "RG2 outflow from modellig entity",
+            unit = "L"
             )
             public JAMSDouble outRG2;
     
