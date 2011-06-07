@@ -46,7 +46,7 @@ import jams.model.*;
             access = JAMSVarDescription.AccessType.READ,
             update = JAMSVarDescription.UpdateType.RUN,
             description = "attribute area",
-            unit="m²"
+            unit="m^2"
             )
             public JAMSDouble area;
     
@@ -54,7 +54,7 @@ import jams.model.*;
             access = JAMSVarDescription.AccessType.READ,
             update = JAMSVarDescription.UpdateType.RUN,
             description = "state variable mean tempeature",
-            unit="°C"
+            unit="degC"
             )
             public JAMSDouble tmean;
     
@@ -104,7 +104,7 @@ import jams.model.*;
             lowerBound = -10.0,
             upperBound = 10.0,
             defaultValue = "0.0",
-            unit = "°C"
+            unit = "degC"
             )
             public JAMSDouble snow_trs;
     
