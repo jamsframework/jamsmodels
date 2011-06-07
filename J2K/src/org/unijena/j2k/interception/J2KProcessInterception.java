@@ -1,4 +1,25 @@
-
+/*
+ * J2KProcessInterception.java
+ * Created on 24. November 2005, 10:52
+ *
+ * This file is part of JAMS
+ * Copyright (C) 2005 FSU Jena, c0krpe
+ *
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License
+ * as published by the Free Software Foundation; either version 2
+ * of the License, or (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
+ *
+ */
 
 package org.unijena.j2k.interception;
 
@@ -9,160 +30,154 @@ import jams.model.*;
  *
  * @author Peter Krause
  */
-//    language = "de"
-
 @JAMSComponentDescription(
         title="J2KProcessInterception",
         author="Peter Krause",
         description="Calculates daily interception based on DICKINSON 1984",
-        version="1.0",
-        date="2010-09-07"    
+        version="1.0_0",
+        date="2011-05-30"
         )
-
         public class J2KProcessInterception extends JAMSComponent {
     
-
-    @JAMSVarDescription(
+    /*
+     *  Component variables
+     */
+   @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
+            update = JAMSVarDescription.UpdateType.RUN,
             description = "attribute area",
-            unit = "m^2",
-            lowerBound= 0,
-            upperBound =1000000
+            unit="m²"
             )
             public JAMSDouble area;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
+            update = JAMSVarDescription.UpdateType.RUN,
             description = "state variable mean tempeature",
-            unit = "°C",
-            lowerBound= -70,
-            upperBound = 70
+            unit="°C"
             )
             public JAMSDouble tmean;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
+            update = JAMSVarDescription.UpdateType.RUN,
             description = "state variable rain",
-            unit = "L",
-            lowerBound= 0,
-            upperBound =100
+            unit="L"
             )
             public JAMSDouble rain;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
+            update = JAMSVarDescription.UpdateType.RUN,
             description = "state variable snow",
-            unit = "L",
-            lowerBound= 0,
-            upperBound =100
+            unit="L"
             )
             public JAMSDouble snow;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
+            update = JAMSVarDescription.UpdateType.RUN,
             description = "state variable potET",
-            unit = "L",
-            lowerBound= 0,
-            upperBound =100
+            unit="L"
             )
             public JAMSDouble potET;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
+            update = JAMSVarDescription.UpdateType.RUN,
             description = "state variable actET",
-            unit = "L",
-            lowerBound= 0,
-            upperBound =100
+            unit="L"
             )
             public JAMSDouble actET;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            description = "state variable LAI",
-            unit = "mm*m^-2",
-            lowerBound= 0,
-            upperBound =100
+            update = JAMSVarDescription.UpdateType.RUN,
+            description = "state variable LAI"
             )
             public JAMSDouble actLAI;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
+            update = JAMSVarDescription.UpdateType.INIT,
             description = "Snow parameter TRS",
-            unit = "°C",
-            lowerBound= -10,
-            upperBound =10
+            lowerBound = -10.0,
+            upperBound = 10.0,
+            defaultValue = "0.0",
+            unit = "°C"
             )
             public JAMSDouble snow_trs;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
+            update = JAMSVarDescription.UpdateType.INIT,
             description = "Snow parameter TRANS",
-            unit = "°C",
-            lowerBound= -10,
-            upperBound =10
+            lowerBound = 0.0,
+            upperBound = 5.0,
+            defaultValue = "2.0",
+            unit = "K"
             )
             public JAMSDouble snow_trans;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
+            update = JAMSVarDescription.UpdateType.INIT,
             description = "Interception parameter a_rain",
-            unit = "mm*m^-2",
-            lowerBound= 0,
-            upperBound =10
+            lowerBound = 0.0,
+            upperBound = 5.0,
+            defaultValue = "0.2",
+            unit = "mm"
             )
             public JAMSDouble a_rain;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
+            update = JAMSVarDescription.UpdateType.INIT,
             description = "Interception parameter a_snow",
-            unit = "mm*m^-2",
-            lowerBound= 0,
-            upperBound =10
+            lowerBound = 0.0,
+            upperBound = 5.0,
+            defaultValue = "0.5",
+            unit = "mm"
             )
             public JAMSDouble a_snow;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
+            update = JAMSVarDescription.UpdateType.RUN,
             description = "state variable net-rain",
-            unit = "L",
-            lowerBound= 0,
-            upperBound =100
+            unit="L"
             )
             public JAMSDouble netRain;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
+            update = JAMSVarDescription.UpdateType.RUN,
             description = "state variable net-snow",
-            unit = "L",
-            lowerBound= 0,
-            upperBound =100
+            unit="L"
             )
             public JAMSDouble netSnow;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
+            update = JAMSVarDescription.UpdateType.RUN,
             description = "state variable throughfall",
-            unit = "L",
-            lowerBound= 0,
-            upperBound =100
+            unit="L"
             )
             public JAMSDouble throughfall;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
+            update = JAMSVarDescription.UpdateType.RUN,
             description = "state variable dy-interception",
-            unit = "L",
-            lowerBound= 0,
-            upperBound =100
+            unit="L"
             )
             public JAMSDouble interception;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
+            update = JAMSVarDescription.UpdateType.RUN,
             description = "state variable interception storage",
-            unit = "L",
-            lowerBound= 0,
-            upperBound =100
+            unit="L"
             )
             public JAMSDouble intercStorage;
     /*
