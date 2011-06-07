@@ -161,6 +161,14 @@ import jams.model.*;
             public JAMSDouble snowRunoff;
 
     @JAMSVarDescription(
+            access = JAMSVarDescription.AccessType.READWRITE,
+            update = JAMSVarDescription.UpdateType.RUN,
+            description = "lateral inflow from glacier entities above",
+            unit = "L"
+            )
+            public JAMSDouble inRD1;
+
+    @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
             update = JAMSVarDescription.UpdateType.RUN,
             description = "remaining storage (only for balance calculation)",
