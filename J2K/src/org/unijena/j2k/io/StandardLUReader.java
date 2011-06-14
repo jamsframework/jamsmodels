@@ -28,27 +28,31 @@ import jams.data.*;
 import jams.model.*;
 import java.util.*;
 import jams.JAMS;
-import jams.tools.JAMSTools;
+import jams.tools.FileTools;
 
 /**
  *
  * @author S. Kralisch
  */
+@JAMSComponentDescription(title = "StandardLUReader",
+author = "Sven Kralisch",
+description = "This component reads an ASCII file containing land use "
++ "information and adds them to model entities.",
+date = "2005-11-10",
+version = "1.1_0")
 public class StandardLUReader extends JAMSComponent {
 
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.INIT,
             description = "Land use parameter file name"
             )
-            public JAMSString luFileName;
+            public Attribute.String luFileName;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.RUN,
-            description = "Collection of hru objects"
+            description = "List of hru objects"
             )
-            public JAMSEntityCollection hrus;
+            public Attribute.EntityCollection hrus;
     
     
     
@@ -56,7 +60,7 @@ public class StandardLUReader extends JAMSComponent {
         //read lu parameter
         Attribute.EntityCollection lus = JAMSDataFactory.createEntityCollection();
         
-        lus.setEntities(J2KFunctions.readParas(JAMSTools.CreateAbsoluteFileName(getModel().getWorkspaceDirectory().getPath(),luFileName.getValue()), getModel()));
+        lus.setEntities(J2KFunctions.readParas(FileTools.createAbsoluteFileName(getModel().getWorkspaceDirectory().getPath(),luFileName.getValue()), getModel()));
         
         HashMap<Double, Attribute.Entity> luMap = new HashMap<Double, Attribute.Entity>();
         Attribute.Entity lu, e;

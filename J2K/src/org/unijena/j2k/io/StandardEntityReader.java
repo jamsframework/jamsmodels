@@ -48,7 +48,7 @@ description = "This component reads two ASCII files containing data of hru and "
 + "1:n topologies between different entities are created based on provided "
 + "attribute names. Additionally, the topologies are checked for cycles.",
 date = "2010-01-29",
-version = "1.1")
+version = "1.1_0")
 public class StandardEntityReader extends JAMSComponent {
 
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,

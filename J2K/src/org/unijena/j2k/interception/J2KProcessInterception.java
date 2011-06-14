@@ -48,7 +48,7 @@ import jams.model.*;
             description = "attribute area",
             unit="m^2"
             )
-            public JAMSDouble area;
+            public Attribute.Double area;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,

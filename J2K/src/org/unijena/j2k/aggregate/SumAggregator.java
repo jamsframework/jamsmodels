@@ -39,7 +39,7 @@ import jams.data.*;
         + "output values. Can be used to sum up any given number of double "
         + "values over a number of iteration steps.",
         version="1.0_0",
-        date="2010-10-28"
+        date="2005-05-22"
         )
 public class SumAggregator extends JAMSComponent {
     

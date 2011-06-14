@@ -27,28 +27,33 @@ import org.unijena.j2k.*;
 import jams.JAMS;
 import jams.data.*;
 import jams.model.*;
+import jams.tools.FileTools;
 import java.util.*;
-import jams.tools.JAMSTools;
 
 /**
  *
  * @author S. Kralisch
  */
+@JAMSComponentDescription(
+        title="StandardSoilParaReader",
+        author="Sven Kralisch",
+        date = "2005-11-10",
+        version = "1.0_0",
+        description="Reads soil information and links them to model entities"
+        )
 public class StandardSoilParaReader extends JAMSComponent {
 
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.INIT,
             description = "Soil types parameter file name"
             )
-            public JAMSString stFileName;
+            public Attribute.String stFileName;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.RUN,
-            description = "Collection of hru objects"
+            description = "List of hru objects"
             )
-            public JAMSEntityCollection hrus;
+            public Attribute.EntityCollection hrus;
     
     
     
@@ -57,7 +62,7 @@ public class StandardSoilParaReader extends JAMSComponent {
         //read soil parameters
         Attribute.EntityCollection soilTypes = JAMSDataFactory.createEntityCollection();
         
-        soilTypes.setEntities(J2KFunctions.readParas(JAMSTools.CreateAbsoluteFileName(getModel().getWorkspaceDirectory().getPath(),stFileName.getValue()), getModel()));
+        soilTypes.setEntities(J2KFunctions.readParas(FileTools.createAbsoluteFileName(getModel().getWorkspaceDirectory().getPath(),stFileName.getValue()), getModel()));
         
         HashMap<Double, Attribute.Entity> stMap = new HashMap<Double, Attribute.Entity>();
         Attribute.Entity st, e;

@@ -20,13 +20,13 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
  *
  */
-
 package org.unijena.j2k.io;
 
 import org.unijena.j2k.*;
 import jams.JAMS;
 import jams.data.*;
 import jams.model.*;
+import jams.tools.FileTools;
 import java.util.*;
 import jams.tools.JAMSTools;
 
@@ -34,64 +34,60 @@ import jams.tools.JAMSTools;
  *
  * @author S. Kralisch
  */
+@JAMSComponentDescription(title = "StandardGroundwaterParaReader",
+author = "Sven Kralisch",
+description = "This component reads an ASCII file containing hydrogeology "
++ "information and adds them to model entities.",
+date = "2005-11-10",
+version = "1.1_0")
 public class StandardGroundwaterParaReader extends JAMSComponent {
+
+    @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
+    description = "Hydrogeology parameter file name")
+    public Attribute.String gwFileName;
     
-    @JAMSVarDescription(
-            access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.INIT,
-            description = "Hydrogeology parameter file name"
-            )
-            public JAMSString gwFileName;
-    
-    @JAMSVarDescription(
-            access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.RUN,
-            description = "Collection of hru objects"
-            )
-            public JAMSEntityCollection hrus;
-    
-    
-    
+    @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
+    description = "List of hru objects")
+    public Attribute.EntityCollection hrus;
+
     public void init() throws Attribute.Entity.NoSuchAttributeException {
-        
+
         //read gw parameter
         Attribute.EntityCollection gwTypes = JAMSDataFactory.createEntityCollection();
-        
-        gwTypes.setEntities(J2KFunctions.readParas(JAMSTools.CreateAbsoluteFileName(getModel().getWorkspaceDirectory().getPath(),gwFileName.getValue()), getModel()));
-        
+
+        gwTypes.setEntities(J2KFunctions.readParas(FileTools.createAbsoluteFileName(getModel().getWorkspaceDirectory().getPath(), gwFileName.getValue()), getModel()));
+
         HashMap<Double, Attribute.Entity> gwMap = new HashMap<Double, Attribute.Entity>();
         Attribute.Entity gw, e;
         Object[] attrs;
-        
+
         //put all entities into a HashMap with their ID as key
         Iterator<Attribute.Entity> gwIterator = gwTypes.getEntities().iterator();
         while (gwIterator.hasNext()) {
             gw = gwIterator.next();
-            gwMap.put(gw.getDouble("GID"),  gw);
+            gwMap.put(gw.getDouble("GID"), gw);
         }
-        
+
         Iterator<Attribute.Entity> hruIterator = hrus.getEntities().iterator();
         while (hruIterator.hasNext()) {
             e = hruIterator.next();
 
             gw = gwMap.get(e.getDouble("hgeoID"));
             e.setObject("hgeoType", gw);
-            
-            if(gw == null){
-                getModel().getRuntime().println("Groundwater unit defined in entity no. "+e.getDouble("ID")+ " is not defined in geo parameter table", JAMS.VERBOSE);
+
+            if (gw == null) {
+                getModel().getRuntime().println("Groundwater unit defined in entity no. " + e.getDouble("ID") + " is not defined in geo parameter table", JAMS.VERBOSE);
             }
             attrs = gw.getKeys();
-            
+
             for (int i = 0; i < attrs.length; i++) {
                 //e.setDouble((String) attrs[i], lu.getDouble((String) attrs[i]));
-                Object o = gw.getObject((String)attrs[i]);
-                if(!(o instanceof JAMSString))
-                    e.setObject((String)attrs[i], o);
+                Object o = gw.getObject((String) attrs[i]);
+                if (!(o instanceof JAMSString)) {
+                    e.setObject((String) attrs[i], o);
+                }
             }
         }
         getModel().getRuntime().println("Groundwater parameter file processed ...", JAMS.VERBOSE);
     }
-    
-    
-    
 }

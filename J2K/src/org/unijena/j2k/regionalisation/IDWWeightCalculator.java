@@ -35,7 +35,9 @@ import org.unijena.j2k.statistics.IDW;
  * @author Sven Kralisch <sven.kralisch at uni-jena.de>
  */
 @JAMSComponentDescription(title = "IDWWeightCalculator",
-                          author = "Peter Krause & Sven Kralisch",
+                          author = "Peter Krause and Sven Kralisch",
+                          date = "2008-12-07",
+                          version = "1.0_0",
                           description = "Get stations coordinates from DataStore and calculate " +
 "inverse distance weights for the regionalisation procedure. Based on " +
 "org.unijena.j2k.regionalization.CalcIDWeights.")
