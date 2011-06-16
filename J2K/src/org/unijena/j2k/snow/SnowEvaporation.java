@@ -75,7 +75,11 @@ title="SnowEvaporation",
         double run_swe = swe.getValue();
         double res_et = this.potET.getValue() * this.set_factor.getValue();
         double run_aET = this.actET.getValue();
+        double deltaET = this.potET.getValue() - this.actET.getValue();
 
+        if(res_et > deltaET)
+            res_et = deltaET;
+        
         if(run_swe >= res_et){
             snow_et = res_et;
             run_swe = run_swe - snow_et;
