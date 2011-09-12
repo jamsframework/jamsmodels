@@ -513,6 +513,14 @@ import jams.model.*;
             description = "max Root depth in soil in m"
             )
             public JAMSDouble soil_root;
+
+     @JAMSVarDescription(
+            access = JAMSVarDescription.AccessType.READ,
+            update = JAMSVarDescription.UpdateType.RUN,
+            description = "preferential flow factor [-] 0 - 1 default = 1"
+            )
+            public JAMSDouble preffac;
+
     
     
     
@@ -755,6 +763,8 @@ import jams.model.*;
             System.out.println("overlandflow is negative! --> " + this.run_overlandflow);
         /** determining direct runoff from depression storage */
         this.run_overlandflow = this.run_overlandflow + this.calcDirectRunoff();
+        
+        
 //        if (run_overlandflow > 0)
 //                System.out.println("test");
         this.calcRD1_out();
@@ -769,13 +779,13 @@ import jams.model.*;
         balET =  sumactETP + preinfep - balET;
         balOut += balET;
         balOut += this.run_outRD1;
-        balOut += this.run_vertComp;
+        balOut += this.run_vertComp;       
         balET =  sumactETP + preinfep;
         
         double balance = balIn + (balMPSstart - balMPSend)+(balLPSstart - balLPSend)+(balDPSstart - balDPSend) - balOut;
         if(Math.abs(balance) > 0.00001)
-            System.out.println("balance error at : " + time.toString() + " --> "+ balance + " in entity: " + entities.getCurrent().getId());
-        
+            //System.out.println("balance error at : " + time.toString() + " --> "+ balance + " in entity: " + entities.getCurrent().getId());
+            getModel().getRuntime().println("balance error at : " + time.toString() + " --> "+ balance + " in entity: " + entities.getCurrent().getId());
         satMPS.setValue(this.run_satMPS);
         satLPS.setValue(this.run_satLPS);
         actMPS.setValue(this.run_actMPS);
