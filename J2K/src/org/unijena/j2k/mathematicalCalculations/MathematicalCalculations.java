@@ -62,5 +62,32 @@ public class MathematicalCalculations {
         double deg = (180 / Math.PI) * angleRad;
         return deg;
     }
+
+    /**
+     * Round a double value to a specified number of decimal
+     * places.
+     *
+     * @param val the value to be rounded.
+     * @param places the number of decimal places to round to.
+     * @return rounded to places decimal places.
+     *
+     */
+    public static double round(double val, int places) {
+        long factor = (long) Math.pow(10, places);
+        long tmp = Math.round(val * factor);
+        return (double) tmp / factor;
+    }
+
+    /**
+     * Round a float value to a specified number of decimal
+     * places.
+     *
+     * @param val the value to be rounded.
+     * @param places the number of decimal places to round to.
+     * @return rounded to places decimal places.
+     */
+    public static float round(float val, int places) {
+        return (float) round((double) val, places);
+    }
     
 }
