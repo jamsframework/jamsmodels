@@ -126,6 +126,8 @@ title="J2KProcessRouting",
             description = "HRU statevar RG2 outflow"
             )
             public JAMSDouble outRG2;
+
+    
     
     
     /*
@@ -149,7 +151,7 @@ title="J2KProcessRouting",
         Double[] polyWeightsArray = (Double[]) entity.getObject("to_poly_weights");
         Double[] reachWeightsArray = (Double[]) entity.getObject("to_reach_weights");
         
-        Attribute.Entity toPoly, toReach;
+        Attribute.Entity toPoly,toReach;
         double polyWeight, reachWeight;
         
         try{
