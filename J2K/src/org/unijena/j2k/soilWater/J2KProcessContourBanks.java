@@ -102,6 +102,19 @@ public class J2KProcessContourBanks extends JAMSComponent {
     update = JAMSVarDescription.UpdateType.RUN,
     description = "RG1 inflow")
     public JAMSDouble inRG1;
+    // zusätliches rausschreiben für das Layerinterface
+    @JAMSVarDescription(access = JAMSVarDescription.AccessType.WRITE,
+    update = JAMSVarDescription.UpdateType.RUN,
+    description = "conturbanks outflow",
+    unit = "l")
+    public JAMSDouble cbAbfussReach;
+    @JAMSVarDescription(access = JAMSVarDescription.AccessType.READWRITE,
+    update = JAMSVarDescription.UpdateType.RUN,
+    description = "conturbanks storage",
+    unit = "l")
+    public JAMSDouble cbSpeicherAkt;
+    
+   
 
     boolean modulCBaktiv, zuflussMgesRD2aktiv, zuflussMgesRG1aktiv;
     
@@ -351,6 +364,13 @@ public class J2KProcessContourBanks extends JAMSComponent {
 
                         aktuelleHRU.setDouble("cbAbfussReach", abflussCBReach_akt);
                         aktuelleHRU.setDouble("cbSpeicherAkt", speicherCB_akt - abflussCBReach_akt);
+                        
+                        // zusätliches rausschreiben für das Layerinterface
+                        
+                        cbAbfussReach.setValue(abflussCBReach_akt);
+                        cbSpeicherAkt.setValue(speicherCB_akt - abflussCBReach_akt);
+                        
+                        //
 
                         this.outRD1.setValue(oberflaechenabflussCB_akt);
                         this.outRD2.setValue(this.run_outRD2 - zuflussRD2_akt + infiltrationRD2Routing_akt);
