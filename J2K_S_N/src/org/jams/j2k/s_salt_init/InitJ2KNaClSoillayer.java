@@ -41,7 +41,10 @@ import jams.model.*;
      *  Component variables
      */
     
-    
+     @JAMSVarDescription(access = JAMSVarDescription.AccessType.WRITE,
+    update = JAMSVarDescription.UpdateType.RUN,
+    description = "Collection of hru objects")
+    public JAMSEntityCollection hrus;
     
     
     @JAMSVarDescription(
@@ -159,6 +162,9 @@ import jams.model.*;
     }
     
     public void run() throws JAMSEntity.NoSuchAttributeException{
+        Attribute.Entity actHRU;
+        actHRU = hrus.getCurrent();
+
         int i = 0;
         
         int layer = (int)Layer.getValue();
@@ -196,7 +202,19 @@ import jams.model.*;
             runResidue_pool = 10;
             runNaCl_Pool = ((7 * Math.exp(-hor_dept/1000)) * runsoil_bulk_density * runlayerdepth)/1000;
             
-            
+            if (i==0){
+            runNaCl_Pool =  actHRU.getDouble("HOR_1") * 1000;
+            }
+            if (i==1){
+            runNaCl_Pool =  actHRU.getDouble("HOR_2") * 1000;
+            }
+            if (i==2){
+            runNaCl_Pool =  actHRU.getDouble("HOR_3") * 1000;
+            }
+            if (i==3){
+            runNaCl_Pool =  actHRU.getDouble("HOR_4") * 1000;
+            }
+
             runNaCl_residue_pool_fresh = 0.0015 * runResidue_pool;
             NaCl_Poolvals[i] = runNaCl_Pool;           
            
