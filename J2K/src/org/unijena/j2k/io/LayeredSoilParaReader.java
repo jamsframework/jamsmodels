@@ -71,6 +71,8 @@ public class LayeredSoilParaReader extends JAMSComponent {
         Iterator<Attribute.Entity> hruIterator = hrus.getEntities().iterator();
         while (hruIterator.hasNext()) {
             e = hruIterator.next();
+            e.setDouble("depth", 100);
+         
             
             //here we have to deal with horizons
             //first we lump them together
@@ -91,6 +93,7 @@ public class LayeredSoilParaReader extends JAMSComponent {
                 hruSID++;
                 horizon++;
             }
+            
             e.setDouble("horizons", horizon);
         }
         getModel().getRuntime().println("Layered soil parameter file processed ...");
