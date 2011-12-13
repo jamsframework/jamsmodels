@@ -870,10 +870,8 @@
     </itemizedlist>
 
     <para>Deren Werte sind für verschiedene Bodenbedeckungsklassen in
-    folgender Abbildung dargestellt:</para>
-
-    <para>(<xref
-    linkend="j2k.potET.PenmanMonteith.hlanu_par_fig1.png" />)</para>
+      <xref xrefstyle="template:Abbildung %n"
+        linkend="j2k.potET.PenmanMonteith.hlanu_par_fig1.png" /> dargestellt.</para>
 
     <figure xml:id="j2k.potET.PenmanMonteith.hlanu_par_fig1.png">
       <title>Landnutzungsparameter verschiedener
