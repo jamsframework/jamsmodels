@@ -391,6 +391,15 @@ import jams.model.*;
             )
             public JAMSDouble PercoN;
 
+ @JAMSVarDescription(
+            access = JAMSVarDescription.AccessType.READWRITE,
+            description = "Nitrate in percolation in N",
+            unit = "kg*ha^-1",
+            lowerBound = 0,
+            upperBound = 100000
+            )
+            public JAMSDoubleArray PercoN_h;
+    
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
             description = "Nitrate in surface runoff in N absolute leaving the HRU",
@@ -1389,6 +1398,7 @@ import jams.model.*;
         // writing of fluxes
         InterflowN.setValue(interflowNvals);
         InterflowNabs.setValue(interflowNabsvals);
+        PercoN_h.setValue(percoNvals);
         PercoN.setValue(percoNvals[layer -1]);
         PercoNabs.setValue(percoNabsvals[layer -1]);
         SurfaceN.setValue(runsurfaceN);

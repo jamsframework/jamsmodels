@@ -703,6 +703,7 @@ import java.io.*;
             if (i == 0) {
                 runsurfaceNaCl = calc_surfaceNaCl();
                 runNaCl_Pool = runNaCl_Pool - runsurfaceNaCl;
+                runNaCl_Pool = Math.max(0, runNaCl_Pool);
             }
             
             

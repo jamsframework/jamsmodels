@@ -94,7 +94,7 @@ public class StandardManagementParaReader extends JAMSComponent {
             public JAMSString aNameHRUID;
     
     // HashMap für Fertilizer anlegen
-    private HashMap<Integer, J2KSNFertilizer> readFertPara(String fileName) {
+    protected HashMap<Integer, J2KSNFertilizer> readFertPara(String fileName) {
         
         BufferedReader reader;
         StringTokenizer tokenizer;
@@ -133,7 +133,7 @@ public class StandardManagementParaReader extends JAMSComponent {
         return map;
     }
     
-    private HashMap<Integer, J2KSNTillage> readTillPara(String fileName) {
+    protected HashMap<Integer, J2KSNTillage> readTillPara(String fileName) {
         
         BufferedReader reader;
         StringTokenizer tokenizer;
@@ -229,7 +229,7 @@ public class StandardManagementParaReader extends JAMSComponent {
     }
     
     // HashMap für Crop anlegen; mit Verweis auf Management, respective tillage und fertilizer
-    private HashMap<Integer, J2KSNCrop> readCrops(String fileName, HashMap<Integer, ArrayList<J2KSNLMArable>> management) {
+    protected HashMap<Integer, J2KSNCrop> readCrops(String fileName, HashMap<Integer, ArrayList<J2KSNLMArable>> management) {
         
         BufferedReader reader;
         StringTokenizer tokenizer;
@@ -276,7 +276,7 @@ public class StandardManagementParaReader extends JAMSComponent {
         return map;
     }
     // haspMap für crop rotations, respective vorherige Hashmaps
-    private HashMap<Integer, ArrayList<J2KSNCrop>> readRotations(String fileName, HashMap<Integer, J2KSNCrop> crops) {
+    protected HashMap<Integer, ArrayList<J2KSNCrop>> readRotations(String fileName, HashMap<Integer, J2KSNCrop> crops) {
         
         BufferedReader reader;
         StringTokenizer tokenizer;
@@ -329,7 +329,7 @@ public class StandardManagementParaReader extends JAMSComponent {
         return map;
     }
     
-    private void linkCrops(String fileName, HashMap<Integer, ArrayList<J2KSNCrop>> rotations) {
+    protected void linkCrops(String fileName, HashMap<Integer, ArrayList<J2KSNCrop>> rotations) {
         
         BufferedReader reader;
         StringTokenizer tokenizer;

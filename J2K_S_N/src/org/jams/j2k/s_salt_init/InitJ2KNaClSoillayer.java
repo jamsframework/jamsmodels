@@ -41,9 +41,11 @@ import jams.model.*;
      *  Component variables
      */
     
-     @JAMSVarDescription(access = JAMSVarDescription.AccessType.WRITE,
-    update = JAMSVarDescription.UpdateType.RUN,
-    description = "Collection of hru objects")
+     @JAMSVarDescription(
+             access = JAMSVarDescription.AccessType.READWRITE,
+             update = JAMSVarDescription.UpdateType.RUN,
+             description = "Collection of hru objects"
+             )
     public JAMSEntityCollection hrus;
     
     

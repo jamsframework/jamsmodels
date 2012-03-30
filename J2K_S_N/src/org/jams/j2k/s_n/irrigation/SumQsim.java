@@ -33,11 +33,26 @@ import jams.model.*;
             description = "HRU crop class"
             )
             public JAMSDouble catchmentSimRunoff_qm;
+ 
+ @JAMSVarDescription(
+            access = JAMSVarDescription.AccessType.READWRITE,
+            update = JAMSVarDescription.UpdateType.RUN,
+            description = "HRU crop class"
+            )
+            public JAMSDouble catchmentSimRunoffN;
+ 
+ @JAMSVarDescription(
+            access = JAMSVarDescription.AccessType.READWRITE,
+            update = JAMSVarDescription.UpdateType.RUN,
+            description = "HRU crop class"
+            )
+            public JAMSDouble irrigationN_conc;
 
 
 
     public void run() {
         
         catchmentSimRunoff_qm.setValue((Storage.getValue() / 86400000) + catchmentSimRunoff_qm.getValue() );
+        catchmentSimRunoffN.setValue(catchmentSimRunoffN.getValue() + (Storage.getValue() * irrigationN_conc.getValue()));
     }
 }
