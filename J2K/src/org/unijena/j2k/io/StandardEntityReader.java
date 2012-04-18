@@ -285,6 +285,9 @@ public class StandardEntityReader extends JAMSComponent {
                 e = hruIterator.next();
 
                 f = (Attribute.Entity) e.getObject(asso);
+                if (f==null){
+                    this.getModel().getRuntime().println("warning hru with id:" + e.getId() + " has no receiver");
+                }
                 if ((f != null) && (f.getValue() == null)) {
                     f = null;
                 }

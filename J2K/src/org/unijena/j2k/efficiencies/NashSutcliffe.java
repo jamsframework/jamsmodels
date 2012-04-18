@@ -10,6 +10,8 @@
 
 package org.unijena.j2k.efficiencies;
 
+import java.util.Arrays;
+
 /**
  *
  * @author Peter Krause
@@ -28,8 +30,13 @@ public class NashSutcliffe {
      * @param validation the validation (observed) data set
      * @param pow the power for the deviation terms
      * @return the calculated efficiency or -9999 if an error occurs
-     */    
+     */
     public static double efficiency(double[] prediction, double[] validation, double pow){
+        double weight[] = new double[prediction.length];
+        Arrays.fill(weight, 1.0);
+        return efficiency(prediction, validation, weight, pow);
+    }
+    public static double efficiency(double[] prediction, double[] validation, double[] weight, double pow){
         int pre_size = prediction.length;
         int val_size = validation.length;
                 
@@ -61,8 +68,8 @@ public class NashSutcliffe {
         double td_vd = 0;
         double vd_mean = 0;
         for(int i = 0; i < steps; i++){
-            td_vd = td_vd + (Math.pow((Math.abs(validation[i] - prediction[i])),pow));
-            vd_mean = vd_mean + (Math.pow((Math.abs(validation[i] - mean_vd)),pow));
+            td_vd = td_vd + weight[i]*(Math.pow((Math.abs(validation[i] - prediction[i])),pow));
+            vd_mean = vd_mean + weight[i]*(Math.pow((Math.abs(validation[i] - mean_vd)),pow));
         }
         
         /** calculating efficiency after Nash & Sutcliffe (1970) */
@@ -81,8 +88,13 @@ public class NashSutcliffe {
      * @param validation the validation (observed) data set
      * @param pow the power for the deviation terms
      * @return the calculated log_efficiency or -9999 if an error occurs
-     */    
+     */
     public static double logEfficiency(double[] prediction, double[] validation, double pow){
+        double weight[] = new double[prediction.length];
+        Arrays.fill(weight, 1.0);
+        return logEfficiency(prediction, validation, weight, pow);
+    }
+    public static double logEfficiency(double[] prediction, double[] validation, double[] weight, double pow){
         int pre_size = prediction.length;
         int val_size = validation.length;
         
@@ -148,8 +160,8 @@ public class NashSutcliffe {
         double vd_log_mean = 0;
         for(int i = 0; i < steps; i++){
             if(log_preData[i] >= 0){
-                pd_log_vd = pd_log_vd + (Math.pow(Math.abs(log_valData[i] - log_preData[i]),pow));
-                vd_log_mean = vd_log_mean + (Math.pow(Math.abs(log_valData[i] - mean_log_vd),pow));
+                pd_log_vd = pd_log_vd + weight[i]*(Math.pow(Math.abs(log_valData[i] - log_preData[i]),pow));
+                vd_log_mean = vd_log_mean + weight[i]*(Math.pow(Math.abs(log_valData[i] - mean_log_vd),pow));
             }
         }
         

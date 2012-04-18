@@ -226,8 +226,22 @@ public class DixonTestSet extends JAMSComponent {
                 
                 r = -a*Math.exp(-b*Math.sqrt(s1))-Math.exp(s2)+a+Math.exp(1);
                 break;
+            }//modified version not centered at zero
+            case 1001: {
+                double a = 20, b = 0.2, c = 2*Math.PI;
+                double shift = 1.0/3.0;
+                double s1 = 0, s2 = 0;
+                for (int i=0;i<n;i++){
+                    s1 += (x[i]+shift)*(x[i]+shift);
+                    s2 += Math.cos(c*(x[i]+shift));
+                }
+                s1 /= n;
+                s2 /= n;
+
+                r = -a*Math.exp(-b*Math.sqrt(s1))-Math.exp(s2)+a+Math.exp(1);
+                break;
             }
-            //Beale´s Function
+            //Beale's Function
             //Minimum x = (3,0.5) y = 0
             //Bounds -4.5 < x < 4.5
             case 2:  { 
@@ -279,7 +293,7 @@ public class DixonTestSet extends JAMSComponent {
                 break;
             }
             //Dixon & Price Function
-            //Minimum x = ? y = 0
+            //Minimum x = [1,1/2,1/4,1/8] y = 0
             //Bounds -10 < x < 10;
             case 9: {
                 r = Math.pow((x1-1),2.0);
@@ -323,7 +337,21 @@ public class DixonTestSet extends JAMSComponent {
                 //p = Math.cos(x1)*Math.cos(x2/2.0);
                 r = s/fr-p+1;                
                 break;
-            }                        
+            }
+            case 1012: {
+                double s = 0;
+                double p = 1.0;
+                double fr = 4000;
+                double shift = 100.0/33.0;
+                for (int i=0;i<n;i++){
+                    s += (x[i]+shift)*(x[i]+shift);
+                    p+=Math.cos((x[i]+shift))/Math.sqrt(i+1);
+                }
+                //s = x1*x1 + x2*x2;
+                //p = Math.cos(x1)*Math.cos(x2/2.0);
+                r = s/fr-p+1;
+                break;
+            }
             //Hartmann Function (4,3)
             //Minimum x =  (0.114614, 0.555649, 0.852547) y = - 3.86278
             //Bounds 0 < x < 1;
@@ -420,7 +448,7 @@ public class DixonTestSet extends JAMSComponent {
                 break;
             }  
             //Powell Function
-            //Minimum x =  (3,-1,0,1, …, 3,-1,0,1),  y = 0
+            //Minimum x =  (3,-1,0,1),  y = 0
             //Bounds -4 < x < 5;
             case 19:{   
                 x = new double[4];                
@@ -528,6 +556,13 @@ public class DixonTestSet extends JAMSComponent {
                     r += x[i]*x[i];
                 break;
             }
+            case 1025:{
+                r = 0;
+                double shift = 1.0 / 3.0;
+                for (int i=0;i<n;i++)
+                    r += (x[i]+shift)*(x[i]+shift);
+                break;
+            }
             //Sum Squares Function
             //Minimum x = 0 y = 0
             //Bounds -10 < x < 10
@@ -537,9 +572,16 @@ public class DixonTestSet extends JAMSComponent {
                     r += (i+1)*x[i]*x[i];
                 break;
             }
+            case 1026:{
+                r = 0;
+                double shift = 1.0 / 3.0;
+                for (int i=0;i<n;i++)
+                    r += (i+1)*(x[i]+shift)*(x[i]+shift);
+                break;
+            }
             //Trid Function
             //Minimum x = ? y = ?
-            // -n² < x < n²
+            // -nÂ² < x < nÂ²
             case 27:{
                 double s1 = 0,s2 = 0;                
                 for (int i=0;i<n;i++)
@@ -559,6 +601,19 @@ public class DixonTestSet extends JAMSComponent {
                 for (int i=0;i<n;i++)
                     s2 += 0.5*(i+1)*x[i];
                 
+                double p2s2 = s2*s2;
+                r = s1 + p2s2 + p2s2*p2s2;
+                break;
+            }
+            case 1028:{
+                double s1 = 0,s2 = 0;
+                double shift = 1.0 / 3.0;
+
+                for (int i=0;i<n;i++)
+                    s1 += (x[i]+shift)*(x[i]+shift);
+                for (int i=0;i<n;i++)
+                    s2 += 0.5*(i+1)*(x[i]+shift);
+
                 double p2s2 = s2*s2;
                 r = s1 + p2s2 + p2s2*p2s2;
                 break;

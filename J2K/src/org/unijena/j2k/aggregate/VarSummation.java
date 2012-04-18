@@ -40,24 +40,28 @@ public class VarSummation extends JAMSComponent {
             public JAMSDouble[] value;
     
     @JAMSVarDescription(
-            access = JAMSVarDescription.AccessType.READWRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
+            access = JAMSVarDescription.AccessType.READWRITE,            
             description = "output sum"
             )
             public JAMSDouble sum;
     
 
     
+    @Override
     public void init() {
         
     }
 
+    @Override
     public void run() {
+        //System.out.println("in:" + value[0].getValue() + " " + value[1].getValue());
         for (int i = 0; i < value.length; i++) {
             sum.setValue(sum.getValue()+ value[i].getValue());
         }
+        //System.out.println("\tout:"+sum.getValue());
     }
     
+    @Override
     public void cleanup(){
         for (int i = 0; i < value.length; i++) {
             sum.setValue(0);

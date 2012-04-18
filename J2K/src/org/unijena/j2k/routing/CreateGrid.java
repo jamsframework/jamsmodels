@@ -137,6 +137,7 @@ public double Rastersize(String path)
         }
         catch (Exception e) {
 	    System.out.println(e.toString());
+            e.printStackTrace();
 	}
         return cellsize;
         
@@ -237,6 +238,7 @@ public double[][] Einlesen(String path)
 	}
 	catch (Exception e) {
 	    System.out.println(e.toString());
+            e.printStackTrace();
 	}
         return grid;
        
@@ -261,6 +263,7 @@ public void Ausgabe(double[][] fuellstand,String path)
     catch(Exception e) 
     {
         System.out.println(e.toString());
+        e.printStackTrace();
     }
 }
 public double[][] Hangneigung(double[][] dgm,double[][] fliessrichtung,double[][] hangneigung, int cellsize)

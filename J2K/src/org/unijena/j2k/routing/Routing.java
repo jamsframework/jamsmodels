@@ -195,28 +195,28 @@ import java.awt.Point;
             update = JAMSVarDescription.UpdateType.RUN,
             description = "Reach statevar simulated Runoff"
             )
-            public JAMSDouble RD1_Koeff;
+            public Attribute.Double RD1_Koeff;
    
      @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
             update = JAMSVarDescription.UpdateType.RUN,
             description = "Reach statevar simulated Runoff"
             )
-            public JAMSDouble RD2_Koeff;
+            public Attribute.Double RD2_Koeff;
      
      @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
             update = JAMSVarDescription.UpdateType.RUN,
             description = "Reach statevar simulated Runoff"
             )
-            public JAMSDouble RG1_Koeff;
+            public Attribute.Double RG1_Koeff;
      
      @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
             update = JAMSVarDescription.UpdateType.RUN,
             description = "Reach statevar simulated Runoff"
             )
-            public JAMSDouble RG2_Koeff;
+            public Attribute.Double RG2_Koeff;
        
 public Routing()
 {

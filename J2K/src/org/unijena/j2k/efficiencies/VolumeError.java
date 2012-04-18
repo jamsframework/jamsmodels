@@ -9,6 +9,8 @@
 
 package org.unijena.j2k.efficiencies;
 
+import java.util.Arrays;
+
 /**
  *
  * @author c0krpe
@@ -18,11 +20,17 @@ public class VolumeError {
     /** Creates a new instance of VolumeError */
     public VolumeError() {
     }
-    
+
     public static double absVolumeError(double[] validation, double[] prediction){
+        double weight[] = new double[prediction.length];
+        Arrays.fill(weight, 1.0);
+        return absVolumeError(prediction, validation, weight);
+    }
+
+    public static double absVolumeError(double[] validation, double[] prediction, double[] weight){
         double volError = 0;
         for(int i = 0; i < prediction.length; i++){
-            volError += (prediction[i] - validation[i]);
+            volError += weight[i]*(prediction[i] - validation[i]);
         }
         return Math.abs(volError); 
     }

@@ -53,12 +53,12 @@
         <ns:emphasis>hgeoID</ns:emphasis> identifiziert wird, und fügt entsprechende
       hydrogeologische Informationen zum Attributeset der Einheit. Ein Beispiel für ein
       hydrogeologisches Parameterfile wird im Bild <xref xmlns:xlink="http://www.w3.org/1999/xlink"
-        linkend="org.unijena.j2k.io.StandardGroundwaterParaReader_en_fig1"/> dargestellt.</para>
+        linkend="org.unijena.j2k.io.StandardGroundwaterParaReader_en_fig1" xrefstyle="select: label"/> dargestellt.</para>
     <figure xml:id="org.unijena.j2k.io.StandardGroundwaterParaReader_en_fig1">
       <title>Beispiel für eine ASCII-Datei mit hydrogeologischen Daten </title>
       <mediaobject>
         <imageobject>
-          <imagedata fileref="hgeo_file.png" scale="80"/>
+          <imagedata align="center"  fileref="hgeo_file.png" scale="80" width="100%"/>
         </imageobject>
       </mediaobject>
     </figure>

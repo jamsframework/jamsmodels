@@ -870,8 +870,10 @@
     </itemizedlist>
 
     <para>Deren Werte sind für verschiedene Bodenbedeckungsklassen in
-      <xref xrefstyle="template:Abbildung %n"
-        linkend="j2k.potET.PenmanMonteith.hlanu_par_fig1.png" /> dargestellt.</para>
+    folgender Abbildung dargestellt:</para>
+
+    <para>(<xref
+      linkend="j2k.potET.PenmanMonteith.hlanu_par_fig1.png" xrefstyle="select: label"/>)</para>
 
     <figure xml:id="j2k.potET.PenmanMonteith.hlanu_par_fig1.png">
       <title>Landnutzungsparameter verschiedener
@@ -879,7 +881,7 @@
 
       <para><inlinemediaobject>
           <imageobject>
-            <imagedata fileref="hlanu_par.png" scale="40"></imagedata>
+            <imagedata align="center" fileref="hlanu_par.png" scale="58" width="100%"></imagedata>
           </imageobject>
         </inlinemediaobject></para>
     </figure>

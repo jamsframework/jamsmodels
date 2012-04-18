@@ -6,7 +6,7 @@
        xmlns:ns3="http://www.w3.org/1998/Math/MathML"
        xmlns:ns="http://docbook.org/ns/docbook">
   <title>J2KProcessLumpedSoilWater</title>
-
+    
   <subtitle>Eine Komponente zur Berechnung des Bodenwasserhaushalts und der Generierung von
     Abfluss.</subtitle>
 
@@ -354,13 +354,12 @@
       bezeichnet) und nur durch die Verdunstung entleert werden kann und einem Speicher, der das
       Volumen der Grob- und Makroporen repräsentiert (im folgenden auch mit <emphasis role="italic"
         >LPS</emphasis> bezeichnet) und der die Quelle für den eigentlichen Abfluß darstellt.</para>
-    <para>(<xref linkend="j2k.soilWater.j2kProcessLumpedSoilWater.soil_module_concept_fig1.png"
-      />)</para>
+    <para>(<xref linkend="j2k.soilWater.j2kProcessLumpedSoilWater.soil_module_concept_fig1.png" xrefstyle="select: label"/>)</para>
     <figure xml:id="j2k.soilWater.j2kProcessLumpedSoilWater.soil_module_concept_fig1.png">
-      <title>Schematische Darstellung des Konzeptes des Bodenwasserhaushaltsmoduls</title>
-      <para><inlinemediaobject>
+      <title>Schematische Darstellung des Konzeptes des Bodenwasserhaushaltsmoduls</title>      
+      <para><inlinemediaobject>      
           <imageobject>
-            <imagedata fileref="soil_module_concept.png" scale="60"/>
+            <imagedata align="center" fileref="soil_module_concept.png" scale="80" width="100%"/>
           </imageobject>
         </inlinemediaobject></para>
     </figure>
@@ -853,12 +852,12 @@
           </ns3:mrow>
         </ns3:math>
       </inlineequation></para>
-    <para>(<xref linkend="j2k.soilWater.j2kProcessLumpedSoilWater.soil_linRed_fig2.png"/>)</para>
+    <para>(<xref linkend="j2k.soilWater.j2kProcessLumpedSoilWater.soil_linRed_fig2.png" xrefstyle="select: label"/>)</para>
     <figure xml:id="j2k.soilWater.j2kProcessLumpedSoilWater.soil_linRed_fig2.png">
       <title>Wirkungsweise des linearen Reduktionsfaktors</title>
       <para><inlinemediaobject>
           <imageobject>
-            <imagedata fileref="soil_linRed.png" scale="60"/>
+            <imagedata align="center" fileref="soil_linRed.png" scale="80" width="100%"/>
           </imageobject>
         </inlinemediaobject></para>
     </figure>
@@ -867,12 +866,12 @@
       im Verhältnis zur potentiellen Verdunstung einen typischen S-förmigen Verlauf aufweist und
       sich somit eher wie die aus der Bodenkunde bekannte Beziehung zwischen Wassergehalt des Bodens
       und der damit verbunden Saugspannung verhält.</para>
-    <para>(<xref linkend="j2k.soilWater.j2kProcessLumpedSoilWater.soil_polRed_fig3.png"/>)</para>
+    <para>(<xref linkend="j2k.soilWater.j2kProcessLumpedSoilWater.soil_polRed_fig3.png" xrefstyle="select: label"/>)</para>
     <figure xml:id="j2k.soilWater.j2kProcessLumpedSoilWater.soil_polRed_fig3.png">
-      <title>Wirkungsweise des polynomischen Reduktionsfaktors</title>
-      <mediaobject>
-        <imageobject>
-          <imagedata fileref="soil_polRed.png" scale="80"/>
+      <title>Wirkungsweise des polynomischen Reduktionsfaktors</title>      
+      <mediaobject>        
+        <imageobject>          
+          <imagedata align="center" fileref="soil_polRed.png" scale="95" width="100%"/>
         </imageobject>
       </mediaobject>
     </figure>

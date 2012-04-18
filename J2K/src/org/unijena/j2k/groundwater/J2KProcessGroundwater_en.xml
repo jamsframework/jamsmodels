@@ -132,18 +132,20 @@
       Both parameters have to be defined for every geological unit separately and have to be saved
       in the corresponding parameter file. The following table shows an example of such a parameter
       file. </para>
+    
     <para>(<xref
-      linkend="j2k.groundwater.j2kProcessGroundwater.hgeo_par_fig1.png" />)</para>
+      linkend="j2k.groundwater.j2kProcessGroundwater.hgeo_par_fig1.png" xrefstyle="select: label"/>)</para>
     
     <figure xml:id="j2k.groundwater.j2kProcessGroundwater.hgeo_par_fig1.png">
       <title>hgeo.par</title>
       
       <para><inlinemediaobject>
         <imageobject>
-          <imagedata fileref="hgeo_par2.png"></imagedata>
+          <imagedata align="center" fileref="hgeo_par.png" scale="60" width="100%"></imagedata>
         </imageobject>
       </inlinemediaobject></para>
     </figure>
+    
     <para>The first process to be calculated is the capillary rise. It is assumed that this action
       takes place in the slow groundwater storage RG2. The calculation is done using the actual
       storage amount <emphasis role="italic">actRG2</emphasis>, the humidity deficit (<emphasis

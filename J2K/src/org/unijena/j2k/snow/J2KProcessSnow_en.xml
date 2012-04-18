@@ -12,6 +12,7 @@
         </row>
       </thead>
       <tbody>
+       
         <row>
           <entry>classification</entry>
           <entry>j2k.snow</entry>
@@ -905,7 +906,7 @@
     <para>The following image presents the snow-compaction scheme with an example.</para>
     
     
-    <para>(<xref linkend="j2k.snow.j2kProcessSnow.snow_compaction_fig1.png" />)</para>
+    <para>(<xref linkend="j2k.snow.j2kProcessSnow.snow_compaction_fig1.png" xrefstyle="select: label"/>)</para>
     
     <figure xml:id="j2k.snow.j2kProcessSnow.snow_compaction_fig1.png">
       <title>Exemplary representation of snow cover reduction by melting. A: snow cover before start
@@ -913,7 +914,7 @@
       
       <para><inlinemediaobject>
         <imageobject>
-          <imagedata fileref="snow_compaction.png" scale="60"></imagedata>
+          <imagedata align="center" fileref="snow_compaction.png" scale="80" width="100%"></imagedata>
         </imageobject>
       </inlinemediaobject></para>
     </figure>

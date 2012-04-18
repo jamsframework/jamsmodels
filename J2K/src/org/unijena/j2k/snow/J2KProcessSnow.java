@@ -522,8 +522,9 @@ import jams.model.*;
     }
     
     private double calcPotRunoff(double crit_dens, double tot_dens, double liq_water){
-        if(Math.abs(liq_water) > 0.00001 && liq_water < 0)
-            getModel().getRuntime().println("liq_water is negative: "+liq_water);
+        if(Math.abs(liq_water) > 0.00001 && liq_water < 0){
+            //getModel().getRuntime().println("liq_water is negative: " + liq_water);
+        }
         double potRunoff = (1 - Math.exp(-1 * Math.pow((crit_dens/tot_dens), 4))) * liq_water;
         if(potRunoff < 0)
             potRunoff = 0;

@@ -23,19 +23,26 @@
 
 package org.unijena.j2k.statistics;
 
+import java.util.Arrays;
+
 /**
  *
  * @author S. Kralisch
  */
 public class Regression {
-    
+
+    public static double[] calcLinReg(double[] xData, double[] yData){
+        double weight[] = new double[xData.length];
+        Arrays.fill(weight, 1.0);
+        return calcLinReg(xData, yData, weight);
+    }
     /**
      * Calcs coefficients of linear regression between x, y data
      * @param xData the independent data array (x)
      * @param yData the dependent data array (y)
      * @return (intercept, gradient, r²)
      */
-    public static double[] calcLinReg(double[] xData, double[] yData){
+    public static double[] calcLinReg(double[] xData, double[] yData, double[] weight){
         double sumYValue = 0;
         double meanYValue = 0;
         double sumXValue = 0;
@@ -50,8 +57,8 @@ public class Regression {
         //calculating sums
         for(int i = 0; i < nstat; i++){
             if((yData[i] != NODATA) && (xData[i] != NODATA)){
-                sumYValue += yData[i];
-                sumXValue += xData[i];
+                sumYValue += weight[i]*yData[i];
+                sumXValue += weight[i]*xData[i];
                 counter++;
             }
         }

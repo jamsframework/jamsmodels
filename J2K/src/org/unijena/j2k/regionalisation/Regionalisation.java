@@ -115,6 +115,8 @@ public class Regionalisation extends JAMSComponent {
         elev = new double[nIDW];
     }
 
+    boolean invalidDatasetReported = false;
+
     public void run() throws IOException {
         //data is read from cache file
         if (dataCaching.getValue() == 1) {
@@ -209,8 +211,10 @@ public class Regionalisation extends JAMSComponent {
 
                 }
             } else {
-                //System.out.println("All data are no-data values!");
-                getModel().getRuntime().println("Invalid dataset found while regionalizing data in component " + this.getInstanceName());
+                if (!invalidDatasetReported){     //only report once
+                    getModel().getRuntime().println("Invalid dataset found while regionalizing data in component " + this.getInstanceName());
+                    invalidDatasetReported = true;
+                }
                 value = noData.getValue();
             }
 

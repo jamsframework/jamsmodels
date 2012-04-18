@@ -44,14 +44,14 @@ public class InputErrorEstimation extends JAMSComponent {
             update = JAMSVarDescription.UpdateType.RUN,
             description = "original data"
             )
-            public JAMSDoubleArray inData;
+            public Attribute.DoubleArray inData;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
             update = JAMSVarDescription.UpdateType.RUN,
             description = "the biased data"
             )
-            public JAMSDoubleArray outData;    
+            public Attribute.DoubleArray outData;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
@@ -59,18 +59,28 @@ public class InputErrorEstimation extends JAMSComponent {
             description = "maximum relative error"
             )
             public JAMSDouble maxRelError;
+            public Attribute.Double maxError;
+
+    @JAMSVarDescription(
+            access = JAMSVarDescription.AccessType.READ,
+            update = JAMSVarDescription.UpdateType.INIT,
+            description = "false for relativ error and true for absolute error",
+            defaultValue = "0"
+            )
+            public Attribute.Boolean relativeOrAbsolute;
 
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
             update = JAMSVarDescription.UpdateType.RUN,
             description = "sign (0 = +/-; 1 = +; -1 = -)"
-            )
-            public JAMSInteger sign;
+            )            
+            public Attribute.Double sign;
 
     
     Random generator = new Random();
     double missingDataVal = -9999;
     
+    @Override
     public void run() {
         boolean pos = true;
         if(sign.getValue() == 0)
@@ -86,12 +96,19 @@ public class InputErrorEstimation extends JAMSComponent {
         for(int i = 0; i < inDat.length; i++){
             double error = generator.nextDouble();
             error = (error * this.maxRelError.getValue());
+
+            error = (error * this.maxError.getValue());
             
             if(!pos)
                 error = error * -1;
-            if(inDat[i] != missingDataVal)
-                outDat[i] = inDat[i] + (Math.abs(inDat[i]) * error);
-            else
+            if(inDat[i] != missingDataVal){
+                outDat[i] = inDat[i] + (inDat[i] * error);
+                if (relativeOrAbsolute.getValue()){
+                    outDat[i] = inDat[i] + (inDat[i] * error);
+                }else{
+                    outDat[i] = inDat[i] + error;
+                }
+            }else
                 outDat[i] = inDat[i];
         }
         this.outData.setValue(outDat);

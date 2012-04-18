@@ -358,7 +358,7 @@
     multipliziert um mm in Liter umzuwandeln.</para>
 
     <para>(<xref
-    linkend="j2k.snow.CalcRainSnowParts.snow_rain_fig1.png" />)</para>
+      linkend="j2k.snow.CalcRainSnowParts.snow_rain_fig1.png" xrefstyle="select: label" />)</para>
 
     <figure xml:id="j2k.snow.CalcRainSnowParts.snow_rain_fig1.png">
       <title>Die Funktion zur Bestimmung des von Regen- bzw. Schneeanteils
@@ -366,7 +366,7 @@
 
       <para><inlinemediaobject>
           <imageobject>
-            <imagedata fileref="snow_rain.png" scale="40"></imagedata>
+            <imagedata align="center"  fileref="snow_rain.png" scale="60" width="100%"></imagedata>
           </imageobject>
         </inlinemediaobject></para>
     </figure>

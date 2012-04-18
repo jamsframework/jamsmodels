@@ -166,11 +166,11 @@
         </row>
         <row>
           <entry>soilImpGT80</entry>
-          <entry>maximum infiltration part on sealed areas (gt 80%) </entry>
+          <entry>maximum infiltration part on sealed areas (&gt; 80%) </entry>
         </row>
         <row>
           <entry>soilImpLT80</entry>
-          <entry>maximum infiltration part on less sealed areas (lt 80%)</entry>
+          <entry>maximum infiltration part on less sealed areas (&lt; 80%)</entry>
         </row>
         <row>
           <entry>soilDistMPSLPS</entry>
@@ -236,13 +236,16 @@
         role="italic">MPS</emphasis>) and which can only be emptied by evaporation and another
       storage which represents the volume of the large and macro pore storage (hereinafter referred
       to as <emphasis role="italic">LPS</emphasis>) and which is the source for the actual runoff. </para>
-    <para><inlinemediaobject>
-      <imageobject>
-        <imagedata fileref="soil_module_concept.png" scale="40"/>
-      </imageobject>
-    </inlinemediaobject></para>
-    <para>Fig: Schematic representation of the concept of soil-water-budget module </para>
-    <para/>
+    <para>(<xref linkend="j2k.soilWater.j2kProcessLumpedSoilWater.soil_module_concept_fig1.png" xrefstyle="select: label"/>)</para>
+    <figure xml:id="j2k.soilWater.j2kProcessLumpedSoilWater.soil_module_concept_fig1.png">
+      <title>Fig: Schematic representation of the concept of soil-water-budget module</title>      
+      <para><inlinemediaobject>      
+        <imageobject>
+          <imagedata align="center" fileref="soil_module_concept.png" scale="80" width="100%"/>
+        </imageobject>
+      </inlinemediaobject></para>
+    </figure>
+    
     <para>From the image it can be concluded that an infiltration storage precedes the soil storages
       which contains net precipitation and water resulting from snow melt. From this storage the
       water is distributed to both soil storages where remaining water is cached in the depression
@@ -722,26 +725,28 @@
           </ns3:mrow>
         </ns3:math>
       </inlineequation></para>
-    <para/>
-    <para><inlinemediaobject>
-      <imageobject>
-        <imagedata fileref="soil_linRed.png" scale="40"/>
-      </imageobject>
-    </inlinemediaobject>
-    </para>
-    <para>Fig: Functioning of the linear reduction factor</para>
-    <para/>
+    
+    <para>(<xref linkend="j2k.soilWater.j2kProcessLumpedSoilWater.soil_linRed_fig2.png" xrefstyle="select: label"/>)</para>
+    <figure xml:id="j2k.soilWater.j2kProcessLumpedSoilWater.soil_linRed_fig2.png">
+      <title>Fig: Functioning of the linear reduction factor</title>
+      <para><inlinemediaobject>
+        <imageobject>
+          <imagedata align="center" fileref="soil_linRed.png" scale="80" width="100%"/>
+        </imageobject>
+      </inlinemediaobject></para>
+    </figure> 
     <para>In addition to this linear approach a non-linear approach can be selected for the
       reduction of evaporation can be chosen. The advantage of this approach is that the reduction
       of actual evaporation in relation to potential evaporation shows a typical S-shaped
       progression and thus behaves like a relation between water content of the soil and connected
       soil water potential which is known from pedology.</para>
-    <para/>
-    <figure>
-      <title>Functioning of the polynomial reduction factor</title>
-      <mediaobject>
-        <imageobject>
-          <imagedata fileref="soil_polRed.png" scale="30"/>
+    
+    <para>(<xref linkend="j2k.soilWater.j2kProcessLumpedSoilWater.soil_polRed_fig3.png" xrefstyle="select: label"/>)</para>
+    <figure xml:id="j2k.soilWater.j2kProcessLumpedSoilWater.soil_polRed_fig3.png">
+      <title>Functioning of the polynomial reduction factor</title>      
+      <mediaobject>        
+        <imageobject>          
+          <imagedata align="center" fileref="soil_polRed.png" scale="95" width="100%"/>
         </imageobject>
       </mediaobject>
     </figure>

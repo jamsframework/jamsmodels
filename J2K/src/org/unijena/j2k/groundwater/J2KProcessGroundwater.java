@@ -294,6 +294,8 @@ import jams.model.*;
             sat_SoilStor = 0.000001;
         if(this.run_actRG2 > deltaSoilStor){
             double alpha = this.gwCapRise.getValue();
+            if (alpha < 0.0)
+                alpha = 0.0;
             inSoilStor = (deltaSoilStor) * (1. - Math.exp(-1*alpha / sat_SoilStor));
         }
         if(run_actRG2 >= inSoilStor){

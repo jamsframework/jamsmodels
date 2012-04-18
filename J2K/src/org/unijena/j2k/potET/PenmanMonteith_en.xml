@@ -551,12 +551,12 @@
       saturation. Their values for the different land cover classes are presented in the following
       image: </para>
     <para/>
-    <para>(<xref linkend="j2k.potET.PenmanMonteith.hlanu_par_fig1.png"/>)</para>
+    <para>(<xref linkend="j2k.potET.PenmanMonteith.hlanu_par_fig1.png" xrefstyle="select: label"/>)</para>
     <figure xml:id="j2k.potET.PenmanMonteith.hlanu_par_fig1.png">
       <title>Land use parameters in different land cover classes</title>
       <para><inlinemediaobject>
           <imageobject>
-            <imagedata fileref="hlanu_par.png" scale="40"/>
+            <imagedata align="center" fileref="hlanu_par.png" scale="58" width="100%"/>
           </imageobject>
         </inlinemediaobject></para>
     </figure>

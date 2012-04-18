@@ -177,6 +177,7 @@ public class J2KTopologyCreator extends JAMSComponent {
                 try {
                     e.setObject("to_reservoir", reservoirMap.get(e.getDouble("to_reservoir")));
                 } catch (Attribute.Entity.NoSuchAttributeException ex) {
+                    ex.printStackTrace();
                     //ex.printStackTrace();
                 }
             }
@@ -191,6 +192,7 @@ public class J2KTopologyCreator extends JAMSComponent {
                 try {
                     e.setObject("to_reservoir", reservoirMap.get(e.getDouble("to-reservoir")));
                 } catch (Attribute.Entity.NoSuchAttributeException ex) {
+                    ex.printStackTrace();
                     //ex.printStackTrace();
                 }
             }

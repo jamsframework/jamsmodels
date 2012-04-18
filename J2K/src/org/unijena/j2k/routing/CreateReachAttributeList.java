@@ -85,6 +85,7 @@ public void run()throws JAMSEntity.NoSuchAttributeException{
         {actreachlist=(ArrayList<ArrayList<Point>>)information.getObject("reachlist");}
         catch (Exception e) {
 	    System.out.println(e.toString());
+            e.printStackTrace();
 	}
   
  double [][] actreachinfo =null; 
@@ -93,6 +94,7 @@ public void run()throws JAMSEntity.NoSuchAttributeException{
         {actreachinfo=(double[][])information.getObject("reachinfo");}
         catch (Exception e) {
 	    System.out.println(e.toString());
+            e.printStackTrace();
 	}
  
 actreachinfo[0][(int)reachID]=reachID;
