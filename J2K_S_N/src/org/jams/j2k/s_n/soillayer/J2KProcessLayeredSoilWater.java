@@ -128,6 +128,13 @@ public class J2KProcessLayeredSoilWater extends JAMSComponent {
     update = JAMSVarDescription.UpdateType.RUN,
     description = "HRU attribute maximum MPS of soil")
     public JAMSDouble soilMaxMPS;
+       @JAMSVarDescription(
+            access = JAMSVarDescription.AccessType.READ,
+            description = "maximum FPS (Fine Pore Storage) soil water content",
+            unit = "l",
+            lowerBound = 0
+            )
+            public JAMSDoubleArray soilMaxFPS;
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.WRITE,
     update = JAMSVarDescription.UpdateType.RUN,
     description = "HRU attribute maximum LPS of soil")
@@ -260,6 +267,10 @@ public class J2KProcessLayeredSoilWater extends JAMSComponent {
     update = JAMSVarDescription.UpdateType.RUN,
     description = "intfiltration poritions for the single horizonts")
     public JAMSDoubleArray infiltration_hor;
+     @JAMSVarDescription(access = JAMSVarDescription.AccessType.WRITE,
+    update = JAMSVarDescription.UpdateType.RUN,
+    description = "matrix potential of the single horizonts [hPa]")
+    public JAMSDoubleArray potential_h;
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.WRITE,
     update = JAMSVarDescription.UpdateType.RUN,
     description = "percolation out of the single horizonts")
@@ -739,6 +750,17 @@ public class J2KProcessLayeredSoilWater extends JAMSComponent {
         return true;
     }
 
+    private double calcTotalSaturationslayer(int h) {
+
+        if (((this.run_maxLPS[h] > 0) | (this.run_maxMPS[h] > 0)) & ((this.run_actLPS[h] > 0) | (this.run_actMPS[h] > 0))) {
+            return ((this.run_actLPS[h] + this.run_actMPS[h] + soilMaxFPS.getValue()[h]) / (this.run_maxLPS[h] + this.run_maxMPS[h] + soilMaxFPS.getValue()[h]));
+        } else {
+            return 0;
+        }
+    }
+
+
+
     private boolean redistRD1_RD2_in() throws JAMSEntity.NoSuchAttributeException {
         //RD1 is put to DPS first
         if (this.run_inRD1 > 0) {
@@ -832,7 +854,7 @@ public class J2KProcessLayeredSoilWater extends JAMSComponent {
         double[] gradient_h_h1 = new double[this.nhor];
         double[] resistance_h_h1 = new double[this.nhor];
 
-
+        double pot_h[] = new double[this.nhor];
 
         for (int h = 0; h < this.nhor - 1; h++) {
 
@@ -842,7 +864,7 @@ public class J2KProcessLayeredSoilWater extends JAMSComponent {
 
             //calculate diffussion factor - order horizontal 
             //diffusion only occur when gravitative flux is not dominating
-            if ((run_satLPS[h] < 0.2) && (run_satMPS[h] < 1 || run_satMPS[h + 1] < 1) && (avg_sat > min_moist.getValue())) {
+            if ((run_satLPS[h] < 1.2) && (run_satMPS[h] <= 1 || run_satMPS[h + 1] < 1) && (avg_sat > min_moist.getValue())) {
                 //     if ((run_satLPS[h] < 0.2) && (run_satMPS[h] < 1 || run_satMPS[h + 1] < 1)) {    
                 //calculate layer distance
 
@@ -859,14 +881,28 @@ public class J2KProcessLayeredSoilWater extends JAMSComponent {
                 // gradient_h_h1[h] = (Math.exp((1 - this.run_satMPS[h]) * kgrad_layer.getValue()) - Math.exp((1 - this.run_satMPS[h + 1]) * kgrad_layer.getValue())) / (Math.pow(dist, 1));
 
                 // after van Genuchten (1980)
+       
+                double n = kgrad_layer.getValue();
+                double m = 1.0 - 1.0/n;
+                pot_h[h] = -(Math.pow(Math.pow(1.0/calcTotalSaturationslayer(h),1.0/m),1/n)+1.0)/0.005;
+                pot_h[h+1] = -( Math.pow(Math.pow(1.0/calcTotalSaturationslayer(h+1),1.0/m),1/n)+1.0)/0.005;
+                        
+                        // Math.pow(Math.abs(0.005*this.run_satMPS[h]), kgrad_layer.getValue()  ) + 1;
 
-                double satpot_h = Math.pow(this.run_satMPS[h], 1 / (kgrad_layer.getValue() - 1)) - 1;
-                double pot_h = -60 - (Math.pow(((Math.abs(satpot_h))), 1 / kgrad_layer.getValue()) * 14940) + dist;
-                double satpot_h1 = Math.pow(this.run_satMPS[h + 1], 1 / (kgrad_layer.getValue() - 1)) - 1;
-                double pot_h1 = -60 - (Math.pow(((Math.abs(satpot_h1))), 1 / kgrad_layer.getValue()) * 14940);
-                gradient_h_h1[h] = (pot_h1 - pot_h) / dist;
+                //pot_h[h] = -60 - (Math.pow(((satpot_h)), -(1. - 1. / (kgrad_layer.getValue()))))  + dist;
+
+                //double satpot_h1 = Math.pow(Math.abs(0.005*this.run_satMPS[h+1]), kgrad_layer.getValue()  ) + 1;
+                
+                //pot_h[h+1] = -60 - (Math.pow(((satpot_h1)), -(1. - 1. / (kgrad_layer.getValue())))) ;
+
+                //double satpot_h1 = Math.pow(this.run_satMPS[h + 1], 1 / (kgrad_layer.getValue() - 1)) - 1;
+                //pot_h[h+1] = -60 - (Math.pow(((Math.abs(satpot_h1))), 1 / kgrad_layer.getValue()) * 14940);
+                gradient_h_h1[h] = (pot_h[h+1] - pot_h[h]) / dist;
                 //}
                 //calculate resistance
+
+                pot_h[h] = Math.max(pot_h[h], -15000);
+                pot_h[h+1] = Math.max(pot_h[h+1], -15000);
 
                 double kf_min = Math.min(kf_h.getValue()[h], kf_h.getValue()[h + 1]);
 
@@ -918,7 +954,7 @@ public class J2KProcessLayeredSoilWater extends JAMSComponent {
                 }
 
             } else {
-
+                pot_h[h] = -(1. - run_satLPS[h]) - (60 * run_satLPS[h]) ;
                 flux_h1_h[h] = 0;
             }
 
@@ -928,7 +964,7 @@ public class J2KProcessLayeredSoilWater extends JAMSComponent {
             calcSoilSaturationslayer(h + 1);
         }
 
-
+         potential_h.setValue(pot_h);
 
         return true;
     }
@@ -1369,6 +1405,7 @@ public class J2KProcessLayeredSoilWater extends JAMSComponent {
                 try {
                     maxPerc = this.soilMaxPerc.getValue() * this.run_area * this.runkf_h[hor + 1];
                 } catch (Exception e) {
+                    e.printStackTrace();
                     System.out.println("SOILID = " + soilID.getValue());
                 }
 

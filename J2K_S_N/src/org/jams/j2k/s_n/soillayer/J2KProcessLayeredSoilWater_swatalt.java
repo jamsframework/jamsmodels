@@ -1326,6 +1326,7 @@ import jams.model.*;
                 try{
                     maxPerc = this.soilMaxPerc.getValue() * this.run_area * this.runkf_h[hor + 1] / 86.4;
                 } catch (Exception e) {
+                    e.printStackTrace();
                     System.out.println("SOILID = " + soilID.getValue());
                 }
                 // 86.4 cm/d "middle" hydraulic conductivity in geology (1 E-5 m/s)
