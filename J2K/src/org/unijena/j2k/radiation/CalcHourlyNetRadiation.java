@@ -115,7 +115,7 @@ import jams.model.*;
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
             update = JAMSVarDescription.UpdateType.RUN,
-            description = "daily net radiation [MJ/m²]"
+            description = "daily net radiation [MJ/mÂ²]"
             )
             public JAMSDouble netRad;
     

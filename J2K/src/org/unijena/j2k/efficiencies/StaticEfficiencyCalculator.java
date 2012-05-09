@@ -110,7 +110,7 @@ import jams.model.*;
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
             update = JAMSVarDescription.UpdateType.RUN,
-            description = "coefficient of determination r²"
+            description = "coefficient of determination rÂ²"
             )
             public JAMSDouble rsq;
     
@@ -124,7 +124,7 @@ import jams.model.*;
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
             update = JAMSVarDescription.UpdateType.RUN,
-            description = "weighted r²"
+            description = "weighted rÂ²"
             )
             public JAMSDouble wrsq;
     
@@ -220,7 +220,7 @@ import jams.model.*;
                 getModel().getRuntime().println("ioa2:\t\t" + ioa2, JAMS.STANDARD);
             }else if(effMethod.getValue()[i] == this.R2){
                 double[] rCoeff = Regression.calcLinReg(valData, preData);
-                getModel().getRuntime().println("r²:\t\t" + rCoeff[2], JAMS.STANDARD);
+                getModel().getRuntime().println("rÂ²:\t\t" + rCoeff[2], JAMS.STANDARD);
                 getModel().getRuntime().println("grad:\t\t" + rCoeff[1], JAMS.STANDARD);
                 this.rsq.setValue(rCoeff[2]);
                 this.grad.setValue(rCoeff[1]);
@@ -232,7 +232,7 @@ import jams.model.*;
                 else
                     wr = Math.pow(Math.abs(rCoeff[1]), -1.0) * rCoeff[2];
                 this.wrsq.setValue(wr);
-                getModel().getRuntime().println("wr²:\t\t" + wr, JAMS.STANDARD);
+                getModel().getRuntime().println("wrÂ²:\t\t" + wr, JAMS.STANDARD);
             }else if(effMethod.getValue()[i] == this.DSGRAD){
                 double dsGrad = DoubleSumAnalysis.dsGrad(valData, preData);
                 this.dsGrad.setValue(dsGrad);

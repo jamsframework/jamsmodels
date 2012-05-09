@@ -102,7 +102,7 @@ public class J2KProcessContourBanks extends JAMSComponent {
     update = JAMSVarDescription.UpdateType.RUN,
     description = "RG1 inflow")
     public JAMSDouble inRG1;
-    // zusätliches rausschreiben für das Layerinterface
+    // zusÃ¤tliches rausschreiben fÃ¼r das Layerinterface
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.WRITE,
     update = JAMSVarDescription.UpdateType.RUN,
     description = "conturbanks outflow",
@@ -365,7 +365,7 @@ public class J2KProcessContourBanks extends JAMSComponent {
                         aktuelleHRU.setDouble("cbAbfussReach", abflussCBReach_akt);
                         aktuelleHRU.setDouble("cbSpeicherAkt", speicherCB_akt - abflussCBReach_akt);
                         
-                        // zusätliches rausschreiben für das Layerinterface
+                        // zusÃ¤tliches rausschreiben fÃ¼r das Layerinterface
                         
                         cbAbfussReach.setValue(abflussCBReach_akt);
                         cbSpeicherAkt.setValue(speicherCB_akt - abflussCBReach_akt);
@@ -424,7 +424,7 @@ public class J2KProcessContourBanks extends JAMSComponent {
         double q_m = speicher1CB_akt / (1000 * faktorZeit); //Umwandlung des CB-Speicher von l in m3/Zeitschritt
         double querschnittCB_akt = q_m / fliessgeschwindigkeit1CB;
 
-        speicher1CB_max = 1000 * faktorZeit * querschnittCB_max * fliessgeschwindigkeit1CB; //Berechnung des maximal möglichen ContourBank-Abflusses pro Zeitschritt in l bei konstanter Fliessgeschwindigkeit und konstantem Fliessquerschnitt
+        speicher1CB_max = 1000 * faktorZeit * querschnittCB_max * fliessgeschwindigkeit1CB; //Berechnung des maximal mÃ¶glichen ContourBank-Abflusses pro Zeitschritt in l bei konstanter Fliessgeschwindigkeit und konstantem Fliessquerschnitt
 
         if (querschnittCB_akt > querschnittCB_max) {
             //Normalerweise muesste diese Schleife iterativ gerechnet werden, da querschnittCB_akt durch fliessgeschwindigkeit1CBakt beeinflusst wird

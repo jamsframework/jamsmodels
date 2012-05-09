@@ -91,7 +91,7 @@ import jams.model.*;
     
     public void run() throws Attribute.Entity.NoSuchAttributeException {
         
-        //eigentlich br‰uchten wir hier einen ReachOutputWriter
+        //eigentlich br√§uchten wir hier einen ReachOutputWriter
         //jetzt aber erstmal quick and dirty nur den outflow reach!
         Attribute.Entity[] entities = reaches.getEntityArray();
         double flow = 0;

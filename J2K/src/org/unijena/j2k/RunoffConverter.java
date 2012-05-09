@@ -33,7 +33,7 @@ import jams.data.*;
 @JAMSComponentDescription(
         title="Runoff Converter",
         author="Peter Krause",
-        description="Converts m³/s to mm/day"
+        description="Converts mÂ³/s to mm/day"
         )
         
 public class RunoffConverter extends JAMSComponent {

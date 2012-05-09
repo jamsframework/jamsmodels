@@ -21,8 +21,8 @@ public class ClimatologicalVariables {
     }
     
     /**
-     * calculates absolute temperature in K from temperatures in °C or F
-     * @param temperature the temperature in °C or F
+     * calculates absolute temperature in K from temperatures in Â°C or F
+     * @param temperature the temperature in Â°C or F
      * @param unit degC - for Celsius; F - for Fahrenheit
      * @return the absolute temperature in K
      */    
@@ -39,7 +39,7 @@ public class ClimatologicalVariables {
     
     /**
      * calculates saturation vapour pressure at the given temperature in kPa
-     * @param temperature the air temperature in °C
+     * @param temperature the air temperature in Â°C
      * @return the saturation vapour pressure at temperature T [kPa]
      */    
     public static double calc_saturationVapourPressure(double temperature){
@@ -63,8 +63,8 @@ public class ClimatologicalVariables {
     
     /**
      * calculates maximum possible humidity of the air at given temperature
-     * @param temperature the current air temperature °C
-     * @return tbe maximum possible humidity in g/cm³
+     * @param temperature the current air temperature Â°C
+     * @return tbe maximum possible humidity in g/cmÂ³
      */    
     public static double calc_maxHum(double temperature){
         double esT = calc_saturationVapourPressure(temperature);
@@ -76,7 +76,7 @@ public class ClimatologicalVariables {
     
     /**
      * calculated latent heat of vaporization depending from temperature in MJ / kg
-     * @param temperature the air temperature in °C
+     * @param temperature the air temperature in Â°C
      * @return latent heat of vaporization in [MJ/kg]
      */    
      public static double calc_latentHeatOfVaporization(double temperature){
@@ -91,15 +91,15 @@ public class ClimatologicalVariables {
       * calculates the psychrometric constant using:
       * atmospheric pressure in [kPa]
       * latent heat of vaporisation [MJ/kg]
-      * specific heat at constant pressure = cp = 1.013E-3 MJ/kg°C
+      * specific heat at constant pressure = cp = 1.013E-3 MJ/kgÂ°C
       * ratio molecular weight of water vapour / dry air = 0.622
       * @param pZ atmospheric pressure [kPa]
       * @param L latent heat of vaporisation [MJ/kg]
-      * @return psychrometric constant [kPa / °C]
+      * @return psychrometric constant [kPa / Â°C]
       */     
     public static double calc_psyConst(double pZ, double L){
         /**
-         *specif. heat capacity of air [MJ / kg°C]
+         *specif. heat capacity of air [MJ / kgÂ°C]
          */
         double CP = 1.013E-3;
         /**
@@ -107,7 +107,7 @@ public class ClimatologicalVariables {
          */
         double VM = 0.622;
         //----------------------------------
-        // Psychrometric constant psy [kPa/°C]
+        // Psychrometric constant psy [kPa/Â°C]
         //----------------------------------
         double psy = (CP * pZ)   / (VM * L);
         
@@ -128,8 +128,8 @@ public class ClimatologicalVariables {
     
     /**
      * calculates the slope of the saturation vapour pressure curve at given temperature
-     * @param temperature the air temperature in °C
-     * @return slope of saturation vapour pressure curve [kPa/°C]
+     * @param temperature the air temperature in Â°C
+     * @return slope of saturation vapour pressure curve [kPa/Â°C]
      */    
     public static double calc_slopeOfSaturationPressureCurve(double temperature){
         double sospc = (4098*(0.6108*Math.exp((17.27 * temperature)/(temperature + 237.3))))/((temperature + 237.3)*(temperature + 237.3));
@@ -146,7 +146,7 @@ public class ClimatologicalVariables {
      * R = 0.287 kJ/kg K
      * @param virtTemp the virtuel air temperature [K]
      * @param P the atmospheric pressure [kPa]
-     * @return the air density at constant pressure in kg/m³
+     * @return the air density at constant pressure in kg/mÂ³
      */    
     public static double calc_AirDensityAtConstantPressure(double virtTemp, double P){
         //P from hPa to kPa

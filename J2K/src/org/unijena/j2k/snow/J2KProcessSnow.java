@@ -449,7 +449,7 @@ import jams.model.*;
     
     /** calculates density of new fallen snow depending
      * on the mean temperature. Follows the approach
-     * of KUCHMENT 1983 and VEHVILÄINEN 1992 as presented
+     * of KUCHMENT 1983 and VEHVILÃ„INEN 1992 as presented
      * by HERPERTZ 2002
      * @param tmean the current mean temperature of the spatial unit
      * @return density of new fallen snow

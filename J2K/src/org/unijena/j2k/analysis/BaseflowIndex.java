@@ -56,7 +56,7 @@ import java.util.Vector;
             access = JAMSVarDescription.AccessType.READ,
             update = JAMSVarDescription.UpdateType.RUN,
             description = "daily runoff value",
-            unit = "m³/s"
+            unit = "mÂ³/s"
             )
             public JAMSDouble dailyRunoff;
 

@@ -61,7 +61,7 @@ public class CalcDailyMaximumSunshineHours extends JAMSComponent {
 
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
     update = JAMSVarDescription.UpdateType.RUN,
-    description = "daily extraterrestic radiation [MJ/m²d]")
+    description = "daily extraterrestic radiation [MJ/mÂ²d]")
     public JAMSDouble actExtRad;
 
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,

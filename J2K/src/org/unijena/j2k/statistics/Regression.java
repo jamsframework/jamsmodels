@@ -40,7 +40,7 @@ public class Regression {
      * Calcs coefficients of linear regression between x, y data
      * @param xData the independent data array (x)
      * @param yData the dependent data array (y)
-     * @return (intercept, gradient, r²)
+     * @return (intercept, gradient, rÂ²)
      */
     public static double[] calcLinReg(double[] xData, double[] yData, double[] weight){
         double sumYValue = 0;
@@ -52,7 +52,7 @@ public class Regression {
         double prod = 0;
         double NODATA = -9999;
         int nstat = xData.length;
-        double[] regCoef = new double[3]; //(intercept, gradient, r²)
+        double[] regCoef = new double[3]; //(intercept, gradient, rÂ²)
         int counter = 0;
         //calculating sums
         for(int i = 0; i < nstat; i++){
@@ -77,7 +77,7 @@ public class Regression {
         if(sumX > 0 && sumY > 0){
             regCoef[1] = prod / sumX;  //gradient
             regCoef[0] = meanYValue - regCoef[1] * meanXValue; //intercept
-            regCoef[2] = Math.pow((prod / Math.sqrt(sumX * sumY)), 2); //r²
+            regCoef[2] = Math.pow((prod / Math.sqrt(sumX * sumY)), 2); //rÂ²
         }
         else{
             regCoef[1] = 0;

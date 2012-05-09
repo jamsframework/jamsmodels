@@ -35,7 +35,7 @@ author = "Peter Krause",
 description = "Calculates potential ETP according Penman-Monteith")
 public class Penman extends JAMSComponent {
 
-    public final double CP = 1.031E-3; //MJ/kg°C
+    public final double CP = 1.031E-3; //MJ/kgÂ°C
 
     public final double RSS = 150;
 
