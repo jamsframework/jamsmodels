@@ -45,21 +45,21 @@ import jams.model.*;
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
             update = JAMSVarDescription.UpdateType.RUN,
-            description = "mean temperature of the simulation period in °C"
+            description = "mean temperature of the simulation period in Â°C"
             )
             public JAMSDouble tmeanavg;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
             update = JAMSVarDescription.UpdateType.RUN,
-            description = "soil temperature in layerdepth in °C"
+            description = "soil temperature in layerdepth in Â°C"
             )
             public JAMSDouble Soil_Temp_Layer;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
             update = JAMSVarDescription.UpdateType.RUN,
-            description = "in °C *  Output soil surface temperature"
+            description = "in Â°C *  Output soil surface temperature"
             )
             public JAMSDouble Surfacetemp;
     

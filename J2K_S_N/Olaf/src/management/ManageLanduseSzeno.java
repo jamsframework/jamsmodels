@@ -1,7 +1,7 @@
 /*
  * ManageLanduse.java
  *
- * Created on 16. März 2006, 13:20
+ * Created on 16. MÃ¤rz 2006, 13:20
  *
  * To change this template, choose Tools | Template Manager
  * and open the template in the editor.

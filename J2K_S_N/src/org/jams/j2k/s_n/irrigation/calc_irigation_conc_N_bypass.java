@@ -85,7 +85,7 @@ public class calc_irigation_conc_N_bypass extends JAMSComponent {
         double irripart = 0;
 
 
-        double runstorage = (storageInput.getValue()*1000); // from m³/day to l/day  
+        double runstorage = (storageInput.getValue()*1000); // from mÂ³/day to l/day  
         
         irrigationN_conc.setValue( storageInputN.getValue()/runstorage);
         

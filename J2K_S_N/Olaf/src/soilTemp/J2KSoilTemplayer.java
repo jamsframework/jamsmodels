@@ -57,15 +57,15 @@ import static oms3.annotations.Role.*;
     @In public double area;
 
     @Description("daily max. temperature")
-    @Unit("�C")
+    @Unit("ï¿½C")
     @In public double tmax;
 
     @Description("daily min. temperature")
-    @Unit("�C")
+    @Unit("ï¿½C")
     @In public double tmin;
 
     @Description("anual mean temperature")
-    @Unit("�C")
+    @Unit("ï¿½C")
     @In public double tmeanavg;
 
     @Description("depth of soil layer")
@@ -76,7 +76,7 @@ import static oms3.annotations.Role.*;
     @In public int horizons;
 
     @Description("Soil bulk density")
-    @Unit("g/cm³")
+    @Unit("g/cmÂ³")
     @In public double[] bulk_density_h ;
     
     @Description("actual LPS in portion of sto_LPS soil water content")
@@ -96,11 +96,11 @@ import static oms3.annotations.Role.*;
     @In public double snowTotSWE;
     
     @Description("global radiation")
-    @Unit("MJ/(m²*d)")
+    @Unit("MJ/(mÂ²*d)")
     @In public double solRad;
     
     @Description("soil temperature in different layerdepths")
-    @Unit("�C")
+    @Unit("ï¿½C")
     @In @Out public double[] soil_Temp_Layer ;
 
     @Description("aboveground biomass")

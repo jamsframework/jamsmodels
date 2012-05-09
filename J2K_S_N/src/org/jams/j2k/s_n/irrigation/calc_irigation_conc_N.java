@@ -70,7 +70,7 @@ public class calc_irigation_conc_N extends JAMSComponent {
         double irripart = 0;
 
 
-        storage.setValue(storageInput.getValue()*1000); // from m³/day to l/day
+        storage.setValue(storageInput.getValue()*1000); // from mÂ³/day to l/day
 
 
         irripart = irrigationsum.getValue()/storage.getValue();

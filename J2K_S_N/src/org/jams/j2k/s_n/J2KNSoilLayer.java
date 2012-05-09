@@ -147,7 +147,7 @@ import jams.model.*;
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
             description = "soil temperature in layerdepth",
-            unit = "°C",
+            unit = "Â°C",
             lowerBound = -70,
             upperBound = 70
             )

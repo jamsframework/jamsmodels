@@ -43,7 +43,7 @@ import static oms3.annotations.Role.*;
     @Description("Apply elevation correction to measured data")
     @In public int elevationCorrection;
     
-    @Description("Minimum r�?� value for elevation correction application")
+    @Description("Minimum rï¿½?ï¿½ value for elevation correction application")
     @In public double rsqThreshold;
     
     @Description("Absolute possible minimum value for data set")

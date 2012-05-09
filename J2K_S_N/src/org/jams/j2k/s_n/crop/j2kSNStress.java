@@ -37,10 +37,10 @@ public class j2kSNStress {
           double tempstrs = 1;
           else if
           this.tbase < this.tmean < this.tppt
-          this tempstrs = 1 - Math.exp ((-0.1054 * (this.topt - this.tmean)²/(this.tmean - this.tbase))
+          this tempstrs = 1 - Math.exp ((-0.1054 * (this.topt - this.tmean)Â²/(this.tmean - this.tbase))
           else if
           this.topt < this.tmean < (2 * this.tOpt) - this.tBase
-          this tempstrs = 1 - Math.exp ((-0.1054 * (this.topt - this.tmean)²/(2 * this.topt - this.tmean - this.tbase))
+          this tempstrs = 1 - Math.exp ((-0.1054 * (this.topt - this.tmean)Â²/(2 * this.topt - this.tmean - this.tbase))
           else if
           this.tmean > (2 * this.topt) - this.tbase
           this tempstrs = 1;

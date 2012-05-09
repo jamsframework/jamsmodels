@@ -148,7 +148,7 @@ import jams.model.*;
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
             description = "soil temperature in layerdepth",
-            unit = "°C",
+            unit = "Â°C",
             lowerBound = -70,
             upperBound = 70
             )
@@ -1811,7 +1811,7 @@ import jams.model.*;
         double surfaceNpool = 0;
         
         
-        //N concentration for diffrent N-pools in kg/kg, estimated bulk density 1.65 kg/dm³
+        //N concentration for diffrent N-pools in kg/kg, estimated bulk density 1.65 kg/dmÂ³
         double concN_pool = pool  / (1.65 * layerdepth.getValue()[0] * 100000 );
                 
         surfaceNpool = sedi_out.getValue() * concN_pool * enrichment.getValue();

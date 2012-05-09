@@ -112,10 +112,10 @@ public class musle_1 extends JAMSComponent {
                 double overflow = (this.run_outRD1 / are) * 10000 ; // outRD1 kommt in Liter/HRU und wird zu mm/ha
                 
 
-                //slope-Umrechung von ° in %
+                //slope-Umrechung von Â° in %
                 double slopeperc = Math.round((Math.tan(Math.toRadians(slope))) * 100);
 
-                if (slope > 2){ //erosive Hangneigung gr??er 2°
+                if (slope > 2){ //erosive Hangneigung gr??er 2Â°
                 //Hangneigunsgradient Sfac = S-Factor f?r slope kleiner 9% und g??er gleich 9%
                 if (slopeperc >= 9) {
                     Sfac = 16.8 * Math.sin(Math.toRadians(slope)) - 0.5; // steil

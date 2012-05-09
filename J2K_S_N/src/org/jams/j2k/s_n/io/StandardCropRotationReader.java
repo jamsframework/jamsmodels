@@ -1,7 +1,7 @@
 /*
  * StandardCropRotationReader.java
  *
- * Created on 9. März 2006, 08:29
+ * Created on 9. MÃ¤rz 2006, 08:29
  *
  * This file is part of JAMS
  * Copyright (C) 2005 S. Kralisch and P. Krause

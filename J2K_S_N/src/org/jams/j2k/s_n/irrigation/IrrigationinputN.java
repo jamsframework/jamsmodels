@@ -129,7 +129,7 @@ public class IrrigationinputN extends JAMSComponent {
         irrigationN.setValue(irract * irrigationN_conc.getValue());
 
 
-        //Storage = (Storage);   //zurückrechznung in m3/s
+        //Storage = (Storage);   //zurÃ¼ckrechznung in m3/s
         //System.out.println("Storage " + Storage);
 
 

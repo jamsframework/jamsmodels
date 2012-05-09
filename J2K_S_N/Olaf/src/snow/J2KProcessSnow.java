@@ -201,7 +201,7 @@ import static oms3.annotations.Role.*;
     
     /** calculates density of new fallen snow depending
      * on the mean temperature. Follows the approach
-     * of KUCHMENT 1983 and VEHVIL�?�INEN 1992 as presented
+     * of KUCHMENT 1983 and VEHVILï¿½?ï¿½INEN 1992 as presented
      * by HERPERTZ 2002
      * @param tmean the current mean temperature of the spatial unit
      * @return density of new fallen snow

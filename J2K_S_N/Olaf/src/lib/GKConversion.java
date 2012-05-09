@@ -27,7 +27,7 @@ public class GKConversion {
         /**
         {==============================================================================}
 { Umrechnung von Geographischen Koordinaten in Gauss-Krueger-Koordinaten       }
-{ Formel: Grossmann,W., Geod�tische Abbildungen, 1964, Seite 151               }
+{ Formel: Grossmann,W., Geodï¿½tische Abbildungen, 1964, Seite 151               }
 { Parameter: geo.Breite (Grad.Min.Sek) in Altgrad  : Twinkel                   }
 {            geo.Laenge (Grad.Min.Sek) in Altgrad  : Twinkel                   }
 {            Zielsystemnummer (Meridiankennziffer) : longint                   }

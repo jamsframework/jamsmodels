@@ -713,7 +713,7 @@ import jams.model.*;
         double veloc = 0;
         
         /**
-         *transfering liter/d to m³/s
+         *transfering liter/d to mÂ³/s
          **/
         double q_m = q / (1000 * secondsOfTimeStep);
         this.rh = calcHydraulicRadius(afv, q_m, width);

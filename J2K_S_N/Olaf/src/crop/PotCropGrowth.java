@@ -70,7 +70,7 @@ import java.util.logging.Logger;
     @In public double tmean;
     
     @Description("Daily solar radiation")
-    @Unit("MJ/m²")
+    @Unit("MJ/mÂ²")
     @In public double solRad;
 
     @Description("indicates dormancy of plants")
@@ -431,7 +431,7 @@ import java.util.logging.Logger;
     // @todo declare how is continuosly vegetated land use is determined
     private boolean calc_phu() {
         if (Tmean > Tbase) {
-            phu_daily = phu_daily + (Tmean - Tbase); //phänologisch wirksame Temperatursumme
+            phu_daily = phu_daily + (Tmean - Tbase); //phÃ¤nologisch wirksame Temperatursumme
             fphu_act = phu_daily / phu;
         }
         return true;
@@ -488,7 +488,7 @@ import java.util.logging.Logger;
     // radiation-use efficiency declared in the crop growth database by parameter 'rue' in crop.par
     // whereas the total biomass on a given day is summed up
     private void calc_biomass() {
-        double Hphosyn = 0.5 * solrad * (1 - Math.exp(leco * lai_act)); // Intercepted photosynthetically active radiation [MJ/m²]
+        double Hphosyn = 0.5 * solrad * (1 - Math.exp(leco * lai_act)); // Intercepted photosynthetically active radiation [MJ/mÂ²]
         bio_opt_delta = rue * Hphosyn;
         if (dormancy) {
             bio_opt_delta = 0;
@@ -550,7 +550,7 @@ import java.util.logging.Logger;
         // is calculated by the fraction of the plant biomass as a function of growth stage given the optimal conditions
         // fnplant =fraction N in plant biomass
         // with bn1 as fraction of N in the plant biomass at the emergence
-        // with bn2 as fraction of N in the plant biomass near the middle of the growing  season (bevor Blütenstand hevortritt)
+        // with bn2 as fraction of N in the plant biomass near the middle of the growing  season (bevor BlÃ¼tenstand hevortritt)
         // with bn3 as fraction of N in the plant biomass at the maturity
         // with bn3_ca as fraction of N in the plant biomass near maturity
         // sc1_Nbio and sc2_Nbio are shape coefficients by solving the equation of two known points

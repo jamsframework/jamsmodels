@@ -106,7 +106,7 @@ import jams.model.*;
         Storage = Storage - (irract*re_use.getValue());
         irrigationAct.setValue(irract);
 
-        //Storage = (Storage);   //zurückrechznung in m3/s
+        //Storage = (Storage);   //zurÃ¼ckrechznung in m3/s
         //System.out.println("Storage " + Storage);
 
 

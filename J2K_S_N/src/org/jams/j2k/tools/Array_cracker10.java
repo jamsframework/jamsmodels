@@ -29,7 +29,7 @@ import jams.model.*;
  *
  * @author c8fima
  */
-@JAMSComponentDescription(title = "Array_cracker1ß",
+@JAMSComponentDescription(title = "Array_cracker1ÃŸ",
 author = "Manfred Fink",
 description = "split the frist 10 values of a JAMSDoubleArray into 10 JAMSDouble values")
 public class Array_cracker10 extends JAMSComponent {

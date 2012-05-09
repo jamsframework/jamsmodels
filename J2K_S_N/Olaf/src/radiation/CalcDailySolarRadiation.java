@@ -43,7 +43,7 @@ import lib.*;
     @In public double latitude;
     
     @Description("daily extraterrestic radiation")
-    @Unit("MJ/m�?�d")
+    @Unit("MJ/mï¿½?ï¿½d")
     @In public double actExtRad;
     
     @Description("daily solar radiation")

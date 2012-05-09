@@ -20,7 +20,7 @@ package lib;
     
     /**
      * calculates absolute temperature in K from temperatures in C or F
-     * @param temperature the temperature in �C or F
+     * @param temperature the temperature in ï¿½C or F
      * @param unit degC - for Celsius; F - for Fahrenheit
      * @return the absolute temperature in K
      */    
@@ -39,7 +39,7 @@ package lib;
     
     /**
      * calculates saturation vapour pressure at the given temperature in kPa
-     * @param temperature the air temperature in �C
+     * @param temperature the air temperature in ï¿½C
      * @return the saturation vapour pressure at temperature T [kPa]
      */    
     public static double saturationVapourPressure(double temperature){
@@ -60,8 +60,8 @@ package lib;
     
     /**
      * calculates maximum possible humidity of the air at given temperature
-     * @param temperature the current air temperature �C
-     * @return tbe maximum possible humidity in g/cm�
+     * @param temperature the current air temperature ï¿½C
+     * @return tbe maximum possible humidity in g/cmï¿½
      */    
     public static double maxHum(double temperature){
         double esT = saturationVapourPressure(temperature);
@@ -72,7 +72,7 @@ package lib;
     
     /**
      * calculated latent heat of vaporization depending from temperature in MJ / kg
-     * @param temperature the air temperature in �C
+     * @param temperature the air temperature in ï¿½C
      * @return latent heat of vaporization in [MJ/kg]
      */    
      public static double latentHeatOfVaporization(double temperature){
@@ -86,15 +86,15 @@ package lib;
       * calculates the psychrometric constant using:
       * atmospheric pressure in [kPa]
       * latent heat of vaporisation [MJ/kg]
-      * specific heat at constant pressure = cp = 1.013E-3 MJ/kg�C
+      * specific heat at constant pressure = cp = 1.013E-3 MJ/kgï¿½C
       * ratio molecular weight of water vapour / dry air = 0.622
       * @param pZ atmospheric pressure [kPa]
       * @param L latent heat of vaporisation [MJ/kg]
-      * @return psychrometric constant [kPa / �C]
+      * @return psychrometric constant [kPa / ï¿½C]
       */     
     public static double psyConst(double pZ, double L){
         /**
-         *specif. heat capacity of air [MJ / kg�C]
+         *specif. heat capacity of air [MJ / kgï¿½C]
          */
         double CP = 1.013E-3;
         /**
@@ -102,7 +102,7 @@ package lib;
          */
         double VM = 0.622;
         //----------------------------------
-        // Psychrometric constant psy [kPa/�C]
+        // Psychrometric constant psy [kPa/ï¿½C]
         //----------------------------------
         return (CP * pZ)  / (VM * L);
     }
@@ -121,8 +121,8 @@ package lib;
     
     /**
      * calculates the slope of the saturation vapour pressure curve at given temperature
-     * @param temperature the air temperature in �C
-     * @return slope of saturation vapour pressure curve [kPa/�C]
+     * @param temperature the air temperature in ï¿½C
+     * @return slope of saturation vapour pressure curve [kPa/ï¿½C]
      */    
     public static double slopeOfSaturationPressureCurve(double temperature){
         double k_temp = temperature + 237.3;
@@ -142,7 +142,7 @@ package lib;
      * R = 0.287 kJ/kg K
      * @param virtTemp the virtuel air temperature [K]
      * @param P the atmospheric pressure [kPa]
-     * @return the air density at constant pressure in kg/m�
+     * @return the air density at constant pressure in kg/mï¿½
      */    
     public static double airDensityAtConstantPressure(double virtTemp, double P){
         //P from hPa to kPa

@@ -1,7 +1,7 @@
 /*
  * J2KSNLMArable.java
  *
- * Created on 8. März 2006, 09:40
+ * Created on 8. MÃ¤rz 2006, 09:40
  *
  * This file is part of JAMS
  * Copyright (C) 2005 S. Kralisch and P. Krause

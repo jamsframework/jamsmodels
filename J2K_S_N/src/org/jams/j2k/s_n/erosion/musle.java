@@ -125,7 +125,7 @@ public class musle extends JAMSComponent {
 
 
 
-            //slope-Umrechung von ° in %
+            //slope-Umrechung von Â° in %
             double slopeperc = Math.round((Math.tan(Math.toRadians(slope))) * 100);
 
             //Hangneigunsgradient Sfac = S-Factor f?r slope kleiner 9% und g??er gleich 9%

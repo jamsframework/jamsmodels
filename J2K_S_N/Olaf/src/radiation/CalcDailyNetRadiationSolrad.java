@@ -50,38 +50,38 @@ import lib.*;
 //    public java.util.Calendar time;
 
     @Description("daily net radiation")
-    @Unit("MJ/m�?�")
+    @Unit("MJ/mï¿½?ï¿½")
     @Out public double netRad;
     
 //     @JAMSVarDescription(
 //            access = JAMSVarDescription.AccessType.WRITE,
 //            update = JAMSVarDescription.UpdateType.RUN,
-//            description = "daily shortwave radiation [MJ/m�?�]"
+//            description = "daily shortwave radiation [MJ/mï¿½?ï¿½]"
 //            )
 //            public JAMSDouble swRad;
     @Description("daily shortwave radiation")
-    @Unit("MJ/m�?�")
+    @Unit("MJ/mï¿½?ï¿½")
     @Out public double swRad;
     
 //    
 //    @JAMSVarDescription(
 //            access = JAMSVarDescription.AccessType.WRITE,
 //            update = JAMSVarDescription.UpdateType.RUN,
-//            description = "daily longwave radiation [MJ/m�?�]"
+//            description = "daily longwave radiation [MJ/mï¿½?ï¿½]"
 //            )
 //            public JAMSDouble lwRad;
     @Description("daily longwave radiation")
-    @Unit("MJ/m�?�")
+    @Unit("MJ/mï¿½?ï¿½")
     @Out public double lwRad;
 //    
 //    @JAMSVarDescription(
 //            access = JAMSVarDescription.AccessType.WRITE,
 //            update = JAMSVarDescription.UpdateType.RUN,
-//            description = "daily net radiation for refET [MJ/m�?�]"
+//            description = "daily net radiation for refET [MJ/mï¿½?ï¿½]"
 //            )
 //            public JAMSDouble refETNetRad;
     @Description("daily net radiation for refET")
-    @Unit("MJ/m�?�")
+    @Unit("MJ/mï¿½?ï¿½")
     @Out public double refETNetRad;
     
     @Execute public void execute() {        

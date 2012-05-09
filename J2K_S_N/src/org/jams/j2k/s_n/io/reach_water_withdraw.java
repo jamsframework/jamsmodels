@@ -81,7 +81,7 @@ title="Reach water  withdrawal",
     @JAMSVarDescription(
     access = JAMSVarDescription.AccessType.READ,
             update = JAMSVarDescription.UpdateType.RUN,
-            description = "Water that leaves the reach out of the system in m³/s determinated by the file"
+            description = "Water that leaves the reach out of the system in mÂ³/s determinated by the file"
             )
             public JAMSDouble measured_waterloss;
     
@@ -116,7 +116,7 @@ title="Reach water  withdrawal",
     @JAMSVarDescription(
     access = JAMSVarDescription.AccessType.WRITE,
             update = JAMSVarDescription.UpdateType.RUN,
-            description = "Water that leaves the reach out of the system in m³/s determinated by the model"
+            description = "Water that leaves the reach out of the system in mÂ³/s determinated by the model"
             )
             public JAMSDouble model_waterloss;
     
@@ -154,7 +154,7 @@ title="Reach water  withdrawal",
         
         double sumN = SurfaceNabs.getValue() + InterflowNabs.getValue() + N_RG1_out.getValue() + N_RG2_out.getValue();
         
-        double waterloss_run = measured_waterloss.getValue() * 86400000; //transformation from m³/s in l/d
+        double waterloss_run = measured_waterloss.getValue() * 86400000; //transformation from mÂ³/s in l/d
         
         double losspart = 0;
         

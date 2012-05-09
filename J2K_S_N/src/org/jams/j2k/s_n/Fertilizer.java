@@ -1,7 +1,7 @@
 /*
  * Fertilizer.java
  *
- * Created on 7. März 2006, 10:37
+ * Created on 7. MÃ¤rz 2006, 10:37
  *
  * *
  * This file is part of JAMS

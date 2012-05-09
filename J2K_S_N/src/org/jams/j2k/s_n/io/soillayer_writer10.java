@@ -1,6 +1,6 @@
 /*
  * soillayer_writer4.java
- * Created on 12. März 2008, 11:43
+ * Created on 12. MÃ¤rz 2008, 11:43
  *
  * This file is part of JAMS
  * Copyright (C) 2005 FSU Jena, c8fima

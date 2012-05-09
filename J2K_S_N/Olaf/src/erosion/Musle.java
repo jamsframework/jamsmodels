@@ -106,7 +106,7 @@ import java.util.StringTokenizer;
 //                Ausgabe(datei, "C:/c8kiho/wd_erosion/L_Faktor1/neu.txt");
 //            }
 
-            //slope-Umrechung von � in %
+            //slope-Umrechung von ï¿½ in %
             double slopeperc = Math.round((Math.tan(Math.toRadians(slope))) * 100);
 
             //Hangneigunsgradient Sfac = S-Factor f?r slope kleiner 9% und g??er gleich 9%

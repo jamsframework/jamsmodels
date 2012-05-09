@@ -31,10 +31,10 @@ public class Solrad {
     /**
      * Calculates the solar constant for the julian day
      * @param julDay the julian day count [1 ... 365,366]
-     * @return the solar constant in MJ/m�min.
+     * @return the solar constant in MJ/mï¿½min.
      */
     public static double solarConstant(int julDay){
-        //solar constant in J / m� min
+        //solar constant in J / mï¿½ min
         double S = 81930 + 2910 * Math.cos(Math.PI / 180 * (julDay - 15));
         // J --> MJ
         S = S / 1000000;
@@ -54,8 +54,8 @@ public class Solrad {
      * calculates the daily solar or shortwave radiation
      * @param s the actual (measured) sunshine hours [h]
      * @param s0 the maximum possible sunshine hours [hour]
-     * @param Ra the daily extraterrestrial radiation [MJ / m� day or hour]
-     * @return the daily solar radiation [MJ / m� day or hour]
+     * @param Ra the daily extraterrestrial radiation [MJ / mï¿½ day or hour]
+     * @return the daily solar radiation [MJ / mï¿½ day or hour]
      */
     public static double solarRadiation(double s, double s0, double Ra, double angstrom_a, double angstrom_b){
         double Rs  = 0;
@@ -71,8 +71,8 @@ public class Solrad {
      * calculates the daily net shortwave radiation resulting from the balance between incoming
      * and reflected solar radiation
      * @param albedo the albedo of the landcover [-]
-     * @param Rs the daily solar radiation [MJ / m� day or hour]
-     * @return net solar or shortwave radiation [MJ / m� day or hour]
+     * @param Rs the daily solar radiation [MJ / mï¿½ day or hour]
+     * @return net solar or shortwave radiation [MJ / mï¿½ day or hour]
      */
     public static double netShortwaveRadiation(double albedo, double Rs){
         return (1 - albedo) * Rs;

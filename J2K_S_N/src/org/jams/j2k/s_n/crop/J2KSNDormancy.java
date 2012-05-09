@@ -72,14 +72,14 @@ import jams.model.*;
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
             update = JAMSVarDescription.UpdateType.RUN,
-            description = "Plants base growth temperature [°C]"
+            description = "Plants base growth temperature [Â°C]"
             )
             public JAMSDouble tbase;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
             update = JAMSVarDescription.UpdateType.RUN,
-            description = "HRU daily mean temperature [°C]"
+            description = "HRU daily mean temperature [Â°C]"
             )
             public JAMSDouble Tmean;
     

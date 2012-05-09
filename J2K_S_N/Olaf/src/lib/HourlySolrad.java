@@ -17,7 +17,7 @@ public class HourlySolrad {
 
     /**
      * calculates the mid time hour angle between two time steps. The hour angle is defined as the angle of the sun before
-     * noon. It is assumed that the sun moves 15� per hour. At times before noon the hour
+     * noon. It is assumed that the sun moves 15ï¿½ per hour. At times before noon the hour
      * angle is positive at noon it is zero and after noon the hour angle is negative.
      * @return the hour angle in dec. degree
      * @param localTimeDateObject the current J2KDate object transferred to real local time

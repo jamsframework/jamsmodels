@@ -95,7 +95,7 @@ public class J2KProcessSoilCarbonate extends JAMSComponent {
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
     update = JAMSVarDescription.UpdateType.RUN,
     description = "temperature of soillayer",
-    unit = "∞C")
+    unit = "¬∞C")
     public Attribute.DoubleArray soilTemperature;
 
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
@@ -246,7 +246,7 @@ public class J2KProcessSoilCarbonate extends JAMSComponent {
         else
             return Math.exp(0.47 - 0.027*T + 0.00193*T*T);
     }
-//phi in meterwassers‰ule
+//phi in meterwassers√§ule
     private double pressurePotentialFunction(double phi){
         double logPhi = Math.log10(-phi);
         if (logPhi > 4.5){
@@ -291,7 +291,7 @@ public class J2KProcessSoilCarbonate extends JAMSComponent {
             BMCS[i] = this.BMCS.getValue();
             BMCF[i] = this.BMCF.getValue();
         }
-        //abh‰ngig von landnutzung!!
+        //abh√§ngig von landnutzung!!
         microbialBiomassConcentrationSlow.setValue(BCS);
         microbialBiomassConcentrationFast.setValue(BCF);
         soilOrganicMatterConcentrationSlow.setValue(BMCS);
@@ -367,7 +367,7 @@ public class J2KProcessSoilCarbonate extends JAMSComponent {
                      EBOM1 = this.EBOM1.getValue(),  //factor
                      EBOM2 = this.EBOM2.getValue();
 
-        //parameter abh‰ngig von landnutzung
+        //parameter abh√§ngig von landnutzung
         //straw: 0.45 0.55
         //plant residues 0.4 0.6
         //pig slurry 0.9 0.0

@@ -54,7 +54,7 @@ import static oms3.annotations.Role.*;
     @In public double[] depth_h;
     
     @Description("soil bulk density")
-    @Unit("kg/dm³")
+    @Unit("kg/dmÂ³")
     @In public double[] bulk_density_h;
     
     @Description("organic Carbon in soil")

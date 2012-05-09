@@ -56,7 +56,7 @@ title="InitJ2KNSoillayer",
     @JAMSVarDescription(
     access = JAMSVarDescription.AccessType.READ,
             update = JAMSVarDescription.UpdateType.INIT,
-            description = "in kg/dm³ soil bulk density"
+            description = "in kg/dmÂ³ soil bulk density"
             )
             public JAMSDoubleArray soil_bulk_density;
     

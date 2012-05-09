@@ -103,11 +103,11 @@ public class InitJ2KProcessLayeredSoilWaterN2008 extends JAMSComponent {
     public JAMSDoubleArray inRD2_h;
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.WRITE,
     update = JAMSVarDescription.UpdateType.RUN,
-    description = "Soil bulk density in g/cm³")
+    description = "Soil bulk density in g/cmÂ³")
     public JAMSDoubleArray bulk_density_h;
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.WRITE,
     update = JAMSVarDescription.UpdateType.RUN,
-    description = "organic carbon content in %³")
+    description = "organic carbon content in %Â³")
     public JAMSDoubleArray corg_h;
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.WRITE,
     update = JAMSVarDescription.UpdateType.RUN,

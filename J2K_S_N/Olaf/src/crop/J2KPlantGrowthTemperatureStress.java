@@ -46,15 +46,15 @@ import static oms3.annotations.Role.*;
  public class J2KPlantGrowthTemperatureStress  {
     
     @Description("dayly mean temperature")
-    @Unit("�C")
+    @Unit("ï¿½C")
     @In public double tmean;
     
     @Description("plant groth base temperature")
-    @Unit("�C")
+    @Unit("ï¿½C")
     @In public double tbase;
     
     @Description("plant groth optimal temperature")
-    @Unit("�C")
+    @Unit("ï¿½C")
     @In public double topt;
     
     @Description("plant groth temperature stress factor")

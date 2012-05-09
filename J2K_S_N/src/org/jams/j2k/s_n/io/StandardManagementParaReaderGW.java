@@ -1,7 +1,7 @@
 /*
  * StandardManagementParaReader.java
  *
- * Created on 6. März 2006, 13:35
+ * Created on 6. MÃ¤rz 2006, 13:35
  *
  * * This file is part of JAMS
  * Copyright (C) 2005 S. Kralisch and P. Krause
@@ -38,10 +38,10 @@ import jams.data.*;
 public class StandardManagementParaReaderGW extends StandardManagementParaReader {
     
   
-    // HashMap für Fertilizer anlegen
+    // HashMap fÃ¼r Fertilizer anlegen
 
     
-    // HashMap für Management anlegen; mit Verweis auf Tillage und Fertilizer
+    // HashMap fÃ¼r Management anlegen; mit Verweis auf Tillage und Fertilizer
     private HashMap<Integer, ArrayList<J2KSNLMArable>> readManagementPara(String fileName, HashMap<Integer, J2KSNTillage> tills, HashMap<Integer, J2KSNFertilizer> ferts) {
           
         BufferedReader reader;
@@ -49,7 +49,7 @@ public class StandardManagementParaReaderGW extends StandardManagementParaReader
         String[] vals = new String[9];
         int oldCID = -1, cid = -1;
         ArrayList<J2KSNLMArable> managements = null;
-        // neu seit Java 5 ist die nähere Definition der Collections gewünscht
+        // neu seit Java 5 ist die nÃ¤here Definition der Collections gewÃ¼nscht
         // HashMap anlegen
         HashMap<Integer, ArrayList<J2KSNLMArable>> map = new HashMap<Integer, ArrayList<J2KSNLMArable>>();
         
@@ -111,7 +111,7 @@ public class StandardManagementParaReaderGW extends StandardManagementParaReader
         linkCrops(getModel().getWorkspaceDirectory().getPath() + "/" + hruRotationFileName.getValue(), rotations);
     }
     
-    // HashMap für Crop anlegen; mit Verweis auf Management, respective tillage und fertilizer
+    // HashMap fÃ¼r Crop anlegen; mit Verweis auf Management, respective tillage und fertilizer
     
     
 

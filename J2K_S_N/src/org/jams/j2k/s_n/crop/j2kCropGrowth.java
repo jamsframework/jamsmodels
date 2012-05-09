@@ -63,14 +63,14 @@ import java.io.*;
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
             update = JAMSVarDescription.UpdateType.INIT,
-            description = "HRU daily mean temperature [°C]"
+            description = "HRU daily mean temperature [Â°C]"
             )
             public JAMSDouble Tmean;
     
      @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
             update = JAMSVarDescription.UpdateType.INIT,
-            description = "HRU plant temperature [°C]"
+            description = "HRU plant temperature [Â°C]"
             )
             public JAMSDouble Tbase;
     
@@ -162,7 +162,7 @@ import java.io.*;
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
             update = JAMSVarDescription.UpdateType.INIT,
-            description = "Daily solar radiation [MJ/m²]"
+            description = "Daily solar radiation [MJ/mÂ²]"
             )
             public JAMSDouble SolRad;
     
@@ -170,14 +170,14 @@ import java.io.*;
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
             update = JAMSVarDescription.UpdateType.INIT,
-            description = "Crop specific radiation use efficiency ([kg/ha] drymass per[MJm²])"
+            description = "Crop specific radiation use efficiency ([kg/ha] drymass per[MJmÂ²])"
             )
             public JAMSDouble RadUse;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
             update = JAMSVarDescription.UpdateType.INIT,
-            description = "Intercepted photosynthetically active radiation [MJ/m²]"
+            description = "Intercepted photosynthetically active radiation [MJ/mÂ²]"
             )
             public JAMSDouble Hphosyn;
     
@@ -336,7 +336,7 @@ import java.io.*;
  /*   @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
             update = JAMSVarDescription.UpdateType.INIT,
-            description = "Optimal temperature for plant growth [°C]"
+            description = "Optimal temperature for plant growth [Â°C]"
             )
             public JAMSDouble TOpt; */
     
@@ -645,16 +645,16 @@ import java.io.*;
 //    (1)   Keimtriebentwicklung (Blattentwicklung)
 //    (2)   Bestockung
 //    (3)   Schossen (Hauptrieb)
-//    (4)   Ähren- und Rispenschwellen
-//    (5)   Ähren- und Rispenschieben
-//    (6)   Blüte
+//    (4)   Ã„hren- und Rispenschwellen
+//    (5)   Ã„hren- und Rispenschieben
+//    (6)   BlÃ¼te
 //    (7)   Fruchtbildung
 //    (8)   Samenreife
 //    (9)   Absterben
    
-   // setze Bedingungen für einzelne Pflanzenentwicklungszustände
+   // setze Bedingungen fÃ¼r einzelne PflanzenentwicklungszustÃ¤nde
     
-  /*  double CHU = CHU + (this.tmean - this.tbase); //phänologisch wirksame Temperatursumme
+  /*  double CHU = CHU + (this.tmean - this.tbase); //phÃ¤nologisch wirksame Temperatursumme
     int julday = time.get(time.JULDAY);
     double CJD = CJD++; */
     
@@ -782,27 +782,27 @@ import java.io.*;
         7 trees
         Processes modeled differently for the 7 groups are:
         1 warm season annual legume
-         simulate nitrogen fixation
-         root depth varies during growing season due to root growth
+        Â• simulate nitrogen fixation
+        Â• root depth varies during growing season due to root growth
         2 cold season annual legume
-         simulate nitrogen fixation
-         root depth varies during growing season due to root growth
-         fall-planted land covers will go dormant when daylength is less than the threshold daylength
+        Â• simulate nitrogen fixation
+        Â• root depth varies during growing season due to root growth
+        Â• fall-planted land covers will go dormant when daylength is less than the threshold daylength
         3 perennial legume
-         simulate nitrogen fixation
-         root depth always equal to the maximum allowed for the plant species and soil
-         plant goes dormant when daylength is less than the threshold daylength
+        Â• simulate nitrogen fixation
+        Â• root depth always equal to the maximum allowed for the plant species and soil
+        Â• plant goes dormant when daylength is less than the threshold daylength
         4 warm season annual
-         root depth varies during growing season due to root growth
+        Â• root depth varies during growing season due to root growth
         5 cold season annual
-         root depth varies during growing season due to root growth
-         fall-planted land covers will go dormant when daylength is less than the threshold daylength
+        Â• root depth varies during growing season due to root growth
+        Â• fall-planted land covers will go dormant when daylength is less than the threshold daylength
         6 perennial
-         root depth always equal to the maximum allowed for the plant species and soil
-         plant goes dormant when daylength is less than the threshold daylength
+        Â• root depth always equal to the maximum allowed for the plant species and soil
+        Â• plant goes dormant when daylength is less than the threshold daylength
         7 trees
-         root depth always equal to the maximum allowed for the plant species and soil
-         partitions new growth between leaves/needles (30%) and woody growth (70%). At the end of each growing season, biomass in the leaf fraction is converted to residue*/
+        Â• root depth always equal to the maximum allowed for the plant species and soil
+        Â• partitions new growth between leaves/needles (30%) and woody growth (70%). At the end of each growing season, biomass in the leaf fraction is converted to residue*/
         
    // Root development (mm in the soil) for plant types on a given day
         
@@ -859,7 +859,7 @@ import java.io.*;
         // is calculated by the fraction of the plant biomass as a function of growth stage given the optimal conditions
         // fnplant =fraction N in plant biomass
         // with bn1 as fraction of N in the plant biomass at the emergence
-        // with bn2 as fraction of N in the plant biomass near the middle of the growing  season (bevor Blütenstand hevortritt)
+        // with bn2 as fraction of N in the plant biomass near the middle of the growing  season (bevor BlÃ¼tenstand hevortritt)
         // with bn3 as fraction of N in the plant biomass at the maturity
         // with bn3_ca as fraction of N in the plant biomass near maturity
         // n1 and n2 are shape coefficients by solving the equation of two known points

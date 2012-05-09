@@ -537,7 +537,7 @@ import static oms3.annotations.Role.*;
         double veloc = 0;
 
         /**
-         *transfering liter/d to m?�/s
+         *transfering liter/d to m?ï¿½/s
          **/
         double q_m = q / (1000 * secondsOfTimeStep);
         rh = calcHydraulicRadius(afv, q_m, width);
