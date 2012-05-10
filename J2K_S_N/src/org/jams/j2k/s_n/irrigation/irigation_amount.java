@@ -1,0 +1,94 @@
+/*
+ * To change this template, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package org.jams.j2k.s_n.irrigation;
+
+import jams.data.*;
+import jams.model.*;
+
+/**
+ *
+ * @author c6gohe2
+ */
+@JAMSComponentDescription(title = "Calculation of irrigation water N-concentration",
+author = "c8fima",
+description = "Calculation of irrigation water N-concentration")
+public class irigation_amount extends JAMSComponent {
+
+
+
+    @JAMSVarDescription(
+            access = JAMSVarDescription.AccessType.WRITE,
+            update = JAMSVarDescription.UpdateType.RUN,
+            description = "HRU crop class"
+            )
+            public JAMSDouble Bypasswater;
+
+
+
+    @JAMSVarDescription(
+            access = JAMSVarDescription.AccessType.READWRITE,
+            update = JAMSVarDescription.UpdateType.RUN,
+            description = "HRU crop class"
+            )
+            public JAMSDouble irrigationsum;
+
+    @JAMSVarDescription(
+            access = JAMSVarDescription.AccessType.WRITE,
+            update = JAMSVarDescription.UpdateType.RUN,
+            description = "HRU crop class"
+            )
+            public JAMSDouble irrigationpart;
+    
+   @JAMSVarDescription(
+            access = JAMSVarDescription.AccessType.READ,
+            update = JAMSVarDescription.UpdateType.RUN,
+            description = "Portion of the irrigation which bypasses the fields and goes directly into the dainage cannel [0 - 100] default = 0"
+            )
+            public JAMSDouble Bypassfactor;
+   
+   @JAMSVarDescription(
+            access = JAMSVarDescription.AccessType.READ,
+            update = JAMSVarDescription.UpdateType.RUN,
+            description = "Portion of the irrigation water depending on the demand [0 - 100] default = 0"
+            )
+            public JAMSDouble IrrWaterfactor;
+
+ 
+
+
+//Berechnung
+    public void init(){
+        irrigationpart.setValue(0.0);
+        irrigationsum.setValue(0.0);
+    }
+    public void run (){
+
+        double irripart = 0;
+
+
+         
+
+        double irrigationwater = (irrigationsum.getValue() * IrrWaterfactor.getValue());
+        
+        Bypasswater.setValue(irrigationwater * Bypassfactor.getValue());
+
+        if (irrigationwater > 0){
+            irripart = irrigationsum.getValue()/ irrigationwater ;
+        }else{
+            irripart = 0;
+        }
+        
+        irrigationpart.setValue(irripart);
+
+
+
+ //       irrigationsum.setValue(0.0);
+
+
+    }
+
+
+
+}
