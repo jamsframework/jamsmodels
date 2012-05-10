@@ -622,6 +622,7 @@ import java.io.*;
             this.runpercoNaCl = 0;
             this.runNaCl_residue_pool_fresh = NaCl_residue_pool_fresh.getValue()[i]; 
             this.runsurfaceNaCl_in = SurfaceNaCl_in.getValue() * 10000 / runarea;
+           
             this.runinterflowNaCl_in = InterflowNaCl_in.getValue()[i] * 10000 / runarea;
             SurfaceNaCl_in.setValue(0);
             
@@ -704,6 +705,8 @@ import java.io.*;
                 runsurfaceNaCl = calc_surfaceNaCl();
                 runNaCl_Pool = runNaCl_Pool - runsurfaceNaCl;
                 runNaCl_Pool = Math.max(0, runNaCl_Pool);
+            } else {
+                runsurfaceNaCl = 0;
             }
             
             
@@ -780,6 +783,7 @@ import java.io.*;
         InterflowNaClabs.setValue(interflowNaClabsvals);
         PercoNaCl.setValue(percoNaClvals[layer -1]);
         PercoNaClabs.setValue(percoNaClabsvals[layer -1]);
+     
         SurfaceNaCl.setValue(runsurfaceNaCl);
         runsurfaceNaClabs = runsurfaceNaCl * runarea / 10000;
         SurfaceNaClabs.setValue(runsurfaceNaClabs);
