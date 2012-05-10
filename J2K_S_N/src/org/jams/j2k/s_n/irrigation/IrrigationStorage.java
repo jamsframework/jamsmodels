@@ -70,11 +70,11 @@ public class IrrigationStorage extends JAMSComponent {
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
     update = JAMSVarDescription.UpdateType.RUN,
     description = "Start of the Irrigation season in day of the year (-)")
-    public JAMSInteger Irr_Start;
+    public JAMSDouble Irr_Start;
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
     update = JAMSVarDescription.UpdateType.RUN,
     description = "End of the Irrigation season in day of the year (-)")
-    public JAMSInteger Irr_End;
+    public JAMSDouble Irr_End;
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
     update = JAMSVarDescription.UpdateType.RUN,
     description = "Exponent of the water use efficiency function (-)")
@@ -92,6 +92,11 @@ public class IrrigationStorage extends JAMSComponent {
     description = "Current time")            
     public JAMSCalendar time;
     
+    @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
+    update = JAMSVarDescription.UpdateType.RUN,
+    description = "Random intervall for the demandfactor (-)")            
+    public JAMSDouble rand_intervall;
+    
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.WRITE,
     update = JAMSVarDescription.UpdateType.RUN,
     description = "Test value for water use efficiency function (-)")
@@ -102,7 +107,7 @@ public class IrrigationStorage extends JAMSComponent {
     //Berechnung
     public void run() throws JAMSEntity.NoSuchAttributeException {
         Attribute.Entity entity = entities.getCurrent();
-        double wst = wstrs.getValue();
+        double wst = 1 - wstrs.getValue();
         double satMPSArray[] = satMPS.getValue();
         double maxMPSArray[] = maxMPS.getValue();
         double satLPSArray[] = satLPS.getValue();
@@ -147,6 +152,10 @@ public class IrrigationStorage extends JAMSComponent {
         }else if (act > Irr_End.getValue()){
             wstthr = wst_thr_out.getValue();
         }
+        
+        double random = (rand_intervall.getValue() * Math.random()) - (rand_intervall.getValue()/2);
+        
+        wstthr = wstthr +  random;
         
         double Irr_mul = Irr_mult.getValue();
         double irrsum = irrigationsum.getValue();

@@ -204,7 +204,9 @@ public class J2KNMultiRoutinglayer_cb extends JAMSComponent {
                     RD1in += anteileKomponentenCB[0] * abflussCBReach_akt;
                     RD2in += anteileKomponentenCB[1] * abflussCBReach_akt;
                     RG1in += anteileKomponentenCB[2] * abflussCBReach_akt;
-
+                    
+                    
+                    
                     toReach.setDouble("SurfaceN_in", RD1in);
                     toReach.setDouble("InterflowN_sum", RD2in);
                     toReach.setDouble("N_RG1_in", RG1in);
