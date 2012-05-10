@@ -29,6 +29,20 @@ public class calc_irigation_conc_N extends JAMSComponent {
             description = "HRU crop class"
             )
             public JAMSDouble storageInputN;
+    
+    @JAMSVarDescription(
+            access = JAMSVarDescription.AccessType.READ,
+            update = JAMSVarDescription.UpdateType.RUN,
+            description = "Fixed minimal bypass factor 0 - 1 [-], default 0"
+            )
+            public JAMSDouble Bypassfactor;
+        
+    @JAMSVarDescription(
+            access = JAMSVarDescription.AccessType.WRITE,
+            update = JAMSVarDescription.UpdateType.RUN,
+            description = "Water amount in bypass [l]"
+            )
+            public JAMSDouble Bypasswater;
 
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
@@ -69,13 +83,17 @@ public class calc_irigation_conc_N extends JAMSComponent {
 
         double irripart = 0;
 
+        double run_storage = storage.getValue();
 
-        storage.setValue(storageInput.getValue()*1000); // from mÂ³/day to l/day
+        double irrstorage = (storageInput.getValue()*1000); // from m³/day to l/day
 
+        irrstorage = irrstorage * (1 - Bypassfactor.getValue());
+        
+        Bypasswater.setValue(irrstorage * Bypassfactor.getValue());
+        
+        irripart = irrigationsum.getValue()/irrstorage;
 
-        irripart = irrigationsum.getValue()/storage.getValue();
-
-        irrigationN_conc.setValue( storageInputN.getValue()/storage.getValue());
+        irrigationN_conc.setValue( storageInputN.getValue()/storageInput.getValue()*1000);
 
         if (irripart > 1) {
             irripart = 1;
@@ -86,6 +104,8 @@ public class calc_irigation_conc_N extends JAMSComponent {
 
 
         irrigationsum.setValue(0.0);
+        
+        storage.setValue(irrstorage + run_storage);
 
 
     }
