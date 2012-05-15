@@ -174,7 +174,10 @@
         <para>For precipitation depths of ≤9.0 mm the wetting and evaporation error is calculated
         according to:</para>
         
-        <para><inlineequation>
+          <para><equation>
+              <mediaobject>
+                  <imageobject>
+                      <imagedata align="center">
             <m:math display="inline">
                 <m:mtable>
                     <m:mtr>
@@ -266,11 +269,19 @@
                     </m:mtr>
                 </m:mtable>
             </m:math>
-        </inlineequation></para>
+                          
+                      </imagedata>
+                  </imageobject>
+              </mediaobject>
+          </equation></para>
         
         <para>For precipitation depths of &gt;9.0 mm the wetting and evaporation error is:</para>
         
-        <para><inlineequation>
+          <para>
+              <equation>
+                  <mediaobject>
+                      <imageobject>
+                          <imagedata align="center">
             <m:math display="inline">
                 <m:mtable>
                     <m:mtr>
@@ -326,7 +337,11 @@
                     </m:mtr>
                 </m:mtable>
             </m:math>
-        </inlineequation></para>
+            
+            </imagedata>
+            </imageobject>
+            </mediaobject>
+            </equation></para>
       </sect3>
         <sect3>
             <title>Correction of the Wind Error</title>  
@@ -336,7 +351,11 @@
         distinctly inversely proportional to the precipitation depths (Pm). The calculation is
         carried out according to the following equations:</para>
         
-        <para><inlineequation>
+            <para>
+                <equation>
+                    <mediaobject>
+                        <imageobject>
+                            <imagedata align="center">
             <m:math display="inline">
                 <m:mrow>
                     <m:mrow>
@@ -404,11 +423,17 @@
                     </m:mrow>
                 </m:mrow>
             </m:math>
-        </inlineequation></para>
+                            </imagedata>
+                        </imageobject>
+                    </mediaobject>
+                </equation></para>
         
         <para>The calculation of the corrected precipitation depths with regard to evaporation and
         wind error is carried out as follows:</para>
-        <equation>
+            <equation>
+                <mediaobject>
+                    <imageobject>
+                        <imagedata align="center">
             <m:math display="block">
                 <m:mrow>
                     <m:mrow>
@@ -523,7 +548,7 @@
                                                         </m:mrow>
                                                     </m:msup>
                                                     
-                                                    <m:mi>] </m:mi>
+                                                    <m:mi> ] </m:mi>
                                                 </m:mrow>
                                             </m:mrow>
                                             
@@ -536,7 +561,11 @@
                     </m:mrow>
                 </m:mrow>
             </m:math>
-        </equation>
+                            
+                        </imagedata>
+                    </imageobject>
+                </mediaobject>
+            </equation>
         </sect3>
     </sect2>
       <bibliography>

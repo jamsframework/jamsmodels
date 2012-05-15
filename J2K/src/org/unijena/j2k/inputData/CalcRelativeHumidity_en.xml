@@ -35,15 +35,15 @@
       <tbody>
         <row>
           <entry>tmean</entry>
-          <entry>air temperature U[°C]</entry>
+          <entry>air temperature [°C]</entry>
         </row>
         <row>
           <entry>ahum</entry>
-          <entry>absolute humidity U[g/m³]</entry>
+          <entry>absolute humidity [g/m³]</entry>
         </row>
         <row>
           <entry>rhum</entry>
-          <entry>relative humidity U[%]state variable relative humidity</entry>
+          <entry>relative humidity [%]state variable relative humidity</entry>
         </row>        
       </tbody>
     </tgroup>
@@ -77,7 +77,11 @@
         </math>
       </inlineequation>) is calculated, then the maximum humidity and relative humidity is
       calculated as a relation between absolute and relative humidity : </para>
-    <para><inlineequation>
+    <para>
+      <equation>
+        <mediaobject>
+          <imageobject>
+            <imagedata align="center">
         <math display="block" xmlns="http://www.w3.org/1998/Math/MathML">
           <semantics>
             <mrow>
@@ -128,7 +132,10 @@
               >MathType@MTEF@5@5@+=feaagCart1ev2aaatCvAUfeBSjuyZL2yd9gzLbvyNv2CaerbuLwBLnhiov2DGi1BTfMBaeXatLxBI9gBaerbd9wDYLwzYbItLDharqqtubsr4rNCHbGeaGqiVu0Je9sqqrpepC0xbbL8F4rqqrFfpeea0xe9Lq=Jc9vqaqpepm0xbba9pwe9Q8fs0=yqaqpepae9pg0FirpepeKkFr0xfr=xfr=xb9adbaqaaeGaciGaaiaabeqaamaabaabaaGcbaaeaaaaaaaaa8qacaWGLbWdamaaBaaaleaapeGaam4CaaWdaeqaaOWdbiabg2da9iaaicdacaGGUaGaaGOnaiaaigdacaaIWaGaaGioaiaacElacaqGLbWdamaaCaaaleqabaWdbmaabmaapaqaa8qadaWcaaWdaeaapeGaaGymaiaaiEdacaGGUaGaaGOmaiaaiEdacaGG3cGaamiDaiaad2gacaWGLbGaamyyaiaad6gaa8aabaWdbiaaikdacaaIZaGaaG4naiaac6cacaaIZaGaey4kaSIaamiDaiaad2gacaWGLbGaamyyaiaad6gaaaaacaGLOaGaayzkaaaaaOWdaiaaywW7peGaai4waiaabUgacaqGqbGaaeyyaiaac2faaaa@5B21@</annotation>
           </semantics>
         </math>
-      </inlineequation></para><para>The maximum humidity (<inlineequation>
+            </imagedata>
+          </imageobject>
+        </mediaobject>
+      </equation></para><para>The maximum humidity (<inlineequation>
         <ns3:math display="inline">
           <ns3:mrow>
             <ns3:mi>m</ns3:mi>
@@ -139,7 +146,10 @@
             </ns3:mrow>
           </ns3:mrow>
         </ns3:math>
-      </inlineequation>) results from this according to: </para><para><inlineequation>
+      </inlineequation>) results from this according to: </para><para><equation>
+        <mediaobject>
+          <imageobject>
+            <imagedata align="center">
         <math display="block" xmlns="http://www.w3.org/1998/Math/MathML">
           <semantics>
             <mrow>
@@ -181,7 +191,10 @@
               >MathType@MTEF@5@5@+=feaagCart1ev2aaatCvAUfeBSjuyZL2yd9gzLbvyNv2CaerbuLwBLnhiov2DGi1BTfMBaeXatLxBI9gBaerbd9wDYLwzYbItLDharqqtubsr4rNCHbGeaGqiVu0Je9sqqrpepC0xbbL8F4rqqrFfpeea0xe9Lq=Jc9vqaqpepm0xbba9pwe9Q8fs0=yqaqpepae9pg0FirpepeKkFr0xfr=xfr=xb9adbaqaaeGaciGaaiaabeqaamaabaabaaGcbaGaamyBaiaadIgacaWG1bGaamyBaiabg2da9iaadwgadaWgaaWcbaGaam4CaaqabaGccqGHflY1caaIXaGaaGimaiabgwSixpaalaaabaGaaGOmaiaaigdacaaI2aGaaiOlaiaaiEdaaeaacaWG0bGaamyBaiaadwgacaWGHbGaamOBaiabgUcaRiaaikdacaaI3aGaaG4maiaac6cacaaIXaGaaGynaaaacaqGGaGaae4waiaabEgacaqGVaGaaeyBamaaCaaaleqabaGaae4maaaakiaab2faaaa@5670@</annotation>
           </semantics>
         </math>
-      </inlineequation> </para><para>Finally, the relative humidity (<inlineequation>
+            </imagedata>
+          </imageobject>
+        </mediaobject>
+      </equation> </para><para>Finally, the relative humidity (<inlineequation>
         <ns3:math display="inline">
           <ns3:mrow>
             <ns3:mi>r</ns3:mi>
@@ -192,7 +205,10 @@
             </ns3:mrow>
           </ns3:mrow>
         </ns3:math>
-      </inlineequation>) is calculated according to:</para><para><inlineequation>
+      </inlineequation>) is calculated according to:</para><para><equation>
+        <mediaobject>
+          <imageobject>
+            <imagedata align="center">
         <math display="block" xmlns="http://www.w3.org/1998/Math/MathML">
           <semantics>
             <mrow>
@@ -223,5 +239,10 @@
               >MathType@MTEF@5@5@+=feaagCart1ev2aaatCvAUfeBSjuyZL2yd9gzLbvyNv2CaerbuLwBLnhiov2DGi1BTfMBaeXatLxBI9gBaerbd9wDYLwzYbItLDharqqtubsr4rNCHbGeaGqiVu0Je9sqqrpepC0xbbL8F4rqqrFfpeea0xe9Lq=Jc9vqaqpepm0xbba9pwe9Q8fs0=yqaqpepae9pg0FirpepeKkFr0xfr=xfr=xb9adbaqaaeGaciGaaiaabeqaamaabaabaaGcbaGaamOCaiaadIgacaWG1bGaamyBaiabg2da9maalaaabaGaamyyaiaadIgacaWG1bGaamyBaaqaaiaad2gacaWGObGaamyDaiaad2gaaaGaeyyXICTaaGymaiaaicdacaaIWaGaaeiiaiaabccacaqGBbGaaeyjaiaab2faaaa@4A89@</annotation>
           </semantics>
         </math>
-      </inlineequation></para></sect2>
+              
+            </imagedata>
+          </imageobject>
+        </mediaobject>
+      </equation>
+      </para></sect2>
 </sect1>

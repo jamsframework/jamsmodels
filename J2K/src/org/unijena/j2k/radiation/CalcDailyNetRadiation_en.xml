@@ -35,43 +35,43 @@
       <tbody>
         <row>
           <entry>tmean</entry>
-          <entry>mean air temperature  U[°C]</entry>
+          <entry>mean air temperature [°C]</entry>
         </row>
         <row>
           <entry>rhum</entry>
-          <entry>relative humidity U[%]</entry>
+          <entry>relative humidity [%]</entry>
         </row>
         <row>
           <entry>extRad</entry>
-          <entry>extraterrestrial radiation U [MJ m-2 d-1]</entry>
+          <entry>extraterrestrial radiation [MJ m-2 d-1]</entry>
         </row>
         <row>
           <entry>solRad</entry>
-          <entry>global radiation U [MJ m-2 d-1]</entry>
+          <entry>global radiation [MJ m-2 d-1]</entry>
         </row>
         <row>
           <entry>albedo</entry>
-          <entry>albedo of land cover U [-]</entry>
+          <entry>albedo of land cover [-]</entry>
         </row>
         <row>
           <entry>elevation</entry>
-          <entry>elevation asl of spatial entity U[m]</entry>
+          <entry>elevation asl of spatial entity [m]</entry>
         </row>
         <row>
           <entry>netRad</entry>
-          <entry>net radiation U [MJ m-2 d-1]</entry>
+          <entry>net radiation [MJ m-2 d-1]</entry>
         </row>
         <row>
           <entry>swRad</entry>
-          <entry>shortwave radiation U [MJ m-2 d-1]</entry>
+          <entry>shortwave radiation [MJ m-2 d-1]</entry>
         </row>
         <row>
           <entry>lwRad</entry>
-          <entry>longwave radiation U [MJ m-2 d-1]</entry>
+          <entry>longwave radiation [MJ m-2 d-1]</entry>
         </row>
         <row>
           <entry>refETNetRad</entry>
-          <entry>daily net radiation for Grass Reference Evapotranspiration U [MJ m-2 d-1]</entry>
+          <entry>daily net radiation for Grass Reference Evapotranspiration [MJ m-2 d-1]</entry>
         </row>
         <row>
           <entry>dataCaching</entry>
@@ -115,7 +115,11 @@
           </semantics>
         </math>
       </inlineequation>) is: </para>
-    <para><inlineequation>
+    <para><equation>
+      <mediaobject>
+        <imageobject>
+          <imagedata align="center">
+            
         <math display="block" xmlns="http://www.w3.org/1998/Math/MathML">
           <semantics>
             <mrow>
@@ -166,7 +170,10 @@
               >MathType@MTEF@5@5@+=feaagCart1ev2aaatCvAUfeBSjuyZL2yd9gzLbvyNv2CaerbuLwBLnhiov2DGi1BTfMBaeXatLxBI9gBaerbd9wDYLwzYbItLDharqqtubsr4rNCHbGeaGqiVu0Je9sqqrpepC0xbbL8F4rqqrFfpeea0xe9Lq=Jc9vqaqpepm0xbba9pwe9Q8fs0=yqaqpepae9pg0FirpepeKkFr0xfr=xfr=xb9adbaqaaeGaciGaaiaabeqaamaabaabaaGcbaaeaaaaaaaaa8qacaWGLbWdamaaBaaaleaapeGaam4CaaWdaeqaaOWdbiabg2da9iaaicdacaGGUaGaaGOnaiaaigdacaaIWaGaaGioaiaacElacaqGLbWdamaaCaaaleqabaWdbmaabmaapaqaa8qadaWcaaWdaeaapeGaaGymaiaaiEdacaGGUaGaaGOmaiaaiEdacaGG3cGaamiDaiaad2gacaWGLbGaamyyaiaad6gaa8aabaWdbiaaikdacaaIZaGaaG4naiaac6cacaaIZaGaey4kaSIaamiDaiaad2gacaWGLbGaamyyaiaad6gaaaaacaGLOaGaayzkaaaaaOWdaiaaywW7peGaai4waiaabUgacaqGqbGaaeyyaiaac2faaaa@5B21@</annotation>
           </semantics>
         </math>
-      </inlineequation></para>
+          </imagedata>
+        </imageobject>
+      </mediaobject>
+    </equation></para>
     <para>The <emphasis role="bold">current vapor pressure</emphasis> (<inlineequation>
         <math display="block" xmlns="http://www.w3.org/1998/Math/MathML">
           <semantics>
@@ -182,7 +189,11 @@
         </math>
       </inlineequation>) results from the saturation vapor pressure and the relative humidity (U in
       [%]) according to: </para>
-    <para><inlineequation>
+    <para>
+      <equation>
+        <mediaobject>
+          <imageobject>
+            <imagedata align="center">
         <math display="block" xmlns="http://www.w3.org/1998/Math/MathML">
           <semantics>
             <mrow>
@@ -208,7 +219,10 @@
               >MathType@MTEF@5@5@+=feaagCart1ev2aaatCvAUfeBSjuyZL2yd9gzLbvyNv2CaerbuLwBLnhiov2DGi1BTfMBaeXatLxBI9gBaerbd9wDYLwzYbItLDharqqtubsr4rNCHbGeaGqiVu0Je9sqqrpepC0xbbL8F4rqqrFfpeea0xe9Lq=Jc9vqaqpepm0xbba9pwe9Q8fs0=yqaqpepae9pg0FirpepeKkFr0xfr=xfr=xb9adbaqaaeGaciGaaiaabeqaamaabaabaaGcbaGaamyzamaaBaaaleaacaWGHbaabeaakiabg2da9iaadwgadaWgaaWcbaGaam4CaaqabaGccqGHflY1daWcaaqaaiaadwfaaeaacaaIXaGaaGimaiaaicdaaaGaaeiiaiaabUfacaqGRbGaaeiuaiaabggacaqGDbaaaa@4581@</annotation>
           </semantics>
         </math>
-      </inlineequation></para>
+            </imagedata>
+          </imageobject>
+        </mediaobject>
+      </equation></para>
     <para>Using the extraterrestrial radiation (<inlineequation>
         <math display="block" xmlns="http://www.w3.org/1998/Math/MathML">
           <semantics>
@@ -224,8 +238,8 @@
               >MathType@MTEF@5@5@+=feaagCart1ev2aaatCvAUfeBSjuyZL2yd9gzLbvyNv2CaerbuLwBLnhiov2DGi1BTfMBaeXatLxBI9gBaerbd9wDYLwzYbItLDharqqtubsr4rNCHbGeaGqiVu0Je9sqqrpepC0xbbL8F4rqqrFfpeea0xe9Lq=Jc9vqaqpepm0xbba9pwe9Q8fs0=yqaqpepae9pg0FirpepeKkFr0xfr=xfr=xb9adbaqaaeGaciGaaiaabeqaamaabaabaaGcbaGaamyzaiaadIhacaWG0bGaamOuaiaadggacaWGKbaaaa@3B7A@</annotation>
           </semantics>
         </math>
-      </inlineequation>) and the elevation h of the model entity shows the global radiation with
-      cloudless, clear sky (<inlineequation>
+    </inlineequation>) and the elevation h of the model entity shows the  <emphasis role="bold">global radiation with
+      cloudless, clear sky </emphasis> (<inlineequation>
         <ns3:math display="inline">
           <ns3:msub>
             <ns3:mi>R</ns3:mi>
@@ -236,7 +250,10 @@
           </ns3:msub>
         </ns3:math>
       </inlineequation>):</para>
-    <para><inlineequation>
+    <para><equation>
+      <mediaobject>
+        <imageobject>
+          <imagedata align="center">
         <math display="block" xmlns="http://www.w3.org/1998/Math/MathML">
           <semantics>
             <mrow>
@@ -298,7 +315,11 @@
               >MathType@MTEF@5@5@+=feaagCart1ev2aaatCvAUfeBSjuyZL2yd9gzLbvyNv2CaerbuLwBLnhiov2DGi1BTfMBaeXatLxBI9gBaerbd9wDYLwzYbItLDharqqtubsr4rNCHbGeaGqiVu0Je9sqqrpepC0xbbL8F4rqqrFfpeea0xe9Lq=Jc9vqaqpepm0xbba9pwe9Q8fs0=yqaqpepae9pg0FirpepeKkFr0xfr=xfr=xb9adbaqaaeGaciGaaiaabeqaamaabaabaaGcbaGaamOuamaaBaaaleaacaWGdbGaam4uaaqabaGccqGH9aqpdaqadaqaaiaaicdacaGGUaGaaG4naiaaiwdacqGHRaWkcaaIYaGaeyyXICTaaGymaiaaicdadaahaaWcbeqaaiabgkHiTiaaiwdaaaGccqGHflY1caWGObaacaGLOaGaayzkaaGaeyyXICTaamyzaiaadIhacaWG0bGaamOuaiaadggacaWGKbGaaeiiaiaabUfacaqGnbGaaeOsaiaabccacaqGTbWaaWbaaSqabeaacaqGTaGaaeOmaaaakiaabccacaqGKbWaaWbaaSqabeaacaqGTaGaaeymaaaakiaab2faaaa@5AB5@</annotation>
           </semantics>
         </math>
-      </inlineequation>
+          </imagedata>
+        </imageobject>
+      </mediaobject>
+    </equation>
+      
     </para>
     <para>The global radiation(<inlineequation>
         <math display="block" xmlns="http://www.w3.org/1998/Math/MathML">
@@ -319,7 +340,7 @@
         <ns3:math display="inline">
           <ns3:mi>α</ns3:mi>
         </ns3:math>
-      </inlineequation>) of the specific land cover gives the shortwave net radiation (<inlineequation>
+      </inlineequation>) of the specific land cover gives the <emphasis role="bold">shortwave net radiation </emphasis> (<inlineequation>
         <math display="block" xmlns="http://www.w3.org/1998/Math/MathML">
           <semantics>
             <mrow>
@@ -335,7 +356,11 @@
           </semantics>
         </math>
       </inlineequation>):</para>
-    <para><inlineequation>
+    <para>
+      <equation>
+        <mediaobject>
+          <imageobject>
+            <imagedata align="center">
         <math display="block" xmlns="http://www.w3.org/1998/Math/MathML">
           <semantics>
             <mrow>
@@ -379,8 +404,11 @@
               >MathType@MTEF@5@5@+=feaagCart1ev2aaatCvAUfeBSjuyZL2yd9gzLbvyNv2CaerbuLwBLnhiov2DGi1BTfMBaeXatLxBI9gBaerbd9wDYLwzYbItLDharqqtubsr4rNCHbGeaGqiVu0Je9sqqrpepC0xbbL8F4rqqrFfpeea0xe9Lq=Jc9vqaqpepm0xbba9pwe9Q8fs0=yqaqpepae9pg0FirpepeKkFr0xfr=xfr=xb9adbaqaaeGaciGaaiaabeqaamaabaabaaGcbaGaamOBaiaadwgacaWG0bGaamOuaiaadggacaWGKbGaeyypa0JaaiikaiaaigdacqGHsislcqaHXoqycaGGPaGaeyyXICTaam4Caiaad+gacaWGSbGaamOuaiaadggacaWGKbGaaeiiaiaabccacaqGGaGaaeiiaiaabUfacaqGnbGaaeOsaiaabccacaqGTbWaaWbaaSqabeaacaqGTaGaaeOmaaaakiaabccacaqGKbWaaWbaaSqabeaacaqGTaGaaeymaaaakiaab2faaaa@551E@</annotation>
           </semantics>
         </math>
-      </inlineequation></para>
-    <para>The longwave net radiation (<inlineequation>
+            </imagedata>
+          </imageobject>
+        </mediaobject>
+      </equation></para>
+    <para>The <emphasis role="bold">longwave net radiation </emphasis> (<inlineequation>
         <math display="block" xmlns="http://www.w3.org/1998/Math/MathML">
           <semantics>
             <mrow>
@@ -491,7 +519,10 @@
           </ns3:msub>
         </ns3:math>
       </inlineequation>) in MJ m-2 d-1 according to:</para>  
-    <para><inlineequation>
+    <para><equation>
+      <mediaobject>
+        <imageobject>
+          <imagedata align="center">
         <math display="block" xmlns="http://www.w3.org/1998/Math/MathML">
           <semantics>
             <mrow>
@@ -573,7 +604,10 @@
               >MathType@MTEF@5@5@+=feaagCart1ev2aaatCvAUfeBSjuyZL2yd9gzLbvyNv2CaerbuLwBLnhiov2DGi1BTfMBaeXatLxBI9gBaerbd9wDYLwzYbItLDharqqtubsr4rNCHbGeaGqiVu0Je9sqqrpepC0xbbL8F4rqqrFfpeea0xe9Lq=Jc9vqaqpepm0xbba9pwe9Q8fs0=yqaqpepae9pg0FirpepeKkFr0xfr=xfr=xb9adbaqaaeGaciGaaiaabeqaamaabaabaaGcbaaeaaaaaaaaa8qacaWGSbGaam4DaiaadkfacaWGHbGaamizaiabg2da9iabeo8aZjaacElacaWGubWdamaaDaaaleaapeGaamyyaiaadkgacaWGZbaapaqaa8qacaaI0aaaaOWdaiabgwSix=qadaqadaWdaeaapeGaaGimaiaac6cacaaIZaGaaGinaiabgkHiTiaaicdacaGGUaGaaGimaiaaigdacaaI0aGaeyyXIC9aaOaaa8aabaWdbiaadwgapaWaaSbaaSqaaiaadggaaeqaaaWdbeqaaaGccaGLOaGaayzkaaGaai4Tamaabmaapaqaa8qacaaIXaGaaiOlaiaaiodacaaI1aGaeyyXIC9aaSaaa8aabaWdbiaadofaa8aabaWdbiaadofapaWaaSbaaSqaa8qacaaIWaaapaqabaaaaOWdbiabgkHiTiaaicdacaGGUaGaaG4maiaaiwdaaiaawIcacaGLPaaacaqGGaGaae4waiaab2eacaqGkbGaaeiiaiaab2gadaahaaWcbeqaaiaab2cacaqGYaaaaOGaaeiiaiaabsgadaahaaWcbeqaaiaab2cacaqGXaaaaOGaaeyxaaaa@6D07@</annotation>
           </semantics>
         </math>
-      </inlineequation></para>
+          </imagedata>
+        </imageobject>
+      </mediaobject>
+    </equation></para>
     <para>The difference of <inlineequation>
         <ns3:math display="inline">
           <ns3:msub>
@@ -594,7 +628,11 @@
             </ns3:mrow>
           </ns3:msub>
         </ns3:math>
-      </inlineequation> gives the net radiation according to:</para><para><inlineequation>
+      </inlineequation> gives the <emphasis role="bold">net radiation </emphasis> according to:</para><para>
+        <equation>
+          <mediaobject>
+            <imageobject>
+              <imagedata align="center">
         <math display="block" xmlns="http://www.w3.org/1998/Math/MathML">
           <semantics>
             <mrow>
@@ -638,7 +676,10 @@
               >MathType@MTEF@5@5@+=feaagCart1ev2aaatCvAUfeBSjuyZL2yd9gzLbvyNv2CaerbuLwBLnhiov2DGi1BTfMBaeXatLxBI9gBaerbd9wDYLwzYbItLDharqqtubsr4rNCHbGeaGqiVu0Je9sqqrpepC0xbbL8F4rqqrFfpeea0xe9Lq=Jc9vqaqpepm0xbba9pwe9Q8fs0=yqaqpepae9pg0FirpepeKkFr0xfr=xfr=xb9adbaqaaeGaciGaaiaabeqaamaabaabaaGcbaaeaaaaaaaaa8qacaWGUbGaamyzaiaadshacaWGsbGaamyyaiaadsgacqGH9aqpcaWGZbGaam4DaiaadkfacaWGHbGaamizaiabgkHiTiaadYgacaWG3bGaamOuaiaadggacaWGKbGaaeiiaiaabUfacaqGnbGaaeOsaiaabccacaqGTbWaaWbaaSqabeaacaqGTaGaaeOmaaaakiaabccacaqGKbWaaWbaaSqabeaacaqGTaGaaeymaaaakiaab2faaaa@5102@</annotation>
           </semantics>
         </math>
-      </inlineequation> </para> <para>If the longwave radiation is greater than the shortwave radiation, the net
+              </imagedata>
+            </imageobject>
+          </mediaobject>
+        </equation> </para> <para>If the longwave radiation is greater than the shortwave radiation, the net
       radiation is put to zero. </para>
   </sect2>
     <bibliography>

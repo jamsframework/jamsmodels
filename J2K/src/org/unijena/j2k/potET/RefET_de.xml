@@ -8,7 +8,7 @@
   <title>RefET</title>
 
   <subtitle>Eine Komponenten zur Berechnung der FAO Grassreferenzverdunstung
-  nach <citation><xref linkend="Allen_1998"/></citation>.</subtitle>
+    nach <citetitle><xref linkend="Allen_1998"/></citetitle>.</subtitle>
 
   <informaltable>
     <tgroup cols="2">
@@ -65,37 +65,37 @@
           <row>
             <entry>wind</entry>
 
-            <entry>Windgeschwindigkeit U[m/s]</entry>
+            <entry>Windgeschwindigkeit [m/s]</entry>
           </row>
 
           <row>
             <entry>tmean</entry>
 
-            <entry>Mittlere Lufttemperatur U[°C]</entry>
+            <entry>Mittlere Lufttemperatur [°C]</entry>
           </row>
 
           <row>
             <entry>rhum</entry>
 
-            <entry>Relative Luftfeuchtigkeit U[%]</entry>
+            <entry>Relative Luftfeuchtigkeit [%]</entry>
           </row>
 
           <row>
             <entry>netRad</entry>
 
-            <entry>Nettostrahlung U[MJ/m² tempRes]</entry>
+            <entry>Nettostrahlung [MJ/m² tempRes]</entry>
           </row>
 
           <row>
             <entry>elevation</entry>
 
-            <entry>Die Höhe über NN der räumlichen Einheit U[m]</entry>
+            <entry>Die Höhe über NN der räumlichen Einheit [m]</entry>
           </row>
 
           <row>
             <entry>area</entry>
 
-            <entry>Die Fläche der räumlichen Einheit U[m²]</entry>
+            <entry>Die Fläche der räumlichen Einheit [m²]</entry>
           </row>
 
           <row>
@@ -135,13 +135,16 @@
 
     <para>Die Referenzoberfläche ähnelt damit einer extensiv genutzten
     Grünfläche mit gleichförmiger Bewuchshöhe, aktiv wachsend, den Boden
-    komplett bedeckend mit adequater Wasserzufuhr (<citation><xref
-    linkend="Allen_1998" /></citation>).</para>
+    komplett bedeckend mit adequater Wasserzufuhr (<citetitle><xref
+    linkend="Allen_1998" /></citetitle>).</para>
 
     <para>Durch diese Standardisierung ergibt sich eine vereinfachte Form der
     Penman-Monteith Gleichung:</para>
 
-    <para><inlineequation>
+    <para><equation>
+      <mediaobject>
+        <imageobject>
+          <imagedata align="center">
         <ns3:math display="inline">
           <ns3:mrow>
             <ns3:mrow>
@@ -315,7 +318,10 @@
             </ns3:mfrac>
           </ns3:mrow>
         </ns3:math>
-      </inlineequation></para>
+        </imagedata>
+        </imageobject>
+        </mediaobject>
+        </equation></para>
 
     <para>mit:</para>
 
@@ -450,7 +456,10 @@
         </ns3:math>
       </inlineequation>) ergibt sich als:</para>
 
-    <para><inlineequation>
+    <para><equation>
+      <mediaobject>
+        <imageobject>
+          <imagedata align="center">
         <ns3:math display="inline">
           <ns3:mrow>
             <ns3:mrow>
@@ -508,9 +517,21 @@
                 </ns3:mfrac>
               </ns3:msup>
             </ns3:mrow>
+            
+            
           </ns3:mrow>
+          
+          <ns3:mi> &#160;</ns3:mi>
+          <ns3:mrow>
+            
+            <ns3:mi>[kPa]</ns3:mi>
+          </ns3:mrow>
+          
         </ns3:math>
-      </inlineequation>[kPa]</para>
+          </imagedata>
+        </imageobject>
+      </mediaobject>
+    </equation> </para>
 
     <para>Der <emphasis role="bold">aktuelle Dampfdruck</emphasis>
     (<inlineequation>
@@ -522,9 +543,12 @@
           </ns3:mrow>
         </ns3:math>
       </inlineequation>) ergibt sich aus dem Sättigungsdampfdruck und der
-    relativen Luftfeuchte (U in [%]) nach:</para>
+    relativen Luftfeuchte (U in %) nach:</para>
 
-    <para><inlineequation>
+    <para><equation>
+      <mediaobject>
+        <imageobject>
+          <imagedata align="center">
         <ns3:math display="inline">
           <ns3:mrow>
             <ns3:mrow>
@@ -550,9 +574,21 @@
                 <ns3:mi>100</ns3:mi>
               </ns3:mfrac>
             </ns3:mrow>
+            
           </ns3:mrow>
+          
+          
+          <ns3:mi> &#160;</ns3:mi>
+          <ns3:mrow>
+            
+            <ns3:mi>[kPa]</ns3:mi>
+          </ns3:mrow>
+          
         </ns3:math>
-      </inlineequation> [kPa]</para>
+          </imagedata>
+        </imageobject>
+      </mediaobject>
+    </equation> </para>
 
     <para>Aus dem Sättigungsdampfdruck (<inlineequation>
         <ns3:math display="inline">
@@ -583,7 +619,10 @@
         </ns3:math>
       </inlineequation>) nach</para>
 
-    <para><inlineequation>
+    <para><equation>
+      <mediaobject>
+        <imageobject>
+          <imagedata align="center">
         <ns3:math display="inline">
           <ns3:mrow>
             <ns3:mi>s</ns3:mi>
@@ -631,9 +670,21 @@
                 </ns3:msup>
               </ns3:mfrac>
             </ns3:mrow>
+            
           </ns3:mrow>
+          
+          <ns3:mi> &#160;</ns3:mi>
+          <ns3:mrow>          
+            <ns3:mi>[kPa /°C]</ns3:mi>
+          </ns3:mrow>
+          
+          
+          
         </ns3:math>
-      </inlineequation> [kPa /°C]</para>
+          </imagedata>
+        </imageobject>
+      </mediaobject>
+    </equation> </para>
 
     <para>Die <emphasis role="bold">Psychrometerkonstante</emphasis>
     (<inlineequation>
@@ -670,7 +721,10 @@
         </ns3:math>
       </inlineequation>) nach:</para>
 
-    <para><inlineequation>
+    <para><equation>
+      <mediaobject>
+        <imageobject>
+          <imagedata align="center">
         <ns3:math display="inline">
           <ns3:mrow>
             <ns3:mi>γ</ns3:mi>
@@ -709,8 +763,18 @@
               </ns3:mrow>
             </ns3:mfrac>
           </ns3:mrow>
+          
+          <ns3:mi> &#160;</ns3:mi>
+          <ns3:mrow>
+            
+            <ns3:mi>[kPa/°C]</ns3:mi>
+          </ns3:mrow>
+          
         </ns3:math>
-      </inlineequation> [kPa/°C]</para>
+          </imagedata>
+        </imageobject>
+      </mediaobject>
+    </equation> </para>
 
     <para>Der Luftdruck (<inlineequation>
         <ns3:math display="inline">
@@ -727,7 +791,10 @@
       </inlineequation>) wird aus der umgestellten barometrischen Höhenformel
     ermittelt:</para>
 
-    <para><inlineequation>
+    <para><equation>
+      <mediaobject>
+        <imageobject>
+          <imagedata align="center">
         <ns3:math display="inline">
           <ns3:mrow>
             <ns3:msub>
@@ -780,10 +847,21 @@
 
                 <ns3:mi>z</ns3:mi>
               </ns3:mrow>
+              
             </ns3:mrow>
           </ns3:mrow>
+          
+          <ns3:mi> &#160;</ns3:mi>
+          <ns3:mrow>
+            
+            <ns3:mi>[kPa]</ns3:mi>
+          </ns3:mrow>
+          
         </ns3:math>
-      </inlineequation> [kPa]</para>
+          </imagedata>
+        </imageobject>
+      </mediaobject>
+    </equation> </para>
 
     <para>mit:</para>
 
@@ -825,8 +903,8 @@
         </ns3:math>
       </inlineequation> ... absolute Lufttemperatur [K]</para>
 
-    <para>Für weitere Informationen über Kontexte siehe auch: <citation><xref
-    linkend="Allen_1998" /></citation></para>
+    <para>Für weitere Informationen über Kontexte siehe auch: <citetitle><xref
+    linkend="Allen_1998" /></citetitle></para>
   </sect2>
 
 <bibliography xmlns="http://docbook.org/ns/docbook" version="5.0">

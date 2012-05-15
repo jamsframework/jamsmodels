@@ -127,7 +127,10 @@
     aus. Entsprechend der tatsächlichen Höhe der jeweiligen Modelleinheit
     erfolgt eine Anpassung der Werte nach:</para>
 
-    <para><inlineequation>
+    <para><equation>
+      <mediaobject>
+        <imageobject>
+          <imagedata align="center">
         <ns3:math display="inline">
           <ns3:mrow>
             <ns3:mrow>
@@ -191,7 +194,10 @@
             </ns3:mrow>
           </ns3:mrow>
         </ns3:math>
-      </inlineequation> </para>
+          </imagedata>
+        </imageobject>
+      </mediaobject>
+    </equation> </para>
 
     <para>Hierdurch wird die Vegetationslänge bei tiefer liegenden Flächen
     verlängert, bei höher liegenden Flächen verkürzt. Zwischen den

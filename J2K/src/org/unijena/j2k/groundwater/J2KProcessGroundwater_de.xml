@@ -58,146 +58,136 @@
           <row>
             <entry>slope</entry>
 
-            <entry>Die Hangneigung der Modelleinheit U[Grad]</entry>
+            <entry>Die Hangneigung der Modelleinheit [Grad]</entry>
           </row>
 
           <row>
             <entry>maxRG1</entry>
 
-            <entry>Die maximale Speichergröße für den schnellen
-            Grundwasserspeicher RG1 U[l]</entry>
+            <entry>Die maximale Speichergröße für den schnellen Grundwasserspeicher RG1 [l]</entry>
           </row>
 
           <row>
             <entry>maxRG2</entry>
 
-            <entry>Die maximale Speichergröße für den langsamen
-            Grundwasserspeicher RG2 U[l]</entry>
+            <entry>Die maximale Speichergröße für den langsamen Grundwasserspeicher RG2 [l]</entry>
           </row>
 
           <row>
             <entry>kRG1</entry>
 
-            <entry>Rückhaltekoeffizient k für die schnelle
-            Grundwasserkomponente RG1 U[1/ts]</entry>
+            <entry>Rückhaltekoeffizient k für die schnelle Grundwasserkomponente RG1 [1/ts]</entry>
           </row>
 
           <row>
             <entry>kRG2</entry>
 
-            <entry>Rückhaltekoeffizient k für die langsame
-            Grundwasserkomponente RG2 U[1/ts]</entry>
+            <entry>Rückhaltekoeffizient k für die langsame Grundwasserkomponente RG2 [1/ts]</entry>
           </row>
 
           <row>
             <entry>actRG1</entry>
 
-            <entry>Die tatsächliche Speicherfüllung für den schnellen
-            Grundwasserspeicher RG1 U[l]</entry>
+            <entry>Die tatsächliche Speicherfüllung für den schnellen Grundwasserspeicher RG1
+              [l]</entry>
           </row>
 
           <row>
             <entry>actRG2</entry>
 
-            <entry>Die tatsächliche Speicherfüllung für den langsamen
-            Grundwasserspeicher RG2 U[l]</entry>
+            <entry>Die tatsächliche Speicherfüllung für den langsamen Grundwasserspeicher RG2
+              [l]</entry>
           </row>
 
           <row>
             <entry>inRG1</entry>
 
-            <entry>Der laterale Zufluss in den schnellen Grundwasserspeicher
-            RG1 aus benachbarten Flächen U[l]</entry>
+            <entry>Der laterale Zufluss in den schnellen Grundwasserspeicher RG1 aus benachbarten
+              Flächen [l]</entry>
           </row>
 
           <row>
             <entry>inRG2</entry>
 
-            <entry>Der laterale Zufluss in den langsamen Grundwasserspeicher
-            RG2 aus benachbarten Flächen U[l]</entry>
+            <entry>Der laterale Zufluss in den langsamen Grundwasserspeicher RG2 aus benachbarten
+              Flächen [l]</entry>
           </row>
 
           <row>
             <entry>outRG1</entry>
 
-            <entry>Abfluss aus dem schnellen Grundwasserspeicher RG1
-            U[l]</entry>
+            <entry>Abfluss aus dem schnellen Grundwasserspeicher RG1 [l]</entry>
           </row>
 
           <row>
             <entry>outRG2</entry>
 
-            <entry>Abfluss aus dem langsamen Grundwasserspeicher RG2
-            U[l]</entry>
+            <entry>Abfluss aus dem langsamen Grundwasserspeicher RG2 [l]</entry>
           </row>
 
           <row>
             <entry>genRG1</entry>
 
-            <entry>wie RG1out U[l]</entry>
+            <entry>wie RG1out [l]</entry>
           </row>
 
           <row>
             <entry>genRG2</entry>
 
-            <entry>wie RG2out U[l]</entry>
+            <entry>wie RG2out [l]</entry>
           </row>
 
           <row>
             <entry>percolation</entry>
 
-            <entry>Die Perkolation aus dem ungesättigten Bodenbereich
-            U[l]</entry>
+            <entry>Die Perkolation aus dem ungesättigten Bodenbereich [l]</entry>
           </row>
 
           <row>
             <entry>gwExcess</entry>
 
-            <entry>Wassermenge, die aufgrund begrenzter Speicher nicht im
-            Grundwasserbereich verbleiben kann U[l]</entry>
+            <entry>Wassermenge, die aufgrund begrenzter Speicher nicht im Grundwasserbereich
+              verbleiben kann [l]</entry>
           </row>
 
           <row>
             <entry>maxSoilStorage</entry>
 
-            <entry>Die maximale Wasserspeicherkapazität des ungesättigten
-            Bodenbereichs U[l]</entry>
+            <entry>Die maximale Wasserspeicherkapazität des ungesättigten Bodenbereichs [l]</entry>
           </row>
 
           <row>
             <entry>actSoilStorage</entry>
 
-            <entry>Die tatsächliche Wasserspeicherkapazität des ungesättigten
-            Bodenbereichs U[l]</entry>
+            <entry>Die tatsächliche Wasserspeicherkapazität des ungesättigten Bodenbereichs
+              [l]</entry>
           </row>
 
           <row>
             <entry>gwRG1Fact</entry>
 
-            <entry>Kalibrierparameter für den Abfluss aus dem schnellen
-            Grundwasserspeicher RG1 WB[0 .. inf] U[-]</entry>
+            <entry>Kalibrierparameter für den Abfluss aus dem schnellen Grundwasserspeicher RG1 WB[0
+              .. inf] [-]</entry>
           </row>
 
           <row>
             <entry>gwRG2Fact</entry>
 
-            <entry>Kalibrierparameter für den Abfluss aus dem langsamen
-            Grundwasserspeicher RG2 WB[0 .. inf] U[-]</entry>
+            <entry>Kalibrierparameter für den Abfluss aus dem langsamen Grundwasserspeicher RG2 WB[0
+              .. inf] [-]</entry>
           </row>
 
           <row>
             <entry>gwRG1RG2dist</entry>
 
-            <entry>Kalibrierparameter zur Verteilung der Perkolationsrate auf
-            die beiden Grundwasserspeicher RG1 und RG2 WB [0 .. inf]
-            U[-]</entry>
+            <entry>Kalibrierparameter zur Verteilung der Perkolationsrate auf die beiden
+              Grundwasserspeicher RG1 und RG2 WB [0 .. inf] [-]</entry>
           </row>
 
           <row>
             <entry>gwCapRise</entry>
 
-            <entry>Kalibrierparameter zur Berechnung des kapillaren Aufstiegs
-            WB[0-inf] U[-]</entry>
+            <entry>Kalibrierparameter zur Berechnung des kapillaren Aufstiegs WB[0-inf] [-]</entry>
           </row>
         </tbody>
       </tgroup>
@@ -227,11 +217,10 @@
       maximale Speicherkapazität lässt sich aus dem Produkt des Hohlraumanteils und der Mächtigkeit
       des einzelnen Speichers pro m² Einheitsfläche abschätzen. Beide Parameter sind für jede
       geologische Einheit separat zu bestimmen und in einem entsprechenden Parameterfile abzulegen.
-      Folgende Abbildung zeigt ein Beispiel für solch ein Parameterfile:</para>
-
-    <para>(<xref
-      linkend="j2k.groundwater.j2kProcessGroundwater.hgeo_par_fig1.png" xrefstyle="select: label"/>)</para>
-
+      Folgende Abbildung (<xref xmlns:xlink="http://www.w3.org/1999/xlink"
+        linkend="j2k.groundwater.j2kProcessGroundwater.hgeo_par_fig1.png" xrefstyle="select: label"/>)  
+  
+      zeigt ein Beispiel für solch ein Parameterfile:</para>
     <figure xml:id="j2k.groundwater.j2kProcessGroundwater.hgeo_par_fig1.png">
       <title>hgeo.par</title>
 
@@ -285,7 +274,10 @@
         </ns3:math>
       </inlineequation>) berechnet:</para>
 
-    <para><inlineequation>
+    <para><equation>
+      <mediaobject>
+        <imageobject>
+          <imagedata align="center">
         <ns3:math display="inline">
           <ns3:mrow>
             <ns3:mrow>
@@ -431,7 +423,10 @@
             </ns3:mrow>
           </ns3:mrow>
         </ns3:math>
-      </inlineequation></para>
+          </imagedata>
+        </imageobject>
+      </mediaobject>
+    </equation></para>
 
     <para>Diese wird dann dem Grundwasserspeicher <emphasis role="italic">RG2</emphasis> entnommen
       und dem oberhalb liegenden Bodenwasserspeicher hinzuaddiert.</para>
@@ -452,7 +447,10 @@
     folgenden Einzelschritten. Zunächst wird der Einfluss der Hangneigung
     berücksichtigt:</para>
 
-    <para><inlineequation>
+    <para><equation>
+      <mediaobject>
+        <imageobject>
+          <imagedata align="center">
         <ns3:math display="inline">
           <ns3:mrow>
             <ns3:mrow>
@@ -523,7 +521,7 @@
 
                 <ns3:mo>)</ns3:mo>
               </ns3:mrow>
-
+              <ns3:mi> &#160;</ns3:mi>
               <ns3:mrow>
                 <ns3:mo>[</ns3:mo>
 
@@ -534,9 +532,15 @@
             </ns3:mrow>
           </ns3:mrow>
         </ns3:math>
-      </inlineequation></para>
+          </imagedata>
+        </imageobject>
+      </mediaobject>
+    </equation></para>
 
-    <para><inlineequation>
+    <para><equation>
+      <mediaobject>
+        <imageobject>
+          <imagedata align="center">
         <ns3:math display="inline">
           <ns3:mrow>
             <ns3:mrow>
@@ -634,9 +638,16 @@
             </ns3:mrow>
           </ns3:mrow>
         </ns3:math>
-      </inlineequation></para>
+        </imagedata>
+        </imageobject>
+        </mediaobject>
+        </equation></para>
 
-    <para><inlineequation>
+    <para><equation>
+      <mediaobject>
+        <imageobject>
+          <imagedata align="center">
+            
         <ns3:math display="inline">
           <ns3:mrow>
             <ns3:mrow>
@@ -674,11 +685,17 @@
             </ns3:mrow>
           </ns3:mrow>
         </ns3:math>
-      </inlineequation></para>
+          </imagedata>
+        </imageobject>
+      </mediaobject>
+    </equation></para>
 
     <para>Dann wird hiermit die Perkolationsrate aufgeteilt:</para>
 
-    <para><inlineequation>
+    <para><equation>
+      <mediaobject>
+        <imageobject>
+          <imagedata align="center">
         <ns3:math display="inline">
           <ns3:mrow>
             <ns3:mrow>
@@ -754,9 +771,15 @@
             </ns3:mrow>
           </ns3:mrow>
         </ns3:math>
-      </inlineequation></para>
+        </imagedata>
+        </imageobject>
+        </mediaobject>
+        </equation></para>
 
-    <para><inlineequation>
+    <para><equation>
+      <mediaobject>
+        <imageobject>
+          <imagedata align="center">
         <ns3:math display="inline">
           <ns3:mrow>
             <ns3:mrow>
@@ -820,7 +843,10 @@
             </ns3:mrow>
           </ns3:mrow>
         </ns3:math>
-      </inlineequation></para>
+          </imagedata>
+        </imageobject>
+      </mediaobject>
+    </equation></para>
 
     <para>Diese potentiellen Zuflüsse warden dann noch gegen die jeweiligen aktuellen Speicher
       abgeglichen. Kann <emphasis role="italic">RG2</emphasis> den Zufluss <emphasis role="italic"
@@ -840,7 +866,11 @@
     Grundwasserausflusses (<emphasis role="italic">outRG1</emphasis> und
     <emphasis role="italic">outRG2</emphasis>) wie folgt ein:</para>
 
-    <para><inlineequation>
+    <para>
+      <equation>
+        <mediaobject>
+          <imageobject>
+            <imagedata align="center">
         <ns3:math display="inline">
           <ns3:mrow>
             <ns3:mrow>
@@ -922,15 +952,23 @@
                     <ns3:mn>1</ns3:mn>
                   </ns3:mrow>
                 </ns3:mrow>
+                <ns3:mi> &#160;</ns3:mi>
               </ns3:mrow>
 
               <ns3:mi>[mm]</ns3:mi>
             </ns3:mrow>
           </ns3:mrow>
         </ns3:math>
-      </inlineequation></para>
+            </imagedata>
+          </imageobject>
+        </mediaobject>
+      </equation></para>
 
-    <para><inlineequation>
+    <para>
+      <equation>
+        <mediaobject>
+          <imageobject>
+            <imagedata align="center">
         <ns3:math display="inline">
           <ns3:mrow>
             <ns3:mrow>
@@ -1014,6 +1052,7 @@
                         <ns3:mn>2</ns3:mn>
                       </ns3:mrow>
                     </ns3:mrow>
+                    <ns3:mi> &#160;</ns3:mi>
                   </ns3:mrow>
 
                   <ns3:mi>[mm]</ns3:mi>
@@ -1022,15 +1061,18 @@
             </ns3:mrow>
           </ns3:mrow>
         </ns3:math>
-      </inlineequation></para>
+        </imagedata>
+        </imageobject>
+        </mediaobject>
+        </equation></para>
 
     <para>Über die beiden Parameter <emphasis
     role="italic">gwRG1Fact</emphasis> und <emphasis
     role="italic">gwRG2Fact</emphasis> kann die Grundwasserdynamik kalibriert
     werden.</para>
 
-    <para>Zu weiterführenden Informationen siehe auch:
-    <citation><xref linkend="Krause_2001" /></citation></para>
+    <para>Zu weiterführenden Informationen siehe auch <citetitle><xref linkend="Krause_2001"
+        /></citetitle></para>
   </sect2>
   <bibliography xmlns="http://docbook.org/ns/docbook" version="5.0" xml:lang="en">
     <title>Literatur</title> 

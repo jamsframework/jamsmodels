@@ -37,74 +37,72 @@
           <entry>attribute area</entry>
         </row>        <row>
           <entry>slope</entry>
-          <entry>slope of the model entity U [degree]</entry>
+          <entry>slope of the model entity  [degree]</entry>
         </row>        <row>
           <entry>maxRG1</entry>
-          <entry>maximum storage capacity for the fast groundwater storage RG1 U[l]</entry>
+          <entry>maximum storage capacity for the fast groundwater storage RG1 [l]</entry>
         </row>        <row>
           <entry>maxRG2</entry>
-          <entry>maximum storage capacity for the slow groundwater storage RG2 U[l]</entry>
+          <entry>maximum storage capacity for the slow groundwater storage RG2 [l]</entry>
         </row>        <row>
           <entry>kRG1</entry>
-          <entry>recision coefficient k for the fast groundwater component RG1 U[1/ts]</entry>
+          <entry>recision coefficient k for the fast groundwater component RG1 [1/ts]</entry>
         </row>        <row>
           <entry>kRG2</entry>
-          <entry>recision coefficient k for the slow groundwater component RG2 U[1/ts]</entry>
+          <entry>recision coefficient k for the slow groundwater component RG2 [1/ts]</entry>
         </row>        
       <row>
         <entry>actRG1</entry>
-        <entry>actual storage amount of the fast groundwater storage RG1 U[l]</entry>
+        <entry>actual storage amount of the fast groundwater storage RG1 [l]</entry>
       </row>        <row>
         <entry>actRG2</entry>
-        <entry>actual storage amount of the slow groundwater storage RG2 U[l]</entry>
+        <entry>actual storage amount of the slow groundwater storage RG2 [l]</entry>
       </row>        <row>
         <entry>inRG1</entry>
-        <entry>lateral inflow in the fast groundwater storage RG1 from neighboring areas
-              U[l]</entry>
+        <entry>lateral inflow in the fast groundwater storage RG1 from neighboring areas [l]</entry>
       </row>        <row>
         <entry>inRG2</entry>
-        <entry>lateral inflow in the slow groundwater storage RG2 from neighboring areas
-              U[l]</entry>
+        <entry>lateral inflow in the slow groundwater storage RG2 from neighboring areas [l]</entry>
       </row>        <row>
         <entry>outRG1</entry>
-        <entry>runoff from the fast groundwater storage RG1 U[l]</entry>
+        <entry>runoff from the fast groundwater storage RG1 [l]</entry>
       </row>        <row>
         <entry>outRG2</entry>
-        <entry>runoff from the slow groundwater storage RG2 U[l]</entry>
+        <entry>runoff from the slow groundwater storage RG2 [l]</entry>
       </row>        <row>
         <entry>genRG1</entry>
-        <entry>like RG1out U[l]</entry>
+        <entry>like RG1out [l]</entry>
       </row>        <row>
         <entry>genRG2</entry>
-        <entry>like RG2out U[l]</entry>
+        <entry>like RG2out [l]</entry>
       </row>        <row>
         <entry>percolation</entry>
-        <entry>percolation from the unsaturated soil U[l]</entry>
+        <entry>percolation from the unsaturated soil [l]</entry>
       </row>        <row>
         <entry>gwExcess</entry>
         <entry>amount of water which cannot stay on the groundwater area due to limited storage
-              capacity U[l]</entry>
+              capacity [l]</entry>
       </row>        <row>
         <entry>maxSoilStorage</entry>
-        <entry>maximum water storage capacity of the unsaturated soil U[l]</entry>
+        <entry>maximum water storage capacity of the unsaturated soil [l]</entry>
       </row>        <row>
         <entry>actSoilStorage</entry>
-        <entry>actual water storage capacity of the unsaturated soil U[l]</entry>
+        <entry>actual water storage capacity of the unsaturated soil [l]</entry>
       </row>        <row>
         <entry>gwRG1Fact</entry>
         <entry>calibration parameter for the runoff from the fast groundwater storage RG1 WB[0 ..
-              inf] U[-]</entry>
+              inf] [-]</entry>
       </row>        <row>
         <entry>gwRG2Fact</entry>
         <entry>calibration parameter for the runoff from the slow groundwater storage RG2 WB[0 ..
-              inf] U[-]</entry>
+              inf] [-]</entry>
       </row>        <row>
         <entry>gwRG1RG2dist</entry>
         <entry>calibration parameter for the allocation of the percolation rate on both groundwater
-              storages RG1 and RG2 WB [0 .. inf] U[-]</entry>
+              storages RG1 and RG2 WB [0 .. inf] [-]</entry>
       </row>        <row>
         <entry>gwCapRise</entry>
-        <entry>calibration parameter for the calculation of capillary rise WB[0-inf] U[-]</entry>
+        <entry>calibration parameter for the calculation of capillary rise WB[0-inf] [-]</entry>
       </row>
       </tbody>
     </tgroup>
@@ -130,11 +128,11 @@
         >kRG2</emphasis>). The maximum storage capacity can be estimated by multiplying the part of
       the underground chamber with the thickness of the individual storages per m² standard area.
       Both parameters have to be defined for every geological unit separately and have to be saved
-      in the corresponding parameter file. The following table shows an example of such a parameter
+      in the corresponding parameter file. The following table (<xref xmlns:xlink="http://www.w3.org/1999/xlink"
+        linkend="j2k.groundwater.j2kProcessGroundwater.hgeo_par_fig1.png" xrefstyle="select: label"/>) shows an example of such a parameter
       file. </para>
     
-    <para>(<xref
-      linkend="j2k.groundwater.j2kProcessGroundwater.hgeo_par_fig1.png" xrefstyle="select: label"/>)</para>
+   
     
     <figure xml:id="j2k.groundwater.j2kProcessGroundwater.hgeo_par_fig1.png">
       <title>hgeo.par</title>
@@ -155,7 +153,10 @@
       amount of the groundwater storage is higher than the soil humidity deficit and the calibration
       parameter gwCapRise is above zero. By putting it to zero the capillary rise can be
       prevented.</para> 
-    <para>If capillary rise is calculated, first the rise rate inSoilStor is calculated:</para> <para><inlineequation>
+    <para>If capillary rise is calculated, first the rise rate inSoilStor is calculated:</para> <para><equation>
+      <mediaobject>
+        <imageobject>
+          <imagedata align="center">
       <ns3:math display="inline">
         <ns3:mrow>
           <ns3:mrow>
@@ -301,7 +302,11 @@
           </ns3:mrow>
         </ns3:mrow>
       </ns3:math>
-    </inlineequation> </para>  
+            
+          </imagedata>
+        </imageobject>
+      </mediaobject>
+    </equation> </para>  
     
     <para>It is then extracted from the groundwater storage RG2 and added to the upper soil water
       storage. After calculating the capillary rise the lateral inflow is considered. Hence, both
@@ -313,7 +318,11 @@
       slope of the specific model entity and a calibration coefficient (<emphasis role="italic"
         >gwRG1RG2dist</emphasis>) in the following steps. First, the influence of the slope is
       considered:</para>
-    <para><inlineequation>
+    <para><equation>
+      <mediaobject>
+        <imageobject>
+          <imagedata align="center">
+            
       <ns3:math display="inline">
         <ns3:mrow>
           <ns3:mrow>
@@ -395,9 +404,15 @@
           </ns3:mrow>
         </ns3:mrow>
       </ns3:math>
-    </inlineequation> </para>
+          </imagedata>
+        </imageobject>
+      </mediaobject>
+    </equation> </para>
     
-    <para><inlineequation>
+    <para><equation>
+      <mediaobject>
+        <imageobject>
+          <imagedata align="center">
       <ns3:math display="inline">
         <ns3:mrow>
           <ns3:mrow>
@@ -495,9 +510,15 @@
           </ns3:mrow>
         </ns3:mrow>
       </ns3:math>
-    </inlineequation> </para>
+      </imagedata>
+      </imageobject>
+      </mediaobject>
+      </equation> </para>
     
-    <para><inlineequation>
+    <para><equation>
+      <mediaobject>
+        <imageobject>
+          <imagedata align="center">
       <ns3:math display="inline">
         <ns3:mrow>
           <ns3:mrow>
@@ -535,7 +556,13 @@
           </ns3:mrow>
         </ns3:mrow>
       </ns3:math>
-    </inlineequation> </para><para>Then the percolation rate is allocated: </para> <para><inlineequation>
+          </imagedata>
+        </imageobject>
+      </mediaobject>
+    </equation></para><para>Then the percolation rate is allocated: </para> <para><equation>
+      <mediaobject>
+        <imageobject>
+          <imagedata align="center">
       <ns3:math display="inline">
         <ns3:mrow>
           <ns3:mrow>
@@ -611,9 +638,15 @@
           </ns3:mrow>
         </ns3:mrow>
       </ns3:math>
-    </inlineequation> </para>
+          </imagedata>
+        </imageobject>
+      </mediaobject>
+    </equation> </para>
     
-    <para><inlineequation>
+    <para><equation>
+      <mediaobject>
+        <imageobject>
+          <imagedata align="center">
       <ns3:math display="inline">
         <ns3:mrow>
           <ns3:mrow>
@@ -677,14 +710,20 @@
           </ns3:mrow>
         </ns3:mrow>
       </ns3:math>
-    </inlineequation> </para> <para>The potential inflows are calibrated against the corresponding current storage. If RG2 cannot take the inflow pot_RG2 completely, the surplus is transferred to pot_RG1. If RG1 cannot take pot_RG1, the surplus is given to gwExcess. According to the model’s concept this variable can be assigned to a specific runoff component. </para>
+          </imagedata>
+        </imageobject>
+      </mediaobject>
+    </equation> </para> <para>The potential inflows are calibrated against the corresponding current storage. If RG2 cannot take the inflow pot_RG2 completely, the surplus is transferred to pot_RG1. If RG1 cannot take pot_RG1, the surplus is given to gwExcess. According to the model’s concept this variable can be assigned to a specific runoff component. </para>
     <para>The calculation of water discharge is carried out according to the current storage amount
       in form of a linear storage-outflow function. The storage retention coefficients (<emphasis
         role="italic">kRG1</emphasis>, <emphasis role="italic">kRG2</emphasis>), which are
       considered as the time water rests in the specific storage, are a factor of the current
       storage volume (<emphasis role="italic">actRG1</emphasis> and <emphasis role="italic"
         >actRG2</emphasis>) used for the calculation of the groundwater outflow (<emphasis
-        role="italic">outRG1</emphasis> and <emphasis role="italic">outRG2</emphasis>) as follows: </para><para><inlineequation>
+          role="italic">outRG1</emphasis> and <emphasis role="italic">outRG2</emphasis>) as follows: </para><para><equation>
+            <mediaobject>
+              <imageobject>
+                <imagedata align="center">
         <ns3:math display="inline">
           <ns3:mrow>
             <ns3:mrow>
@@ -772,9 +811,16 @@
             </ns3:mrow>
           </ns3:mrow>
         </ns3:math>
-      </inlineequation></para>
+                  
+                </imagedata>
+              </imageobject>
+            </mediaobject>
+          </equation></para>
       
-      <para><inlineequation>
+    <para><equation>
+      <mediaobject>
+        <imageobject>
+          <imagedata align="center">
         <ns3:math display="inline">
           <ns3:mrow>
             <ns3:mrow>
@@ -866,11 +912,14 @@
             </ns3:mrow>
           </ns3:mrow>
         </ns3:math>
-      </inlineequation> </para> 
+          </imagedata>
+        </imageobject>
+      </mediaobject>
+    </equation> </para> 
      <para>The groundwater dynamics can be calibrated using parameters <emphasis role="italic"
        >gwRG1Fact</emphasis> and <emphasis role="italic">gwRG2Fact</emphasis>. </para>
-    <para>Zu weiterführenden Informationen siehe auch:
-      <citation><xref linkend="Krause_2001" /></citation></para>
+    <para>Zu weiterführenden Informationen siehe auch <citetitle><xref linkend="Krause_2001"
+        /></citetitle></para>
   </sect2>
     <bibliography>
     <title>Literature</title> 

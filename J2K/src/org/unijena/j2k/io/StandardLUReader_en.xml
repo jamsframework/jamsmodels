@@ -52,7 +52,7 @@
         role="italic">luFileName</emphasis>. For each entity from the list <emphasis role="italic"
         >hrus</emphasis> it selects the land use type identified by its attribute
         <ns:emphasis>landuseID</ns:emphasis> and adds the related land use information to the
-      entity's attribute set. An example of a land use parameter file is shown in figure <xref
+      entity's attribute set. An example of a land use parameter file is shown in  <xref
         xmlns:xlink="http://www.w3.org/1999/xlink"
         linkend="org.unijena.j2k.io.StandardLUReader_en_fig1" xrefstyle="select: label"/>.</para>
     <figure xml:id="org.unijena.j2k.io.StandardLUReader_en_fig1">

@@ -183,6 +183,9 @@
     </inlineequation>) abhängt, nach:</para>
 
   <equation>
+    <mediaobject>
+      <imageobject>
+        <imagedata align="center">
     <m:math display="block">
       <m:mrow>
         <m:mrow>
@@ -216,6 +219,9 @@
         </m:mrow>
       </m:mrow>
     </m:math>
+        </imagedata>
+      </imageobject>
+    </mediaobject>
   </equation>
 
   <para>Die Unbekannten <inlineequation>
@@ -237,7 +243,11 @@
     </inlineequation> werden nach der Gaußschen Methode der kleinsten Quadrate
   bestimmt:</para>
 
-  <para><inlineequation>
+  <para>
+    <equation>
+      <mediaobject>
+        <imageobject>
+          <imagedata align="center">
       <m:math display="inline">
         <m:mrow>
           <m:msub>
@@ -365,9 +375,16 @@
           </m:mfrac>
         </m:mrow>
       </m:math>
-    </inlineequation></para>
+      </imagedata>
+      </imageobject>
+      </mediaobject>
+      </equation></para>
 
-  <para><inlineequation>
+  <para>
+    <equation>
+      <mediaobject>
+        <imageobject>
+          <imagedata align="center">
       <m:math display="inline">
         <m:mrow>
           <m:msub>
@@ -409,11 +426,18 @@
           </m:mrow>
         </m:mrow>
       </m:math>
-    </inlineequation></para>
+          </imagedata>
+        </imageobject>
+      </mediaobject>
+    </equation></para>
 
   <para>Der Korrelationskoeffizient der Regression berechnet sich nach:</para>
 
-  <para><inlineequation>
+  <para>
+    <equation>
+      <mediaobject>
+        <imageobject>
+          <imagedata align="center">
       <m:math display="inline">
         <m:mrow>
           <m:mi>r</m:mi>
@@ -593,7 +617,10 @@
           </m:mfrac>
         </m:mrow>
       </m:math>
-    </inlineequation></para>
+      </imagedata>
+      </imageobject>
+      </mediaobject>
+      </equation></para>
 
   <para><emphasis role="bold">2. Bestimmung der n Messstationen, die der jeweiligen HRU am nächsten
       liegen.</emphasis> Die Zahl n, die während der Parametrisierung des Modells angegeben werden
@@ -620,7 +647,11 @@
       </m:math>
     </inlineequation>) jeder Stationen zur betrachteten Fläche nach:</para>
 
-  <para><inlineequation>
+  <para>
+    <equation>
+      <mediaobject>
+        <imageobject>
+          <imagedata align="center">
       <m:math display="inline">
         <m:mrow>
           <m:mrow>
@@ -758,7 +789,10 @@
           </m:msqrt>
         </m:mrow>
       </m:math>
-    </inlineequation></para>
+          </imagedata>
+        </imageobject>
+      </mediaobject>
+    </equation></para>
 
   <para>mit</para>
 
@@ -822,7 +856,10 @@
   horizontale Variabilität der Stationsdaten, entsprechend ihrer Lage im Raum,
   berücksichtigt. Die Berechnung erfolgt nach:</para>
 
-  <para><inlineequation>
+  <para><equation>
+    <mediaobject>
+      <imageobject>
+        <imagedata align="center">
       <m:math display="inline">
         <m:mrow>
           <m:mrow>
@@ -994,7 +1031,10 @@
           </m:mfrac>
         </m:mrow>
       </m:math>
-    </inlineequation></para>
+      </imagedata>
+      </imageobject>
+      </mediaobject>
+      </equation></para>
 
   <para><emphasis role="bold">4. Berechnung des Datenwertes für jede HRU
   </emphasis>mit den Gewichten aus Punkt 3 und einer optionalen
@@ -1003,7 +1043,10 @@
   Bestimmtheitsmaß einen, vom Anwender anzugebenden, Grenzwert übersteigt. Die
   Berechnung ohne die optionale Höhenkorrektur erfolgt nach:</para>
 
-  <para><inlineequation>
+  <para><equation>
+    <mediaobject>
+      <imageobject>
+        <imagedata align="center">
       <m:math display="inline">
         <m:mrow>
           <m:mrow>
@@ -1069,7 +1112,10 @@
           </m:mrow>
         </m:mrow>
       </m:math>
-    </inlineequation></para>
+        </imagedata>
+      </imageobject>
+    </mediaobject>
+  </equation></para>
 
   <para>Bei Datenwerten, die bekanntermaßen einen Höheneffekt aufweisen,
   werden die Messwerte bei genügend enger Regressionsbeziehung
@@ -1084,7 +1130,11 @@
     </inlineequation> größer als ein vom Anwender anzugebender Grenzwert) noch
   zusätzlich höhenkorrigiert. Die Berechnung erfolgt dann nach:</para>
 
-  <para><inlineequation>
+  <para>
+    <equation>
+      <mediaobject>
+        <imageobject>
+          <imagedata align="center">
       <m:math display="inline">
         <m:mrow>
           <m:mrow>
@@ -1190,7 +1240,10 @@
           </m:mrow>
         </m:mrow>
       </m:math>
-    </inlineequation></para>
+      </imagedata>
+      </imageobject>
+      </mediaobject>
+      </equation></para>
 
   <para>mit <inlineequation>
       <m:math display="inline">

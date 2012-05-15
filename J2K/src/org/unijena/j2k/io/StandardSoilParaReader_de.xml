@@ -51,8 +51,9 @@
         <emphasis role="italic">hrus</emphasis> wählt sie einen Bodentyp, der durch sein Attribut
         <ns:emphasis>soilID</ns:emphasis> identifiziert wird und ergänzt die verbundenen
       Bodeninformationen zu dem Attributeset der Einheit. Ein Beispiel für eine hydrogeologische
-      Parameterdatei wird im Bild <xref xmlns:xlink="http://www.w3.org/1999/xlink"
-        linkend="org.unijena.j2k.io.StandardSoilParaReader_en_fig1" xrefstyle="select: label"/> gezeigt.</para>
+      Parameterdatei wird i folgender  Abbildung (<xref xmlns:xlink="http://www.w3.org/1999/xlink"
+        linkend="org.unijena.j2k.io.StandardSoilParaReader_en_fig1" xrefstyle="select: label"/>)
+      gezeigt.</para>
     <figure xml:id="org.unijena.j2k.io.StandardSoilParaReader_en_fig1">
       <title>Ausschnitt einer ASCII-Beispieldatei mit Bodeninformationen</title>
       <mediaobject>

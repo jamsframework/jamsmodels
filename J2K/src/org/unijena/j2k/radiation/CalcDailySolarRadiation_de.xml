@@ -129,7 +129,7 @@
     extraterrestrischen Strahlung abzüglich des im Atmosphärendurchgang
     reflektierten bzw. adsorbierten Anteils. Dieser kann durch die
     Angstromformel abgeschätzt werden. Für die Berechnung der Globalstrahlung
-    werden im Modul folgende Einzelberechnungen, entsprechend <citation><xref linkend="Allen_1998"/></citation> durchgeführt. Für monatliche Berechnungen wird die Globalstrahlung
+    werden im Modul folgende Einzelberechnungen, entsprechend <citetitle><xref linkend="Allen_1998"/></citetitle> durchgeführt. Für monatliche Berechnungen wird die Globalstrahlung
     jeweils für den 15. des betreffenden Monats berechnet.</para>
 
     <para>Deklination (<inlineequation>
@@ -146,7 +146,10 @@
         </ns3:math>
       </inlineequation>):</para>
 
-    <para><inlineequation>
+    <para><equation>
+      <mediaobject>
+        <imageobject>
+          <imagedata align="center">
         <ns3:math display="inline">
           <ns3:mrow>
             <ns3:mi>d</ns3:mi>
@@ -186,11 +189,25 @@
                     <ns3:mo>)</ns3:mo>
                   </ns3:mrow>
                 </ns3:mrow>
+                
+                
               </ns3:mrow>
             </ns3:mrow>
+            
+            <ns3:mi> &#160;</ns3:mi>
+            <ns3:mrow>
+              
+              
+              <ns3:mi>[rad]</ns3:mi>
+              
+            </ns3:mrow>
           </ns3:mrow>
+          
         </ns3:math>
-      </inlineequation>) [rad]</para>
+          </imagedata>
+        </imageobject>
+      </mediaobject>
+    </equation> </para>
 
     <para>Stundenwinkel bei Sonnenuntergang für die jeweilige geographische
     Breite (<inlineequation>
@@ -209,7 +226,10 @@
         </ns3:math>
       </inlineequation>):</para>
 
-    <para><inlineequation>
+    <para><equation>
+      <mediaobject>
+        <imageobject>
+          <imagedata align="center">
         <ns3:math display="inline">
           <ns3:mrow>
             <ns3:mrow>
@@ -271,9 +291,24 @@
                 <ns3:mo>)</ns3:mo>
               </ns3:mrow>
             </ns3:mrow>
+            
+            
           </ns3:mrow>
+         
+          
+          <ns3:mi> &#160;</ns3:mi>
+          <ns3:mrow>
+            
+            
+            <ns3:mi>[rad]</ns3:mi>
+            
+          </ns3:mrow>
+          
         </ns3:math>
-      </inlineequation> [rad]</para>
+        </imagedata>
+        </imageobject>
+        </mediaobject>
+        </equation> </para>
 
     <para>Die maximal mögliche Anzahl der Sonnenscheinstunden für den
     julianischen Tag (<inlineequation>
@@ -294,7 +329,10 @@
         </ns3:math>
       </inlineequation>):</para>
 
-    <para><inlineequation>
+    <para><equation>
+      <mediaobject>
+        <imageobject>
+          <imagedata align="center">
         <ns3:math display="inline">
           <ns3:mrow>
             <ns3:msub>
@@ -322,7 +360,10 @@
             </ns3:mrow>
           </ns3:mrow>
         </ns3:math>
-      </inlineequation></para>
+          </imagedata>
+        </imageobject>
+      </mediaobject>
+    </equation></para>
 
     <para>Mit Hilfe der Angstromformel, die die beiden Parameter <emphasis role="italic"
         >a</emphasis> und <emphasis role="italic">b</emphasis> besitzt, dem Verhältnis zwischen
@@ -353,7 +394,10 @@
         </ns3:math>
       </inlineequation>) nach:</para>
 
-    <para><inlineequation>
+    <para><equation>
+      <mediaobject>
+        <imageobject>
+          <imagedata align="center">
         <ns3:math display="inline">
           <ns3:mrow>
             <ns3:msub>
@@ -402,11 +446,24 @@
               </ns3:msub>
             </ns3:mrow>
           </ns3:mrow>
-        </ns3:math>
-      </inlineequation> [MJ/m²/d]</para>
 
-    <para>Zu weiterführenden Informationen über Kontexte siehe auch:
-    <citation><xref linkend="Allen_1998" /></citation></para>
+          
+          <ns3:mi> &#160;</ns3:mi>
+          <ns3:mrow>
+            
+            
+            <ns3:mi>[MJ/m²/d]</ns3:mi>
+            
+          </ns3:mrow>
+          
+        </ns3:math>
+          </imagedata>
+        </imageobject>
+      </mediaobject>
+    </equation> </para>
+
+    <para>Zu weiterführenden Informationen über Kontexte siehe auch
+      <citetitle><xref linkend="Allen_1998" /></citetitle></para>
   </sect2>
   <bibliography xmlns="http://docbook.org/ns/docbook" version="5.0" xml:lang="en">
     <biblioentry xml:id="Allen_1998" xreflabel="Allen et.al 1998" role="inproceedings" >

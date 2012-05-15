@@ -123,7 +123,7 @@
   </sect2>
   <sect2>
     <title>Component Description</title>
-    <para>The snow module is carried out according to the method described in <citation><xref linkend="Knauf_1980"/></citation> including
+    <para>The snow module is carried out according to the method described in <citetitle><xref linkend="Knauf_1980"/></citetitle> including
       some changes and extensions. The snow module takes into account the changes of state of the
       snow cover during its existence, especially changes of the density due to melting and
       subsidence. This is important because snow covers can store free water, like a sponge, until
@@ -134,8 +134,8 @@
         >totSWE</emphasis>) which additionally considers liquid water stored in the snow cover. The
       subsidence of the snow cover, which results from the input of liquid water through the snow
       melt to the surface or from precipitation as rainfall, is calculated according to the
-      empirical subsidence method (snow compaction scheme) by <citation><xref linkend="Bertle_1966"
-      /></citation>.</para>
+      empirical subsidence method (snow compaction scheme) by <citetitle><xref linkend="Bertle_1966"
+      /></citetitle>.</para>
     <para>The snow cover and its conditions are described for the modeling according to the
       following parameters: snow depth (<emphasis role="italic">snowDepth</emphasis>) [in mm], dry
       snow density (<emphasis role="italic">dryDens</emphasis>) [in g/cm³] as quotient from total
@@ -143,7 +143,10 @@
     <para>If there is minimum, mean or maximum air temperature for a certain time, the module
       calculates separate accumulation or melt temperatures. In this way, accumulation and melting
       can occur within a time step. Temperatures are calculated according to: </para>
-    <para><inlineequation>
+    <para><equation>
+      <mediaobject>
+        <imageobject>
+          <imagedata align="center">
         <ns3:math display="inline">
           <ns3:mrow>
             <ns3:msub>
@@ -173,14 +176,27 @@
                     <ns3:mi>v</ns3:mi>
                     <ns3:mi>g</ns3:mi>
                   </ns3:mrow>
-                </ns3:msub>
+                </ns3:msub> 
               </ns3:mrow>
-              <ns3:mi>2</ns3:mi>
             </ns3:mfrac>
           </ns3:mrow>
+          
+          <ns3:mi> &#160;</ns3:mi>
+          <ns3:mrow>
+            
+            <ns3:mi>[°C]</ns3:mi>
+          </ns3:mrow>
+          
+          
         </ns3:math>
-      </inlineequation> [°C]</para>
-    <para><inlineequation>
+          </imagedata>
+        </imageobject>
+      </mediaobject>
+    </equation> </para>
+    <para><equation>
+      <mediaobject>
+        <imageobject>
+          <imagedata align="center">
         <ns3:math display="inline">
           <ns3:mrow>
             <ns3:msub>
@@ -215,11 +231,20 @@
                   </ns3:mrow>
                 </ns3:msub>
               </ns3:mrow>
-              <ns3:mi>2</ns3:mi>
             </ns3:mfrac>
           </ns3:mrow>
+          
+          <ns3:mi> &#160;</ns3:mi>
+          <ns3:mrow>
+            
+            <ns3:mi>[°C]</ns3:mi>
+          </ns3:mrow>
+         
         </ns3:math>
-      </inlineequation> [°C]</para>
+          </imagedata>
+        </imageobject>
+      </mediaobject>
+    </equation> </para>
     <para>If only mean temperature is available, it is used to decide whether the module is in the
       accumulation or melting phase. </para>
     <para><emphasis role="bold">Accumulation phase:</emphasis></para>
@@ -228,7 +253,10 @@
       of the snow cover has to be set close to 0 degrees. This process is taken into account by
       calculating the <emphasis role="bold">cold content</emphasis> (<emphasis role="italic"
         >snowColdContent</emphasis>) of the snow cover. This is done according to:</para>
-    <para><inlineequation>
+    <para><equation>
+      <mediaobject>
+        <imageobject>
+          <imagedata align="center">
         <ns3:math display="inline">
           <ns3:mrow>
             <ns3:mrow>
@@ -299,9 +327,20 @@
                 </ns3:msub>
               </ns3:mrow>
             </ns3:mrow>
+            
           </ns3:mrow>
+     
+          <ns3:mi> &#160;</ns3:mi>
+          <ns3:mrow>
+            
+            <ns3:mi>[mm]</ns3:mi>
+          </ns3:mrow>
+        
         </ns3:math>
-      </inlineequation> [mm]</para>
+          </imagedata>
+        </imageobject>
+      </mediaobject>
+    </equation> </para>
     <para>In doing so, negative air temperatures are accumulated and cancelled out by positive air
       temperatures and resulting potential rates of melting. Only when the cold content has reached
       a value of 0, a snow melt occurs.  </para>
@@ -312,8 +351,11 @@
       precipitation in solid form (<emphasis role="italic">netSnow</emphasis> > 0). Therefore the
         <emphasis role="bold">density of new snow</emphasis> (<emphasis role="italic"
         >newSnowDens</emphasis>) is determined subject to air temperature. The calculation is
-      carried out according to <citation><xref linkend="Kuchment_1983"/></citation> and <citation><xref linkend="Vehviläinen_1992"/></citation>:</para>
-    <para><inlineequation>
+      carried out according to <citetitle><xref linkend="Kuchment_1983"/></citetitle> and <citetitle><xref linkend="Vehviläinen_1992"/></citetitle>:</para>
+    <para><equation>
+      <mediaobject>
+        <imageobject>
+          <imagedata align="center">
         <ns3:math display="inline">
           <ns3:mrow>
             <ns3:mrow>
@@ -361,12 +403,26 @@
                       <ns3:mi>2</ns3:mi>
                     </ns3:msubsup>
                   </ns3:mrow>
+                  
                 </ns3:mrow>
               </ns3:mrow>
+              
+              
             </ns3:mrow>
           </ns3:mrow>
+          
+          <ns3:mi> &#160;</ns3:mi>
+          <ns3:mrow>
+            
+            <ns3:mi>[g/cm³]</ns3:mi>
+          </ns3:mrow>
+         
+          
         </ns3:math>
-      </inlineequation> [g/cm³]</para>
+          </imagedata>
+        </imageobject>
+      </mediaobject>
+    </equation> </para>
     <para>The <emphasis role="bold">change of snow depth</emphasis> (<inlineequation>
         <ns3:math display="inline">
           <ns3:mrow>
@@ -376,7 +432,10 @@
           </ns3:mrow>
         </ns3:math>
       </inlineequation>)  resulting from snow precipitation is calculated according to: </para>
-    <para><inlineequation>
+    <para><equation>
+      <mediaobject>
+        <imageobject>
+          <imagedata align="center">
         <ns3:math display="inline">
           <ns3:mrow>
             <ns3:mrow>
@@ -409,15 +468,28 @@
                   <ns3:mi>n</ns3:mi>
                   <ns3:mi>s</ns3:mi>
                 </ns3:mrow>
+                
               </ns3:mrow>
             </ns3:mfrac>
           </ns3:mrow>
+         
+          <ns3:mi> &#160;</ns3:mi>
+          <ns3:mrow>    
+            <ns3:mi>[mm]</ns3:mi>
+          </ns3:mrow>
+          
         </ns3:math>
-      </inlineequation> [mm]</para>
+          </imagedata>
+        </imageobject>
+      </mediaobject>
+    </equation> </para>
     <para>The <emphasis role="bold">snow water equivalent</emphasis> of the previous day (<emphasis
         role="italic">SWCdry</emphasis>) increases by the value of snow precipitation according
       to:</para>
-    <para><inlineequation>
+    <para><equation>
+      <mediaobject>
+        <imageobject>
+          <imagedata align="center">
         <ns3:math display="inline">
           <ns3:mrow>
             <ns3:mrow>
@@ -462,10 +534,21 @@
                 <ns3:mi>o</ns3:mi>
                 <ns3:mi>w</ns3:mi>
               </ns3:mrow>
+              
             </ns3:mrow>
           </ns3:mrow>
+         
+          <ns3:mi> &#160;</ns3:mi>
+          <ns3:mrow>
+            
+            <ns3:mi>[mm]</ns3:mi>
+          </ns3:mrow>
+         
         </ns3:math>
-      </inlineequation> [mm] </para>
+          </imagedata>
+        </imageobject>
+      </mediaobject>
+    </equation> </para>
     <para>The dry snow water equivalent and the total snow water equivalent are increased by the
       same value. If the precipitation event was mixed precipitation, the rain amount is allocated
       to the total snow-water equivalent. </para>
@@ -528,7 +611,10 @@
           </ns3:mrow>
         </ns3:math>
       </inlineequation> is carried out according to:</para>
-    <para><inlineequation>
+    <para><equation>
+      <mediaobject>
+        <imageobject>
+          <imagedata align="center">
         <ns3:math display="inline">
           <ns3:mrow>
             <ns3:mrow>
@@ -612,15 +698,28 @@
                           <ns3:mi>o</ns3:mi>
                           <ns3:mi>r</ns3:mi>
                         </ns3:mrow>
+                        
                       </ns3:mrow>
                     </ns3:mrow>
+                    
+                    
                   </ns3:mrow>
                 </ns3:mrow>
+                
+                <ns3:mi> &#160;</ns3:mi>
+                <ns3:mrow>
+                  
+                  <ns3:mi>[mm]</ns3:mi>
+                </ns3:mrow>
               </ns3:mrow>
+              
             </ns3:mrow>
           </ns3:mrow>
         </ns3:math>
-      </inlineequation> [mm]</para>
+          </imagedata>
+        </imageobject>
+      </mediaobject>
+    </equation> </para>
     <para><inlineequation>
         <ns3:math display="inline">
           <ns3:mrow>
@@ -630,7 +729,10 @@
         </ns3:math>
       </inlineequation> is then also modified according to the slope and the exposition of the
       spatial model entity:</para>
-    <para><inlineequation>
+    <para><equation>
+      <mediaobject>
+        <imageobject>
+          <imagedata align="center">
         <ns3:math display="inline">
           <ns3:mrow>
             <ns3:mrow>
@@ -656,11 +758,24 @@
                   <ns3:mi>C</ns3:mi>
                   <ns3:mi>f</ns3:mi>
                 </ns3:mrow>
+                
               </ns3:mrow>
             </ns3:mrow>
+            
+            
           </ns3:mrow>
+         
+          <ns3:mi> &#160;</ns3:mi>
+          <ns3:mrow>
+            
+            <ns3:mi>[mm]</ns3:mi>
+          </ns3:mrow>
+         
         </ns3:math>
-      </inlineequation> [mm]</para>
+          </imagedata>
+        </imageobject>
+      </mediaobject>
+    </equation> </para>
     <para><inlineequation>
         <ns3:math display="inline">
           <ns3:mrow>
@@ -679,7 +794,10 @@
           </ns3:mrow>
         </ns3:math>
       </inlineequation>):</para>
-    <para><inlineequation>
+    <para><equation>
+      <mediaobject>
+        <imageobject>
+          <imagedata align="center">
         <ns3:math display="inline">
           <ns3:mrow>
             <ns3:mrow>
@@ -702,10 +820,22 @@
                 <ns3:mi>n</ns3:mi>
                 <ns3:mi>s</ns3:mi>
               </ns3:mrow>
+     
             </ns3:mfrac>
           </ns3:mrow>
+       
+          
+          <ns3:mi> &#160;</ns3:mi>
+          <ns3:mrow>
+            
+            <ns3:mi>[mm]</ns3:mi>
+          </ns3:mrow>
+         
         </ns3:math>
-      </inlineequation> [mm]</para>
+          </imagedata>
+        </imageobject>
+      </mediaobject>
+    </equation> </para>
     <para>If <inlineequation>
         <ns3:math display="inline">
           <ns3:mrow>
@@ -719,19 +849,22 @@
       not the case, the snow depth is reduced correspondingly, which does not change the snow-water
       equivalent at first. The result is an increase in the total density of the snow cover. </para>
     <para>In addition to this change in density additional changes in subsidence and density
-      according to the <emphasis role="bold">snow-compaction-scheme</emphasis> by <citation><xref linkend="Bertle_1966"
-      /></citation> are
+      according to the <emphasis role="bold">snow-compaction-scheme</emphasis> by <citetitle><xref linkend="Bertle_1966"
+      /></citetitle> are
       taken into account. This method is based on the fact that water, no matter whether it results
       from temperature-induced snow melt or from precipitation, seeps aways into the snow cover and
       this leads to subsidence by recrystallization of snow and by structural changes and
-      concentration in the storage (<citation><xref linkend="Knauf_1980"/></citation>). The resulting subsidence rate is calculated using
-      the snow-subsidence method described in <citation><xref linkend="Bertle_1966"
-      /></citation>. This method is based on the observation
+      concentration in the storage (<citetitle><xref linkend="Knauf_1980"/></citetitle>). The resulting subsidence rate is calculated using
+      the snow-subsidence method described in <citetitle><xref linkend="Bertle_1966"
+      /></citetitle>. This method is based on the observation
       of an empirical relation between inflowing free water and the resulting change in elevation by
       subsidence which was derived from laboratory experiments of the US-Bureau of Reclamation. For
       the calculation the increase of accumulated water content in percentage is seen in relation to
       the snow-water equivalent using the following formula: </para>
-    <para><inlineequation>
+    <para><equation>
+      <mediaobject>
+        <imageobject>
+          <imagedata align="center">
         <ns3:math display="inline">
           <ns3:mrow>
             <ns3:msub>
@@ -769,11 +902,19 @@
               <ns3:mo>×</ns3:mo>
               <ns3:mi>100</ns3:mi>
             </ns3:mrow>
+            
           </ns3:mrow>
+  
+          <ns3:mi> &#160;</ns3:mi>           
+            <ns3:mi>[\%]</ns3:mi>
+         
         </ns3:math>
-      </inlineequation> [\%]</para>
+          </imagedata>
+        </imageobject>
+      </mediaobject>
+    </equation> </para>
     <para>This equation shows that the more liquid water is there as input, the greater is the snow
-      cover subsidence (<citation><xref linkend="Knauf_1980"/></citation>). An input of exactly the amount of water corresponding to the
+      cover subsidence (<citetitle><xref linkend="Knauf_1980"/></citetitle>). An input of exactly the amount of water corresponding to the
       snow-water equivalent of the snow cover leads to halving the snow depth by subsidence. The
       percentage of snow depth change (<inlineequation>
         <ns3:math display="inline">
@@ -783,7 +924,10 @@
           </ns3:msub>
         </ns3:math>
       </inlineequation>) is calculated subject to input of free water : </para>
-    <para><inlineequation>
+    <para><equation>
+      <mediaobject>
+        <imageobject>
+          <imagedata align="center">
         <ns3:math display="inline">
           <ns3:mrow>
             <ns3:msub>
@@ -802,12 +946,27 @@
                   <ns3:mi>W</ns3:mi>
                 </ns3:msub>
               </ns3:mrow>
+              
             </ns3:mrow>
           </ns3:mrow>
+          
+          <ns3:mi> &#160;</ns3:mi>
+          <ns3:mrow>
+            
+            <ns3:mi>[\%]</ns3:mi>
+          </ns3:mrow>
+       
         </ns3:math>
-      </inlineequation> [\%]</para>
+          </imagedata>
+        </imageobject>
+      </mediaobject>
+    </equation> </para>
+ 
     <para>The new snow depth is: </para>
-    <para><inlineequation>
+    <para><equation>
+      <mediaobject>
+        <imageobject>
+          <imagedata align="center">
         <ns3:math display="inline">
           <ns3:mrow>
             <ns3:mrow>
@@ -829,13 +988,27 @@
                 <ns3:mi>100</ns3:mi>
               </ns3:mfrac>
             </ns3:mrow>
+            
           </ns3:mrow>
+   
+          <ns3:mi> &#160;</ns3:mi>
+          <ns3:mrow>
+            
+            <ns3:mi>[mm]</ns3:mi>
+          </ns3:mrow>
+          
         </ns3:math>
-      </inlineequation> [mm] </para>
+          </imagedata>
+        </imageobject>
+      </mediaobject>
+    </equation> </para>
     <para>Together with the snow depth which has been calculated the total density (<emphasis
         role="italic">totDens</emphasis>) and the dry snow density (<emphasis role="italic"
         >dryDens</emphasis>) are recalculated according to the following formulas:</para>
-    <para><inlineequation>
+    <para><equation>
+      <mediaobject>
+        <imageobject>
+          <imagedata align="center">
         <ns3:math display="inline">
           <ns3:mrow>
             <ns3:mrow>
@@ -867,9 +1040,23 @@
               </ns3:mrow>
             </ns3:mfrac>
           </ns3:mrow>
+    
+          <ns3:mi> &#160;</ns3:mi>
+          <ns3:mrow>
+            
+            <ns3:mi>[g/cm³]</ns3:mi>
+          </ns3:mrow>
+   
         </ns3:math>
-      </inlineequation> [g/cm³]</para>
-    <para><inlineequation>
+          </imagedata>
+        </imageobject>
+      </mediaobject>
+    </equation> </para>
+     
+    <para><equation>
+      <mediaobject>
+        <imageobject>
+          <imagedata align="center">
         <ns3:math display="inline">
           <ns3:mrow>
             <ns3:mrow>
@@ -901,12 +1088,24 @@
               </ns3:mrow>
             </ns3:mfrac>
           </ns3:mrow>
+  
+          
+          <ns3:mi> &#160;</ns3:mi>
+          <ns3:mrow>
+            
+            <ns3:mi>[g/cm³]</ns3:mi>
+          </ns3:mrow>
+      
         </ns3:math>
-      </inlineequation> [g/cm³]</para>
-    <para>The following image presents the snow-compaction scheme with an example.</para>
+          </imagedata>
+        </imageobject>
+      </mediaobject>
+    </equation> </para>
+
+    <para>The following image (<xref linkend="j2k.snow.j2kProcessSnow.snow_compaction_fig1.png" xrefstyle="select: label"/>) presents the snow-compaction scheme with an example.</para>
     
     
-    <para>(<xref linkend="j2k.snow.j2kProcessSnow.snow_compaction_fig1.png" xrefstyle="select: label"/>)</para>
+    <para></para>
     
     <figure xml:id="j2k.snow.j2kProcessSnow.snow_compaction_fig1.png">
       <title>Exemplary representation of snow cover reduction by melting. A: snow cover before start
@@ -922,11 +1121,11 @@
       to store free water in its pores up to a certain density limit (<emphasis role="italic"
         >critDens</emphasis>). This storage capacity is almost completely and irreversibly lost when
       reaching a certain amount of free water in relation to the total snow-water equivalent
-      (between 40% and 45% according to <citation><xref linkend="Bertle_1966"/></citation>, 
-      <citation><xref linkend="Herrmann_1976"/></citation>, <citation><xref linkend="Lang_2005"/></citation>). In this
+      (between 40% and 45% according to <citetitle><xref linkend="Bertle_1966"/></citetitle>, 
+      <citetitle><xref linkend="Herrmann_1976"/></citetitle>, <citetitle><xref linkend="Lang_2005"/></citetitle>). In this
       threshold limit area the retention capacity of a naturally developing snow cover is also
       suddenly decreased without rain impact, a sudden water release from the snow cover can be
-      observed (<citation><xref linkend="Herrmann_1976"/></citation>). During the modeling this behavior is simulated by using the
+      observed (<citetitle><xref linkend="Herrmann_1976"/></citetitle>). During the modeling this behavior is simulated by using the
       calculation of a maximum water content of the snow cover (<inlineequation>
         <ns3:math display="inline">
           <ns3:mrow>
@@ -944,7 +1143,10 @@
         </ns3:math>
       </inlineequation>) according to:</para>
     
-    <para><inlineequation>
+    <para><equation>
+      <mediaobject>
+        <imageobject>
+          <imagedata align="center">
       <ns3:math display="inline">
         <ns3:mrow>
           <ns3:mrow>
@@ -1007,15 +1209,29 @@
               
               <ns3:mi>H</ns3:mi>
             </ns3:mrow>
+            
           </ns3:mrow>
         </ns3:mrow>
+
+        <ns3:mi> &#160;</ns3:mi>
+        <ns3:mrow>
+          
+          <ns3:mi>[mm]</ns3:mi>
+        </ns3:mrow>
+
       </ns3:math>
-    </inlineequation> [mm]</para>
+          </imagedata>
+        </imageobject>
+      </mediaobject>
+    </equation> </para>
     
     <para>The critical density (<emphasis role="italic">snowCritDens</emphasis>) is to be determined
       by the user. The water stored in the snow cover which exceeds this limit runs off: </para>
     
-    <para><inlineequation>
+    <para><equation>
+      <mediaobject>
+        <imageobject>
+          <imagedata align="center">
       <ns3:math display="inline">
         <ns3:mrow>
           <ns3:msub>
@@ -1072,21 +1288,33 @@
                   
                   <ns3:mi>x</ns3:mi>
                 </ns3:mrow>
-              </ns3:msub>
+              </ns3:msub> 
             </ns3:mrow>
           </ns3:mrow>
+          
+          
         </ns3:mrow>
+    
+        <ns3:mi> &#160;</ns3:mi>
+        <ns3:mrow>
+          
+          <ns3:mi>[mm]</ns3:mi>
+        </ns3:mrow>
+       
       </ns3:math>
-    </inlineequation> [mm]</para>
+          </imagedata>
+        </imageobject>
+      </mediaobject>
+    </equation> </para>
     
     <para>In the following time steps the density of the snow cover keeps the critical threshold
       density until it is either defrosted or starts the accumulation phase due to recurring
       snowfall.</para>
-    <para>For further information on contexts see also: <citation><xref linkend="Bertle_1966"
-        /></citation>, <citation><xref linkend="Herrmann_1976"/></citation>, <citation><xref
-          linkend="Knauf_1980"/></citation>, <citation><xref linkend="Kuchment_1983"/></citation>,
-          <citation><xref linkend="Lang_2005"/></citation>, <citation><xref
-          linkend="Vehviläinen_1992"/></citation></para>
+    <para>For further information on contexts see also: <citetitle><xref linkend="Bertle_1966"
+    /></citetitle>, <citetitle><xref linkend="Herrmann_1976"/></citetitle>, <citetitle><xref
+      linkend="Knauf_1980"/></citetitle>, <citetitle><xref linkend="Kuchment_1983"/></citetitle>,
+      <citetitle><xref linkend="Lang_2005"/></citetitle>, <citetitle><xref
+          linkend="Vehviläinen_1992"/></citetitle></para>
   </sect2>
     <bibliography>
       <title>Literature</title>

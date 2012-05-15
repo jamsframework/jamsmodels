@@ -139,24 +139,21 @@
       </variablelist>
       
       <para>
-        <inlinemediaobject>
-          <imageobject>
-            <imagedata fileref="lake_small.jpeg"/>
-          </imageobject>
-          <textobject>
-            <para>example image</para>
-          </textobject>
-        </inlinemediaobject> The parameter α has a certain value dependent on
-        the type of intercepted precipitation (rain or snow) since the maximum
-        interception capacity of snow is significantly higher than that of
-        liquid precipitation. The leaf area index for the individual vegetation
-        types in the seasonal cycle is calculated according to the
-        above-mentioned method for each day of the time span. The emptying of
-        the inception storage is exclusively carried out by evaporation. A
-        special case occurs when the value of the parameter α changes from snow
-        to rain because of air temperature. This leads to a sudden decrease of
-        the maximum interception storage capacity. Potential excess
-        precipitation is transferred as drip precipitation to the subsequent
-        module. </para>
+      <inlinemediaobject>
+        <imageobject>
+          <imagedata fileref="lake_small.jpeg"/>
+        </imageobject>
+        <textobject>
+          <para>example image</para>
+        </textobject>
+      </inlinemediaobject>The parameter α has a certain value dependent on the type of intercepted
+      precipitation (rain or snow) since the maximum interception capacity of snow is significantly
+      higher than that of liquid precipitation. The leaf area index for the individual vegetation
+      types in the seasonal cycle is calculated according to the above-mentioned method for each day
+      of the time span. The emptying of the inception storage is exclusively carried out by
+      evaporation. A special case occurs when the value of the parameter α changes from snow to rain
+      because of air temperature. This leads to a sudden decrease of the maximum interception
+      storage capacity. Potential excess precipitation is transferred as drip precipitation to the
+      subsequent module. </para>
   </sect2>
 </sect1>

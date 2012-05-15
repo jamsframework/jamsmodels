@@ -60,56 +60,55 @@
           <row>
             <entry>rhum</entry>
 
-            <entry>Die relative Luftfeuchtigkeit U[%]</entry>
+            <entry>Die relative Luftfeuchtigkeit [%]</entry>
           </row>
 
           <row>
             <entry>extRad</entry>
 
-            <entry>Die extraterrestrische Einstrahlung U [MJ/m²/d]</entry>
+            <entry>Die extraterrestrische Einstrahlung  [MJ/m²/d]</entry>
           </row>
 
           <row>
             <entry>solRad</entry>
 
-            <entry>Die Globalstrahlung U [MJ/m²/d]</entry>
+            <entry>Die Globalstrahlung  [MJ/m²/d]</entry>
           </row>
 
           <row>
             <entry>albedo</entry>
 
-            <entry>Die Albedo der Landbedeckung U [-]</entry>
+            <entry>Die Albedo der Landbedeckung  [-]</entry>
           </row>
 
           <row>
             <entry>elevation</entry>
 
-            <entry>Die Höhe über NN der räumlichen Modelleinheit U[m]</entry>
+            <entry>Die Höhe über NN der räumlichen Modelleinheit [m]</entry>
           </row>
 
           <row>
             <entry>netRad</entry>
 
-            <entry>Die Nettostrahlung U [MJ/m²/d]</entry>
+            <entry>Die Nettostrahlung  [MJ/m²/d]</entry>
           </row>
 
           <row>
             <entry>swRad</entry>
 
-            <entry>Der kurzwellige Strahlungsanteil U [MJ/m²/d]</entry>
+            <entry>Der kurzwellige Strahlungsanteil  [MJ/m²/d]</entry>
           </row>
 
           <row>
             <entry>lwRad</entry>
 
-            <entry>Der langwellig Strahlungsanteil U [MJ/m²/d]</entry>
+            <entry>Der langwellig Strahlungsanteil  [MJ/m²/d]</entry>
           </row>
 
           <row>
             <entry>refETNetRad</entry>
 
-            <entry>tägliche Nettostrahlung für die Grasfeferenzverdunstung U
-            [MJ/m²/d]</entry>
+            <entry>tägliche Nettostrahlung für die Grasfeferenzverdunstung  [MJ/m²/d]</entry>
           </row>
 
           <row>
@@ -158,7 +157,10 @@
         </ns3:math>
       </inlineequation>):</para>
 
-    <para><inlineequation>
+    <para><equation>
+      <mediaobject>
+        <imageobject>
+          <imagedata align="center">
         <ns3:math display="inline">
           <ns3:mrow>
             <ns3:mrow>
@@ -212,16 +214,31 @@
                         <ns3:mi>g</ns3:mi>
                       </ns3:mrow>
                     </ns3:msub>
+                  
                   </ns3:mrow>
                 </ns3:mfrac>
               </ns3:msup>
+            </ns3:mrow>     
+                  <ns3:mo>) </ns3:mo>
+             
             </ns3:mrow>
-          </ns3:mrow>
+            
+            <ns3:mi> &#160;</ns3:mi>
+            <ns3:mrow>
+             
+              
+              <ns3:mi>[kPa]</ns3:mi>
+             
+            </ns3:mrow>
+            
         </ns3:math>
-      </inlineequation> [kPa]</para>
+          </imagedata>
+        </imageobject>
+      </mediaobject>
+    </equation> </para>
 
     <para>Daraus ergibt sich mit Hilfe der relativen Luftfeuchtigkeit der
-    <emphasis role="bold">aktuelle Dampfdruck</emphasis> (<inlineequation>
+      <emphasis role="bold">aktuelle Dampfdruck</emphasis> (<inlineequation>
         <ns3:math display="inline">
           <ns3:mrow>
             <ns3:mi>e</ns3:mi>
@@ -231,7 +248,10 @@
         </ns3:math>
       </inlineequation>) nach:</para>
 
-    <para><inlineequation>
+    <para><equation>
+      <mediaobject>
+        <imageobject>
+          <imagedata align="center">
         <ns3:math display="inline">
           <ns3:mrow>
             <ns3:mrow>
@@ -257,9 +277,25 @@
                 <ns3:mi>100</ns3:mi>
               </ns3:mfrac>
             </ns3:mrow>
+          
           </ns3:mrow>
+          
+          <ns3:mo>) </ns3:mo>
+    
+          
+          <ns3:mi> &#160;</ns3:mi>
+          <ns3:mrow>
+            
+            
+            <ns3:mi>[kPa]</ns3:mi>
+           
+          </ns3:mrow>
+          
         </ns3:math>
-      </inlineequation> [kPa]</para>
+          </imagedata>
+        </imageobject>
+      </mediaobject>
+    </equation> </para>
 
     <para>Aus der extraterrestrischen Strahlung <inlineequation>
         <ns3:math display="inline">
@@ -270,7 +306,7 @@
           </ns3:msub>
         </ns3:math>
       </inlineequation>) und der Höhe h der Modelleinheit ergibt sich die
-    Globalstrahlung bei unbedecktem, klarem Himmel (<inlineequation>
+      <emphasis role="bold">Globalstrahlung bei unbedecktem, klarem Himmel</emphasis> (<inlineequation>
         <ns3:math display="inline">
           <ns3:msub>
             <ns3:mi>R</ns3:mi>
@@ -284,7 +320,10 @@
         </ns3:math>
       </inlineequation>):</para>
 
-    <para><inlineequation>
+    <para><equation>
+      <mediaobject>
+        <imageobject>
+          <imagedata align="center">
         <ns3:math display="inline">
           <ns3:mrow>
             <ns3:msub>
@@ -339,8 +378,25 @@
               </ns3:msub>
             </ns3:mrow>
           </ns3:mrow>
+          
+          <ns3:mo>) </ns3:mo>
+         
+          
+          
+          <ns3:mi> &#160;</ns3:mi>
+          <ns3:mrow>
+            
+            
+            <ns3:mi>[MJ/m²/d]</ns3:mi>
+            
+          </ns3:mrow>
+          
         </ns3:math>
-      </inlineequation> [MJ/m²/d]</para>
+          </imagedata>
+        </imageobject>
+      </mediaobject>
+    </equation> </para>
+      
 
     <para>Aus Globalstrahlung (<inlineequation>
         <ns3:math display="inline">
@@ -355,7 +411,7 @@
           <ns3:mi>α</ns3:mi>
         </ns3:math>
       </inlineequation>) der jeweiligen Landbedeckung ergibt sich die
-    Nettokurzwellenstrahlung (<inlineequation>
+      <emphasis role="bold">Nettokurzwellenstrahlung </emphasis>(<inlineequation>
         <ns3:math display="inline">
           <ns3:msub>
             <ns3:mi>R</ns3:mi>
@@ -369,7 +425,10 @@
         </ns3:math>
       </inlineequation>):</para>
 
-    <para><inlineequation>
+    <para><equation>
+      <mediaobject>
+        <imageobject>
+          <imagedata align="center">
         <ns3:math display="inline">
           <ns3:mrow>
             <ns3:msub>
@@ -408,10 +467,26 @@
               </ns3:msub>
             </ns3:mrow>
           </ns3:mrow>
+          
+          <ns3:mo>) </ns3:mo>
+      
+          
+          <ns3:mi> &#160;</ns3:mi>
+          <ns3:mrow>
+       
+               
+            <ns3:mi>[MJ/m²/d]</ns3:mi>
+       
+          </ns3:mrow>
+          
         </ns3:math>
-      </inlineequation> [MJ/m²/d]</para>
+          </imagedata>
+        </imageobject>
+      </mediaobject>
+    </equation> </para>
+   
 
-    <para>Die Nettolangwellenstrahlung (<inlineequation>
+    <para>Die <emphasis role="bold">Nettolangwellenstrahlung </emphasis> (<inlineequation>
         <ns3:math display="inline">
           <ns3:msub>
             <ns3:mi>R</ns3:mi>
@@ -492,7 +567,10 @@
         </ns3:math>
       </inlineequation>) beide in MJ/m²/d nach:</para>
 
-    <para><inlineequation>
+    <para><equation>
+      <mediaobject>
+        <imageobject>
+          <imagedata align="center">
         <ns3:math display="inline">
           <ns3:mrow>
             <ns3:msub>
@@ -597,19 +675,39 @@
                           <ns3:mo>-</ns3:mo>
 
                           <ns3:mi>0.35</ns3:mi>
-                        </ns3:mrow>
-                      </ns3:mrow>
-
-                      <ns3:mo>)</ns3:mo>
+                          
+                            <ns3:mo>)</ns3:mo>
+                            
+                           
+                        
+                        
+                      
                     </ns3:mrow>
+                  </ns3:mrow> 
+                  </ns3:mrow> 
                   </ns3:mrow>
-                </ns3:mrow>
-              </ns3:mrow>
-            </ns3:mrow>
-          </ns3:mrow>
+                  
+                  
+                  
+                  <ns3:mi> &#160;</ns3:mi>
+                  <ns3:mrow>
+                    
+                    
+                    <ns3:mi>[MJ/m²/]</ns3:mi>
+                    
+                  </ns3:mrow>
+                  
+                  
+                </ns3:mrow>     
+            </ns3:mrow> 
+            </ns3:mrow> 
+          </ns3:mrow> 
         </ns3:math>
-      </inlineequation> [MJ/m²/]</para>
-
+          </imagedata>
+        </imageobject>
+      </mediaobject>
+    </equation> </para>
+ 
     <para>Als Differenz aus <inlineequation>
         <ns3:math display="inline">
           <ns3:msub>
@@ -634,10 +732,13 @@
             </ns3:mrow>
           </ns3:msub>
         </ns3:math>
-      </inlineequation> ergibt sich schließlich die Nettostrahlung
+      </inlineequation> ergibt sich schließlich die <emphasis role="bold">Nettostrahlung</emphasis> 
     nach:</para>
 
-    <para><inlineequation>
+    <para><equation>
+      <mediaobject>
+        <imageobject>
+          <imagedata align="center">
         <ns3:math display="inline">
           <ns3:mrow>
             <ns3:msub>
@@ -671,9 +772,24 @@
                 </ns3:mrow>
               </ns3:msub>
             </ns3:mrow>
+            
+            <ns3:mo>) </ns3:mo>
+ 
           </ns3:mrow>
+          
+          <ns3:mi> &#160;</ns3:mi>
+          <ns3:mrow>
+            
+            
+            <ns3:mi>[MJ/m²/d]</ns3:mi>
+            
+          </ns3:mrow>
+          
         </ns3:math>
-      </inlineequation> [MJ/m²/d]</para>
+          </imagedata>
+        </imageobject>
+      </mediaobject>
+    </equation> </para>
 
     <para>Ist die langwellige Ausstrahlung größer als die kurzwellige
     Einstrahlung, wird die Nettostrahlung auf Null gesetzt.</para>

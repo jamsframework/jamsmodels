@@ -196,7 +196,10 @@
       </m:math>
     </inlineequation>):</para>
 
-  <para><inlineequation>
+    <para><equation>
+      <mediaobject>
+        <imageobject>
+          <imagedata align="center">
       <m:math display="inline">
         <m:mrow>
           <m:mrow>
@@ -292,7 +295,11 @@
           </m:mrow>
         </m:mrow>
       </m:math>
-    </inlineequation></para>
+            
+          </imagedata>
+        </imageobject>
+      </mediaobject>
+    </equation></para>
 
   <para>Nash-Sutcliffe efficiency with power 2 (<inlineequation>
       <m:math display="inline">
@@ -303,7 +310,10 @@
       </m:math>
     </inlineequation>):</para>
 
-  <para><inlineequation>
+    <para><equation>
+      <mediaobject>
+        <imageobject>
+          <imagedata align="center">
       <m:math display="inline">
         <m:mrow>
           <m:mrow>
@@ -407,7 +417,11 @@
           </m:mrow>
         </m:mrow>
       </m:math>
-    </inlineequation></para>
+            
+          </imagedata>
+        </imageobject>
+      </mediaobject>
+    </equation></para>
 
   <para>Nash-Sutcliffe efficiency calculated from logarithmic values with power  1 (<inlineequation>
       <m:math display="inline">
@@ -422,7 +436,10 @@
       </m:math>
     </inlineequation>):</para>
 
-  <para><inlineequation>
+    <para><equation>
+      <mediaobject>
+        <imageobject>
+          <imagedata align="center">
       <m:math display="inline">
         <m:mrow>
           <m:mrow>
@@ -548,7 +565,11 @@
           </m:mrow>
         </m:mrow>
       </m:math>
-    </inlineequation></para>
+    
+    </imagedata>
+    </imageobject>
+    </mediaobject>
+    </equation></para>
 
   <para>Nash-Sutcliffe efficiency calculated from logarithmic values with power  2 (<inlineequation>
       <m:math display="inline">
@@ -563,7 +584,10 @@
       </m:math>
     </inlineequation>):</para>
 
-  <para><inlineequation>
+    <para><equation>
+      <mediaobject>
+        <imageobject>
+          <imagedata align="center">
       <m:math display="inline">
         <m:mrow>
           <m:mrow>
@@ -697,7 +721,11 @@
           </m:mrow>
         </m:mrow>
       </m:math>
-    </inlineequation></para>
+          </imagedata>
+        </imageobject>
+      </mediaobject>
+    </equation>
+    </para>
 
   <para>In both forms which are calculated from logarithmic values there is a problem when one ore
     both values are 0. The logarithm is not defined in this case. The following cases are
@@ -724,7 +752,10 @@
       </m:math>
     </inlineequation>):</para>
 
-  <para><inlineequation>
+    <para><equation>
+      <mediaobject>
+        <imageobject>
+          <imagedata align="center">
       <m:math display="inline">
         <m:mrow>
           <m:mrow>
@@ -860,7 +891,11 @@
           </m:mrow>
         </m:mrow>
       </m:math>
-    </inlineequation></para>
+      </imagedata>
+      </imageobject>
+      </mediaobject>
+      </equation>
+  </para>
 
   <para>Index of Agreement with power 2 (<inlineequation>
       <m:math display="inline">
@@ -875,7 +910,10 @@
       </m:math>
     </inlineequation>):</para>
 
-  <para><inlineequation>
+    <para><equation>
+      <mediaobject>
+        <imageobject>
+          <imagedata align="center">
       <m:math display="inline">
         <m:mrow>
           <m:mrow>
@@ -1017,7 +1055,11 @@
           </m:mrow>
         </m:mrow>
       </m:math>
-    </inlineequation> </para>
+            
+          </imagedata>
+        </imageobject>
+      </mediaobject>
+    </equation> </para>
 
   <para>The coefficient of determination (<inlineequation>
       <m:math display="inline">
@@ -1029,7 +1071,10 @@
       </m:math>
     </inlineequation>):</para>
 
-  <para><inlineequation>
+    <para><equation>
+      <mediaobject>
+        <imageobject>
+          <imagedata align="center">
       <m:math display="inline">
         <m:mrow>
           <m:mrow>
@@ -1211,7 +1256,11 @@
           </m:msup>
         </m:mrow>
       </m:math>
-    </inlineequation> </para>
+    
+    </imagedata>
+    </imageobject>
+    </mediaobject>
+    </equation> </para>
 
   <para>A weighted form of the coefficient of determination having the slope of the regression line
     (b) as weight (<inlineequation>
@@ -1227,7 +1276,10 @@
       </m:math>
     </inlineequation>):</para>
 
-  <para><inlineequation>
+    <para><equation>
+      <mediaobject>
+        <imageobject>
+          <imagedata align="center">
       <m:math display="inline">
         <m:mrow>
           <m:mrow>
@@ -1333,7 +1385,11 @@
           </m:mrow>
         </m:mrow>
       </m:math>
-    </inlineequation> </para>
+    
+    </imagedata>
+    </imageobject>
+    </mediaobject>
+    </equation> </para>
 
   <para>The slope of the linear line of best fit for accumulated simulation and comparison values
     (dsgrad):</para>
@@ -1354,7 +1410,10 @@
       </m:math>
     </inlineequation>):</para>
 
-  <para><inlineequation>
+    <para><equation>
+      <mediaobject>
+        <imageobject>
+          <imagedata align="center">
       <m:math display="inline">
         <m:mrow>
           <m:mrow>
@@ -1406,11 +1465,18 @@
           </m:mrow>
         </m:mrow>
       </m:math>
-    </inlineequation> </para>
+            
+          </imagedata>
+        </imageobject>
+      </mediaobject>
+    </equation></para>
 
   <para>The mean square error (rmse):</para>
 
-  <para><inlineequation>
+    <para><equation>
+      <mediaobject>
+        <imageobject>
+          <imagedata align="center">
       <m:math display="inline">
         <m:mrow>
           <m:mrow>
@@ -1480,7 +1546,11 @@
           </m:msqrt>
         </m:mrow>
       </m:math>
-    </inlineequation> </para>
+            
+          </imagedata>
+        </imageobject>
+      </mediaobject>
+    </equation> </para>
 
   <para>The mean percentage error (<inlineequation>
       <m:math display="inline">
@@ -1494,7 +1564,10 @@
       </m:math>
     </inlineequation>):</para>
 
-  <para><inlineequation>
+    <para><equation>
+      <mediaobject>
+        <imageobject>
+          <imagedata align="center">
       <m:math display="inline">
         <m:mrow>
           <m:mrow>
@@ -1586,7 +1659,11 @@
           </m:mrow>
         </m:mrow>
       </m:math>
-    </inlineequation> </para>
+    
+    </imagedata>
+    </imageobject>
+    </mediaobject>
+    </equation></para>
 
   <para>The mean absolute percentage error (<inlineequation>
       <m:math display="inline">
@@ -1603,7 +1680,10 @@
       </m:math>
     </inlineequation>):</para>
 
-  <para><inlineequation>
+    <para><equation>
+      <mediaobject>
+        <imageobject>
+          <imagedata align="center">
       <m:math display="inline">
         <m:mrow>
           <m:mrow>
@@ -1699,7 +1779,11 @@
           </m:mrow>
         </m:mrow>
       </m:math>
-  </inlineequation> 
+    
+    </imagedata>
+    </imageobject>
+    </mediaobject>
+    </equation>
   </para>
   </sect2>
     <bibliography>

@@ -52,8 +52,8 @@
         role="italic">hrus</emphasis> wählt es den Landnutzungstypen, der durch sein Attribut
         <ns:emphasis>landuseID</ns:emphasis> identifiziert wird, und fügt die entsprechende
       Landnutzungsinformation zum Attributeset der Einheit hinzu. Ein Beispiel für ein Parameterfile
-      der Landnutzung wird in der Abbildung <xref xmlns:xlink="http://www.w3.org/1999/xlink"
-        linkend="org.unijena.j2k.io.StandardLUReader_en_fig1" xrefstyle="select: label"/> dargestellt.</para>
+      der Landnutzung wird in der Abbildung (<xref xmlns:xlink="http://www.w3.org/1999/xlink"
+        linkend="org.unijena.j2k.io.StandardLUReader_en_fig1" xrefstyle="select: label"/>) dargestellt.</para>
     <figure xml:id="org.unijena.j2k.io.StandardLUReader_en_fig1">
       <title>Ausschnitt aus einem Beisipiel einer ASCII-Datei mit Landnutzungsinformation</title>
       <mediaobject>

@@ -87,7 +87,7 @@
       solar radiation is calculated by taking the extraterrestrial radiation substracting the amount
       which is reflected or absorbed when passing the atmosphere. This amount can be estimated using
       the Angstrom formula. In order to calculate the solar radiation the following individual
-      calculations are carried out in the module according to Allen et al. (1998). For monthly
+      calculations are carried out in the module according to <citetitle><xref linkend="Allen_1998"/></citetitle> . For monthly
       calculations the solar radiation is calculated for the 15th of the particular month. </para>
     <para>Declination (d) of the sun for the Julian day (<inlineequation>
         <ns3:math display="inline">
@@ -97,7 +97,10 @@
           </ns3:mrow>
         </ns3:math>
       </inlineequation>):</para>
-    <para><inlineequation>
+    <para><equation>
+      <mediaobject>
+        <imageobject>
+          <imagedata align="center">
         <math display="block" xmlns="http://www.w3.org/1998/Math/MathML">
           <semantics>
             <mrow>
@@ -121,7 +124,10 @@
               >MathType@MTEF@5@5@+=feaagCart1ev2aaatCvAUfeBSjuyZL2yd9gzLbvyNv2CaerbuLwBLnhiov2DGi1BTfMBaeXatLxBI9gBaerbd9wDYLwzYbItLDharqqtubsr4rNCHbGeaGqiVu0Je9sqqrpepC0xbbL8F4rqqrFfpeea0xe9Lq=Jc9vqaqpepm0xbba9pwe9Q8fs0=yqaqpepae9pg0FirpepeKkFr0xfr=xfr=xb9adbaqaaeGaciGaaiaabeqaamaabaabaaGcbaGaamizaiaadwgacaWGJbGaamiBaiabg2da9iaaicdacaGGUaGaaGinaiaaicdacaaI5aGaaGynaiaaisdacqGHflY1ciGGZbGaaiyAaiaac6gacaGGOaGaaGimaiaac6cacaaIWaGaaGymaiaaiEdacaaIYaGaeyyXICTaaiikaiaadQgacaWGebGaeyOeI0IaaG4naiaaiMdacaGGUaGaaG4maiaaiwdacaGGPaGaaeiiaiaabUfacaqGYbGaaeyyaiaabsgacaqGDbaaaa@5911@</annotation>
           </semantics>
         </math>
-      </inlineequation></para>
+          </imagedata>
+        </imageobject>
+      </mediaobject>
+    </equation></para>
     <para>Hour angle at sunset for the particular geographical latitude (<inlineequation>
         <ns3:math display="inline">
           <ns3:mrow>
@@ -135,7 +141,10 @@
           <ns3:mi>d</ns3:mi>
         </ns3:math>
       </inlineequation>):</para>
-    <para><inlineequation>
+    <para><equation>
+      <mediaobject>
+        <imageobject>
+          <imagedata align="center">
         <math display="block" xmlns="http://www.w3.org/1998/Math/MathML">
           <semantics>
             <mrow>
@@ -165,7 +174,10 @@
               >MathType@MTEF@5@5@+=feaagCart1ev2aaatCvAUfeBSjuyZL2yd9gzLbvyNv2CaerbuLwBLnhiov2DGi1BTfMBaeXatLxBI9gBaerbd9wDYLwzYbItLDharqqtubsr4rNCHbGeaGqiVu0Je9sqqrpepC0xbbL8F4rqqrFfpeea0xe9Lq=Jc9vqaqpepm0xbba9pwe9Q8fs0=yqaqpepae9pg0FirpepeKkFr0xfr=xfr=xb9adbaqaaeGaciGaaiaabeqaamaabaabaaGcbaGaam4CaiaadEhacqGH9aqpciGGHbGaaiOCaiaacogacaGGJbGaai4BaiaacohacaGGOaGaeyOeI0IaaGymaiabgwSixlGacshacaGGHbGaaiOBaiaacIcacaWGSbGaamyyaiaadshacaGGPaGaeyyXICTaciiDaiaacggacaGGUbGaaiikaiaadsgacaGGPaGaaiykaiaabccacaqGBbGaaeOCaiaabggacaqGKbGaaeyxaaaa@5746@</annotation>
           </semantics>
         </math>
-      </inlineequation></para>
+          </imagedata>
+        </imageobject>
+      </mediaobject>
+    </equation></para>
     <para>The maximum amount of sunshine hours for the Julian day  (<inlineequation>
         <ns3:math display="inline">
           <ns3:mrow>
@@ -181,7 +193,11 @@
           </ns3:mrow>
         </ns3:math>
       </inlineequation>):</para>
-    <para><inlineequation>
+    <para>
+      <equation>
+        <mediaobject>
+          <imageobject>
+            <imagedata align="center">
         <math display="block" xmlns="http://www.w3.org/1998/Math/MathML">
           <semantics>
             <mrow>
@@ -205,7 +221,10 @@
               >MathType@MTEF@5@5@+=feaagCart1ev2aaatCvAUfeBSjuyZL2yd9gzLbvyNv2CaerbuLwBLnhiov2DGi1BTfMBaeXatLxBI9gBaerbd9wDYLwzYbItLDharqqtubsr4rNCHbGeaGqiVu0Je9sqqrpepC0xbbL8F4rqqrFfpeea0xe9Lq=Jc9vqaqpepm0xbba9pwe9Q8fs0=yqaqpepae9pg0FirpepeKkFr0xfr=xfr=xb9adbaqaaeGaciGaaiaabeqaamaabaabaaGcbaGaam4uamaaBaaaleaacaaIWaaabeaakiabg2da9maalaaabaGaaGOmaiaaisdaaeaacqqHGoauaaGaeyyXICTaam4CaiaadEhacaqGGaGaae4waiaabIgacaqGDbaaaa@4354@</annotation>
           </semantics>
         </math>
-      </inlineequation></para>
+            </imagedata>
+          </imageobject>
+        </mediaobject>
+      </equation></para>
     <para>By using the Angstrom formula with parameters <emphasis role="italic">a</emphasis> and
         <emphasis role="italic">b</emphasis>, the relation between current (<inlineequation>
         <ns3:math display="inline">
@@ -244,7 +263,11 @@
           </ns3:msub>
         </ns3:math>
       </inlineequation>) is calculated according to:</para>
-    <para><inlineequation>
+    <para>
+      <equation>
+        <mediaobject>
+          <imageobject>
+            <imagedata align="center">
         <math display="block" xmlns="http://www.w3.org/1998/Math/MathML">
           <semantics>
             <mrow>
@@ -311,9 +334,12 @@
               >MathType@MTEF@5@5@+=feaagCart1ev2aaatCvAUfeBSjuyZL2yd9gzLbvyNv2CaerbuLwBLnhiov2DGi1BTfMBaeXatLxBI9gBaerbd9wDYLwzYbItLDharqqtubsr4rNCHbGeaGqiVu0Je9sqqrpepC0xbbL8F4rqqrFfpeea0xe9Lq=Jc9vqaqpepm0xbba9pwe9Q8fs0=yqaqpepae9pg0FirpepeKkFr0xfr=xfr=xb9adbaqaaeGaciGaaiaabeqaamaabaabaaGcbaGaam4Caiaad+gacaWGSbGaamOuaiaadggacaWGKbGaeyypa0ZaaeWaaeaacaWGHbGaey4kaSIaamOyaiabgwSixpaalaaabaGaam4uaaqaaiaadofadaWgaaWcbaGaaGimaaqabaaaaaGccaGLOaGaayzkaaGaeyyXICTaamyyaiaadogacaWG0bGaamyraiaadIhacaWG0bGaamOuaiaadggacaWGKbGaaeiiamaadmaabaGaaeytaiaabQeacqGHflY1caqGTbWaaWbaaSqabeaacaqGTaGaaeOmaaaakiabgwSixlaabsgadaahaaWcbeqaaiaab2cacaqGXaaaaaGccaGLBbGaayzxaaaaaa@5DFA@</annotation>
           </semantics>
         </math>
-      </inlineequation></para>
-    <para>For further information on contexts see also: <citation><xref linkend="Allen_1998"
-        /></citation></para>
+            </imagedata>
+          </imageobject>
+        </mediaobject>
+      </equation></para>
+    <para>For further information on contexts see also <citetitle><xref linkend="Allen_1998"
+        /></citetitle></para>
   </sect2>
   <bibliography xmlns="http://docbook.org/ns/docbook" version="5.0" xml:lang="en">
     <biblioentry xml:id="Allen_1998" xreflabel="Allen et.al 1998" role="inproceedings" >

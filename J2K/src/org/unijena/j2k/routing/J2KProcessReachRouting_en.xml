@@ -178,7 +178,7 @@
       Although the complete amount of water is routed, the relative amounts of the individual runoff
       components are maintained, so they can be considered separately anytime and in every reach. </para>
     <para>The module describes flow processes in the channel by using the kinematic wave approach
-      and the calculation of velocity according to MANNING &amp; STRICKLER. The only parameter that
+      and the calculation of velocity according to Manning &amp; Strickler. The only parameter that
       has to be set by the user  (<inlineequation>
         <ns3:math display="inline">
           <ns3:mrow>
@@ -207,7 +207,10 @@
           </ns3:mrow>
         </ns3:math>
       </inlineequation>): </para>
-    <para><inlineequation>
+    <para><equation>
+      <mediaobject>
+        <imageobject>
+          <imagedata align="center">
         <ns3:math display="inline">
           <ns3:mrow>
             <ns3:mrow>
@@ -235,7 +238,11 @@
             </ns3:mrow>
           </ns3:mrow>
         </ns3:math>
-      </inlineequation></para>
+            
+          </imagedata>
+        </imageobject>
+      </mediaobject>
+    </equation></para>
     <para>Before doing so, the velocity (<inlineequation>
         <ns3:math display="inline">
           <ns3:msub>
@@ -305,7 +312,10 @@
           </ns3:msub>
         </ns3:math>
       </inlineequation>) until both velocities differ in a value smaller than 0,001 m s^{-1}: </para>
-    <para><inlineequation>
+    <para><equation>
+      <mediaobject>
+        <imageobject>
+          <imagedata align="center">
         <ns3:math display="inline">
           <ns3:mrow>
             <ns3:mrow>
@@ -325,13 +335,34 @@
                     <ns3:mi>b</ns3:mi>
                   </ns3:mfrac>
                 </ns3:mrow>
+            
               </ns3:mrow>
             </ns3:mfrac>
           </ns3:mrow>
+          
+          
+     
+    
+          
+          <ns3:mi> &#160;</ns3:mi>
+          <ns3:mrow>
+  
+            <ns3:mi>[m]</ns3:mi>
+  
+          </ns3:mrow>
+         
+          
+          
         </ns3:math>
-      </inlineequation> [m]</para>
+          </imagedata>
+        </imageobject>
+      </mediaobject>
+    </equation> </para>
     <para>with: </para>
-    <para><inlineequation>
+    <para><equation>
+      <mediaobject>
+        <imageobject>
+          <imagedata align="center">
         <ns3:math display="inline">
           <ns3:mrow>
             <ns3:mi>A</ns3:mi>
@@ -347,13 +378,30 @@
                     <ns3:mi>i</ns3:mi>
                     <ns3:mi>t</ns3:mi>
                   </ns3:mrow>
+                  
                 </ns3:mrow>
               </ns3:msub>
             </ns3:mfrac>
           </ns3:mrow>
+         
+          <ns3:mi> &#160;</ns3:mi>
+          <ns3:mrow>
+   
+            
+            <ns3:mi>[m²]</ns3:mi>
+ 
+          </ns3:mrow>
+          
         </ns3:math>
-      </inlineequation> [m²]</para>
-    <para><inlineequation>
+          </imagedata>
+        </imageobject>
+      </mediaobject>
+    </equation> </para>
+  
+    <para><equation>
+      <mediaobject>
+        <imageobject>
+          <imagedata align="center">
         <ns3:math display="inline">
           <ns3:mrow>
             <ns3:msub>
@@ -386,12 +434,24 @@
                     <ns3:mi>1</ns3:mi>
                     <ns3:mi>3</ns3:mi>
                   </ns3:mfrac>
-                </ns3:msup>
+                  </ns3:msup>
               </ns3:mrow>
+              
             </ns3:mrow>
           </ns3:mrow>
+          
+          <ns3:mi> &#160;</ns3:mi>
+          <ns3:mrow>
+ 
+            <ns3:mi>[m³/s]</ns3:mi>
+   
+          </ns3:mrow>
+          
         </ns3:math>
-      </inlineequation> [m³/s]</para>
+          </imagedata>
+        </imageobject>
+      </mediaobject>
+    </equation> </para>
     <para>Finally, the amount of water of the corresponding reach  (<inlineequation>
         <ns3:math display="inline">
           <ns3:msub>
@@ -415,7 +475,10 @@
           </ns3:mrow>
         </ns3:math>
       </inlineequation>)  which has been generated. </para>
-    <para><inlineequation>
+    <para><equation>
+      <mediaobject>
+        <imageobject>
+          <imagedata align="center">
         <ns3:math display="inline">
           <ns3:mrow>
             <ns3:mi>q</ns3:mi>
@@ -438,12 +501,23 @@
                     <ns3:mi>R</ns3:mi>
                     <ns3:mi>k</ns3:mi>
                   </ns3:mrow>
-                </ns3:mfrac>
+                </ns3:mfrac>  
               </ns3:msup>
             </ns3:mrow>
           </ns3:mrow>
+    
+          <ns3:mi> &#160;</ns3:mi>
+          <ns3:mrow>
+            
+            <ns3:mi>[m³/s]</ns3:mi>
+
+          </ns3:mrow>
+          
         </ns3:math>
-      </inlineequation> [m³/s]</para>
+          </imagedata>
+        </imageobject>
+      </mediaobject>
+    </equation> </para>
     <para>The higher the assumed value of <inlineequation>
         <ns3:math display="inline">
           <ns3:mrow>
@@ -453,8 +527,8 @@
         </ns3:math>
       </inlineequation>, the faster does the runoff wave move within a certain time span and the
       less water remains in the channel.</para>
-    <para>For further information see also: <citation><xref linkend="Krause_2005"
-      /></citation>.</para>
+    <para>For further information see also <citetitle><xref linkend="Krause_2005"
+      /></citetitle>.</para>
   </sect2>
     <bibliography>
       <title>Literature</title>

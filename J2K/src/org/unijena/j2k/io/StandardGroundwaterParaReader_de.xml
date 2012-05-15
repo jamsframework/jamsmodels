@@ -52,8 +52,8 @@
         role="italic">hrus</emphasis> wählt es den hydrogeologischen Typen, der durch sein Attribut
         <ns:emphasis>hgeoID</ns:emphasis> identifiziert wird, und fügt entsprechende
       hydrogeologische Informationen zum Attributeset der Einheit. Ein Beispiel für ein
-      hydrogeologisches Parameterfile wird im Bild <xref xmlns:xlink="http://www.w3.org/1999/xlink"
-        linkend="org.unijena.j2k.io.StandardGroundwaterParaReader_en_fig1" xrefstyle="select: label"/> dargestellt.</para>
+      hydrogeologisches Parameterfile wird in folgender Abbildung (<xref xmlns:xlink="http://www.w3.org/1999/xlink"
+        linkend="org.unijena.j2k.io.StandardGroundwaterParaReader_en_fig1" xrefstyle="select: label"/>) dargestellt.</para>
     <figure xml:id="org.unijena.j2k.io.StandardGroundwaterParaReader_en_fig1">
       <title>Beispiel für eine ASCII-Datei mit hydrogeologischen Daten </title>
       <mediaobject>

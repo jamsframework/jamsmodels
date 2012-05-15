@@ -9,7 +9,7 @@
 
   <subtitle>Eine Komponente zur Berechnung der potentiellen
   Landoberflächenverdunstung nach Penman-Monteith. Die Berechnung erfolgt
-  weitestgehend nach <citation><xref linkend="Allen_1998"/></citation>.</subtitle>
+  weitestgehend nach <citetitle><xref linkend="Allen_1998"/></citetitle>.</subtitle>
 
   <informaltable>
     <tgroup cols="2">
@@ -66,49 +66,49 @@
           <row>
             <entry>wind</entry>
 
-            <entry>Windgeschwindigkeit U[m/s]</entry>
+            <entry>Windgeschwindigkeit [m/s]</entry>
           </row>
 
           <row>
             <entry>tmean</entry>
 
-            <entry>Mittlere Lufttemperatur U[°C]</entry>
+            <entry>Mittlere Lufttemperatur [°C]</entry>
           </row>
 
           <row>
             <entry>rhum</entry>
 
-            <entry>Relative Luftfeuchtigkeit U[%]</entry>
+            <entry>Relative Luftfeuchtigkeit [%]</entry>
           </row>
 
           <row>
             <entry>netRad</entry>
 
-            <entry>Nettostrahlung U[MJ/m² tempRes]</entry>
+            <entry>Nettostrahlung [MJ/m² tempRes]</entry>
           </row>
 
           <row>
             <entry>actRsc0</entry>
 
-            <entry>Stomatawiderstand U[s/m]</entry>
+            <entry>Stomatawiderstand [s/m]</entry>
           </row>
 
           <row>
             <entry>elevation</entry>
 
-            <entry>Die Höhe über NN der räumlichen Einheit U[m]</entry>
+            <entry>Die Höhe über NN der räumlichen Einheit [m]</entry>
           </row>
 
           <row>
             <entry>area</entry>
 
-            <entry>Die Fläche der räumlichen Einheit U[m²]</entry>
+            <entry>Die Fläche der räumlichen Einheit [m²]</entry>
           </row>
 
           <row>
             <entry>actLAI</entry>
 
-            <entry>Der Blattflächenindex U[-]</entry>
+            <entry>Der Blattflächenindex [-]</entry>
           </row>
 
           <row>
@@ -132,13 +132,13 @@
           <row>
             <entry>rs</entry>
 
-            <entry>Der Verdunstungswiderstand der Vegetation U[s/m]</entry>
+            <entry>Der Verdunstungswiderstand der Vegetation [s/m]</entry>
           </row>
 
           <row>
             <entry>ra</entry>
 
-            <entry>Der aerodynamische Widerstand des Bestandes U[s/m]</entry>
+            <entry>Der aerodynamische Widerstand des Bestandes [s/m]</entry>
           </row>
 
           <row>
@@ -155,14 +155,16 @@
   <sect2>
     <title>Beschreibung der Komponente</title>
 
-    <para>Mit diesem Modul wird die potentielle Verdunstung nach
-    Penman-Monteith (<citation><xref linkend="Monteith_1975"/></citation>) für verschiedene Landbedeckungen
-    berechnet. Die Berechnung der Bestandverdunstung erfolgt in mehreren
-    Schritten weitestgehend nach <citation><xref linkend="Allen_1998"/></citation> unter Einbeziehung einer
-    Vielzahl von Parametern. Die Berechnung der potentiellen Verdunstung
-    erfolgt nach:</para>
+    <para>Mit diesem Modul wird die potentielle Verdunstung nach Penman-Monteith (<citetitle><xref
+          linkend="Monteith_1975"/></citetitle>) für verschiedene Landbedeckungen berechnet. Die
+      Berechnung der Bestandverdunstung erfolgt in mehreren Schritten weitestgehend nach
+          <citation><xref linkend="Allen_1998"/></citation> unter Einbeziehung einer Vielzahl von
+      Parametern. Die Berechnung der potentiellen Verdunstung erfolgt nach:</para>
 
-    <para><inlineequation>
+    <para><equation>
+      <mediaobject>
+        <imageobject>
+          <imagedata align="center">
         <ns3:math display="inline">
           <ns3:mrow>
             <ns3:mrow>
@@ -294,7 +296,10 @@
             </ns3:mrow>
           </ns3:mrow>
         </ns3:math>
-      </inlineequation></para>
+          </imagedata>
+        </imageobject>
+      </mediaobject>
+    </equation></para>
 
     <para>mit:</para>
 
@@ -404,7 +409,10 @@
         </ns3:math>
       </inlineequation> in °C nach:</para>
 
-    <para><inlineequation>
+    <para><equation>
+      <mediaobject>
+        <imageobject>
+          <imagedata align="center">
         <ns3:math display="inline">
           <ns3:mrow>
             <ns3:mi>L</ns3:mi>
@@ -445,8 +453,20 @@
               <ns3:mi>1000</ns3:mi>
             </ns3:mfrac>
           </ns3:mrow>
+          
+          
+          <ns3:mi> &#160;</ns3:mi>
+          <ns3:mrow>
+            
+            <ns3:mi>[MJ/kg/ZS]</ns3:mi>
+          
+          </ns3:mrow>
+          
         </ns3:math>
-      </inlineequation> [MJ/kg/ZS]</para>
+          </imagedata>
+        </imageobject>
+      </mediaobject>
+    </equation> </para>
 
     <para>Der Sättigungsdampfdruck (<inlineequation>
         <ns3:math display="inline">
@@ -472,7 +492,10 @@
         </ns3:math>
       </inlineequation>) ergibt sich als:</para>
 
-    <para><inlineequation>
+    <para><equation>
+      <mediaobject>
+        <imageobject>
+          <imagedata align="center">
         <ns3:math display="inline">
           <ns3:mrow>
             <ns3:mrow>
@@ -530,15 +553,30 @@
                 </ns3:mfrac>
               </ns3:msup>
             </ns3:mrow>
+            
           </ns3:mrow>
+          
+          
+          <ns3:mi> &#160;</ns3:mi>
+          <ns3:mrow>
+            
+            <ns3:mi>[kPa]</ns3:mi>
+          </ns3:mrow>
+          
         </ns3:math>
-      </inlineequation> [kPa]</para>
+          </imagedata>
+        </imageobject>
+      </mediaobject>
+    </equation> </para>
 
     <para>Der aktuelle Dampfdruck (<emphasis role="italic">ea</emphasis>)
     ergibt sich aus dem Sättigungsdampfdruck und der relativen Luftfeuchte (%)
     nach:</para>
 
-    <para><inlineequation>
+    <para><equation>
+      <mediaobject>
+        <imageobject>
+          <imagedata align="center">
         <ns3:math display="inline">
           <ns3:mrow>
             <ns3:mrow>
@@ -564,9 +602,21 @@
                 <ns3:mi>100</ns3:mi>
               </ns3:mfrac>
             </ns3:mrow>
+            
           </ns3:mrow>
+          
+          
+          <ns3:mi> &#160;</ns3:mi>
+          <ns3:mrow>
+            
+            <ns3:mi>[kPa]</ns3:mi>
+          </ns3:mrow>
+ 
         </ns3:math>
-      </inlineequation> [kPa]</para>
+          </imagedata>
+        </imageobject>
+      </mediaobject>
+    </equation> </para>
 
     <para>Aus dem Sättigungsdampfdruck (<emphasis role="italic">es</emphasis>)
     und der Lufttemperatur (<inlineequation>
@@ -590,7 +640,10 @@
         </ns3:math>
       </inlineequation>) nach</para>
 
-    <para><inlineequation>
+    <para><equation>
+      <mediaobject>
+        <imageobject>
+          <imagedata align="center">
         <ns3:math display="inline">
           <ns3:mrow>
             <ns3:mi>s</ns3:mi>
@@ -638,9 +691,20 @@
                 </ns3:msup>
               </ns3:mfrac>
             </ns3:mrow>
+            
           </ns3:mrow>
+          
+          <ns3:mi> &#160;</ns3:mi>
+          <ns3:mrow>
+            
+            <ns3:mi>[kPa/°C]</ns3:mi>
+          </ns3:mrow>
+          
         </ns3:math>
-      </inlineequation> [kPa/°C]</para>
+          </imagedata>
+        </imageobject>
+      </mediaobject>
+    </equation> </para>
 
     <para>Der Luftdruck (<inlineequation>
         <ns3:math display="inline">
@@ -657,7 +721,10 @@
       </inlineequation>) wird aus der umgestellten barometrischen Höhenformel
     ermittelt:</para>
 
-    <para><inlineequation>
+    <para><equation>
+      <mediaobject>
+        <imageobject>
+          <imagedata align="center">
         <ns3:math display="inline">
           <ns3:mrow>
             <ns3:msub>
@@ -714,10 +781,22 @@
 
                 <ns3:mi>z</ns3:mi>
               </ns3:mrow>
+              
             </ns3:mrow>
           </ns3:mrow>
+          
+          
+          <ns3:mi> &#160;</ns3:mi>
+          <ns3:mrow>
+            
+            <ns3:mi>[kPa]</ns3:mi>
+          </ns3:mrow>
+          
         </ns3:math>
-      </inlineequation> [kPa]</para>
+          </imagedata>
+        </imageobject>
+      </mediaobject>
+    </equation> </para>
 
     <para>mit:</para>
 
@@ -797,7 +876,10 @@
         </ns3:math>
       </inlineequation>) nach:</para>
 
-    <para><inlineequation>
+    <para><equation>
+      <mediaobject>
+        <imageobject>
+          <imagedata align="center">
         <ns3:math display="inline">
           <ns3:mrow>
             <ns3:mi>γ</ns3:mi>
@@ -840,8 +922,19 @@
               </ns3:mrow>
             </ns3:mfrac>
           </ns3:mrow>
+          
+          
+          <ns3:mi> &#160;</ns3:mi>
+          <ns3:mrow>
+            
+            <ns3:mi>[kPa/°C]</ns3:mi>
+          </ns3:mrow>
+
         </ns3:math>
-      </inlineequation> [kPa/°C]</para>
+          </imagedata>
+        </imageobject>
+      </mediaobject>
+    </equation> </para>
 
     <para><emphasis role="bold">Berechnung bestandsspezifischer Parameter
     </emphasis></para>
@@ -870,10 +963,10 @@
     </itemizedlist>
 
     <para>Deren Werte sind für verschiedene Bodenbedeckungsklassen in
-    folgender Abbildung dargestellt:</para>
+      folgender Abbildung (<xref
+        linkend="j2k.potET.PenmanMonteith.hlanu_par_fig1.png" xrefstyle="select: label"/>) dargestellt:</para>
 
-    <para>(<xref
-      linkend="j2k.potET.PenmanMonteith.hlanu_par_fig1.png" xrefstyle="select: label"/>)</para>
+    <para></para>
 
     <figure xml:id="j2k.potET.PenmanMonteith.hlanu_par_fig1.png">
       <title>Landnutzungsparameter verschiedener
@@ -905,7 +998,10 @@
       </inlineequation>) werden diese Punkte nach folgender empirischen
     Beziehung approximiert:</para>
 
-    <para><inlineequation>
+    <para><equation>
+      <mediaobject>
+        <imageobject>
+          <imagedata align="center">
         <ns3:math display="inline">
           <ns3:mrow>
             <ns3:mrow>
@@ -967,9 +1063,15 @@
             </ns3:mrow>
           </ns3:mrow>
         </ns3:math>
-      </inlineequation></para>
+          </imagedata>
+        </imageobject>
+      </mediaobject>
+    </equation></para>
 
-    <para><inlineequation>
+    <para><equation>
+      <mediaobject>
+        <imageobject>
+          <imagedata align="center">
         <ns3:math display="inline">
           <ns3:mrow>
             <ns3:mrow>
@@ -1031,9 +1133,15 @@
             </ns3:mrow>
           </ns3:mrow>
         </ns3:math>
-      </inlineequation></para>
+          </imagedata>
+        </imageobject>
+      </mediaobject>
+    </equation></para>
 
-    <para><inlineequation>
+    <para><equation>
+      <mediaobject>
+        <imageobject>
+          <imagedata align="center">
         <ns3:math display="inline">
           <ns3:mrow>
             <ns3:mrow>
@@ -1095,9 +1203,15 @@
             </ns3:mrow>
           </ns3:mrow>
         </ns3:math>
-      </inlineequation></para>
+          </imagedata>
+        </imageobject>
+      </mediaobject>
+    </equation></para>
 
-    <para><inlineequation>
+    <para><equation>
+      <mediaobject>
+        <imageobject>
+          <imagedata align="center">
         <ns3:math display="inline">
           <ns3:mrow>
             <ns3:mrow>
@@ -1159,7 +1273,10 @@
             </ns3:mrow>
           </ns3:mrow>
         </ns3:math>
-      </inlineequation></para>
+          </imagedata>
+        </imageobject>
+      </mediaobject>
+    </equation></para>
 
     <para>Die Werte zwischen den einzelnen Punkten werden linear interpoliert.
     Der aerodynamische Widerstand (<emphasis role="italic">ra</emphasis>) für
@@ -1167,7 +1284,10 @@
     jeweiligen Landnutzungsart lässt sich nach folgender Gleichung
     berechnen:</para>
 
-    <para><emphasis role="italic"><inlineequation>
+    <para><emphasis role="italic"><equation>
+      <mediaobject>
+        <imageobject>
+          <imagedata align="center">
         <ns3:math display="inline">
           <ns3:mrow>
             <ns3:mrow>
@@ -1217,9 +1337,22 @@
                 <ns3:mn>2</ns3:mn>
               </ns3:msup>
             </ns3:mrow>
+            
           </ns3:mrow>
+          
+          
+          <ns3:mi> &#160;</ns3:mi>
+          <ns3:mrow>
+            
+            <ns3:mi>[s/m]</ns3:mi>
+          </ns3:mrow>
+          
+          
         </ns3:math>
-      </inlineequation></emphasis> [s/m]</para>
+          </imagedata>
+        </imageobject>
+      </mediaobject>
+    </equation></emphasis> </para>
 
     <para>mit</para>
 
@@ -1247,7 +1380,10 @@
     <para>Für effektive Bewuchshöhen von gleich oder mehr als 10 m berechnet
     sich die aerodynamische Widerstand vereinfacht nach:</para>
 
-    <para><inlineequation>
+    <para><equation>
+      <mediaobject>
+        <imageobject>
+          <imagedata align="center">
         <ns3:math display="inline">
           <ns3:mrow>
             <ns3:mrow>
@@ -1274,17 +1410,31 @@
                   <ns3:mi>v</ns3:mi>
 
                   <ns3:mn>2</ns3:mn>
+                  
                 </ns3:mrow>
               </ns3:mrow>
-            </ns3:mfrac>
+                </ns3:mfrac>
           </ns3:mrow>
+        
+          <ns3:mi> &#160;</ns3:mi>
+          <ns3:mrow>
+            
+            <ns3:mi>[s/m]</ns3:mi>
+          </ns3:mrow>
+          
         </ns3:math>
-      </inlineequation> [s/m]</para>
+          </imagedata>
+        </imageobject>
+      </mediaobject>
+    </equation> </para>
 
     <para>Der Oberflächenwiderstand der jeweiligen Landbedeckung berechnet
     sich nach:</para>
 
-    <para><emphasis role="italic"><inlineequation>
+    <para><emphasis role="italic"><equation>
+      <mediaobject>
+        <imageobject>
+          <imagedata align="center">
         <ns3:math display="inline">
           <ns3:mrow>
             <ns3:mrow>
@@ -1343,8 +1493,21 @@
               </ns3:mrow>
             </ns3:msup>
           </ns3:mrow>
+          
+          
+          <ns3:mi> &#160;</ns3:mi>
+          <ns3:mrow>
+            
+            <ns3:mi>[s/m]</ns3:mi>
+          </ns3:mrow>
+          
+          
+          
         </ns3:math>
-      </inlineequation></emphasis> [s/m]</para>
+          </imagedata>
+        </imageobject>
+      </mediaobject>
+    </equation></emphasis> </para>
 
     <para>mit</para>
 
@@ -1379,8 +1542,8 @@
       </inlineequation>... Oberflächenwiderstand von unbewachsenem Boden
     [s/m]</para>
 
-    <para>Zu weiterführenden Informationen siehe auch: <citation><xref linkend="Allen_1998"
-        /></citation>, <citation><xref linkend="Monteith_1975"/></citation></para>
+    <para>Zu weiterführenden Informationen siehe auch: <citetitle><xref linkend="Allen_1998"
+        /></citetitle>, <citetitle><xref linkend="Monteith_1975"/></citetitle></para>
   </sect2>
   <bibliography xmlns="http://docbook.org/ns/docbook" version="5.0" xml:lang="en">
     <title>Literatur</title> 

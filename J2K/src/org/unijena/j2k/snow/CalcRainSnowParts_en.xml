@@ -105,7 +105,10 @@
           </ns3:mrow>
         </ns3:math>
       </inlineequation> (in K) has to be determined which corresponds to half the width of the
-      transition area. The actual amount of snow(<inlineequation>
+      transition area (<xref xmlns:xlink="http://www.w3.org/1999/xlink"
+        linkend="j2k.snow.CalcRainSnowParts.snow_rain_fig1.png" xrefstyle="select: label"/>).  
+      
+      The actual amount of snow(<inlineequation>
         <ns3:math display="inline">
           <ns3:mrow>
             <ns3:mi>p</ns3:mi>
@@ -121,7 +124,11 @@
           <ns3:mi>T</ns3:mi>
         </ns3:math>
       </inlineequation>) is calculated according to: </para>
-    <para><inlineequation>
+    <para>
+      <equation>
+        <mediaobject>
+          <imageobject>
+            <imagedata align="center">
         <ns3:math display="inline">
           <ns3:mrow>
             <ns3:mrow>
@@ -164,10 +171,26 @@
                   <ns3:mi>s</ns3:mi>
                 </ns3:mrow>
               </ns3:mrow>
+              
+            
             </ns3:mfrac>
           </ns3:mrow>
+          
+          <ns3:mi> &#160;</ns3:mi>
+          <ns3:mrow>
+         
+  
+            <ns3:mi>[mm]</ns3:mi>
+            
+          </ns3:mrow>
+        
         </ns3:math>
-      </inlineequation> [mm]</para>
+        </imagedata>
+        </imageobject>
+        </mediaobject>
+        </equation> </para>
+              
+          
     <para>The daily amount of snow precipitation (<inlineequation>
         <ns3:math display="inline">
           <ns3:msub>
@@ -183,7 +206,11 @@
           </ns3:msub>
         </ns3:math>
       </inlineequation>) results from: </para>
-    <para><inlineequation>
+    <para>
+      <equation>
+        <mediaobject>
+          <imageobject>
+            <imagedata align="center">
         <ns3:math display="inline">
           <ns3:mrow>
             <ns3:msub>
@@ -202,11 +229,31 @@
                   <ns3:mo>)</ns3:mo>
                 </ns3:mrow>
               </ns3:mrow>
-            </ns3:mrow>
+              
+              
           </ns3:mrow>
+          </ns3:mrow>
+          
+            <ns3:mi> &#160;</ns3:mi>
+            <ns3:mrow>
+             
+              
+              <ns3:mi>[mm]</ns3:mi>
+       
+            </ns3:mrow>
+            
         </ns3:math>
-      </inlineequation> [mm]</para>
-    <para><inlineequation>
+        </imagedata>
+        </imageobject>
+        </mediaobject>
+        </equation> </para>
+              
+            
+    <para>
+      <equation>
+        <mediaobject>
+          <imageobject>
+            <imagedata align="center">
         <ns3:math display="inline">
           <ns3:mrow>
             <ns3:msub>
@@ -228,15 +275,33 @@
                       <ns3:mo>(</ns3:mo>
                       <ns3:mi>s</ns3:mi>
                       <ns3:mo>)</ns3:mo>
+                      <ns3:mo>)</ns3:mo>
                     </ns3:mrow>
+                    
                   </ns3:mrow>
                 </ns3:mrow>
-                <ns3:mo>)</ns3:mo>
+                
+                
               </ns3:mrow>
             </ns3:mrow>
+            
+            <ns3:mi> &#160;</ns3:mi>
+            <ns3:mrow>
+             
+              
+              <ns3:mi>[mm]</ns3:mi>
+             
+            </ns3:mrow>
           </ns3:mrow>
+            
+            
         </ns3:math>
-      </inlineequation> [mm] </para>
+        </imagedata>
+        </imageobject>
+        </mediaobject>
+        </equation> </para>
+    
+                  
     <para>Finally, <inlineequation>
         <ns3:math display="inline">
           <ns3:msub>
@@ -253,8 +318,7 @@
         </ns3:math>
       </inlineequation>are multiplied by the <emphasis role="italic">area</emphasis> of the model
       entity in order to convert mm into liters. </para>
-    <para>(<xref
-      linkend="j2k.snow.CalcRainSnowParts.snow_rain_fig1.png" xrefstyle="select: label"/>)</para>
+   
     <figure xml:id="j2k.snow.CalcRainSnowParts.snow_rain_fig1.png">
       <title>Function for determining amount of rain or snow of a precipitation event</title>    
       <para><inlinemediaobject>

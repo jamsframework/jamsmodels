@@ -139,7 +139,10 @@
         mm, wird der Benetzungs- und Verdunstungsfehler auf einen konstanten Wert gesetzt.</para>
       <para>Für Niederschlagshöhen ≤9.0 mm berechnet sich der Benetzungs- und Verdunstungsfehler
         nach:</para>
-      <para><inlineequation>
+      <para><equation>
+        <mediaobject>
+          <imageobject>
+            <imagedata align="center">
           <m:math display="inline">
             <m:mtable>
               <m:mtr>
@@ -212,9 +215,15 @@
               </m:mtr>
             </m:mtable>
           </m:math>
-        </inlineequation></para>
+          </imagedata>
+          </imageobject>
+          </mediaobject>
+          </equation></para>
       <para>Für Niederschlagshöhen &gt;9.0 mm beträgt der Benetzungs- und Verdunstungsfehler:</para>
-      <para><inlineequation>
+      <para><equation>
+        <mediaobject>
+          <imageobject>
+            <imagedata align="center">
           <m:math display="inline">
             <m:mtable>
               <m:mtr>
@@ -256,8 +265,11 @@
                 </m:mtd>
               </m:mtr>
             </m:mtable>
-          </m:math>
-        </inlineequation></para>
+          </m:math>   
+            </imagedata>
+          </imageobject>
+        </mediaobject>
+      </equation></para>
     </sect3>
     <sect3>
       <title>Korrektur des Windfehlers</title>
@@ -289,7 +301,11 @@
             </m:msub>
           </m:math>
         </inlineequation>) verhält. Die Berechnung erfolgt nach folgenden Gleichungen:</para>
-      <para><inlineequation>
+      <para>
+        <equation>
+          <mediaobject>
+            <imageobject>
+              <imagedata align="center">
           <m:math display="inline">
             <m:mrow>
               <m:mrow>
@@ -392,10 +408,18 @@
               </m:mrow>
             </m:mrow>
           </m:math>
-        </inlineequation></para>
+        
+        </imagedata>
+        </imageobject>
+        </mediaobject>
+        </equation></para>
       <para>Die Berechnung der um Verdunstungs- und Windfehler korrigierten Niederschlagshöhe
         erfolgt schließlich nach:</para>
+      
       <equation>
+        <mediaobject>
+          <imageobject>
+            <imagedata align="center">
         <m:math display="block">
           <m:mrow>
             <m:mrow>
@@ -489,6 +513,9 @@
             </m:mrow>
           </m:mrow>
         </m:math>
+            </imagedata>
+          </imageobject>
+        </mediaobject>
       </equation>
     </sect3>
   </sect2>

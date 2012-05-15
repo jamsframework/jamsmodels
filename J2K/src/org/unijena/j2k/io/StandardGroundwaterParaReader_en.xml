@@ -52,9 +52,10 @@
         role="italic">gwFileName</emphasis>. For each entity from the list <emphasis role="italic"
         >hrus</emphasis> it selects the hydrogeology type identified by its attribute
         <ns:emphasis>hgeoID</ns:emphasis> and adds the related hydrogeology information to the
-      entity's attribute set. An example of a hydrogeology parameter file is shown in figure <xref
+      entity's attribute set. An example of a hydrogeology parameter file is shown in  <xref
         xmlns:xlink="http://www.w3.org/1999/xlink"
-        linkend="org.unijena.j2k.io.StandardGroundwaterParaReader_en_fig1" xrefstyle="select: label"/>.</para>
+        linkend="org.unijena.j2k.io.StandardGroundwaterParaReader_en_fig1" xrefstyle="select: label"
+      />.</para>
     <figure xml:id="org.unijena.j2k.io.StandardGroundwaterParaReader_en_fig1">
       <title>Example of an ASCII file with hydrogeology data</title>
       <mediaobject>

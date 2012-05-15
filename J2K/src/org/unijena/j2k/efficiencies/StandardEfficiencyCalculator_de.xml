@@ -262,7 +262,11 @@
       </m:math>
     </inlineequation>):</para>
 
-  <para><inlineequation>
+    <para>
+      <equation>
+        <mediaobject>
+          <imageobject>
+            <imagedata align="center">
       <m:math display="inline">
         <m:mrow>
           <m:mrow>
@@ -358,7 +362,10 @@
           </m:mrow>
         </m:mrow>
       </m:math>
-    </inlineequation></para>
+            </imagedata>
+          </imageobject>
+        </mediaobject>
+      </equation></para>
 
   <para>Nash-Sutcliffe Effizienz mit Potenz 2 (<inlineequation>
       <m:math display="inline">
@@ -370,7 +377,11 @@
       </m:math>
     </inlineequation>):</para>
 
-  <para><inlineequation>
+    <para>
+      <equation>
+        <mediaobject>
+          <imageobject>
+            <imagedata align="center">
       <m:math display="inline">
         <m:mrow>
           <m:mrow>
@@ -474,7 +485,10 @@
           </m:mrow>
         </m:mrow>
       </m:math>
-    </inlineequation></para>
+            </imagedata>
+          </imageobject>
+        </mediaobject>
+      </equation></para>
 
   <para>Nash-Sutcliffe Effizienz aus logarithmierten Werten mit Potenz 1
   (<inlineequation>
@@ -493,7 +507,11 @@
       </m:math>
     </inlineequation>):</para>
 
-  <para><inlineequation>
+    <para>
+      <equation>
+        <mediaobject>
+          <imageobject>
+            <imagedata align="center">
       <m:math display="inline">
         <m:mrow>
           <m:mrow>
@@ -619,7 +637,10 @@
           </m:mrow>
         </m:mrow>
       </m:math>
-    </inlineequation></para>
+            </imagedata>
+          </imageobject>
+        </mediaobject>
+      </equation></para>
 
   <para>Nash-Sutcliffe Effizienz aus logarithmierten Werten mit Potenz 2
   (<inlineequation>
@@ -638,7 +659,11 @@
       </m:math>
     </inlineequation>):</para>
 
-  <para><inlineequation>
+    <para>
+      <equation>
+        <mediaobject>
+          <imageobject>
+            <imagedata align="center">
       <m:math display="inline">
         <m:mrow>
           <m:mrow>
@@ -772,7 +797,10 @@
           </m:mrow>
         </m:mrow>
       </m:math>
-    </inlineequation></para>
+            </imagedata>
+          </imageobject>
+        </mediaobject>
+      </equation></para>
 
   <para>Bei den beiden Formen, die aus logarithmierten Werten berechnet werden
   besteht das Problem wenn einer oder beide Werten 0 zeigen, da hierfür der
@@ -805,7 +833,10 @@
       </m:math>
     </inlineequation>):</para>
 
-  <para><inlineequation>
+    <para><equation>
+      <mediaobject>
+        <imageobject>
+          <imagedata align="center">
       <m:math display="inline">
         <m:mrow>
           <m:mrow>
@@ -941,7 +972,10 @@
           </m:mrow>
         </m:mrow>
       </m:math>
-    </inlineequation></para>
+      </imagedata>
+      </imageobject>
+      </mediaobject>
+      </equation></para>
 
   <para>Index of Agreement mit Potenz 2 (<inlineequation>
       <m:math display="inline">
@@ -959,7 +993,10 @@
       </m:math>
     </inlineequation>):</para>
 
-  <para><inlineequation>
+    <para><equation>
+      <mediaobject>
+        <imageobject>
+          <imagedata align="center">
       <m:math display="inline">
         <m:mrow>
           <m:mrow>
@@ -1101,7 +1138,10 @@
           </m:mrow>
         </m:mrow>
       </m:math>
-    </inlineequation> </para>
+      </imagedata>
+      </imageobject>
+      </mediaobject>
+      </equation> </para>
 
   <para>Das Bestimmtheitsmaß (<inlineequation>
       <m:math display="inline">
@@ -1115,7 +1155,10 @@
       </m:math>
     </inlineequation>):</para>
 
-  <para><inlineequation>
+    <para><equation>
+      <mediaobject>
+        <imageobject>
+          <imagedata align="center">
       <m:math display="inline">
         <m:mrow>
           <m:mrow>
@@ -1297,7 +1340,10 @@
           </m:msup>
         </m:mrow>
       </m:math>
-    </inlineequation> </para>
+      </imagedata>
+      </imageobject>
+      </mediaobject>
+      </equation></para>
 
   <para>Eine gewichtete Form des Bestimmtheitsmaßes mit der Steigung der
   Regressionsgeraden (b) als Gewicht (<inlineequation>
@@ -1316,7 +1362,10 @@
       </m:math>
     </inlineequation>):</para>
 
-  <para><inlineequation>
+    <para><equation>
+      <mediaobject>
+        <imageobject>
+          <imagedata align="center">
       <m:math display="inline">
         <m:mrow>
           <m:mrow>
@@ -1422,7 +1471,10 @@
           </m:mrow>
         </m:mrow>
       </m:math>
-    </inlineequation> </para>
+      </imagedata>
+      </imageobject>
+      </mediaobject>
+      </equation></para>
 
   <para>Die Steigung der linearen Ausgleichsgeraden der kumulierten Simulations- und
     Vergleichswerten (dsgrad) (<xref linkend="j2k.efficiencies.StandardEfficienciesCalculator.dsgrad_fig1.jpg"/>:)</para>
@@ -1446,7 +1498,10 @@
       </m:math>
     </inlineequation>):</para>
 
-  <para><inlineequation>
+    <para><equation>
+      <mediaobject>
+        <imageobject>
+          <imagedata align="center">
       <m:math display="inline">
         <m:mrow>
           <m:mrow>
@@ -1498,11 +1553,18 @@
           </m:mrow>
         </m:mrow>
       </m:math>
-    </inlineequation> </para>
+            
+          </imagedata>
+        </imageobject>
+      </mediaobject>
+    </equation></para>
 
   <para>Der mittlere quadratische Fehler (rmse):</para>
 
-  <para><inlineequation>
+    <para><equation>
+      <mediaobject>
+        <imageobject>
+          <imagedata align="center">
       <m:math display="inline">
         <m:mrow>
           <m:mrow>
@@ -1572,7 +1634,10 @@
           </m:msqrt>
         </m:mrow>
       </m:math>
-    </inlineequation> </para>
+      </imagedata>
+      </imageobject>
+      </mediaobject>
+      </equation> </para>
 
   <para>Der mittlere prozentuale Fehler (<inlineequation>
       <m:math display="inline">
@@ -1590,7 +1655,10 @@
       </m:math>
     </inlineequation>):</para>
 
-  <para><inlineequation>
+    <para><equation>
+      <mediaobject>
+        <imageobject>
+          <imagedata align="center">
       <m:math display="inline">
         <m:mrow>
           <m:mrow>
@@ -1682,7 +1750,10 @@
           </m:mrow>
         </m:mrow>
       </m:math>
-    </inlineequation> </para>
+          </imagedata>
+        </imageobject>
+      </mediaobject>
+    </equation> </para>
 
   <para>Der mittlere absolute prozentuale Fehler (<inlineequation>
       <m:math display="inline">
@@ -1704,7 +1775,10 @@
       </m:math>
     </inlineequation>):</para>
 
-  <para><inlineequation>
+    <para><equation>
+      <mediaobject>
+        <imageobject>
+          <imagedata align="center">
         <m:math display="inline">
           <m:mrow>
             <m:mrow>
@@ -1771,7 +1845,10 @@
             </m:mrow>
           </m:mrow>
         </m:math>
-      </inlineequation>
+          </imagedata>
+        </imageobject>
+      </mediaobject>
+    </equation>
     </para>
     <para/>
   </sect2>

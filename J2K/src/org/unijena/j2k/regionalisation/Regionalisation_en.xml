@@ -139,6 +139,9 @@
                             </inlineequation>), according to: </para>
 
   <equation>
+    <mediaobject>
+      <imageobject>
+        <imagedata align="center">
     <m:math display="block">
       <m:mrow>
         <m:mrow>
@@ -172,6 +175,9 @@
         </m:mrow>
       </m:mrow>
     </m:math>
+        </imagedata>
+      </imageobject>
+    </mediaobject>
   </equation>
 
   <para>The unknown values  <inlineequation>
@@ -191,7 +197,10 @@
                             </inlineequation>  are calculated according to the Gauss' Method of
                             Least Squares:</para>
 
-  <para><inlineequation>
+  <para><equation>
+    <mediaobject>
+      <imageobject>
+        <imagedata align="center">
       <m:math display="inline">
         <m:mrow>
           <m:msub>
@@ -319,9 +328,15 @@
           </m:mfrac>
         </m:mrow>
       </m:math>
-    </inlineequation></para>
+      </imagedata>
+      </imageobject>
+      </mediaobject>
+      </equation></para>
 
-  <para><inlineequation>
+  <para><equation>
+    <mediaobject>
+      <imageobject>
+        <imagedata align="center">
       <m:math display="inline">
         <m:mrow>
           <m:msub>
@@ -363,11 +378,18 @@
           </m:mrow>
         </m:mrow>
       </m:math>
-    </inlineequation></para>
+          
+        </imagedata>
+      </imageobject>
+    </mediaobject>
+  </equation></para>
 
   <para>The correlation coefficient of the regression is determined according to:</para>
 
-  <para><inlineequation>
+  <para><equation>
+    <mediaobject>
+      <imageobject>
+        <imagedata align="center">
       <m:math display="inline">
         <m:mrow>
           <m:mi>r</m:mi>
@@ -547,7 +569,11 @@
           </m:mfrac>
         </m:mrow>
       </m:math>
-    </inlineequation></para>
+          
+        </imagedata>
+      </imageobject>
+    </mediaobject>
+  </equation></para>
 
   <para><emphasis role="bold">2. Determination of n measurement stations which are closest to the
                                 specific HRU.</emphasis> The number n which has to be indicated
@@ -576,7 +602,10 @@
                             </inlineequation>) of every station to the area which is considered.
                             This is done as follows:</para>
 
-  <para><inlineequation>
+  <para><equation>
+    <mediaobject>
+      <imageobject>
+        <imagedata align="center">
       <m:math display="inline">
         <m:mrow>
           <m:mrow>
@@ -714,7 +743,11 @@
           </m:msqrt>
         </m:mrow>
       </m:math>
-    </inlineequation></para>
+    
+    </imagedata>
+    </imageobject>
+    </mediaobject>
+    </equation></para>
 
   <para>with:</para>
 
@@ -770,7 +803,10 @@
                             variability of stations' data, corresponding to their location in space.
                             The calculation is carried out according to: </para>
 
-  <para><inlineequation>
+  <para><equation>
+    <mediaobject>
+      <imageobject>
+        <imagedata align="center">
       <m:math display="inline">
         <m:mrow>
           <m:mrow>
@@ -942,7 +978,10 @@
           </m:mfrac>
         </m:mrow>
       </m:math>
-    </inlineequation></para>
+        </imagedata>
+      </imageobject>
+    </mediaobject>
+  </equation></para>
 
   <para><emphasis role="bold">4. Calculation of the data value for every HRU </emphasis>with weights
                             of section 3 and an optional elevation correction, considering the
@@ -951,7 +990,11 @@
                             which is defined by the user. The calculation of the optional elevation
                             correction is done as follows:</para>
 
-  <para><inlineequation>
+  <para>
+    <equation>
+      <mediaobject>
+        <imageobject>
+          <imagedata align="center">
       <m:math display="inline">
         <m:mrow>
           <m:mrow>
@@ -1017,7 +1060,10 @@
           </m:mrow>
         </m:mrow>
       </m:math>
-    </inlineequation></para>
+          </imagedata>
+        </imageobject>
+      </mediaobject>
+    </equation></para>
 
   <para>The data values which notoriously show an elevation effect receive an additional elevation
                             correction of the measurement values if the regression relation is
@@ -1031,7 +1077,10 @@
                             </inlineequation> higher than the threshold value defined by the user).
                             The calculation is carried out according to:</para>
 
-  <para><inlineequation>
+  <para><equation>
+    <mediaobject>
+      <imageobject>
+        <imagedata align="center">
       <m:math display="inline">
         <m:mrow>
           <m:mrow>
@@ -1137,7 +1186,10 @@
           </m:mrow>
         </m:mrow>
       </m:math>
-    </inlineequation></para>
+      </imagedata>
+      </imageobject>
+      </mediaobject>
+      </equation></para>
 
   <para>with <inlineequation>
                                 <m:math display="inline">

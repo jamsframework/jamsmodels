@@ -93,21 +93,15 @@
         <ns3:math display="inline">
           <ns3:mrow>
             <ns3:mi>j</ns3:mi>
-            
             <ns3:mi>D</ns3:mi>
           </ns3:mrow>
         </ns3:math>
-      </inlineequation>): <inlineequation>
-        <ns3:math display="inline">
-          <ns3:mrow>
-            <ns3:mi>j</ns3:mi>
-            
-            <ns3:mi>D</ns3:mi>
-          </ns3:mrow>
-        </ns3:math>
-      </inlineequation>):</para>
+      </inlineequation>): </para>
       
-      <para><inlineequation>
+      <para><equation>
+        <mediaobject>
+          <imageobject>
+            <imagedata align="center">
         <ns3:math display="inline">
           <ns3:mrow>
             <ns3:mrow>
@@ -139,7 +133,7 @@
                       
                       <ns3:mrow>
                         <ns3:mfrac>
-                          <ns3:mi>Π</ns3:mi>
+                          <ns3:mi>π</ns3:mi>
                           
                           <ns3:mi>180</ns3:mi>
                         </ns3:mfrac>
@@ -176,9 +170,11 @@
                       <ns3:mi>1000000</ns3:mi>
                     </ns3:mrow>
                     
+                    <ns3:mi> &#160;</ns3:mi> 
                     <ns3:mrow>
                       <ns3:mo> [</ns3:mo>
-                      
+                    
+                        
                       <ns3:mi>MJ/m²/min</ns3:mi>
                       
                       <ns3:mo>]</ns3:mo>
@@ -189,20 +185,25 @@
             </ns3:mrow>
           </ns3:mrow>
         </ns3:math>
-      </inlineequation></para>
+            </imagedata>
+          </imageobject>
+        </mediaobject>
+      </equation></para>
       <para> Solar constant (sc) for the Julian day (jD): sc = (81930 + 2910 \cdot
         \cos{\pi / 180 \cdot (jD - 15)}) / 1000000 [MJ/m² min] </para>
-      <para> Inverse relative distance Earth - Sun for the Julian day (jD): <inlineequation>
+      <para> Inverse relative distance Earth - Sun for the Julian day: <inlineequation>
         <ns3:math display="inline">
           <ns3:mrow>
             <ns3:mi>j</ns3:mi>
-            
             <ns3:mi>D</ns3:mi>
           </ns3:mrow>
         </ns3:math>
       </inlineequation>):</para>
       
-      <para><inlineequation>
+      <para><equation>
+        <mediaobject>
+          <imageobject>
+            <imagedata align="center">
         <ns3:math display="inline">
           <ns3:mrow>
             <ns3:mrow>
@@ -243,7 +244,7 @@
                           <ns3:mrow>
                             <ns3:mn>2</ns3:mn>
                             
-                            <ns3:mi>Π</ns3:mi>
+                            <ns3:mi>π</ns3:mi>
                           </ns3:mrow>
                           
                           <ns3:mi>365</ns3:mi>
@@ -262,6 +263,7 @@
                     </ns3:mrow>
                   </ns3:mrow>
                   
+                  <ns3:mi> &#160;</ns3:mi>
                   <ns3:mrow>
                     <ns3:mo>[</ns3:mo>
                     
@@ -274,7 +276,10 @@
             </ns3:mrow>
           </ns3:mrow>
         </ns3:math>
-      </inlineequation> </para>
+            </imagedata>
+          </imageobject>
+        </mediaobject>
+      </equation> </para>
       <para> Hour angle at sunset for the corresponding geographical <emphasis role="italic"
         >latitude </emphasis>(lat in radians) and for the declination <inlineequation>
           <ns3:math display="inline">
@@ -282,7 +287,10 @@
           </ns3:math>
         </inlineequation>:</para>
       
-      <para><inlineequation>
+      <para><equation>
+        <mediaobject>
+          <imageobject>
+            <imagedata align="center">
           <ns3:math display="inline">
             <ns3:mrow>
               <ns3:mrow>
@@ -360,6 +368,7 @@
                   </ns3:mrow>
                 </ns3:mrow>
                 
+                <ns3:mi> &#160;</ns3:mi>
                 <ns3:mrow>
                   <ns3:mo>[</ns3:mo>
                   
@@ -370,7 +379,10 @@
               </ns3:mrow>
             </ns3:mrow>
           </ns3:math>
-        </inlineequation></para>
+            </imagedata>
+          </imageobject>
+        </mediaobject>
+      </equation></para>
       <para> Extraterrestrial radiation<inlineequation>
         <ns3:math display="inline">
           <ns3:mrow>
@@ -381,7 +393,10 @@
         </ns3:math>
       </inlineequation>:</para>
       
-      <para><inlineequation>
+      <para><equation>
+        <mediaobject>
+          <imageobject>
+            <imagedata align="center">
         <ns3:math display="inline">
           <ns3:mrow>
             <ns3:mrow>
@@ -402,7 +417,7 @@
                   <ns3:mi>60</ns3:mi>
                 </ns3:mrow>
                 
-                <ns3:mi>Π</ns3:mi>
+                <ns3:mi>π</ns3:mi>
               </ns3:mfrac>
               
               <ns3:mo>×</ns3:mo>
@@ -554,6 +569,7 @@
                       <ns3:mo>)</ns3:mo>
                     </ns3:mrow>
                     
+                    <ns3:mi> &#160;</ns3:mi>
                     <ns3:mrow>
                       <ns3:mo> [</ns3:mo>
                       
@@ -567,10 +583,16 @@
             </ns3:mrow>
           </ns3:mrow>
         </ns3:math>
-      </inlineequation></para>
+            </imagedata>
+          </imageobject>
+        </mediaobject>
+      </equation></para>
       <para>Additional calculation steps have to be considered for hourly
         values:</para>
-      <para>Hour angle in the middle of an hour: <inlineequation>
+      <para>Hour angle in the middle of an hour: <equation>
+        <mediaobject>
+          <imageobject>
+            <imagedata align="center">
         <ns3:math display="inline">
           <ns3:mrow>
             <ns3:mrow>
@@ -585,7 +607,7 @@
             
             <ns3:mrow>
               <ns3:mfrac>
-                <ns3:mi>Π</ns3:mi>
+                <ns3:mi>π</ns3:mi>
                 
                 <ns3:mi>12</ns3:mi>
               </ns3:mfrac>
@@ -710,7 +732,10 @@
             </ns3:mrow>
           </ns3:mrow>
         </ns3:math>
-      </inlineequation></para>
+            </imagedata>
+          </imageobject>
+        </mediaobject>
+      </equation></para>
       <para>where <inlineequation>
         <ns3:math display="inline">
           <ns3:mrow>
@@ -750,7 +775,11 @@
       </inlineequation> is a
         seasonal correction factor for solar time which is calculated as
         follows: </para>
-      <para><inlineequation>
+      <para>
+        <equation>
+          <mediaobject>
+            <imageobject>
+              <imagedata align="center">
         <ns3:math display="inline">
           <ns3:mrow>
             <ns3:mrow>
@@ -840,8 +869,14 @@
             </ns3:mrow>
           </ns3:mrow>
         </ns3:math>
-      </inlineequation></para>
-      <para>with <inlineequation>
+              </imagedata>
+            </imageobject>
+          </mediaobject>
+        </equation></para>
+      <para>with <equation>
+        <mediaobject>
+          <imageobject>
+            <imagedata align="center">
         <ns3:math display="inline">
           <ns3:mrow>
             <ns3:mi>b</ns3:mi>
@@ -855,7 +890,7 @@
                 <ns3:mo>×</ns3:mo>
                 
                 <ns3:mrow>
-                  <ns3:mi>Π</ns3:mi>
+                  <ns3:mi>π</ns3:mi>
                   
                   <ns3:mo>×</ns3:mo>
                   
@@ -883,7 +918,11 @@
             </ns3:mfrac>
           </ns3:mrow>
         </ns3:math>
-      </inlineequation></para>
+              
+            </imagedata>
+          </imageobject>
+        </mediaobject>
+      </equation></para>
       <para>The hour angle at the beginning of an hour: <inlineequation>
         <ns3:math display="inline">
           <ns3:mrow>
@@ -896,7 +935,11 @@
         </ns3:math>
       </inlineequation>):</para>
       
-      <para><inlineequation>
+      <para>
+        <equation>
+          <mediaobject>
+            <imageobject>
+              <imagedata align="center">
         <ns3:math display="inline">
           <ns3:mrow>
             <ns3:mrow>
@@ -924,7 +967,7 @@
                 <ns3:mo>(</ns3:mo>
                 
                 <ns3:mrow>
-                  <ns3:mi>Π</ns3:mi>
+                  <ns3:mi>π</ns3:mi>
                   
                   <ns3:mo>×</ns3:mo>
                   
@@ -940,7 +983,10 @@
             </ns3:mrow>
           </ns3:mrow>
         </ns3:math>
-      </inlineequation></para>
+              </imagedata>
+            </imageobject>
+          </mediaobject>
+        </equation></para>
       <para>The hour angle at the end of an hour: <inlineequation>
         <ns3:math display="inline">
           <ns3:mrow>
@@ -953,7 +999,10 @@
         </ns3:math>
       </inlineequation>):</para>
       
-      <para><inlineequation>
+      <para><equation>
+        <mediaobject>
+          <imageobject>
+            <imagedata align="center">
         <ns3:math display="inline">
           <ns3:mrow>
             <ns3:mrow>
@@ -981,7 +1030,7 @@
                 <ns3:mo>(</ns3:mo>
                 
                 <ns3:mrow>
-                  <ns3:mi>Π</ns3:mi>
+                  <ns3:mi>π</ns3:mi>
                   
                   <ns3:mo>×</ns3:mo>
                   
@@ -997,9 +1046,17 @@
             </ns3:mrow>
           </ns3:mrow>
         </ns3:math>
-      </inlineequation> </para>
+              
+            </imagedata>
+          </imageobject>
+        </mediaobject>
+      </equation>
+      </para>
       <para>This results in an hourly extraterrestrial radiation as follows: </para>
-      <para><inlineequation>
+      <para><equation>
+        <mediaobject>
+          <imageobject>
+            <imagedata align="center">
         <ns3:math display="inline">
           <ns3:mrow>
             <ns3:mrow>
@@ -1020,7 +1077,7 @@
                   <ns3:mi>60</ns3:mi>
                 </ns3:mrow>
                 
-                <ns3:mi>Π</ns3:mi>
+                <ns3:mi>π</ns3:mi>
               </ns3:mfrac>
               
               <ns3:mo>×</ns3:mo>
@@ -1239,7 +1296,11 @@
             </ns3:mrow>
           </ns3:mrow>
         </ns3:math>
-      </inlineequation> </para>
+              
+            </imagedata>
+          </imageobject>
+        </mediaobject>
+      </equation></para>
     </sect2>
       <bibliography>
         <title>Literature</title>

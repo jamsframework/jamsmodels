@@ -118,8 +118,8 @@
             können den Speichern relative Anfangswassergehalte zugewiesen werden. Schließlich werden
             die Wassergehalte von mm in Litern umgerechnet indem mit der Fläche (in m²) der
             jeweiligen Modelleinheit multipliziert wird.</para>
-        <para>Zu weiterführenden Informationen siehe auch: <citation><xref linkend="Krause_2001"
-                /></citation></para>
+        <para>Zu weiterführenden Informationen siehe auch: <citetitle><xref linkend="Krause_2001"
+                /></citetitle></para>
     </sect2>
         <bibliography>
             <title>Literatur</title>

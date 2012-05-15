@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <sect1 version="5.0" xmlns="http://docbook.org/ns/docbook" xmlns:ns6="http://www.w3.org/1999/xlink" xmlns:ns5="http://www.w3.org/1999/xhtml" xmlns:ns4="http://www.w3.org/2000/svg" xmlns:ns3="http://www.w3.org/1998/Math/MathML" xmlns:ns="http://docbook.org/ns/docbook">
   <title>RefET</title>
-  <subtitle>A component for calculation of the FAO Grass Reference Evapotranspiration according to <citation><xref linkend="Allen_1998"/></citation></subtitle>
+  <subtitle>A component for calculation of the FAO Grass Reference Evapotranspiration according to <citetitle><xref linkend="Allen_1998"/></citetitle></subtitle>
   <informaltable>
     <tgroup cols="2">
       <colspec colname="c1" colnum="1" colwidth="1*"/>
@@ -42,27 +42,27 @@
         </row>
         <row>
           <entry>wind</entry>
-          <entry>wind speed U[m/s]</entry>
+          <entry>wind speed [m/s]</entry>
         </row>
         <row>
           <entry>tmean</entry>
-          <entry>mean air temperature U[°C]</entry>
+          <entry>mean air temperature [°C]</entry>
         </row>
         <row>
           <entry>rhum</entry>
-          <entry>relative humidity U[%]</entry>
+          <entry>relative humidity [%]</entry>
         </row>
         <row>
           <entry>netRad</entry>
-          <entry>net radiation U[MJ/m² tempRes]</entry>
+          <entry>net radiation [MJ/m² tempRes]</entry>
         </row>
         <row>
           <entry>elevation</entry>
-          <entry>elevations above MSL of the spatial entity U[m]</entry>
+          <entry>elevations above MSL of the spatial entity [m]</entry>
         </row>
         <row>
           <entry>area</entry>
-          <entry>area of the spatial entity U[m²]</entry>
+          <entry>area of the spatial entity [m²]</entry>
         </row>
         <row>
           <entry>refET</entry>
@@ -87,9 +87,12 @@
     <para><emphasis role="bold">A hypothetical reference crop with an assumed height of 0.12m, a
         fixed canopy resistance of 70s/m, and an albedo of 0.23. </emphasis></para>
     <para>The reference crop resembles an extensively used green with a uniform growth height,
-      actively growing and covering the soil completely with adequate water supply (Allen et al.
-      1998).</para><para>The standardization results in a simplified form of the Penman-Monteith equation:</para>
-    <para><inlineequation>
+      actively growing and covering the soil completely with adequate water supply 
+      (<citetitle><xref linkend="Allen_1998"/></citetitle>).</para><para>The standardization results in a simplified form of the Penman-Monteith equation:</para>
+    <para><equation>
+      <mediaobject>
+        <imageobject>
+          <imagedata align="center">
         <math display="block" xmlns="http://www.w3.org/1998/Math/MathML">
           <semantics>
             <mrow>
@@ -198,7 +201,11 @@
             <annotation encoding="MathType-MTEF">MathType@MTEF@5@5@+=feaagCart1ev2aaatCvAUfeBSjuyZL2yd9gzLbvyNv2CaerbuLwBLnhiov2DGi1BTfMBaeXatLxBI9gBaerbd9wDYLwzYbItLDharqqtubsr4rNCHbGeaGqiVu0Je9sqqrpepC0xbbL8F4rqqrFfpeea0xe9Lq=Jc9vqaqpepm0xbba9pwe9Q8fs0=yqaqpepae9pg0FirpepeKkFr0xfr=xfr=xb9adbaqaaeGaciGaaiaabeqaamaabaabaaGcbaaeaaaaaaaaa8qacaWGYbGaamyzaiaadAgacaWGfbGaamivaiabg2da9maalaaapaqaa8qacaaIWaGaaiOlaiaaisdacaaIWaGaaGioaiabgwSixlaadohacqGHflY1caGGOaGaamOua8aadaWgaaWcbaWdbiaad6eaa8aabeaakiabgkHiT8qacaWGhbGaaiykaiabgUcaRiabeo7aNjabgwSixpaalaaapaqaa8qacaWG0bGaamyzaiaad2gacaWGWbGaamOraiaadggacaWGJbGaamiDaiaad+gacaWGYbaapaqaa8qacaWGubWdamaaBaaaleaapeGaamyyaiaadAhacaWGNbaapaqabaGcpeGaey4kaSIaaGOmaiaaiEdacaaIZaaaaiabgwSixlaadAhapaWaaSbaaSqaa8qacaaIYaaapaqabaGccqGHflY1peGaaiikaiaadwgadaWgaaWcbaGaam4CaaqabaGccqGHsislcaWGLbWaaSbaaSqaaiaadggaaeqaaOGaaiykaaWdaeaapeGaam4CaiabgUcaRiabeo7aNjabgwSixlaacIcacaaIXaGaey4kaSIaaGimaiaac6cacaaIZaGaaGinaiabgwSixlaadAhapaWaaSbaaSqaa8qacaaIYaaapaqabaGccaGGPaaaa8qacaqGGaGaae4waiaab2eacaqGkbGaaeiiaiaab2gadaahaaWcbeqaaiaab2cacaqGYaaaaOGaaeiiaiaabsgadaahaaWcbeqaaiaab2cacaqGXaaaaOGaaeyxaaaa@8769@</annotation>
           </semantics>
         </math>
-      </inlineequation></para><para>with:</para>
+            
+          </imagedata>
+        </imageobject>
+      </mediaobject>
+    </equation></para><para>with:</para>
     <para><inlineequation>
         <ns3:math display="inline">
           <ns3:mi>s</ns3:mi>
@@ -296,7 +303,10 @@
           </ns3:msub>
         </ns3:math>
       </inlineequation>) is: </para> 
-    <para><inlineequation>
+    <para><equation>
+      <mediaobject>
+        <imageobject>
+          <imagedata align="center">
         <ns3:math display="inline">
           <ns3:mrow>
             <ns3:mrow>
@@ -337,9 +347,21 @@
                 </ns3:mfrac>
               </ns3:msup>
             </ns3:mrow>
+            
+            
           </ns3:mrow>
+         
+          <ns3:mi> &#160;</ns3:mi>
+          <ns3:mrow>
+            
+            <ns3:mi>[kPa]</ns3:mi>
+          </ns3:mrow>
+         
         </ns3:math>
-      </inlineequation>[kPa]</para><para>The <emphasis role="bold">current vapor pressure</emphasis> (<inlineequation>
+          </imagedata>
+        </imageobject>
+      </mediaobject>
+    </equation> </para><para>The <emphasis role="bold">current vapor pressure</emphasis> (<inlineequation>
         <ns3:math display="inline">
           <ns3:mrow>
             <ns3:mi>e</ns3:mi>
@@ -347,7 +369,10 @@
           </ns3:mrow>
         </ns3:math>
       </inlineequation>) results from the saturation vapor pressure and the relative humidity (U in
-      [%]) according to: </para><para><inlineequation>
+      %) according to: </para><para><equation>
+        <mediaobject>
+          <imageobject>
+            <imagedata align="center">
         <ns3:math display="inline">
           <ns3:mrow>
             <ns3:mrow>
@@ -366,9 +391,21 @@
                 <ns3:mi>100</ns3:mi>
               </ns3:mfrac>
             </ns3:mrow>
+            
           </ns3:mrow>
+         
+          
+          <ns3:mi> &#160;</ns3:mi>
+          <ns3:mrow>
+            
+            <ns3:mi>[kPa]</ns3:mi>
+          </ns3:mrow>
+  
         </ns3:math>
-      </inlineequation> [kPa]</para>
+            </imagedata>
+          </imageobject>
+        </mediaobject>
+      </equation> </para>
     <para>The saturation vapor pressure(<inlineequation>
         <ns3:math display="inline">
           <ns3:mrow>
@@ -392,7 +429,10 @@
         <ns3:math display="inline">
           <ns3:mi>s</ns3:mi>
         </ns3:math>
-      </inlineequation>) according to: </para><para><inlineequation>
+        </inlineequation>) according to: </para><para><equation>
+          <mediaobject>
+            <imageobject>
+              <imagedata align="center">
         <ns3:math display="inline">
           <ns3:mrow>
             <ns3:mi>s</ns3:mi>
@@ -426,9 +466,22 @@
                 </ns3:msup>
               </ns3:mfrac>
             </ns3:mrow>
+            
           </ns3:mrow>
+         
+          <ns3:mi> &#160;</ns3:mi>
+          <ns3:mrow>          
+            <ns3:mi>[kPa /°C]</ns3:mi>
+          </ns3:mrow>
+ 
+          
+          
         </ns3:math>
-      </inlineequation> [kPa /°C]</para>
+              </imagedata>
+            </imageobject>
+          </mediaobject>
+        </equation> </para>
+
     <para>The <emphasis role="bold">psychrometric constant </emphasis>(<inlineequation>
         <ns3:math display="inline">
           <ns3:mi>γ</ns3:mi>
@@ -457,7 +510,10 @@
           <ns3:mi>L</ns3:mi>
         </ns3:math>
       </inlineequation>) according to: </para>
-    <para><inlineequation>
+    <para><equation>
+      <mediaobject>
+        <imageobject>
+          <imagedata align="center">
         <ns3:math display="inline">
           <ns3:mrow>
             <ns3:mi>γ</ns3:mi>
@@ -485,8 +541,20 @@
               </ns3:mrow>
             </ns3:mfrac>
           </ns3:mrow>
+
+          <ns3:mi> &#160;</ns3:mi>
+          <ns3:mrow>
+            
+            <ns3:mi>[kPa/°C]</ns3:mi>
+          </ns3:mrow>
+   
+          
+          
         </ns3:math>
-      </inlineequation> [kPa/°C]</para> <para>The <emphasis role="bold">air pressure</emphasis>  (<inlineequation>
+          </imagedata>
+        </imageobject>
+      </mediaobject>
+    </equation> </para> <para>The <emphasis role="bold">air pressure</emphasis>  (<inlineequation>
         <ns3:math display="inline">
           <ns3:msub>
             <ns3:mi>P</ns3:mi>
@@ -498,7 +566,10 @@
           <ns3:mi>z</ns3:mi>
         </ns3:math>
       </inlineequation>) is measured using the converted barometric height formula: </para>
-    <para><inlineequation>
+    <para><equation>
+      <mediaobject>
+        <imageobject>
+          <imagedata align="center">
         <ns3:math display="inline">
           <ns3:mrow>
             <ns3:msub>
@@ -535,10 +606,21 @@
                 <ns3:mo>×</ns3:mo>
                 <ns3:mi>z</ns3:mi>
               </ns3:mrow>
+              
             </ns3:mrow>
           </ns3:mrow>
+
+          <ns3:mi> &#160;</ns3:mi>
+          <ns3:mrow>
+            
+            <ns3:mi>[kPa]</ns3:mi>
+          </ns3:mrow>
+       
         </ns3:math>
-      </inlineequation> [kPa]</para>
+          </imagedata>
+        </imageobject>
+      </mediaobject>
+    </equation> </para>
     <para>with:</para> 
     <para><inlineequation>
         <ns3:math display="inline">
@@ -570,7 +652,7 @@
           </ns3:msub>
         </ns3:math>
       </inlineequation> ... absolute air temperature [K]</para> 
-    <para>For further information see also: <citation><xref linkend="Allen_1998"/></citation></para>
+    <para>For further information see also: <citetitle><xref linkend="Allen_1998"/></citetitle></para>
   </sect2>
     <bibliography>
       <title>Literatur</title>

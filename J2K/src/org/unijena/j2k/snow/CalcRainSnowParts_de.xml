@@ -53,62 +53,62 @@
           <row>
             <entry>area</entry>
 
-            <entry>Die Fläche der räumlichen Modelleinheit U[m²]</entry>
+            <entry>Die Fläche der räumlichen Modelleinheit [m²]</entry>
           </row>
 
           <row>
             <entry>snow_trs</entry>
 
-            <entry>Temperatur bei der 50% des Niederschlags als Regen und 50%
-            als Schnee fällt. U[°C]</entry>
+            <entry>Temperatur bei der 50% des Niederschlags als Regen und 50% als Schnee fällt.
+              [°C]</entry>
           </row>
 
           <row>
             <entry>snow_trans</entry>
 
-            <entry>Temperaturintervall um snow_trs U[K]</entry>
+            <entry>Temperaturintervall um snow_trs [K]</entry>
           </row>
 
           <row>
             <entry>tmin</entry>
 
-            <entry>Die minimale Lufttemperatur U[°C]</entry>
+            <entry>Die minimale Lufttemperatur [°C]</entry>
           </row>
 
           <row>
             <entry>tmean</entry>
 
-            <entry>Die mittlere Lufttemperatur U[°C]</entry>
+            <entry>Die mittlere Lufttemperatur [°C]</entry>
           </row>
 
           <row>
             <entry>precip</entry>
 
-            <entry>Der Niederschlag U[mm]</entry>
+            <entry>Der Niederschlag [mm]</entry>
           </row>
 
           <row>
             <entry>rain</entry>
 
-            <entry>Die Regenmenge am Niederschlag U[l]</entry>
+            <entry>Die Regenmenge am Niederschlag [l]</entry>
           </row>
 
           <row>
             <entry>snow</entry>
 
-            <entry>Die Schneemenge am Niederschlag U[l]</entry>
+            <entry>Die Schneemenge am Niederschlag [l]</entry>
           </row>
 
           <row>
             <entry>svRain</entry>
 
-            <entry>Kopie von rain - nur zu Bilanzierungszwecken U[l]</entry>
+            <entry>Kopie von rain - nur zu Bilanzierungszwecken [l]</entry>
           </row>
 
           <row>
             <entry>svSnow</entry>
 
-            <entry>Kopie von snow - nur zu Bilanzierungszwecken U[l]</entry>
+            <entry>Kopie von snow - nur zu Bilanzierungszwecken [l]</entry>
           </row>
         </tbody>
       </tgroup>
@@ -152,7 +152,11 @@
           </ns3:mrow>
         </ns3:math>
       </inlineequation> (in K) bestimmt werden, der der halben Breite des
-    Übergangsbereiches entspricht. Der tatsächliche Schneeanteil
+      Übergangsbereiches entspricht
+      (<xref xmlns:xlink="http://www.w3.org/1999/xlink"
+        linkend="j2k.snow.CalcRainSnowParts.snow_rain_fig1.png" xrefstyle="select: label"/>). 
+      
+      Der tatsächliche Schneeanteil
     (<inlineequation>
         <ns3:math display="inline">
           <ns3:mrow>
@@ -174,7 +178,10 @@
         </ns3:math>
       </inlineequation>) berechnet sich dabei nach:</para>
 
-    <para><inlineequation>
+    <para><equation>
+      <mediaobject>
+        <imageobject>
+          <imagedata align="center">
         <ns3:math display="inline">
           <ns3:mrow>
             <ns3:mrow>
@@ -239,10 +246,24 @@
                   <ns3:mi>s</ns3:mi>
                 </ns3:mrow>
               </ns3:mrow>
+              
             </ns3:mfrac>
           </ns3:mrow>
+          
+          
+          <ns3:mi> &#160;</ns3:mi>
+          <ns3:mrow>
+            
+            
+            <ns3:mi>[mm]</ns3:mi>
+            
+          </ns3:mrow>
+          
         </ns3:math>
-      </inlineequation> [mm]</para>
+          </imagedata>
+        </imageobject>
+      </mediaobject>
+    </equation> </para>
 
     <para>Die tägliche Schneemenge (<inlineequation>
         <ns3:math display="inline">
@@ -262,7 +283,10 @@
         </ns3:math>
       </inlineequation>) ergibt sich nach:</para>
 
-    <para><inlineequation>
+    <para><equation>
+      <mediaobject>
+        <imageobject>
+          <imagedata align="center">
         <ns3:math display="inline">
           <ns3:mrow>
             <ns3:msub>
@@ -289,12 +313,29 @@
                   <ns3:mo>)</ns3:mo>
                 </ns3:mrow>
               </ns3:mrow>
+              
+              
             </ns3:mrow>
           </ns3:mrow>
+          
+          <ns3:mi> &#160;</ns3:mi>
+          <ns3:mrow>
+            
+            
+            <ns3:mi>[mm]</ns3:mi>
+            
+          </ns3:mrow>
+          
         </ns3:math>
-      </inlineequation> [mm]</para>
+          </imagedata>
+        </imageobject>
+      </mediaobject>
+    </equation> </para>
 
-    <para><inlineequation>
+    <para><equation>
+      <mediaobject>
+        <imageobject>
+          <imagedata align="center">
         <ns3:math display="inline">
           <ns3:mrow>
             <ns3:msub>
@@ -329,14 +370,25 @@
                       <ns3:mo>)</ns3:mo>
                     </ns3:mrow>
                   </ns3:mrow>
+                  
+                  
                 </ns3:mrow>
-
-                <ns3:mo>)</ns3:mo>
+              </ns3:mrow>
+              
+              <ns3:mi> &#160;</ns3:mi>
+              <ns3:mrow>
+                
+                
+                <ns3:mi>[mm]</ns3:mi>
+                
               </ns3:mrow>
             </ns3:mrow>
           </ns3:mrow>
         </ns3:math>
-      </inlineequation> [mm]</para>
+          </imagedata>
+        </imageobject>
+      </mediaobject>
+    </equation> </para>
 
     <para>Schließlich werden <inlineequation>
         <ns3:math display="inline">
@@ -357,8 +409,6 @@
       </inlineequation> noch mit der Fläche (area) der Modelleinheit
     multipliziert um mm in Liter umzuwandeln.</para>
 
-    <para>(<xref
-      linkend="j2k.snow.CalcRainSnowParts.snow_rain_fig1.png" xrefstyle="select: label" />)</para>
 
     <figure xml:id="j2k.snow.CalcRainSnowParts.snow_rain_fig1.png">
       <title>Die Funktion zur Bestimmung des von Regen- bzw. Schneeanteils

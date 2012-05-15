@@ -60,25 +60,25 @@
           <row>
             <entry>length</entry>
 
-            <entry>Die Länge eines Flussabschnitts U[m]</entry>
+            <entry>Die Länge eines Flussabschnitts [m]</entry>
           </row>
 
           <row>
             <entry>slope</entry>
 
-            <entry>Das Gefälle eines Flussabschnitts U[%]</entry>
+            <entry>Das Gefälle eines Flussabschnitts [%]</entry>
           </row>
 
           <row>
             <entry>width</entry>
 
-            <entry>Die Breite eines Flussabschnitts U[m]</entry>
+            <entry>Die Breite eines Flussabschnitts [m]</entry>
           </row>
 
           <row>
             <entry>roughness</entry>
 
-            <entry>Die Sohlrauhigkeit nach Maning-Strickler U[-]</entry>
+            <entry>Die Sohlrauhigkeit nach Maning-Strickler [-]</entry>
           </row>
 
           <row>
@@ -237,7 +237,7 @@
           <row>
             <entry>tempRes</entry>
 
-            <entry>Die zeitliche Modellauflösung U[d oder h]</entry>
+            <entry>Die zeitliche Modellauflösung [d oder h]</entry>
           </row>
 
           <row>
@@ -278,7 +278,7 @@
 
     <para>Das Modul beschreibt die Fließvorgänge im Gerinne mittels eines
     kinematischen Wellenansatz und der Berechnung der Fließgeschwindigkeit
-    nach MANNING &amp; STRICKLER. Der einzige einzustellende Parameter
+    nach Manning &amp; Strickler. Der einzige einzustellende Parameter
     (<inlineequation>
         <ns3:math display="inline">
           <ns3:mrow>
@@ -314,7 +314,11 @@
         </ns3:math>
       </inlineequation>) ein:</para>
 
-    <para><inlineequation>
+    <para>
+      <equation>
+        <mediaobject>
+          <imageobject>
+            <imagedata align="center">
         <ns3:math display="inline">
           <ns3:mrow>
             <ns3:mrow>
@@ -352,7 +356,11 @@
             </ns3:mrow>
           </ns3:mrow>
         </ns3:math>
-      </inlineequation></para>
+            </imagedata>
+          </imageobject>
+        </mediaobject>
+      </equation>
+    </para>
 
     <para>Zuvor ist jedoch die Fliessgeschwindigkeit (<inlineequation>
         <ns3:math display="inline">
@@ -440,7 +448,11 @@
       </inlineequation>) abgeglichen wird, bis die Abweichung der beiden
     Geschwindigkeiten einen Wert kleiner als 0,001 m/s beträgt:</para>
 
-    <para><inlineequation>
+    <para>
+      <equation>
+        <mediaobject>
+          <imageobject>
+            <imagedata align="center">
         <ns3:math display="inline">
           <ns3:mrow>
             <ns3:mrow>
@@ -468,15 +480,36 @@
                     <ns3:mi>b</ns3:mi>
                   </ns3:mfrac>
                 </ns3:mrow>
+                
               </ns3:mrow>
             </ns3:mfrac>
           </ns3:mrow>
+          
+          
+          
+          
+          
+          <ns3:mi> &#160;</ns3:mi>
+          <ns3:mrow>       
+            <ns3:mi>[m]</ns3:mi>
+
+          </ns3:mrow>
+          
+          
+          
         </ns3:math>
-      </inlineequation> [m]</para>
+            </imagedata>
+          </imageobject>
+        </mediaobject>
+      </equation> </para>
 
     <para>mit:</para>
 
-    <para><inlineequation>
+    <para>
+      <equation>
+        <mediaobject>
+          <imageobject>
+            <imagedata align="center">
         <ns3:math display="inline">
           <ns3:mrow>
             <ns3:mi>A</ns3:mi>
@@ -499,14 +532,29 @@
 
                     <ns3:mi>t</ns3:mi>
                   </ns3:mrow>
+                  
                 </ns3:mrow>
               </ns3:msub>
             </ns3:mfrac>
           </ns3:mrow>
+          
+          <ns3:mi> &#160;</ns3:mi>
+          <ns3:mrow>
+            
+            <ns3:mi>[m²]</ns3:mi>
+          </ns3:mrow>
+          
         </ns3:math>
-      </inlineequation> [m²]</para>
+            </imagedata>
+          </imageobject>
+        </mediaobject>
+      </equation> </para>
 
-    <para><inlineequation>
+    <para>
+      <equation>
+        <mediaobject>
+          <imageobject>
+            <imagedata align="center">
         <ns3:math display="inline">
           <ns3:mrow>
             <ns3:msub>
@@ -555,10 +603,21 @@
                   </ns3:mfrac>
                 </ns3:msup>
               </ns3:mrow>
+              
             </ns3:mrow>
           </ns3:mrow>
+          
+          <ns3:mi> &#160;</ns3:mi>
+          <ns3:mrow>
+            
+            <ns3:mi>[m³/s]</ns3:mi>
+          </ns3:mrow>
+          
         </ns3:math>
-      </inlineequation> [m³/s]</para>
+            </imagedata>
+          </imageobject>
+        </mediaobject>
+      </equation> </para>
 
     <para>Schließlich wird mit dem ermittelten Ausflussrückhaltekoeffizienten
     (<inlineequation>
@@ -590,7 +649,11 @@
         </ns3:math>
       </inlineequation>), berechnet.</para>
 
-    <para><inlineequation>
+    <para>
+      <equation>
+        <mediaobject>
+          <imageobject>
+            <imagedata align="center">
         <ns3:math display="inline">
           <ns3:mrow>
             <ns3:mi>q</ns3:mi>
@@ -623,12 +686,23 @@
 
                     <ns3:mi>k</ns3:mi>
                   </ns3:mrow>
-                </ns3:mfrac>
+                </ns3:mfrac>  
               </ns3:msup>
             </ns3:mrow>
           </ns3:mrow>
+          
+          <ns3:mi> &#160;</ns3:mi>
+          <ns3:mrow>
+            
+            <ns3:mi>[m³/s]</ns3:mi>
+            
+          </ns3:mrow>
+          
         </ns3:math>
-      </inlineequation> [m³/s]</para>
+            </imagedata>
+          </imageobject>
+        </mediaobject>
+      </equation> </para>
 
     <para>Je höher der angenommene Wert von <inlineequation>
         <ns3:math display="inline">
@@ -641,6 +715,8 @@
       </inlineequation> ist, desto schneller bewegt sich die Abflusswelle
     innerhalb eines bestimmten Zeitabschnittes und umso weniger Wasser
     verbleibt im Gerinne.</para>
+    <para>Weiterführende Informationen in <citetitle><xref linkend="Krause_2005"
+    /></citetitle>.</para>
   </sect2>
     <bibliography>
       <title>Literatur</title>

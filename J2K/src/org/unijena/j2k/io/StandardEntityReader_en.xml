@@ -80,7 +80,7 @@
         (<emphasis role="italic">hrus</emphasis> and <emphasis role="italic">reaches</emphasis>)
       accordingly. The component expects a file format that offers one HRU/reach entitiy per line
       after an initial file header, with columns reparated by tabs. An example is of the HRU file is
-      given in figure <xref xmlns:xlink="http://www.w3.org/1999/xlink"
+      given in  <xref xmlns:xlink="http://www.w3.org/1999/xlink"
         linkend="org.unijena.j2k.io.StandardEntityReader_en_fig1"/>.</para>
     <ns:para>While reading the ASCII files, the component creates one entity object of the type
         <ns:code>Attribute.Entity</ns:code> per line and adds the provided attributes (e.g. x, y,

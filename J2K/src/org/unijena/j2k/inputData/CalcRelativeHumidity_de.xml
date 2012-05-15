@@ -101,7 +101,10 @@
         </ns3:math>
       </inlineequation>) berechnet:</para>
 
-    <para><inlineequation>
+    <para><equation>
+      <mediaobject>
+        <imageobject>
+          <imagedata align="center">
         <ns3:math display="inline">
           <ns3:mrow>
             <ns3:mrow>
@@ -156,12 +159,25 @@
                       <ns3:mi>n</ns3:mi>
                     </ns3:mrow>
                   </ns3:mrow>
+                  
                 </ns3:mfrac>
               </ns3:msup>
             </ns3:mrow>
           </ns3:mrow>
+          
+          <ns3:mi> &#160;</ns3:mi>
+          <ns3:mrow>
+            
+            
+            <ns3:mi>[hPa]</ns3:mi>
+            
+          </ns3:mrow>
+          
         </ns3:math>
-      </inlineequation> [hPa]</para>
+          </imagedata>
+        </imageobject>
+      </mediaobject>
+    </equation> </para>
 
     <para>Daraus ergibt sich die maximal mögliche Luftfeuchtigkeit
     (<inlineequation>
@@ -180,7 +196,10 @@
         </ns3:math>
       </inlineequation>) nach:</para>
 
-    <para><inlineequation>
+    <para><equation>
+      <mediaobject>
+        <imageobject>
+          <imagedata align="center">
         <ns3:math display="inline">
           <ns3:mrow>
             <ns3:mrow>
@@ -228,9 +247,24 @@
                 </ns3:mrow>
               </ns3:mfrac>
             </ns3:mrow>
+            
+            
           </ns3:mrow>
+          
+          <ns3:mi> &#160;</ns3:mi>
+          <ns3:mrow>
+            
+            
+            <ns3:mi>[g/m³]</ns3:mi>
+            
+          </ns3:mrow>
+          
         </ns3:math>
-      </inlineequation> [g/m³]</para>
+          </imagedata>
+        </imageobject>
+      </mediaobject>
+    </equation> </para>
+
 
     <para>Und schließlich die relative Luftfeuchtigkeit (<inlineequation>
         <ns3:math display="inline">
@@ -248,7 +282,10 @@
         </ns3:math>
       </inlineequation>)nach:</para>
 
-    <para><inlineequation>
+    <para><equation>
+      <mediaobject>
+        <imageobject>
+          <imagedata align="center">
         <ns3:math display="inline">
           <ns3:mrow>
             <ns3:mrow>
@@ -297,7 +334,19 @@
               <ns3:mi>100</ns3:mi>
             </ns3:mrow>
           </ns3:mrow>
+
+          <ns3:mi> &#160;</ns3:mi>
+          <ns3:mrow>
+            
+            
+            <ns3:mi>[%]</ns3:mi>
+            
+          </ns3:mrow>
+          
         </ns3:math>
-      </inlineequation> [%]</para>
+          </imagedata>
+        </imageobject>
+      </mediaobject>
+    </equation> </para>
   </sect2>
 </sect1>
