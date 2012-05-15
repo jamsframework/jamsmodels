@@ -406,7 +406,7 @@ import jams.model.*;
             access = JAMSVarDescription.AccessType.READ,
             update = JAMSVarDescription.UpdateType.INIT,
             description = "concentration coefficient for RD2",
-            lowerBound = 0.0,
+            lowerBound = 1.0,
             upperBound = 20.0,
             defaultValue = "8.0"
             )

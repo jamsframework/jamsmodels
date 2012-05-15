@@ -331,7 +331,7 @@ public class DixonTestSet extends JAMSComponent {
                 double fr = 4000;
                 for (int i=0;i<n;i++){
                     s += x[i]*x[i];
-                    p+=Math.cos(x[i])/Math.sqrt(i+1);
+                    p+=Math.cos(x[i]/Math.sqrt(i+1));
                 }
                 //s = x1*x1 + x2*x2;
                 //p = Math.cos(x1)*Math.cos(x2/2.0);
@@ -345,7 +345,7 @@ public class DixonTestSet extends JAMSComponent {
                 double shift = 100.0/33.0;
                 for (int i=0;i<n;i++){
                     s += (x[i]+shift)*(x[i]+shift);
-                    p+=Math.cos((x[i]+shift))/Math.sqrt(i+1);
+                    p+=Math.cos((x[i]+shift)/Math.sqrt(i+1));
                 }
                 //s = x1*x1 + x2*x2;
                 //p = Math.cos(x1)*Math.cos(x2/2.0);
