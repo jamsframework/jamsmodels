@@ -251,8 +251,9 @@ public class J2KProcessContourBanks extends JAMSComponent {
                 double speicherCB_akt_temp = 0;
 
                 boolean weiter = true;
-                while (weiter == true) {
-
+                int i = 0;
+                while (weiter == true && i < 100) {
+                    i++;
                     //Berechnung des aktuellen Speichers einer ContourBank
                     double speicher1CB_akt = speicherCB_akt / anzahlCB;
 
