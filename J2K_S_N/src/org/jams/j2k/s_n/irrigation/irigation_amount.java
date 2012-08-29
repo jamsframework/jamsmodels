@@ -21,11 +21,19 @@ public class irigation_amount extends JAMSComponent {
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
             update = JAMSVarDescription.UpdateType.RUN,
-            description = "HRU crop class"
+            description = "Irrigation water which is not used for irrigation but left in the irrigation channel [l]"
             )
             public JAMSDouble Bypasswater;
 
+    @JAMSVarDescription(
+            access = JAMSVarDescription.AccessType.READWRITE,
+            update = JAMSVarDescription.UpdateType.RUN,
+            description = "Irrigation water which is damped in the irrigation channel [l]"
+            )
+            public JAMSDouble Bypassrest;
 
+    
+    
 
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
@@ -48,6 +56,14 @@ public class irigation_amount extends JAMSComponent {
             )
             public JAMSDouble Bypassfactor;
    
+     @JAMSVarDescription(
+            access = JAMSVarDescription.AccessType.READ,
+            update = JAMSVarDescription.UpdateType.RUN,
+            description = "Factor for the delay of the irrigation which bypasses the fields and goes directly into the dainage cannel [1 - 100] default = 1"
+            )
+            public JAMSDouble Bypassdamping;
+   
+   
    @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
             update = JAMSVarDescription.UpdateType.RUN,
@@ -62,17 +78,31 @@ public class irigation_amount extends JAMSComponent {
     public void init(){
         irrigationpart.setValue(0.0);
         irrigationsum.setValue(0.0);
+        Bypassrest.setValue(0);
+        
+        
     }
     public void run (){
 
         double irripart = 0;
-
+        double bypass = 0;
+        double bypassact = 0;
+        
 
          
 
         double irrigationwater = (irrigationsum.getValue() * IrrWaterfactor.getValue());
         
-        Bypasswater.setValue(irrigationwater * Bypassfactor.getValue());
+        bypass = irrigationwater * Bypassfactor.getValue() + Bypassrest.getValue();
+        
+        bypassact = bypass / Bypassdamping.getValue();
+        
+        Bypassrest.setValue(bypass - bypassact);
+        
+        
+        
+        
+        Bypasswater.setValue(bypassact);
 
         if (irrigationwater > 0){
             irripart = irrigationsum.getValue()/ irrigationwater ;
@@ -84,7 +114,7 @@ public class irigation_amount extends JAMSComponent {
 
 
 
- //       irrigationsum.setValue(0.0);
+        irrigationsum.setValue(0.0);
 
 
     }

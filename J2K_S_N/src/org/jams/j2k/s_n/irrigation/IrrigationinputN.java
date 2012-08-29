@@ -91,7 +91,7 @@ public class IrrigationinputN extends JAMSComponent {
 
         //Demand gap with rain
 
-        double Demandgap = Irrsoll * (1 - part);
+        //double Demandgap = Irrsoll * (1 - part);
 
 
 
@@ -100,8 +100,10 @@ public class IrrigationinputN extends JAMSComponent {
 
 
         x = (Irrsoll * part);
-
-
+        
+        /* //consideration of the precip in the irrigation amount
+        
+        x = x - rain;*/
 
         if (x <= 0) {
             x = 0;

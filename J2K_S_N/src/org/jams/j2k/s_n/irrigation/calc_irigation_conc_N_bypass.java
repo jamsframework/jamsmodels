@@ -95,11 +95,9 @@ public class calc_irigation_conc_N_bypass extends JAMSComponent {
         
         bypass_N.setValue(bypass_water.getValue() * 86400000 * irrigationN_conc.getValue());      
        
-        irripart = irrigationsum.getValue()/runstorage;
+        irripart = runstorage / irrigationsum.getValue();
         
-        if (irripart > 1) {
-            irripart = 1;
-        }
+       
 
         irrigationpart.setValue(irripart);
 
