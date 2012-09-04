@@ -611,6 +611,9 @@ import java.io.*;
             runResidue_pool = Residue_pool.getValue()[i];
 
             this.runNaCl_Pool = NaCl_Pool.getValue()[i];
+            if (runNaCl_Pool < 0){
+                System.out.println(runNaCl_Pool +" = runNaCl_Pool");
+            }
 
             
             this.RD1_out_mm = RD1_out.getValue() / runarea;
@@ -701,6 +704,10 @@ import java.io.*;
             concSALT_mobile = calc_concSALT_mobile(i);
             ConcSALT_mobile[i] = concSALT_mobile;
             plantuptake_NaCl = calc_plantuptake(i);
+            if (runNaCl_Pool < 0){
+                System.out.println(runNaCl_Pool +" = runNaCl_Pool");
+            }
+            
             if (i == 0) {
                 runsurfaceNaCl = calc_surfaceNaCl();
                 runNaCl_Pool = runNaCl_Pool - runsurfaceNaCl;
@@ -763,8 +770,8 @@ import java.io.*;
                 NaCl_Poolvals[i+1] = NaCl_Poolvals[i+1] - diffoutNa;
             }else{
                 diffoutNa = w_l_diff[i] * ConcSALT_mobile[i+1];
-                NaCl_Poolvals[i] = NaCl_Poolvals[i] - diffoutNa;
-                NaCl_Poolvals[i+1] = NaCl_Poolvals[i+1] + diffoutNa;
+                NaCl_Poolvals[i] = NaCl_Poolvals[i] + diffoutNa;
+                NaCl_Poolvals[i+1] = NaCl_Poolvals[i+1] - diffoutNa;
                 
             }
         }
