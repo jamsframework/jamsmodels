@@ -109,14 +109,14 @@ import jams.model.*;
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
             update = JAMSVarDescription.UpdateType.RUN,
-            description = "daily net radiation [MJ/mï¿½]"
+            description = "daily net radiation [MJ/m²]"
             )
             public JAMSDouble netRad;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
             update = JAMSVarDescription.UpdateType.RUN,
-            description = "daily shortwave radiation [MJ/mï¿½]",
+            description = "daily shortwave radiation [MJ/m²]",
             defaultValue="0"            
             )
             public JAMSDouble swRad;
@@ -124,7 +124,7 @@ import jams.model.*;
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
             update = JAMSVarDescription.UpdateType.RUN,
-            description = "daily longwave radiation [MJ/mï¿½]",
+            description = "daily longwave radiation [MJ/m²]",
             defaultValue="0"
             )
             public JAMSDouble lwRad;
