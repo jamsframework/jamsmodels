@@ -157,14 +157,14 @@ import jams.model.*;
      @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
             update = JAMSVarDescription.UpdateType.RUN,
-            description = "Soil bulk density in g/cmÂ³"
+            description = "Soil bulk density in g/cm³"
             )
             public JAMSDoubleArray bulk_density_h;
     
       @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
             update = JAMSVarDescription.UpdateType.RUN,
-            description = "organic carbon content in %Â³"
+            description = "organic carbon content in %³"
             )
             public JAMSDoubleArray corg_h;
     

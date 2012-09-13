@@ -57,7 +57,7 @@ import jams.model.*;
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
             update = JAMSVarDescription.UpdateType.INIT,
-            description = "HRU attribute name area in mÂ²"
+            description = "HRU attribute name area in m²"
             )
             public JAMSString aNameArea;
     
@@ -77,14 +77,14 @@ import jams.model.*;
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
             update = JAMSVarDescription.UpdateType.INIT,
-            description = "in kg/dmÂ³ soil bulk density"
+            description = "in kg/dm³ soil bulk density"
             )
             public JAMSString aNamesoil_bulk_density;
  */ // preliminary
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
             update = JAMSVarDescription.UpdateType.INIT,
-            description = "in kg/dmÂ³ soil bulk density"
+            description = "in kg/dm³ soil bulk density"
             )
             public JAMSDouble aNamesoil_bulk_density;
 //
@@ -122,7 +122,7 @@ import jams.model.*;
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
             update = JAMSVarDescription.UpdateType.INIT,
-            description = "soil temperature in layerdepth in Â°C"
+            description = "soil temperature in layerdepth in °C"
             )
             public JAMSString aNameSoil_Temp_Layer;
     @JAMSVarDescription(

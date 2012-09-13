@@ -1,7 +1,7 @@
 /*
  * J2KSNLandManagement.java
  *
- * Created on 6. MÃ¤rz 2006, 13:28
+ * Created on 6. März 2006, 13:28
  ** This file is part of JAMS
  * Copyright (C) 2005 S. Kralisch and P. Krause
  *

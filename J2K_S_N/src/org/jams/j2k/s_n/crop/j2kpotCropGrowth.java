@@ -58,11 +58,11 @@ public class j2kpotCropGrowth extends JAMSComponent {
     public JAMSDouble Area;
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
     update = JAMSVarDescription.UpdateType.RUN,
-    description = "HRU daily mean temperature [Â°C]")
+    description = "HRU daily mean temperature [°C]")
     public JAMSDouble Tmean;
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
     update = JAMSVarDescription.UpdateType.RUN,
-    description = "Daily solar radiation [MJ/mÂ²]")
+    description = "Daily solar radiation [MJ/m²]")
     public JAMSDouble SolRad;
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READWRITE,
     update = JAMSVarDescription.UpdateType.RUN,
@@ -165,11 +165,11 @@ public class j2kpotCropGrowth extends JAMSComponent {
     public JAMSDouble PHUact;
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READWRITE,
     update = JAMSVarDescription.UpdateType.RUN,
-    description = "Plants base growth temperature [Â°C]")
+    description = "Plants base growth temperature [°C]")
     public JAMSDouble tbase;
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READWRITE,
     update = JAMSVarDescription.UpdateType.RUN,
-    description = "Plants optimum growth temperature [Â°C]")
+    description = "Plants optimum growth temperature [°C]")
     public JAMSDouble topt;
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READWRITE,
     update = JAMSVarDescription.UpdateType.RUN,
@@ -513,7 +513,7 @@ public class j2kpotCropGrowth extends JAMSComponent {
     // @todo declare how is continuosly vegetated land use is determined
     private boolean calc_phu() {
         if (this.tmean > this.Tbase) {
-            this.phu_daily = phu_daily + (this.tmean - this.Tbase); //phÃ¤nologisch wirksame Temperatursumme
+            this.phu_daily = phu_daily + (this.tmean - this.Tbase); //phänologisch wirksame Temperatursumme
             this.fphu_act = this.phu_daily / this.phu;
         }
         //*double tDelta = this.Tbase - this.tmean;
@@ -526,7 +526,7 @@ public class j2kpotCropGrowth extends JAMSComponent {
     }
 
     /* private boolean calc_phu_() throws JAMSEntity.NoSuchAttributeException {
-    //System.out.println("tÃ¤gliche phu_daily " + phu_delta );
+    //System.out.println("tägliche phu_daily " + phu_delta );
     if (this.tmean > this.Tbase) {
     double phu_Delta = this.Tbase - this.tmean;
     //double phu_Delta = this.tmean - this.Tbase;
@@ -537,25 +537,25 @@ public class j2kpotCropGrowth extends JAMSComponent {
     // this.phu_delta = Math.max(0, this.tmean - this.Tbase);
     this.phu_daily = phu_deltaold + this.phu_delta;
     //if  (this.enty_id == 6) {
-    //System.out.println("tÃ¤gliche phu_daily " + phu_daily +" " +phu_Delta+ "  "+tmean+ "  " +Tbase+ "  ");
+    //System.out.println("tägliche phu_daily " + phu_daily +" " +phu_Delta+ "  "+tmean+ "  " +Tbase+ "  ");
     //}
-    //System.out.println("tÃ¤gliche phu_daily " + phu_daily +" " +phu_delta+ "  "+tmean+ "  " +Tbase+ "  ");
+    //System.out.println("tägliche phu_daily " + phu_daily +" " +phu_delta+ "  "+tmean+ "  " +Tbase+ "  ");
     this.fphu_act = this.phu_daily / this.phu;
     
     /* else {
     phu_deltaold = phu_delta;
     phu_delta = 0;
     this.phu_daily = this.phu_delta + phu_deltaold;
-    //System.out.println("tÃ¤gliche phu_daily " + phu_daily +" " +phu_delta+ "  ");
+    //System.out.println("tägliche phu_daily " + phu_daily +" " +phu_delta+ "  ");
     this.fphu_act = this.phu_daily / this.phu;*/
     //if (this.enty_id == 6){
-    //  System.out.println("tÃ¤gliche Temperatursumme " + phu_daily +" "+ fphu_act  +" "+ tmean +" ");
+    //  System.out.println("tägliche Temperatursumme " + phu_daily +" "+ fphu_act  +" "+ tmean +" ");
     //}
     /*if (phu_deltaold > phu_delta)
     System.out.println("ARGHH!");*/
     //}
     //return true; */
-    //System.out.println("tÃ¤gliche phu_daily " + phu_delta );
+    //System.out.println("tägliche phu_daily " + phu_delta );
     // }
     private boolean calc_lai() {
 
@@ -632,7 +632,7 @@ public class j2kpotCropGrowth extends JAMSComponent {
 // whereas the total biomass on a given day is summed up
     private void calc_biomass() {
 
-        double Hphosyn = 0.5 * this.solrad * (1 - Math.exp(this.leco * this.lai_act)); // Intercepted photosynthetically active radiation [MJ/mÂ²]
+        double Hphosyn = 0.5 * this.solrad * (1 - Math.exp(this.leco * this.lai_act)); // Intercepted photosynthetically active radiation [MJ/m²]
 
         this.bio_opt_delta = this.rue * Hphosyn;
 
@@ -691,29 +691,29 @@ public class j2kpotCropGrowth extends JAMSComponent {
         7 trees
         Processes modeled differently for the 7 groups are:
         1 warm season annual legume
-        Â• simulate nitrogen fixation
-        Â• root depth varies during growing season due to root growth
+        • simulate nitrogen fixation
+        • root depth varies during growing season due to root growth
         2 cold season annual legume
-        Â• simulate nitrogen fixation
-        Â• root depth varies during growing season due to root growth
-        Â• fall-planted land covers will go dormant when daylength is less than the threshold daylength
+        • simulate nitrogen fixation
+        • root depth varies during growing season due to root growth
+        • fall-planted land covers will go dormant when daylength is less than the threshold daylength
         3 perennial legume
-        Â• simulate nitrogen fixation
-        Â• root depth always equal to the maximum allowed for the plant species and soil
-        Â• plant goes dormant when daylength is less than the threshold daylength
+        • simulate nitrogen fixation
+        • root depth always equal to the maximum allowed for the plant species and soil
+        • plant goes dormant when daylength is less than the threshold daylength
         4 warm season annual
-        Â• root depth varies during growing season due to root growth
+        • root depth varies during growing season due to root growth
         5 cold season annual
-        Â• root depth varies during growing season due to root growth
-        Â• fall-planted land covers will go dormant when daylength is less than the threshold daylength
+        • root depth varies during growing season due to root growth
+        • fall-planted land covers will go dormant when daylength is less than the threshold daylength
         6 perennial
-        Â• root depth always equal to the maximum allowed for the plant species and soil
-        Â• plant goes dormant when daylength is less than the threshold daylength
+        • root depth always equal to the maximum allowed for the plant species and soil
+        • plant goes dormant when daylength is less than the threshold daylength
         7 trees
-        Â• root depth always equal to the maximum allowed for the plant species and soil
-        Â• partitions new growth between leaves/needles (30%) and woody growth (70%). At the end of each growing season, biomass in the leaf fraction is converted to residue
+        • root depth always equal to the maximum allowed for the plant species and soil
+        • partitions new growth between leaves/needles (30%) and woody growth (70%). At the end of each growing season, biomass in the leaf fraction is converted to residue
         8 Untersaat
-        Â•   */
+        •   */
 
         // Root development (mm in the soil) for plant types on a given day
 
@@ -750,7 +750,7 @@ public class j2kpotCropGrowth extends JAMSComponent {
         // is calculated by the fraction of the plant biomass as a function of growth stage given the optimal conditions
         // fnplant =fraction N in plant biomass
         // with bn1 as fraction of N in the plant biomass at the emergence
-        // with bn2 as fraction of N in the plant biomass near the middle of the growing  season (bevor BlÃ¼tenstand hevortritt)
+        // with bn2 as fraction of N in the plant biomass near the middle of the growing  season (bevor Blütenstand hevortritt)
         // with bn3 as fraction of N in the plant biomass at the maturity
         // with bn3_ca as fraction of N in the plant biomass near maturity
         // sc1_Nbio and sc2_Nbio are shape coefficients by solving the equation of two known points
@@ -1056,13 +1056,13 @@ public class j2kpotCropGrowth extends JAMSComponent {
 //    (3)   Schossen (Hauptrieb)
 //    (4)   Ã„hren- und Rispenschwellen
 //    (5)   Ã„hren- und Rispenschieben
-//    (6)   BlÃ¼te
+//    (6)   Blüte
 //    (7)   Fruchtbildung
 //    (8)   Samenreife
 //    (9)   Absterben
-// setze Bedingungen fÃ¼r einzelne PflanzenentwicklungszustÃ¤nde
+// setze Bedingungen für einzelne Pflanzenentwicklungszustände
 
-/*  double CHU = CHU + (this.tmean - this.tbase); //phÃ¤nologisch wirksame Temperatursumme
+/*  double CHU = CHU + (this.tmean - this.tbase); //phänologisch wirksame Temperatursumme
 int julday = time.get(time.JULDAY);
 double CJD = CJD++; */
 

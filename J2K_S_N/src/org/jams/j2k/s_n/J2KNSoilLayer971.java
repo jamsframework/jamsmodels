@@ -48,7 +48,7 @@ import java.io.*;
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
             update = JAMSVarDescription.UpdateType.RUN,
-            description = "HRU attribute name area in mÂ²"
+            description = "HRU attribute name area in m²"
             )
             public JAMSDouble area;
     
@@ -84,7 +84,7 @@ import java.io.*;
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
             update = JAMSVarDescription.UpdateType.RUN,
-            description = "in kg/dmÂ³ soil bulk density"
+            description = "in kg/dm³ soil bulk density"
             )
             public JAMSDoubleArray soil_bulk_density;
     
@@ -126,7 +126,7 @@ import java.io.*;
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
             update = JAMSVarDescription.UpdateType.RUN,
-            description = "soil temperature in layerdepth in Â°C"
+            description = "soil temperature in layerdepth in °C"
             )
             public JAMSDoubleArray Soil_Temp_Layer;
     
