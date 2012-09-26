@@ -30,25 +30,38 @@ import jams.data.*;
  *
  * @author S. Kralisch
  */
+@JAMSComponentDescription(title = "DoubleSetter",
+author = "Sven Kralisch",
+date = "2012-09-26",
+version = "1.0_0",
+description = "DoubleSetter can be used to set a number of attributes to one "
+        + "or more values. If \"value\" contains only one element, all "
+        + "\"attributes\" are set to this value. Otherwise \"value\" must "
+        + "contain one element for each attribute, i.e. sizes of \"attributes\" "
+        + "and \"value\" must be equal.")
 public class DoubleSetter extends JAMSComponent {
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "Double attributes to be set"
             )
             public JAMSDouble[] attributes;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.INIT,
-            description = "Double value"
+            description = "Double values"
             )
-            public JAMSDouble value;
+            public JAMSDouble[] value;  
     
     public void run() {
-        for (int i = 0; i < attributes.length; i++) {
-            attributes[i].setValue(value.getValue());
+        if (value.length == 1) {
+            for (int i = 0; i < attributes.length; i++) {
+                attributes[i].setValue(value[0].getValue());
+            }
+        } else {
+            for (int i = 0; i < attributes.length; i++) {
+                attributes[i].setValue(value[i].getValue());
+            }            
         }
     }
 }
