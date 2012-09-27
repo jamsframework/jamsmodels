@@ -1,6 +1,6 @@
 /*
- * J2KProcessRouting.java
- * Created on 28. November 2005, 09:21
+ * HRURouting.java
+ * Created on 26. September 2012, 21:45
  *
  * This file is part of JAMS
  * Copyright (C) 2005 FSU Jena, c0krpe
@@ -100,7 +100,7 @@ import jams.model.*;
             public Attribute.Double inGWExcess;    
     
     @JAMSVarDescription(
-            access = JAMSVarDescription.AccessType.READ,
+            access = JAMSVarDescription.AccessType.READ,    
             description = "RD1 inflow attribute name for HRUs / reaches"
             )
             public Attribute.String inRD1Name;
