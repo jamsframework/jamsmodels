@@ -311,12 +311,12 @@ import jams.model.*;
         }
         Attribute.Entity DestReservoir = null;
         
-        try{
+        if (entity.existsAttribute("to_reservoir")) {
             DestReservoir = (Attribute.Entity)entity.getObject("to_reservoir");
-        }catch(Attribute.Entity.NoSuchAttributeException e){
+        } else {
             DestReservoir = null;
-        }
-        
+        }        
+             
         double width = this.width.getValue();
         double slope = this.slope.getValue();
         double rough = this.roughness.getValue();
@@ -530,7 +530,7 @@ import jams.model.*;
         double veloc = 0;
         
         /**
-         *transfering liter/d to m?/s
+         *transfering liter/d to m³/s
          **/
         double q_m = q / (1000 * secondsOfTimeStep);
         double rh = calcHydraulicRadius(afv, q_m, width);
