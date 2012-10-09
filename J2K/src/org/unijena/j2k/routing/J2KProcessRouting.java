@@ -169,11 +169,13 @@ import jams.model.*;
                 
         //receiving reservoir
         Attribute.Entity toReservoir = null;
-        try{
+        
+        if (entity.existsAttribute("to_reservoir")) {
             toReservoir = (Attribute.Entity)entity.getObject("to_reservoir");
-        }catch(Attribute.Entity.NoSuchAttributeException e){
+        } else {
             toReservoir = null;
-        }
+        }         
+
         double RD1out = outRD1.getValue();
         double RD2out = outRD2.getValue();
         double RG1out = outRG1.getValue();

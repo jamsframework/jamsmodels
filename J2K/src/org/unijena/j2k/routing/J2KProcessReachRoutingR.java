@@ -285,9 +285,9 @@ import jams.model.*;
         }
         Attribute.Entity DestReservoir = null;
         
-        try{
+        if (entity.existsAttribute("to_reservoir")) {
             DestReservoir = (Attribute.Entity)entity.getObject("to_reservoir");
-        }catch(Attribute.Entity.NoSuchAttributeException e){
+        } else {
             DestReservoir = null;
         }
         
