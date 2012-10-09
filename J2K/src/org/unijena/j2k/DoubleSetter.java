@@ -45,20 +45,20 @@ public class DoubleSetter extends JAMSComponent {
             access = JAMSVarDescription.AccessType.WRITE,
             description = "Double attributes to be set"
             )
-            public JAMSDouble[] attributes;
+            public Attribute.Double[] attributes;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
             description = "Double values"
             )
-            public JAMSDouble[] value;  
+            public Attribute.Double[] value;
     
     public void run() {
         if (value.length == 1) {
             for (int i = 0; i < attributes.length; i++) {
                 attributes[i].setValue(value[0].getValue());
             }
-        } else {
+        } else if (attributes.length == value.length) {
             for (int i = 0; i < attributes.length; i++) {
                 attributes[i].setValue(value[i].getValue());
             }            
