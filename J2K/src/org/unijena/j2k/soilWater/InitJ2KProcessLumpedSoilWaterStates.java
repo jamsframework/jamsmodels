@@ -214,6 +214,8 @@ import jams.model.*;
         double mxLPS = entity.getDouble("aircap") * area.getValue();
         mxLPS = mxLPS * this.ACAdaptation.getValue();    
 
+
+
         if(satStartLPS != null){
         	this.actLPS.setValue(mxLPS * this.satStartLPS.getValue());
         }

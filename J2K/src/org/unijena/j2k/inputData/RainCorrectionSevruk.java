@@ -190,13 +190,21 @@ import jams.model.*;
             )
             public JAMSDouble tbase;
     
-    @JAMSVarDescription(
-            access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.RUN,
-            description = "Use caching of regionalised data?"
-            )
-            public JAMSBoolean dataCaching;
+//    @JAMSVarDescription(
+//            access = JAMSVarDescription.AccessType.READ,
+//            update = JAMSVarDescription.UpdateType.RUN,
+//            description = "Use caching of regionalised data?"
+//            )
+//            public JAMSBoolean dataCaching;
+
+    @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
+                        update = JAMSVarDescription.UpdateType.RUN,
+                        description = "Caching configuration: 0 - write cache, 1 - use cache, 2 - caching off",
+                        defaultValue = "0")
+    public JAMSInteger dataCaching;
     
+
+
     
     /*
      *  Component run stages
@@ -207,7 +215,8 @@ import jams.model.*;
     }
     
     public void run() throws JAMSEntity.NoSuchAttributeException {
-        if(!dataCaching.getValue()){
+        //if(!dataCaching.getValue()){
+             if (dataCaching.getValue() != 1) {
             double[] precip = this.precip.getValue();
             double[] temperature = this.temperature.getValue();
             double[] wind = this.wind.getValue();
@@ -275,6 +284,7 @@ import jams.model.*;
                 
                 //Calculating relative Winderror acc to SEVRUK 1989
                 double windErr = 0;
+
                 if(rainTemp < -27.0){
                     windErr = 1 + 0.550 * Math.pow(rainWind, 1.4);
                 }
