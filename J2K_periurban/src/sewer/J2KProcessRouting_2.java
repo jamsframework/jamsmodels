@@ -21,7 +21,7 @@
  *
  */
 
-package irstea.sewer;
+package sewer;
 
 import jams.data.*;
 import jams.model.*;

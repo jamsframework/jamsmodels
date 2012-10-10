@@ -20,7 +20,7 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
  *
  */
-package irstea.sewer;
+package sewer;
 
 //import org.unijena.j2k.*;
 import jams.JAMS;
@@ -35,7 +35,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Stack;
-import irstea.J2KCrop.J2KFunctions;
+import J2KCrop.J2KFunctions;
 
 /**
  *

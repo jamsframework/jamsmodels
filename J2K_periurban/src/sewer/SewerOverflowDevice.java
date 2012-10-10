@@ -1,6 +1,6 @@
 /*
  * SewerOverflowDevice.java
- * Created on 27. September 2012, 22:02
+ * Created on 05. October 2012, 17:02
  *
  * This file is part of JAMS
  * Copyright (C) FSU Jena
@@ -20,7 +20,7 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
  *
  */
-package irstea.sewer;
+package sewer;
 
 import jams.data.*;
 import jams.model.*;
@@ -28,16 +28,14 @@ import java.util.GregorianCalendar;
 
 /**
  *
- * @author Sven Kralisch
+ * @author Sven Kralisch & Mériem Labbas & Christian Fischer
  */
 @JAMSComponentDescription(title = "DoubleTransfer",
-author = "Sven Kralisch",
-description = "Component for simply transferring multiple double "
-+ "attributes) to a target entity. Can be used to implement a "
-+ "simple routing mechanism (e.g. HRU to HRU or HRU to reach) by "
-+ "taking a source entity's double data and moving it to specified.",
+author = "Sven Kralisch & Mériem Labbas & Christian Fischer",
+description = "Component used for the simulation of an overflow device. It takes the different components outflows"
+        + "coming from a sewer reach(threshold test) and adds it to the receiving reach river.",
 version = "1.0_0",
-date = "2012-09-27")
+date = "2012-10-05")
 public class SewerOverflowDevice extends JAMSComponent {
 
     /*
@@ -78,11 +76,11 @@ public class SewerOverflowDevice extends JAMSComponent {
     unit = "L")
     public Attribute.Double[] inValues;
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READWRITE,
-    description = "Flow to be transferred",
+    description = "Actual flow inside the sewer or river reach",
     unit = "L")
     public Attribute.Double[] actValues;
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.WRITE,
-    description = "Flow to be transferred to the SOD",
+    description = "outflow from the SOD",
     unit = "L")
     public Attribute.Double[] outValues;
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
@@ -102,18 +100,22 @@ public class SewerOverflowDevice extends JAMSComponent {
             seconds = 60*ti.getTimeUnitCount();
         } else if (ti.getTimeUnit() == GregorianCalendar.HOUR) {
             seconds = 3600*ti.getTimeUnitCount();
-        } else if (ti.getTimeUnit() == GregorianCalendar.DAY_OF_MONTH) {
+        } else if (ti.getTimeUnit() == GregorianCalendar.DAY_OF_YEAR) {
             seconds = 24*3600*ti.getTimeUnitCount();
         }  else if (ti.getTimeUnit() == GregorianCalendar.MONTH) {
             seconds = time.getActualMaximum(GregorianCalendar.DAY_OF_MONTH)*24*3600*ti.getTimeUnitCount();
         }
     }
-    
+    int ts = 0;
     /*
      * Component run stages
      */
     public void run() throws Attribute.Entity.NoSuchAttributeException {
 
+        if (ts++ > 60) {
+            System.out.println("");
+        }
+        
         if (to_river.getValue() == null) {
             return;
         }
@@ -126,37 +128,49 @@ public class SewerOverflowDevice extends JAMSComponent {
         for (int i = 0; i < inValues.length; i++) {
             volume = volume + inValues[i].getValue();
         }
-        for (int i = 0; i < inValues.length; i++) {
-            frac[i] = inValues[i].getValue() / volume;
-        }
         for (int i = 0; i < actValues.length; i++) {
             volume = volume + actValues[i].getValue();
         }
+        for (int i = 0; i < inValues.length; i++) {
+            if (volume > 0) {
+                frac[i] = (inValues[i].getValue() + actValues[i].getValue())/ volume;
+            }
+        }        
 
         double maxVolume = threshold.getValue() * length.getValue() * width.getValue() * 1000; //in L
-        double diffVolume = 0, height = 0, q;
-        double g = 9.80665; //gravitionnal constant
+        double diffVolume = 0, height = 0, q = 0;
+        double overflowComp = 0;
+        double g = 9.80665; //gravitationnal constant
 
         // overflow is happening?
         if (volume - maxVolume > 0) {
             diffVolume = volume - maxVolume; //in L
             height = (diffVolume / 1000) / (length.getValue() * width.getValue()); //in m
-
-            //q = diffVolume;
-            if (height <= pipeHeight.getValue()) {
-                q = dischCoeff.getValue() * pipeWidth.getValue() * height * Math.sqrt(2 * g * height) * seconds / 1000;
+            q = diffVolume;
+            
+         if (height <= pipeHeight.getValue()) {
+                q = dischCoeff.getValue() * pipeWidth.getValue() * height * Math.sqrt(2 * g * height) * seconds * 1000;
+//              getModel().getRuntime().println("");
+//                getModel().getRuntime().println("x");
             } else {
-                q = dischCoeff.getValue() * pipeWidth.getValue() * threshold.getValue() * Math.sqrt(2 * g * height) * seconds / 1000;
+                q = dischCoeff.getValue() * pipeWidth.getValue() * pipeHeight.getValue() * Math.sqrt(2 * g * height) * seconds * 1000;
+//                getModel().getRuntime().println("y");
             }
-
-            double overflowComp;
+            q = Math.min(q, diffVolume); 
+            
+            
 
             for (int i = 0; i < inValues.length; i++) {
                 // The overflow of the SOD is limited by its pipe diameter               
-                overflowComp = frac[i] * q;
+                  overflowComp = frac[i] * q;
 
                 inValues[i].setValue(inValues[i].getValue() - overflowComp);
                 to_river.setDouble(inNames[i].getValue(), overflowComp + to_river.getDouble(inNames[i].getValue()));
+                outValues[i].setValue(overflowComp);
+            }
+        }else
+        {
+            for (int i = 0; i < inValues.length; i++) {
                 outValues[i].setValue(overflowComp);
             }
         }
