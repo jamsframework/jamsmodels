@@ -359,6 +359,7 @@ import jams.model.*;
                vegetationcover = biomass.getValue() + this.Residue_pool.getValue()[0];
            }
            
+           vegetationcover =Math.min(vegetationcover,15);
            
            double radiation = radiat / 1000;
 //        double temp_min = atemp_min.getValue();
@@ -395,7 +396,7 @@ import jams.model.*;
         
 //     albedofactor = soilalbedo * Math.exp(-0.5 * LAI) +  0.25 * (1 - Math.exp(-0.5 * LAI));/*orignal*/
         albedofactor = 0.01 ;/*modified for bare Soil*/
-        temp_bare_soil = (1 - albedofactor) * (temp_min + (temp_max - temp_min) * Math.pow(0.03 * radiat, 0.5)) +  surfacet * albedofactor;
+        temp_bare_soil = (1 - albedofactor) * (temp_min + (temp_max - temp_min) * Math.pow(0.03 * radiat, 0.5)) +  Surfacetemp.getValue() * albedofactor;
         
 /*        if (unitnr < 2 && datumjul == 20 ) {
         j2k_org.core.message.deb_msg("calc_Soil_Temp_Layer \n"+
