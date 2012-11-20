@@ -140,7 +140,7 @@ import jams.model.*;
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
             update = JAMSVarDescription.UpdateType.RUN,
-            description = "snow runoff of time step before",
+            description = "snow melt from glacier areas",
             unit = "L"
             )
             public JAMSDouble snowMelt_G;
@@ -148,7 +148,7 @@ import jams.model.*;
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
             update = JAMSVarDescription.UpdateType.RUN,
-            description = "snow runoff of time step before",
+            description = "rain runoff of time step before",
             unit = "L"
             )
             public JAMSDouble rainRunofftm1;
@@ -172,7 +172,7 @@ import jams.model.*;
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
             update = JAMSVarDescription.UpdateType.RUN,
-            description = "total runoff of unit",
+            description = "total direct runoff of unit",
             unit = "L"
             )
             public JAMSDouble dirQ;
@@ -180,7 +180,7 @@ import jams.model.*;
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
             update = JAMSVarDescription.UpdateType.RUN,
-            description = "runoff from glacier melt",
+            description = "runoff from glacier ice melt",
             unit="L"
             )
             public JAMSDouble iceRunoff;
@@ -276,7 +276,7 @@ import jams.model.*;
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
             update = JAMSVarDescription.UpdateType.INIT,
-            description = "routing coefficient for ice"
+            description = "routing coefficient for rain"
             )
             public JAMSDouble kRain;
 
@@ -284,7 +284,7 @@ import jams.model.*;
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
             update = JAMSVarDescription.UpdateType.INIT,
-            description = "threshold temperature"
+            description = "threshold temperature for icemelt"
             )
             public JAMSDouble tbase;
 
@@ -306,7 +306,7 @@ import jams.model.*;
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
             update = JAMSVarDescription.UpdateType.INIT,
-            description = "debris factor based on the debris cover on glacier"
+            description = "debris factor based on the debris cover on glaciers"
             )
             public JAMSDouble debrisFactor;
 
