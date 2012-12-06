@@ -615,8 +615,12 @@ public class PF_KF_KA5 {
                 
             }
             
+            if (x > 0){
             J2kline = String.valueOf(x) + "\t" +  String.valueOf(totdepth)  + "\t" +  String.valueOf(0)   + "\t" +  String.valueOf(0)+ "\t" +  String.valueOf(0) + "\t" +  String.valueOf(0)  + "\t" +  String.valueOf(LPStot) + "\t" +  String.valueOf(MPStot) + J2kMPSline;
+            }
             x++;
+            
+            
             writer1.write(J2kline);
             writer1.newLine();
         
