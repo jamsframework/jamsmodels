@@ -594,8 +594,8 @@ public class PF_KF_KA5 {
                 }else{
                    if ((actdepth - hordepth) > 0){
                        if (h < 4 && MPSarray[h+1] > 0){
-                       MPSj2karray[c] = ((hordepth - actdepth)/10) * MPSarray[h] + (1 - ((hordepth - actdepth)/10)) * MPSarray[h+1];
-                       LPStot = LPStot + ((hordepth - actdepth)/10) * LPSarray[h] + (1 - ((hordepth - actdepth)/10)) * LPSarray[h+1];
+                       MPSj2karray[c] = ((hordepth + 10 - actdepth)/10) * MPSarray[h] + (((actdepth - hordepth)/10)) * MPSarray[h+1];
+                       LPStot = LPStot + ((hordepth + 10 - actdepth)/10) * LPSarray[h] + (((actdepth - hordepth)/10)) * LPSarray[h+1];
                        h++;
                        hordepth = hordepth + deptharray[h];  
                        MPStot = MPStot + MPSj2karray[c];
