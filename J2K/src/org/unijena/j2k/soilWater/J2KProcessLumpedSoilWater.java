@@ -690,7 +690,7 @@ import jams.model.*;
         this.calcSoilSaturations(false);
         
         /**checking if MPS can take all the water */
-        if(inflow < (this.run_maxMPS - this.run_actMPS)){
+        if(inflow < (this.run_maxMPS - this.run_actMPS)){ //christian: this seams wrong to me, because if this test fails mps gets all the water even if it wouldn't because of alpha .. 
             /** if MPS is empty it takes all the water */
             if(this.run_actMPS == 0){
                 this.run_actMPS = this.run_actMPS + inflow;
@@ -861,7 +861,7 @@ import jams.model.*;
             double diff = this.soilDiffMPSLPS.getValue();
             
             //new equation like all other exps 04.03.04
-            diffusion = this.run_actLPS * (1. - Math.exp((-1. * diff) / this.run_satMPS));
+            diffusion = this.run_actLPS * (1. - Math.exp((-1. * diff) / this.run_satMPS)); 
         }
         
         if(diffusion > this.run_actLPS)
