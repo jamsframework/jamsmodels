@@ -6,7 +6,7 @@
  * Author = Flora Branger, 17 April 2012
  */
 
-package irstea.J2KCrop;
+package J2KCrop;
 
 import jams.data.*;
 import jams.model.*;

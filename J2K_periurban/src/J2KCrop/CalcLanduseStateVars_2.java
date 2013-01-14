@@ -20,7 +20,7 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
  *
  */   
-package irstea.J2KCrop;
+package J2KCrop;
 
 import jams.data.*;
 import jams.model.*;

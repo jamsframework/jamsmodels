@@ -173,7 +173,7 @@ public class StandardEntitiesReader extends JAMSComponent {
         getModel().getRuntime().println("Reach entities read successfully", JAMS.STANDARD);
         getModel().getRuntime().println("Create ordered sewer-list", JAMS.VERBOSE);
         createOrderedList(sewers, sewer2sewerAttribute.getValue());
-        getModel().getRuntime().println("Sewer entities read successfully", JAMS.STANDARD);    
+        getModel().getRuntime().println("Sewer entities read successfully", JAMS.STANDARD);
     }
 
     //do depth first search to find cycles

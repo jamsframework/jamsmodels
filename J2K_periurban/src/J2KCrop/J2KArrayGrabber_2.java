@@ -38,7 +38,7 @@
 </component>
  */
 
-package irstea.J2KCrop;
+package J2KCrop;
 
 import jams.data.*;
 import jams.model.*;

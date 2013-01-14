@@ -1,5 +1,5 @@
 /*
- * J2KProcessRouting_2.java
+ * J2KProcessRouting.java
  * Created on 28. November 2005, 09:21
  *
  * This file is part of JAMS
@@ -21,7 +21,7 @@
  *
  */
 
-package sewer;
+package org.unijena.j2k.routing;
 
 import jams.data.*;
 import jams.model.*;
@@ -31,11 +31,11 @@ import jams.model.*;
  * @author Peter Krause
  */
 @JAMSComponentDescription(
-        title="J2KProcessRouting_2",
-        author="Peter Krause & Meriem",
+        title="J2KProcessRouting",
+        author="Peter Krause",
         description="Passes the output of the entities as input to the respective reach or unit",
         version="1.0_0",
-        date="2012-08-28"
+        date="2011-05-30"
         )
         public class J2KProcessRouting_2 extends JAMSComponent {
     
@@ -55,13 +55,6 @@ import jams.model.*;
             description = "Collection of reach objects"
             )
             public JAMSEntityCollection reaches;
-    
-     @JAMSVarDescription(
-            access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.RUN,
-            description = "Collection of reach objects"
-            )
-            public JAMSEntityCollection reachesbis;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
@@ -156,13 +149,6 @@ import jams.model.*;
             description = "Downstream reach entity"
             )
             public Attribute.Entity toReach;
-
-    @JAMSVarDescription(
-            access = JAMSVarDescription.AccessType.READWRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
-            description = "Downstream reach bis entity"
-            )
-            public Attribute.Entity toReachBis;
     
     /*
      *  Component run stages
@@ -183,11 +169,13 @@ import jams.model.*;
                 
         //receiving reservoir
         Attribute.Entity toReservoir = null;
-        try{
+        
+        if (entity.existsAttribute("to_reservoir")) {
             toReservoir = (Attribute.Entity)entity.getObject("to_reservoir");
-        }catch(Attribute.Entity.NoSuchAttributeException e){
+        } else {
             toReservoir = null;
-        }
+        }         
+
         double RD1out = outRD1.getValue();
         double RD2out = outRD2.getValue();
         double RG1out = outRG1.getValue();
@@ -251,32 +239,6 @@ import jams.model.*;
             outRG2.setValue(RG2out);
             inGWExcess.setValue(0);
             toReach.setDouble("inRG2", RG2in);
-        } else if(toReachBis.getValue() != null){
-            double RD1in = toReachBis.getDouble("inRD1");
-            double RD2in = toReachBis.getDouble("inRD2");
-            double RG1in = toReachBis.getDouble("inRG1");
-            double RG2in = toReachBis.getDouble("inRG2");
-            
-            RD1in = RD1in + RD1out;
-            RD2in = RD2in + RD2out;
-            RG1in = RG1in + RG1out;
-            RG2in = RG2in + RG2out;
-            RD2in += inGWExcess.getValue();
-            
-            RD1out = 0;
-            RD2out = 0;
-            RG1out = 0;
-            RG2out = 0;
-            
-            outRD1.setValue(RD1out);
-            toReachBis.setDouble("inRD1", RD1in);
-            outRD2.setValue(RD2out);
-            toReachBis.setDouble("inRD2", RD2in);
-            outRG1.setValue(RG1out);
-            toReachBis.setDouble("inRG1", RG1in);
-            outRG2.setValue(RG2out);
-            inGWExcess.setValue(0);
-            toReachBis.setDouble("inRG2", RG2in);
             
         }else if(toReservoir != null){
             double resRD1 = toReservoir.getDouble("compRD1");
