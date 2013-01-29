@@ -58,8 +58,7 @@ public class InputErrorEstimation extends JAMSComponent {
             update = JAMSVarDescription.UpdateType.INIT,
             description = "maximum relative error"
             )
-            public JAMSDouble maxRelError;
-            public Attribute.Double maxError;
+            public Attribute.Double maxRelError;
 
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
@@ -96,8 +95,6 @@ public class InputErrorEstimation extends JAMSComponent {
         for(int i = 0; i < inDat.length; i++){
             double error = generator.nextDouble();
             error = (error * this.maxRelError.getValue());
-
-            error = (error * this.maxError.getValue());
             
             if(!pos)
                 error = error * -1;
