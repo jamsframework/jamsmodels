@@ -28,21 +28,21 @@ public class CreateGrid extends JAMSComponent {
             update = JAMSVarDescription.UpdateType.RUN,
             description = "spatial grid resolution"
             )
-            public JAMSDouble gridresolution;
+            public Attribute.Double gridresolution;
       
       @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
             update = JAMSVarDescription.UpdateType.RUN,
             description = "spatial grid resolution"
             )
-            public JAMSDouble modelrastersize;
+            public Attribute.Double modelrastersize;
       
       @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
             update = JAMSVarDescription.UpdateType.RUN,
             description = "Time bin of simulation"
             )
-            public JAMSDouble timescale;
+            public Attribute.Double timescale;
                  
      @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
@@ -63,28 +63,28 @@ public class CreateGrid extends JAMSComponent {
             update = JAMSVarDescription.UpdateType.RUN,
             description = "Reach statevar simulated Runoff"
             )
-            public JAMSDouble RD1_Weg_Koeff;
+            public Attribute.Double RD1_Weg_Koeff;
    
      @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
             update = JAMSVarDescription.UpdateType.RUN,
             description = "Reach statevar simulated Runoff"
             )
-            public JAMSDouble RD2_Weg_Koeff;
+            public Attribute.Double RD2_Weg_Koeff;
      
      @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
             update = JAMSVarDescription.UpdateType.RUN,
             description = "Reach statevar simulated Runoff"
             )
-            public JAMSDouble RG1_Weg_Koeff;
+            public Attribute.Double RG1_Weg_Koeff;
      
      @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
             update = JAMSVarDescription.UpdateType.RUN,
             description = "Reach statevar simulated Runoff"
             )
-            public JAMSDouble RG2_Weg_Koeff;
+            public Attribute.Double RG2_Weg_Koeff;
      
      
     @JAMSVarDescription(

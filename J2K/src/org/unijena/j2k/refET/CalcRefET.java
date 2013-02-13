@@ -61,7 +61,7 @@ import jams.model.*;
             description = "state variable wind",
             unit="m/s"
             )
-            public JAMSDouble wind;
+            public Attribute.Double wind;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
@@ -69,7 +69,7 @@ import jams.model.*;
             description = "state variable minimum temperature",
             unit="°C"
             )
-            public JAMSDouble tmin;
+            public Attribute.Double tmin;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
@@ -77,7 +77,7 @@ import jams.model.*;
             description = "state variable mean temperature",
             unit="°C"
             )
-            public JAMSDouble tmean;
+            public Attribute.Double tmean;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
@@ -85,7 +85,7 @@ import jams.model.*;
             description = "state variable maximum temperature",
             unit="°C"
             )
-            public JAMSDouble tmax;
+            public Attribute.Double tmax;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
@@ -93,7 +93,7 @@ import jams.model.*;
             description = "state variable relative humidity",
             unit="%"
             )
-            public JAMSDouble rhum;
+            public Attribute.Double rhum;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
@@ -101,7 +101,7 @@ import jams.model.*;
             description = "state variable net radiation",
             unit="MJ m^-2 d^-1"
             )
-            public JAMSDouble netRad;
+            public Attribute.Double netRad;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
@@ -109,7 +109,7 @@ import jams.model.*;
             description = "state extraterrestric radiation",
             unit="MJ m^-2 d^-1"
             )
-            public JAMSDouble extRad;
+            public Attribute.Double extRad;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
@@ -117,7 +117,7 @@ import jams.model.*;
             description = "state variable solar radiation",
             unit="MJ m^-2 d^-1"
             )
-            public JAMSDouble solRad;
+            public Attribute.Double solRad;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
@@ -125,7 +125,7 @@ import jams.model.*;
             description = "attribute elevation",
             unit="m"
             )
-            public JAMSDouble elevation;
+            public Attribute.Double elevation;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
@@ -133,7 +133,7 @@ import jams.model.*;
             description = "attribute area",
             unit="m²"
             )
-            public JAMSDouble area;
+            public Attribute.Double area;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
@@ -141,7 +141,7 @@ import jams.model.*;
             description = "reference potential ETP [mm]",
             unit="mm d^-1"
             )
-            public JAMSDouble refET;
+            public Attribute.Double refET;
     
     
     /*

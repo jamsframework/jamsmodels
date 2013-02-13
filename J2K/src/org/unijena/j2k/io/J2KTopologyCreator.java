@@ -70,7 +70,7 @@ public class J2KTopologyCreator extends JAMSComponent {
     }
     
     //do depth first search to find cycles
-    protected boolean cycleCheck(Attribute.Entity node,Stack<Attribute.Entity> searchStack,HashSet<JAMSDouble> closedList,HashSet<JAMSDouble> visitedList) throws JAMSEntity.NoSuchAttributeException {
+    protected boolean cycleCheck(Attribute.Entity node,Stack<Attribute.Entity> searchStack,HashSet<Attribute.Double> closedList,HashSet<Attribute.Double> visitedList) throws JAMSEntity.NoSuchAttributeException {
         Attribute.Entity child_node;
         
         //current node allready in search stack -> circle found
@@ -89,7 +89,7 @@ public class J2KTopologyCreator extends JAMSComponent {
         if (closedList.contains(node.getObject("ID")) == true)
             return false;
         //now this node is visited
-        visitedList.add((JAMSDouble)node.getObject("ID"));
+        visitedList.add((Attribute.Double)node.getObject("ID"));
         
         child_node = (Attribute.Entity)node.getObject("to_poly");
         
@@ -109,8 +109,8 @@ public class J2KTopologyCreator extends JAMSComponent {
     protected boolean cycleCheck() throws Attribute.Entity.NoSuchAttributeException {
         Iterator<Attribute.Entity> hruIterator;
         
-        HashSet<JAMSDouble> closedList = new HashSet<JAMSDouble>();
-        HashSet<JAMSDouble> visitedList = new HashSet<JAMSDouble>();
+        HashSet<Attribute.Double> closedList = new HashSet<Attribute.Double>();
+        HashSet<Attribute.Double> visitedList = new HashSet<Attribute.Double>();
         
         Attribute.Entity start_node;
         

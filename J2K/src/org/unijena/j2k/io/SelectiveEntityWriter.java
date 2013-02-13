@@ -138,7 +138,7 @@ public class SelectiveEntityWriter extends JAMSComponent {
                     //output variable is of type array
                     if(ob.getClass().getName().contains("DoubleArray")){
                         //System.out.println("JAMSArray");
-                        length = ((JAMSDoubleArray)entitySet.getCurrent().getObject(this.attributeName.getValue())).getValue().length;
+                        length = ((Attribute.DoubleArray)entitySet.getCurrent().getObject(this.attributeName.getValue())).getValue().length;
                         //output variable is a single value
                     } else{
                         length = 0;
@@ -182,19 +182,19 @@ public class SelectiveEntityWriter extends JAMSComponent {
             if(output){
                 double area = 1.0;
                 if(this.perArea.getValue()){
-                    area = ((JAMSDouble)entitySet.getCurrent().getObject("area")).getValue();
+                    area = ((Attribute.Double)entitySet.getCurrent().getObject("area")).getValue();
                 }
                 Object ob = entitySet.getCurrent().getObject(this.attributeName.getValue());
                 if (ob.getClass().getName().contains("DoubleArray")) {
-                    //System.out.println("HRUNo: " +((JAMSDouble)entitySet.getCurrent().getObject("ID")).getValue());
-                    double[] da = ((JAMSDoubleArray)entitySet.getCurrent().getObject(this.attributeName.getValue())).getValue();
+                    //System.out.println("HRUNo: " +((Attribute.Double)entitySet.getCurrent().getObject("ID")).getValue());
+                    double[] da = ((Attribute.DoubleArray)entitySet.getCurrent().getObject(this.attributeName.getValue())).getValue();
                     for(int i = 0; i < da.length; i++){
                         double val = da[i] / area;
                         writer.addData(val, precision.getValue());
                     }
                 } else {
                     //System.out.println("Primitive");
-                    double da = ((JAMSDouble)entitySet.getCurrent().getObject(this.attributeName.getValue())).getValue();
+                    double da = ((Attribute.Double)entitySet.getCurrent().getObject(this.attributeName.getValue())).getValue();
                     double val = da / area;
                     writer.addData(val, precision.getValue());
                 }

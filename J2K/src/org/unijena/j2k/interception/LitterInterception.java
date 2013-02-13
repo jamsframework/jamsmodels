@@ -79,70 +79,70 @@ import jams.model.*;
             update = JAMSVarDescription.UpdateType.RUN,
             description = "hruID"
             )
-            public JAMSDouble hruID;
+            public Attribute.Double hruID;
             
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
             update = JAMSVarDescription.UpdateType.RUN,
             description = "attribute area"
             )
-            public JAMSDouble area;
+            public Attribute.Double area;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
             update = JAMSVarDescription.UpdateType.RUN,
             description = "state variable net-rain"
             )
-            public JAMSDouble netRain;
+            public Attribute.Double netRain;
             
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
             update = JAMSVarDescription.UpdateType.RUN,
             description = "daily snow melt"
             )
-            public JAMSDouble snowMelt;
+            public Attribute.Double snowMelt;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
             update = JAMSVarDescription.UpdateType.RUN,
             description = "state variable potE"
             )
-            public JAMSDouble potE;
+            public Attribute.Double potE;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
             update = JAMSVarDescription.UpdateType.RUN,
             description = "state variable actE"
             )
-            public JAMSDouble actE;
+            public Attribute.Double actE;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
             update = JAMSVarDescription.UpdateType.INIT,
             description = "LitterInterception parameter Cmax"
             )
-            public JAMSDouble Cmax;
+            public Attribute.Double Cmax;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
             update = JAMSVarDescription.UpdateType.INIT,
             description = "LitterInterception parameter Cmin"
             )
-            public JAMSDouble Cmin;
+            public Attribute.Double Cmin;
     
    /*@JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
             update = JAMSVarDescription.UpdateType.RUN,
             description = "state variable throughfall"
             )
-            public JAMSDouble throughfall;*/
+            public Attribute.Double throughfall;*/
     
    /* @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
             update = JAMSVarDescription.UpdateType.RUN,
             description = "state variable litter interception"
             )
-            public JAMSDouble LitterInterception;*/
+            public Attribute.Double LitterInterception;*/
     
                 
      @JAMSVarDescription(
@@ -150,98 +150,98 @@ import jams.model.*;
             update = JAMSVarDescription.UpdateType.RUN,
             description = "horizons"
             )
-            public JAMSDouble horizons;
+            public Attribute.Double horizons;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
             update = JAMSVarDescription.UpdateType.RUN,
             description = "HRU attribute maximum MPS"
             )
-            public JAMSDoubleArray maxMPS;
+            public Attribute.DoubleArray maxMPS;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
             update = JAMSVarDescription.UpdateType.RUN,
             description = "HRU attribute maximum LPS"
             )
-            public JAMSDoubleArray maxLPS;
+            public Attribute.DoubleArray maxLPS;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
             update = JAMSVarDescription.UpdateType.RUN,
             description = "HRU state var actual MPS"
             )
-            public JAMSDoubleArray actMPS;
+            public Attribute.DoubleArray actMPS;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
             update = JAMSVarDescription.UpdateType.RUN,
             description = "HRU state var actual LPS"
             )
-            public JAMSDoubleArray actLPS;
+            public Attribute.DoubleArray actLPS;
             
         @JAMSVarDescription(
     access = JAMSVarDescription.AccessType.READ,
             update = JAMSVarDescription.UpdateType.RUN,
             description = "HRU state var saturation of MPS"
             )
-            public JAMSDoubleArray satMPS;
+            public Attribute.DoubleArray satMPS;
     
     @JAMSVarDescription(
     access = JAMSVarDescription.AccessType.READ,
             update = JAMSVarDescription.UpdateType.RUN,
             description = "HRU state var saturation of LPS"
             )
-            public JAMSDoubleArray satLPS;
+            public Attribute.DoubleArray satLPS;
             
     @JAMSVarDescription(
     access = JAMSVarDescription.AccessType.READ,
             update = JAMSVarDescription.UpdateType.INIT,
             description = "maximum infiltration rate in summer [mm/d]"
             )
-            public JAMSDouble soilMaxInfSummer;
+            public Attribute.Double soilMaxInfSummer;
     
     @JAMSVarDescription(
     access = JAMSVarDescription.AccessType.READ,
             update = JAMSVarDescription.UpdateType.INIT,
             description = "maximum infiltration rate in winter [mm/d]"
             )
-            public JAMSDouble soilMaxInfWinter;
+            public Attribute.Double soilMaxInfWinter;
     
     @JAMSVarDescription(
     access = JAMSVarDescription.AccessType.READ,
             update = JAMSVarDescription.UpdateType.INIT,
             description = "maximum infiltration rate on snow [mm/d]"
             )
-            public JAMSDouble soilMaxInfSnow;
+            public Attribute.Double soilMaxInfSnow;
     
      @JAMSVarDescription(
     access = JAMSVarDescription.AccessType.READWRITE,
             update = JAMSVarDescription.UpdateType.RUN,
             description = "Litter interception storage [mm]"
             )
-            public JAMSDouble LitterInterceptionStorage;
+            public Attribute.Double LitterInterceptionStorage;
      
      @JAMSVarDescription(
     access = JAMSVarDescription.AccessType.WRITE,
             update = JAMSVarDescription.UpdateType.RUN,
             description = "surface runoff generation"
             )
-            public JAMSDouble litterRD1;
+            public Attribute.Double litterRD1;
     
    @JAMSVarDescription(
     access = JAMSVarDescription.AccessType.READ,
             update = JAMSVarDescription.UpdateType.RUN,
             description = "snow depth"
             )
-            public JAMSDouble snowDepth;
+            public Attribute.Double snowDepth;
    
     @JAMSVarDescription(
     access = JAMSVarDescription.AccessType.WRITE,
             update = JAMSVarDescription.UpdateType.RUN,
             description = "litter infiltration"
             )
-            public JAMSDouble litterInfiltration;
+            public Attribute.Double litterInfiltration;
     /*
      *  Component run stages
      */

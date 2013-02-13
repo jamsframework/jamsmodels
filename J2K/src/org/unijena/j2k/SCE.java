@@ -80,21 +80,21 @@ title="Title",
             update = JAMSVarDescription.UpdateType.RUN,
             description = "objective function value"
             )
-            public JAMSDouble effValue;*/
+            public Attribute.Double effValue;*/
 
     @JAMSVarDescription(
     access = JAMSVarDescription.AccessType.READWRITE,
             update = JAMSVarDescription.UpdateType.RUN,
             description = "the prediction series"
             )
-            public JAMSDoubleArray prediction;
+            public Attribute.DoubleArray prediction;
 
     @JAMSVarDescription(
     access = JAMSVarDescription.AccessType.READWRITE,
             update = JAMSVarDescription.UpdateType.RUN,
             description = "the observation series"
             )
-            public JAMSDoubleArray observation;
+            public Attribute.DoubleArray observation;
 
     @JAMSVarDescription(
     access = JAMSVarDescription.AccessType.READWRITE,
@@ -129,14 +129,14 @@ title="Title",
             update = JAMSVarDescription.UpdateType.RUN,
             description = "pcento"
             )
-            public JAMSDouble pcento;
+            public Attribute.Double pcento;
 
     @JAMSVarDescription(
     access = JAMSVarDescription.AccessType.READWRITE,
             update = JAMSVarDescription.UpdateType.RUN,
             description = "peps"
             )
-            public JAMSDouble peps;
+            public Attribute.Double peps;
 
     @JAMSVarDescription(
     access = JAMSVarDescription.AccessType.READ,
@@ -152,7 +152,7 @@ title="Title",
             )
             public JAMSString sceFileName;
 
-    JAMSDouble[] parameters;
+    Attribute.Double[] parameters;
     String[] parameterNames;
     double[] lowBound;
     double[] upBound;
@@ -291,14 +291,14 @@ title="Title",
             int i;
             StringTokenizer tok = new StringTokenizer(parameterIDs.getValue(), ";");
             String key;
-            parameters = new JAMSDouble[tok.countTokens()];
+            parameters = new Attribute.Double[tok.countTokens()];
             parameterNames = new String[tok.countTokens()];
 
             i = 0;
             while (tok.hasMoreTokens()) {
                 key = tok.nextToken();
                 parameterNames[i] = key;
-                parameters[i] = (JAMSDouble) getModel().getRuntime().getDataHandles().get(key);
+                parameters[i] = (Attribute.Double) getModel().getRuntime().getDataHandles().get(key);
                 i++;
             }
 
@@ -442,7 +442,7 @@ title="Title",
     private boolean IsSampleValid(double[] sample) {
         Attribute.Double conv_sample[] = new Attribute.Double[sample.length];
         for (int i = 0;i<sample.length;i++) {
-            conv_sample[i] = JAMSDataFactory.createDouble();
+            conv_sample[i] = getModel().getRuntime().getDataFactory().createDouble();
             conv_sample[i].setValue(sample[i]);
         }
         return IsSampleValid(conv_sample);

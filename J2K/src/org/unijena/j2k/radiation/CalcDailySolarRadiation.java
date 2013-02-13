@@ -54,37 +54,37 @@ public class CalcDailySolarRadiation extends JAMSComponent {
     update = JAMSVarDescription.UpdateType.RUN,
     description = "state variable sunshine hours",
     unit = "h/d")
-    public JAMSDouble sunh;
+    public Attribute.Double sunh;
 
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.WRITE,
     update = JAMSVarDescription.UpdateType.RUN,
     description = "Maximum sunshine duration in h",
     unit = "h/d",
     defaultValue = "0")
-    public JAMSDouble sunhmax;
+    public Attribute.Double sunhmax;
 
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
     update = JAMSVarDescription.UpdateType.RUN,
     description = "state variable slope aspect correction factor")
-    public JAMSDouble actSlAsCf;
+    public Attribute.Double actSlAsCf;
 
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
     update = JAMSVarDescription.UpdateType.RUN,
     description = "attribute latitude",
     unit = "deg")
-    public JAMSDouble latitude;
+    public Attribute.Double latitude;
 
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
     update = JAMSVarDescription.UpdateType.RUN,
     description = "daily extraterrestic radiation",
     unit = "MJ / m² d")
-    public JAMSDouble actExtRad;
+    public Attribute.Double actExtRad;
 
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.WRITE,
     update = JAMSVarDescription.UpdateType.RUN,
     description = "daily solar radiation",
     unit = "MJ / m² d")
-    public JAMSDouble solRad;
+    public Attribute.Double solRad;
 
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
     update = JAMSVarDescription.UpdateType.INIT,
@@ -92,7 +92,7 @@ public class CalcDailySolarRadiation extends JAMSComponent {
     lowerBound = 0,
     upperBound = 1,
     defaultValue = "0.25")
-    public JAMSDouble angstrom_a;
+    public Attribute.Double angstrom_a;
 
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
     update = JAMSVarDescription.UpdateType.INIT,
@@ -100,7 +100,7 @@ public class CalcDailySolarRadiation extends JAMSComponent {
     lowerBound = 0,
     upperBound = 1,
     defaultValue = "0.5")
-    public JAMSDouble angstrom_b;
+    public Attribute.Double angstrom_b;
 
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
     update = JAMSVarDescription.UpdateType.INIT,

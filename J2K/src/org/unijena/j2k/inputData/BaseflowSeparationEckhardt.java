@@ -53,28 +53,28 @@ title="BaseflowSeparationEckhardt",
             update = JAMSVarDescription.UpdateType.RUN,
             description = "the measured streamflow values"
             )
-            public JAMSDoubleArray strflow;
+            public Attribute.DoubleArray strflow;
     
     @JAMSVarDescription(
     access = JAMSVarDescription.AccessType.WRITE,
             update = JAMSVarDescription.UpdateType.RUN,
             description = "the surface runoff values"
             )
-            public JAMSDoubleArray surfq;
+            public Attribute.DoubleArray surfq;
     
     @JAMSVarDescription(
     access = JAMSVarDescription.AccessType.WRITE,
             update = JAMSVarDescription.UpdateType.RUN,
             description = "the baseflow values"
             )
-            public JAMSDoubleArray baseq;
+            public Attribute.DoubleArray baseq;
     
     @JAMSVarDescription(
     access = JAMSVarDescription.AccessType.WRITE,
             update = JAMSVarDescription.UpdateType.RUN,
             description = "the baseflow index for the entire time series"
             )
-            public JAMSDouble bfi;
+            public Attribute.Double bfi;
     
     
     /*

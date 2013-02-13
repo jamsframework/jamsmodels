@@ -52,49 +52,49 @@ import jams.model.*;
             update = JAMSVarDescription.UpdateType.RUN,
             description = "state variable mean temperature"
             )
-            public JAMSDouble tmean;
+            public Attribute.Double tmean;
 
       @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
             update = JAMSVarDescription.UpdateType.RUN,
             description = "state variable maximum temperature"
             )
-            public JAMSDouble tmax;
+            public Attribute.Double tmax;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
             update = JAMSVarDescription.UpdateType.RUN,
             description = "state variable relative humidity"
             )
-            public JAMSDouble rhum;
+            public Attribute.Double rhum;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
             update = JAMSVarDescription.UpdateType.RUN,
             description = "state variable haude factor"
             )
-            public JAMSDouble haudeFactor;
+            public Attribute.Double haudeFactor;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
             update = JAMSVarDescription.UpdateType.RUN,
             description = "attribute area"
             )
-            public JAMSDouble area;
+            public Attribute.Double area;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
             update = JAMSVarDescription.UpdateType.RUN,
             description = "daily potential ETP [mm/d]"
             )
-            public JAMSDouble pET;
+            public Attribute.Double pET;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
             update = JAMSVarDescription.UpdateType.RUN,
             description = "daily actual ETP [mm/d]"
             )
-            public JAMSDouble aET;
+            public Attribute.Double aET;
     
     
     

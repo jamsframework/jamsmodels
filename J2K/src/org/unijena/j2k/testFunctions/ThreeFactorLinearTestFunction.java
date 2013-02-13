@@ -43,35 +43,35 @@ public class ThreeFactorLinearTestFunction extends JAMSComponent {
             update = JAMSVarDescription.UpdateType.INIT,
             description = "parameter c"
             )
-            public JAMSDouble paraC;
+            public Attribute.Double paraC;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
             update = JAMSVarDescription.UpdateType.INIT,
             description = "parameter d"
             )
-            public JAMSDouble paraD;
+            public Attribute.Double paraD;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
             update = JAMSVarDescription.UpdateType.INIT,
             description = "parameter e"
             )
-            public JAMSDouble paraE;
+            public Attribute.Double paraE;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
             update = JAMSVarDescription.UpdateType.RUN,
             description = "the input value"            
             )
-            public JAMSDouble input;
+            public Attribute.Double input;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
             update = JAMSVarDescription.UpdateType.RUN,
             description = "the simulated response"            
             )
-            public JAMSDouble simulation;
+            public Attribute.Double simulation;
     
     public void init(){
         

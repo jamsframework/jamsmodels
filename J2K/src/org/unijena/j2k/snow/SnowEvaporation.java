@@ -29,28 +29,28 @@ title="SnowEvaporation",
             update = JAMSVarDescription.UpdateType.RUN,
             description = "the potential ET"
             )
-            public JAMSDouble potET;
+            public Attribute.Double potET;
 
     @JAMSVarDescription(
     access = JAMSVarDescription.AccessType.READWRITE,
             update = JAMSVarDescription.UpdateType.RUN,
             description = "the actual ET"
             )
-            public JAMSDouble actET;
+            public Attribute.Double actET;
     
     @JAMSVarDescription(
     access = JAMSVarDescription.AccessType.READ,
             update = JAMSVarDescription.UpdateType.INIT,
             description = "snow ET coefficient"
             )
-            public JAMSDouble set_factor;
+            public Attribute.Double set_factor;
     
     @JAMSVarDescription(
     access = JAMSVarDescription.AccessType.READWRITE,
             update = JAMSVarDescription.UpdateType.RUN,
             description = "snow water equivalent"
             )
-            public JAMSDouble swe;
+            public Attribute.Double swe;
     
     
     
@@ -59,7 +59,7 @@ title="SnowEvaporation",
             update = JAMSVarDescription.UpdateType.RUN,
             description = "the snow storage "
             )
-            public JAMSDouble snowET;
+            public Attribute.Double snowET;
     
     
         /*

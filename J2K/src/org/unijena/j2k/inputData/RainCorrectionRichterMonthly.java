@@ -54,14 +54,14 @@ import jams.model.*;
             update = JAMSVarDescription.UpdateType.RUN,
             description = "the uncorrected precip values"
             )
-            public JAMSDoubleArray inPrecip;
+            public Attribute.DoubleArray inPrecip;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
             update = JAMSVarDescription.UpdateType.RUN,
             description = "the corrected precip values"
             )
-            public JAMSDoubleArray corrPrecip;
+            public Attribute.DoubleArray corrPrecip;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
@@ -75,7 +75,7 @@ import jams.model.*;
             update = JAMSVarDescription.UpdateType.INIT,
             description = "precipitation adjustment factor"
             )
-            public JAMSDouble precipAdj;
+            public Attribute.Double precipAdj;
     
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
             update = JAMSVarDescription.UpdateType.INIT,

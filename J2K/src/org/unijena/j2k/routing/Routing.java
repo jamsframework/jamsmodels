@@ -54,56 +54,56 @@ import java.awt.Point;
             update = JAMSVarDescription.UpdateType.RUN,
             description = "Reach statevar RD1 inflow"
             )
-            public JAMSDouble inRD1;
+            public Attribute.Double inRD1;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
             update = JAMSVarDescription.UpdateType.RUN,
             description = "Reach statevar RD2 inflow"
             )
-            public JAMSDouble inRD2;
+            public Attribute.Double inRD2;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
             update = JAMSVarDescription.UpdateType.RUN,
             description = "Reach statevar RG1 inflow"
             )
-            public JAMSDouble inRG1;
+            public Attribute.Double inRG1;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
             update = JAMSVarDescription.UpdateType.RUN,
             description = "Reach statevar RG2 inflow"
             )
-            public JAMSDouble inRG2;
+            public Attribute.Double inRG2;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
             update = JAMSVarDescription.UpdateType.RUN,
             description = "Reach statevar RD1 outflow"
             )
-            public JAMSDouble outRD1;
+            public Attribute.Double outRD1;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
             update = JAMSVarDescription.UpdateType.RUN,
             description = "Reach statevar RD2 outflow"
             )
-            public JAMSDouble outRD2;
+            public Attribute.Double outRD2;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
             update = JAMSVarDescription.UpdateType.RUN,
             description = "Reach statevar RG1 outflow"
             )
-            public JAMSDouble outRG1;
+            public Attribute.Double outRG1;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
             update = JAMSVarDescription.UpdateType.RUN,
             description = "Reach statevar RG2 outflow"
             )
-            public JAMSDouble outRG2;
+            public Attribute.Double outRG2;
     
 
     @JAMSVarDescription(
@@ -111,49 +111,49 @@ import java.awt.Point;
             update = JAMSVarDescription.UpdateType.RUN,
             description = "Reach statevar RD1 storage"
             )
-            public JAMSDouble actRD1;
+            public Attribute.Double actRD1;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
             update = JAMSVarDescription.UpdateType.RUN,
             description = "Reach statevar RD2 storage"
             )
-            public JAMSDouble actRD2;
+            public Attribute.Double actRD2;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
             update = JAMSVarDescription.UpdateType.RUN,
             description = "Reach statevar RG1 storage"
             )
-            public JAMSDouble actRG1;
+            public Attribute.Double actRG1;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
             update = JAMSVarDescription.UpdateType.RUN,
             description = "Reach statevar RG2 storage"
             )
-            public JAMSDouble actRG2;       
+            public Attribute.Double actRG2;       
      
      @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
             update = JAMSVarDescription.UpdateType.RUN,
             description = "Reach statevar RG2 storage"
             )
-            public JAMSDouble hruID;    
+            public Attribute.Double hruID;    
      
   @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
             update = JAMSVarDescription.UpdateType.RUN,
             description = "Reach statevar RG2 storage"
             )
-            public JAMSDouble snowMelt;    
+            public Attribute.Double snowMelt;    
     
        @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
             update = JAMSVarDescription.UpdateType.RUN,
             description = "Reach statevar RG2 storage"
             )
-            public JAMSDouble rain;    
+            public Attribute.Double rain;    
     
        @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
@@ -188,7 +188,7 @@ import java.awt.Point;
             update = JAMSVarDescription.UpdateType.RUN,
             description = "HRU statevar groundwater excess"
             )
-            public JAMSDouble inGWExcess;
+            public Attribute.Double inGWExcess;
       
         @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,

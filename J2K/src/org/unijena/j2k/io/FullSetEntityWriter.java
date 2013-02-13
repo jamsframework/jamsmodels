@@ -117,7 +117,7 @@ public class FullSetEntityWriter extends JAMSComponent {
                 //output variable is of type array
                 if(ob.getClass().getName().contains("DoubleArray")){
                     //System.out.println("JAMSArray");
-                    length = ((JAMSDoubleArray)entity.getObject(this.attributeName.getValue())).getValue().length;
+                    length = ((Attribute.DoubleArray)entity.getObject(this.attributeName.getValue())).getValue().length;
                     //output variable is a single value
                 } else{
                     length = 0;
@@ -152,19 +152,19 @@ public class FullSetEntityWriter extends JAMSComponent {
             }
             double weightVal = 1.0;
             if(!this.weight.getValue().equals("none")){
-                weightVal = (((JAMSDouble)entity.getObject(this.weight.getValue())).getValue());
+                weightVal = (((Attribute.Double)entity.getObject(this.weight.getValue())).getValue());
             }
             Object ob = entity.getObject(this.attributeName.getValue());
             if(ob.getClass().getName().contains("DoubleArray")){
-                //System.out.println("HRUNo: " +((JAMSDouble)entitySet.getCurrent().getObject("ID")).getValue());
-                double[] da = ((JAMSDoubleArray)entity.getObject(this.attributeName.getValue())).getValue();
+                //System.out.println("HRUNo: " +((Attribute.Double)entitySet.getCurrent().getObject("ID")).getValue());
+                double[] da = ((Attribute.DoubleArray)entity.getObject(this.attributeName.getValue())).getValue();
                 for(int i = 0; i < da.length; i++){
                     double val = da[i] / weightVal;
                     writer.addData(""+val);
                 }
             } else{
                 //System.out.println("Primitive");
-                double da = ((JAMSDouble)entity.getObject(this.attributeName.getValue())).getValue();
+                double da = ((Attribute.Double)entity.getObject(this.attributeName.getValue())).getValue();
                 double val = da / weightVal;
                 //System.out.println("Val:" + val + " da: " + da);
                 writer.addData(""+val);

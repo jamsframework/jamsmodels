@@ -71,7 +71,7 @@ public class StandardEntityReaderRR extends JAMSComponent {
     }
 
     //do depth first search to find cycles
-    protected boolean cycleCheck(Entity node, Stack<Entity> searchStack, HashSet<JAMSDouble> closedList, HashSet<JAMSDouble> visitedList) throws JAMSEntity.NoSuchAttributeException {
+    protected boolean cycleCheck(Entity node, Stack<Entity> searchStack, HashSet<Attribute.Double> closedList, HashSet<Attribute.Double> visitedList) throws JAMSEntity.NoSuchAttributeException {
         JAMSEntity child_node;
 
         //current node allready in search stack -> circle found
@@ -91,7 +91,7 @@ public class StandardEntityReaderRR extends JAMSComponent {
             return false;
         }
         //now this node is visited
-        visitedList.add((JAMSDouble) node.getObject("ID"));
+        visitedList.add((Attribute.Double) node.getObject("ID"));
 
         child_node = (JAMSEntity) node.getObject("to_poly");
         if (child_node.getValue() == null) {
@@ -114,8 +114,8 @@ public class StandardEntityReaderRR extends JAMSComponent {
     protected boolean cycleCheck() throws JAMSEntity.NoSuchAttributeException {
         Iterator<Entity> hruIterator;
 
-        HashSet<JAMSDouble> closedList = new HashSet<JAMSDouble>();
-        HashSet<JAMSDouble> visitedList = new HashSet<JAMSDouble>();
+        HashSet<Attribute.Double> closedList = new HashSet<Attribute.Double>();
+        HashSet<Attribute.Double> visitedList = new HashSet<Attribute.Double>();
 
         Entity start_node;
 
@@ -161,7 +161,7 @@ public class StandardEntityReaderRR extends JAMSComponent {
         }
 
         //create empty entities, i.e. those that are linked to in case there is no linkage ;-)
-        Attribute.Entity nullEntity = JAMSDataFactory.createEntity();
+        Attribute.Entity nullEntity = getModel().getRuntime().getDataFactory().createEntity();
         nullEntity.setValue((HashMap<String, Object>) null);
         hruMap.put(new Double(0), nullEntity);
         reachMap.put(new Double(0), nullEntity);

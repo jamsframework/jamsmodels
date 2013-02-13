@@ -45,7 +45,7 @@ public class StationDataWriter extends JAMSComponent{
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READWRITE,
                         update = JAMSVarDescription.UpdateType.RUN,
                         description = "the data values")
-    public JAMSDoubleArray values;
+    public Attribute.DoubleArray values;
 
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
                         update = JAMSVarDescription.UpdateType.RUN,
@@ -60,17 +60,17 @@ public class StationDataWriter extends JAMSComponent{
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
                         update = JAMSVarDescription.UpdateType.RUN,
                         description = "the station elevation")
-    public JAMSDoubleArray statElev;
+    public Attribute.DoubleArray statElev;
 
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
                         update = JAMSVarDescription.UpdateType.RUN,
                         description = "the station x-coordinates")
-    public JAMSDoubleArray statX;
+    public Attribute.DoubleArray statX;
 
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
                         update = JAMSVarDescription.UpdateType.RUN,
                         description = "the station y-coordinates")
-    public JAMSDoubleArray statY;
+    public Attribute.DoubleArray statY;
 
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
                         update = JAMSVarDescription.UpdateType.INIT,
@@ -90,7 +90,7 @@ public class StationDataWriter extends JAMSComponent{
             update = JAMSVarDescription.UpdateType.INIT,
             description = "missing data value"
             )
-            public JAMSDouble missDataValue;
+            public Attribute.Double missDataValue;
 
     @JAMSVarDescription(
     access = JAMSVarDescription.AccessType.READ,

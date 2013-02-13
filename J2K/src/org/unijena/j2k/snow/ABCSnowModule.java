@@ -29,21 +29,21 @@ title="ABCSnowModule",
             update = JAMSVarDescription.UpdateType.RUN,
             description = "Entity area"
             )
-            public JAMSDouble area;
+            public Attribute.Double area;
     
     @JAMSVarDescription(
     access = JAMSVarDescription.AccessType.READ,
             update = JAMSVarDescription.UpdateType.INIT,
             description = "snow melt coefficient"
             )
-            public JAMSDouble cm;
+            public Attribute.Double cm;
     
     @JAMSVarDescription(
     access = JAMSVarDescription.AccessType.READ,
             update = JAMSVarDescription.UpdateType.INIT,
             description = "base temperature"
             )
-            public JAMSDouble t_base;
+            public Attribute.Double t_base;
     
     
     
@@ -52,56 +52,56 @@ title="ABCSnowModule",
             update = JAMSVarDescription.UpdateType.RUN,
             description = "the snow storage "
             )
-            public JAMSDouble snowStorage;
+            public Attribute.Double snowStorage;
     
     @JAMSVarDescription(
     access = JAMSVarDescription.AccessType.READWRITE,
             update = JAMSVarDescription.UpdateType.RUN,
             description = "rain amount"
             )
-            public JAMSDouble rain;
+            public Attribute.Double rain;
     
     @JAMSVarDescription(
     access = JAMSVarDescription.AccessType.READWRITE,
             update = JAMSVarDescription.UpdateType.RUN,
             description = "snow amount"
             )
-            public JAMSDouble snow;
+            public Attribute.Double snow;
     
     @JAMSVarDescription(
     access = JAMSVarDescription.AccessType.READ,
             update = JAMSVarDescription.UpdateType.RUN,
             description = "the tmin input"
             )
-            public JAMSDouble tmin;
+            public Attribute.Double tmin;
     
     @JAMSVarDescription(
     access = JAMSVarDescription.AccessType.READ,
             update = JAMSVarDescription.UpdateType.RUN,
             description = "the tmean input"
             )
-            public JAMSDouble tmean;
+            public Attribute.Double tmean;
     
     @JAMSVarDescription(
     access = JAMSVarDescription.AccessType.READ,
             update = JAMSVarDescription.UpdateType.RUN,
             description = "the tmax input"
             )
-            public JAMSDouble tmax;
+            public Attribute.Double tmax;
     
     @JAMSVarDescription(
     access = JAMSVarDescription.AccessType.WRITE,
             update = JAMSVarDescription.UpdateType.RUN,
             description = "the snowmelt output"
             )
-            public JAMSDouble snowMelt;
+            public Attribute.Double snowMelt;
     
     @JAMSVarDescription(
     access = JAMSVarDescription.AccessType.WRITE,
             update = JAMSVarDescription.UpdateType.RUN,
             description = "remaining precip"
             )
-            public JAMSDouble restPrecip;
+            public Attribute.Double restPrecip;
     
     @JAMSVarDescription(
     access = JAMSVarDescription.AccessType.READ,

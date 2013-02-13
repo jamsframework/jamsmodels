@@ -62,7 +62,7 @@ import jams.model.*;
             //upperBound = infinity,
             unit="L"
             )
-            public JAMSDouble maxRG1;
+            public Attribute.Double maxRG1;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
@@ -72,7 +72,7 @@ import jams.model.*;
             //upperBound = infinity,
             unit="L"
             )
-            public JAMSDouble maxRG2;
+            public Attribute.Double maxRG2;
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
             update = JAMSVarDescription.UpdateType.RUN,
@@ -81,7 +81,7 @@ import jams.model.*;
             //upperBound = infinity,
             unit="L"
             )
-            public JAMSDouble actRG1;
+            public Attribute.Double actRG1;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
@@ -91,7 +91,7 @@ import jams.model.*;
             //upperBound = infinity,
             unit="L"
             )
-            public JAMSDouble actRG2;
+            public Attribute.Double actRG2;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
@@ -102,7 +102,7 @@ import jams.model.*;
             unit="n/a",
             defaultValue = "0.0"
             )
-            public JAMSDouble initRG1;
+            public Attribute.Double initRG1;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
@@ -113,7 +113,7 @@ import jams.model.*;
             unit="n/a",
             defaultValue = "0.0"
             )
-            public JAMSDouble initRG2;
+            public Attribute.Double initRG2;
     
     
     /*

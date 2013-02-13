@@ -37,13 +37,13 @@ public class VarSummation extends JAMSComponent {
             update = JAMSVarDescription.UpdateType.RUN,
             description = "input values"
             )
-            public JAMSDouble[] value;
+            public Attribute.Double[] value;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,            
             description = "output sum"
             )
-            public JAMSDouble sum;
+            public Attribute.Double sum;
     
 
     

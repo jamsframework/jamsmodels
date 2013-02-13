@@ -29,54 +29,54 @@ public class J2KContourBanks_layer_calc_depth extends JAMSComponent {
     update = JAMSVarDescription.UpdateType.RUN,
     description = "actual LPS water content",
     unit = "l")
-    public JAMSDoubleArray actLPS;
+    public Attribute.DoubleArray actLPS;
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
     update = JAMSVarDescription.UpdateType.RUN,
     description = "maximum LPS water content",
     unit = "l")
-    public JAMSDoubleArray maxLPS;
+    public Attribute.DoubleArray maxLPS;
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
     description = "interflow reaching the HRU in every layer",
     unit = "L",
     lowerBound = 0,
     upperBound = 100000000)
-    public JAMSDoubleArray RD2_in;
+    public Attribute.DoubleArray RD2_in;
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
     description = " number of soil layers",
     unit = "-",
     lowerBound = 0,
     upperBound = 100)
-    public JAMSDouble Layer;
+    public Attribute.Double Layer;
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
     description = "depth of soil layer",
     unit = "cm",
     lowerBound = 0,
     upperBound = 10000)
-    public JAMSDoubleArray layerdepth;
+    public Attribute.DoubleArray layerdepth;
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.WRITE,
     description = "depth of soil layers cutted by the trench",
     unit = "cm",
     lowerBound = 0,
     upperBound = 10000)
-    public JAMSDouble sumlayer;
+    public Attribute.Double sumlayer;
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READWRITE,
     description = "number of the deepest soil layers cutted by the trench",
     unit = "-",
     lowerBound = 0,
     upperBound = 100)
-    public JAMSDouble layermax;
+    public Attribute.Double layermax;
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.WRITE,
     description = "interflow reaching the HRU in the layers affected by the trench",
     unit = "l",
     lowerBound = 0,
     upperBound = 100000000)
-    public JAMSDouble RD2_insum;
+    public Attribute.Double RD2_insum;
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.WRITE,
     description = "average soil saturation of the layers affected by the trench",
     unit = "l",
     lowerBound = 0,
     upperBound = 100000000)
-    public JAMSDouble avgsatsoil;
+    public Attribute.Double avgsatsoil;
     
     
     boolean modulCBaktiv;

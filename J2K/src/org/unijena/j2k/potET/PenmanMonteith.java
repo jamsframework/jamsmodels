@@ -58,78 +58,78 @@ public class PenmanMonteith extends JAMSComponent {
     update = JAMSVarDescription.UpdateType.RUN,
     description = "state variable wind",
             unit="m/s")
-    public JAMSDouble wind;
+    public Attribute.Double wind;
 
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
     update = JAMSVarDescription.UpdateType.RUN,
     description = "state variable mean temperature",
     unit="°C")
-    public JAMSDouble tmean;
+    public Attribute.Double tmean;
 
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
     update = JAMSVarDescription.UpdateType.RUN,
     description = "state variable relative humidity",
     unit="%")
-    public JAMSDouble rhum;
+    public Attribute.Double rhum;
 
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
     update = JAMSVarDescription.UpdateType.RUN,
     description = "state variable net radiation",
     unit="MJ m^-2 d^-1")
-    public JAMSDouble netRad;
+    public Attribute.Double netRad;
 
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
     update = JAMSVarDescription.UpdateType.RUN,
     description = "state variable rsc0",
     unit="m s^-1")
-    public JAMSDouble actRsc0;
+    public Attribute.Double actRsc0;
 
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
     update = JAMSVarDescription.UpdateType.RUN,
     description = "attribute elevation",
     unit="m")
-    public JAMSDouble elevation;
+    public Attribute.Double elevation;
 
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
     update = JAMSVarDescription.UpdateType.RUN,
     description = "attribute area",
     unit="m²")
-    public JAMSDouble area;
+    public Attribute.Double area;
 
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
     update = JAMSVarDescription.UpdateType.RUN,
     description = "state variable LAI")
-    public JAMSDouble actLAI;
+    public Attribute.Double actLAI;
 
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
     update = JAMSVarDescription.UpdateType.RUN,
     description = "state variable effective height",
     unit="m")
-    public JAMSDouble actEffH;
+    public Attribute.Double actEffH;
 
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.WRITE,
     update = JAMSVarDescription.UpdateType.RUN,
     description = "potential ET [mm/ timeUnit]",
     unit="mm d^-1")
-    public JAMSDouble potET;
+    public Attribute.Double potET;
 
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.WRITE,
     update = JAMSVarDescription.UpdateType.RUN,
     description = "actual ET [mm/ timeUnit]",
     unit="mm d^-1")
-    public JAMSDouble actET;
+    public Attribute.Double actET;
 
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.WRITE,
     update = JAMSVarDescription.UpdateType.RUN,
     description = "rs",
     unit="s m^-1")
-    public JAMSDouble rs;
+    public Attribute.Double rs;
 
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.WRITE,
     update = JAMSVarDescription.UpdateType.RUN,
     description = "ra",
     unit="s m^-1")
-    public JAMSDouble ra;
+    public Attribute.Double ra;
 
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
     update = JAMSVarDescription.UpdateType.INIT,

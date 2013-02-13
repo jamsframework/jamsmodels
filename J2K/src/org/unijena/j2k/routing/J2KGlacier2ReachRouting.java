@@ -53,14 +53,14 @@ import jams.model.*;
             update = JAMSVarDescription.UpdateType.RUN,
             description = "HRU statevar glacier melt outflow"
             )
-            public JAMSDouble glacierRunoff;
+            public Attribute.Double glacierRunoff;
 
      @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
             update = JAMSVarDescription.UpdateType.RUN,
             description = "HRU RD1 from upper HRUs"
             )
-            public JAMSDouble inRD1;
+            public Attribute.Double inRD1;
 
      @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,

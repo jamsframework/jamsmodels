@@ -46,14 +46,14 @@ import jams.model.*;
             update = JAMSVarDescription.UpdateType.RUN,
             description = "the input data array"
             )
-            public JAMSDoubleArray dataArray;
+            public Attribute.DoubleArray dataArray;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
             update = JAMSVarDescription.UpdateType.RUN,
             description = "the returned element"
             )
-            public JAMSDouble element;
+            public Attribute.Double element;
     
     
     int counter = 0;

@@ -60,35 +60,35 @@ import jams.model.*;
             update = JAMSVarDescription.UpdateType.RUN,
             description = "the inflow from the data file or another model"
             )
-            public JAMSDouble inflow;
+            public Attribute.Double inflow;
         
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
             update = JAMSVarDescription.UpdateType.RUN,
             description = "additional inflow to the specific reach"
             )
-            public JAMSDouble inAddIn;
+            public Attribute.Double inAddIn;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
             update = JAMSVarDescription.UpdateType.RUN,
             description = "outflow of the additional inflow from the specific reach"
             )
-            public JAMSDouble outAddIn;
+            public Attribute.Double outAddIn;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
             update = JAMSVarDescription.UpdateType.RUN,
             description = "the actual channel storage of the additional inflow of the specific reach"
             )
-            public JAMSDouble actAddIn;
+            public Attribute.Double actAddIn;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
             update = JAMSVarDescription.UpdateType.RUN,
             description = "Catchment additional input outlet storage"
             )
-            public JAMSDouble catchmentAddIn;
+            public Attribute.Double catchmentAddIn;
     
       
     /*

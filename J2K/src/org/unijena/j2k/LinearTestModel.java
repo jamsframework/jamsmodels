@@ -43,70 +43,70 @@ public class LinearTestModel extends JAMSComponent {
             update = JAMSVarDescription.UpdateType.INIT,
             description = "known intercept"
             )
-            public JAMSDouble paraAgoal;
+            public Attribute.Double paraAgoal;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
             update = JAMSVarDescription.UpdateType.INIT,
             description = "known gradient"
             )
-            public JAMSDouble paraBgoal; 
+            public Attribute.Double paraBgoal; 
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
             update = JAMSVarDescription.UpdateType.INIT,
             description = "known intercept"
             )
-            public JAMSDouble paraCgoal;
+            public Attribute.Double paraCgoal;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
             update = JAMSVarDescription.UpdateType.INIT,
             description = "known gradient"
             )
-            public JAMSDouble paraDgoal; 
+            public Attribute.Double paraDgoal; 
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
             update = JAMSVarDescription.UpdateType.INIT,
             description = "unknown intercept"
             )
-            public JAMSDouble paraA;
+            public Attribute.Double paraA;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
             update = JAMSVarDescription.UpdateType.INIT,
             description = "unknown gradient"
             )
-            public JAMSDouble paraB; 
+            public Attribute.Double paraB; 
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
             update = JAMSVarDescription.UpdateType.INIT,
             description = "unknown intercept"
             )
-            public JAMSDouble paraC;
+            public Attribute.Double paraC;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
             update = JAMSVarDescription.UpdateType.INIT,
             description = "unknown gradient"
             )
-            public JAMSDouble paraD; 
+            public Attribute.Double paraD; 
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
             update = JAMSVarDescription.UpdateType.RUN,
             description = "model output y"
             )
-            public JAMSDoubleArray yVal;
+            public Attribute.DoubleArray yVal;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
             update = JAMSVarDescription.UpdateType.RUN,
             description = "real output y"
             )
-            public JAMSDoubleArray yValKnown;
+            public Attribute.DoubleArray yValKnown;
     
     public void run() {
         double a = this.paraA.getValue();

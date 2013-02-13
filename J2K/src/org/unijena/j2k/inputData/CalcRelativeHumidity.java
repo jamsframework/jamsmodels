@@ -49,7 +49,7 @@ import jams.model.*;
             description = "state variable mean tempeature",
             unit = "°C"
             )
-            public JAMSDouble tmean;
+            public Attribute.Double tmean;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
@@ -57,7 +57,7 @@ import jams.model.*;
             description = "state variable absolute humidity",
             unit = "g / m³"
             )
-            public JAMSDouble ahum;
+            public Attribute.Double ahum;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
@@ -65,7 +65,7 @@ import jams.model.*;
             description = "state variable relative humidity",
             unit = "%"
             )
-            public JAMSDouble rhum;
+            public Attribute.Double rhum;
     
     
     /*

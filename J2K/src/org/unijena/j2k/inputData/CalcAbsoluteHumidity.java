@@ -46,70 +46,70 @@ title="CalcAbsoluteHumidity",
             update = JAMSVarDescription.UpdateType.RUN,
             description = "the relative humidity values"
             )
-            public JAMSDoubleArray rhum;
+            public Attribute.DoubleArray rhum;
     
     @JAMSVarDescription(
     access = JAMSVarDescription.AccessType.READ,
             update = JAMSVarDescription.UpdateType.RUN,
             description = "temperature for the computation"
             )
-            public JAMSDoubleArray temperature;
+            public Attribute.DoubleArray temperature;
     
     @JAMSVarDescription(
     access = JAMSVarDescription.AccessType.WRITE,
             update = JAMSVarDescription.UpdateType.RUN,
             description = "absolute humidity values"
             )
-            public JAMSDoubleArray ahum;
+            public Attribute.DoubleArray ahum;
     
     @JAMSVarDescription(
     access = JAMSVarDescription.AccessType.WRITE,
             update = JAMSVarDescription.UpdateType.RUN,
             description = "Array of temperature station elevations"
             )
-            public JAMSDoubleArray tempElevation;
+            public Attribute.DoubleArray tempElevation;
     
     @JAMSVarDescription(
     access = JAMSVarDescription.AccessType.WRITE,
             update = JAMSVarDescription.UpdateType.RUN,
             description = "Array of temperature station's x coordinate"
             )
-            public JAMSDoubleArray tempXCoord;
+            public Attribute.DoubleArray tempXCoord;
     
     @JAMSVarDescription(
     access = JAMSVarDescription.AccessType.WRITE,
             update = JAMSVarDescription.UpdateType.RUN,
             description = "Array of temperature station's y coordinate"
             )
-            public JAMSDoubleArray tempYCoord;
+            public Attribute.DoubleArray tempYCoord;
     
     @JAMSVarDescription(
     access = JAMSVarDescription.AccessType.WRITE,
             update = JAMSVarDescription.UpdateType.RUN,
             description = "Array of rhum station elevations"
             )
-            public JAMSDoubleArray rhumElevation;
+            public Attribute.DoubleArray rhumElevation;
     
     @JAMSVarDescription(
     access = JAMSVarDescription.AccessType.WRITE,
             update = JAMSVarDescription.UpdateType.RUN,
             description = "Array of rhum station's x coordinate"
             )
-            public JAMSDoubleArray rhumXCoord;
+            public Attribute.DoubleArray rhumXCoord;
     
     @JAMSVarDescription(
     access = JAMSVarDescription.AccessType.WRITE,
             update = JAMSVarDescription.UpdateType.RUN,
             description = "Array of rhum station's y coordinate"
             )
-            public JAMSDoubleArray rhumYCoord;
+            public Attribute.DoubleArray rhumYCoord;
     
     @JAMSVarDescription(
     access = JAMSVarDescription.AccessType.WRITE,
             update = JAMSVarDescription.UpdateType.RUN,
             description = "rsqr for ahum stations"
             )
-            public JAMSDoubleArray regCoeffAhum;
+            public Attribute.DoubleArray regCoeffAhum;
     
     /*
      *  Component run stages

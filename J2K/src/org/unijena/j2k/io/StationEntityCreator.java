@@ -25,7 +25,7 @@ package org.unijena.j2k.io;
 //import org.unijena.j2k.*;
 import jams.data.Attribute;
 import jams.data.JAMSDataFactory;
-import jams.data.JAMSDoubleArray;
+import jams.data.Attribute.DoubleArray;
 import jams.data.JAMSEntity;
 import jams.data.JAMSIntegerArray;
 import jams.data.JAMSString;
@@ -76,17 +76,17 @@ public class StationEntityCreator extends JAMSComponent {
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.WRITE,
                         update = JAMSVarDescription.UpdateType.RUN,
                         description = "the station elevation")
-    public JAMSDoubleArray statElev;
+    public Attribute.DoubleArray statElev;
 
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.WRITE,
                         update = JAMSVarDescription.UpdateType.RUN,
                         description = "the station x-coordinates")
-    public JAMSDoubleArray statX;
+    public Attribute.DoubleArray statX;
 
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.WRITE,
                         update = JAMSVarDescription.UpdateType.RUN,
                         description = "the station y-coordinates")
-    public JAMSDoubleArray statY;
+    public Attribute.DoubleArray statY;
     
     ArrayList<Attribute.Entity> entityList = new ArrayList<Attribute.Entity>();
 
@@ -103,11 +103,11 @@ public class StationEntityCreator extends JAMSComponent {
         this.statY.setValue(listToDoubleArray(store.getDataSetDefinition().getAttributeValues("Y")));
         
         int nEntities = statNames.getValue().length;
-        Attribute.EntityCollection ents = JAMSDataFactory.createEntityCollection();
+        Attribute.EntityCollection ents = getModel().getRuntime().getDataFactory().createEntityCollection();
         for(int i = 0; i < nEntities; i++){
            JAMSEntity e;
                 try {
-                    e = (JAMSEntity) JAMSDataFactory.createInstance(JAMSEntity.class);
+                    e = (JAMSEntity) getModel().getRuntime().getDataFactory().createInstance(JAMSEntity.class);
                     e.setObject("NAME", statNames.getValue()[i]);
                     e.setInt("ID", this.statId.getValue()[i]);
                     e.setDouble("ELEVATION", this.statElev.getValue()[i]);

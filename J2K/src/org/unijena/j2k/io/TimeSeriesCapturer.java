@@ -80,14 +80,14 @@ title="Time series capturer",
             update = JAMSVarDescription.UpdateType.RUN,
             description = "the timeSeries values to capture"
             )
-            public JAMSDouble timeSeriesVal;
+            public Attribute.Double timeSeriesVal;
     
     @JAMSVarDescription(
     access = JAMSVarDescription.AccessType.WRITE,
             update = JAMSVarDescription.UpdateType.RUN,
             description = "the captured time series"
             )
-            public JAMSDoubleArray timeSeries;
+            public Attribute.DoubleArray timeSeries;
     
     private final int TOTAL_PERIOD = 0;
     private final int HYDROLOGICAL_YEAR = 1;

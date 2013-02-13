@@ -69,7 +69,7 @@ public class TSDataReader extends JAMSComponent {
             update = JAMSVarDescription.UpdateType.RUN,
             description = "Array of data values for current time step"
             )
-            public JAMSDoubleArray dataArray;
+            public Attribute.DoubleArray dataArray;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
@@ -83,28 +83,28 @@ public class TSDataReader extends JAMSComponent {
             update = JAMSVarDescription.UpdateType.RUN,
             description = "Array of station elevations"
             )
-            public JAMSDoubleArray elevation;
+            public Attribute.DoubleArray elevation;
 
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
             update = JAMSVarDescription.UpdateType.RUN,
             description = "Array of station's x coordinate"
             )
-            public JAMSDoubleArray xCoord;
+            public Attribute.DoubleArray xCoord;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
             update = JAMSVarDescription.UpdateType.RUN,
             description = "Array of station's y coordinate"
             )
-            public JAMSDoubleArray yCoord;
+            public Attribute.DoubleArray yCoord;
 
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
             update = JAMSVarDescription.UpdateType.RUN,
             description = "Regression coefficients"
             )
-            public JAMSDoubleArray regCoeff;
+            public Attribute.DoubleArray regCoeff;
 
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
@@ -119,7 +119,7 @@ public class TSDataReader extends JAMSComponent {
             description = "Array of numerical station ids",
             defaultValue=""
             )
-            public JAMSDoubleArray statId;
+            public Attribute.DoubleArray statId;
 
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
@@ -143,7 +143,7 @@ public class TSDataReader extends JAMSComponent {
             update = JAMSVarDescription.UpdateType.RUN,
             description = "missing data value"
             )
-            public JAMSDouble missDataValue;
+            public Attribute.Double missDataValue;
 
     private JAMSTableDataStore store;
     private JAMSTableDataArray da;
@@ -296,7 +296,7 @@ public class TSDataReader extends JAMSComponent {
         if(timeInterval != null){
             int timeUnit = timeInterval.getTimeUnit();
             Attribute.Calendar tiStart = timeInterval.getStart();
-            Attribute.Calendar date = JAMSDataFactory.createCalendar();
+            Attribute.Calendar date = getModel().getRuntime().getDataFactory().createCalendar();
             if(timeUnit == JAMSCalendar.DAY_OF_YEAR) {
                     date.set(tiStart.get(Calendar.YEAR), tiStart.get(Calendar.MONTH), tiStart.get(Calendar.DAY_OF_MONTH), 0, 0, 0);
             } else if(timeUnit == JAMSCalendar.HOUR_OF_DAY) {
@@ -328,7 +328,7 @@ public class TSDataReader extends JAMSComponent {
         }
     }
     
-    private static Attribute.Calendar parseJ2KTime(String timeString) {
+    private Attribute.Calendar parseJ2KTime(String timeString) {
         
         //Array keeping values for year, month, day, hour, minute
         String[] timeArray = new String[5];
@@ -345,7 +345,7 @@ public class TSDataReader extends JAMSComponent {
             timeArray[i] = st.nextToken();
         }
         
-        Attribute.Calendar cal = JAMSDataFactory.createCalendar();
+        Attribute.Calendar cal = getModel().getRuntime().getDataFactory().createCalendar();
         cal.setValue(timeArray[2]+"-"+timeArray[1]+"-"+timeArray[0]+" "+timeArray[3]+":"+timeArray[4]);
         return cal;
     }

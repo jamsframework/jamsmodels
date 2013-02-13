@@ -43,21 +43,21 @@ public class RunoffConverter extends JAMSComponent {
             update = JAMSVarDescription.UpdateType.RUN,
             description = "Catchment area attribute"
             )
-            public JAMSDouble catchmentArea;    
+            public Attribute.Double catchmentArea;    
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
             update = JAMSVarDescription.UpdateType.RUN,
             description = "the input"
             )
-            public JAMSDouble inVar;
+            public Attribute.Double inVar;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
             update = JAMSVarDescription.UpdateType.RUN,
             description = "the output"
             )
-            public JAMSDouble outVar;
+            public Attribute.Double outVar;
     
     public void run() {
         double out = this.inVar.getValue() * 1000 * 86400 / catchmentArea.getValue();

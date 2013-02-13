@@ -56,7 +56,7 @@ import jams.model.*;
             description = "attribute area",
             unit="m^2"
             )
-            public JAMSDouble area;
+            public Attribute.Double area;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
@@ -67,7 +67,7 @@ import jams.model.*;
             //upperBound = 1000000,
             defaultValue = "1.0"
             )
-            public JAMSDouble FCAdaptation;
+            public Attribute.Double FCAdaptation;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
@@ -78,7 +78,7 @@ import jams.model.*;
             //upperBound = 1000000,
             defaultValue = "1.0"
             )
-            public JAMSDouble ACAdaptation;
+            public Attribute.Double ACAdaptation;
     
     
     @JAMSVarDescription(
@@ -89,7 +89,7 @@ import jams.model.*;
             lowerBound = 0
             //upperBound = 1000000
             )
-            public JAMSDouble rootDepth;
+            public Attribute.Double rootDepth;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
@@ -99,7 +99,7 @@ import jams.model.*;
             lowerBound = 0
             //upperBound = 1000000
             )
-            public JAMSDouble maxMPS;
+            public Attribute.Double maxMPS;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
@@ -109,7 +109,7 @@ import jams.model.*;
             lowerBound = 0
             //upperBound = 1000000
             )
-            public JAMSDouble maxLPS;
+            public Attribute.Double maxLPS;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
@@ -119,7 +119,7 @@ import jams.model.*;
             lowerBound = 0
             //upperBound = 1000000
             )
-            public JAMSDouble actMPS;
+            public Attribute.Double actMPS;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
@@ -129,7 +129,7 @@ import jams.model.*;
             lowerBound = 0
             //upperBound = 1000000
             )
-            public JAMSDouble actLPS;
+            public Attribute.Double actLPS;
    
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
@@ -139,7 +139,7 @@ import jams.model.*;
             lowerBound = 0,
             upperBound = 1
             )
-            public JAMSDouble satMPS;
+            public Attribute.Double satMPS;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
@@ -149,7 +149,7 @@ import jams.model.*;
             lowerBound = 0,
             upperBound = 1
             )
-            public JAMSDouble satLPS;
+            public Attribute.Double satLPS;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
@@ -159,7 +159,7 @@ import jams.model.*;
             lowerBound = 0,
             upperBound = 1
             )
-            public JAMSDouble satSoil;
+            public Attribute.Double satSoil;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
@@ -170,7 +170,7 @@ import jams.model.*;
             upperBound = 1,
             defaultValue = "0.0"
             )
-            public JAMSDouble satStartLPS;
+            public Attribute.Double satStartLPS;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
@@ -181,7 +181,7 @@ import jams.model.*;
             upperBound = 1,
             defaultValue = "0.0"
             )
-            public JAMSDouble satStartMPS;
+            public Attribute.Double satStartMPS;
     
     
     

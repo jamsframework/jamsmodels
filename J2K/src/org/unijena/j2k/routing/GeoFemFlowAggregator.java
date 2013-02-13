@@ -45,35 +45,35 @@ import jams.model.*;
             update = JAMSVarDescription.UpdateType.RUN,
             description = "catchment area"
             )
-            public JAMSDouble cArea;
+            public Attribute.Double cArea;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
             update = JAMSVarDescription.UpdateType.RUN,
             description = "direct runoff"
             )
-            public JAMSDouble dirQ;
+            public Attribute.Double dirQ;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
             update = JAMSVarDescription.UpdateType.RUN,
             description = "base flow"
             )
-            public JAMSDouble basQ;
+            public Attribute.Double basQ;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
             update = JAMSVarDescription.UpdateType.RUN,
             description = "total outflow cbm"
             )
-            public JAMSDouble totQcbm;
+            public Attribute.Double totQcbm;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
             update = JAMSVarDescription.UpdateType.RUN,
             description = "total outflow mm"
             )
-            public JAMSDouble totQmm;
+            public Attribute.Double totQmm;
     
     /*
      *  Component run stages

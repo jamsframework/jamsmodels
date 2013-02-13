@@ -62,7 +62,7 @@ import jams.model.*;
             description = "attribute area",
             unit="m²"
             )
-            public JAMSDouble area;
+            public Attribute.Double area;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
@@ -70,14 +70,14 @@ import jams.model.*;
             description = "attribute slope",
             unit="deg"
             )
-            public JAMSDouble slope;
+            public Attribute.Double slope;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
             update = JAMSVarDescription.UpdateType.RUN,
             description = "sealed grade"
             )
-            public JAMSDouble sealedGrade;
+            public Attribute.Double sealedGrade;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
@@ -85,7 +85,7 @@ import jams.model.*;
             description = "state variable net rain",
             unit="L"
             )
-            public JAMSDouble netRain;
+            public Attribute.Double netRain;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
@@ -93,7 +93,7 @@ import jams.model.*;
             description = "state variable net snow",
             unit="L"
             )
-            public JAMSDouble netSnow;
+            public Attribute.Double netSnow;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
@@ -101,7 +101,7 @@ import jams.model.*;
             description = "state variable potET",
             unit="L"
             )
-            public JAMSDouble potET;
+            public Attribute.Double potET;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
@@ -109,7 +109,7 @@ import jams.model.*;
             description = "state variable actET",
             unit="L"
             )
-            public JAMSDouble actET;
+            public Attribute.Double actET;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
@@ -117,7 +117,7 @@ import jams.model.*;
             description = "snow depth",
             unit="mm"
             )
-            public JAMSDouble snowDepth;
+            public Attribute.Double snowDepth;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
@@ -125,7 +125,7 @@ import jams.model.*;
             description = "daily snow melt",
             unit="L"
             )
-            public JAMSDouble snowMelt;
+            public Attribute.Double snowMelt;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
@@ -133,7 +133,7 @@ import jams.model.*;
             description = "maximum MPS",
             unit="L"
             )
-            public JAMSDouble maxMPS;
+            public Attribute.Double maxMPS;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
@@ -141,7 +141,7 @@ import jams.model.*;
             description = "maximum LPS",
             unit="L"
             )
-            public JAMSDouble maxLPS;
+            public Attribute.Double maxLPS;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
@@ -149,7 +149,7 @@ import jams.model.*;
             description = "state var actual MPS",
             unit="L"
             )
-            public JAMSDouble actMPS;
+            public Attribute.Double actMPS;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
@@ -157,7 +157,7 @@ import jams.model.*;
             description = "state var actual LPS",
             unit="L"
             )
-            public JAMSDouble actLPS;
+            public Attribute.Double actLPS;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
@@ -165,28 +165,28 @@ import jams.model.*;
             description = "state var actual depression storage",
             unit="L"
             )
-            public JAMSDouble actDPS;
+            public Attribute.Double actDPS;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
             update = JAMSVarDescription.UpdateType.RUN,
             description = "state var saturation of MPS"
             )
-            public JAMSDouble satMPS;
+            public Attribute.Double satMPS;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
             update = JAMSVarDescription.UpdateType.RUN,
             description = "state var saturation of LPS"
             )
-            public JAMSDouble satLPS;
+            public Attribute.Double satLPS;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
             update = JAMSVarDescription.UpdateType.RUN,
             description = "state var saturation of whole soil"
             )
-            public JAMSDouble satSoil;
+            public Attribute.Double satSoil;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
@@ -194,7 +194,7 @@ import jams.model.*;
             description = "statevar infiltration",
             unit="L"
             )
-            public JAMSDouble infiltration;
+            public Attribute.Double infiltration;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
@@ -202,7 +202,7 @@ import jams.model.*;
             description = "statevar interflow",
             unit="L"
             )
-            public JAMSDouble interflow;
+            public Attribute.Double interflow;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
@@ -210,7 +210,7 @@ import jams.model.*;
             description = "statevar percolation",
             unit="L"
             )
-            public JAMSDouble percolation;
+            public Attribute.Double percolation;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
@@ -218,7 +218,7 @@ import jams.model.*;
             description = "statevar RD1 inflow",
             unit="L"
             )
-            public JAMSDouble inRD1;
+            public Attribute.Double inRD1;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
@@ -226,7 +226,7 @@ import jams.model.*;
             description = "statevar RD1 outflow",
             unit="L"
             )
-            public JAMSDouble outRD1;
+            public Attribute.Double outRD1;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
@@ -234,7 +234,7 @@ import jams.model.*;
             description = "statevar RD1 generation",
             unit="L"
             )
-            public JAMSDouble genRD1;
+            public Attribute.Double genRD1;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
@@ -242,7 +242,7 @@ import jams.model.*;
             description = "statevar RD2 inflow",
             unit="L"
             )
-            public JAMSDouble inRD2;
+            public Attribute.Double inRD2;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
@@ -250,7 +250,7 @@ import jams.model.*;
             description = "statevar RD2 outflow",
             unit="L"
             )
-            public JAMSDouble outRD2;
+            public Attribute.Double outRD2;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
@@ -258,7 +258,7 @@ import jams.model.*;
             description = "statevar RD2 generation",
             unit="L"
             )
-            public JAMSDouble genRD2;
+            public Attribute.Double genRD2;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
@@ -266,7 +266,7 @@ import jams.model.*;
             description = "maximum depression storage",
             unit="L"
             )
-            public JAMSDouble soilMaxDPS;
+            public Attribute.Double soilMaxDPS;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
@@ -276,7 +276,7 @@ import jams.model.*;
             upperBound = 10.0,
             defaultValue = "3.0"
             )
-            public JAMSDouble soilPolRed;
+            public Attribute.Double soilPolRed;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
@@ -286,7 +286,7 @@ import jams.model.*;
             upperBound = 1.0,
             defaultValue = "0.6"
             )
-            public JAMSDouble soilLinRed;
+            public Attribute.Double soilLinRed;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
@@ -297,7 +297,7 @@ import jams.model.*;
             defaultValue = "50.0",
             unit="mm d^-1"
             )
-            public JAMSDouble soilMaxInfSummer;
+            public Attribute.Double soilMaxInfSummer;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
@@ -308,7 +308,7 @@ import jams.model.*;
             defaultValue = "50.0",
             unit="mm d^-1"
             )
-            public JAMSDouble soilMaxInfWinter;
+            public Attribute.Double soilMaxInfWinter;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
@@ -319,7 +319,7 @@ import jams.model.*;
             defaultValue = "50.0",
             unit="mm d^-1"
             )
-            public JAMSDouble soilMaxInfSnow;
+            public Attribute.Double soilMaxInfSnow;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
@@ -329,7 +329,7 @@ import jams.model.*;
             upperBound = 1.0,
             defaultValue = "0.25"
             )
-            public JAMSDouble soilImpGT80;
+            public Attribute.Double soilImpGT80;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
@@ -339,7 +339,7 @@ import jams.model.*;
             upperBound = 1.0,
             defaultValue = "0.75"
             )
-            public JAMSDouble soilImpLT80;
+            public Attribute.Double soilImpLT80;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
@@ -349,7 +349,7 @@ import jams.model.*;
             upperBound = 10.0,
             defaultValue = "1.0"
             )
-            public JAMSDouble soilDistMPSLPS;
+            public Attribute.Double soilDistMPSLPS;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
@@ -359,7 +359,7 @@ import jams.model.*;
             upperBound = 10.0,
             defaultValue = "1.0"
             )
-            public JAMSDouble soilDiffMPSLPS;
+            public Attribute.Double soilDiffMPSLPS;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
@@ -369,7 +369,7 @@ import jams.model.*;
             upperBound = 10.0,
             defaultValue = "1.0"
             )
-            public JAMSDouble soilOutLPS;
+            public Attribute.Double soilOutLPS;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
@@ -379,7 +379,7 @@ import jams.model.*;
             upperBound = 10.0,
             defaultValue = "1.0"
             )
-            public JAMSDouble soilLatVertLPS;
+            public Attribute.Double soilLatVertLPS;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
@@ -390,7 +390,7 @@ import jams.model.*;
             defaultValue = "5.0",
             unit = "mm d^-1"
             )
-            public JAMSDouble soilMaxPerc;
+            public Attribute.Double soilMaxPerc;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
@@ -400,7 +400,7 @@ import jams.model.*;
             upperBound = 10.0,
             defaultValue = "2.0"
             )
-            public JAMSDouble soilConcRD1;
+            public Attribute.Double soilConcRD1;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
@@ -410,7 +410,7 @@ import jams.model.*;
             upperBound = 20.0,
             defaultValue = "8.0"
             )
-            public JAMSDouble soilConcRD2;
+            public Attribute.Double soilConcRD2;
     
     //internal state variables
     double run_maxMPS, run_maxLPS, run_actMPS, run_actLPS, run_satMPS, run_actDPS, run_satLPS, run_satSoil, run_inRD1, run_inRD2, run_inRain, run_inSnow,

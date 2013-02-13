@@ -32,51 +32,51 @@ public class J2KContourBanks_layerinterface_out extends JAMSComponent {
     update = JAMSVarDescription.UpdateType.RUN,
     description = "actual LPS water content",
     unit = "l")
-    public JAMSDoubleArray actLPS;
+    public Attribute.DoubleArray actLPS;
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READWRITE,
     update = JAMSVarDescription.UpdateType.RUN,
     description = "maximum LPS water content",
     unit = "l")
-    public JAMSDoubleArray maxLPS;
+    public Attribute.DoubleArray maxLPS;
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
     description = " number of soil layers",
     unit = "-",
     lowerBound = 0,
     upperBound = 100)
-    public JAMSDouble Layer;
+    public Attribute.Double Layer;
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
     description = "depth of soil layer",
     unit = "cm",
     lowerBound = 0,
     upperBound = 10000)
-    public JAMSDoubleArray layerdepth;
+    public Attribute.DoubleArray layerdepth;
     
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.WRITE,
     description = "depth of soil layers cutted by the trench",
     unit = "cm",
     lowerBound = 0,
     upperBound = 10000)
-    public JAMSDouble sumlayer;
+    public Attribute.Double sumlayer;
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READWRITE,
     description = "number of the deepest soil layers cutted by the trench",
     unit = "-",
     lowerBound = 0,
     upperBound = 100)
-    public JAMSDouble layermax;
+    public Attribute.Double layermax;
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
     description = "average LPSsoil saturation in soil layers cutted by the trench",
     unit = "-",
     lowerBound = 0,
     upperBound = 1)
-    public JAMSDouble avgsatsoil;
+    public Attribute.Double avgsatsoil;
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.WRITE,
     update = JAMSVarDescription.UpdateType.RUN,
     description = "RD2 outflow")
-    public JAMSDoubleArray outRD2;
+    public Attribute.DoubleArray outRD2;
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
     update = JAMSVarDescription.UpdateType.RUN,
     description = "RD2 outflow from contour banks")
-    public JAMSDouble outRD2cb;
+    public Attribute.Double outRD2cb;
     boolean modulCBaktiv;
     double kalibZufluss;
 

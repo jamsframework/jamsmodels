@@ -48,21 +48,21 @@ public class RasterToHRU extends JAMSComponent {
             update = JAMSVarDescription.UpdateType.RUN,
             description = "Reach statevar RG2 storage"
             )
-            public JAMSDouble hruID;   
+            public Attribute.Double hruID;   
      
      @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
             update = JAMSVarDescription.UpdateType.RUN,
             description = "Reach statevar RD1 storage"
             )
-            public JAMSDouble actRD1;
+            public Attribute.Double actRD1;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
             update = JAMSVarDescription.UpdateType.RUN,
             description = "Reach statevar RD2 storage"
             )
-            public JAMSDouble actRD2;
+            public Attribute.Double actRD2;
     
     
     
@@ -71,41 +71,41 @@ public class RasterToHRU extends JAMSComponent {
             update = JAMSVarDescription.UpdateType.RUN,
             description = "Reach statevar RG1 storage"
             )
-            public JAMSDouble actRG1;
+            public Attribute.Double actRG1;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
             update = JAMSVarDescription.UpdateType.RUN,
             description = "Reach statevar RG2 storage"
             )
-            public JAMSDouble actRG2;   
+            public Attribute.Double actRG2;   
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
             update = JAMSVarDescription.UpdateType.RUN,
             description = "Reach statevar RD1 storage"
             )
-            public JAMSDouble inRD1;
+            public Attribute.Double inRD1;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
             update = JAMSVarDescription.UpdateType.RUN,
             description = "Reach statevar RD2 storage"
             )
-            public JAMSDouble inRD2;
+            public Attribute.Double inRD2;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
             update = JAMSVarDescription.UpdateType.RUN,
             description = "Reach statevar RG1 storage"
             )
-            public JAMSDouble inRG1;
+            public Attribute.Double inRG1;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
             update = JAMSVarDescription.UpdateType.RUN,
             description = "Reach statevar RG2 storage"
             )
-            public JAMSDouble inRG2;  
+            public Attribute.Double inRG2;  
     
      
     

@@ -35,19 +35,19 @@ public class Regionalisation extends JAMSComponent {
 
     @JAMSVarDescription (access = JAMSVarDescription.AccessType.READ,
                          description = "Array of data values for current time step")
-    public JAMSDoubleArray dataArray;
+    public Attribute.DoubleArray dataArray;
 
     @JAMSVarDescription (access = JAMSVarDescription.AccessType.READ,
                          description = "Regression coefficients")
-    public JAMSDoubleArray regCoeff;
+    public Attribute.DoubleArray regCoeff;
 
     @JAMSVarDescription (access = JAMSVarDescription.AccessType.READ,
                          description = "Array of station elevations")
-    public JAMSDoubleArray statElevation;
+    public Attribute.DoubleArray statElevation;
 
     @JAMSVarDescription (access = JAMSVarDescription.AccessType.READ,
                          description = "Array of station's weights")
-    public JAMSDoubleArray statWeights;
+    public Attribute.DoubleArray statWeights;
 
     @JAMSVarDescription (access = JAMSVarDescription.AccessType.READ,
                          description = "Array position of weights")
@@ -55,11 +55,11 @@ public class Regionalisation extends JAMSComponent {
 
     @JAMSVarDescription (access = JAMSVarDescription.AccessType.WRITE,
                          description = "regionalised data value")
-    public JAMSDouble dataValue;
+    public Attribute.Double dataValue;
 
     @JAMSVarDescription (access = JAMSVarDescription.AccessType.READ,
                          description = "Attribute name elevation")
-    public JAMSDouble entityElevation;
+    public Attribute.Double entityElevation;
 
     @JAMSVarDescription (access = JAMSVarDescription.AccessType.READ,
                          description = "Number of IDW stations")
@@ -71,11 +71,11 @@ public class Regionalisation extends JAMSComponent {
 
     @JAMSVarDescription (access = JAMSVarDescription.AccessType.READ,
                          description = "Minimum r² value for elevation correction application")
-    public JAMSDouble rsqThreshold;
+    public Attribute.Double rsqThreshold;
 
     @JAMSVarDescription (access = JAMSVarDescription.AccessType.READ,
                          description = "Absolute possible minimum value for data set")
-    public JAMSDouble fixedMinimum;
+    public Attribute.Double fixedMinimum;
 
     @JAMSVarDescription (access = JAMSVarDescription.AccessType.READ,
                          description = "Caching configuration: 0 - write cache, 1 - use cache, 2 - caching off",
@@ -85,7 +85,7 @@ public class Regionalisation extends JAMSComponent {
     @JAMSVarDescription (access = JAMSVarDescription.AccessType.READ,
                          description = "Result value if no value is available",
                          defaultValue = "-9999.0")
-    public JAMSDouble noData;
+    public Attribute.Double noData;
 
     private File cacheFile;
 

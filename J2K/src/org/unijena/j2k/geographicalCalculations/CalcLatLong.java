@@ -52,14 +52,14 @@ import jams.model.*;
             update = JAMSVarDescription.UpdateType.RUN,
             description = "entity x-coordinate"
             )
-            public JAMSDouble x;
+            public Attribute.Double x;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
             update = JAMSVarDescription.UpdateType.RUN,
             description = "entity y-coordinate"
             )
-            public JAMSDouble y;
+            public Attribute.Double y;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
@@ -69,7 +69,7 @@ import jams.model.*;
             lowerBound = 0,
             upperBound = 90.0
             )
-            public JAMSDouble slope;
+            public Attribute.Double slope;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
@@ -79,7 +79,7 @@ import jams.model.*;
             lowerBound = 0,
             upperBound = 360
             )
-            public JAMSDouble aspect;
+            public Attribute.Double aspect;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
@@ -89,7 +89,7 @@ import jams.model.*;
             lowerBound = 0,
             upperBound = 90.0
             )
-            public JAMSDouble latitude;
+            public Attribute.Double latitude;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
@@ -99,7 +99,7 @@ import jams.model.*;
             lowerBound = 0,
             upperBound = 180.0
             )
-            public JAMSDouble longitude;
+            public Attribute.Double longitude;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
@@ -109,7 +109,7 @@ import jams.model.*;
             lowerBound = 0,
             upperBound = 1000.0
             )
-            public JAMSDoubleArray slAsCfArray;
+            public Attribute.DoubleArray slAsCfArray;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,

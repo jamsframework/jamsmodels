@@ -67,7 +67,7 @@ title="InErrorContext",
             update = JAMSVarDescription.UpdateType.RUN,
             description = "efficiency values"
             )
-            public JAMSDouble[] effValues;
+            public Attribute.Double[] effValues;
     
     @JAMSVarDescription(
     access = JAMSVarDescription.AccessType.READ,
@@ -100,7 +100,7 @@ title="InErrorContext",
             update = JAMSVarDescription.UpdateType.RUN,
             description = "Output file attribute"
             )
-            public JAMSDoubleArray targetValue;
+            public Attribute.DoubleArray targetValue;
    
     Random generator = new Random();
     GenericDataWriter effWriter;

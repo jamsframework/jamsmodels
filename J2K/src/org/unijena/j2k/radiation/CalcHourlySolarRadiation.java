@@ -54,21 +54,21 @@ import jams.model.*;
             update = JAMSVarDescription.UpdateType.RUN,
             description = "latitude of entity"
             )
-            public JAMSDouble latitude;
+            public Attribute.Double latitude;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
             update = JAMSVarDescription.UpdateType.RUN,
             description = "state variable slope aspect correction factor"
             )
-            public JAMSDouble actSlAsCf;
+            public Attribute.Double actSlAsCf;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
             update = JAMSVarDescription.UpdateType.RUN,
             description = "state variable fraction of sunshine in one hour"
             )
-            public JAMSDouble sunFrac;
+            public Attribute.Double sunFrac;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
@@ -82,28 +82,28 @@ import jams.model.*;
             update = JAMSVarDescription.UpdateType.INIT,
             description = "Angstrom factor a"
             )
-            public JAMSDouble angstrom_a;
+            public Attribute.Double angstrom_a;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
             update = JAMSVarDescription.UpdateType.INIT,
             description = "Angstrom factor b"
             )
-            public JAMSDouble angstrom_b;
+            public Attribute.Double angstrom_b;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
             update = JAMSVarDescription.UpdateType.RUN,
             description = "hourly solar radiation [MJ/m²]"
             )
-            public JAMSDouble solRad;
+            public Attribute.Double solRad;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
             update = JAMSVarDescription.UpdateType.RUN,
             description = "extraterrestic radiation [MJ/m²]"
             )
-            public JAMSDouble actExtRad;
+            public Attribute.Double actExtRad;
     
     
     

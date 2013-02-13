@@ -30,23 +30,23 @@ public class ContourBanksReader extends JAMSComponent {
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
     update = JAMSVarDescription.UpdateType.INIT,
     description = "ContourBank-Hoehe")
-    public JAMSDouble cbWallhoehe;
+    public Attribute.Double cbWallhoehe;
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
     update = JAMSVarDescription.UpdateType.INIT,
     description = "ContourBank-Boeschungswinkel vorn")
-    public JAMSDouble cbBoeschungswinkelWall_vorn;
+    public Attribute.Double cbBoeschungswinkelWall_vorn;
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
     update = JAMSVarDescription.UpdateType.INIT,
     description = "ContourBank-Boeschungswinkel hinten")
-    public JAMSDouble cbBoeschungswinkelWall_hinten;
+    public Attribute.Double cbBoeschungswinkelWall_hinten;
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
     update = JAMSVarDescription.UpdateType.INIT,
     description = "ContourBank-Grabentiefe direkt hinter dem Wall")
-    public JAMSDouble cbTiefeGraben_vorn;
+    public Attribute.Double cbTiefeGraben_vorn;
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
     update = JAMSVarDescription.UpdateType.INIT,
     description = "ContourBank-Grabenbreite")
-    public JAMSDouble cbBreiteGraben;
+    public Attribute.Double cbBreiteGraben;
     boolean modulCBaktiv;
 
     public void init() throws Attribute.Entity.NoSuchAttributeException, FileNotFoundException, IOException {

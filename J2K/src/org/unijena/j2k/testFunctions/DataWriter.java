@@ -57,21 +57,21 @@ public class DataWriter extends JAMSComponent {
             update = JAMSVarDescription.UpdateType.RUN,
             description = "the input value of the respective time step"
             )
-            public JAMSDouble input;
+            public Attribute.Double input;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
             update = JAMSVarDescription.UpdateType.RUN,
             description = "the simulation value of the respective time step"
             )
-            public JAMSDouble simulation;
+            public Attribute.Double simulation;
         
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
             update = JAMSVarDescription.UpdateType.RUN,
             description = "the observation value of the respective time step"
             )
-            public JAMSDouble observation;
+            public Attribute.Double observation;
     
     
         

@@ -53,35 +53,35 @@ title="PRMSProcessSnow",
             update = JAMSVarDescription.UpdateType.RUN,
             description = "Entity area"
             )
-            public JAMSDouble area;
+            public Attribute.Double area;
     
     @JAMSVarDescription(
     access = JAMSVarDescription.AccessType.READ,
             update = JAMSVarDescription.UpdateType.RUN,
             description = "Entity cover density in winter"
             )
-            public JAMSDouble covDensWin;
+            public Attribute.Double covDensWin;
     
     @JAMSVarDescription(
     access = JAMSVarDescription.AccessType.READ,
             update = JAMSVarDescription.UpdateType.RUN,
             description = "Entity cover density in summer"
             )
-            public JAMSDouble covDensSum;
+            public Attribute.Double covDensSum;
     
     @JAMSVarDescription(
     access = JAMSVarDescription.AccessType.READ,
             update = JAMSVarDescription.UpdateType.RUN,
             description = "cover type of entity 0 = bareSoil, 1 = grass, 2 = shrubs, 3 = trees"
             )
-            public JAMSDouble covType;
+            public Attribute.Double covType;
     
     @JAMSVarDescription(
     access = JAMSVarDescription.AccessType.READ,
             update = JAMSVarDescription.UpdateType.RUN,
             description = "type of entity 1 = land, 2 = water"
             )
-            public JAMSDouble entityType;
+            public Attribute.Double entityType;
     
 //state variables recheck read/write access
     @JAMSVarDescription(
@@ -89,28 +89,28 @@ title="PRMSProcessSnow",
             update = JAMSVarDescription.UpdateType.RUN,
             description = "variable snowCrv [PRMS: Scrv]"
             )
-            public JAMSDouble snowCurve;
+            public Attribute.Double snowCurve;
     
     @JAMSVarDescription(
     access = JAMSVarDescription.AccessType.READWRITE,
             update = JAMSVarDescription.UpdateType.RUN,
             description = "variable snowCovAreaSave [PRMS: Snowcov_areasv]"
             )
-            public JAMSDouble snowCovAreaSave;
+            public Attribute.Double snowCovAreaSave;
     
     @JAMSVarDescription(
     access = JAMSVarDescription.AccessType.READWRITE,
             update = JAMSVarDescription.UpdateType.RUN,
             description = "variable albedoSave [PRMS: Salb]"
             )
-            public JAMSDouble packAlbedoSave;
+            public Attribute.Double packAlbedoSave;
     
     @JAMSVarDescription(
     access = JAMSVarDescription.AccessType.READWRITE,
             update = JAMSVarDescription.UpdateType.RUN,
             description = "variable lstSave [PRMS: Slst]"
             )
-            public JAMSDouble lstSave;
+            public Attribute.Double lstSave;
     
     @JAMSVarDescription(
     access = JAMSVarDescription.AccessType.READWRITE,
@@ -124,63 +124,63 @@ title="PRMSProcessSnow",
             update = JAMSVarDescription.UpdateType.RUN,
             description = "snow surface albedo [PRMS: Albedo]"
             )
-            public JAMSDouble packAlbedo;
+            public Attribute.Double packAlbedo;
     
     @JAMSVarDescription(
     access = JAMSVarDescription.AccessType.WRITE,
             update = JAMSVarDescription.UpdateType.RUN,
             description = "precipitation added to snowpack [PRMS: Pk_precip]"
             )
-            public JAMSDouble packPrecip;
+            public Attribute.Double packPrecip;
     
     @JAMSVarDescription(
     access = JAMSVarDescription.AccessType.READWRITE,
             update = JAMSVarDescription.UpdateType.RUN,
             description = "temperature of the snowpack [PRMS: Pk_temp]"
             )
-            public JAMSDouble packTemp;
+            public Attribute.Double packTemp;
     
     @JAMSVarDescription(
     access = JAMSVarDescription.AccessType.READWRITE,
             update = JAMSVarDescription.UpdateType.RUN,
             description = "density of the snowpack [PRMS: Pk_den]"
             )
-            public JAMSDouble packDensity;
+            public Attribute.Double packDensity;
     
     @JAMSVarDescription(
     access = JAMSVarDescription.AccessType.READWRITE,
             update = JAMSVarDescription.UpdateType.RUN,
             description = "net snowpack energy balance [PRMS: Tcal]"
             )
-            public JAMSDouble packEnergyBal;
+            public Attribute.Double packEnergyBal;
     
     @JAMSVarDescription(
     access = JAMSVarDescription.AccessType.WRITE,
             update = JAMSVarDescription.UpdateType.RUN,
             description = "evaporation and sublimation from snowpack [PRMS: Snow_evap]"
             )
-            public JAMSDouble snowET;
+            public Attribute.Double snowET;
     
     @JAMSVarDescription(
     access = JAMSVarDescription.AccessType.WRITE,
             update = JAMSVarDescription.UpdateType.RUN,
             description = "snowmelt from snowpack [PRMS: Snowmelt]"
             )
-            public JAMSDouble snowMelt;
+            public Attribute.Double snowMelt;
     
     @JAMSVarDescription(
     access = JAMSVarDescription.AccessType.READWRITE,
             update = JAMSVarDescription.UpdateType.RUN,
             description = "snowpack water equivalent [PRMS: Pkwater_equiv]"
             )
-            public JAMSDouble snowWaterEquivalent;
+            public Attribute.Double snowWaterEquivalent;
     
     @JAMSVarDescription(
     access = JAMSVarDescription.AccessType.READWRITE,
             update = JAMSVarDescription.UpdateType.RUN,
             description = "snow-covered area (decimal percent) [PRMS: Snowcov_area]"
             )
-            public JAMSDouble snowCovArea;
+            public Attribute.Double snowCovArea;
     
     @JAMSVarDescription(
     access = JAMSVarDescription.AccessType.WRITE,
@@ -230,56 +230,56 @@ title="PRMSProcessSnow",
             update = JAMSVarDescription.UpdateType.RUN,
             description = "heat deficit in the lower snowpack [PRMS: Pk_def]"
             )
-            public JAMSDouble packDef;
+            public Attribute.Double packDef;
     
     @JAMSVarDescription(
     access = JAMSVarDescription.AccessType.READWRITE,
             update = JAMSVarDescription.UpdateType.RUN,
             description = "frozen part of the pack's swe [PRMS: Pk_ice]"
             )
-            public JAMSDouble packIce;
+            public Attribute.Double packIce;
     
     @JAMSVarDescription(
     access = JAMSVarDescription.AccessType.READWRITE,
             update = JAMSVarDescription.UpdateType.RUN,
             description = "liquid part of the pack's swe [PRMS: freeh2o]"
             )
-            public JAMSDouble packFreeWater;
+            public Attribute.Double packFreeWater;
     
     @JAMSVarDescription(
     access = JAMSVarDescription.AccessType.READWRITE,
             update = JAMSVarDescription.UpdateType.RUN,
             description = "depth of the snowpack [PRMS: Pk_depth]"
             )
-            public JAMSDouble packDepth;
+            public Attribute.Double packDepth;
     
     @JAMSVarDescription(
     access = JAMSVarDescription.AccessType.READWRITE,
             update = JAMSVarDescription.UpdateType.RUN,
             description = "var pss [PRMS: Pss]"
             )
-            public JAMSDouble pss;
+            public Attribute.Double pss;
     
     @JAMSVarDescription(
     access = JAMSVarDescription.AccessType.READWRITE,
             update = JAMSVarDescription.UpdateType.RUN,
             description = "var pst [PRMS: Pst]"
             )
-            public JAMSDouble pst;
+            public Attribute.Double pst;
     
     @JAMSVarDescription(
     access = JAMSVarDescription.AccessType.READWRITE,
             update = JAMSVarDescription.UpdateType.RUN,
             description = "captures the old swe of the time step before [PRMS: Pksv]"
             )
-            public JAMSDouble packSWEtm1;
+            public Attribute.Double packSWEtm1;
     
     @JAMSVarDescription(
     access = JAMSVarDescription.AccessType.READWRITE,
             update = JAMSVarDescription.UpdateType.RUN,
             description = "captures the old snow of the time step before [PRMS: Snsv]"
             )
-            public JAMSDouble snowSave;
+            public Attribute.Double snowSave;
     
     
     
@@ -289,21 +289,21 @@ title="PRMSProcessSnow",
             update = JAMSVarDescription.UpdateType.INIT,
             description = "density of new snow [PRMS: Den_init]"
             )
-            public JAMSDouble initDens;
+            public Attribute.Double initDens;
     
     @JAMSVarDescription(
     access = JAMSVarDescription.AccessType.READ,
             update = JAMSVarDescription.UpdateType.INIT,
             description = "Snowpack settlement time constant [PRMS: Settle_const]"
             )
-            public JAMSDouble settleConst;
+            public Attribute.Double settleConst;
     
     @JAMSVarDescription(
     access = JAMSVarDescription.AccessType.READ,
             update = JAMSVarDescription.UpdateType.INIT,
             description = "Average maximum snowpack density [PRMS: Den_max]"
             )
-            public JAMSDouble maxDens;
+            public Attribute.Double maxDens;
     
     @JAMSVarDescription(
     access = JAMSVarDescription.AccessType.READ,
@@ -330,7 +330,7 @@ title="PRMSProcessSnow",
             description = "Transmission coefficient for short-wave radiation through" +
             "the winter vegetation canopy in decimal percent [PRMS: Rad_trncf]"
             )
-            public JAMSDouble radTransCoef;
+            public Attribute.Double radTransCoef;
     
     @JAMSVarDescription(
     access = JAMSVarDescription.AccessType.READ,
@@ -340,7 +340,7 @@ title="PRMSProcessSnow",
             "which the snow-covered-area curve is applied. " +
             "Varies with elevation (not here!). [PRMS: Snarea_thresh]"
             )
-            public JAMSDouble snowAreaThresh;
+            public Attribute.Double snowAreaThresh;
     
     @JAMSVarDescription(
     access = JAMSVarDescription.AccessType.READ,
@@ -350,7 +350,7 @@ title="PRMSProcessSnow",
             "above which the snow albedo is not reset. Applied during" +
             "the snowpack melt stage [PRMS: Albset_rnm]"
             )
-            public JAMSDouble albedoResetRainMelt;
+            public Attribute.Double albedoResetRainMelt;
     
     @JAMSVarDescription(
     access = JAMSVarDescription.AccessType.READ,
@@ -360,7 +360,7 @@ title="PRMSProcessSnow",
             "above which the snow albedo is not reset. Applied during" +
             "the snowpack accumulation stage [PRMS: Albset_rna]"
             )
-            public JAMSDouble albedoResetRainAccu;
+            public Attribute.Double albedoResetRainAccu;
     
     @JAMSVarDescription(
     access = JAMSVarDescription.AccessType.READ,
@@ -370,7 +370,7 @@ title="PRMSProcessSnow",
             "snow albedo during the snowpack melt stage" +
             "[PRMS: Albset_snm]"
             )
-            public JAMSDouble albedoResetSnowMelt;
+            public Attribute.Double albedoResetSnowMelt;
     
     @JAMSVarDescription(
     access = JAMSVarDescription.AccessType.READ,
@@ -380,7 +380,7 @@ title="PRMSProcessSnow",
             "snow albedo during the snowpack accumulation stage" +
             "[PRMS: Albset_sna]"
             )
-            public JAMSDouble albedoResetSnowAccu;
+            public Attribute.Double albedoResetSnowAccu;
     
     @JAMSVarDescription(
     access = JAMSVarDescription.AccessType.READ,
@@ -389,7 +389,7 @@ title="PRMSProcessSnow",
             "Average emissivity of air on days without precipitation" +
             "[PRMS: Emis_noppt]"
             )
-            public JAMSDouble emisNoPrecip;
+            public Attribute.Double emisNoPrecip;
     
     @JAMSVarDescription(
     access = JAMSVarDescription.AccessType.READ,
@@ -397,7 +397,7 @@ title="PRMSProcessSnow",
             description = "Proportion (decimal percent) of potential ET that is sublimated from the" +
             "snow surface [PRMS: Potet_sublim]"
             )
-            public JAMSDouble petSublimProp;
+            public Attribute.Double petSublimProp;
     
     @JAMSVarDescription(
     access = JAMSVarDescription.AccessType.READ,
@@ -406,7 +406,7 @@ title="PRMSProcessSnow",
             "snowpack expressed as decimal fraction of total " +
             "snowpack water equivalent [PRMS: Freeh2o_cap]"
             )
-            public JAMSDouble packFreeWaterCapacity;
+            public Attribute.Double packFreeWaterCapacity;
     
     @JAMSVarDescription(
     access = JAMSVarDescription.AccessType.READ,
@@ -415,14 +415,14 @@ title="PRMSProcessSnow",
             "If HRU maximum temperature is less than or equal to this" +
             "value, precipitation is assumed to be snow [PRMS: Tmax_allsnow]"
             )
-            public JAMSDouble tmaxAllSnow;
+            public Attribute.Double tmaxAllSnow;
     
     @JAMSVarDescription(
     access = JAMSVarDescription.AccessType.READ,
             update = JAMSVarDescription.UpdateType.INIT,
             description = "Multiplier for the cecn values [PRMS: n/a]"
             )
-            public JAMSDouble cecnFactor;
+            public Attribute.Double cecnFactor;
     
 //driving variables
     @JAMSVarDescription(
@@ -430,84 +430,84 @@ title="PRMSProcessSnow",
             update = JAMSVarDescription.UpdateType.RUN,
             description = "minum temperature"
             )
-            public JAMSDouble tmin;
+            public Attribute.Double tmin;
     
     @JAMSVarDescription(
     access = JAMSVarDescription.AccessType.READ,
             update = JAMSVarDescription.UpdateType.RUN,
             description = "mean temperature"
             )
-            public JAMSDouble tmean;
+            public Attribute.Double tmean;
     
     @JAMSVarDescription(
     access = JAMSVarDescription.AccessType.READ,
             update = JAMSVarDescription.UpdateType.RUN,
             description = "max temperature"
             )
-            public JAMSDouble tmax;
+            public Attribute.Double tmax;
     
     @JAMSVarDescription(
     access = JAMSVarDescription.AccessType.READ,
             update = JAMSVarDescription.UpdateType.RUN,
             description = "observed or calculated solar radiation"
             )
-            public JAMSDouble solRad;
+            public Attribute.Double solRad;
     
     @JAMSVarDescription(
     access = JAMSVarDescription.AccessType.READ,
             update = JAMSVarDescription.UpdateType.RUN,
             description = "observed or calculated shortwave radiation"
             )
-            public JAMSDouble swRad;
+            public Attribute.Double swRad;
     
     @JAMSVarDescription(
     access = JAMSVarDescription.AccessType.READ,
             update = JAMSVarDescription.UpdateType.RUN,
             description = "total precipitation (rain and snow)"
             )
-            public JAMSDouble precip;
+            public Attribute.Double precip;
     
     @JAMSVarDescription(
     access = JAMSVarDescription.AccessType.READWRITE,
             update = JAMSVarDescription.UpdateType.RUN,
             description = "rain amount of precipitation, will be changed during snow modelling"
             )
-            public JAMSDouble inRain;
+            public Attribute.Double inRain;
     
     @JAMSVarDescription(
     access = JAMSVarDescription.AccessType.READWRITE,
             update = JAMSVarDescription.UpdateType.RUN,
             description = "snow amount of precipitation, will be changed during snow modelling"
             )
-            public JAMSDouble inSnow;
+            public Attribute.Double inSnow;
     
     @JAMSVarDescription(
     access = JAMSVarDescription.AccessType.WRITE,
             update = JAMSVarDescription.UpdateType.RUN,
             description = "save rain for output"
             )
-            public JAMSDouble svRain;
+            public Attribute.Double svRain;
     
     @JAMSVarDescription(
     access = JAMSVarDescription.AccessType.WRITE,
             update = JAMSVarDescription.UpdateType.RUN,
             description = "save snow for output"
             )
-            public JAMSDouble svSnow;
+            public Attribute.Double svSnow;
     
     @JAMSVarDescription(
     access = JAMSVarDescription.AccessType.READWRITE,
             update = JAMSVarDescription.UpdateType.RUN,
             description = "actual evapotranspiration so far"
             )
-            public JAMSDouble aET;
+            public Attribute.Double aET;
     
     @JAMSVarDescription(
     access = JAMSVarDescription.AccessType.READ,
             update = JAMSVarDescription.UpdateType.RUN,
             description = "potential evapotranspiration"
             )
-            public JAMSDouble pET;
+            public Attribute.Double pET;
     
     @JAMSVarDescription(
     access = JAMSVarDescription.AccessType.READ,

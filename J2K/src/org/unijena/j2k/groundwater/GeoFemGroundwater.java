@@ -46,42 +46,42 @@ import jams.model.*;
             update = JAMSVarDescription.UpdateType.RUN,
             description = "attribute slope"
             )
-            public JAMSDouble slope;
+            public Attribute.Double slope;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
             update = JAMSVarDescription.UpdateType.INIT,
             description = "recision coefficient k"
             )
-            public JAMSDouble k;
+            public Attribute.Double k;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
             update = JAMSVarDescription.UpdateType.RUN,
             description = "groundwater recharge"
             )
-            public JAMSDouble gwRecharge;
+            public Attribute.Double gwRecharge;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
             update = JAMSVarDescription.UpdateType.RUN,
             description = "groundwater storages"
             )
-            public JAMSDouble storage;
+            public Attribute.Double storage;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
             update = JAMSVarDescription.UpdateType.RUN,
             description = "baseflow basQ"
             )
-            public JAMSDouble basQ;
+            public Attribute.Double basQ;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
             update = JAMSVarDescription.UpdateType.RUN,
             description = "baseflow recession coefficient"
             )
-            public JAMSDouble gwRecCoeff;
+            public Attribute.Double gwRecCoeff;
     
    
     

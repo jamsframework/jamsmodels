@@ -53,14 +53,14 @@ import jams.model.*;
             update = JAMSVarDescription.UpdateType.INIT,
             description = "The receiver reach ID"
             )
-            public JAMSDouble outReachID;
+            public Attribute.Double outReachID;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
             update = JAMSVarDescription.UpdateType.RUN,
             description = "data array read from file"
             )
-            public JAMSDoubleArray inDataArray;
+            public Attribute.DoubleArray inDataArray;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
@@ -74,119 +74,119 @@ import jams.model.*;
             update = JAMSVarDescription.UpdateType.RUN,
             description = "the outflow from the data file or another model"
             )
-            public JAMSDouble resOutflow;
+            public Attribute.Double resOutflow;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
             update = JAMSVarDescription.UpdateType.RUN,
             description = "the reservoir area read in from file"
             )
-            public JAMSDouble resArea;
+            public Attribute.Double resArea;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
             update = JAMSVarDescription.UpdateType.RUN,
             description = "the reservoir volume read in from file"
             )
-            public JAMSDouble resObsVolume;
+            public Attribute.Double resObsVolume;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
             update = JAMSVarDescription.UpdateType.RUN,
             description = "the calculated reservoir volume"
             )
-            public JAMSDouble resCalcVolume;
+            public Attribute.Double resCalcVolume;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
             update = JAMSVarDescription.UpdateType.RUN,
             description = "the reservoir depth read in from file"
             )
-            public JAMSDouble resDepth;
+            public Attribute.Double resDepth;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
             update = JAMSVarDescription.UpdateType.RUN,
             description = "component RD1"
             )
-            public JAMSDouble compRD1;
+            public Attribute.Double compRD1;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
             update = JAMSVarDescription.UpdateType.RUN,
             description = "component RD2"
             )
-            public JAMSDouble compRD2;
+            public Attribute.Double compRD2;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
             update = JAMSVarDescription.UpdateType.RUN,
             description = "component RG1"
             )
-            public JAMSDouble compRG1;
+            public Attribute.Double compRG1;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
             update = JAMSVarDescription.UpdateType.RUN,
             description = "component RG2"
             )
-            public JAMSDouble compRG2;
+            public Attribute.Double compRG2;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
             update = JAMSVarDescription.UpdateType.RUN,
             description = "outflow RD1"
             )
-            public JAMSDouble outRD1;
+            public Attribute.Double outRD1;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
             update = JAMSVarDescription.UpdateType.RUN,
             description = "outflow RD2"
             )
-            public JAMSDouble outRD2;
+            public Attribute.Double outRD2;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
             update = JAMSVarDescription.UpdateType.RUN,
             description = "outflow RG1"
             )
-            public JAMSDouble outRG1;
+            public Attribute.Double outRG1;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
             update = JAMSVarDescription.UpdateType.RUN,
             description = "outflow RG2"
             )
-            public JAMSDouble outRG2;
+            public Attribute.Double outRG2;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
             update = JAMSVarDescription.UpdateType.RUN,
             description = "the precipitation"
             )
-            public JAMSDouble precip;
+            public Attribute.Double precip;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
             update = JAMSVarDescription.UpdateType.RUN,
             description = "the potential et"
             )
-            public JAMSDouble pET;
+            public Attribute.Double pET;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
             update = JAMSVarDescription.UpdateType.RUN,
             description = "the actual et"
             )
-            public JAMSDouble actET;
+            public Attribute.Double actET;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
             update = JAMSVarDescription.UpdateType.INIT,
             description = "startVolume"
             )
-            public JAMSDouble startVolume;
+            public Attribute.Double startVolume;
     
     int nComp = 4;
     double[] relComp;

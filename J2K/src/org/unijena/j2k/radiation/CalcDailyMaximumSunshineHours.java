@@ -52,17 +52,17 @@ public class CalcDailyMaximumSunshineHours extends JAMSComponent {
     update = JAMSVarDescription.UpdateType.RUN,
     description = "Maximum sunshine duration in h",
     defaultValue = "0")
-    public JAMSDouble sunhmax;
+    public Attribute.Double sunhmax;
 
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
     update = JAMSVarDescription.UpdateType.RUN,
     description = "attribute latitude [deg]")
-    public JAMSDouble latitude;
+    public Attribute.Double latitude;
 
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
     update = JAMSVarDescription.UpdateType.RUN,
     description = "daily extraterrestic radiation [MJ/m²d]")
-    public JAMSDouble actExtRad;
+    public Attribute.Double actExtRad;
 
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
     update = JAMSVarDescription.UpdateType.INIT,

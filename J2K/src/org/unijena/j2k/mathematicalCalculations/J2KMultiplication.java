@@ -65,7 +65,7 @@ import jams.model.*;
             description = "Product",
             unit="-"
             )
-            public JAMSDouble Product;
+            public Attribute.Double Product;
     
     /*
      *  Component run stages

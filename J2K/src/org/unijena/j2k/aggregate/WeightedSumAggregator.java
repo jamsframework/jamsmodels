@@ -40,19 +40,19 @@ public class WeightedSumAggregator extends JAMSComponent {
             access = JAMSVarDescription.AccessType.READ,
             description = "The value(s) that shall be summed up"
             )
-            public JAMSDouble[] value;
+            public Attribute.Double[] value;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
             description = "A weight to be used to calculate the weighted sum"
             )
-            public JAMSDouble weight;
+            public Attribute.Double weight;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
             description = "The resulting weighted sum(s) of the given values"
             )
-            public JAMSDouble[] sum;
+            public Attribute.Double[] sum;
     
     public void init(){
         for (int i = 0; i < value.length; i++) {

@@ -51,7 +51,7 @@ public class CatchmentCreator extends JAMSComponent {
         
     public void init() throws Attribute.Entity.NoSuchAttributeException {
         ArrayList<Attribute.Entity> list = new ArrayList<Attribute.Entity>();
-        Attribute.Entity e = JAMSDataFactory.createEntity();
+        Attribute.Entity e = getModel().getRuntime().getDataFactory().createEntity();
         e.setDouble("ID", 1);
         list.add(e);
         catchment.setEntities(list);

@@ -162,7 +162,7 @@ public class MultiEntityReaderTS_2 extends JAMSComponent {
         }
 
 
-        Attribute.Entity nullEntity = JAMSDataFactory.createEntity();
+        Attribute.Entity nullEntity = getModel().getRuntime().getDataFactory().createEntity();
         nullEntity.setValue((HashMap<String, Object>) null);
         hruMap.put(new Double(0), nullEntity);
         reachMap.put(new Double(0), nullEntity);
@@ -283,7 +283,7 @@ public class MultiEntityReaderTS_2 extends JAMSComponent {
 
                 //converting the ArrayLists into Arrays
 
-                //Attribute.Entity nullEntity = JAMSDataFactory.createEntity();
+                //Attribute.Entity nullEntity = getModel().getRuntime().getDataFactory().createEntity();
 
                 Attribute.Entity[] toHRUsArray = toHRUsArrayList.toArray(new Attribute.Entity[toHRUsArrayList.size()]);
                 Attribute.Entity[] toReachesArray = toReachesArrayList.toArray(new Attribute.Entity[toReachesArrayList.size()]);

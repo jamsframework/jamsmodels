@@ -47,21 +47,21 @@ public class CalcAreaWeight extends JAMSComponent {
             description = "the area of the single entity",
             unit = "m^2"
             )
-            public JAMSDouble entityArea;
+            public Attribute.Double entityArea;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
             description = "the area of the catchment",
             unit = "m^2"
             )
-            public JAMSDouble catchmentArea;    
+            public Attribute.Double catchmentArea;    
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
             description = "the relative area weight of the entity",
             unit = "n/a"
             )
-            public JAMSDouble areaWeight;
+            public Attribute.Double areaWeight;
     
     public void run() {
         areaWeight.setValue(catchmentArea.getValue() / entityArea.getValue());

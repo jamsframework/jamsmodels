@@ -54,40 +54,40 @@ public class J2KProcessMultiRouting_h extends JAMSComponent {
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READWRITE,
     update = JAMSVarDescription.UpdateType.RUN,
     description = "HRU statevar RD1 inflow")
-    public JAMSDouble inRD1;
+    public Attribute.Double inRD1;
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READWRITE,
     update = JAMSVarDescription.UpdateType.RUN,
     description = "HRU statevar RD2 inflow")
-    public JAMSDoubleArray inRD2_h;
+    public Attribute.DoubleArray inRD2_h;
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READWRITE,
     update = JAMSVarDescription.UpdateType.RUN,
     description = "HRU statevar RD2 inflow")
-    public JAMSDoubleArray outRD2_h;
+    public Attribute.DoubleArray outRD2_h;
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READWRITE,
     update = JAMSVarDescription.UpdateType.RUN,
     description = "HRU statevar RG1 inflow")
-    public JAMSDouble inRG1;
+    public Attribute.Double inRG1;
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READWRITE,
     update = JAMSVarDescription.UpdateType.RUN,
     description = "HRU statevar RG2 inflow")
-    public JAMSDouble inRG2;
+    public Attribute.Double inRG2;
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READWRITE,
     update = JAMSVarDescription.UpdateType.RUN,
     description = "HRU statevar groundwater excess",
     defaultValue = "0")
-    public JAMSDouble inGWExcess;
+    public Attribute.Double inGWExcess;
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READWRITE,
     update = JAMSVarDescription.UpdateType.RUN,
     description = "HRU statevar RD1 outflow")
-    public JAMSDouble outRD1;
+    public Attribute.Double outRD1;
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READWRITE,
     update = JAMSVarDescription.UpdateType.RUN,
     description = "HRU statevar RG1 outflow")
-    public JAMSDouble outRG1;
+    public Attribute.Double outRG1;
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READWRITE,
     update = JAMSVarDescription.UpdateType.RUN,
     description = "HRU statevar RG2 outflow")
-    public JAMSDouble outRG2;
+    public Attribute.Double outRG2;
     double[][] fracOut;
     double[] percOut;
 
@@ -126,7 +126,7 @@ public class J2KProcessMultiRouting_h extends JAMSComponent {
 
         boolean keinziel = false;
 
-        double[] srcDepth = ((JAMSDoubleArray) entity.getObject("depth_h")).getValue();
+        double[] srcDepth = ((Attribute.DoubleArray) entity.getObject("depth_h")).getValue();
         int srcHors = srcDepth.length;
 
         if (toPolyArray.length > 0) {
@@ -140,14 +140,14 @@ public class J2KProcessMultiRouting_h extends JAMSComponent {
 
                     double RD1in = toPoly.getDouble("inRD1");
 
-                    double[] recDepth = ((JAMSDoubleArray) toPoly.getObject("depth_h")).getValue();
+                    double[] recDepth = ((Attribute.DoubleArray) toPoly.getObject("depth_h")).getValue();
                     int recHors = recDepth.length;
 
                     double[] RD2in = new double[recHors];
 
                     this.calcParts(srcDepth, recDepth);
 
-                    double[] RD2Array = ((JAMSDoubleArray) toPoly.getObject("inRD2_h")).getValue();
+                    double[] RD2Array = ((Attribute.DoubleArray) toPoly.getObject("inRD2_h")).getValue();
                     double RG1in = toPoly.getDouble("inRG1");
 
                     for (int j = 0; j < recHors; j++) {
@@ -170,7 +170,7 @@ public class J2KProcessMultiRouting_h extends JAMSComponent {
                     RG1in = RG1in + RG1out * polyWeight;
                     RG2in = RG2in + RG2out * polyWeight;
 
-                    JAMSDoubleArray rdA = (JAMSDoubleArray) toPoly.getObject("inRD2_h");
+                    Attribute.DoubleArray rdA = (Attribute.DoubleArray) toPoly.getObject("inRD2_h");
                     rdA.setValue(RD2in);
                     toPoly.setDouble("inRD1", RD1in);
                     toPoly.setObject("inRD2_h", rdA);

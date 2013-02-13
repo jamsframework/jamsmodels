@@ -61,14 +61,14 @@ import jams.model.*;
             description = "attribute area",
             unit = "m²"
             )
-            public JAMSDouble area;
+            public Attribute.Double area;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
             update = JAMSVarDescription.UpdateType.RUN,
             description = "state var slope-aspect-correction-factor"
             )
-            public JAMSDouble actSlAsCf;
+            public Attribute.Double actSlAsCf;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
@@ -76,7 +76,7 @@ import jams.model.*;
             description = "minimum temperature if available, else mean temp",
             unit = "°C"
             )
-            public JAMSDouble minTemp;
+            public Attribute.Double minTemp;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
@@ -84,7 +84,7 @@ import jams.model.*;
             description = "mean temperature",
             unit = "°C"
             )
-            public JAMSDouble meanTemp;
+            public Attribute.Double meanTemp;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
@@ -92,7 +92,7 @@ import jams.model.*;
             description = "maximum temperature if available, else mean temp",
             unit = "°C"
             )
-            public JAMSDouble maxTemp;
+            public Attribute.Double maxTemp;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
@@ -100,7 +100,7 @@ import jams.model.*;
             description = "state variable net rain",
             unit = "L"
             )
-            public JAMSDouble netRain;
+            public Attribute.Double netRain;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
@@ -108,7 +108,7 @@ import jams.model.*;
             description = "state variable net snow",
             unit = "L"
             )
-            public JAMSDouble netSnow;
+            public Attribute.Double netSnow;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
@@ -116,7 +116,7 @@ import jams.model.*;
             description = "total snow water equivalent",
             unit = "L"
             )
-            public JAMSDouble snowTotSWE;
+            public Attribute.Double snowTotSWE;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
@@ -124,7 +124,7 @@ import jams.model.*;
             description = "dry snow water equivalent",
             unit = "L"
             )
-            public JAMSDouble drySWE;
+            public Attribute.Double drySWE;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
@@ -132,7 +132,7 @@ import jams.model.*;
             description = "total snow density",
             unit = "g cm^-3"
             )
-            public JAMSDouble totDens;
+            public Attribute.Double totDens;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
@@ -140,7 +140,7 @@ import jams.model.*;
             description = "dry snow density",
             unit = "g cm^-3"
             )
-            public JAMSDouble dryDens;
+            public Attribute.Double dryDens;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
@@ -148,7 +148,7 @@ import jams.model.*;
             description = "snow depth",
             unit = "mm"
             )
-            public JAMSDouble snowDepth;
+            public Attribute.Double snowDepth;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
@@ -156,14 +156,14 @@ import jams.model.*;
             description = "snow age",
             unit = "d"
             )
-            public JAMSDouble snowAge;
+            public Attribute.Double snowAge;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
             update = JAMSVarDescription.UpdateType.RUN,
             description = "snow cold content"
             )
-            public JAMSDouble snowColdContent;
+            public Attribute.Double snowColdContent;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
@@ -171,7 +171,7 @@ import jams.model.*;
             description = "daily snow melt",
             unit = "L"
             )
-            public JAMSDouble snowMelt;
+            public Attribute.Double snowMelt;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
@@ -182,7 +182,7 @@ import jams.model.*;
             defaultValue="0",
             unit = "°C"
             )
-            public JAMSDouble baseTemp;
+            public Attribute.Double baseTemp;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
@@ -193,7 +193,7 @@ import jams.model.*;
             defaultValue="1",
             unit = "mm °C^-1"
             )
-            public JAMSDouble t_factor;
+            public Attribute.Double t_factor;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
@@ -204,7 +204,7 @@ import jams.model.*;
             defaultValue="1",
             unit = "°C^-1"
             )
-            public JAMSDouble r_factor;
+            public Attribute.Double r_factor;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
@@ -215,7 +215,7 @@ import jams.model.*;
             defaultValue="1",
             unit = "mm"
             )
-            public JAMSDouble g_factor;
+            public Attribute.Double g_factor;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
@@ -226,7 +226,7 @@ import jams.model.*;
             defaultValue="0.45",
             unit = "g cm^-3"
             )
-            public JAMSDouble snowCritDens;
+            public Attribute.Double snowCritDens;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
@@ -236,7 +236,7 @@ import jams.model.*;
             upperBound = 5.0,
             defaultValue="0.01"
             )
-            public JAMSDouble ccf_factor;
+            public Attribute.Double ccf_factor;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,

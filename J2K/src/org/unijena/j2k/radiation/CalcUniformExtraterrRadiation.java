@@ -47,21 +47,21 @@ import jams.model.*;
             update = JAMSVarDescription.UpdateType.RUN,
             description = "entity latidute [deg]"
             )
-            public JAMSDouble latitude;
+            public Attribute.Double latitude;
 
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
             update = JAMSVarDescription.UpdateType.RUN,
             description = "entity longitude [deg]"
             )
-            public JAMSDouble longitude;
+            public Attribute.Double longitude;
 
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
             update = JAMSVarDescription.UpdateType.INIT,
             description = "longitude of time zone [deg]"
             )
-            public JAMSDouble longTZ;
+            public Attribute.Double longTZ;
 
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
@@ -82,7 +82,7 @@ import jams.model.*;
             update = JAMSVarDescription.UpdateType.RUN,
             description = "extraterrestric radiation of each time step of the year [MJ/m² timeUnit]"
             )
-            public JAMSDoubleArray extRadArray;
+            public Attribute.DoubleArray extRadArray;
 
     int[] monthMean = {15,45,74,105,135,166,196,227,258,288,319,349};
 
@@ -109,7 +109,7 @@ import jams.model.*;
         }
 
         double latRad = org.unijena.j2k.mathematicalCalculations.MathematicalCalculations.deg2rad(lati);
-        Attribute.Calendar time = JAMSDataFactory.createCalendar();
+        Attribute.Calendar time = getModel().getRuntime().getDataFactory().createCalendar();
         time.set(2000, 0, 1, 0, 0, 0); //just a leap year, that's the reason for 2000
         if(tempRes.getValue().equals("m")){
             for(int i = 0; i < 12; i++){

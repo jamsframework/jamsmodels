@@ -94,7 +94,7 @@ public class StandardEntityWriter extends JAMSComponent {
             int length = 0;
             if (ob.getClass().getName().contains("DoubleArray")) {
                 //System.out.getRuntime().println("JAMSArray");
-                length = ((JAMSDoubleArray) entities.getCurrent().getObject(this.attributeName.getValue())).getValue().length;
+                length = ((Attribute.DoubleArray) entities.getCurrent().getObject(this.attributeName.getValue())).getValue().length;
             } else {
                 //System.out.getRuntime().println("Primitive");
             }
@@ -129,14 +129,14 @@ public class StandardEntityWriter extends JAMSComponent {
         while (cont) {
             Object ob = entities.getCurrent().getObject(this.attributeName.getValue());
             if (ob.getClass().getName().contains("DoubleArray")) {
-                //System.out.getRuntime().println("HRUNo: " +((JAMSDouble)entitySet.getCurrent().getObject("ID")).getValue());
-                double[] da = ((JAMSDoubleArray) entities.getCurrent().getObject(this.attributeName.getValue())).getValue();
+                //System.out.getRuntime().println("HRUNo: " +((Attribute.Double)entitySet.getCurrent().getObject("ID")).getValue());
+                double[] da = ((Attribute.DoubleArray) entities.getCurrent().getObject(this.attributeName.getValue())).getValue();
                 for (int i = 0; i < da.length; i++) {
                     double val = 0;
                     if (this.weight.getValue().equals("none")) {
                         val = da[i];
                     } else {
-                        double weight = (((JAMSDouble) entities.getCurrent().getObject(this.weight.getValue())).getValue());
+                        double weight = (((Attribute.Double) entities.getCurrent().getObject(this.weight.getValue())).getValue());
                         val = da[i] / weight;
                     }
                     writer.addData("" + val);
@@ -144,11 +144,11 @@ public class StandardEntityWriter extends JAMSComponent {
             } else {
                 //System.out.getRuntime().println("Primitive");
                 double val = 0;
-                double da = ((JAMSDouble) entities.getCurrent().getObject(this.attributeName.getValue())).getValue();
+                double da = ((Attribute.Double) entities.getCurrent().getObject(this.attributeName.getValue())).getValue();
                 if (this.weight.getValue().equals("none")) {
                     val = da;
                 } else {
-                    double weight = (((JAMSDouble) entities.getCurrent().getObject(this.weight.getValue())).getValue());
+                    double weight = (((Attribute.Double) entities.getCurrent().getObject(this.weight.getValue())).getValue());
                     val = da / weight;
                 }
                 writer.addData("" + val);

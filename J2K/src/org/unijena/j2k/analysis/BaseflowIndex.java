@@ -58,7 +58,7 @@ import java.util.Vector;
             description = "daily runoff value",
             unit = "m³/s"
             )
-            public JAMSDouble dailyRunoff;
+            public Attribute.Double dailyRunoff;
 
     //calibration parameters
     @JAMSVarDescription(
@@ -68,7 +68,7 @@ import java.util.Vector;
             "influenced and removed from the analysis. Default value is 5%.",
             defaultValue="0.05"
             )
-            public JAMSDouble lowestValues;
+            public Attribute.Double lowestValues;
 
     //output values
     @JAMSVarDescription(
@@ -77,7 +77,7 @@ import java.util.Vector;
             description = "the baseflow index expressed as the ration of reduced" +
             "mean monthly low flows and mean monthly runoff"
             )
-            public JAMSDouble bfi;
+            public Attribute.Double bfi;
     
    
     /*

@@ -48,7 +48,7 @@ import jams.model.*;
             description = "HRU attribute name area",
             unit = "m"
             )
-            public JAMSDouble area;
+            public Attribute.Double area;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
@@ -59,7 +59,7 @@ import jams.model.*;
             defaultValue = "0.0",
             unit = "°C"
             )
-            public JAMSDouble snow_trs;
+            public Attribute.Double snow_trs;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
@@ -70,7 +70,7 @@ import jams.model.*;
             defaultValue = "2.0",
             unit = "K"
             )
-            public JAMSDouble snow_trans;
+            public Attribute.Double snow_trans;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
@@ -78,7 +78,7 @@ import jams.model.*;
             description = "state variable min temperature or mean",
             unit = "°C"
             )
-            public JAMSDouble tmin;
+            public Attribute.Double tmin;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
@@ -86,7 +86,7 @@ import jams.model.*;
             description = "state variable mean temperature",
             unit = "°C"
             )
-            public JAMSDouble tmean;
+            public Attribute.Double tmean;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
@@ -94,7 +94,7 @@ import jams.model.*;
             description = "state variable precipitation",
             unit = "mm"
             )
-            public JAMSDouble precip;
+            public Attribute.Double precip;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
@@ -102,7 +102,7 @@ import jams.model.*;
             description = "state variable rain",
             unit = "L"
             )
-            public JAMSDouble rain;
+            public Attribute.Double rain;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
@@ -110,7 +110,7 @@ import jams.model.*;
             description = "state variable snow",
             unit = "L"
             )
-            public JAMSDouble snow;
+            public Attribute.Double snow;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
@@ -119,7 +119,7 @@ import jams.model.*;
             defaultValue= "0",
             unit = "L"
             )
-            public JAMSDouble svRain;
+            public Attribute.Double svRain;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
@@ -128,7 +128,7 @@ import jams.model.*;
             defaultValue= "0",
             unit = "L"
             )
-            public JAMSDouble svSnow;
+            public Attribute.Double svSnow;
     
     
     /*

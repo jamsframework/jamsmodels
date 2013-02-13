@@ -124,12 +124,12 @@ public class FullSetEntityWriter_1 extends JAMSComponent {
         while(cont){
             double weightVal = 1.0;
             if(!this.weight.getValue().equals("none")){
-                weightVal = (((JAMSDouble)entitySet.getCurrent().getObject(this.weight.getValue())).getValue());
+                weightVal = (((Attribute.Double)entitySet.getCurrent().getObject(this.weight.getValue())).getValue());
             }
             Object ob = entitySet.getCurrent().getObject(this.attributeName.getValue());
             if(ob.getClass().getName().contains("DoubleArray")){
-                //System.out.println("HRUNo: " +((JAMSDouble)entitySet.getCurrent().getObject("ID")).getValue());
-                double[] da = ((JAMSDoubleArray)entitySet.getCurrent().getObject(this.attributeName.getValue())).getValue();
+                //System.out.println("HRUNo: " +((Attribute.Double)entitySet.getCurrent().getObject("ID")).getValue());
+                double[] da = ((Attribute.DoubleArray)entitySet.getCurrent().getObject(this.attributeName.getValue())).getValue();
                 for(int i = 0; i < da.length; i++){
                     double val = da[i] / weightVal;
                     this.valArray[entCounter][tcounter] = val;
@@ -137,7 +137,7 @@ public class FullSetEntityWriter_1 extends JAMSComponent {
                 }
             } else{
                 //System.out.println("Primitive");
-                double da = ((JAMSDouble)entitySet.getCurrent().getObject(this.attributeName.getValue())).getValue();
+                double da = ((Attribute.Double)entitySet.getCurrent().getObject(this.attributeName.getValue())).getValue();
                 double val = da / weightVal;
                 this.valArray[entCounter][tcounter] = val;
                 //writer.addData(""+val);

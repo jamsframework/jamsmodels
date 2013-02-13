@@ -43,42 +43,42 @@ public class NashCascadeTestFunction extends JAMSComponent {
             update = JAMSVarDescription.UpdateType.INIT,
             description = "number of storages"
             )
-            public JAMSDouble para_n;
+            public Attribute.Double para_n;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
             update = JAMSVarDescription.UpdateType.INIT,
             description = "recession coefficient k"
             )
-            public JAMSDouble para_k;
+            public Attribute.Double para_k;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
             update = JAMSVarDescription.UpdateType.INIT,
             description = "input reduction value"
             )
-            public JAMSDouble para_r;
+            public Attribute.Double para_r;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
             update = JAMSVarDescription.UpdateType.INIT,
             description = "parameter e"
             )
-            public JAMSDoubleArray storages;
+            public Attribute.DoubleArray storages;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
             update = JAMSVarDescription.UpdateType.RUN,
             description = "the input value"            
             )
-            public JAMSDouble input;
+            public Attribute.Double input;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
             update = JAMSVarDescription.UpdateType.RUN,
             description = "the simulated response"            
             )
-            public JAMSDouble simulation;
+            public Attribute.Double simulation;
     
     public void init(){
         int n = (int)this.para_n.getValue();

@@ -190,7 +190,7 @@ public class MultiEntityReaderTS_old extends JAMSComponent {
         }
 
 
-        Attribute.Entity nullEntity = JAMSDataFactory.createEntity();
+        Attribute.Entity nullEntity = getModel().getRuntime().getDataFactory().createEntity();
         nullEntity.setValue((HashMap<String, Object>) null);
         hruMap.put(new Double(0), nullEntity);
         reachMap.put(new Double(0), nullEntity);

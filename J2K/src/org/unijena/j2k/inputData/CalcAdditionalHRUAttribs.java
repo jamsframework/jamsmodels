@@ -52,49 +52,49 @@ import jams.model.*;
             update = JAMSVarDescription.UpdateType.INIT,
             description = "attribute x-coordinate"
             )
-            public JAMSDouble x;
+            public Attribute.Double x;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
             update = JAMSVarDescription.UpdateType.INIT,
             description = "attribute y-coordinate"
             )
-            public JAMSDouble y;
+            public Attribute.Double y;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
             update = JAMSVarDescription.UpdateType.INIT,
             description = "attribute slope"
             )
-            public JAMSDouble slope;
+            public Attribute.Double slope;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
             update = JAMSVarDescription.UpdateType.INIT,
             description = "attribute aspect"
             )
-            public JAMSDouble aspect;
+            public Attribute.Double aspect;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
             update = JAMSVarDescription.UpdateType.INIT,
             description = "attribute latidute"
             )
-            public JAMSDouble latitude;
+            public Attribute.Double latitude;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
             update = JAMSVarDescription.UpdateType.INIT,
             description = "attribute longitude"
             )
-            public JAMSDouble longitude;
+            public Attribute.Double longitude;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
             update = JAMSVarDescription.UpdateType.INIT,
             description = "attribute slopeAspectCorrection factor"
             )
-            public JAMSDouble slAsCf;
+            public Attribute.Double slAsCf;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,

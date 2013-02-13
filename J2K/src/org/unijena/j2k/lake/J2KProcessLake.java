@@ -47,42 +47,42 @@ import jams.model.*;
             update = JAMSVarDescription.UpdateType.RUN,
             description = "HRU attribute name area"
             )
-            public JAMSDouble area;
+            public Attribute.Double area;
 
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
             update = JAMSVarDescription.UpdateType.RUN,
             description = "state variable rain"
             )
-            public JAMSDouble precip;
+            public Attribute.Double precip;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
             update = JAMSVarDescription.UpdateType.RUN,
             description = "state variable potET"
             )
-            public JAMSDouble potET;
+            public Attribute.Double potET;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
             update = JAMSVarDescription.UpdateType.RUN,
             description = "state variable actET"
             )
-            public JAMSDouble actET;
+            public Attribute.Double actET;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
             update = JAMSVarDescription.UpdateType.RUN,
             description = "state variable lake storage"
             )
-            public JAMSDouble lakeStorage;
+            public Attribute.Double lakeStorage;
 
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
             update = JAMSVarDescription.UpdateType.RUN,
             description = "state variable lake storage"
             )
-            public JAMSDouble lakeChange;
+            public Attribute.Double lakeChange;
     /*
      *  Component run stages
      */

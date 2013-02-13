@@ -50,56 +50,56 @@ public class RainCorrectionRichter extends JAMSComponent {
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
                         update = JAMSVarDescription.UpdateType.RUN,
                         description = "the precip values")
-    public JAMSDoubleArray precip;
+    public Attribute.DoubleArray precip;
 
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
                         update = JAMSVarDescription.UpdateType.RUN,
                         description = "temperature for the correction function",
                         unit = "°C")
-    public JAMSDoubleArray temperature;
+    public Attribute.DoubleArray temperature;
 
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.WRITE,
                         update = JAMSVarDescription.UpdateType.RUN,
                         description = "corrected precip values",
                         unit = "mm")
-    public JAMSDoubleArray rcorr;
+    public Attribute.DoubleArray rcorr;
 
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
                         update = JAMSVarDescription.UpdateType.RUN,
                         description = "array of temperature station elevations",
                         unit = "m")
-    public JAMSDoubleArray tempElevation;
+    public Attribute.DoubleArray tempElevation;
 
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
                         update = JAMSVarDescription.UpdateType.RUN,
                         description = "array of temperature station's x coordinate")
-    public JAMSDoubleArray tempXCoord;
+    public Attribute.DoubleArray tempXCoord;
 
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
                         update = JAMSVarDescription.UpdateType.RUN,
                         description = "array of temperature station's y coordinate")
-    public JAMSDoubleArray tempYCoord;
+    public Attribute.DoubleArray tempYCoord;
 
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
                         update = JAMSVarDescription.UpdateType.RUN,
                         description = "Regression coefficients for temperature")
-    public JAMSDoubleArray tempRegCoeff;
+    public Attribute.DoubleArray tempRegCoeff;
 
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
                         update = JAMSVarDescription.UpdateType.RUN,
                         description = "array of precip station elevations",
                         unit = "m")
-    public JAMSDoubleArray rainElevation;
+    public Attribute.DoubleArray rainElevation;
 
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
                         update = JAMSVarDescription.UpdateType.RUN,
                         description = "array of precip station's x coordinate")
-    public JAMSDoubleArray rainXCoord;
+    public Attribute.DoubleArray rainXCoord;
 
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
                         update = JAMSVarDescription.UpdateType.RUN,
                         description = "array of precip station's y coordinate")
-    public JAMSDoubleArray rainYCoord;
+    public Attribute.DoubleArray rainYCoord;
 
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
                         update = JAMSVarDescription.UpdateType.RUN,
@@ -109,12 +109,12 @@ public class RainCorrectionRichter extends JAMSComponent {
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
                         update = JAMSVarDescription.UpdateType.RUN,
                         description = "power for IDW function")
-    public JAMSDouble pIDW;
+    public Attribute.Double pIDW;
 
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
                         update = JAMSVarDescription.UpdateType.RUN,
                         description = "regression threshold")
-    public JAMSDouble regThres;
+    public Attribute.Double regThres;
 
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
                         update = JAMSVarDescription.UpdateType.RUN,
@@ -122,7 +122,7 @@ public class RainCorrectionRichter extends JAMSComponent {
                         upperBound = 5.0,
                         lowerBound = -5.0,
                         unit = "°C")
-    public JAMSDouble snow_trs;
+    public Attribute.Double snow_trs;
 
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
                         update = JAMSVarDescription.UpdateType.RUN,
@@ -130,7 +130,7 @@ public class RainCorrectionRichter extends JAMSComponent {
                         upperBound = 10,
                         lowerBound = 0,
                         unit = "K")
-    public JAMSDouble snow_trans;
+    public Attribute.Double snow_trans;
 
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
                         update = JAMSVarDescription.UpdateType.RUN,

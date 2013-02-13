@@ -37,20 +37,20 @@ public class WeightedVarSummation extends JAMSComponent {
             update = JAMSVarDescription.UpdateType.RUN,
             description = "input values"
             )
-            public JAMSDouble[] value;
+            public Attribute.Double[] value;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
             update = JAMSVarDescription.UpdateType.RUN,
             description = "output sum"
             )
-            public JAMSDouble sum;
+            public Attribute.Double sum;
 
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
             description = "A weight to be used to calculate the weighted sum"
             )
-            public JAMSDouble weight;
+            public Attribute.Double weight;
 
     
     public void init() {

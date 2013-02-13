@@ -46,21 +46,21 @@ public class Regionalisation_old extends JAMSComponent {
             update = JAMSVarDescription.UpdateType.RUN,
             description = "Array of data values for current time step"
             )
-            public JAMSDoubleArray dataArray;
+            public Attribute.DoubleArray dataArray;
     
     @JAMSVarDescription(
     access = JAMSVarDescription.AccessType.READ,
             update = JAMSVarDescription.UpdateType.RUN,
             description = "Regression coefficients"
             )
-            public JAMSDoubleArray regCoeff;
+            public Attribute.DoubleArray regCoeff;
     
     @JAMSVarDescription(
     access = JAMSVarDescription.AccessType.READ,
             update = JAMSVarDescription.UpdateType.RUN,
             description = "Array of station elevations"
             )
-            public JAMSDoubleArray statElevation;
+            public Attribute.DoubleArray statElevation;
     
     @JAMSVarDescription(
     access = JAMSVarDescription.AccessType.READ,
@@ -74,21 +74,21 @@ public class Regionalisation_old extends JAMSComponent {
             update = JAMSVarDescription.UpdateType.RUN,
             description = "Array of station's x coordinates"
             )
-            public JAMSDoubleArray statX;
+            public Attribute.DoubleArray statX;
     
     @JAMSVarDescription(
     access = JAMSVarDescription.AccessType.READ,
             update = JAMSVarDescription.UpdateType.RUN,
             description = "Array of station's y coordinates"
             )
-            public JAMSDoubleArray statY;
+            public Attribute.DoubleArray statY;
     
     @JAMSVarDescription(
     access = JAMSVarDescription.AccessType.READ,
             update = JAMSVarDescription.UpdateType.RUN,
             description = "Array of station's weights"
             )
-            public JAMSDoubleArray statWeights;
+            public Attribute.DoubleArray statWeights;
     
     @JAMSVarDescription(
     access = JAMSVarDescription.AccessType.READ,
@@ -102,28 +102,28 @@ public class Regionalisation_old extends JAMSComponent {
             update = JAMSVarDescription.UpdateType.INIT,
             description = "Attribute name x coordinate (hru)"
             )
-            public JAMSDouble unitX;
+            public Attribute.Double unitX;
     
     @JAMSVarDescription(
     access = JAMSVarDescription.AccessType.READ,
             update = JAMSVarDescription.UpdateType.INIT,
             description = "Attribute name y coordinate (hru)"
             )
-            public JAMSDouble unitY;
+            public Attribute.Double unitY;
     
     @JAMSVarDescription(
     access = JAMSVarDescription.AccessType.WRITE,
             update = JAMSVarDescription.UpdateType.RUN,
             description = "regionalised data value"
             )
-            public JAMSDouble dataValue;
+            public Attribute.Double dataValue;
     
     @JAMSVarDescription(
     access = JAMSVarDescription.AccessType.READ,
             update = JAMSVarDescription.UpdateType.RUN,
             description = "Attribute name elevation"
             )
-            public JAMSDouble entityElevation;
+            public Attribute.Double entityElevation;
     
     @JAMSVarDescription(
     access = JAMSVarDescription.AccessType.READ,
@@ -144,14 +144,14 @@ public class Regionalisation_old extends JAMSComponent {
             update = JAMSVarDescription.UpdateType.INIT,
             description = "Minimum r² value for elevation correction application"
             )
-            public JAMSDouble rsqThreshold;
+            public Attribute.Double rsqThreshold;
     
     @JAMSVarDescription(
     access = JAMSVarDescription.AccessType.READ,
             update = JAMSVarDescription.UpdateType.INIT,
             description = "Absolute possible minimum value for data set"
             )
-            public JAMSDouble fixedMinimum;
+            public Attribute.Double fixedMinimum;
     
     @JAMSVarDescription(
     access = JAMSVarDescription.AccessType.READ,

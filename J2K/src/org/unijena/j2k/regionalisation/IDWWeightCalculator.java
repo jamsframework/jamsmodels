@@ -48,19 +48,19 @@ public class IDWWeightCalculator extends JAMSComponent {
      */
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
                         description = "entity x-coordinate")
-    public JAMSDouble entityX;
+    public Attribute.Double entityX;
 
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
                         description = "entity y-coordinate")
-    public JAMSDouble entityY;
+    public Attribute.Double entityY;
 
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
                         description = "Power of IDW function")
-    public JAMSDouble pidw;
+    public Attribute.Double pidw;
 
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.WRITE,
                         description = "weights for IDW part of regionalisation")
-    public JAMSDoubleArray statWeights;
+    public Attribute.DoubleArray statWeights;
 
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.WRITE,
                         description = "position array to determine best weights")

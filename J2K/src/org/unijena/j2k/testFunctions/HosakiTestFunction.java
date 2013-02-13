@@ -43,21 +43,21 @@ public class HosakiTestFunction extends JAMSComponent {
             update = JAMSVarDescription.UpdateType.INIT,
             description = "parameter X1"
             )
-            public JAMSDouble paraX1;
+            public Attribute.Double paraX1;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
             update = JAMSVarDescription.UpdateType.INIT,
             description = "parameter X2"
             )
-            public JAMSDouble paraX2; 
+            public Attribute.Double paraX2; 
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
             update = JAMSVarDescription.UpdateType.RUN,
             description = "function y"            
             )
-            public JAMSDouble yVal;
+            public Attribute.Double yVal;
 
     public void run() {
         double x1 = this.paraX1.getValue();

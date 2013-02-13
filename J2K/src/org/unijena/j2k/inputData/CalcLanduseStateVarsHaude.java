@@ -52,21 +52,21 @@ import jams.model.*;
             update = JAMSVarDescription.UpdateType.RUN,
             description = "HRU statevar LAI values (366)"
             )
-            public JAMSDoubleArray LAIArray;
+            public Attribute.DoubleArray LAIArray;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
             update = JAMSVarDescription.UpdateType.RUN,
             description = "Monthly stomata resistance values"
             )
-            public JAMSDoubleArray etMonthFactorArray;
+            public Attribute.DoubleArray etMonthFactorArray;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
             update = JAMSVarDescription.UpdateType.RUN,
             description = "HRU attribute name elevation"
             )
-            public JAMSDouble elevation;
+            public Attribute.Double elevation;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,

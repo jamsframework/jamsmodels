@@ -42,11 +42,11 @@ public class CalcHourlyMaximumSunshine extends JAMSComponent {
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.WRITE,
         update = JAMSVarDescription.UpdateType.RUN,
         description = "maximum sunshine [0|1]")
-        public JAMSDouble maxSunshine;
+        public Attribute.Double maxSunshine;
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.WRITE,
         update = JAMSVarDescription.UpdateType.RUN,
         description = "extraterrestic radiation [MJ/m²]")
-        public JAMSDouble actExtRad;
+        public Attribute.Double actExtRad;
 
     /*
      *  Component run stages

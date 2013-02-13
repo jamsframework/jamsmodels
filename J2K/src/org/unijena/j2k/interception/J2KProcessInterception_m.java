@@ -71,7 +71,7 @@ import jams.model.*;
             update = JAMSVarDescription.UpdateType.RUN,
             description = "hruID"
             )
-            public JAMSDouble hruID;
+            public Attribute.Double hruID;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
@@ -85,119 +85,119 @@ import jams.model.*;
             update = JAMSVarDescription.UpdateType.RUN,
             description = "attribute area"
             )
-            public JAMSDouble area;
+            public Attribute.Double area;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
             update = JAMSVarDescription.UpdateType.RUN,
             description = "state variable mean tempeature"
             )
-            public JAMSDouble tmean;
+            public Attribute.Double tmean;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
             update = JAMSVarDescription.UpdateType.RUN,
             description = "state variable rain"
             )
-            public JAMSDouble rain;
+            public Attribute.Double rain;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
             update = JAMSVarDescription.UpdateType.RUN,
             description = "state variable snow"
             )
-            public JAMSDouble snow;
+            public Attribute.Double snow;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
             update = JAMSVarDescription.UpdateType.RUN,
             description = "state variable potET"
             )
-            public JAMSDouble potET;
+            public Attribute.Double potET;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
             update = JAMSVarDescription.UpdateType.RUN,
             description = "state variable actET"
             )
-            public JAMSDouble actET;
+            public Attribute.Double actET;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
             update = JAMSVarDescription.UpdateType.RUN,
             description = "state variable LAI"
             )
-            public JAMSDouble actLAI;
+            public Attribute.Double actLAI;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
             update = JAMSVarDescription.UpdateType.INIT,
             description = "Snow parameter TRS"
             )
-            public JAMSDouble snow_trs;
+            public Attribute.Double snow_trs;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
             update = JAMSVarDescription.UpdateType.INIT,
             description = "Snow parameter TRANS"
             )
-            public JAMSDouble snow_trans;
+            public Attribute.Double snow_trans;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
             update = JAMSVarDescription.UpdateType.INIT,
             description = "Interception parameter a_rain"
             )
-            public JAMSDouble a_rain;
+            public Attribute.Double a_rain;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
             update = JAMSVarDescription.UpdateType.INIT,
             description = "Interception parameter a_snow"
             )
-            public JAMSDouble a_snow;
+            public Attribute.Double a_snow;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
             update = JAMSVarDescription.UpdateType.RUN,
             description = "state variable net-rain"
             )
-            public JAMSDouble netRain;
+            public Attribute.Double netRain;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
             update = JAMSVarDescription.UpdateType.RUN,
             description = "state variable net-snow"
             )
-            public JAMSDouble netSnow;
+            public Attribute.Double netSnow;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
             update = JAMSVarDescription.UpdateType.RUN,
             description = "state variable throughfall"
             )
-            public JAMSDouble throughfall;
+            public Attribute.Double throughfall;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
             update = JAMSVarDescription.UpdateType.RUN,
             description = "state variable dy-interception"
             )
-            public JAMSDouble interception;
+            public Attribute.Double interception;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
             update = JAMSVarDescription.UpdateType.RUN,
             description = "state variable interception storage"
             )
-            public JAMSDouble intercStorage;
+            public Attribute.Double intercStorage;
 
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
             update = JAMSVarDescription.UpdateType.RUN,
             description = "state variable evaporation from interception storage"
             )
-            public JAMSDouble intercETP;
+            public Attribute.Double intercETP;
     /*
      *  Component run stages
      */

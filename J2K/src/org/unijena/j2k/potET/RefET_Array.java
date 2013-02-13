@@ -49,32 +49,32 @@ public class RefET_Array extends JAMSComponent {
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
     update = JAMSVarDescription.UpdateType.RUN,
     description = "state variable wind")
-    public JAMSDoubleArray wind;
+    public Attribute.DoubleArray wind;
 
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
     update = JAMSVarDescription.UpdateType.RUN,
     description = "state variable mean temperature")
-    public JAMSDoubleArray tmean;
+    public Attribute.DoubleArray tmean;
 
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
     update = JAMSVarDescription.UpdateType.RUN,
     description = "state variable relative humidity")
-    public JAMSDoubleArray rhum;
+    public Attribute.DoubleArray rhum;
 
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
     update = JAMSVarDescription.UpdateType.RUN,
     description = "state variable net radiation")
-    public JAMSDoubleArray netRad;
+    public Attribute.DoubleArray netRad;
 
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
     update = JAMSVarDescription.UpdateType.RUN,
     description = "attribute elevation")
-    public JAMSDoubleArray elevation;
+    public Attribute.DoubleArray elevation;
 
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.WRITE,
     update = JAMSVarDescription.UpdateType.RUN,
     description = "potential refET [mm/ timeUnit]")
-    public JAMSDoubleArray refET;
+    public Attribute.DoubleArray refET;
 
 
     /*

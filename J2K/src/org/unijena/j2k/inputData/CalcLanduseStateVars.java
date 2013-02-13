@@ -55,14 +55,14 @@ import jams.model.*;
             update = JAMSVarDescription.UpdateType.RUN,
             description = "Array with LAI values for a standard year"
             )
-            public JAMSDoubleArray LAIArray;
+            public Attribute.DoubleArray LAIArray;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
             update = JAMSVarDescription.UpdateType.RUN,
             description = "Array with eff. Height values for a standard year"
             )
-            public JAMSDoubleArray effHArray;
+            public Attribute.DoubleArray effHArray;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
@@ -72,7 +72,7 @@ import jams.model.*;
             upperBound = 150,
             unit = "s / m"
             )
-            public JAMSDoubleArray rsc0Array;
+            public Attribute.DoubleArray rsc0Array;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
@@ -82,7 +82,7 @@ import jams.model.*;
             //upperBound = 150,
             unit = "m"
             )
-            public JAMSDouble elevation;
+            public Attribute.Double elevation;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,

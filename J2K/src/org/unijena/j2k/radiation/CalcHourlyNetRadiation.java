@@ -54,49 +54,49 @@ import jams.model.*;
             update = JAMSVarDescription.UpdateType.RUN,
             description = "state variable temperature"
             )
-            public JAMSDouble temp;
+            public Attribute.Double temp;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
             update = JAMSVarDescription.UpdateType.RUN,
             description = "state variable relative humidity"
             )
-            public JAMSDouble rhum;
+            public Attribute.Double rhum;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
             update = JAMSVarDescription.UpdateType.RUN,
             description = "state variable solar radiation"
             )
-            public JAMSDouble solRad;
+            public Attribute.Double solRad;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
             update = JAMSVarDescription.UpdateType.RUN,
             description = "state variable solar radiation"
             )
-            public JAMSDouble extRad;
+            public Attribute.Double extRad;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
             update = JAMSVarDescription.UpdateType.RUN,
             description = "state variable albedo"
             )
-            public JAMSDouble albedo;
+            public Attribute.Double albedo;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
             update = JAMSVarDescription.UpdateType.RUN,
             description = "attribute elevation"
             )
-            public JAMSDouble elevation;
+            public Attribute.Double elevation;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
             update = JAMSVarDescription.UpdateType.RUN,
             description = "attribute latitude"
             )
-            public JAMSDouble latitude;
+            public Attribute.Double latitude;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
@@ -117,7 +117,7 @@ import jams.model.*;
             update = JAMSVarDescription.UpdateType.RUN,
             description = "daily net radiation [MJ/m²]"
             )
-            public JAMSDouble netRad;
+            public Attribute.Double netRad;
     
     private File cacheFile;
     private boolean useCache = false;

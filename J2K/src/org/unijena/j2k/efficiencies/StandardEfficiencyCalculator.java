@@ -89,14 +89,14 @@ title="StandardEfficiencyCalculator",
             update = JAMSVarDescription.UpdateType.RUN,
             description = "Prediction value"
             )
-            public JAMSDouble prediction;
+            public Attribute.Double prediction;
     
     @JAMSVarDescription(
     access = JAMSVarDescription.AccessType.READ,
             update = JAMSVarDescription.UpdateType.RUN,
             description = "Validation value"
             )
-            public JAMSDouble validation;
+            public Attribute.Double validation;
     
     @JAMSVarDescription(
     access = JAMSVarDescription.AccessType.WRITE,
@@ -106,7 +106,7 @@ title="StandardEfficiencyCalculator",
             lowerBound = -9999,
             upperBound = 1
             )
-            public JAMSDouble e1;
+            public Attribute.Double e1;
     
     @JAMSVarDescription(
     access = JAMSVarDescription.AccessType.WRITE,
@@ -116,7 +116,7 @@ title="StandardEfficiencyCalculator",
             lowerBound = -9999,
             upperBound = 1
             )
-            public JAMSDouble e2;
+            public Attribute.Double e2;
     
     @JAMSVarDescription(
     access = JAMSVarDescription.AccessType.WRITE,
@@ -126,7 +126,7 @@ title="StandardEfficiencyCalculator",
             lowerBound = -9999,
             upperBound = 1
             )
-            public JAMSDouble le1;
+            public Attribute.Double le1;
     
     @JAMSVarDescription(
     access = JAMSVarDescription.AccessType.WRITE,
@@ -136,7 +136,7 @@ title="StandardEfficiencyCalculator",
             lowerBound = -9999,
             upperBound = 1
             )
-            public JAMSDouble le2;
+            public Attribute.Double le2;
     
     @JAMSVarDescription(
     access = JAMSVarDescription.AccessType.WRITE,
@@ -146,7 +146,7 @@ title="StandardEfficiencyCalculator",
             lowerBound = 0,
             upperBound = 1
             )
-            public JAMSDouble ioa1;
+            public Attribute.Double ioa1;
     
     @JAMSVarDescription(
     access = JAMSVarDescription.AccessType.WRITE,
@@ -156,7 +156,7 @@ title="StandardEfficiencyCalculator",
             lowerBound = 0,
             upperBound = 1
             )
-            public JAMSDouble ioa2;
+            public Attribute.Double ioa2;
     
     @JAMSVarDescription(
     access = JAMSVarDescription.AccessType.WRITE,
@@ -166,7 +166,7 @@ title="StandardEfficiencyCalculator",
             lowerBound = 0,
             upperBound = 1
             )
-            public JAMSDouble rsq;
+            public Attribute.Double rsq;
     
     @JAMSVarDescription(
     access = JAMSVarDescription.AccessType.WRITE,
@@ -176,7 +176,7 @@ title="StandardEfficiencyCalculator",
             lowerBound = 0,
             upperBound = 9999
             )
-            public JAMSDouble grad;
+            public Attribute.Double grad;
     
     @JAMSVarDescription(
     access = JAMSVarDescription.AccessType.WRITE,
@@ -185,7 +185,7 @@ title="StandardEfficiencyCalculator",
             unit="n/a",
             lowerBound = 0,
             upperBound = 1)
-            public JAMSDouble wrsq;
+            public Attribute.Double wrsq;
     
     @JAMSVarDescription(
     access = JAMSVarDescription.AccessType.WRITE,
@@ -195,7 +195,7 @@ title="StandardEfficiencyCalculator",
             lowerBound = 0,
             upperBound = 9999
             )
-            public JAMSDouble dsGrad;
+            public Attribute.Double dsGrad;
     
     @JAMSVarDescription(
     access = JAMSVarDescription.AccessType.WRITE,
@@ -205,7 +205,7 @@ title="StandardEfficiencyCalculator",
             lowerBound = 0,
             upperBound = 9999
             )
-            public JAMSDouble absVolErr;
+            public Attribute.Double absVolErr;
     
     @JAMSVarDescription(
     access = JAMSVarDescription.AccessType.WRITE,
@@ -215,7 +215,7 @@ title="StandardEfficiencyCalculator",
             lowerBound = 0,
             upperBound = 9999
             )
-            public JAMSDouble rmse;
+            public Attribute.Double rmse;
     
     @JAMSVarDescription(
     access = JAMSVarDescription.AccessType.WRITE,
@@ -225,7 +225,7 @@ title="StandardEfficiencyCalculator",
             lowerBound = 0,
             upperBound = 9999
             )
-            public JAMSDouble pbias;
+            public Attribute.Double pbias;
 
     @JAMSVarDescription(
     access = JAMSVarDescription.AccessType.WRITE,
@@ -235,14 +235,14 @@ title="StandardEfficiencyCalculator",
             lowerBound = 0,
             upperBound = 9999
             )
-            public JAMSDouble apbias;
+            public Attribute.Double apbias;
     
     @JAMSVarDescription(
     access = JAMSVarDescription.AccessType.WRITE,
             update = JAMSVarDescription.UpdateType.RUN,
             description = "full set of predicted values"
             )
-            public JAMSDoubleArray predictionValues;
+            public Attribute.DoubleArray predictionValues;
     
     private final int E1 = 1;
     private final int E2 = 2;
@@ -399,7 +399,7 @@ title="StandardEfficiencyCalculator",
         Vector<Double> preVector = new Vector<Double>();
         
         this.predictionValues.setValue(preData);
-        
+
         for(int i = this.interValStart; i < this.interValEnd; i++){
             //consider valid values only
             if(valData[i] > -9999 && preData[i] > -9999){

@@ -53,49 +53,49 @@ import javax.naming.directory.NoSuchAttributeException;
             update = JAMSVarDescription.UpdateType.RUN,
             description = "Catchment outlet RG2 storage"
             )
-            public JAMSDouble catchmentSimRunoff;
+            public Attribute.Double catchmentSimRunoff;
      
      @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
             update = JAMSVarDescription.UpdateType.RUN,
             description = "Reach statevar simulated Runoff"
             )
-            public JAMSDouble simRunoff;
+            public Attribute.Double simRunoff;
     
      @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
             update = JAMSVarDescription.UpdateType.RUN,
             description = "Reach statevar simulated Runoff"
             )
-            public JAMSDouble RD1_RR_Koeff;
+            public Attribute.Double RD1_RR_Koeff;
    
      @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
             update = JAMSVarDescription.UpdateType.RUN,
             description = "Reach statevar simulated Runoff"
             )
-            public JAMSDouble RD2_RR_Koeff;
+            public Attribute.Double RD2_RR_Koeff;
      
      @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
             update = JAMSVarDescription.UpdateType.RUN,
             description = "Reach statevar simulated Runoff"
             )
-            public JAMSDouble RG1_RR_Koeff;
+            public Attribute.Double RG1_RR_Koeff;
      
      @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
             update = JAMSVarDescription.UpdateType.RUN,
             description = "Reach statevar simulated Runoff"
             )
-            public JAMSDouble RG2_RR_Koeff;
+            public Attribute.Double RG2_RR_Koeff;
       
      @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
             update = JAMSVarDescription.UpdateType.RUN,
             description = "spatial grid resolution"
             )
-            public JAMSDouble gridresolution;
+            public Attribute.Double gridresolution;
      
     
 public double[][] RasterRouting(double anteil ,Point [][] routing,int dgm_sort[][],double[][] fliessrichtung,double[][] fuellstand, int anzahl_elemente, double flgew1[][],double aufloesung)

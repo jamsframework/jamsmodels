@@ -47,61 +47,61 @@ public class CalcDailyNetRadiation extends JAMSComponent {
     update = JAMSVarDescription.UpdateType.RUN,
     description = "state variable mean temperature",
     unit = "°C")
-    public JAMSDouble tmean;
+    public Attribute.Double tmean;
 
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
     update = JAMSVarDescription.UpdateType.RUN,
     description = "state variable relative humidity",
     unit = "%")
-    public JAMSDouble rhum;
+    public Attribute.Double rhum;
 
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
     update = JAMSVarDescription.UpdateType.RUN,
     description = "state variable solar radiation",
     unit = "MJ m^-2 d^-1")
-    public JAMSDouble extRad;
+    public Attribute.Double extRad;
 
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
     update = JAMSVarDescription.UpdateType.RUN,
     description = "state variable solar radiation",
     unit = "MJ m^-2 d^-1")
-    public JAMSDouble solRad;
+    public Attribute.Double solRad;
 
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
     update = JAMSVarDescription.UpdateType.RUN,
     description = "state variable albedo")
-    public JAMSDouble albedo;
+    public Attribute.Double albedo;
 
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
     update = JAMSVarDescription.UpdateType.RUN,
     description = "attribute elevation",
     unit = "m")
-    public JAMSDouble elevation;
+    public Attribute.Double elevation;
 
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.WRITE,
     update = JAMSVarDescription.UpdateType.RUN,
     description = "daily net radiation",
     unit = "MJ m^-2 d^-1")
-    public JAMSDouble netRad;
+    public Attribute.Double netRad;
 
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.WRITE,
     update = JAMSVarDescription.UpdateType.RUN,
     description = "daily shortwave radiation",
     unit = "MJ m^-2 d^-1")
-    public JAMSDouble swRad;
+    public Attribute.Double swRad;
 
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.WRITE,
     update = JAMSVarDescription.UpdateType.RUN,
     description = "daily longwave radiation",
     unit = "MJ m^-2 d^-1")
-    public JAMSDouble lwRad;
+    public Attribute.Double lwRad;
 
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.WRITE,
     update = JAMSVarDescription.UpdateType.RUN,
     description = "daily net radiation for refET",
     defaultValue = "0",
     unit = "MJ m^-2 d^-1")
-    public JAMSDouble refETNetRad;
+    public Attribute.Double refETNetRad;
 
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
     update = JAMSVarDescription.UpdateType.INIT,

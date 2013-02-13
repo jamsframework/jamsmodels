@@ -72,7 +72,7 @@ public class RefET extends JAMSComponent {
             description = "state variable wind",
             unit="m/s"
             )
-            public JAMSDouble wind;
+            public Attribute.Double wind;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
@@ -80,7 +80,7 @@ public class RefET extends JAMSComponent {
             description = "state variable mean temperature",
             unit="°C"
             )
-            public JAMSDouble tmean;
+            public Attribute.Double tmean;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
@@ -88,7 +88,7 @@ public class RefET extends JAMSComponent {
             description = "state variable relative humidity",
             unit="%"
             )
-            public JAMSDouble rhum;
+            public Attribute.Double rhum;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
@@ -96,7 +96,7 @@ public class RefET extends JAMSComponent {
             description = "state variable net radiation",
             unit="MJ m^-2 d^-1"
             )
-            public JAMSDouble netRad;
+            public Attribute.Double netRad;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
@@ -104,7 +104,7 @@ public class RefET extends JAMSComponent {
             description = "state extraterrestric radiation",
             unit="MJ m^-2 d^-1"
             )
-            public JAMSDouble extRad;
+            public Attribute.Double extRad;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
@@ -112,7 +112,7 @@ public class RefET extends JAMSComponent {
             description = "state variable solar radiation",
             unit="MJ m^-2 d^-1"
             )
-            public JAMSDouble solRad;
+            public Attribute.Double solRad;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
@@ -120,7 +120,7 @@ public class RefET extends JAMSComponent {
             description = "attribute elevation",
             unit="m"
             )
-            public JAMSDouble elevation;
+            public Attribute.Double elevation;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
@@ -128,17 +128,17 @@ public class RefET extends JAMSComponent {
             description = "attribute area",
             unit="m²"
             )
-            public JAMSDouble area;
+            public Attribute.Double area;
 
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.WRITE,
     update = JAMSVarDescription.UpdateType.RUN,
     description = "potential refET [mm/ timeUnit]")
-    public JAMSDouble refET;
+    public Attribute.Double refET;
 
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.WRITE,
     update = JAMSVarDescription.UpdateType.RUN,
     description = "actual ET [mm/ timeUnit]")
-    public JAMSDouble actET;
+    public Attribute.Double actET;
 
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
     update = JAMSVarDescription.UpdateType.INIT,

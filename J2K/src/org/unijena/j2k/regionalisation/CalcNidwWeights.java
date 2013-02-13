@@ -46,28 +46,28 @@ import jams.model.*;
             update = JAMSVarDescription.UpdateType.RUN,
             description = "entity x-coordinate"
             )
-            public JAMSDouble entityX;
+            public Attribute.Double entityX;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
             update = JAMSVarDescription.UpdateType.RUN,
             description = "entity y-coordinate"
             )
-            public JAMSDouble entityY;
+            public Attribute.Double entityY;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
             update = JAMSVarDescription.UpdateType.RUN,
             description = "Array of station's x coordinates"
             )
-            public JAMSDoubleArray statX;
+            public Attribute.DoubleArray statX;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
             update = JAMSVarDescription.UpdateType.RUN,
             description = "Array of station's y coordinates"
             )
-            public JAMSDoubleArray statY;
+            public Attribute.DoubleArray statY;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
@@ -81,14 +81,14 @@ import jams.model.*;
             update = JAMSVarDescription.UpdateType.INIT,
             description = "Power of IDW function"
             )
-            public JAMSDouble pidw;
+            public Attribute.Double pidw;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
             update = JAMSVarDescription.UpdateType.RUN,
             description = "weights for IDW part of regionalisation"
             )
-            public JAMSDoubleArray statWeights;
+            public Attribute.DoubleArray statWeights;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
@@ -106,7 +106,7 @@ import jams.model.*;
     }
     
     public void run() throws JAMSEntity.NoSuchAttributeException{
-        Attribute.DoubleArray idwWeights = JAMSDataFactory.createDoubleArray();
+        Attribute.DoubleArray idwWeights = getModel().getRuntime().getDataFactory().createDoubleArray();
         if(equalWeights == null || !equalWeights.getValue()){
         	idwWeights.setValue(org.unijena.j2k.statistics.IDW.calcNidwWeights(entityX.getValue(), entityY.getValue(), statX.getValue(), statY.getValue(), pidw.getValue(), nidw.getValue()));
         }

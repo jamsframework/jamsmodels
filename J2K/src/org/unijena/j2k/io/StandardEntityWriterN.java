@@ -147,14 +147,14 @@ public class StandardEntityWriterN extends JAMSComponent {
         //no weight
         if(this.weight.getValue().equals("none")){
             for(int i = 0; i < nEnts; i++){
-                valueMatrix[tcounter][i] = (((JAMSDouble)entities.getEntityArray()[i].getObject(this.attributeName.getValue())).getValue());
+                valueMatrix[tcounter][i] = (((Attribute.Double)entities.getEntityArray()[i].getObject(this.attributeName.getValue())).getValue());
             }
         }
         //user selected weight attribute
         else{
             for(int i = 0; i < nEnts; i++){
-                double weight = (((JAMSDouble)entities.getEntityArray()[i].getObject(this.weight.getValue())).getValue());
-                valueMatrix[tcounter][i] = (((JAMSDouble)entities.getEntityArray()[i].getObject(this.attributeName.getValue())).getValue()) / weight;
+                double weight = (((Attribute.Double)entities.getEntityArray()[i].getObject(this.weight.getValue())).getValue());
+                valueMatrix[tcounter][i] = (((Attribute.Double)entities.getEntityArray()[i].getObject(this.attributeName.getValue())).getValue()) / weight;
             }
         }
         
@@ -208,7 +208,7 @@ public class StandardEntityWriterN extends JAMSComponent {
             
             //data matrix
             for(int e = 0; e < nEnts; e++){
-                int ID = (int)(((JAMSDouble)entities.getEntityArray()[e].getObject("ID")).getValue());
+                int ID = (int)(((Attribute.Double)entities.getEntityArray()[e].getObject("ID")).getValue());
                 writer.addData(ID);
                 for(int t = 0; t < dateVals.length; t++){
                     String dStr = String.format(Locale.US,"%.3f",valueMatrix[t][e]);

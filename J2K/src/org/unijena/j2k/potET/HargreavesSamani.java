@@ -53,42 +53,42 @@ public class HargreavesSamani extends JAMSComponent {
     update = JAMSVarDescription.UpdateType.RUN,
     description = "state variable minimum air temperature",
             unit = "degC")
-    public JAMSDouble tmin;
+    public Attribute.Double tmin;
 
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
     update = JAMSVarDescription.UpdateType.RUN,
     description = "state variable mean temperature",
             unit = "degC")
-    public JAMSDouble tmean;
+    public Attribute.Double tmean;
 
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
     update = JAMSVarDescription.UpdateType.RUN,
     description = "state variable maximum air temperature",
             unit = "degC")
-    public JAMSDouble tmax;
+    public Attribute.Double tmax;
 
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
     update = JAMSVarDescription.UpdateType.RUN,
     description = "state variable extraterrestrial radiation",
             unit = "MJ m^-2 day^-1")
-    public JAMSDouble extRad;
+    public Attribute.Double extRad;
 
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
     update = JAMSVarDescription.UpdateType.RUN,
     description = "attribute area")
-    public JAMSDouble area;
+    public Attribute.Double area;
 
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.WRITE,
     update = JAMSVarDescription.UpdateType.RUN,
     description = "potential ET",
             unit = "mm day^-1")
-    public JAMSDouble potET;
+    public Attribute.Double potET;
 
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.WRITE,
     update = JAMSVarDescription.UpdateType.RUN,
     description = "actual ET",
             unit = "mm day^-1")
-    public JAMSDouble actET;
+    public Attribute.Double actET;
 
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
     update = JAMSVarDescription.UpdateType.INIT,

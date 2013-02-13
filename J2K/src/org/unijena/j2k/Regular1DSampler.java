@@ -78,7 +78,7 @@ import jams.model.*;
             update = JAMSVarDescription.UpdateType.RUN,
             description = "efficiency values"
             )
-            public JAMSDouble[] effValues;
+            public Attribute.Double[] effValues;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
@@ -118,9 +118,9 @@ import jams.model.*;
             update = JAMSVarDescription.UpdateType.RUN,
             description = "Output file attribute"
             )
-            public JAMSDoubleArray targetValue;
+            public Attribute.DoubleArray targetValue;
     
-    JAMSDouble parameter;
+    Attribute.Double parameter;
     String parameterName;
     double lowBound;
     double upBound;
@@ -149,7 +149,7 @@ import jams.model.*;
             //retreiving parameter names
             int i;
             parameterName = this.parameterID.getValue();
-            parameter = (JAMSDouble) getModel().getRuntime().getDataHandles().get(parameterName);
+            parameter = (Attribute.Double) getModel().getRuntime().getDataHandles().get(parameterName);
                         
             String key = this.boundaries.getValue().substring(1, boundaries.getValue().length()-1);
             StringTokenizer boundTok = new StringTokenizer(key, ">");

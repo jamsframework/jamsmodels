@@ -54,28 +54,28 @@ title="WASIMProcessSnow",
             description = "Entity area",
             unit = "m²"
             )
-            public JAMSDouble area;
+            public Attribute.Double area;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
             update = JAMSVarDescription.UpdateType.RUN,
             description = "Entity slope aspect correction factor"
             )
-            public JAMSDouble sloAspCorrFactor;
+            public Attribute.Double sloAspCorrFactor;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
             update = JAMSVarDescription.UpdateType.RUN,
             description = "Entity latitude"
             )
-            public JAMSDouble latitude;
+            public Attribute.Double latitude;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
             update = JAMSVarDescription.UpdateType.RUN,
             description = "Entity landuse albedo"
             )
-            public JAMSDouble landAlbedo;
+            public Attribute.Double landAlbedo;
     
     //state variables
     @JAMSVarDescription(
@@ -84,7 +84,7 @@ title="WASIMProcessSnow",
             description = "Snow water equivalent",
             unit = "mm"
             )
-            public JAMSDouble snowWaterEquivalent;
+            public Attribute.Double snowWaterEquivalent;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
@@ -92,7 +92,7 @@ title="WASIMProcessSnow",
             description = "liquid water in snowpack",
             unit = "mm"
             )
-            public JAMSDouble freeWater;
+            public Attribute.Double freeWater;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
@@ -100,7 +100,7 @@ title="WASIMProcessSnow",
             description = "frozen water in snowpack",
             unit = "mm"
             )
-            public JAMSDouble iceContent;
+            public Attribute.Double iceContent;
     
     /*@JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
@@ -108,28 +108,28 @@ title="WASIMProcessSnow",
             description = "radiation melt factor",
             unit = "mm / C*day"
             )
-            public JAMSDouble radiationMeltFactor;*/
+            public Attribute.Double radiationMeltFactor;*/
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
             update = JAMSVarDescription.UpdateType.RUN,
             description = "the snow melt"
             )
-            public JAMSDouble snowMelt;
+            public Attribute.Double snowMelt;
     
     @JAMSVarDescription(
     access = JAMSVarDescription.AccessType.READWRITE,
             update = JAMSVarDescription.UpdateType.RUN,
             description = "the albedo of the entity"
             )
-            public JAMSDouble snowAlbedo;
+            public Attribute.Double snowAlbedo;
     
     /*@JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
             update = JAMSVarDescription.UpdateType.RUN,
             description = "actual evapotranspiration"
             )
-            public JAMSDouble aET;*/
+            public Attribute.Double aET;*/
     
     //calibration parameters
        
@@ -140,14 +140,14 @@ title="WASIMProcessSnow",
             "which snow melt will start",
             unit = "C"
             )
-            public JAMSDouble meltTemp;
+            public Attribute.Double meltTemp;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
             update = JAMSVarDescription.UpdateType.INIT,
             description = "factor c0 for potential melt rate"
             )
-            public JAMSDouble c0Factor;
+            public Attribute.Double c0Factor;
     
     @JAMSVarDescription(
     access = JAMSVarDescription.AccessType.READ,
@@ -156,14 +156,14 @@ title="WASIMProcessSnow",
             "snowpack expressed as decimal fraction of total " +
             "snowpack water equivalent"
             )
-            public JAMSDouble freeWaterCapacity;
+            public Attribute.Double freeWaterCapacity;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
             update = JAMSVarDescription.UpdateType.INIT,
             description = "constant albedo of snow"
             )
-            public JAMSDouble snowConstAlbedo;
+            public Attribute.Double snowConstAlbedo;
     
     //driving data
     @JAMSVarDescription(
@@ -171,21 +171,21 @@ title="WASIMProcessSnow",
             update = JAMSVarDescription.UpdateType.RUN,
             description = "rain amount"
             )
-            public JAMSDouble rain;
+            public Attribute.Double rain;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
             update = JAMSVarDescription.UpdateType.RUN,
             description = "snow amount"
             )
-            public JAMSDouble snow;
+            public Attribute.Double snow;
     
     @JAMSVarDescription(
     access = JAMSVarDescription.AccessType.READ,
             update = JAMSVarDescription.UpdateType.RUN,
             description = "precip amount"
             )
-            public JAMSDouble precip;
+            public Attribute.Double precip;
     
     @JAMSVarDescription(
     access = JAMSVarDescription.AccessType.READ,
@@ -193,7 +193,7 @@ title="WASIMProcessSnow",
             description = "minum temperature",
             unit = "C"
             )
-            public JAMSDouble tmin;
+            public Attribute.Double tmin;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
@@ -201,7 +201,7 @@ title="WASIMProcessSnow",
             description = "mean temperature",
             unit = "C"
             )
-            public JAMSDouble tmean;
+            public Attribute.Double tmean;
     
     @JAMSVarDescription(
     access = JAMSVarDescription.AccessType.READ,
@@ -209,7 +209,7 @@ title="WASIMProcessSnow",
             description = "max temperature",
             unit = "C"
             )
-            public JAMSDouble tmax;
+            public Attribute.Double tmax;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,

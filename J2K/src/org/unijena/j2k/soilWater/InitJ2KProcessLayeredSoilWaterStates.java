@@ -52,21 +52,21 @@ import jams.model.*;
             update = JAMSVarDescription.UpdateType.RUN,
             description = "attribute area"
             )
-            public JAMSDouble area;
+            public Attribute.Double area;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
             update = JAMSVarDescription.UpdateType.INIT,
             description = "field capacity adaptation factor"
             )
-            public JAMSDouble FCAdaptation;
+            public Attribute.Double FCAdaptation;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
             update = JAMSVarDescription.UpdateType.INIT,
             description = "air capacity adaptation factor"
             )
-            public JAMSDouble ACAdaptation;
+            public Attribute.Double ACAdaptation;
     
     
     @JAMSVarDescription(
@@ -74,84 +74,84 @@ import jams.model.*;
             update = JAMSVarDescription.UpdateType.RUN,
             description = "HRU statevar rooting depth"
             )
-            public JAMSDouble rootDepth;
+            public Attribute.Double rootDepth;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
             update = JAMSVarDescription.UpdateType.RUN,
             description = "number of horizons"
             )
-            public JAMSDouble horizons;
+            public Attribute.Double horizons;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
             update = JAMSVarDescription.UpdateType.RUN,
             description = "soil horizon depths"
             )
-            public JAMSDoubleArray depth_h;
+            public Attribute.DoubleArray depth_h;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
             update = JAMSVarDescription.UpdateType.RUN,
             description = "HRU attribute maximum MPS"
             )
-            public JAMSDoubleArray maxMPS_h;
+            public Attribute.DoubleArray maxMPS_h;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
             update = JAMSVarDescription.UpdateType.RUN,
             description = "HRU attribute maximum LPS"
             )
-            public JAMSDoubleArray maxLPS_h;
+            public Attribute.DoubleArray maxLPS_h;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
             update = JAMSVarDescription.UpdateType.RUN,
             description = "HRU state var actual MPS"
             )
-            public JAMSDoubleArray actMPS_h;
+            public Attribute.DoubleArray actMPS_h;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
             update = JAMSVarDescription.UpdateType.RUN,
             description = "HRU state var actual LPS"
             )
-            public JAMSDoubleArray actLPS_h;
+            public Attribute.DoubleArray actLPS_h;
    
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
             update = JAMSVarDescription.UpdateType.RUN,
             description = "HRU state var saturation of MPS"
             )
-            public JAMSDoubleArray satMPS_h;
+            public Attribute.DoubleArray satMPS_h;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
             update = JAMSVarDescription.UpdateType.RUN,
             description = "HRU state var saturation of LPS"
             )
-            public JAMSDoubleArray satLPS_h;
+            public Attribute.DoubleArray satLPS_h;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
             update = JAMSVarDescription.UpdateType.RUN,
             description = "HRU state var saturation of whole soil"
             )
-            public JAMSDouble satSoil_h;
+            public Attribute.Double satSoil_h;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
             update = JAMSVarDescription.UpdateType.RUN,
             description = "RD2 inflow"
             )
-            public JAMSDoubleArray inRD2_h;
+            public Attribute.DoubleArray inRD2_h;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
             update = JAMSVarDescription.UpdateType.RUN,
             description = "initial saturation for all horizons"
             )
-            public JAMSDouble initSat;
+            public Attribute.Double initSat;
     
    
     /*

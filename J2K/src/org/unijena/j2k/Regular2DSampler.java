@@ -85,7 +85,7 @@ import jams.model.*;
             update = JAMSVarDescription.UpdateType.RUN,
             description = "efficiency values"
             )
-            public JAMSDouble[] effValues;
+            public Attribute.Double[] effValues;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
@@ -125,9 +125,9 @@ import jams.model.*;
             update = JAMSVarDescription.UpdateType.RUN,
             description = "Output file attribute"
             )
-            public JAMSDoubleArray targetValue;
+            public Attribute.DoubleArray targetValue;
     
-    JAMSDouble[] parameters;
+    Attribute.Double[] parameters;
     String[] parameterNames;
     double[] lowBound;
     double[] upBound;
@@ -157,14 +157,14 @@ import jams.model.*;
             int i;
             StringTokenizer tok = new StringTokenizer(parameterIDs.getValue(), ";");
             String key;
-            parameters = new JAMSDouble[tok.countTokens()];
+            parameters = new Attribute.Double[tok.countTokens()];
             parameterNames = new String[tok.countTokens()];
             
             i = 0;
             while (tok.hasMoreTokens()) {
                 key = tok.nextToken();
                 parameterNames[i] = key;
-                parameters[i] = (JAMSDouble) getModel().getRuntime().getDataHandles().get(key);
+                parameters[i] = (Attribute.Double) getModel().getRuntime().getDataHandles().get(key);
                 i++;
             }
             

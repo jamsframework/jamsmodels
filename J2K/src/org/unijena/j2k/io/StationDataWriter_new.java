@@ -74,7 +74,7 @@ public class StationDataWriter_new extends JAMSComponent{
             update = JAMSVarDescription.UpdateType.INIT,
             description = "missing data value"
             )
-            public JAMSDouble missDataValue;
+            public Attribute.Double missDataValue;
 
     @JAMSVarDescription(
     access = JAMSVarDescription.AccessType.READ,

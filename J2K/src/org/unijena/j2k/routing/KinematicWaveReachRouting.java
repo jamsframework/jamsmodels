@@ -50,7 +50,7 @@ import javax.naming.directory.NoSuchAttributeException;
             update = JAMSVarDescription.UpdateType.RUN,
             description = "Catchment outlet RG2 storage"
             )
-            public JAMSDouble catchmentSimRunoff;
+            public Attribute.Double catchmentSimRunoff;
      
     
         @JAMSVarDescription(
@@ -58,41 +58,41 @@ import javax.naming.directory.NoSuchAttributeException;
             update = JAMSVarDescription.UpdateType.RUN,
             description = "Time bin of simulation"
             )
-            public JAMSDouble timescale;
+            public Attribute.Double timescale;
     
         @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
             update = JAMSVarDescription.UpdateType.RUN,
             description = "spatial grid resolution"
             )
-            public JAMSDouble modelrastersize;
+            public Attribute.Double modelrastersize;
                @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
             update = JAMSVarDescription.UpdateType.RUN,
             description = "Catchment outlet RD1 storage"
             )
-            public JAMSDouble catchmentRD1;
+            public Attribute.Double catchmentRD1;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
             update = JAMSVarDescription.UpdateType.RUN,
             description = "Catchment outlet RD2 storage"
             )
-            public JAMSDouble catchmentRD2;
+            public Attribute.Double catchmentRD2;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
             update = JAMSVarDescription.UpdateType.RUN,
             description = "Catchment outlet RG1 storage"
             )
-            public JAMSDouble catchmentRG1;
+            public Attribute.Double catchmentRG1;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
             update = JAMSVarDescription.UpdateType.RUN,
             description = "Catchment outlet RG2 storage"
             )
-            public JAMSDouble catchmentRG2;
+            public Attribute.Double catchmentRG2;
    
 
 

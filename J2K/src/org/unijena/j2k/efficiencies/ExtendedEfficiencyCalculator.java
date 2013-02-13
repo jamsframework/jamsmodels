@@ -89,14 +89,14 @@ title="ExtendedEfficiencyCalculator",
             update = JAMSVarDescription.UpdateType.RUN,
             description = "Prediction value"
             )
-            public JAMSDouble prediction;
+            public Attribute.Double prediction;
     
     @JAMSVarDescription(
     access = JAMSVarDescription.AccessType.READ,
             update = JAMSVarDescription.UpdateType.RUN,
             description = "Validation value"
             )
-            public JAMSDouble validation;
+            public Attribute.Double validation;
     
     @JAMSVarDescription(
     access = JAMSVarDescription.AccessType.WRITE,
@@ -104,7 +104,7 @@ title="ExtendedEfficiencyCalculator",
             description = "custom efficiency measure",
             defaultValue= "0"
             )
-            public JAMSDouble effHydro1;
+            public Attribute.Double effHydro1;
     
     @JAMSVarDescription(
     access = JAMSVarDescription.AccessType.WRITE,
@@ -112,7 +112,7 @@ title="ExtendedEfficiencyCalculator",
             description = "custom efficiency measure",
             defaultValue= "0"
             )
-            public JAMSDouble effHydro2;
+            public Attribute.Double effHydro2;
     
     @JAMSVarDescription(
     access = JAMSVarDescription.AccessType.WRITE,
@@ -120,7 +120,7 @@ title="ExtendedEfficiencyCalculator",
             description = "fourier transform based efficiency measure",
             defaultValue= "0"
             )
-            public JAMSDouble effFourier;
+            public Attribute.Double effFourier;
     
     @JAMSVarDescription(
     access = JAMSVarDescription.AccessType.WRITE,
@@ -128,7 +128,7 @@ title="ExtendedEfficiencyCalculator",
             description = "cosine metric",
             defaultValue= "0"
             )
-            public JAMSDouble effCosine;
+            public Attribute.Double effCosine;
     
     @JAMSVarDescription(
     access = JAMSVarDescription.AccessType.WRITE,
@@ -136,7 +136,7 @@ title="ExtendedEfficiencyCalculator",
             description = "similB measure, based on cross power operator",
             defaultValue= "0"
             )
-            public JAMSDouble similB;
+            public Attribute.Double similB;
     
     @JAMSVarDescription(
     access = JAMSVarDescription.AccessType.WRITE,
@@ -144,7 +144,7 @@ title="ExtendedEfficiencyCalculator",
             description = "likelihood ration based distance measure",
             defaultValue= "0"
             )
-            public JAMSDouble LHReff;
+            public Attribute.Double LHReff;
     
     @JAMSVarDescription(
     access = JAMSVarDescription.AccessType.WRITE,
@@ -152,7 +152,7 @@ title="ExtendedEfficiencyCalculator",
             description = "likelihood ration based distance measure",
             defaultValue= "0"
             )
-            public JAMSDouble effLowpassFourier;
+            public Attribute.Double effLowpassFourier;
             
     @JAMSVarDescription(
     access = JAMSVarDescription.AccessType.WRITE,
@@ -291,7 +291,7 @@ title="ExtendedEfficiencyCalculator",
         Vector<Double> valVector = new Vector<Double>();
         Vector<Double> preVector = new Vector<Double>();
 
-        this.predictionValues = JAMSDataFactory.createDoubleArray();
+        this.predictionValues = getModel().getRuntime().getDataFactory().createDoubleArray();
         this.predictionValues.setValue(preData);
         
         for(int i = this.interValStart; i < this.interValEnd; i++){

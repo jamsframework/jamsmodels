@@ -56,105 +56,105 @@ import jams.model.*;
             update = JAMSVarDescription.UpdateType.RUN,
             description = "Prediction value array"
             )
-            public JAMSDoubleArray prediction;
+            public Attribute.DoubleArray prediction;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
             update = JAMSVarDescription.UpdateType.RUN,
             description = "Validation value array"
             )
-            public JAMSDoubleArray validation;
+            public Attribute.DoubleArray validation;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
             update = JAMSVarDescription.UpdateType.RUN,
             description = "Nash-Sutcliffe-efficiency with power 1.0"
             )
-            public JAMSDouble e1;
+            public Attribute.Double e1;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
             update = JAMSVarDescription.UpdateType.RUN,
             description = "Nash-Sutcliffe-efficiency with power 2.0"
             )
-            public JAMSDouble e2;
+            public Attribute.Double e2;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
             update = JAMSVarDescription.UpdateType.RUN,
             description = "logarithmic Nash-Sutcliffe-efficiency with power 1.0"
             )
-            public JAMSDouble le1;
+            public Attribute.Double le1;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
             update = JAMSVarDescription.UpdateType.RUN,
             description = "logarithmic Nash-Sutcliffe-efficiency with power 2.0"
             )
-            public JAMSDouble le2;
+            public Attribute.Double le2;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
             update = JAMSVarDescription.UpdateType.RUN,
             description = "Willmot's index of agreement with power 1.0"
             )
-            public JAMSDouble ioa1;
+            public Attribute.Double ioa1;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
             update = JAMSVarDescription.UpdateType.RUN,
             description = "Willmot's index of agreement with power 2.0"
             )
-            public JAMSDouble ioa2;
+            public Attribute.Double ioa2;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
             update = JAMSVarDescription.UpdateType.RUN,
             description = "coefficient of determination r²"
             )
-            public JAMSDouble rsq;
+            public Attribute.Double rsq;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
             update = JAMSVarDescription.UpdateType.RUN,
             description = "gradient of linear regression"
             )
-            public JAMSDouble grad;
+            public Attribute.Double grad;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
             update = JAMSVarDescription.UpdateType.RUN,
             description = "weighted r²"
             )
-            public JAMSDouble wrsq;
+            public Attribute.Double wrsq;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
             update = JAMSVarDescription.UpdateType.RUN,
             description = "gradient of double sum regression"
             )
-            public JAMSDouble dsGrad;
+            public Attribute.Double dsGrad;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
             update = JAMSVarDescription.UpdateType.RUN,
             description = "absolute volume error"
             )
-            public JAMSDouble absVolErr;
+            public Attribute.Double absVolErr;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
             update = JAMSVarDescription.UpdateType.RUN,
             description = "root mean square error"
             )
-            public JAMSDouble rmse;
+            public Attribute.Double rmse;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
             update = JAMSVarDescription.UpdateType.RUN,
             description = "percent bias"
             )
-            public JAMSDouble pbias;
+            public Attribute.Double pbias;
     
     
     

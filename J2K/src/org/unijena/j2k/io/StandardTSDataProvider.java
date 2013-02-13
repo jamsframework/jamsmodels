@@ -46,14 +46,14 @@ import jams.model.*;
             update = JAMSVarDescription.UpdateType.RUN,
             description = "Array of data values for current time step"
             )
-            public JAMSDoubleArray dataArray;
+            public Attribute.DoubleArray dataArray;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
             update = JAMSVarDescription.UpdateType.RUN,
             description = "Spatial attribute to be set"
             )
-            public JAMSDouble attribute;
+            public Attribute.Double attribute;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
@@ -67,7 +67,7 @@ import jams.model.*;
             update = JAMSVarDescription.UpdateType.INIT,
             description = "constant correction factor"
             )
-            public JAMSDouble corr_factor;
+            public Attribute.Double corr_factor;
 
     
     /*
