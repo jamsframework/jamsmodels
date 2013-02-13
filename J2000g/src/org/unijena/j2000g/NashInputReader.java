@@ -129,7 +129,7 @@ public class NashInputReader extends JAMSComponent {
             timeArray[i] = st.nextToken();
         }
         
-        Attribute.Calendar cal = JAMSDataFactory.createCalendar();
+        Attribute.Calendar cal = getModel().getRuntime().getDataFactory().createCalendar();
         cal.setValue(timeArray[0]+"-"+timeArray[1]+"-"+timeArray[2]+" "+timeArray[3]+":"+timeArray[4]);
         return cal;
     }

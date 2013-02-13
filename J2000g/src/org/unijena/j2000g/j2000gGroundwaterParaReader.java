@@ -55,7 +55,7 @@ public class j2000gGroundwaterParaReader extends JAMSComponent {
     public void init() throws Attribute.Entity.NoSuchAttributeException {
         
         //read gw parameter
-        Attribute.EntityCollection gwTypes = JAMSDataFactory.createEntityCollection();
+        Attribute.EntityCollection gwTypes = getModel().getRuntime().getDataFactory().createEntityCollection();
 
         gwTypes.setEntities(J2KFunctions.readParas(JAMSTools.CreateAbsoluteFileName(getModel().getWorkspaceDirectory().getPath(),gwFileName.getValue()), getModel()));
         

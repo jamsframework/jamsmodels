@@ -146,14 +146,14 @@ import jams.model.*;
         double[] stor1 = new double[this.n1.getValue()];
         for(int i = 0; i < this.n1.getValue(); i++)
             stor1[i] = 0;
-        //gwStor1 = JAMSDataFactory.createDoubleArray();
+        //gwStor1 = getModel().getRuntime().getDataFactory().createDoubleArray();
         gwStor1.setValue(stor1);
 
         //cascade 2 setup
         double[] stor2 = new double[this.n2.getValue()];
         for(int i = 0; i < this.n2.getValue(); i++)
             stor2[i] = 0;
-        //gwStor2 = JAMSDataFactory.createDoubleArray();
+        //gwStor2 = getModel().getRuntime().getDataFactory().createDoubleArray();
         gwStor2.setValue(stor2);
     }
     

@@ -142,7 +142,7 @@ public class TSDataReader extends JAMSComponent {
         if(timeInterval != null){
             int timeUnit = timeInterval.getTimeUnit();
             Attribute.Calendar tiStart = timeInterval.getStart();
-            Attribute.Calendar date = JAMSDataFactory.createCalendar();
+            Attribute.Calendar date = getModel().getRuntime().getDataFactory().createCalendar();
             if(timeUnit == JAMSCalendar.DAY_OF_YEAR)
                     date.set(tiStart.get(Calendar.YEAR), tiStart.get(Calendar.MONTH), tiStart.get(Calendar.DAY_OF_MONTH), 0, 0, 0);
                 else if(timeUnit == JAMSCalendar.HOUR_OF_DAY)
@@ -171,7 +171,7 @@ public class TSDataReader extends JAMSComponent {
         dataArray.setValue(JAMSTableDataConverter.toDouble(store.getNext(), startColumn.getValue()));
     }
     
-    private static Attribute.Calendar parseJ2KTime(String timeString) {
+    private Attribute.Calendar parseJ2KTime(String timeString) {
         
         //Array keeping values for year, month, day, hour, minute
         String[] timeArray = new String[5];
@@ -188,7 +188,7 @@ public class TSDataReader extends JAMSComponent {
             timeArray[i] = st.nextToken();
         }
         
-        Attribute.Calendar cal = JAMSDataFactory.createCalendar();
+        Attribute.Calendar cal = getModel().getRuntime().getDataFactory().createCalendar();
         cal.setValue(timeArray[2]+"-"+timeArray[1]+"-"+timeArray[0]+" "+timeArray[3]+":"+timeArray[4]);
         return cal;
     }
