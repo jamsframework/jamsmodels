@@ -54,7 +54,7 @@ public class StandardTillParaReader extends JAMSComponent {
     public void init() throws JAMSEntity.NoSuchAttributeException {
         
         //read tillage parameter
-        Attribute.EntityCollection till = JAMSDataFactory.createEntityCollection();
+        Attribute.EntityCollection till = getModel().getRuntime().getDataFactory().createEntityCollection();
         till.setEntities(J2KFunctions.readParas(getModel().getWorkspaceDirectory().getPath()+"/"+tlFileName.getValue(), getModel()));
         
         HashMap<Double, Attribute.Entity> tlMap = new HashMap<Double, Attribute.Entity>();

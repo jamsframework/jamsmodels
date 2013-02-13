@@ -54,7 +54,7 @@ public class StandardLMPastureParaReader extends JAMSComponent {
     public void init() throws JAMSEntity.NoSuchAttributeException {
         
         //read pasture management parameter
-        Attribute.EntityCollection lmpas = JAMSDataFactory.createEntityCollection();
+        Attribute.EntityCollection lmpas = getModel().getRuntime().getDataFactory().createEntityCollection();
         lmpas.setEntities(J2KFunctions.readParas(getModel().getWorkspaceDirectory().getPath()+"/"+lpFileName.getValue(), getModel()));
         
         HashMap<Double, Attribute.Entity> lpMap = new HashMap<Double, Attribute.Entity>();

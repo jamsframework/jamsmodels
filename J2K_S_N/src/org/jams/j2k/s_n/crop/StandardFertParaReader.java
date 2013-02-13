@@ -54,7 +54,7 @@ public class StandardFertParaReader extends JAMSComponent {
     public void init() throws JAMSEntity.NoSuchAttributeException {
         
         //read fertilizer parameter
-        Attribute.EntityCollection fert = JAMSDataFactory.createEntityCollection();
+        Attribute.EntityCollection fert = getModel().getRuntime().getDataFactory().createEntityCollection();
         fert.setEntities(J2KFunctions.readParas(getModel().getWorkspaceDirectory().getPath()+"/"+ftFileName.getValue(), getModel()));
         
         HashMap<Double, Attribute.Entity> ftMap = new HashMap<Double, Attribute.Entity>();

@@ -52,7 +52,7 @@ public class Salt_pool_ParaReader extends JAMSComponent {
     public void init() throws Attribute.Entity.NoSuchAttributeException {
 
         //read saltpools
-        Attribute.EntityCollection gwTypes = JAMSDataFactory.createEntityCollection();
+        Attribute.EntityCollection gwTypes = getModel().getRuntime().getDataFactory().createEntityCollection();
 
         gwTypes.setEntities(J2KFunctions.readParas(FileTools.createAbsoluteFileName(getModel().getWorkspaceDirectory().getPath(), hruSaltPoolFileName.getValue()), getModel()));
 

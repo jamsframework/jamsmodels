@@ -55,7 +55,7 @@ public class StandardLMArableParaReader extends JAMSComponent {
     public void init() throws JAMSEntity.NoSuchAttributeException {
         
         //read crop rotation parameter
-        Attribute.EntityCollection croprot = JAMSDataFactory.createEntityCollection();
+        Attribute.EntityCollection croprot = getModel().getRuntime().getDataFactory().createEntityCollection();
         croprot.setEntities(J2KFunctions.readParas(getModel().getWorkspaceDirectory().getPath()+"/"+laFileName.getValue(), getModel()));
         
         HashMap<Double, Attribute.Entity> ctMap = new HashMap<Double, Attribute.Entity>();
