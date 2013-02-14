@@ -116,7 +116,7 @@ import java.io.*;
         PHU_50.setValue(phu_50);
              
  }
-     private boolean calc_dailyHU() throws Attribute.Entity.NoSuchAttributeException {
+     private boolean calc_dailyHU() {
          /*@todo wenn Wintergetreide dann startdate auf enddate gesetzt */
          if 
                 (this.startdate >=  this.enddate){

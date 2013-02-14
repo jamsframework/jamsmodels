@@ -204,7 +204,7 @@ import jams.model.*;
         
     }
     
-    public void run() throws Attribute.Entity.NoSuchAttributeException {
+    public void run() {
         int i = 0;
         int layer = (int)Layer.getValue();
         double Soil_Temp_Sum = 0;
@@ -240,7 +240,7 @@ import jams.model.*;
         Soil_Temp_Layer.setValue(Soiltemp_hor);
     }
     
-    private double calc_Soil_Temp_Layer(int i) throws Attribute.Entity.NoSuchAttributeException {
+    private double calc_Soil_Temp_Layer(int i) {
         
         
         
@@ -271,7 +271,7 @@ import jams.model.*;
         return Soil_Temp;
     }
     
-    private double calc_water_content(int i) throws Attribute.Entity.NoSuchAttributeException {
+    private double calc_water_content(int i) {
         double soilwater = 0;
         double area_ = area.getValue();
         double sto_LPS = stohru_LPS.getValue()[i] / area_;
@@ -287,7 +287,7 @@ import jams.model.*;
         
         return soilwater;
     }
-    private double calc_Soil_Temp_Depth_Factor(int i) throws Attribute.Entity.NoSuchAttributeException {
+    private double calc_Soil_Temp_Depth_Factor(int i) {
         double depthfactor;
         
         double dampingdepth = calc_Soil_Temp_Dampingdepth(i);
@@ -297,7 +297,7 @@ import jams.model.*;
         return depthfactor;
     }
     
-    private double calc_Soil_Temp_Dampingdepth(int i) throws Attribute.Entity.NoSuchAttributeException {
+    private double calc_Soil_Temp_Dampingdepth(int i) {
         double dampingdepth;
         double dd;
         double dd_max;
@@ -317,7 +317,7 @@ import jams.model.*;
         
         return dampingdepth;
     }
-    private double calc_Soil_Surface_Temp() throws Attribute.Entity.NoSuchAttributeException {   /* after SWAT */
+    private double calc_Soil_Surface_Temp() {   /* after SWAT */
         double coverweightsnow;
         double coverweightveg;
         double coverweight;
@@ -364,7 +364,7 @@ import jams.model.*;
     }
     
     
-    private double calc_Soil_Surface_Temp2() throws Attribute.Entity.NoSuchAttributeException {   /* after ArcEgmo  "Williams-algorithm"*/
+    private double calc_Soil_Surface_Temp2() {   /* after ArcEgmo  "Williams-algorithm"*/
         double  albedofactor;
         double temp_min = atemp_min.getValue();
         double temp_max = atemp_max.getValue();

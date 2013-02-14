@@ -55,10 +55,10 @@ public class SelectiveEntityDataProvider extends JAMSComponent {
     /*
      *  Component runstages
      */
-    public void init() throws Attribute.Entity.NoSuchAttributeException {
+    public void init() {
     }
 
-    public void run() throws Attribute.Entity.NoSuchAttributeException {
+    public void run() {
 
         int curID = (int) (int) entitySet.getCurrent().getDouble("ID");
         if (this.ID.getValue() == curID) {

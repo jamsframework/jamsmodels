@@ -123,7 +123,7 @@ public class StandardEntitiesReader extends JAMSComponent {
     
     
     @Override
-    public void init() throws Attribute.Entity.NoSuchAttributeException {
+    public void init() {
 
         //read hru parameter
         hrus.setEntities(J2KFunctions.readParas(FileTools.createAbsoluteFileName(getModel().getWorkspaceDirectory().getPath(), hruFileName.getValue()), getModel()));
@@ -177,7 +177,7 @@ public class StandardEntitiesReader extends JAMSComponent {
     }
 
     //do depth first search to find cycles
-    protected boolean cycleCheck(Attribute.Entity node, Stack<Attribute.Entity> searchStack, HashSet<Long> closedList, HashSet<Long> visitedList) throws Attribute.Entity.NoSuchAttributeException {
+    protected boolean cycleCheck(Attribute.Entity node, Stack<Attribute.Entity> searchStack, HashSet<Long> closedList, HashSet<Long> visitedList) {
         Attribute.Entity child_node;
 
         //current node allready in search stack -> circle found
@@ -217,7 +217,7 @@ public class StandardEntitiesReader extends JAMSComponent {
         return false;
     }
 
-    protected boolean cycleCheck() throws Attribute.Entity.NoSuchAttributeException {
+    protected boolean cycleCheck() {
         Iterator<Attribute.Entity> hruIterator;
 
         HashSet<Long> closedList = new HashSet<Long>();
@@ -246,7 +246,7 @@ public class StandardEntitiesReader extends JAMSComponent {
         return result;
     }
 
-    protected void createTopology() throws Attribute.Entity.NoSuchAttributeException {
+    protected void createTopology() {
 
         HashMap<Double, Attribute.Entity> hruMap = new HashMap<Double, Attribute.Entity>();
         HashMap<Double, Attribute.Entity> reachMap = new HashMap<Double, Attribute.Entity>();
@@ -274,7 +274,7 @@ public class StandardEntitiesReader extends JAMSComponent {
         }
 
         //create empty entities, i.e. those that are linked to in case there is no linkage ;-)
-        Attribute.Entity nullEntity = JAMSDataFactory.createEntity();
+        Attribute.Entity nullEntity = JAMSDataFactory.getDataFactory().createEntity();
         nullEntity.setValue((HashMap<String, Object>) null);
         hruMap.put(new Double(0), nullEntity);
         reachMap.put(new Double(0), nullEntity);
@@ -350,7 +350,7 @@ public class StandardEntitiesReader extends JAMSComponent {
 
     }
 
-    protected void createOrderedList(Attribute.EntityCollection col, String asso) throws Attribute.Entity.NoSuchAttributeException {
+    protected void createOrderedList(Attribute.EntityCollection col, String asso) {
 
         Iterator<Attribute.Entity> hruIterator;
         Attribute.Entity e, f;

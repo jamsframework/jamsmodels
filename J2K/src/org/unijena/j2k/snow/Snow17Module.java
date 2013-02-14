@@ -421,7 +421,7 @@ title="ABCSnowModule",
          *  Component run stages
          */
     
-    public void init() throws Attribute.Entity.NoSuchAttributeException {
+    public void init() {
         
     }
     
@@ -460,9 +460,9 @@ title="ABCSnowModule",
             netSurfaceEnergyExchange = 0;
             
             //date and time
-            this.month = this.time.get(JAMSCalendar.MONTH);
-            this.date = this.time.get(JAMSCalendar.DATE);
-            this.julDay = this.time.get(JAMSCalendar.DAY_OF_YEAR);
+            this.month = this.time.get(Attribute.Calendar.MONTH);
+            this.date = this.time.get(Attribute.Calendar.DATE);
+            this.julDay = this.time.get(Attribute.Calendar.DAY_OF_YEAR);
             
             //input data
             rainIn = this.rain_1.getValue();

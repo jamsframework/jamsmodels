@@ -75,7 +75,7 @@ public class IrrigationdemandGW extends JAMSComponent {
     
 
     //Berechnung
-    public void run() throws Attribute.Entity.NoSuchAttributeException {
+    public void run() {
         
         double wst = 1 - wstrs.getValue();
         double satMPSArray[] = satMPS.getValue();

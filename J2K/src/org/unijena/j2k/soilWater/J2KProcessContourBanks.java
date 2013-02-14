@@ -98,7 +98,7 @@ public class J2KProcessContourBanks extends JAMSComponent {
             HRUsSlope, boeschungswinkelWall_hinten, breiteGraben, rauhigkeitsbeiwertGraben, run_outRD1, run_satLPS, run_outRD2, run_inRD2,
             run_maxRG1, run_actRG1, run_outRG1, run_inRG1;
 
-    public void init() throws Attribute.Entity.NoSuchAttributeException {
+    public void init() {
 
         this.modulCBaktiv = cbModulAktiv.getValue();
 
@@ -122,7 +122,7 @@ public class J2KProcessContourBanks extends JAMSComponent {
         }
     }
 
-    public void run() throws Attribute.Entity.NoSuchAttributeException {
+    public void run() {
     
         Attribute.Entity aktuelleHRU;
     

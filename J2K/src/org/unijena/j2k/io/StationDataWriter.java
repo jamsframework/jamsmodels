@@ -114,7 +114,7 @@ public class StationDataWriter extends JAMSComponent{
      *  Component run stages
      */
     @Override
-    public void init() throws Attribute.Entity.NoSuchAttributeException {
+    public void init() {
         
         getModel().getRuntime().println(" start init " + fileName.getValue() + ".. ", JAMS.VERBOSE);
         Date dt = new Date();
@@ -137,7 +137,7 @@ public class StationDataWriter extends JAMSComponent{
             timeFormat = "%1$tY";
             dateFormat = new SimpleDateFormat("yyyy");
         }
-        dateFormat.setTimeZone(JAMSCalendar.STANDARD_TIME_ZONE);
+        dateFormat.setTimeZone(Attribute.Calendar.DEFAULT_TIME_ZONE);
 
         writer = new GenericDataWriter(JAMSTools.CreateAbsoluteFileName(getModel().getWorkspace().getOutputDataDirectory().getPath(),fileName.getValue()));
         String inputHeader = withInputHeader.getValue();
@@ -204,7 +204,7 @@ public class StationDataWriter extends JAMSComponent{
     }
 
     @Override
-    public void run() throws Attribute.Entity.NoSuchAttributeException {
+    public void run() {
         writer.addData(time.toString(dateFormat));
         for(int i = 0; i < values.getValue().length;i++){
             writer.addData(values.getValue()[i], precision.getValue());
@@ -220,7 +220,7 @@ public class StationDataWriter extends JAMSComponent{
     }
 
     @Override
-    public void cleanup() throws Attribute.Entity.NoSuchAttributeException {
+    public void cleanup() {
         try {
             writer.writer.flush();
             writer.writer.close();

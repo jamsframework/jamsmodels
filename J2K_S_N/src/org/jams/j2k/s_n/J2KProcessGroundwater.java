@@ -192,11 +192,11 @@ import jams.model.*;
      *  Component run stages
      */
     
-    public void init() throws Attribute.Entity.NoSuchAttributeException {
+    public void init() {
         
     }
     
-    public void run() throws Attribute.Entity.NoSuchAttributeException {
+    public void run() {
         this.run_maxRG1 = maxRG1.getValue();
         this.run_maxRG2 = maxRG2.getValue();
         this.run_actRG1 = actRG1.getValue();

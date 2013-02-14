@@ -11,7 +11,7 @@ package org.unijena.j2k;
 
 import jams.data.Attribute;
 import jams.data.Attribute.Calendar;
-import jams.data.JAMSCalendar;
+import jams.data.Attribute.Calendar;
 import java.util.Locale;
 import jams.data.JAMSDataFactory;
 
@@ -31,12 +31,12 @@ public class TimeNumbers {
      */
     public static void main(String[] args) {
         Attribute.Calendar time = JAMSDataFactory.getDataFactory().createCalendar();
-        System.out.println("seconds: " + JAMSCalendar.SECOND);
-        System.out.println("Minutes: " + JAMSCalendar.MINUTE);
-        System.out.println("Hours: " + JAMSCalendar.HOUR_OF_DAY);
-        System.out.println("Day: " + JAMSCalendar.DAY_OF_YEAR);
-        System.out.println("Months: " + JAMSCalendar.MONTH);
-        System.out.println("Years: " + JAMSCalendar.YEAR);
+        System.out.println("seconds: " + Attribute.Calendar.SECOND);
+        System.out.println("Minutes: " + Attribute.Calendar.MINUTE);
+        System.out.println("Hours: " + Attribute.Calendar.HOUR_OF_DAY);
+        System.out.println("Day: " + Attribute.Calendar.DAY_OF_YEAR);
+        System.out.println("Months: " + Attribute.Calendar.MONTH);
+        System.out.println("Years: " + Attribute.Calendar.YEAR);
         
         double x1 = 4;
         double x2 = 2;

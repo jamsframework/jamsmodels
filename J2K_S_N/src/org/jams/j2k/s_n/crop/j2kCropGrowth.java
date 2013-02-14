@@ -595,7 +595,7 @@ import java.io.*;
     int julday = time.get(time.JULDAY);
     double CJD = CJD++; */
     
-  /*  private boolean calc_ps() throws Attribute.Entity.NoSuchAttributeException { 
+  /*  private boolean calc_ps() { 
     if (Keimung)
         if CHU = PHU[PS] || CJD >= PJD[PS];
         Keimung;
@@ -619,7 +619,7 @@ import java.io.*;
  
    
     
-    private boolean calc_lai() throws Attribute.Entity.NoSuchAttributeException {
+    private boolean calc_lai() {
         
          /* Shape coefficients
             sc to determine LAI development */
@@ -662,7 +662,7 @@ import java.io.*;
     // radiation-use efficiency declared in the crop growth database by parameter 'rue' in crop.par
     // whereas the total biomass on a given day is summed up
     
-    private double calc_biomass() throws Attribute.Entity.NoSuchAttributeException {
+    private double calc_biomass() {
         double bio_opt = 0;
         double Hphosyn = 0.5 * this.solrad * (1 - Math.exp(this.leco*lai_act));
         
@@ -683,7 +683,7 @@ import java.io.*;
     // chtmx = maximum canopy height (m), Parameter from crop.par
     // frLAImx = fraction of plants maximum canopy height
     
-    private double calc_canopy() throws Attribute.Entity.NoSuchAttributeException {
+    private double calc_canopy() {
         
         double hc_delta = 0;
         double frLAImx_act = 0;
@@ -702,7 +702,7 @@ import java.io.*;
     
     // Fraction of root biomass
     //
-    private boolean calc_root() throws Attribute.Entity.NoSuchAttributeException {
+    private boolean calc_root() {
         
         double frroot_act = 0;        
         double frroot = 0.40 - 0.20 * this.fphu_act;
@@ -774,7 +774,7 @@ import java.io.*;
     // as therefore no calculation is needed
     // @todo nutrients & water uptake & transpiration will stopp depending on the condition fphu = 1
      
-      private boolean calc_maturity ()throws Attribute.Entity.NoSuchAttributeException {
+      private boolean calc_maturity (){
           
       if
          (this.fphu_act >= 1.00) 
@@ -792,7 +792,7 @@ import java.io.*;
     
     // Nutrient uptake by plants
     
-    private boolean calc_nuptake() throws Attribute.Entity.NoSuchAttributeException {
+    private boolean calc_nuptake() {
         // is calculated by the fraction of the plant biomass as a function of growth stage given the optimal conditions
         // fnplant =fraction N in plant biomass
         // with bn1 as fraction of N in the plant biomass at the emergence
@@ -869,7 +869,7 @@ import java.io.*;
     // Phosphorus uptake
     
     // Crop Yield
-    private boolean calc_cropyield() throws Attribute.Entity.NoSuchAttributeException {
+    private boolean calc_cropyield() {
         double yield;
         hi_act = 0;
         bioag_act = 0;
@@ -924,7 +924,7 @@ import java.io.*;
         //double yldP = this.cpyld * yield;
         return true;
     }
-     private double calc_cropyield_ha() throws Attribute.Entity.NoSuchAttributeException {
+     private double calc_cropyield_ha() {
  
          yldN_ha = yldN * area_ha / 10000; 
          

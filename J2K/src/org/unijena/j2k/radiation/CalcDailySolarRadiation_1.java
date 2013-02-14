@@ -138,8 +138,8 @@ import jams.model.*;
     
     public void run() throws Attribute.Entity.NoSuchAttributeException, IOException {
        
-            int julDay = time.get(JAMSCalendar.DAY_OF_YEAR);
-            int month = time.get(JAMSCalendar.MONTH);
+            int julDay = time.get(Attribute.Calendar.DAY_OF_YEAR);
+            int month = time.get(Attribute.Calendar.MONTH);
             double SAC = actSlAsCf.getValue();
             double lati = latitude.getValue();
             double sunsh = sunh.getValue();

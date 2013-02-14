@@ -70,7 +70,7 @@ import jams.model.*;
             public Attribute.Integer aggregationType;
     
     
-    public void run() throws Attribute.Entity.NoSuchAttributeException {
+    public void run() {
         
         Attribute.Entity[] entities = hrus.getEntityArray();
         

@@ -68,14 +68,14 @@ import jams.model.*;
      *  Component run stages
      */
     
-    public void init() throws Attribute.Entity.NoSuchAttributeException {
+    public void init() {
         
     }
     
-    public void run() throws Attribute.Entity.NoSuchAttributeException {
+    public void run() {
         long days = 1;
         if(this.timeStep != null)
-            days = timeStep.getActualMaximum(JAMSCalendar.DAY_OF_MONTH);
+            days = timeStep.getActualMaximum(Attribute.Calendar.DAY_OF_MONTH);
         //double totOut = 0;
 
         for(int i = 0; i < this.inVars.length; i++){

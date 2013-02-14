@@ -67,7 +67,7 @@ public class StandardEntityWriter extends JAMSComponent {
      *  Component runstages
      */
 
-    public void init() throws Attribute.Entity.NoSuchAttributeException {
+    public void init() {
         writer = new GenericDataWriter(JAMSTools.CreateAbsoluteFileName(getModel().getWorkspaceDirectory().getPath(), fileName.getValue()));
 
         writer.addComment("J2K model output" + header.getValue());
@@ -77,7 +77,7 @@ public class StandardEntityWriter extends JAMSComponent {
 
     }
 
-    public void run() throws Attribute.Entity.NoSuchAttributeException {
+    public void run() {
 
         EntityEnumerator ee = entities.getEntityEnumerator();
 

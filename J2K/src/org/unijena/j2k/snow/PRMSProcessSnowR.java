@@ -1300,8 +1300,8 @@ title="PRMSProcessSnow",
         //if ( getvar(Transp_on) != 0 ) return;
         
 //PK other than PRMS, have to think about that later
-        int julDay = this.time.get(JAMSCalendar.DAY_OF_YEAR);
-        int month = this.time.get(JAMSCalendar.MONTH);
+        int julDay = this.time.get(Attribute.Calendar.DAY_OF_YEAR);
+        int month = this.time.get(Attribute.Calendar.MONTH);
         if(julDay > 85 && julDay < 305)
             this.runTranspOn = true;
         else
@@ -1324,7 +1324,7 @@ title="PRMSProcessSnow",
         double balIn = this.runSnow + this.runRain;
         double balStorStart = this.runPackSwe;
         
-        int year = time.get(JAMSCalendar.YEAR);
+        int year = time.get(Attribute.Calendar.YEAR);
         
         
 //		 reset some values if first day of hydrological year

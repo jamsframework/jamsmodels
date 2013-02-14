@@ -101,7 +101,7 @@ public class StandardEntityWriterN extends JAMSComponent {
      *  Component runstages
      */
     
-    public void init() throws Attribute.Entity.NoSuchAttributeException {                        
+    public void init() {                        
         writer = new GenericDataWriter(JAMSTools.CreateAbsoluteFileName(getModel().getWorkspaceDirectory().getPath(),fileName.getValue()));
         
         int tsteps = (int)this.timeInterval.getNumberOfTimesteps();
@@ -126,15 +126,15 @@ public class StandardEntityWriterN extends JAMSComponent {
             aggCounter = new int[12];
             aggFieldNames = new String[12];
         }
-        dateFormat.setTimeZone(JAMSCalendar.STANDARD_TIME_ZONE);
+        dateFormat.setTimeZone(Attribute.Calendar.DEFAULT_TIME_ZONE);
         aggfieldNameFormat = new SimpleDateFormat("MMM");
-        aggfieldNameFormat.setTimeZone(JAMSCalendar.STANDARD_TIME_ZONE);
+        aggfieldNameFormat.setTimeZone(Attribute.Calendar.DEFAULT_TIME_ZONE);
         
         tcounter = 0;
         
     }
     
-    public void run() throws Attribute.Entity.NoSuchAttributeException {
+    public void run() {
         dateVals[tcounter] = time.toString(dateFormat);
         
         //no weight
@@ -154,7 +154,7 @@ public class StandardEntityWriterN extends JAMSComponent {
         //aggregated values
         //daily values
         if(this.timeInterval.getTimeUnit() == 5){
-            int month = time.get(JAMSCalendar.MONTH);
+            int month = time.get(Attribute.Calendar.MONTH);
             aggCounter[month]++;
             //aggFieldNames[month] = time.toString("%1$tb");
             aggFieldNames[month] = time.toString(aggfieldNameFormat);
@@ -166,7 +166,7 @@ public class StandardEntityWriterN extends JAMSComponent {
         }
         //monthly values
         if(this.timeInterval.getTimeUnit() == 2){
-            int month = time.get(JAMSCalendar.MONTH);
+            int month = time.get(Attribute.Calendar.MONTH);
             aggCounter[month]++;
             //aggFieldNames[month] = time.toString("%1$tb");
             aggFieldNames[month] = time.toString(aggfieldNameFormat);
@@ -178,7 +178,7 @@ public class StandardEntityWriterN extends JAMSComponent {
         tcounter++;
     }
     
-    public void cleanup() throws Attribute.Entity.NoSuchAttributeException {
+    public void cleanup() {
         
         getModel().getRuntime().println("Writing distributed output file ... may take a while ... please wait ...", JAMS.STANDARD);
         getModel().getRuntime().println("Number of entities: " + nEnts + ", number of timeSteps: " + dateVals.length);

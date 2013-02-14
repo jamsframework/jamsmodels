@@ -83,7 +83,7 @@ import jams.model.*;
     final int ALL = 0;
     final int LAST = 1;
     
-    public void run() throws Attribute.Entity.NoSuchAttributeException {
+    public void run() {
         
         //eigentlich bräuchten wir hier einen ReachOutputWriter
         //jetzt aber erstmal quick and dirty nur den outflow reach!

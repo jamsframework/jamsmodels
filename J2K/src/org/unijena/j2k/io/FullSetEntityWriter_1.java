@@ -93,7 +93,7 @@ public class FullSetEntityWriter_1 extends JAMSComponent {
      *  Component runstages
      */
     
-    public void init() throws Attribute.Entity.NoSuchAttributeException {
+    public void init() {
         writer = new GenericDataWriter(JAMSTools.CreateAbsoluteFileName(getModel().getWorkspaceDirectory().getPath(),fileName.getValue()));
         
         writer.addComment("J2K model output"+header.getValue());
@@ -106,7 +106,7 @@ public class FullSetEntityWriter_1 extends JAMSComponent {
         dateStr = new String[tsteps];
     }
     
-    public void run() throws Attribute.Entity.NoSuchAttributeException {
+    public void run() {
        
         dateStr[tcounter] = this.time.toString();
         entitySet.getEntityEnumerator().reset();
@@ -151,7 +151,7 @@ public class FullSetEntityWriter_1 extends JAMSComponent {
         
     }
     
-    public void cleanup() throws Attribute.Entity.NoSuchAttributeException {
+    public void cleanup() {
         try{
             //always write time
             writer.addColumn("ID");

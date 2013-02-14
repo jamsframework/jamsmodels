@@ -49,7 +49,7 @@ public class StandardTillParaReader extends JAMSComponent {
     
     
     
-    public void init() throws Attribute.Entity.NoSuchAttributeException {
+    public void init() {
         
         //read tillage parameter
         Attribute.EntityCollection till = getModel().getRuntime().getDataFactory().createEntityCollection();

@@ -50,7 +50,7 @@ public class StandardCropParaReader extends JAMSComponent {
     
     
     
-    public void init() throws Attribute.Entity.NoSuchAttributeException {
+    public void init() {
         
         //read crop parameter
         Attribute.EntityCollection crops = getModel().getRuntime().getDataFactory().createEntityCollection();

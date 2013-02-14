@@ -469,7 +469,7 @@ import jams.model.*;
        
        
        
-       this.datumjul = time.get(JAMSCalendar.DAY_OF_YEAR);
+       this.datumjul = time.get(Attribute.Calendar.DAY_OF_YEAR);
 //        sto_FPS = 0.3 *(sto_MPS); /*SWAT definition of wilting point */
        
 

@@ -49,7 +49,7 @@ public class StandardFertParaReader extends JAMSComponent {
     
     
     
-    public void init() throws Attribute.Entity.NoSuchAttributeException {
+    public void init() {
         
         //read fertilizer parameter
         Attribute.EntityCollection fert = getModel().getRuntime().getDataFactory().createEntityCollection();

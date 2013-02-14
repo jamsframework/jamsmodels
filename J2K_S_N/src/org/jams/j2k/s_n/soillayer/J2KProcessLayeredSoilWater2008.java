@@ -261,10 +261,10 @@ public class J2KProcessLayeredSoilWater2008 extends JAMSComponent {
     /*
      *  Component run stages
      */
-    public void init() throws Attribute.Entity.NoSuchAttributeException {
+    public void init() {
     }
 
-    public void run() throws Attribute.Entity.NoSuchAttributeException {
+    public void run() {
         double balMPSstart = 0;
         double balMPSend = 0;
         double balLPSstart = 0;
@@ -388,7 +388,7 @@ public class J2KProcessLayeredSoilWater2008 extends JAMSComponent {
         this.calcInfImperv(sealedGrade.getValue());
         this.calcSoilSaturations(false);
         /** determining maximal infiltration rate */
-        double maxInf = this.calcMaxInfiltration(time.get(JAMSCalendar.MONTH) + 1);
+        double maxInf = this.calcMaxInfiltration(time.get(Attribute.Calendar.MONTH) + 1);
         if (maxInf < this.run_infiltration) {
             //System.out.getRuntime().println("maxInf:");
             double deltaInf = this.run_infiltration - maxInf;
@@ -611,7 +611,7 @@ public class J2KProcessLayeredSoilWater2008 extends JAMSComponent {
         return true;
     }
 
-    private boolean redistRD1_RD2_in() throws Attribute.Entity.NoSuchAttributeException {
+    private boolean redistRD1_RD2_in() {
         //RD1 is put to DPS first
         if (this.run_inRD1 > 0) {
             this.run_actDPS = this.run_actDPS + this.run_inRD1;

@@ -92,11 +92,11 @@ public class J2KProcessMultiRouting_h_cb extends JAMSComponent {
     /*
      *  Component run stages
      */
-    public void init() throws Attribute.Entity.NoSuchAttributeException {
+    public void init() {
         this.modulCBaktiv = cbModulAktiv.getValue();
     }
 
-    public void run() throws Attribute.Entity.NoSuchAttributeException {
+    public void run() {
 
         Attribute.Entity entity = entities.getCurrent();
 

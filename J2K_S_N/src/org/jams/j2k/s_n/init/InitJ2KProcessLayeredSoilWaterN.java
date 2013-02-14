@@ -107,10 +107,10 @@ public class InitJ2KProcessLayeredSoilWaterN extends JAMSComponent {
     /*
      *  Component run stages
      */
-    public void init() throws Attribute.Entity.NoSuchAttributeException {
+    public void init() {
     }
 
-    public void run() throws Attribute.Entity.NoSuchAttributeException {
+    public void run() {
         Attribute.Entity entity = entities.getCurrent();
         //System.out.println("Entity: " + entity.getId());
         int horizons = (int) this.horizons.getValue();

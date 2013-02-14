@@ -197,14 +197,14 @@ import jams.model.*;
     } */
     }
     
-    public void run() throws Attribute.Entity.NoSuchAttributeException {
+    public void run() {
         this.radiat = radiation.getValue();
         this.Soil_Temp = Soil_Temp_Layer.getValue();
         double runSoil_Temp_Layer = calc_Soil_Temp_Layer();
         Soil_Temp_Layer.setValue(runSoil_Temp_Layer);
     }
     
-    private double calc_Soil_Temp_Layer() throws Attribute.Entity.NoSuchAttributeException {
+    private double calc_Soil_Temp_Layer() {
         
         double depthfactor = calc_Soil_Temp_Depth_Factor();
         double surfacetemp = calc_Soil_Surface_Temp();
@@ -233,7 +233,7 @@ import jams.model.*;
         return Soil_Temp;
     }
     
-    private double calc_water_content() throws Attribute.Entity.NoSuchAttributeException {
+    private double calc_water_content() {
         double soilwater = 0;
         double area_ = area.getValue();
         double sto_LPS = stohru_LPS.getValue() / area_;
@@ -249,7 +249,7 @@ import jams.model.*;
         
         return soilwater;
     }
-    private double calc_Soil_Temp_Depth_Factor() throws Attribute.Entity.NoSuchAttributeException {
+    private double calc_Soil_Temp_Depth_Factor() {
         double depthfactor;
         
         double dampingdepth = calc_Soil_Temp_Dampingdepth();
@@ -259,7 +259,7 @@ import jams.model.*;
         return depthfactor;
     }
     
-    private double calc_Soil_Temp_Dampingdepth() throws Attribute.Entity.NoSuchAttributeException {
+    private double calc_Soil_Temp_Dampingdepth() {
         double dampingdepth;
         double dd;
         double dd_max;
@@ -280,8 +280,8 @@ import jams.model.*;
         
         return dampingdepth;
     }
-    private double calc_Soil_Surface_Temp() throws Attribute.Entity.NoSuchAttributeException {   /* after SWAT */
-        int day = time.get(JAMSCalendar.DAY_OF_YEAR) - 1;
+    private double calc_Soil_Surface_Temp() {   /* after SWAT */
+        int day = time.get(Attribute.Calendar.DAY_OF_YEAR) - 1;
         double coverweightsnow;
         double coverweightveg;
         double coverweight;
@@ -318,7 +318,7 @@ import jams.model.*;
     }
     
     
-    private double calc_Soil_Surface_Temp2() throws Attribute.Entity.NoSuchAttributeException {   /* after ArcEgmo  "Williams-algorithm"*/
+    private double calc_Soil_Surface_Temp2() {   /* after ArcEgmo  "Williams-algorithm"*/
         double  albedofactor;
         double temp_min = atemp_min.getValue();
         double temp_max = atemp_max.getValue();

@@ -82,11 +82,11 @@ import jams.model.*;
      *  Component run stages
      */
     
-    public void init() throws Attribute.Entity.NoSuchAttributeException {
+    public void init() {
         
     }
     
-    public void run() throws Attribute.Entity.NoSuchAttributeException {
+    public void run() {
         //conversion from liters to m^3/time
         if(tempRes.getValue().equalsIgnoreCase("h")){
             this.outQcbm.setValue((inQ.getValue()) / (3600 * 1000));

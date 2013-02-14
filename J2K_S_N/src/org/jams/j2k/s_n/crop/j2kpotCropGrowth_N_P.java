@@ -706,7 +706,7 @@ title="j2kCropGrowth",
     }
     
     
-   /* private boolean calc_phu_() throws Attribute.Entity.NoSuchAttributeException {
+   /* private boolean calc_phu_() {
         //System.out.println("tägliche phu_daily " + phu_delta );
         if (this.tmean > this.Tbase) {
         double phu_Delta = this.Tbase - this.tmean;
@@ -1255,7 +1255,7 @@ title="j2kCropGrowth",
     int julday = time.get(time.JULDAY);
     double CJD = CJD++; */
 
-  /*  private boolean calc_ps() throws Attribute.Entity.NoSuchAttributeException {
+  /*  private boolean calc_ps() {
     if (Keimung)
         if CHU = PHU[PS] || CJD >= PJD[PS];
         Keimung;

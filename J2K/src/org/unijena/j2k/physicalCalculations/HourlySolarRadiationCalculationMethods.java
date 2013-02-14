@@ -10,7 +10,7 @@
 
 package org.unijena.j2k.physicalCalculations;
 
-import jams.data.JAMSCalendar;
+import jams.data.Attribute;
 
 /**
  *
@@ -33,8 +33,8 @@ public class HourlySolarRadiationCalculationMethods {
      * @param longTZ the longitude of the time zone in deg. west from Greenwich
      */
     public static double calc_midTimeHourAngle(jams.data.Attribute.Calendar time, int julDay, double longSite, double longTZ, boolean debug){
-        long hour = time.get(JAMSCalendar.HOUR_OF_DAY);//localTimeDateObject.decTime();
-        long minute = time.get(JAMSCalendar.MINUTE);
+        long hour = time.get(Attribute.Calendar.HOUR_OF_DAY);//localTimeDateObject.decTime();
+        long minute = time.get(Attribute.Calendar.MINUTE);
         double decMin = minute / 60;
         double decTime = hour + decMin;
         if(decTime >= 24.0)

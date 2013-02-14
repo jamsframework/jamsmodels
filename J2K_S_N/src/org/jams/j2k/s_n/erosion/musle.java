@@ -59,7 +59,7 @@ public class musle extends JAMSComponent {
     public void init() {
     }
 
-    public void run() throws Attribute.Entity.NoSuchAttributeException {
+    public void run() {
 
 
         double Sfac = 0;
@@ -79,7 +79,7 @@ public class musle extends JAMSComponent {
         this.run_insed = insed.getValue();
        
 
-        int Day = time.get(JAMSCalendar.DAY_OF_YEAR);
+        int Day = time.get(Attribute.Calendar.DAY_OF_YEAR);
         
         //System.out.println("Tag: " + Day+ "RD1 l/hru :" + this.run_genRD1);
         

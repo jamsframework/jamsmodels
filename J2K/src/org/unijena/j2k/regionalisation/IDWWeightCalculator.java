@@ -113,7 +113,7 @@ public class IDWWeightCalculator extends JAMSComponent {
         statY = listToDoubleArray(yList);
     }
 
-    public void run() throws Attribute.Entity.NoSuchAttributeException {
+    public void run() {
         double[] idwWeights;
         int[] wA;
         double[] dist;
@@ -140,7 +140,7 @@ public class IDWWeightCalculator extends JAMSComponent {
         statOrder.setValue(wA);
     }
 
-    public void cleanup() throws Attribute.Entity.NoSuchAttributeException {
+    public void cleanup() {
         int nstat = statWeights.getValue().length;
         double[] sw = new double[nstat];
         for (int i = 0; i < nstat; i++) {

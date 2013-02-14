@@ -215,29 +215,29 @@ title="ExtendedEfficiencyCalculator",
         this.monthCount = 0;
         
         //determine start and end array index for timeInterval        
-        if(eff_tres == JAMSCalendar.DAY_OF_YEAR){
+        if(eff_tres == Attribute.Calendar.DAY_OF_YEAR){
             this.interValStart =(int)((sdEff - sdMod) / (1000 * 60 * 60 * 24));
             this.interValEnd = this.interValStart + this.effTsteps;
-        } else if(eff_tres == JAMSCalendar.HOUR_OF_DAY){
+        } else if(eff_tres == Attribute.Calendar.HOUR_OF_DAY){
             this.interValStart =(int)((sdEff - sdMod) / (1000 * 60 * 60));
             this.interValEnd = this.interValStart + this.effTsteps;
-        } else if(eff_tres == JAMSCalendar.MONTH){
+        } else if(eff_tres == Attribute.Calendar.MONTH){
             Attribute.Calendar modStart = modelTimeInterval.getStart().clone();
             Attribute.Calendar effStart = effTimeInterval.getStart().clone();
             int startStep = 0;
             while(modStart.before(effStart)){
                 startStep++;
-                modStart.add(JAMSCalendar.MONTH,1);
+                modStart.add(Attribute.Calendar.MONTH,1);
             }
             this.interValStart = startStep;
             this.interValEnd = this.interValStart + this.effTsteps;
-        } else if(eff_tres == JAMSCalendar.YEAR){
+        } else if(eff_tres == Attribute.Calendar.YEAR){
             Attribute.Calendar modStart = modelTimeInterval.getStart().clone();
             Attribute.Calendar effStart = effTimeInterval.getStart().clone();
             int startStep = 0;
             while(modStart.before(effStart)){
                 startStep++;
-                modStart.add(JAMSCalendar.YEAR,1);
+                modStart.add(Attribute.Calendar.YEAR,1);
             }
             this.interValStart = startStep;
             this.interValEnd = this.interValStart + this.effTsteps;
@@ -250,7 +250,7 @@ title="ExtendedEfficiencyCalculator",
                     
     public void run() {
         if(monthly){
-            int month = time.get(JAMSCalendar.MONTH) + 1;
+            int month = time.get(Attribute.Calendar.MONTH) + 1;
             for(int i = 0; i < this.effMonthList.getValue().length; i++){
                 if(month == this.effMonthList.getValue()[i]){
                     this.valData[counter] = validation.getValue();

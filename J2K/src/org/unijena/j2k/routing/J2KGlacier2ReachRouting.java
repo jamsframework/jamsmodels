@@ -81,10 +81,10 @@ import jams.model.*;
      *  Component run stages
      */
 
-    public void init() throws Attribute.Entity.NoSuchAttributeException {
+    public void init() {
     }
 
-    public void run() throws Attribute.Entity.NoSuchAttributeException {
+    public void run() {
         double gm = glacierRunoff.getValue();
         //Attribute.Entity ent = entities.getCurrent();
         //long id = ent.getId();

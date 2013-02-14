@@ -56,7 +56,7 @@ public class StandardLUReader extends JAMSComponent {
     
     
     
-    public void init() throws Attribute.Entity.NoSuchAttributeException {
+    public void init() {
         //read lu parameter
         Attribute.EntityCollection lus = getModel().getRuntime().getDataFactory().createEntityCollection();
         

@@ -90,7 +90,7 @@ import java.util.Vector;
 
     public void run(){
         //check month
-        int actMonth = time.get(JAMSCalendar.MONTH);
+        int actMonth = time.get(Attribute.Calendar.MONTH);
         if(currentMonth < 0)
             currentMonth = actMonth;
 

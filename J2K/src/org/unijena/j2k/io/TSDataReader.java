@@ -283,22 +283,22 @@ public class TSDataReader extends JAMSComponent {
             int timeUnit = timeInterval.getTimeUnit();
             Attribute.Calendar tiStart = timeInterval.getStart();
             Attribute.Calendar date = getModel().getRuntime().getDataFactory().createCalendar();
-            if(timeUnit == JAMSCalendar.DAY_OF_YEAR) {
+            if(timeUnit == Attribute.Calendar.DAY_OF_YEAR) {
                     date.set(tiStart.get(Calendar.YEAR), tiStart.get(Calendar.MONTH), tiStart.get(Calendar.DAY_OF_MONTH), 0, 0, 0);
-            } else if(timeUnit == JAMSCalendar.HOUR_OF_DAY) {
+            } else if(timeUnit == Attribute.Calendar.HOUR_OF_DAY) {
                     date.set(tiStart.get(Calendar.YEAR), tiStart.get(Calendar.MONTH), tiStart.get(Calendar.DAY_OF_MONTH), tiStart.get(Calendar.HOUR_OF_DAY), tiStart.get(Calendar.MINUTE), 0);
-            } else if(timeUnit == JAMSCalendar.MONTH) {
+            } else if(timeUnit == Attribute.Calendar.MONTH) {
                     date.set(tiStart.get(Calendar.YEAR), tiStart.get(Calendar.MONTH), 1, 0, 0, 0);
             }
             
             while (startTime.before(date) && store.hasNext()) {
                 da = store.getNext();
-                if(timeUnit == JAMSCalendar.DAY_OF_YEAR)
-                    startTime.add(JAMSCalendar.DATE, 1);
-                else if(timeUnit == JAMSCalendar.HOUR_OF_DAY)
-                    startTime.add(JAMSCalendar.HOUR_OF_DAY, 1);
-                else if(timeUnit == JAMSCalendar.MONTH)
-                    startTime.add(JAMSCalendar.MONTH, 1);
+                if(timeUnit == Attribute.Calendar.DAY_OF_YEAR)
+                    startTime.add(Attribute.Calendar.DATE, 1);
+                else if(timeUnit == Attribute.Calendar.HOUR_OF_DAY)
+                    startTime.add(Attribute.Calendar.HOUR_OF_DAY, 1);
+                else if(timeUnit == Attribute.Calendar.MONTH)
+                    startTime.add(Attribute.Calendar.MONTH, 1);
                 
             }
         }

@@ -96,7 +96,7 @@ public class ManageLanduse extends JAMSComponent {
             public Attribute.Double PHUact; */
     
     
-    public void run() throws Attribute.Entity.NoSuchAttributeException {
+    public void run() {
         
         Attribute.Entity entity = entities.getCurrent();
         this.fertNO3N.setValue(0);
@@ -123,7 +123,7 @@ public class ManageLanduse extends JAMSComponent {
         
 //            System.out.println("da" + nextDay + time.get(Attribute.Calendar.DAY_OF_YEAR));
         
-        if ((nextDay-1) == time.get(JAMSCalendar.DAY_OF_YEAR)) {
+        if ((nextDay-1) == time.get(Attribute.Calendar.DAY_OF_YEAR)) {
             if (currentManagement.harvest != -1) {
                 //do harvesting here!!
                 //System.out.println(" Julianischer Tag  "+ time.get(time.DAY_OF_YEAR));
@@ -131,7 +131,7 @@ public class ManageLanduse extends JAMSComponent {
             }
         }
         
-        if (nextDay == time.get(JAMSCalendar.DAY_OF_YEAR)) {
+        if (nextDay == time.get(Attribute.Calendar.DAY_OF_YEAR)) {
             
             if ((managementPos+1) ==  managementList.size()) {
                 ManagementPos.setValue(0);

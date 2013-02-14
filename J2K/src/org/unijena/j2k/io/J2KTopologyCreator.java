@@ -52,7 +52,7 @@ public class J2KTopologyCreator extends JAMSComponent {
             )
             public Attribute.EntityCollection reservoirs;
     
-    public void init() throws Attribute.Entity.NoSuchAttributeException {
+    public void init() {
         
         //create object associations from id attributes for hrus and reaches
         createTopology();
@@ -67,7 +67,7 @@ public class J2KTopologyCreator extends JAMSComponent {
     }
     
     //do depth first search to find cycles
-    protected boolean cycleCheck(Attribute.Entity node,Stack<Attribute.Entity> searchStack,HashSet<Attribute.Double> closedList,HashSet<Attribute.Double> visitedList) throws Attribute.Entity.NoSuchAttributeException {
+    protected boolean cycleCheck(Attribute.Entity node,Stack<Attribute.Entity> searchStack,HashSet<Attribute.Double> closedList,HashSet<Attribute.Double> visitedList) {
         Attribute.Entity child_node;
         
         //current node allready in search stack -> circle found
@@ -103,7 +103,7 @@ public class J2KTopologyCreator extends JAMSComponent {
         return false;
     }
     
-    protected boolean cycleCheck() throws Attribute.Entity.NoSuchAttributeException {
+    protected boolean cycleCheck() {
         Iterator<Attribute.Entity> hruIterator;
         
         HashSet<Attribute.Double> closedList = new HashSet<Attribute.Double>();
@@ -132,7 +132,7 @@ public class J2KTopologyCreator extends JAMSComponent {
         return result;
     }
     
-    protected void createTopology() throws Attribute.Entity.NoSuchAttributeException {
+    protected void createTopology() {
         
         HashMap<Double, Attribute.Entity> hruMap = new HashMap<Double, Attribute.Entity>();
         HashMap<Double, Attribute.Entity> reachMap = new HashMap<Double, Attribute.Entity>();
@@ -205,7 +205,7 @@ public class J2KTopologyCreator extends JAMSComponent {
         
     }
     
-    protected void createOrderedList(Attribute.EntityCollection col, String asso) throws Attribute.Entity.NoSuchAttributeException {
+    protected void createOrderedList(Attribute.EntityCollection col, String asso) {
         
         Iterator<Attribute.Entity> hruIterator;
         Attribute.Entity e, f;

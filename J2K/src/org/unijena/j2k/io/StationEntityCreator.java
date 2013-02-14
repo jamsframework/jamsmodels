@@ -81,7 +81,7 @@ public class StationEntityCreator extends JAMSComponent {
     ArrayList<Attribute.Entity> entityList = new ArrayList<Attribute.Entity>();
 
     @Override
-    public void init() throws Attribute.Entity.NoSuchAttributeException {
+    public void init() {
         InputDataStore store = null;
         if (dataStoreID != null) {
             store = getModel().getWorkspace().getInputDataStore(dataStoreID.getValue());

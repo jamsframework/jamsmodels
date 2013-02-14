@@ -249,7 +249,7 @@ import jams.model.*;
     	}
     }
     
-    public void run() throws Attribute.Entity.NoSuchAttributeException {
+    public void run() {
     	if(this.active == null || this.active.getValue()){
 	        //if(time.get(time.DAY_OF_MONTH) == 7 && entity.getDouble("ID") == 3607)
 	        //    System.out.getRuntime().println("stop!");

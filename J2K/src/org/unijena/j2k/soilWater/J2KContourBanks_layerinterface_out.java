@@ -74,11 +74,11 @@ public class J2KContourBanks_layerinterface_out extends JAMSComponent {
     boolean modulCBaktiv;
     double kalibZufluss;
 
-    public void init() throws Attribute.Entity.NoSuchAttributeException {
+    public void init() {
       
     }
 
-    public void run() throws Attribute.Entity.NoSuchAttributeException {
+    public void run() {
 
         int i = 0;
         int imax = (int)Layer.getValue();

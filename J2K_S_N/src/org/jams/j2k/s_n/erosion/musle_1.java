@@ -55,7 +55,7 @@ public class musle_1 extends JAMSComponent {
     public void init() {
     }
 
-    public void run() throws Attribute.Entity.NoSuchAttributeException {
+    public void run() {
 
 
         double Sfac = 0;
@@ -74,7 +74,7 @@ public class musle_1 extends JAMSComponent {
         this.run_insed = insed.getValue();
 
 
-        int Day = time.get(JAMSCalendar.DAY_OF_YEAR);
+        int Day = time.get(Attribute.Calendar.DAY_OF_YEAR);
 
         //Regen groesser 15  mm dann erst m?glicher Bodenabtrag
         // Oder der Oberfl?chenabfluss groesser 0 ????
@@ -141,7 +141,7 @@ public class musle_1 extends JAMSComponent {
                 double ROKF = Math.pow((Math.E), (-0.53 * ROK));
 
                 double peaktime = 0; // hour
-                if (time.get(JAMSCalendar.MONTH) >= 4 & time.get(JAMSCalendar.MONTH) < 10) { //Summer half of the year
+                if (time.get(Attribute.Calendar.MONTH) >= 4 & time.get(Attribute.Calendar.MONTH) < 10) { //Summer half of the year
                      peaktime = 24;
                     } else {   //Winter half of the year
                      peaktime = 12;

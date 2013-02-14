@@ -149,7 +149,7 @@ public class ManageLanduse_szenoNP extends JAMSComponent {
 
     }
 
-    public void run() throws Attribute.Entity.NoSuchAttributeException {
+    public void run() {
         double dayintervall = Dayintervall.getValue();
         Attribute.Entity entity = entities.getCurrent();
         this.fertPmin.setValue(0);
@@ -183,7 +183,7 @@ public class ManageLanduse_szenoNP extends JAMSComponent {
 
 //            System.out.println("da" + nextDay + time.get(Attribute.Calendar.DAY_OF_YEAR));
 
-        if ((nextDay - 1) == time.get(JAMSCalendar.DAY_OF_YEAR)) {
+        if ((nextDay - 1) == time.get(Attribute.Calendar.DAY_OF_YEAR)) {
             if (currentManagement.harvest != -1) {
                 //do harvesting here!!
                 //System.out.println(" Julianischer Tag  "+ time.get(time.DAY_OF_YEAR));
@@ -191,7 +191,7 @@ public class ManageLanduse_szenoNP extends JAMSComponent {
             }
         }
 
-        if (nextDay == time.get(JAMSCalendar.DAY_OF_YEAR)) {
+        if (nextDay == time.get(Attribute.Calendar.DAY_OF_YEAR)) {
 
             if ((managementPos + 1) == managementList.size()) {
                 ManagementPos.setValue(0);
@@ -225,7 +225,7 @@ public class ManageLanduse_szenoNP extends JAMSComponent {
             }
         }
 
-        double day = time.get(JAMSCalendar.DAY_OF_YEAR);
+        double day = time.get(Attribute.Calendar.DAY_OF_YEAR);
 
         if ((opti.getValue() == 2) && (day > 90.0 && day < 300.0) && (gift.getValue() > 0) && (idc == 1 || idc == 2 || idc == 4 || idc == 5)) {
             if (nstrs.getValue() > 0.03 && gift.getValue() < 4) {

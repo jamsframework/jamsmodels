@@ -116,12 +116,12 @@ public class DataReader extends JAMSComponent {
 
                 while (startTime.before(date) && store.hasNext()) {
                     da = store.getNext();
-                    if(timeUnit == JAMSCalendar.DAY_OF_YEAR)
-                        startTime.add(JAMSCalendar.DATE, 1);
-                    else if(timeUnit == JAMSCalendar.HOUR_OF_DAY)
-                        startTime.add(JAMSCalendar.HOUR_OF_DAY, 1);
-                    else if(timeUnit == JAMSCalendar.MONTH)
-                        startTime.add(JAMSCalendar.MONTH, 1);
+                    if(timeUnit == Attribute.Calendar.DAY_OF_YEAR)
+                        startTime.add(Attribute.Calendar.DATE, 1);
+                    else if(timeUnit == Attribute.Calendar.HOUR_OF_DAY)
+                        startTime.add(Attribute.Calendar.HOUR_OF_DAY, 1);
+                    else if(timeUnit == Attribute.Calendar.MONTH)
+                        startTime.add(Attribute.Calendar.MONTH, 1);
                 }
                 getModel().getRuntime().println(fileName.getValue() + " data file initalised ... ", JAMS.VERBOSE);
             }

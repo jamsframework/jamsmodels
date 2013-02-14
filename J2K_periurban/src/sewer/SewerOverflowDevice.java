@@ -110,7 +110,7 @@ public class SewerOverflowDevice extends JAMSComponent {
     /*
      * Component run stages
      */
-    public void run() throws Attribute.Entity.NoSuchAttributeException {
+    public void run() {
 
         if (ts++ > 60) {
             System.out.println("");

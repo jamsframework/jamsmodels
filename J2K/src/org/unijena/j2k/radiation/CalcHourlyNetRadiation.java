@@ -138,8 +138,8 @@ import jams.model.*;
             netRad.setValue(reader.readDouble());
         }
         else {
-            int julDay = time.get(JAMSCalendar.DAY_OF_YEAR);
-            int idx = (julDay - 1) * 24 + time.get(JAMSCalendar.HOUR_OF_DAY);
+            int julDay = time.get(Attribute.Calendar.DAY_OF_YEAR);
+            int idx = (julDay - 1) * 24 + time.get(Attribute.Calendar.HOUR_OF_DAY);
             double extraterrRadiation = extRad.getValue();
             double elev = elevation.getValue();
             double alb;

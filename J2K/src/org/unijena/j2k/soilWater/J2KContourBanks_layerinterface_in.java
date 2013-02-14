@@ -78,7 +78,7 @@ public class J2KContourBanks_layerinterface_in extends JAMSComponent {
     boolean modulCBaktiv;
     
 
-    public void init() throws Attribute.Entity.NoSuchAttributeException {
+    public void init() {
         Attribute.Entity actHRU;
         double runsumlayer = 0;
         //which Layer are cutted by the trench 
@@ -102,7 +102,7 @@ public class J2KContourBanks_layerinterface_in extends JAMSComponent {
         layermax.setValue(runlayermax);
     }
 
-    public void run() throws Attribute.Entity.NoSuchAttributeException {
+    public void run() {
 
         int i = 0;
         double sumactLPS = 0;

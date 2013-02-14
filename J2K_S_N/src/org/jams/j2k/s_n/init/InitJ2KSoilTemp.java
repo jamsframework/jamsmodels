@@ -71,7 +71,7 @@ import jams.model.*;
         
     }
     
-    public void run() throws Attribute.Entity.NoSuchAttributeException {
+    public void run() {
         
     
         Soil_Temp_Layer.setValue(tmeanavg.getValue());

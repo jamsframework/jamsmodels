@@ -69,11 +69,11 @@ import jams.model.*;
      *  Component run stages
      */
     
-    public void init() throws Attribute.Entity.NoSuchAttributeException {
+    public void init() {
         
     }
     
-    public void run() throws Attribute.Entity.NoSuchAttributeException {
+    public void run() {
         
         double maxHum = org.unijena.j2k.physicalCalculations.ClimatologicalVariables.calc_maxHum(tmean.getValue());
         double rh = (ahum.getValue() / maxHum) * 100;
@@ -85,7 +85,7 @@ import jams.model.*;
         rhum.setValue(rh);
     }
     
-    public void cleanup() throws Attribute.Entity.NoSuchAttributeException {
+    public void cleanup() {
         
     }
 }

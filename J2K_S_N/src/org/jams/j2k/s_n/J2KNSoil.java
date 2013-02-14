@@ -378,7 +378,7 @@ import jams.model.*;
     }
     
     public void run() throws Attribute.Entity.NoSuchAttributeException{
-        int day = time.get(JAMSCalendar.DAY_OF_YEAR) - 1;
+        int day = time.get(Attribute.Calendar.DAY_OF_YEAR) - 1;
         int i = 1;
         this.gamma_temp = 0;
         this.gamma_water = 0;
@@ -430,7 +430,7 @@ import jams.model.*;
         
         
         
-        this.datumjul = time.get(JAMSCalendar.DAY_OF_YEAR);
+        this.datumjul = time.get(Attribute.Calendar.DAY_OF_YEAR);
         
         gamma_temp = 0.9 * (runSoil_Temp_Layer / (runSoil_Temp_Layer * Math.exp(9.93 - 0.312 * runSoil_Temp_Layer))) + 0.1;
         

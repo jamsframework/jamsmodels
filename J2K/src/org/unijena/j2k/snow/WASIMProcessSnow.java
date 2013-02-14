@@ -258,7 +258,7 @@ title="WASIMProcessSnow",
     }
     
     
-    public void run() throws Attribute.Entity.NoSuchAttributeException {
+    public void run() {
         if(this.active == null || this.active.getValue()){
             // map run variables
             // driving vars
@@ -296,7 +296,7 @@ title="WASIMProcessSnow",
                     this.runAET = this.pET.getValue();
                 }
                 
-                int julDay = this.time.get(JAMSCalendar.DAY_OF_YEAR);
+                int julDay = this.time.get(Attribute.Calendar.DAY_OF_YEAR);
                 double dayFrac = org.unijena.j2k.physicalCalculations.DailySolarRadiationCalculationMethods.calcDayFraction(this.latitude.getValue(), julDay);
                 this.runRadiationMeltFactor = this.calcRadiationMeltFactor2(julDay);
                 

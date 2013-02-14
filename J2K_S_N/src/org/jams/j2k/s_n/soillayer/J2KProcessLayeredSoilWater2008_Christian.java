@@ -245,7 +245,7 @@ public class J2KProcessLayeredSoilWater2008_Christian extends JAMSComponent {
     boolean debug;
 
     @Override
-    public void run() throws Attribute.Entity.NoSuchAttributeException {
+    public void run() {
         double balMPSstart = 0, balMPSend = 0;
         double balLPSstart = 0, balLPSend = 0;
         double balDPSstart = 0, balDPSend = 0;
@@ -556,7 +556,7 @@ public class J2KProcessLayeredSoilWater2008_Christian extends JAMSComponent {
         }        
     }
 
-    private void redistRD1_RD2_in() throws Attribute.Entity.NoSuchAttributeException {
+    private void redistRD1_RD2_in() {
         //RD1 is put to DPS first
         if (this.run_inRD1 > 0) {
             this.run_actDPS += this.run_inRD1;

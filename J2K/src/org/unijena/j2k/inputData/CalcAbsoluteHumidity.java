@@ -105,11 +105,11 @@ title="CalcAbsoluteHumidity",
      *  Component run stages
      */
     
-    public void init() throws Attribute.Entity.NoSuchAttributeException {
+    public void init() {
         
     }
     
-    public void run() throws Attribute.Entity.NoSuchAttributeException {
+    public void run() {
 
         double[] rhum = this.rhum.getValue();
         double[] temperature = this.temperature.getValue();
@@ -170,7 +170,7 @@ title="CalcAbsoluteHumidity",
         regCoeffAhum.setValue(org.unijena.j2k.statistics.Regression.calcLinReg(rhumElevation.getValue(), this.ahum.getValue()));
     }
     
-    public void cleanup() throws Attribute.Entity.NoSuchAttributeException {
+    public void cleanup() {
         
     }
 }

@@ -79,10 +79,10 @@ public class TemperatureLapseRate1 extends JAMSComponent {
      *  Component run stages
      */
 
-    public void init() throws Attribute.Entity.NoSuchAttributeException {
+    public void init() {
     }
 
-    public void run() throws Attribute.Entity.NoSuchAttributeException {
+    public void run() {
 
      
         
@@ -116,10 +116,10 @@ public class TemperatureLapseRate1 extends JAMSComponent {
 
 //
 //
-//    public void init() throws Attribute.Entity.NoSuchAttributeException {
+//    public void init() {
 //    }
 //
-//    public void run() throws Attribute.Entity.NoSuchAttributeException {
+//    public void run() {
 //
 //
 //

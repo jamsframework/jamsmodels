@@ -701,7 +701,7 @@ import java.util.ArrayList;
     // expressed as LAI fraction of the known max LAI
     // @todo declare how is continuosly vegetated land use is determined
     
-    private boolean calc_phu() throws Attribute.Entity.NoSuchAttributeException {
+    private boolean calc_phu() {
         if (this.tmean > this.Tbase) {
             this.phu_daily = phu_daily + (this.tmean - this.Tbase); //phänologisch wirksame Temperatursumme
             this.fphu_act = this.phu_daily / this.phu;
@@ -716,7 +716,7 @@ import java.util.ArrayList;
     }
     
     
-   /* private boolean calc_phu_() throws Attribute.Entity.NoSuchAttributeException {
+   /* private boolean calc_phu_() {
         //System.out.println("tägliche phu_daily " + phu_delta );
         if (this.tmean > this.Tbase) {
         double phu_Delta = this.Tbase - this.tmean;
@@ -754,7 +754,7 @@ import java.util.ArrayList;
     
     
     
-    private boolean calc_lai() throws Attribute.Entity.NoSuchAttributeException {
+    private boolean calc_lai() {
         
          /* Shape coefficients
             sc to determine LAI development */
@@ -829,7 +829,7 @@ import java.util.ArrayList;
 // radiation-use efficiency declared in the crop growth database by parameter 'rue' in crop.par
 // whereas the total biomass on a given day is summed up
     
-    private void calc_biomass() throws Attribute.Entity.NoSuchAttributeException {
+    private void calc_biomass() {
         
         double Hphosyn = 0.5 * this.solrad * (1 - Math.exp(this.leco*this.lai_act)); // Intercepted photosynthetically active radiation [MJ/m²]
         
@@ -853,7 +853,7 @@ import java.util.ArrayList;
 // chtmx = maximum canopy height (m), Parameter from crop.par
 // frLAImx = fraction of plants maximum canopy height
     
-    private double calc_canopy() throws Attribute.Entity.NoSuchAttributeException {
+    private double calc_canopy() {
         
         //double hc_old = hc_delta;
         double hc_delta = this.chtmx * Math.sqrt(frLAImx_act);
@@ -871,7 +871,7 @@ import java.util.ArrayList;
     
 // Fraction of root biomass
 //
-    private boolean calc_root() throws Attribute.Entity.NoSuchAttributeException {
+    private boolean calc_root() {
         
         
         double rootpartmodi = 0.20 * this.fphu_act;
@@ -950,7 +950,7 @@ import java.util.ArrayList;
       bioNaCl_act = actNaCl_up.getValue() + bioNaCl_act;
     }
     
-    private boolean calc_maturity()throws Attribute.Entity.NoSuchAttributeException {
+    private boolean calc_maturity(){
         
         if
                 (this.fphu_act >= 1.00) {
@@ -974,7 +974,7 @@ import java.util.ArrayList;
 // Phosphorus uptake
     
 // Crop Yield
-    private boolean calc_cropyield() throws Attribute.Entity.NoSuchAttributeException {
+    private boolean calc_cropyield() {
         if (this.idc == 3 || this.idc == 6 || this.idc == 7) {
             
             double u1 = 100 * this.fphu_act;
@@ -1108,14 +1108,14 @@ import java.util.ArrayList;
         }
         return true;
     }
-    private double calc_cropyield_ha() throws Attribute.Entity.NoSuchAttributeException {
+    private double calc_cropyield_ha() {
         
         this.yldNaCl_ha = this.yldNaCl * area_ha / 10000;
         
         return yldNaCl_ha;
     }
     
-    private boolean calc_residues() throws Attribute.Entity.NoSuchAttributeException {
+    private boolean calc_residues() {
         if ( this.idc == 7) {
             this.addresidue_pool =  this.yield;
             this.addresidue_poolNaCl = this.yldNaCl;
@@ -1160,7 +1160,7 @@ import java.util.ArrayList;
     int julday = time.get(time.JULDAY);
     double CJD = CJD++; */
 
-  /*  private boolean calc_ps() throws Attribute.Entity.NoSuchAttributeException {
+  /*  private boolean calc_ps() {
     if (Keimung)
         if CHU = PHU[PS] || CJD >= PJD[PS];
         Keimung;

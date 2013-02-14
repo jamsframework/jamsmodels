@@ -24,7 +24,7 @@ public class StandardEntityReaderRR extends JAMSComponent {
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.WRITE, update = JAMSVarDescription.UpdateType.RUN, description = "Collection of reach objects")
     public Attribute.EntityCollection reaches;
 
-    public void init() throws Attribute.Entity.NoSuchAttributeException {
+    public void init() {
         //to handle relative path names        
         hrus.setEntities(J2KFunctions.readParas(JAMSTools.CreateAbsoluteFileName(getModel().getWorkspaceDirectory().getPath(), hruFileName.getValue()), getModel()));
 
@@ -71,7 +71,7 @@ public class StandardEntityReaderRR extends JAMSComponent {
     }
 
     //do depth first search to find cycles
-    protected boolean cycleCheck(Entity node, Stack<Entity> searchStack, HashSet<Attribute.Double> closedList, HashSet<Attribute.Double> visitedList) throws Attribute.Entity.NoSuchAttributeException {
+    protected boolean cycleCheck(Entity node, Stack<Entity> searchStack, HashSet<Attribute.Double> closedList, HashSet<Attribute.Double> visitedList) {
         Attribute.Entity child_node;
 
         //current node allready in search stack -> circle found
@@ -111,7 +111,7 @@ public class StandardEntityReaderRR extends JAMSComponent {
         return false;
     }
 
-    protected boolean cycleCheck() throws Attribute.Entity.NoSuchAttributeException {
+    protected boolean cycleCheck() {
         Iterator<Entity> hruIterator;
 
         HashSet<Attribute.Double> closedList = new HashSet<Attribute.Double>();
@@ -140,7 +140,7 @@ public class StandardEntityReaderRR extends JAMSComponent {
         return result;
     }
 
-    protected void createTopology() throws Attribute.Entity.NoSuchAttributeException {
+    protected void createTopology() {
 
         HashMap<Double, Entity> hruMap = new HashMap<Double, Entity>();
         HashMap<Double, Entity> reachMap = new HashMap<Double, Entity>();
@@ -192,7 +192,7 @@ public class StandardEntityReaderRR extends JAMSComponent {
 
     }
 
-    protected void createOrderedList(Attribute.EntityCollection col, String asso) throws Attribute.Entity.NoSuchAttributeException {
+    protected void createOrderedList(Attribute.EntityCollection col, String asso) {
 
         Iterator<Entity> hruIterator;
         Entity e, f;

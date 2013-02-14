@@ -190,7 +190,7 @@ public class J2KProcessSnow2 extends JAMSComponent {
         }
     }
 
-    public void run() throws Attribute.Entity.NoSuchAttributeException {
+    public void run() {
 //
 //        Attribute.Calendar c = getModel().getRuntime().getDataFactory().createCalendar();
 //        c.setValue("1997-01-21 00:00");

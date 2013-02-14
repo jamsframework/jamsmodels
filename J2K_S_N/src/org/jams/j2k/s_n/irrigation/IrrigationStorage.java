@@ -81,7 +81,7 @@ public class IrrigationStorage extends JAMSComponent {
     public Attribute.Double Eff_test;
 
     //Berechnung
-    public void run() throws Attribute.Entity.NoSuchAttributeException {
+    public void run() {
         Attribute.Entity entity = entities.getCurrent();
         double wst = 1 - wstrs.getValue();
         double satMPSArray[] = satMPS.getValue();

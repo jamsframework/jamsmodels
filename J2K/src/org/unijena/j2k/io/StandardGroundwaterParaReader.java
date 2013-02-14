@@ -50,7 +50,7 @@ public class StandardGroundwaterParaReader extends JAMSComponent {
     description = "List of hru objects")
     public Attribute.EntityCollection hrus;
 
-    public void init() throws Attribute.Entity.NoSuchAttributeException {
+    public void init() {
 
         //read gw parameter
         Attribute.EntityCollection gwTypes = getModel().getRuntime().getDataFactory().createEntityCollection();

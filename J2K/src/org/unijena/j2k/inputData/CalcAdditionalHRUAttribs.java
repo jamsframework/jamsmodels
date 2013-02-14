@@ -105,7 +105,7 @@ import jams.model.*;
      *  Component run stages
      */
     
-    public void init() throws Attribute.Entity.NoSuchAttributeException {
+    public void init() {
         double[] latLong = new double[2];
         latLong = org.unijena.j2k.geographicalCalculations.GKConversion.GK2LatLon(x.getValue(), y.getValue());
         latitude.setValue(latLong[0]);
@@ -117,10 +117,10 @@ import jams.model.*;
         int julDay = 0; 
         
         if(this.tempRes == null || this.tempRes.equals("d") || this.tempRes.equals("h")){
-            julDay = this.time.get(JAMSCalendar.DAY_OF_YEAR);
+            julDay = this.time.get(Attribute.Calendar.DAY_OF_YEAR);
         }
         else if(this.tempRes.equals("m")){
-            int month = this.time.get(JAMSCalendar.MONTH);
+            int month = this.time.get(Attribute.Calendar.MONTH);
             julDay = this.monthMean[month];
         }
         double sloAspCorr = org.unijena.j2k.geographicalCalculations.CalcSlopeAspectCorrectionFactor.calc_slopeAspectCorrectionFactor(julDay, latitude.getValue(), slope.getValue(), aspect.getValue());

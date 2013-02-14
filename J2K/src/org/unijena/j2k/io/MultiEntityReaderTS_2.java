@@ -86,7 +86,7 @@ public class MultiEntityReaderTS_2 extends JAMSComponent {
     public Attribute.String reach2reachAttribute;
 
     @Override
-    public void init() throws Attribute.Entity.NoSuchAttributeException {
+    public void init() {
  
 
         //read hru parameter
@@ -126,7 +126,7 @@ public class MultiEntityReaderTS_2 extends JAMSComponent {
 
     }
 
-    private void createTopology() throws Attribute.Entity.NoSuchAttributeException {
+    private void createTopology() {
 
         BufferedReader reader1;
         BufferedReader reader2;
@@ -323,7 +323,7 @@ public class MultiEntityReaderTS_2 extends JAMSComponent {
         }
     }
 
-    protected void createOrderedList(Attribute.EntityCollection col, String asso) throws Attribute.Entity.NoSuchAttributeException {
+    protected void createOrderedList(Attribute.EntityCollection col, String asso) {
 
         Iterator<Attribute.Entity> entityIterator;
         Attribute.Entity e = null ;

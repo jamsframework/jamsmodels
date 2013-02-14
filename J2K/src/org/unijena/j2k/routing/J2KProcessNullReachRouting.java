@@ -136,11 +136,11 @@ import jams.model.*;
      *  Component run stages
      */
     
-    public void init() throws Attribute.Entity.NoSuchAttributeException {
+    public void init() {
         
     }
     
-    public void run() throws Attribute.Entity.NoSuchAttributeException {
+    public void run() {
         
         Attribute.Entity DestReach = (Attribute.Entity) entity.getObject("to_reach");
         

@@ -50,7 +50,7 @@ import jams.model.*;
             )
             public Attribute.Double outVar;
     
-    public void run() throws Attribute.Entity.NoSuchAttributeException {
+    public void run() {
         
         double varSum = 0;
         for(int i = 0; i < inVars.length; i++)

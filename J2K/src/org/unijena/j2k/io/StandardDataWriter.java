@@ -126,10 +126,10 @@ public class StandardDataWriter extends JAMSComponent {
             timeFormat = "%1$tY";        
             dateFormat = new SimpleDateFormat("yyyy");
         }
-        dateFormat.setTimeZone(JAMSCalendar.STANDARD_TIME_ZONE);
+        dateFormat.setTimeZone(Attribute.Calendar.DEFAULT_TIME_ZONE);
     }
     
-    public void run() throws Attribute.Entity.NoSuchAttributeException {
+    public void run() {
         //always write time
         //the time also knows a toString() method with additional formatting parameters
         //e.g. time.toString("%1$tY-%1$tm-%1$td %1$tH:%1$tM")

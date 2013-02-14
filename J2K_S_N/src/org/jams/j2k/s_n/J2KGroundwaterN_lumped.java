@@ -177,7 +177,7 @@ import jams.model.*;
      *  Component run stages
      */
     
-    public void init()  throws Attribute.Entity.NoSuchAttributeException {
+    public void init()  {
         EntityEnumerator eEnum = hrus.getEntityEnumerator();
         Attribute.Entity[] entities = hrus.getEntityArray();
         
@@ -199,7 +199,7 @@ import jams.model.*;
         }
     }
     
-    public void run() throws Attribute.Entity.NoSuchAttributeException {
+    public void run() {
         
         double RG1_out = entity.getDouble(aNameOutRG1.getValue());
         double RG2_out = entity.getDouble(aNameOutRG2.getValue());

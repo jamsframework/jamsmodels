@@ -50,10 +50,10 @@ public class StandardRainwaterManagementReader extends JAMSComponent {
     description = "List of hru objects")
     public Attribute.EntityCollection hrus;
 
-    public void init() throws Attribute.Entity.NoSuchAttributeException {
+    public void init() {
 
         //read rwm parameter
-        Attribute.EntityCollection rwmTypes = JAMSDataFactory.createEntityCollection();
+        Attribute.EntityCollection rwmTypes = JAMSDataFactory.getDataFactory().createEntityCollection();
 
         rwmTypes.setEntities(J2KFunctions.readParas(FileTools.createAbsoluteFileName(getModel().getWorkspaceDirectory().getPath(), rwmFileName.getValue()), getModel()));
 

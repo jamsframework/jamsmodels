@@ -378,13 +378,13 @@ import jams.model.*;
      *  Component run stages
      */
     
-    public void init() throws Attribute.Entity.NoSuchAttributeException {
+    public void init() {
        
 
         
     }
     
-    public void run() throws Attribute.Entity.NoSuchAttributeException {
+    public void run() {
         this.run_area = area.getValue();
         this.run_slope = slope.getValue();
         
@@ -439,7 +439,7 @@ import jams.model.*;
         this.calcInfImperv(sealedGrade.getValue());
         
         /** determining maximal infiltration rate */
-        double maxInf = this.calcMaxInfiltration(time.get(JAMSCalendar.MONTH)+1);
+        double maxInf = this.calcMaxInfiltration(time.get(Attribute.Calendar.MONTH)+1);
         if(maxInf < this.run_infiltration){
             double deltaInf = this.run_infiltration - maxInf;
             this.run_actDPS = this.run_actDPS + deltaInf;

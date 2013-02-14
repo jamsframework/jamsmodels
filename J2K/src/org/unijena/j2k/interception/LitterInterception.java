@@ -273,7 +273,7 @@ import jams.model.*;
             /** determining maximal infiltration rate */
        
         //System.out.println("Monat: " + time.get(time.MONTH)+1);
-        double maxInf = calcMaxInfiltration(time.get(JAMSCalendar.MONTH)+1);
+        double maxInf = calcMaxInfiltration(time.get(Attribute.Calendar.MONTH)+1);
         
         //Calculating available water for Infiltration
         double potInf = (run_LitIntcStorage - minLitIntcCap)/maxLitIntcCap;

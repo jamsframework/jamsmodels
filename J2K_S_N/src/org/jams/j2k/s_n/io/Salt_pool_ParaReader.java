@@ -49,7 +49,7 @@ public class Salt_pool_ParaReader extends JAMSComponent {
     
 
   
-    public void init() throws Attribute.Entity.NoSuchAttributeException {
+    public void init() {
 
         //read saltpools
         Attribute.EntityCollection gwTypes = getModel().getRuntime().getDataFactory().createEntityCollection();

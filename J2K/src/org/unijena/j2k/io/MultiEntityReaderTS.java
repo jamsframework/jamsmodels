@@ -99,7 +99,7 @@ public class MultiEntityReaderTS extends JAMSComponent {
 
     }
 
-    private void createTopology() throws Attribute.Entity.NoSuchAttributeException {
+    private void createTopology() {
 
         BufferedReader reader1, reader2;
         HashMap<Double, Attribute.Entity> hruMap = new HashMap<Double, Attribute.Entity>();

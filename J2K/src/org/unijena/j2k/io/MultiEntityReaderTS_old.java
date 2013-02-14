@@ -83,7 +83,7 @@ public class MultiEntityReaderTS_old extends JAMSComponent {
     defaultValue = "to_reach")
     public Attribute.String reach2reachAttribute;
 
-    public void init() throws Attribute.Entity.NoSuchAttributeException {
+    public void init() {
         /*
         //read hru parameter
         hrus.setEntities(J2KFunctions.readParas(JAMSTools.CreateAbsoluteFileName(getModel().getWorkspaceDirectory().getPath(), hruFileName.getValue()), getModel()));
@@ -138,7 +138,7 @@ public class MultiEntityReaderTS_old extends JAMSComponent {
 
     }
 
-    private void createTopology() throws Attribute.Entity.NoSuchAttributeException {
+    private void createTopology() {
 
         BufferedReader reader1;
         BufferedReader reader2;
@@ -345,7 +345,7 @@ public class MultiEntityReaderTS_old extends JAMSComponent {
         }
     }
 
-    protected void createOrderedList(Attribute.EntityCollection col, String asso) throws Attribute.Entity.NoSuchAttributeException {
+    protected void createOrderedList(Attribute.EntityCollection col, String asso) {
 
         Iterator<Attribute.Entity> entityIterator, entityIterator2;
         Attribute.Entity e = null, e_ziel, e_ziel_neu;

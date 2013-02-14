@@ -581,8 +581,8 @@ import jams.model.*;
         double balIn = this.inSnow.getValue() + this.inRain.getValue();
         double balStorStart = this.snowWaterEquivalent.getValue();
         
-        int julDay = this.time.get(JAMSCalendar.DAY_OF_YEAR);
-        int month = this.time.get(JAMSCalendar.MONTH);
+        int julDay = this.time.get(Attribute.Calendar.DAY_OF_YEAR);
+        int month = this.time.get(Attribute.Calendar.MONTH);
         
         //other than PRMS, have to think about that later
         if(julDay > 85 && julDay < 305)

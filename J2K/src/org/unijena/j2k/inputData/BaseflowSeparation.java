@@ -74,12 +74,12 @@ title="CalcAbsoluteHumidity",
      *  Component run stages
      */
     
-    public void init() throws Attribute.Entity.NoSuchAttributeException {
+    public void init() {
         
         
     }
     
-    public void run() throws Attribute.Entity.NoSuchAttributeException {
+    public void run() {
         
         //allocating the output arrays
         double[] strflw = this.strflow.getValue();
@@ -226,7 +226,7 @@ title="CalcAbsoluteHumidity",
         //integrate the alpha value
     }
     
-    public void cleanup() throws Attribute.Entity.NoSuchAttributeException {
+    public void cleanup() {
         
     }
 }

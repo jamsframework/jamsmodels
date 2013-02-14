@@ -128,7 +128,7 @@ import jams.model.*;
      *  Component run stages
      */
     
-    public void init() throws Attribute.Entity.NoSuchAttributeException {
+    public void init() {
         //cascade 1 setup
         double[] stor1 = new double[this.n1.getValue()];
         for(int i = 0; i < this.n1.getValue(); i++)
@@ -144,7 +144,7 @@ import jams.model.*;
         gwStor2.setValue(stor2);
     }
     
-    public void run() throws Attribute.Entity.NoSuchAttributeException {
+    public void run() {
        double inflow = this.gwRecharge.getValue();
        double inC1 = this.alpha.getValue() * inflow;
        double inC2 = (1 - this.alpha.getValue()) * inflow;

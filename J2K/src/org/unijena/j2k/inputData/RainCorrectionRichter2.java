@@ -155,11 +155,11 @@ import jams.model.*;
      *  Component run stages
      */
     
-    public void init() throws Attribute.Entity.NoSuchAttributeException {
+    public void init() {
         
     }
     
-    public void run() throws Attribute.Entity.NoSuchAttributeException {
+    public void run() {
         if(!dataCaching.getValue()){
             double[] precip = this.precip.getValue();
             double[] temperature = this.temperature.getValue();
@@ -290,7 +290,7 @@ import jams.model.*;
                 if(precip[r] < 0.1)
                     wetErr = 0;
                 else{
-                    if(time.get(JAMSCalendar.MONTH) >= 4 & time.get(JAMSCalendar.MONTH) < 10){ //Summer half of the year
+                    if(time.get(Attribute.Calendar.MONTH) >= 4 & time.get(Attribute.Calendar.MONTH) < 10){ //Summer half of the year
                         if(precip[r] >= 9.0)
                             wetErr = 0.47;
                         else
@@ -311,7 +311,7 @@ import jams.model.*;
         }
     }
     
-    public void cleanup() throws Attribute.Entity.NoSuchAttributeException {
+    public void cleanup() {
         
     }
 }

@@ -183,7 +183,7 @@ import jams.model.*;
             //aggregation to monthly values
             if(this.time != null){
                 if(this.tempRes.getValue().equals("m")){
-                    int daysInMonth = this.time.getActualMaximum(JAMSCalendar.DATE);
+                    int daysInMonth = this.time.getActualMaximum(Attribute.Calendar.DATE);
                     pET = pET * daysInMonth;
                 }
             }

@@ -170,7 +170,7 @@ title="Time series capturer",
             int startStep = 0;
             while(modStart.before(effStart)){
                 startStep++;
-                modStart.add(JAMSCalendar.MONTH,1);
+                modStart.add(Attribute.Calendar.MONTH,1);
             }
             this.interValStart = startStep;
             this.interValEnd = this.interValStart + this.effTsteps;
@@ -180,7 +180,7 @@ title="Time series capturer",
             int startStep = 0;
             while(modStart.before(effStart)){
                 startStep++;
-                modStart.add(JAMSCalendar.YEAR,1);
+                modStart.add(Attribute.Calendar.YEAR,1);
             }
             this.interValStart = startStep;
             this.interValEnd = this.interValStart + this.effTsteps;
@@ -208,7 +208,7 @@ title="Time series capturer",
         
         if(capture){
             if(monthly){
-                int month = time.get(JAMSCalendar.MONTH) + 1;
+                int month = time.get(Attribute.Calendar.MONTH) + 1;
                 for(int i = 0; i < this.captureMonthList.getValue().length; i++){
                     if(month == this.captureMonthList.getValue()[i]){
                         this.captData[counter] = this.timeSeriesVal.getValue();

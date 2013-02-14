@@ -85,7 +85,7 @@ import jams.model.*;
      */
     double[] extRadiation = null;
 
-    public void init() throws Attribute.Entity.NoSuchAttributeException {
+    public void init() {
         if(tempRes.getValue().equals("d"))
             extRadiation = new double[366];
         else if(tempRes.getValue().equals("h"))

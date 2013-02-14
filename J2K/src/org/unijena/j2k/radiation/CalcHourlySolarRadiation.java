@@ -127,8 +127,8 @@ import jams.model.*;
         }
         else {
             int oldjulDay = 0;
-            int julDay = time.get(JAMSCalendar.DAY_OF_YEAR);
-            int idx = (julDay - 1) * 24 + time.get(JAMSCalendar.HOUR_OF_DAY);
+            int julDay = time.get(Attribute.Calendar.DAY_OF_YEAR);
+            int idx = (julDay - 1) * 24 + time.get(Attribute.Calendar.HOUR_OF_DAY);
             
             double lat = latitude.getValue();
             double radLat = org.unijena.j2k.mathematicalCalculations.MathematicalCalculations.deg2rad(lat);

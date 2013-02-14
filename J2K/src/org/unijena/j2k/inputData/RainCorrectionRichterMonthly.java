@@ -94,7 +94,7 @@ import jams.model.*;
      *  Component run stages
      */
     
-    public void init() throws Attribute.Entity.NoSuchAttributeException {
+    public void init() {
         adj = this.precipAdj.getValue();
         if(adj == 0)
             adj = 1;
@@ -104,7 +104,7 @@ import jams.model.*;
         }
     }
     
-    public void run() throws Attribute.Entity.NoSuchAttributeException {
+    public void run() {
         double[] corrFactor = null;
         if (this.outFileName != null) {
             int nstat = inPrecip.getValue().length;
@@ -123,7 +123,7 @@ import jams.model.*;
             corrFactor = richter3_c;
         double[] precip = this.inPrecip.getValue();
         double[] rcorr = new double[precip.length];
-        int month = time.get(JAMSCalendar.MONTH);
+        int month = time.get(Attribute.Calendar.MONTH);
         for(int i = 0; i < rcorr.length; i++){
             if(precip[i] == -9999){
                 rcorr[i] = -9999;
@@ -149,7 +149,7 @@ import jams.model.*;
         
     }
     
-    public void cleanup() throws Attribute.Entity.NoSuchAttributeException {
+    public void cleanup() {
         if (this.outFileName != null) {
             writer.write("#eof");
             writer.close();

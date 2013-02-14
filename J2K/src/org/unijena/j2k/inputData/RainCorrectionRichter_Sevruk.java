@@ -125,7 +125,7 @@ public class RainCorrectionRichter_Sevruk extends JAMSComponent {
     /*
      *  Component run stages
      */
-    public void init() throws Attribute.Entity.NoSuchAttributeException {
+    public void init() {
         if (this.fileName != null) {
             writer = new GenericDataWriter(dirName.getValue() + "/" + fileName.getValue());
             writer2 = new GenericDataWriter(dirName.getValue() + "/" + "rainTempFile.dat");
@@ -133,7 +133,7 @@ public class RainCorrectionRichter_Sevruk extends JAMSComponent {
         }
     }
 
-    public void run() throws Attribute.Entity.NoSuchAttributeException {
+    public void run() {
 
         if (this.fileName != null) {
             int nstat = precip.getValue().length;
@@ -322,7 +322,7 @@ public class RainCorrectionRichter_Sevruk extends JAMSComponent {
                 if (precip[r] < 0.1) {
                     wetErr = 0;
                 } else {
-                    if (time.get(JAMSCalendar.MONTH) >= 4 & time.get(JAMSCalendar.MONTH) < 10) { //Summer half of the year
+                    if (time.get(Attribute.Calendar.MONTH) >= 4 & time.get(Attribute.Calendar.MONTH) < 10) { //Summer half of the year
                         if (precip[r] >= 9.0) {
                             wetErr = 0.47;
                         } else {
@@ -364,7 +364,7 @@ public class RainCorrectionRichter_Sevruk extends JAMSComponent {
         }
     }
 
-    public void cleanup() throws Attribute.Entity.NoSuchAttributeException {
+    public void cleanup() {
         if (this.fileName != null) {
             writer.write("#eof");
             writer2.write("#eof");

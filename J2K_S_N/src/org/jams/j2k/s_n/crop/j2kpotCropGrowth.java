@@ -248,7 +248,7 @@ public class j2kpotCropGrowth extends JAMSComponent {
     public void init() {
     }
 
-    public void run() throws Attribute.Entity.NoSuchAttributeException {
+    public void run() {
         Attribute.Entity entity = entities.getCurrent();
         /* this.bp1 = crop.bp1; // Phosphate uptake parameter not used at the moment
         this.bp2 = crop.bp2;
@@ -484,7 +484,7 @@ public class j2kpotCropGrowth extends JAMSComponent {
         return true;
     }
 
-    /* private boolean calc_phu_() throws Attribute.Entity.NoSuchAttributeException {
+    /* private boolean calc_phu_() {
     //System.out.println("tägliche phu_daily " + phu_delta );
     if (this.tmean > this.Tbase) {
     double phu_Delta = this.Tbase - this.tmean;
@@ -1025,7 +1025,7 @@ public class j2kpotCropGrowth extends JAMSComponent {
 int julday = time.get(time.JULDAY);
 double CJD = CJD++; */
 
-/*  private boolean calc_ps() throws Attribute.Entity.NoSuchAttributeException {
+/*  private boolean calc_ps() {
 if (Keimung)
 if CHU = PHU[PS] || CJD >= PJD[PS];
 Keimung;

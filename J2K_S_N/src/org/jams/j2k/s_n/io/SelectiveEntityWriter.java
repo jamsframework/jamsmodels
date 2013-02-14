@@ -98,7 +98,7 @@ public class SelectiveEntityWriter extends JAMSComponent {
      *  Component runstages
      */
     
-    public void init() throws Attribute.Entity.NoSuchAttributeException {
+    public void init() {
         writer = new GenericDataWriter(getModel().getWorkspaceDirectory().getPath()+"/"+fileName.getValue());
         
         writer.addComment("J2K model output"+header.getValue());
@@ -108,7 +108,7 @@ public class SelectiveEntityWriter extends JAMSComponent {
         
     }
     
-    public void run() throws Attribute.Entity.NoSuchAttributeException {
+    public void run() {
         int[] entSet = this.eIDs.getValue();
         int numEntities = entSet.length;
         

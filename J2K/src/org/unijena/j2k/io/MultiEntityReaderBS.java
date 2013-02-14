@@ -63,7 +63,7 @@ public class MultiEntityReaderBS extends JAMSComponent {
     description = "Collection of hru objects with their topology")
     public Attribute.EntityCollection topology;
 
-    public void init() throws Attribute.Entity.NoSuchAttributeException {
+    public void init() {
 
         //read hru parameter
         hrus.setEntities(J2KFunctions.readParas(JAMSTools.CreateAbsoluteFileName(getModel().getWorkspaceDirectory().getPath(), hruFileName.getValue()), getModel()));
@@ -83,7 +83,7 @@ public class MultiEntityReaderBS extends JAMSComponent {
 
     }
 
-    private void createTopology() throws Attribute.Entity.NoSuchAttributeException {
+    private void createTopology() {
 
         BufferedReader reader1;
         BufferedReader reader2;
@@ -241,7 +241,7 @@ public class MultiEntityReaderBS extends JAMSComponent {
         }
     }
 
-    protected void createOrderedList(Attribute.EntityCollection col, String asso) throws Attribute.Entity.NoSuchAttributeException {
+    protected void createOrderedList(Attribute.EntityCollection col, String asso) {
 
         Iterator<Attribute.Entity> entityIterator, entityIterator2, entityIterator3;
         Attribute.Entity e, e_ziel, e_ziel_temp, e_temp, f;

@@ -55,7 +55,7 @@ public class StandardEntityReader_1 extends JAMSComponent {
             )
             public Attribute.String identName;
     
-    public void init() throws Attribute.Entity.NoSuchAttributeException {
+    public void init() {
        
         //read entity parameter        
         entities.setEntities(J2KFunctions.readParas(JAMSTools.CreateAbsoluteFileName(getModel().getWorkspaceDirectory().getPath(),entityFileName.getValue()), getModel()));

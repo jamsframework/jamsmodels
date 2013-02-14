@@ -50,7 +50,7 @@ public class StandardLMArableParaReader extends JAMSComponent {
     
     
     
-    public void init() throws Attribute.Entity.NoSuchAttributeException {
+    public void init() {
         
         //read crop rotation parameter
         Attribute.EntityCollection croprot = getModel().getRuntime().getDataFactory().createEntityCollection();

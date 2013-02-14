@@ -153,12 +153,12 @@ import jams.model.*;
      *  Component run stages
      */
     
-    public void init() throws Attribute.Entity.NoSuchAttributeException {
+    public void init() {
         
         
     }
     
-    public void run() throws Attribute.Entity.NoSuchAttributeException {
+    public void run() {
         double k_factor = 1;
         double maxExcStor = 100000.0;
         if(this.recConst.getValue() != 0){

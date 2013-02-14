@@ -75,7 +75,7 @@ title="NashCascade",
      *  Component run stages
      */
     
-    public void init() throws Attribute.Entity.NoSuchAttributeException {
+    public void init() {
         //build the cascade and initalize all tanks with a value of zero
         double[] tanks = new double[this.nTanks.getValue()];
         for(int i = 0; i < this.nTanks.getValue(); i++)
@@ -84,7 +84,7 @@ title="NashCascade",
         this.storages.setValue(tanks);
     }
     
-    public void run() throws Attribute.Entity.NoSuchAttributeException {
+    public void run() {
         double[] tanks = this.storages.getValue();
         double[] outflow = new double[tanks.length];
         double rec = this.k.getValue();

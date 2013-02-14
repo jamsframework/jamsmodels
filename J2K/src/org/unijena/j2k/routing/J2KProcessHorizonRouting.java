@@ -113,11 +113,11 @@ import jams.model.*;
      *  Component run stages
      */
     
-    public void init() throws Attribute.Entity.NoSuchAttributeException {
+    public void init() {
         
     }
     
-    public void run() throws Attribute.Entity.NoSuchAttributeException {
+    public void run() {
         Attribute.Entity entity = entities.getCurrent();
         //receiving polygon
         Attribute.Entity toPoly = (Attribute.Entity) entity.getObject("to_poly");

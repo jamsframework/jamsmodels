@@ -119,12 +119,12 @@ public class J2KContourBNaCl_layerinterface_out extends JAMSComponent {
     
     
 
-    public void init() throws Attribute.Entity.NoSuchAttributeException {
+    public void init() {
     }
     
     
     
-    public void run() throws Attribute.Entity.NoSuchAttributeException {
+    public void run() {
         Attribute.Entity actHRU;
         actHRU = hrus.getCurrent();
         int i = 0;
