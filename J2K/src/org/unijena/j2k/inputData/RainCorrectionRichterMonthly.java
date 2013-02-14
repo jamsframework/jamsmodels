@@ -44,44 +44,38 @@ import jams.model.*;
      */
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "time"
             )
-            public JAMSCalendar time;
+            public Attribute.Calendar time;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "the uncorrected precip values"
             )
             public Attribute.DoubleArray inPrecip;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "the corrected precip values"
             )
             public Attribute.DoubleArray corrPrecip;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.INIT,
             description = "the geographical zone according to Richter 1995"
             )
-            public JAMSInteger precipZone;
+            public Attribute.Integer precipZone;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.INIT,
             description = "precipitation adjustment factor"
             )
             public Attribute.Double precipAdj;
     
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.INIT,
             description = "Output file name"
             )
-            public JAMSString outFileName;
+            public Attribute.String outFileName;
     
     
     
@@ -100,7 +94,7 @@ import jams.model.*;
      *  Component run stages
      */
     
-    public void init() throws JAMSEntity.NoSuchAttributeException {
+    public void init() throws Attribute.Entity.NoSuchAttributeException {
         adj = this.precipAdj.getValue();
         if(adj == 0)
             adj = 1;
@@ -110,7 +104,7 @@ import jams.model.*;
         }
     }
     
-    public void run() throws JAMSEntity.NoSuchAttributeException {
+    public void run() throws Attribute.Entity.NoSuchAttributeException {
         double[] corrFactor = null;
         if (this.outFileName != null) {
             int nstat = inPrecip.getValue().length;
@@ -129,7 +123,7 @@ import jams.model.*;
             corrFactor = richter3_c;
         double[] precip = this.inPrecip.getValue();
         double[] rcorr = new double[precip.length];
-        int month = time.get(time.MONTH);
+        int month = time.get(JAMSCalendar.MONTH);
         for(int i = 0; i < rcorr.length; i++){
             if(precip[i] == -9999){
                 rcorr[i] = -9999;
@@ -155,7 +149,7 @@ import jams.model.*;
         
     }
     
-    public void cleanup() throws JAMSEntity.NoSuchAttributeException {
+    public void cleanup() throws Attribute.Entity.NoSuchAttributeException {
         if (this.outFileName != null) {
             writer.write("#eof");
             writer.close();

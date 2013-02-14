@@ -42,66 +42,57 @@ import jams.model.*;
      */
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "HRU attribute name area"
             )
-            public JAMSDouble area;
+            public Attribute.Double area;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.INIT,
             description = "Snow parameter TRS"
             )
-            public JAMSDouble snow_trs;
+            public Attribute.Double snow_trs;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.INIT,
             description = "Snow parameter TRANS"
             )
-            public JAMSDouble snow_trans;
+            public Attribute.Double snow_trans;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "state variable min temperature or mean"
             )
-            public JAMSDouble tmin;
+            public Attribute.Double tmin;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "state variable mean temperature"
             )
-            public JAMSDouble tmean;
+            public Attribute.Double tmean;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "state variable precipitation"
             )
-            public JAMSDouble precip;
+            public Attribute.Double precip;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "state variable rain"
             )
-            public JAMSDouble rain;
+            public Attribute.Double rain;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "state variable snow"
             )
-            public JAMSDouble snow;
+            public Attribute.Double snow;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "rain-snow-mix"
             )
-            public JAMSBoolean mixPrecip;
+            public Attribute.Boolean mixPrecip;
 
     
     
@@ -113,7 +104,7 @@ import jams.model.*;
         
     }
     
-    public void run() throws JAMSEntity.NoSuchAttributeException{
+    public void run() throws Attribute.Entity.NoSuchAttributeException{
         
         double temperature = (this.tmin.getValue() + this.tmean.getValue()) / 2.0;
         //determinining relative snow amount of total precip depending on temperature

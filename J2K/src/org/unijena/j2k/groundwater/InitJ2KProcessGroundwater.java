@@ -49,14 +49,12 @@ import jams.model.*;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "The collection of model entities"
             )
-            public JAMSEntityCollection entities;
+            public Attribute.EntityCollection entities;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "maximum RG1 storage",
             lowerBound = 0,
             //upperBound = infinity,
@@ -66,7 +64,6 @@ import jams.model.*;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "maximum RG2 storage",
             lowerBound = 0,
             //upperBound = infinity,
@@ -75,7 +72,6 @@ import jams.model.*;
             public Attribute.Double maxRG2;
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "actual RG1 storage",
             lowerBound = 0,
             //upperBound = infinity,
@@ -85,7 +81,6 @@ import jams.model.*;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "actual RG2 storage",
             lowerBound = 0,
             //upperBound = infinity,
@@ -95,7 +90,6 @@ import jams.model.*;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.INIT,
             description = "relative initial RG1 storage",
             lowerBound = 0,
             upperBound = 1.0,
@@ -106,7 +100,6 @@ import jams.model.*;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.INIT,
             description = "relative initial RG2 storage",
             lowerBound = 0,
             upperBound = 1.0,

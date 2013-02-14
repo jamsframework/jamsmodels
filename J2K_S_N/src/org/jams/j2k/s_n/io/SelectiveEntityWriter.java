@@ -39,66 +39,57 @@ public class SelectiveEntityWriter extends JAMSComponent {
     
     @JAMSVarDescription(
     access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.INIT,
             description = "EntitySet"
             )
-            public JAMSEntityCollection entitySet;
+            public Attribute.EntityCollection entitySet;
 
     @JAMSVarDescription(
     access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.INIT,
             description = "Output file name"
             )
-            public JAMSString fileName;
+            public Attribute.String fileName;
     
     @JAMSVarDescription(
     access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "Current time"
             )
-            public JAMSCalendar time;
+            public Attribute.Calendar time;
     
     @JAMSVarDescription(
     access = JAMSVarDescription.AccessType.READWRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "Current time - 1 Day"
             )
-            public JAMSCalendar time2;
+            public Attribute.Calendar time2;
     
     @JAMSVarDescription(
     access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.INIT,
             description = "Output file header descriptions"
             )
-            public JAMSString header;
+            public Attribute.String header;
     
     @JAMSVarDescription(
     access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.INIT,
             description = "Output file attribute names"
             )
-            public JAMSString attributeName;
+            public Attribute.String attributeName;
     
     @JAMSVarDescription(
     access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.INIT,
             description = "Output entities"
             )
-            public JAMSIntegerArray eIDs;
+            public Attribute.IntegerArray eIDs;
     
     @JAMSVarDescription(
     access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.INIT,
             description = "per area"
             )
-            public JAMSBoolean perArea;
+            public Attribute.Boolean perArea;
     
     @JAMSVarDescription(
     access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "HRU soil moistrure of the fourth layer in %"
             )
-            public JAMSDoubleArray actMoist_h;
+            public Attribute.DoubleArray actMoist_h;
     
     private GenericDataWriter writer;
     private String[] attrs;
@@ -107,7 +98,7 @@ public class SelectiveEntityWriter extends JAMSComponent {
      *  Component runstages
      */
     
-    public void init() throws JAMSEntity.NoSuchAttributeException {
+    public void init() throws Attribute.Entity.NoSuchAttributeException {
         writer = new GenericDataWriter(getModel().getWorkspaceDirectory().getPath()+"/"+fileName.getValue());
         
         writer.addComment("J2K model output"+header.getValue());
@@ -117,7 +108,7 @@ public class SelectiveEntityWriter extends JAMSComponent {
         
     }
     
-    public void run() throws JAMSEntity.NoSuchAttributeException {
+    public void run() throws Attribute.Entity.NoSuchAttributeException {
         int[] entSet = this.eIDs.getValue();
         int numEntities = entSet.length;
         
@@ -145,7 +136,7 @@ public class SelectiveEntityWriter extends JAMSComponent {
                     //output variable is of type array
                     if(ob.getClass().getName().contains("DoubleArray")){
                         //System.out.println("JAMSArray");
-                        length = ((JAMSDoubleArray)entitySet.getCurrent().getObject(this.attributeName.getValue())).getValue().length;
+                        length = ((Attribute.DoubleArray)entitySet.getCurrent().getObject(this.attributeName.getValue())).getValue().length;
                         //output variable is a single vaentitySet.getCurrent().getObject(this.attributeName.getValue())).getValue()lue
                     } else{
                         length = 0;
@@ -194,19 +185,19 @@ public class SelectiveEntityWriter extends JAMSComponent {
             if(output){
                 double area = 1.0;
                 if(this.perArea.getValue()){
-                    area = ((JAMSDouble)entitySet.getCurrent().getObject("area")).getValue();
+                    area = ((Attribute.Double)entitySet.getCurrent().getObject("area")).getValue();
                 }
                 Object ob = entitySet.getCurrent().getObject(this.attributeName.getValue());
                 if (ob.getClass().getName().contains("DoubleArray")) {
-                    //System.out.println("HRUNo: " +((JAMSDouble)entitySet.getCurrent().getObject("ID")).getValue());
-                    double[] da = ((JAMSDoubleArray)entitySet.getCurrent().getObject(this.attributeName.getValue())).getValue();
+                    //System.out.println("HRUNo: " +((Attribute.Double)entitySet.getCurrent().getObject("ID")).getValue());
+                    double[] da = ((Attribute.DoubleArray)entitySet.getCurrent().getObject(this.attributeName.getValue())).getValue();
                     for(int i = 0; i < da.length; i++){
                         double val = da[i] / area;
                         writer.addData(""+val);
                     }
                 } else {
                     //System.out.println("Primitive");
-                    double da = ((JAMSDouble)entitySet.getCurrent().getObject(this.attributeName.getValue())).getValue();
+                    double da = ((Attribute.Double)entitySet.getCurrent().getObject(this.attributeName.getValue())).getValue();
                     double val = da / area;
                     writer.addData(""+val);
                 }

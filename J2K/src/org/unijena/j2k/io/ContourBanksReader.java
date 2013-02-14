@@ -16,35 +16,27 @@ import java.util.*;
 public class ContourBanksReader extends JAMSComponent {
 
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
-    update = JAMSVarDescription.UpdateType.INIT,
     description = "An- bzw. Ausschalten des Moduls")
-    public JAMSBoolean cbModulAktiv;
+    public Attribute.Boolean cbModulAktiv;
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
-    update = JAMSVarDescription.UpdateType.INIT,
     description = "Parameter file name for ContourBanks")
-    public JAMSString contourbankFileName;
+    public Attribute.String contourbankFileName;
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.WRITE,
-    update = JAMSVarDescription.UpdateType.RUN,
     description = "Collection of hru objects")
-    public JAMSEntityCollection hrus;
+    public Attribute.EntityCollection hrus;
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
-    update = JAMSVarDescription.UpdateType.INIT,
     description = "ContourBank-Hoehe")
     public Attribute.Double cbWallhoehe;
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
-    update = JAMSVarDescription.UpdateType.INIT,
     description = "ContourBank-Boeschungswinkel vorn")
     public Attribute.Double cbBoeschungswinkelWall_vorn;
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
-    update = JAMSVarDescription.UpdateType.INIT,
     description = "ContourBank-Boeschungswinkel hinten")
     public Attribute.Double cbBoeschungswinkelWall_hinten;
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
-    update = JAMSVarDescription.UpdateType.INIT,
     description = "ContourBank-Grabentiefe direkt hinter dem Wall")
     public Attribute.Double cbTiefeGraben_vorn;
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
-    update = JAMSVarDescription.UpdateType.INIT,
     description = "ContourBank-Grabenbreite")
     public Attribute.Double cbBreiteGraben;
     boolean modulCBaktiv;
@@ -61,9 +53,9 @@ public class ContourBanksReader extends JAMSComponent {
             double breiteGraben = this.cbBreiteGraben.getValue();
 
             BufferedReader reader5;
-            //HashMap<Integer, JAMSEntity> hruMap = new HashMap<Integer, JAMSEntity>();
+            //HashMap<Integer, Attribute.Entity> hruMap = new HashMap<Integer, Attribute.Entity>();
             HashMap<Double, Attribute.Entity> hruMap = new HashMap<Double, Attribute.Entity>();
-            //Iterator<JAMSEntity> hruIterator;
+            //Iterator<Attribute.Entity> hruIterator;
             Iterator<Attribute.Entity> hruIterator;
             Attribute.Entity aktuelleHRU;
 

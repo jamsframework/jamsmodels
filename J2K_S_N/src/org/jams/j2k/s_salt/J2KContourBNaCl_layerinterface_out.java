@@ -21,126 +21,110 @@ public class J2KContourBNaCl_layerinterface_out extends JAMSComponent {
 
     @JAMSVarDescription(
     access = JAMSVarDescription.AccessType.READWRITE,
-    update = JAMSVarDescription.UpdateType.RUN,
     description = "HRU statevar RD2 inflow NaCl")
-    public JAMSDoubleArray inRD2_Nacl;
+    public Attribute.DoubleArray inRD2_Nacl;
     @JAMSVarDescription(
     access = JAMSVarDescription.AccessType.READWRITE,
-    update = JAMSVarDescription.UpdateType.RUN,
     description = "HRU statevar RD2 inflow")
-    public JAMSDoubleArray inRD2;
+    public Attribute.DoubleArray inRD2;
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READWRITE,
-    update = JAMSVarDescription.UpdateType.RUN,
     description = "HRU statevar RD2 inflow procuced by the contourbanks module")
-    public JAMSDouble inRD2_CB;
+    public Attribute.Double inRD2_CB;
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
-    update = JAMSVarDescription.UpdateType.INIT,
     description = "An- bzw. Ausschalten des Moduls")
-    public JAMSBoolean cbModulAktiv;
+    public Attribute.Boolean cbModulAktiv;
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
-    update = JAMSVarDescription.UpdateType.RUN,
     description = "The current hru entity")
-    public JAMSEntityCollection hrus;
+    public Attribute.EntityCollection hrus;
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READWRITE,
-    update = JAMSVarDescription.UpdateType.RUN,
     description = "actual LPS water content",
     unit = "l")
-    public JAMSDoubleArray actLPS;
+    public Attribute.DoubleArray actLPS;
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READWRITE,
-    update = JAMSVarDescription.UpdateType.RUN,
     description = "maximum LPS water content",
     unit = "l")
-    public JAMSDoubleArray maxLPS;
+    public Attribute.DoubleArray maxLPS;
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
     description = " number of soil layers",
     unit = "-",
     lowerBound = 0,
     upperBound = 100)
-    public JAMSDouble Layer;
+    public Attribute.Double Layer;
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
     description = "depth of soil layer",
     unit = "cm",
     lowerBound = 0,
     upperBound = 10000)
-    public JAMSDoubleArray layerdepth;
+    public Attribute.DoubleArray layerdepth;
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.WRITE,
     description = "depth of soil layers cutted by the trench",
     unit = "cm",
     lowerBound = 0,
     upperBound = 10000)
-    public JAMSDouble sumlayer;
+    public Attribute.Double sumlayer;
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READWRITE,
     description = "number of the deepest soil layers cutted by the trench",
     unit = "-",
     lowerBound = 0,
     upperBound = 100)
-    public JAMSDouble layermax;
+    public Attribute.Double layermax;
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
     description = "average LPSsoil saturation in soil layers cutted by the trench",
     unit = "-",
     lowerBound = 0,
     upperBound = 1)
-    public JAMSDouble avgsatsoil;
+    public Attribute.Double avgsatsoil;
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READWRITE,
-    update = JAMSVarDescription.UpdateType.RUN,
     description = "RD2 outflow")
-    public JAMSDoubleArray outRD2;
+    public Attribute.DoubleArray outRD2;
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
-    update = JAMSVarDescription.UpdateType.RUN,
     description = "RD2 outflow from contour banks")
-    public JAMSDouble outRD2cb;
+    public Attribute.Double outRD2cb;
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
     description = "surface runoff leaving the HRU without Conturbanks",
     unit = "l",
     lowerBound = 0,
     upperBound = 100000000)
-    public JAMSDouble RD1_out_old;
+    public Attribute.Double RD1_out_old;
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.WRITE,
     description = "surface runoff leaving the HRU goes into Conturbanks",
     unit = "l",
     lowerBound = 0,
     upperBound = 100000000)
-    public JAMSDouble RD1_out;
+    public Attribute.Double RD1_out;
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
-    update = JAMSVarDescription.UpdateType.RUN,
     description = "conturbanks outflow",
     unit = "l")
-    public JAMSDouble CB_outflow;
+    public Attribute.Double CB_outflow;
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
-    update = JAMSVarDescription.UpdateType.RUN,
     description = "conturbanks storage",
     unit = "l")
-    public JAMSDouble CB_storage;
+    public Attribute.Double CB_storage;
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READWRITE,
-    update = JAMSVarDescription.UpdateType.RUN,
     description = " NaCl in surface runoff in kgNaCl/ha")
-    public JAMSDouble SurfaceNaCl;
+    public Attribute.Double SurfaceNaCl;
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READWRITE,
-    update = JAMSVarDescription.UpdateType.RUN,
     description = " NaCl outflow in interflow in kgNaCl/ha")
-    public JAMSDoubleArray InterflowNaCl;
+    public Attribute.DoubleArray InterflowNaCl;
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READWRITE,
-    update = JAMSVarDescription.UpdateType.RUN,
     description = " NaCl inflow in interflow in kgNaCl/ha")
-    public JAMSDoubleArray InterflowNaCl_in;
+    public Attribute.DoubleArray InterflowNaCl_in;
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READWRITE,
-    update = JAMSVarDescription.UpdateType.RUN,
     description = " NaCl in Contour Banks storage in kgNaCl/ha")
-    public JAMSDouble NaCl_CB;
+    public Attribute.Double NaCl_CB;
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.WRITE,
-    update = JAMSVarDescription.UpdateType.RUN,
     description = "conturbanks NaCl outflow in kgNaCl",
     unit = "l")
-    public JAMSDouble NaCl_CB_out;
+    public Attribute.Double NaCl_CB_out;
     
     
 
-    public void init() throws JAMSEntity.NoSuchAttributeException {
+    public void init() throws Attribute.Entity.NoSuchAttributeException {
     }
     
     
     
-    public void run() throws JAMSEntity.NoSuchAttributeException {
+    public void run() throws Attribute.Entity.NoSuchAttributeException {
         Attribute.Entity actHRU;
         actHRU = hrus.getCurrent();
         int i = 0;

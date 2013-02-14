@@ -42,45 +42,39 @@ import jams.model.*;
      */
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "catchment area"
             )
-            public JAMSDouble cArea;
+            public Attribute.Double cArea;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "input"
             )
-            public JAMSDouble inQ;
+            public Attribute.Double inQ;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "output in cms"
             )
-            public JAMSDouble outQcbm;
+            public Attribute.Double outQcbm;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "output in mm"
             )
-            public JAMSDouble outQmm;
+            public Attribute.Double outQmm;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "output in litres"
             )
-            public JAMSDouble outQl;
+            public Attribute.Double outQl;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "temporal resolution [h;d;m]"
             )
-            public JAMSString tempRes;
+            public Attribute.String tempRes;
     
     
     
@@ -88,11 +82,11 @@ import jams.model.*;
      *  Component run stages
      */
     
-    public void init() throws JAMSEntity.NoSuchAttributeException {
+    public void init() throws Attribute.Entity.NoSuchAttributeException {
         
     }
     
-    public void run() throws JAMSEntity.NoSuchAttributeException {
+    public void run() throws Attribute.Entity.NoSuchAttributeException {
         //conversion from liters to m^3/time
         if(tempRes.getValue().equalsIgnoreCase("h")){
             this.outQcbm.setValue((inQ.getValue()) / (3600 * 1000));

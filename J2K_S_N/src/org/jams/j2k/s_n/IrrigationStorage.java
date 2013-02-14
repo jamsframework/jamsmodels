@@ -21,62 +21,51 @@ import org.jams.j2k.s_n.crop.J2KSNCrop;
         public class IrrigationStorage extends JAMSComponent {
 
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
-    update = JAMSVarDescription.UpdateType.RUN,
     description = "Current organic fertilizer amount")
-    public JAMSInteger RotPos;
+    public Attribute.Integer RotPos;
 
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
-    update = JAMSVarDescription.UpdateType.RUN,
     description = "Current hru object")
-    public JAMSEntityCollection entities;
+    public Attribute.EntityCollection entities;
 
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
-    update = JAMSVarDescription.UpdateType.RUN,
     description = "in [-] plant growth water stress factor")
-    public JAMSDouble wstrs;
+    public Attribute.Double wstrs;
 
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
-    update = JAMSVarDescription.UpdateType.RUN,
     description = "HRU attribute maximum MPS")
-    public JAMSDoubleArray maxMPS;
+    public Attribute.DoubleArray maxMPS;
 
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
-    update = JAMSVarDescription.UpdateType.RUN,
     description = "HRU attribute maximum LPS")
-    public JAMSDoubleArray maxLPS;
+    public Attribute.DoubleArray maxLPS;
 
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READWRITE,
-    update = JAMSVarDescription.UpdateType.RUN,
     description = "HRU state var saturation of MPS")
-    public JAMSDoubleArray satMPS;
+    public Attribute.DoubleArray satMPS;
 
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READWRITE,
-    update = JAMSVarDescription.UpdateType.RUN,
     description = "HRU state var saturation of LPS")
-    public JAMSDoubleArray satLPS;
+    public Attribute.DoubleArray satLPS;
 
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.WRITE,
-    update = JAMSVarDescription.UpdateType.RUN,
     description = "HRU crop class")
-    public JAMSDouble irrigation;
+    public Attribute.Double irrigation;
 
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
-    update = JAMSVarDescription.UpdateType.RUN,
     description = "HRU crop class")
-    public JAMSDouble wst_thr;
+    public Attribute.Double wst_thr;
 
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
-    update = JAMSVarDescription.UpdateType.RUN,
     description = "HRU crop class")
-    public JAMSDouble param2;
+    public Attribute.Double param2;
 
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
-    update = JAMSVarDescription.UpdateType.RUN,
     description = "HRU crop class")
-    public JAMSDouble cropid;
+    public Attribute.Double cropid;
 
      //Berechnung
-    public void run() throws JAMSEntity.NoSuchAttributeException{
+    public void run() throws Attribute.Entity.NoSuchAttributeException{
         Attribute.Entity entity = entities.getCurrent();
         double wst = wstrs.getValue();
         double satMPSArray[] = satMPS.getValue();

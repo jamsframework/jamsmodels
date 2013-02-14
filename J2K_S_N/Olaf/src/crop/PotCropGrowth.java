@@ -613,7 +613,7 @@ import java.util.logging.Logger;
             // Amounts of nitrogen [kg N/ha](and who wants P) to be removed from the field
             // whereas cnyld is the fraction of N being removed by the field crop
             yldN = bioN_act * (yield / bio_opt);
-            //System.out.println (" Julianischer Tag "+ JAMSCalendar.DAY_OF_YEAR + " hi_act: " + hi_act +  " hvsti: " + hvsti +  " fphu: " + fphu_act + " yldN " + yldN + " yield " + yield);
+            //System.out.println (" Julianischer Tag "+ Attribute.Calendar.DAY_OF_YEAR + " hi_act: " + hi_act +  " hvsti: " + hvsti +  " fphu: " + fphu_act + " yldN " + yldN + " yield " + yield);
             //double yldP = cpyld * yield; time
             if (idc == 7) {
                 fphu_act = 0;
@@ -674,7 +674,7 @@ import java.util.logging.Logger;
             if (yldN > bioN_act * (yldN / (yldN + ((bio_opt - yield) * (bn3 / 2.0))))) {
                 yldN = bioN_act * (yldN / (yldN + ((bio_opt - yield) * (bn3 / 2.0))));
             }
-            //System.out.println (" Julianischer Tag "+ JAMSCalendar.DAY_OF_YEAR + " hi_act: " + hi_act +  " hvsti: " + hvsti +  " fphu: " + fphu_act + " yldN " + yldN + " yield " + yield);
+            //System.out.println (" Julianischer Tag "+ Attribute.Calendar.DAY_OF_YEAR + " hi_act: " + hi_act +  " hvsti: " + hvsti +  " fphu: " + fphu_act + " yldN " + yldN + " yield " + yield);
             //double yldP = cpyld * yield;
             fracharvest = 1 - (yield / bio_opt);
             fracharvestn = 1 - (yldN / bioN_act);

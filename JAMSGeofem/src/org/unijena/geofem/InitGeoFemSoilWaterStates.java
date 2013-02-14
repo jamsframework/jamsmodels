@@ -23,8 +23,8 @@
 
 package org.unijena.geofem;
 
-import org.unijena.jams.data.*;
-import org.unijena.jams.model.*;
+import jams.data.*;
+import jams.model.*;
 
 /**
  *
@@ -43,45 +43,39 @@ import org.unijena.jams.model.*;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "The current hru entity"
             )
-            public JAMSEntityCollection entities;
+            public Attribute.EntityCollection entities;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "attribute area"
             )
-            public JAMSDouble area;
+            public Attribute.Double area;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.INIT,
             description = "field capacity adaptation factor"
             )
-            public JAMSDouble FCAdaptation;
+            public Attribute.Double FCAdaptation;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "HRU statevar rooting depth"
             )
-            public JAMSDouble rootDepth;
+            public Attribute.Double rootDepth;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "HRU attribute maximum MPS"
             )
-            public JAMSDouble maxMPS;
+            public Attribute.Double maxMPS;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "HRU state var actual MPS"
             )
-            public JAMSDouble actMPS;
+            public Attribute.Double actMPS;
     
     
     
@@ -91,14 +85,14 @@ import org.unijena.jams.model.*;
      *  Component run stages
      */
     
-    public void init() throws JAMSEntity.NoSuchAttributeException {
+    public void init() throws Attribute.Entity.NoSuchAttributeException {
         
         
     }
     
-    public void run() throws JAMSEntity.NoSuchAttributeException {
+    public void run() throws Attribute.Entity.NoSuchAttributeException {
         
-        JAMSEntity entity = entities.getCurrent();
+        Attribute.Entity entity = entities.getCurrent();
         
         double rootDepth = this.rootDepth.getValue();
         double mxMPS = 0;

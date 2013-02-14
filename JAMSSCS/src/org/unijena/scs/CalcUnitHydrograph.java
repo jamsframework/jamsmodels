@@ -57,11 +57,10 @@ public class CalcUnitHydrograph extends JAMSComponent {
      */
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.RUN,
             unit = "m^2",
             description = "the entire area of the catchment"
             )
-            public JAMSDouble catchmentArea;
+            public Attribute.Double catchmentArea;
     
     /**
      * the catchment's area in square meters<br>
@@ -71,10 +70,9 @@ public class CalcUnitHydrograph extends JAMSComponent {
      */
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "timeInterval"
             )
-            public JAMSTimeInterval timeInterval;
+            public Attribute.TimeInterval timeInterval;
     
     /**
      * the duration of the rainfall event<br>
@@ -84,11 +82,10 @@ public class CalcUnitHydrograph extends JAMSComponent {
      */
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.RUN,
             unit = "s",
             description = "duration of precip event"
             )
-            public JAMSDouble precipDuration;
+            public Attribute.Double precipDuration;
     
     /**
      * the effective input precipitation<br>
@@ -98,11 +95,10 @@ public class CalcUnitHydrograph extends JAMSComponent {
      */
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.RUN,
             unit = "mm",
             description = "effective rainfall"
             )
-            public JAMSDouble effectivePrecip;
+            public Attribute.Double effectivePrecip;
     
     /**
      * flag for selection of temporal rainfall distribution. Valid values are:<br>
@@ -116,10 +112,9 @@ public class CalcUnitHydrograph extends JAMSComponent {
      */
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "precip distribution B = uniform, M = middle accented, A = start accented, E = end accented"
             )
-            public JAMSString precipDistribution;
+            public Attribute.String precipDistribution;
     
     /**
      * the distribution factor beta which is responsible for the distribution of the
@@ -130,10 +125,9 @@ public class CalcUnitHydrograph extends JAMSComponent {
      */
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "distribution factor beta"
             )
-            public JAMSDouble beta;
+            public Attribute.Double beta;
     
     /**
      * the retention coefficient for the quick Nash-cascade<br>
@@ -143,10 +137,9 @@ public class CalcUnitHydrograph extends JAMSComponent {
      */
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "retention factor k1"
             )
-            public JAMSDouble k1;
+            public Attribute.Double k1;
     
     /**
      * the retention coefficient for the slow Nash-cascade<br>
@@ -156,10 +149,9 @@ public class CalcUnitHydrograph extends JAMSComponent {
      */
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "retention factor k2"
             )
-            public JAMSDouble k2;
+            public Attribute.Double k2;
     
     /**
      * the unit hydrograph values from the quick Nash-cascade<br>
@@ -169,10 +161,9 @@ public class CalcUnitHydrograph extends JAMSComponent {
      */
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "unit hydrograph 1"
             )
-            public JAMSDoubleArray uh1;
+            public Attribute.DoubleArray uh1;
     
     /**
      * the unit hydrograph values from the slow Nash-cascade<br>
@@ -182,10 +173,9 @@ public class CalcUnitHydrograph extends JAMSComponent {
      */
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "unit hydrograph 2"
             )
-            public JAMSDoubleArray uh2;
+            public Attribute.DoubleArray uh2;
     
     /**
      * the input precipitation for the quick Nash-cascade<br>
@@ -195,10 +185,9 @@ public class CalcUnitHydrograph extends JAMSComponent {
      */
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "precip for uh1"
             )
-            public JAMSDoubleArray hNe1;
+            public Attribute.DoubleArray hNe1;
     
     /**
      * the input precipitation for the slow Nash-cascade<br>
@@ -208,10 +197,9 @@ public class CalcUnitHydrograph extends JAMSComponent {
      */
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "precip for uh2"
             )
-            public JAMSDoubleArray hNe2;
+            public Attribute.DoubleArray hNe2;
     
     /**
      * the elements of the unit hydrograph array. Equals precip duration divided by time step length
@@ -222,18 +210,17 @@ public class CalcUnitHydrograph extends JAMSComponent {
      */
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "array length"
             )
-            public JAMSInteger arrayLength;
+            public Attribute.Integer arrayLength;
     
     
     
     /**
      * the component's run method
-     * @throws org.unijena.jams.data.JAMSEntity.NoSuchAttributeException thrown when a model entity tries to access a non existent attribute
+     * @throws org.unijena.jams.data.Attribute.Entity.NoSuchAttributeException thrown when a model entity tries to access a non existent attribute
      */
-   public void run() throws JAMSEntity.NoSuchAttributeException {
+   public void run() throws Attribute.Entity.NoSuchAttributeException {
         int nStor = 2;
         double pDur = this.precipDuration.getValue() * 60.0;        
         int timeSteps = (int)timeInterval.getNumberOfTimesteps()+1;

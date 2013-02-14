@@ -25,63 +25,54 @@ public class CreateGrid extends JAMSComponent {
    
       @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "spatial grid resolution"
             )
             public Attribute.Double gridresolution;
       
       @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "spatial grid resolution"
             )
             public Attribute.Double modelrastersize;
       
       @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "Time bin of simulation"
             )
             public Attribute.Double timescale;
                  
      @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "The current hru entity"
             )
-            public JAMSEntity information;
+            public Attribute.Entity information;
 
      @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "The current hru entity"
             )
-            public JAMSEntity fuellstand;
+            public Attribute.Entity fuellstand;
    
      @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "Reach statevar simulated Runoff"
             )
             public Attribute.Double RD1_Weg_Koeff;
    
      @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "Reach statevar simulated Runoff"
             )
             public Attribute.Double RD2_Weg_Koeff;
      
      @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "Reach statevar simulated Runoff"
             )
             public Attribute.Double RG1_Weg_Koeff;
      
      @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "Reach statevar simulated Runoff"
             )
             public Attribute.Double RG2_Weg_Koeff;
@@ -89,24 +80,21 @@ public class CreateGrid extends JAMSComponent {
      
     @JAMSVarDescription(
            access = JAMSVarDescription.AccessType.READ,
-           update = JAMSVarDescription.UpdateType.INIT,
            description = ""
            )
-    public JAMSString hruRasterFile;
+    public Attribute.String hruRasterFile;
 
     @JAMSVarDescription(
            access = JAMSVarDescription.AccessType.READ,
-           update = JAMSVarDescription.UpdateType.INIT,
            description = ""
            )
-    public JAMSString dgmFile;
+    public Attribute.String dgmFile;
      
     @JAMSVarDescription(
            access = JAMSVarDescription.AccessType.READ,
-           update = JAMSVarDescription.UpdateType.INIT,
            description = ""
            )
-    public JAMSString flgewFile;
+    public Attribute.String flgewFile;
 
 public double Rastersize(String path)
 {

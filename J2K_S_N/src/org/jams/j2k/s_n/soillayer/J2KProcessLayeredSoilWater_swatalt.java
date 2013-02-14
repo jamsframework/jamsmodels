@@ -89,447 +89,384 @@ import jams.model.*;
      */
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "time"
             )
-            public JAMSCalendar time;
+            public Attribute.Calendar time;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "The current hru entity"
             )
-            public JAMSEntity entity;
+            public Attribute.Entity entity;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "attribute area"
             )
-            public JAMSDouble area;
+            public Attribute.Double area;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "attribute slope"
             )
-            public JAMSDouble slope;
+            public Attribute.Double slope;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "sealed grade"
             )
-            public JAMSDouble sealedGrade;
+            public Attribute.Double sealedGrade;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "state variable net rain"
             )
-            public JAMSDouble netRain;
+            public Attribute.Double netRain;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "state variable net snow"
             )
-            public JAMSDouble netSnow;
+            public Attribute.Double netSnow;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "state variable potET"
             )
-            public JAMSDouble potET;
+            public Attribute.Double potET;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "state variable actET"
             )
-            public JAMSDouble actET;
+            public Attribute.Double actET;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "snow depth"
             )
-            public JAMSDouble snowDepth;
+            public Attribute.Double snowDepth;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "daily snow melt"
             )
-            public JAMSDouble snowMelt;
+            public Attribute.Double snowMelt;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "horizons"
             )
-            public JAMSDouble horizons;
+            public Attribute.Double horizons;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "in cm depth of soil layer"
             )
-            public JAMSDoubleArray layerdepth;
+            public Attribute.DoubleArray layerdepth;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "in dm actual depth of roots"
             )
-            public JAMSDouble rootdepth;
+            public Attribute.Double rootdepth;
     
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "HRU attribute maximum MPS"
             )
-            public JAMSDoubleArray maxMPS;
+            public Attribute.DoubleArray maxMPS;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "HRU attribute maximum LPS"
             )
-            public JAMSDoubleArray maxLPS;
+            public Attribute.DoubleArray maxLPS;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "HRU state var actual MPS"
             )
-            public JAMSDoubleArray actMPS;
+            public Attribute.DoubleArray actMPS;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "HRU state var actual LPS"
             )
-            public JAMSDoubleArray actLPS;
+            public Attribute.DoubleArray actLPS;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "HRU state var actual depression storage"
             )
-            public JAMSDouble actDPS;
+            public Attribute.Double actDPS;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "HRU state var saturation of MPS"
             )
-            public JAMSDoubleArray satMPS;
+            public Attribute.DoubleArray satMPS;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "HRU state var saturation of LPS"
             )
-            public JAMSDoubleArray satLPS;
+            public Attribute.DoubleArray satLPS;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "HRU attribute maximum MPS of soil"
             )
-            public JAMSDouble soilMaxMPS;
+            public Attribute.Double soilMaxMPS;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "HRU attribute maximum LPS of soil"
             )
-            public JAMSDouble soilMaxLPS;
+            public Attribute.Double soilMaxLPS;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "HRU state var actual MPS of soil"
             )
-            public JAMSDouble soilActMPS;
+            public Attribute.Double soilActMPS;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "HRU state var actual LPS of soil"
             )
-            public JAMSDouble soilActLPS;
+            public Attribute.Double soilActLPS;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "HRU state var saturation of MPS of soil"
             )
-            public JAMSDouble soilSatMPS;
+            public Attribute.Double soilSatMPS;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "HRU state var saturation of LPS of soil"
             )
-            public JAMSDouble soilSatLPS;
+            public Attribute.Double soilSatLPS;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "HRU state var saturation of whole soil"
             )
-            public JAMSDouble satSoil;
+            public Attribute.Double satSoil;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "HRU statevar infiltration"
             )
-            public JAMSDouble infiltration;
+            public Attribute.Double infiltration;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "HRU statevar interflow"
             )
-            public JAMSDouble interflow;
+            public Attribute.Double interflow;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "HRU statevar percolation"
             )
-            public JAMSDouble percolation;
+            public Attribute.Double percolation;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "HRU statevar RD1 inflow"
             )
-            public JAMSDouble inRD1;
+            public Attribute.Double inRD1;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "HRU statevar RD1 outflow"
             )
-            public JAMSDouble outRD1;
+            public Attribute.Double outRD1;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "HRU statevar RD1 generation"
             )
-            public JAMSDouble genRD1;
+            public Attribute.Double genRD1;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "HRU statevar RD2 inflow"
             )
-            public JAMSDoubleArray inRD2;
+            public Attribute.DoubleArray inRD2;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "HRU statevar RD2 outflow"
             )
-            public JAMSDoubleArray outRD2;
+            public Attribute.DoubleArray outRD2;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "HRU statevar RD2 generation"
             )
-            public JAMSDoubleArray genRD2;
+            public Attribute.DoubleArray genRD2;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.INIT,
             description = "maximum depression storage [mm]"
             )
-            public JAMSDouble soilMaxDPS;
+            public Attribute.Double soilMaxDPS;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.INIT,
             description = "poly reduction of ETP"
             )
-            public JAMSDouble soilPolRed;
+            public Attribute.Double soilPolRed;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.INIT,
             description = "linear reduction of ETP"
             )
-            public JAMSDouble soilLinRed;
+            public Attribute.Double soilLinRed;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.INIT,
             description = "maximum infiltration rate in summer [mm/d]"
             )
-            public JAMSDouble soilMaxInfSummer;
+            public Attribute.Double soilMaxInfSummer;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.INIT,
             description = "maximum infiltration rate in winter [mm/d]"
             )
-            public JAMSDouble soilMaxInfWinter;
+            public Attribute.Double soilMaxInfWinter;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.INIT,
             description = "maximum infiltration rate on snow [mm/d]"
             )
-            public JAMSDouble soilMaxInfSnow;
+            public Attribute.Double soilMaxInfSnow;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.INIT,
             description = "maximum infiltration part on sealed areas (gt 80%)"
             )
-            public JAMSDouble soilImpGT80;
+            public Attribute.Double soilImpGT80;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.INIT,
             description = "maximum infiltration part on sealed areas (lt 80%)"
             )
-            public JAMSDouble soilImpLT80;
+            public Attribute.Double soilImpLT80;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.INIT,
             description = "MPS/LPS distribution coefficient for inflow"
             )
-            public JAMSDouble soilDistMPSLPS;
+            public Attribute.Double soilDistMPSLPS;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.INIT,
             description = "MPS/LPS diffusion coefficient"
             )
-            public JAMSDouble soilDiffMPSLPS;
+            public Attribute.Double soilDiffMPSLPS;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.INIT,
             description = "LPS outflow coefficient"
             )
-            public JAMSDouble soilOutLPS;
+            public Attribute.Double soilOutLPS;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.INIT,
             description = "LPS lateral-vertical distribution coefficient"
             )
-            public JAMSDouble soilLatVertLPS;
+            public Attribute.Double soilLatVertLPS;
     
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.INIT,
             description = "maximum percolation rate in soil [mm/d]"
             )
-            public JAMSDouble soilMaxPerc;
+            public Attribute.Double soilMaxPerc;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.INIT,
             description = "maximum percolation rate out of soil [mm/d]"
             )
-            public JAMSDouble geoMaxPerc;
+            public Attribute.Double geoMaxPerc;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.INIT,
             description = "concentration coefficient for RD1"
             )
-            public JAMSDouble soilConcRD1;
+            public Attribute.Double soilConcRD1;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.INIT,
             description = "concentration coefficient for RD2"
             )
-            public JAMSDouble soilConcRD2;
+            public Attribute.Double soilConcRD2;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.INIT,
             description = "water-use distribution parameter for Transpiration"
             )
-            public JAMSDouble BetaW;
+            public Attribute.Double BetaW;
     
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "intfiltration poritions for the single horizonts"
             )
-            public JAMSDoubleArray infiltration_hor;
+            public Attribute.DoubleArray infiltration_hor;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "percolation out of the single horizonts"
             )
-            public JAMSDoubleArray perco_hor;
+            public Attribute.DoubleArray perco_hor;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "evapotranspiration out of the single horizonts"
             )
-            public JAMSDoubleArray actETP_h;
+            public Attribute.DoubleArray actETP_h;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "Array of state variables LAI "
             )
-            public JAMSDouble LAI;
+            public Attribute.Double LAI;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "estimated hydraulicconductivity in cm/d"
             )
-            public JAMSDouble Kf_geo;
+            public Attribute.Double Kf_geo;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "in cm/d soil hydraulic conductivity"
             )
-            public JAMSDoubleArray kf_h;
+            public Attribute.DoubleArray kf_h;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "ID of soil"
             )
-            public JAMSDouble soilID;
+            public Attribute.Double soilID;
      
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "Transpiration compensation factor to calibrate 0 - 1 [-] default = 0"
             )
-            public JAMSDouble esco;
+            public Attribute.Double esco;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "Evaporation compensation factor to calibrate 0 - 1 [-] default = 0"
             )
-            public JAMSDouble epco;
+            public Attribute.Double epco;
     
     
     //internal state variables
@@ -545,13 +482,13 @@ import jams.model.*;
      *  Component run stages
      */
     
-    public void init() throws JAMSEntity.NoSuchAttributeException {
+    public void init() throws Attribute.Entity.NoSuchAttributeException {
         
         
         
     }
     
-    public void run() throws JAMSEntity.NoSuchAttributeException {
+    public void run() throws Attribute.Entity.NoSuchAttributeException {
         double balMPSstart = 0;
         double balMPSend = 0;
         double balLPSstart = 0;
@@ -663,7 +600,7 @@ import jams.model.*;
         this.calcInfImperv(sealedGrade.getValue());
         this.calcSoilSaturations(false);
         /** determining maximal infiltration rate */
-        double maxInf = this.calcMaxInfiltration(time.get(time.MONTH)+1);
+        double maxInf = this.calcMaxInfiltration(time.get(JAMSCalendar.MONTH)+1);
         if(maxInf < this.run_infiltration){
             //System.out.getRuntime().println("maxInf:");
             double deltaInf = this.run_infiltration - maxInf;
@@ -880,7 +817,7 @@ import jams.model.*;
         return true;
     }
     
-    private boolean redistRD1_RD2_in()throws JAMSEntity.NoSuchAttributeException{
+    private boolean redistRD1_RD2_in()throws Attribute.Entity.NoSuchAttributeException{
         //RD1 is put to DPS first
         if(this.run_inRD1 > 0){
             this.run_actDPS = this.run_actDPS + this.run_inRD1;

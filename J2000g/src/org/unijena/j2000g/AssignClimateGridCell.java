@@ -7,9 +7,9 @@ package org.unijena.j2000g;
 
 import jams.data.Attribute;
 import jams.data.Attribute.Entity.NoSuchAttributeException;
-import jams.data.JAMSDoubleArray;
-import jams.data.JAMSEntityCollection;
-import jams.data.JAMSInteger;
+import jams.data.Attribute.DoubleArray;
+import jams.data.Attribute.EntityCollection;
+import jams.data.Attribute.Integer;
 import jams.model.JAMSComponent;
 import jams.model.JAMSVarDescription;
 import java.util.Iterator;
@@ -21,25 +21,22 @@ import java.util.Iterator;
 public class AssignClimateGridCell extends JAMSComponent{
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.INIT,
             description = "EntitySet of modelling units"
             )
-            public JAMSEntityCollection entitySet;
+            public Attribute.EntityCollection entitySet;
 
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "Array of numerical GRID cell ids",
             defaultValue=""
             )
-            public JAMSDoubleArray statId;
+            public Attribute.DoubleArray statId;
 
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
-            update = JAMSVarDescription.UpdateType.INIT,
             description = "Column of first data value"
             )
-            public JAMSInteger gridCellColumn;
+            public Attribute.Integer gridCellColumn;
 
     public void init() {
        System.out.println("init in ACGC");

@@ -38,21 +38,19 @@ public class StandardLMArableParaReader extends JAMSComponent {
 
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.INIT,
             description = "Arable crop rotation parameter file name"
             )
-            public JAMSString laFileName;
+            public Attribute.String laFileName;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.INIT,
             description = "Collection of hru objects"
             )
-            public JAMSEntityCollection hrus;
+            public Attribute.EntityCollection hrus;
     
     
     
-    public void init() throws JAMSEntity.NoSuchAttributeException {
+    public void init() throws Attribute.Entity.NoSuchAttributeException {
         
         //read crop rotation parameter
         Attribute.EntityCollection croprot = getModel().getRuntime().getDataFactory().createEntityCollection();

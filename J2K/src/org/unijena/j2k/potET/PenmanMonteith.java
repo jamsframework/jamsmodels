@@ -45,97 +45,81 @@ public class PenmanMonteith extends JAMSComponent {
      *  Component variables
      */
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
-    update = JAMSVarDescription.UpdateType.RUN,
     description = "Current time")
-    public JAMSCalendar time;
+    public Attribute.Calendar time;
 
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
-    update = JAMSVarDescription.UpdateType.INIT,
     description = "temporal resolution [d | h | m]")
-    public JAMSString tempRes;
+    public Attribute.String tempRes;
 
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
-    update = JAMSVarDescription.UpdateType.RUN,
     description = "state variable wind",
             unit="m/s")
     public Attribute.Double wind;
 
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
-    update = JAMSVarDescription.UpdateType.RUN,
     description = "state variable mean temperature",
     unit="°C")
     public Attribute.Double tmean;
 
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
-    update = JAMSVarDescription.UpdateType.RUN,
     description = "state variable relative humidity",
     unit="%")
     public Attribute.Double rhum;
 
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
-    update = JAMSVarDescription.UpdateType.RUN,
     description = "state variable net radiation",
     unit="MJ m^-2 d^-1")
     public Attribute.Double netRad;
 
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
-    update = JAMSVarDescription.UpdateType.RUN,
     description = "state variable rsc0",
     unit="m s^-1")
     public Attribute.Double actRsc0;
 
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
-    update = JAMSVarDescription.UpdateType.RUN,
     description = "attribute elevation",
     unit="m")
     public Attribute.Double elevation;
 
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
-    update = JAMSVarDescription.UpdateType.RUN,
     description = "attribute area",
     unit="m²")
     public Attribute.Double area;
 
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
-    update = JAMSVarDescription.UpdateType.RUN,
     description = "state variable LAI")
     public Attribute.Double actLAI;
 
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
-    update = JAMSVarDescription.UpdateType.RUN,
     description = "state variable effective height",
     unit="m")
     public Attribute.Double actEffH;
 
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.WRITE,
-    update = JAMSVarDescription.UpdateType.RUN,
     description = "potential ET [mm/ timeUnit]",
     unit="mm d^-1")
     public Attribute.Double potET;
 
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.WRITE,
-    update = JAMSVarDescription.UpdateType.RUN,
     description = "actual ET [mm/ timeUnit]",
     unit="mm d^-1")
     public Attribute.Double actET;
 
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.WRITE,
-    update = JAMSVarDescription.UpdateType.RUN,
     description = "rs",
     unit="s m^-1")
     public Attribute.Double rs;
 
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.WRITE,
-    update = JAMSVarDescription.UpdateType.RUN,
     description = "ra",
     unit="s m^-1")
     public Attribute.Double ra;
 
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
-    update = JAMSVarDescription.UpdateType.INIT,
     description = "Caching configuration: 0 - write cache, 1 - use cache, 2 - caching off",
     defaultValue = "0")
-    public JAMSInteger dataCaching;
+    public Attribute.Integer dataCaching;
 
     private File cacheFile;
     //todo .. handle transient
@@ -146,7 +130,7 @@ public class PenmanMonteith extends JAMSComponent {
     /*
      *  Component run stages
      */
-    public void init() throws JAMSEntity.NoSuchAttributeException, IOException {
+    public void init() throws Attribute.Entity.NoSuchAttributeException, IOException {
         //first, check if cached data are available
         //cacheFile = new File(dirName.getValue() + "/$" + this.getInstanceName() + ".cache");
         cacheFile = new File(getModel().getWorkspace().getTempDirectory(), this.getInstanceName() + ".cache");
@@ -161,7 +145,7 @@ public class PenmanMonteith extends JAMSComponent {
         }
     }
 
-    public void run() throws JAMSEntity.NoSuchAttributeException, IOException {
+    public void run() throws Attribute.Entity.NoSuchAttributeException, IOException {
 
         if (dataCaching.getValue() == 1) {
             this.potET.setValue(reader.readDouble());
@@ -218,7 +202,7 @@ public class PenmanMonteith extends JAMSComponent {
             //aggregation to monthly values
             if (this.time != null) {
                 if (this.tempRes.getValue().equals("m")) {
-                    int daysInMonth = this.time.getActualMaximum(time.DATE);
+                    int daysInMonth = this.time.getActualMaximum(JAMSCalendar.DATE);
                     pET = pET * daysInMonth;
                 }
             }

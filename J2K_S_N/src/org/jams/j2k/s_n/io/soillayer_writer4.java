@@ -43,143 +43,123 @@ title="soillayer_writer4",
     
     @JAMSVarDescription(
     access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "in cm depth of soil layer"
             )
-            public JAMSDoubleArray layerdepth;
+            public Attribute.DoubleArray layerdepth;
     
     @JAMSVarDescription(
     access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "HRU area in m^2"
             )
-            public JAMSDouble area;
+            public Attribute.Double area;
     
     @JAMSVarDescription(
     access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "HRU attribute maximum FPS in mm"
             )
-            public JAMSDoubleArray maxFPS;
+            public Attribute.DoubleArray maxFPS;
     
     @JAMSVarDescription(
     access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "HRU attribute maximum MPS in mm"
             )
-            public JAMSDoubleArray maxMPS;
+            public Attribute.DoubleArray maxMPS;
     
     @JAMSVarDescription(
     access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "HRU attribute maximum LPS in mm"
             )
-            public JAMSDoubleArray maxLPS;
+            public Attribute.DoubleArray maxLPS;
     
     @JAMSVarDescription(
     access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "HRU state var actual MPS in mm"
             )
-            public JAMSDoubleArray actMPS;
+            public Attribute.DoubleArray actMPS;
     
     @JAMSVarDescription(
     access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "HRU state var actual LPS in mm"
             )
-            public JAMSDoubleArray actLPS;
+            public Attribute.DoubleArray actLPS;
     
     @JAMSVarDescription(
     access = JAMSVarDescription.AccessType.WRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "HRU state var actual LPS of the frist layer in mm"
             )
-            public JAMSDouble actLPS1;
+            public Attribute.Double actLPS1;
     
     @JAMSVarDescription(
     access = JAMSVarDescription.AccessType.WRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "HRU state var actual LPS of the second layer in mm"
             )
-            public JAMSDouble actLPS2;
+            public Attribute.Double actLPS2;
     
     @JAMSVarDescription(
     access = JAMSVarDescription.AccessType.WRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "HRU state var actual LPS of the third layer in mm"
             )
-            public JAMSDouble actLPS3;
+            public Attribute.Double actLPS3;
     
     @JAMSVarDescription(
     access = JAMSVarDescription.AccessType.WRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "HRU state var actual LPS of the fourth layer in mm"
             )
-            public JAMSDouble actLPS4;
+            public Attribute.Double actLPS4;
     
     @JAMSVarDescription(
     access = JAMSVarDescription.AccessType.WRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "HRU state var actual MPS of the frist layer in mm"
             )
-            public JAMSDouble actMPS1;
+            public Attribute.Double actMPS1;
     
     @JAMSVarDescription(
     access = JAMSVarDescription.AccessType.WRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "HRU state var actual MPS of the second layer in mm"
             )
-            public JAMSDouble actMPS2;
+            public Attribute.Double actMPS2;
     
     @JAMSVarDescription(
     access = JAMSVarDescription.AccessType.WRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "HRU state var actual MPS of the third layer in mm"
             )
-            public JAMSDouble actMPS3;
+            public Attribute.Double actMPS3;
     
     @JAMSVarDescription(
     access = JAMSVarDescription.AccessType.WRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "HRU state var actual MPS of the fourth layer in mm"
             )
-            public JAMSDouble actMPS4;
+            public Attribute.Double actMPS4;
     
     @JAMSVarDescription(
     access = JAMSVarDescription.AccessType.WRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "HRU soil moistrure of the frist layer in %"
             )
-            public JAMSDouble actMoist1;
+            public Attribute.Double actMoist1;
     
     @JAMSVarDescription(
     access = JAMSVarDescription.AccessType.WRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "HRU soil moistrure of the second layer in %"
             )
-            public JAMSDouble actMoist2;
+            public Attribute.Double actMoist2;
     
     @JAMSVarDescription(
     access = JAMSVarDescription.AccessType.WRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "HRU soil moistrure of the third layer in %"
             )
-            public JAMSDouble actMoist3;
+            public Attribute.Double actMoist3;
     
     @JAMSVarDescription(
     access = JAMSVarDescription.AccessType.WRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "HRU soil moistrure of the fourth layer in %"
             )
-            public JAMSDouble actMoist4;
+            public Attribute.Double actMoist4;
     
     @JAMSVarDescription(
     access = JAMSVarDescription.AccessType.WRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "HRU soil moistrure array of all layers in %"
             )
-            public JAMSDoubleArray actMoist_h;
+            public Attribute.DoubleArray actMoist_h;
     
     
     

@@ -48,7 +48,7 @@ import jams.model.*;
             access = JAMSVarDescription.AccessType.READ,
             description = "The reach collection"
             )
-            public JAMSEntityCollection entities;
+            public Attribute.EntityCollection entities;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
@@ -57,7 +57,7 @@ import jams.model.*;
             lowerBound = 0,
             upperBound = Double.POSITIVE_INFINITY
             )
-            public JAMSDouble length;
+            public Attribute.Double length;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
@@ -66,7 +66,7 @@ import jams.model.*;
             lowerBound = 0,
             upperBound =90
             )
-            public JAMSDouble slope;
+            public Attribute.Double slope;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
@@ -75,7 +75,7 @@ import jams.model.*;
             lowerBound = 0,
             upperBound = Double.POSITIVE_INFINITY
             )
-            public JAMSDouble width;
+            public Attribute.Double width;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
@@ -85,7 +85,7 @@ import jams.model.*;
             upperBound = 100
 
             )
-            public JAMSDouble roughness;
+            public Attribute.Double roughness;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
@@ -94,7 +94,7 @@ import jams.model.*;
             lowerBound = 0,
             upperBound = Double.POSITIVE_INFINITY
             )
-            public JAMSDouble inRD1;
+            public Attribute.Double inRD1;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
@@ -103,7 +103,7 @@ import jams.model.*;
             lowerBound = 0,
             upperBound = Double.POSITIVE_INFINITY
             )
-            public JAMSDouble inRD2;
+            public Attribute.Double inRD2;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
@@ -112,7 +112,7 @@ import jams.model.*;
             lowerBound = 0,
             upperBound = Double.POSITIVE_INFINITY
             )
-            public JAMSDouble inRG1;
+            public Attribute.Double inRG1;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
@@ -121,7 +121,7 @@ import jams.model.*;
             lowerBound = 0,
             upperBound = Double.POSITIVE_INFINITY
             )
-            public JAMSDouble inRG2;
+            public Attribute.Double inRG2;
 
    @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
@@ -130,7 +130,7 @@ import jams.model.*;
             lowerBound = 0,
             upperBound = Double.POSITIVE_INFINITY
             )
-            public JAMSDouble inGW;
+            public Attribute.Double inGW;
 
    @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
@@ -139,7 +139,7 @@ import jams.model.*;
             lowerBound = 0,
             upperBound = Double.POSITIVE_INFINITY
             )
-            public JAMSDouble inTZ;
+            public Attribute.Double inTZ;
 
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
@@ -149,7 +149,7 @@ import jams.model.*;
             lowerBound = 0,
             upperBound = Double.POSITIVE_INFINITY
             )
-            public JAMSDouble inAddIn;
+            public Attribute.Double inAddIn;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
@@ -158,7 +158,7 @@ import jams.model.*;
             lowerBound = 0,
             upperBound = Double.POSITIVE_INFINITY
             )
-            public JAMSDouble outRD1;
+            public Attribute.Double outRD1;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
@@ -167,7 +167,7 @@ import jams.model.*;
             lowerBound = 0,
             upperBound = Double.POSITIVE_INFINITY
             )
-            public JAMSDouble outRD2;
+            public Attribute.Double outRD2;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
@@ -176,7 +176,7 @@ import jams.model.*;
             lowerBound = 0,
             upperBound = Double.POSITIVE_INFINITY
             )
-            public JAMSDouble outRG1;
+            public Attribute.Double outRG1;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
@@ -185,7 +185,7 @@ import jams.model.*;
             lowerBound = 0,
             upperBound = Double.POSITIVE_INFINITY
             )
-            public JAMSDouble outRG2;
+            public Attribute.Double outRG2;
 
         @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
@@ -194,7 +194,7 @@ import jams.model.*;
             lowerBound = 0,
             upperBound = Double.POSITIVE_INFINITY
             )
-            public JAMSDouble outGW;
+            public Attribute.Double outGW;
 
         @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
@@ -203,7 +203,7 @@ import jams.model.*;
             lowerBound = 0,
             upperBound = Double.POSITIVE_INFINITY
             )
-            public JAMSDouble outTZ;
+            public Attribute.Double outTZ;
 
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
@@ -213,7 +213,7 @@ import jams.model.*;
             lowerBound = 0,
             upperBound = Double.POSITIVE_INFINITY
             )
-            public JAMSDouble outAddIn;
+            public Attribute.Double outAddIn;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
@@ -222,7 +222,7 @@ import jams.model.*;
             lowerBound = 0,
             upperBound = Double.POSITIVE_INFINITY
             )
-            public JAMSDouble simRunoff;
+            public Attribute.Double simRunoff;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
@@ -231,7 +231,7 @@ import jams.model.*;
             lowerBound = 0,
             upperBound = Double.POSITIVE_INFINITY
             )
-            public JAMSDouble actRD1;
+            public Attribute.Double actRD1;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
@@ -240,7 +240,7 @@ import jams.model.*;
             lowerBound = 0,
             upperBound = Double.POSITIVE_INFINITY
             )
-            public JAMSDouble actRD2;
+            public Attribute.Double actRD2;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
@@ -249,7 +249,7 @@ import jams.model.*;
             lowerBound = 0,
             upperBound = Double.POSITIVE_INFINITY
             )
-            public JAMSDouble actRG1;
+            public Attribute.Double actRG1;
 
     
     @JAMSVarDescription(
@@ -259,7 +259,7 @@ import jams.model.*;
             lowerBound = 0,
             upperBound = Double.POSITIVE_INFINITY
             )
-            public JAMSDouble actRG2;
+            public Attribute.Double actRG2;
 
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
@@ -268,7 +268,7 @@ import jams.model.*;
             lowerBound = 0,
             upperBound = Double.POSITIVE_INFINITY
             )
-            public JAMSDouble actGW;
+            public Attribute.Double actGW;
 
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
@@ -277,7 +277,7 @@ import jams.model.*;
             lowerBound = 0,
             upperBound = Double.POSITIVE_INFINITY
             )
-            public JAMSDouble actTZ;
+            public Attribute.Double actTZ;
 
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
@@ -287,7 +287,7 @@ import jams.model.*;
             lowerBound = 0,
             upperBound = Double.POSITIVE_INFINITY
             )
-            public JAMSDouble actAddIn;
+            public Attribute.Double actAddIn;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
@@ -296,7 +296,7 @@ import jams.model.*;
             lowerBound = 0,
             upperBound = Double.POSITIVE_INFINITY
             )
-            public JAMSDouble channelStorage;
+            public Attribute.Double channelStorage;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
@@ -306,7 +306,7 @@ import jams.model.*;
             lowerBound = 0,
             upperBound = Double.POSITIVE_INFINITY
             )
-            public JAMSDouble flowRouteTA;
+            public Attribute.Double flowRouteTA;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
@@ -315,7 +315,7 @@ import jams.model.*;
             lowerBound = 0,
             upperBound = Double.POSITIVE_INFINITY
             )
-            public JAMSDouble catchmentRD1;
+            public Attribute.Double catchmentRD1;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
@@ -324,7 +324,7 @@ import jams.model.*;
             lowerBound = 0,
             upperBound = Double.POSITIVE_INFINITY
             )
-            public JAMSDouble catchmentRD2;
+            public Attribute.Double catchmentRD2;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
@@ -333,7 +333,7 @@ import jams.model.*;
             lowerBound = 0,
             upperBound = Double.POSITIVE_INFINITY
             )
-            public JAMSDouble catchmentRG1;
+            public Attribute.Double catchmentRG1;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
@@ -342,7 +342,7 @@ import jams.model.*;
             lowerBound = 0,
             upperBound = Double.POSITIVE_INFINITY
             )
-            public JAMSDouble catchmentRG2;
+            public Attribute.Double catchmentRG2;
 
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
@@ -351,7 +351,7 @@ import jams.model.*;
             lowerBound = 0,
             upperBound = Double.POSITIVE_INFINITY
             )
-            public JAMSDouble catchmentGW;
+            public Attribute.Double catchmentGW;
 
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
@@ -360,7 +360,7 @@ import jams.model.*;
             lowerBound = 0,
             upperBound = Double.POSITIVE_INFINITY
             )
-            public JAMSDouble catchmentTZ;
+            public Attribute.Double catchmentTZ;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
@@ -370,7 +370,7 @@ import jams.model.*;
             lowerBound = 0,
             upperBound = Double.POSITIVE_INFINITY
             )
-            public JAMSDouble catchmentAddIn;
+            public Attribute.Double catchmentAddIn;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
@@ -379,31 +379,31 @@ import jams.model.*;
             lowerBound = 0,
             upperBound = Double.POSITIVE_INFINITY
             )
-            public JAMSDouble catchmentSimRunoff;
+            public Attribute.Double catchmentSimRunoff;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
             description = "temporal resolution [d or h]"
             )
-            public JAMSString tempRes;
+            public Attribute.String tempRes;
 
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
             description = "height above sea level",
-            unit = "m", //[m ü NN] / [a.s.l.]
+            unit = "m", //[m Ã¼ NN] / [a.s.l.]
             lowerBound = 0,
             upperBound = Double.POSITIVE_INFINITY
             )
-            public JAMSDouble baseHeigth;
+            public Attribute.Double baseHeigth;
 
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
             description = "water Level",
-            unit = "m", //[m ü NN] / [a.s.l.]
+            unit = "m", //[m Ã¼ NN] / [a.s.l.]
             lowerBound = 0,
             upperBound = Double.POSITIVE_INFINITY
             )
-            public JAMSDouble waterTable_NN;
+            public Attribute.Double waterTable_NN;
 
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
@@ -412,28 +412,28 @@ import jams.model.*;
             lowerBound = 0,
             upperBound = Double.POSITIVE_INFINITY
             )
-            public JAMSDouble waterDepth;
+            public Attribute.Double waterDepth;
     /*
      *  Component run stages
      */
     
-    public void init() throws JAMSEntity.NoSuchAttributeException {
+    public void init() throws Attribute.Entity.NoSuchAttributeException {
         
     }
     
-    public void run() throws JAMSEntity.NoSuchAttributeException {
+    public void run() throws Attribute.Entity.NoSuchAttributeException {
         
         Attribute.Entity entity = entities.getCurrent();
 
-        JAMSEntity DestReach = (JAMSEntity)entity.getObject("to_reach");
+        Attribute.Entity DestReach = (Attribute.Entity)entity.getObject("to_reach");
         if (DestReach.getValue() == null) {
             DestReach = null;
         }
-        JAMSEntity DestReservoir = null;
+        Attribute.Entity DestReservoir = null;
         
         try{
-            DestReservoir = (JAMSEntity)entity.getObject("to_reservoir");
-        }catch(JAMSEntity.NoSuchAttributeException e){
+            DestReservoir = (Attribute.Entity)entity.getObject("to_reservoir");
+        }catch(Attribute.Entity.NoSuchAttributeException e){
             DestReservoir = null;
         }
         
@@ -507,7 +507,7 @@ import jams.model.*;
             GWDestIn = DestReach.getDouble("inGW");
             try{
                 addInDestIn = DestReach.getDouble("inAddIn");
-            }catch(jams.data.JAMSEntity.NoSuchAttributeException e){
+            }catch(jams.data.Attribute.Entity.NoSuchAttributeException e){
                 addInDestIn = 0;
             }
         }
@@ -676,7 +676,7 @@ import jams.model.*;
         double veloc = 0;
         
         /**
-         *transfering liter/d to m³/s
+         *transfering liter/d to mÂ³/s
          **/
         double q_m = q / (1000 * secondsOfTimeStep);
         double rh = calcHydraulicRadius(afv, q_m, width);

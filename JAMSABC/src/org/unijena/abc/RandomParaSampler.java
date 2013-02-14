@@ -46,87 +46,75 @@ title="Title",
     
     @JAMSVarDescription(
     access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.INIT,
             description = "Data file directory name"
             )
-            public JAMSString dirName;
+            public Attribute.String dirName;
     
     @JAMSVarDescription(
     access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.INIT,
             description = "List of parameter identifiers to be sampled"
             )
-            public JAMSString parameterIDs;
+            public Attribute.String parameterIDs;
     
     @JAMSVarDescription(
     access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.INIT,
             description = "List of parameter value bounaries corresponding to parameter identifiers"
             )
-            public JAMSString boundaries;
+            public Attribute.String boundaries;
     
     @JAMSVarDescription(
     access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.INIT,
             description = "Number of samples to be taken"
             )
-            public JAMSInteger sampleCount;
+            public Attribute.Integer sampleCount;
     
     @JAMSVarDescription(
     access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.INIT,
             description = "efficiency methods"
             )
-            public JAMSString effMethodNames;
+            public Attribute.String effMethodNames;
     
     @JAMSVarDescription(
     access = JAMSVarDescription.AccessType.READWRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "efficiency values"
             )
-            public JAMSDouble[] effValues;
+            public Attribute.Double[] effValues;
     
     @JAMSVarDescription(
     access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.INIT,
             description = "Flag for dis/enabling this sampler"
             )
-            public JAMSBoolean enable;
+            public Attribute.Boolean enable;
     
     @JAMSVarDescription(
     access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.INIT
             )
-            public JAMSString paraFileName;
+            public Attribute.String paraFileName;
     
     @JAMSVarDescription(
     access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.INIT
             )
-            public JAMSString attribFileName;
+            public Attribute.String attribFileName;
     
     @JAMSVarDescription(
     access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.INIT,
             description = "The model time interval"
             )
-            public JAMSTimeInterval modelTimeInterval;
+            public Attribute.TimeInterval modelTimeInterval;
     
     @JAMSVarDescription(
     access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.INIT,
             description = "Output file header descriptions"
             )
-            public JAMSString attribHeader;
+            public Attribute.String attribHeader;
     
     @JAMSVarDescription(
     access = JAMSVarDescription.AccessType.READWRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "Output file attribute"
             )
-            public JAMSDoubleArray targetValue;
+            public Attribute.DoubleArray targetValue;
     
-    JAMSDouble[] parameters;
+    Attribute.Double[] parameters;
     String[] parameterNames;
     double[] lowBound;
     double[] upBound;
@@ -150,14 +138,14 @@ title="Title",
             int i;
             StringTokenizer tok = new StringTokenizer(parameterIDs.getValue(), ";");
             String key;
-            parameters = new JAMSDouble[tok.countTokens()];
+            parameters = new Attribute.Double[tok.countTokens()];
             parameterNames = new String[tok.countTokens()];
             
             i = 0;
             while (tok.hasMoreTokens()) {
                 key = tok.nextToken();
                 parameterNames[i] = key;
-                parameters[i] = (JAMSDouble) getModel().getRuntime().getDataHandles().get(key);
+                parameters[i] = (Attribute.Double) getModel().getRuntime().getDataHandles().get(key);
                 if(parameters[i] == null){
                     System.out.println("Problem in Sampler: parameter: " + key + "does not exist!");
                 }
@@ -289,7 +277,7 @@ title="Title",
             //always write time
             //the time also knows a toString() method with additional formatting parameters
             //e.g. time.toString("%1$tY-%1$tm-%1$td %1$tH:%1$tM")
-            JAMSCalendar timeStamp = this.modelTimeInterval.getStart();
+            Attribute.Calendar timeStamp = this.modelTimeInterval.getStart();
             for(int t = 0; t < this.timeSteps; t++){
                 attribWriter.addData(timeStamp.toString("%1$tY-%1$tm-%1$td %1$tH:%1$tM"));
                 timeStamp.add(modelTimeInterval.getTimeUnit(), 1);

@@ -18,61 +18,53 @@ public class calc_irigation_conc_N extends JAMSComponent {
 
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "HRU crop class"
             )
-            public JAMSDouble storageInput;
+            public Attribute.Double storageInput;
 
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "HRU crop class"
             )
-            public JAMSDouble storageInputN;
+            public Attribute.Double storageInputN;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "Fixed minimal bypass factor 0 - 1 [-], default 0"
             )
-            public JAMSDouble Bypassfactor;
+            public Attribute.Double Bypassfactor;
         
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "Water amount in bypass [l]"
             )
-            public JAMSDouble Bypasswater;
+            public Attribute.Double Bypasswater;
 
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "HRU crop class"
             )
-            public JAMSDouble storage;
+            public Attribute.Double storage;
 
 
 
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "HRU crop class"
             )
-            public JAMSDouble irrigationsum;
+            public Attribute.Double irrigationsum;
 
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "HRU crop class"
             )
-            public JAMSDouble irrigationpart;
+            public Attribute.Double irrigationpart;
 
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "N-concentration of the irrigation water kgN/l"
             )
-            public JAMSDouble irrigationN_conc;
+            public Attribute.Double irrigationN_conc;
 
 
 //Berechnung

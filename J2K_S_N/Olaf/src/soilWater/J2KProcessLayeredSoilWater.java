@@ -87,25 +87,25 @@ import static oms3.annotations.Role.*;
 
     @Description ("depth of soil layer")
     @Unit("cm")
-    @In public double[] layerdepth /* = new JAMSDoubleArray() */;
+    @In public double[] layerdepth /* = new Attribute.DoubleArray() */;
 
     @Description ("actual depth of roots")
     @Unit("m")
     @In public double rootdepth;
 
     @Description ("HRU attribute maximum MPS")
-    @In public double[] maxMPS /* = new JAMSDoubleArray() */;
+    @In public double[] maxMPS /* = new Attribute.DoubleArray() */;
 
     @Description ("HRU attribute maximum LPS")
-    @In public double[] maxLPS /* = new JAMSDoubleArray() */;
+    @In public double[] maxLPS /* = new Attribute.DoubleArray() */;
 
     // TODO READWRITE subst
     @Description ("HRU state var actual MPS")
-    public double[] actMPS /* = new JAMSDoubleArray() */;
+    public double[] actMPS /* = new Attribute.DoubleArray() */;
 
     // TODO READWRITE subst
     @Description ("HRU state var actual LPS")
-    public double[] actLPS /* = new JAMSDoubleArray() */;
+    public double[] actLPS /* = new Attribute.DoubleArray() */;
 
     // TODO READWRITE subst
     @Description ("HRU state var actual depression storage")
@@ -113,11 +113,11 @@ import static oms3.annotations.Role.*;
 
     // TODO READWRITE subst
     @Description ("HRU state var saturation of MPS")
-    public double[] satMPS /* = new JAMSDoubleArray() */;
+    public double[] satMPS /* = new Attribute.DoubleArray() */;
     // TODO READWRITE subst
    
     @Description ("HRU state var saturation of LPS")
-    public double[] satLPS /* = new JAMSDoubleArray() */;
+    public double[] satLPS /* = new Attribute.DoubleArray() */;
    
     @Description ("HRU attribute maximum MPS of soil")
     @Out public double soilMaxMPS;
@@ -162,13 +162,13 @@ import static oms3.annotations.Role.*;
 
     // TODO READWRITE subst   
     @Description ("HRU statevar RD2 inflow")
-    public double[] inRD2 /* = new JAMSDoubleArray() */;
+    public double[] inRD2 /* = new Attribute.DoubleArray() */;
    
     @Description ("HRU statevar RD2 outflow")
-    @Out public double[] outRD2 /* = new JAMSDoubleArray() */;
+    @Out public double[] outRD2 /* = new Attribute.DoubleArray() */;
    
     @Description ("HRU statevar RD2 generation")
-    @Out public double[] genRD2 /* = new JAMSDoubleArray() */;
+    @Out public double[] genRD2 /* = new Attribute.DoubleArray() */;
    
     @Description ("maximum depression storage")
     @Unit("mm")
@@ -244,16 +244,16 @@ import static oms3.annotations.Role.*;
     @In public double BetaW;
    
     @Description ("intfiltration poritions for the single horizonts")
-    @Out public double[] infiltration_hor /* = new JAMSDoubleArray() */;
+    @Out public double[] infiltration_hor /* = new Attribute.DoubleArray() */;
    
     @Description ("percolation out of the single horizonts")
-    @Out public double[] perco_hor /* = new JAMSDoubleArray() */;
+    @Out public double[] perco_hor /* = new Attribute.DoubleArray() */;
    
     @Description ("evapotranspiration out of the single horizonts")
-    @Out public double[] actETP_h /* = new JAMSDoubleArray() */;
+    @Out public double[] actETP_h /* = new Attribute.DoubleArray() */;
    
     @Description ("mps diffusion between layers value")
-    @Out public double[] w_layer_diff /* = new JAMSDoubleArray() */;
+    @Out public double[] w_layer_diff /* = new Attribute.DoubleArray() */;
    
     @Description ("Array of state variables LAI ")
     @In public double LAI;
@@ -264,7 +264,7 @@ import static oms3.annotations.Role.*;
    
     @Description ("soil hydraulic conductivity")
     @Unit("cm/d")
-    @In public double[] kf_h /* = new JAMSDoubleArray() */;
+    @In public double[] kf_h /* = new Attribute.DoubleArray() */;
    
     @Description ("ID of soil")
     @Out public double soilID;
@@ -280,7 +280,7 @@ import static oms3.annotations.Role.*;
     @In public double kgrad_layer;
    
     @Description ("Indicates whether roots can penetrate or not the soil layer")
-    @In public double[] root_h /* = new JAMSDoubleArray() */;
+    @In public double[] root_h /* = new Attribute.DoubleArray() */;
    
     @Description ("max Root depth in soil in m")
     @Out public double soil_root;    //internal state variables

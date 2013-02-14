@@ -47,75 +47,64 @@ import jams.model.*;
 
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.INIT,
             description = "Parameter identifiers to be sampled"
             )
-            public JAMSString parameterID;
+            public Attribute.String parameterID;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.INIT,
             description = "Parameter value bounaries corresponding to parameter identifiers"
             )
-            public JAMSString boundaries;
+            public Attribute.String boundaries;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.INIT,
             description = "resolution"
             )
-            public JAMSInteger resolution;
+            public Attribute.Integer resolution;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.INIT,
             description = "efficiency methods"
             )
-            public JAMSString effMethodNames;
+            public Attribute.String effMethodNames;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "efficiency values"
             )
             public Attribute.Double[] effValues;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.INIT,
             description = "Flag for enabling this sampler"
             )
-            public JAMSBoolean enable;
+            public Attribute.Boolean enable;
     
     @JAMSVarDescription(
-            access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.INIT
+            access = JAMSVarDescription.AccessType.READ
             )
-            public JAMSString paraFileName;
+            public Attribute.String paraFileName;
     
     @JAMSVarDescription(
-            access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.INIT
+            access = JAMSVarDescription.AccessType.READ
             )
-            public JAMSString attribFileName;
+            public Attribute.String attribFileName;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.INIT,
             description = "The model time interval"
             )
-            public JAMSTimeInterval modelTimeInterval;
+            public Attribute.TimeInterval modelTimeInterval;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.INIT,
             description = "Output file header descriptions"
             )
-            public JAMSString attribHeader;
+            public Attribute.String attribHeader;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "Output file attribute"
             )
             public Attribute.DoubleArray targetValue;

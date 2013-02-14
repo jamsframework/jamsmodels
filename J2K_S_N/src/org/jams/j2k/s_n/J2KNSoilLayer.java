@@ -51,7 +51,7 @@ import jams.model.*;
             lowerBound = 0,
             upperBound = 1000000000
             )
-            public JAMSDouble area;
+            public Attribute.Double area;
 
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
@@ -60,7 +60,7 @@ import jams.model.*;
             lowerBound = 0,
             upperBound = 100
             )
-            public JAMSDouble Layer;
+            public Attribute.Double Layer;
 
 
     @JAMSVarDescription(
@@ -70,7 +70,7 @@ import jams.model.*;
             lowerBound = 0,
             upperBound = 10000
             )
-            public JAMSDoubleArray layerdepth;
+            public Attribute.DoubleArray layerdepth;
 
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
@@ -79,7 +79,7 @@ import jams.model.*;
             lowerBound = 0,
             upperBound = 100000
             )
-            public JAMSDouble totaldepth;
+            public Attribute.Double totaldepth;
 
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
@@ -88,7 +88,7 @@ import jams.model.*;
             lowerBound = 0,
             upperBound = 100
             )
-            public JAMSDouble rootdepth;
+            public Attribute.Double rootdepth;
 
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
@@ -97,7 +97,7 @@ import jams.model.*;
             lowerBound = 0,
             upperBound = 20
             )
-            public JAMSDoubleArray soil_bulk_density;
+            public Attribute.DoubleArray soil_bulk_density;
 
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
@@ -106,7 +106,7 @@ import jams.model.*;
             lowerBound = 0,
             upperBound = 1
             )
-            public JAMSDoubleArray sat_LPS;
+            public Attribute.DoubleArray sat_LPS;
 
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
@@ -115,7 +115,7 @@ import jams.model.*;
             lowerBound = 0,
             upperBound = 1
             )
-            public JAMSDoubleArray sat_MPS;
+            public Attribute.DoubleArray sat_MPS;
 
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
@@ -124,7 +124,7 @@ import jams.model.*;
             lowerBound = 0,
             upperBound = 2000
             )
-            public JAMSDoubleArray stohru_MPS;
+            public Attribute.DoubleArray stohru_MPS;
 
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
@@ -133,7 +133,7 @@ import jams.model.*;
             lowerBound = 0,
             upperBound = 2000
             )
-            public JAMSDoubleArray stohru_LPS;
+            public Attribute.DoubleArray stohru_LPS;
 
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
@@ -142,7 +142,7 @@ import jams.model.*;
             lowerBound = 0,
             upperBound = 2000
             )
-            public JAMSDoubleArray stohru_FPS;
+            public Attribute.DoubleArray stohru_FPS;
 
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
@@ -151,7 +151,7 @@ import jams.model.*;
             lowerBound = -70,
             upperBound = 70
             )
-            public JAMSDoubleArray Soil_Temp_Layer;
+            public Attribute.DoubleArray Soil_Temp_Layer;
 
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
@@ -160,7 +160,7 @@ import jams.model.*;
             lowerBound = 0,
             upperBound = 100
             )
-            public JAMSDoubleArray C_org;
+            public Attribute.DoubleArray C_org;
 
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
@@ -169,7 +169,7 @@ import jams.model.*;
             lowerBound = 0,
             upperBound = 10000
             )
-            public JAMSDoubleArray NO3_Pool;
+            public Attribute.DoubleArray NO3_Pool;
 
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
@@ -178,7 +178,7 @@ import jams.model.*;
             lowerBound = 0,
             upperBound = 10000
             )
-            public JAMSDoubleArray NH4_Pool;
+            public Attribute.DoubleArray NH4_Pool;
 
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
@@ -187,7 +187,7 @@ import jams.model.*;
             lowerBound = 0,
             upperBound = 100000
             )
-            public JAMSDoubleArray N_activ_pool;
+            public Attribute.DoubleArray N_activ_pool;
 
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
@@ -196,7 +196,7 @@ import jams.model.*;
             lowerBound = 0,
             upperBound = 1000000
             )
-            public JAMSDoubleArray N_stabel_pool;
+            public Attribute.DoubleArray N_stabel_pool;
 
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
@@ -205,7 +205,7 @@ import jams.model.*;
             lowerBound = 0,
             upperBound = 1000000
             )
-            public JAMSDouble sN_activ_pool;
+            public Attribute.Double sN_activ_pool;
 
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
@@ -214,7 +214,7 @@ import jams.model.*;
             lowerBound = 0,
             upperBound = 10000000
             )
-            public JAMSDouble sN_stabel_pool;
+            public Attribute.Double sN_stabel_pool;
 
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
@@ -223,7 +223,7 @@ import jams.model.*;
             lowerBound = 0,
             upperBound = 10000
             )
-            public JAMSDouble sNO3_Pool;
+            public Attribute.Double sNO3_Pool;
 
 
     @JAMSVarDescription(
@@ -233,7 +233,7 @@ import jams.model.*;
             lowerBound = 0,
             upperBound = 10000
             )
-            public JAMSDouble sNH4_Pool;
+            public Attribute.Double sNH4_Pool;
 
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
@@ -242,7 +242,7 @@ import jams.model.*;
             lowerBound = 0,
             upperBound = 100000
             )
-            public JAMSDouble sNResiduePool;
+            public Attribute.Double sNResiduePool;
 
 
     @JAMSVarDescription(
@@ -252,7 +252,7 @@ import jams.model.*;
             lowerBound = 0,
             upperBound = 100000000
             )
-            public JAMSDouble sinterflowNabs;
+            public Attribute.Double sinterflowNabs;
 
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
@@ -261,7 +261,7 @@ import jams.model.*;
             lowerBound = 0,
             upperBound = 10000
             )
-            public JAMSDouble sinterflowN;
+            public Attribute.Double sinterflowN;
 
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
@@ -270,7 +270,7 @@ import jams.model.*;
             lowerBound = 0,
             upperBound = 1000000
             )
-            public JAMSDoubleArray Residue_pool;
+            public Attribute.DoubleArray Residue_pool;
 
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
@@ -279,7 +279,7 @@ import jams.model.*;
             lowerBound = 0,
             upperBound = 1000000
             )
-            public JAMSDoubleArray N_residue_pool_fresh;
+            public Attribute.DoubleArray N_residue_pool_fresh;
 
 
     @JAMSVarDescription(
@@ -289,7 +289,7 @@ import jams.model.*;
             lowerBound = 0,
             upperBound = 100000000
             )
-            public JAMSDoubleArray aEP_h;
+            public Attribute.DoubleArray aEP_h;
 
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
@@ -298,7 +298,7 @@ import jams.model.*;
             lowerBound = 0,
             upperBound = 100000000
             )
-            public JAMSDoubleArray w_layer_diff;
+            public Attribute.DoubleArray w_layer_diff;
 
 
     @JAMSVarDescription(
@@ -308,7 +308,7 @@ import jams.model.*;
             lowerBound = 0,
             upperBound = 1000000000
             )
-            public JAMSDouble RD1_out;
+            public Attribute.Double RD1_out;
 
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
@@ -317,7 +317,7 @@ import jams.model.*;
             lowerBound = 0,
             upperBound = 100000000
             )
-            public JAMSDoubleArray RD2_out;
+            public Attribute.DoubleArray RD2_out;
 
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
@@ -326,7 +326,7 @@ import jams.model.*;
             lowerBound = 0,
             upperBound = 1000000000
             )
-            public JAMSDouble D_perco ;
+            public Attribute.Double D_perco ;
 
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
@@ -335,7 +335,7 @@ import jams.model.*;
             lowerBound = 0,
             upperBound = 1000
             )
-            public JAMSDouble Volati_trans;
+            public Attribute.Double Volati_trans;
 
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
@@ -344,7 +344,7 @@ import jams.model.*;
             lowerBound = 0,
             upperBound = 1000
             )
-            public JAMSDouble NH4inp;
+            public Attribute.Double NH4inp;
 
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
@@ -353,7 +353,7 @@ import jams.model.*;
             lowerBound = 0,
             upperBound = 1000
             )
-            public JAMSDouble Nitri_trans;
+            public Attribute.Double Nitri_trans;
 
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
@@ -362,7 +362,7 @@ import jams.model.*;
             lowerBound = 0,
             upperBound = 1000
             )
-            public JAMSDouble Denit_trans;
+            public Attribute.Double Denit_trans;
 
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
@@ -371,7 +371,7 @@ import jams.model.*;
             lowerBound = 0,
             upperBound = 100000
             )
-            public JAMSDouble SurfaceN;
+            public Attribute.Double SurfaceN;
 
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
@@ -380,7 +380,7 @@ import jams.model.*;
             lowerBound = 0,
             upperBound = 100000
             )
-            public JAMSDoubleArray InterflowN;
+            public Attribute.DoubleArray InterflowN;
 
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
@@ -389,7 +389,7 @@ import jams.model.*;
             lowerBound = 0,
             upperBound = 100000
             )
-            public JAMSDouble PercoN;
+            public Attribute.Double PercoN;
 
  @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
@@ -398,7 +398,7 @@ import jams.model.*;
             lowerBound = 0,
             upperBound = 100000
             )
-            public JAMSDoubleArray PercoN_h;
+            public Attribute.DoubleArray PercoN_h;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
@@ -407,7 +407,7 @@ import jams.model.*;
             lowerBound = 0,
             upperBound = 1000000000
             )
-            public JAMSDouble SurfaceNabs;
+            public Attribute.Double SurfaceNabs;
 
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
@@ -416,7 +416,7 @@ import jams.model.*;
             lowerBound = 0,
             upperBound = 1000000000
             )
-            public JAMSDoubleArray InterflowNabs;
+            public Attribute.DoubleArray InterflowNabs;
 
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
@@ -425,7 +425,7 @@ import jams.model.*;
             lowerBound = 0,
             upperBound = 1000000000
             )
-            public JAMSDouble PercoNabs;
+            public Attribute.Double PercoNabs;
 
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
@@ -434,7 +434,7 @@ import jams.model.*;
             lowerBound = 0,
             upperBound = 1000000000
             )
-            public JAMSDouble SurfaceN_in;
+            public Attribute.Double SurfaceN_in;
 
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
@@ -443,7 +443,7 @@ import jams.model.*;
             lowerBound = 0,
             upperBound = 1000000000
             )
-            public JAMSDoubleArray InterflowN_in;
+            public Attribute.DoubleArray InterflowN_in;
 
 
     @JAMSVarDescription(
@@ -453,7 +453,7 @@ import jams.model.*;
             lowerBound = 0,
             upperBound = 10000
             )
-            public JAMSDouble BioNoptAct;
+            public Attribute.Double BioNoptAct;
 
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
@@ -462,7 +462,7 @@ import jams.model.*;
             lowerBound = 0,
             upperBound = 10000
             )
-            public JAMSDouble BioNAct;
+            public Attribute.Double BioNAct;
 
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
@@ -471,7 +471,7 @@ import jams.model.*;
             lowerBound = 0,
             upperBound = 1000
             )
-            public JAMSDouble actnup;
+            public Attribute.Double actnup;
 
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
@@ -480,7 +480,7 @@ import jams.model.*;
             lowerBound = 0,
             upperBound = 10000000
             )
-            public JAMSDoubleArray infiltration_hor;
+            public Attribute.DoubleArray infiltration_hor;
 
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
@@ -489,7 +489,7 @@ import jams.model.*;
             lowerBound = 0,
             upperBound = 10000000
             )
-            public JAMSDoubleArray perco_hor;
+            public Attribute.DoubleArray perco_hor;
 
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
@@ -498,7 +498,7 @@ import jams.model.*;
             lowerBound = 0,
             upperBound = 1000000
             )
-            public JAMSDoubleArray actETP_h;
+            public Attribute.DoubleArray actETP_h;
 
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
@@ -507,7 +507,7 @@ import jams.model.*;
             lowerBound = 0,
             upperBound = 10000
             )
-            public JAMSDouble fertNO3;
+            public Attribute.Double fertNO3;
 
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
@@ -516,7 +516,7 @@ import jams.model.*;
             lowerBound = 0,
             upperBound = 10000
             )
-            public JAMSDouble fertNH4;
+            public Attribute.Double fertNH4;
 
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
@@ -525,7 +525,7 @@ import jams.model.*;
             lowerBound = 0,
             upperBound = 10000
             )
-            public JAMSDouble fertstableorg;
+            public Attribute.Double fertstableorg;
 
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
@@ -534,7 +534,7 @@ import jams.model.*;
             lowerBound = 0,
             upperBound = 10000
             )
-            public JAMSDouble fertactivorg;
+            public Attribute.Double fertactivorg;
 
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
@@ -543,7 +543,7 @@ import jams.model.*;
             lowerBound = 0,
             upperBound = 10000
             )
-            public JAMSDouble sum_Ninput;
+            public Attribute.Double sum_Ninput;
 
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
@@ -552,7 +552,7 @@ import jams.model.*;
             lowerBound = 0,
             upperBound = 100000
             )
-            public JAMSDouble fertorgNfresh;
+            public Attribute.Double fertorgNfresh;
 
 
     @JAMSVarDescription(
@@ -562,7 +562,7 @@ import jams.model.*;
             lowerBound = 0,
             upperBound = 1000000
             )
-            public JAMSDouble inp_biomass;
+            public Attribute.Double inp_biomass;
 
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
@@ -571,7 +571,7 @@ import jams.model.*;
             lowerBound = 0,
             upperBound = 10000
             )
-            public JAMSDouble inpN_biomass;
+            public Attribute.Double inpN_biomass;
 
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
@@ -580,19 +580,19 @@ import jams.model.*;
             lowerBound = 0,
             upperBound = 1000
             )
-            public JAMSDouble precip;
+            public Attribute.Double precip;
 
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
             description = "Current time"
             )
-            public JAMSCalendar time;
+            public Attribute.Calendar time;
 
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
             description = "indicates dormancy of plants"
             )
-            public JAMSBoolean dormancy;
+            public Attribute.Boolean dormancy;
 
         @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
@@ -601,7 +601,7 @@ import jams.model.*;
             lowerBound = 0,
             upperBound = 400
             )
-            public JAMSInteger App_time;
+            public Attribute.Integer App_time;
 
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
@@ -610,7 +610,7 @@ import jams.model.*;
             lowerBound = 0,
             upperBound = 10000
             )
-            public JAMSDouble nmin;
+            public Attribute.Double nmin;
 
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
@@ -619,7 +619,7 @@ import jams.model.*;
             lowerBound = 0,
             upperBound = 1
             )
-            public JAMSDoubleArray root_h;
+            public Attribute.DoubleArray root_h;
 
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
@@ -628,7 +628,7 @@ import jams.model.*;
             lowerBound = 0,
             upperBound = 1000000000
             )
-            public JAMSDouble sedi_in;
+            public Attribute.Double sedi_in;
 
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
@@ -637,7 +637,7 @@ import jams.model.*;
             lowerBound = 0,
             upperBound = 1000000000
             )
-            public JAMSDouble sedi_out;
+            public Attribute.Double sedi_out;
 
 
     @JAMSVarDescription(
@@ -647,7 +647,7 @@ import jams.model.*;
             lowerBound = 0,
             upperBound = 1000000000
             )
-            public JAMSDouble NH4_in;
+            public Attribute.Double NH4_in;
 
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
@@ -656,7 +656,7 @@ import jams.model.*;
             lowerBound = 0,
             upperBound = 1000000000
             )
-            public JAMSDouble residue_in;
+            public Attribute.Double residue_in;
 
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
@@ -665,7 +665,7 @@ import jams.model.*;
             lowerBound = 0,
             upperBound = 1000000000
             )
-            public JAMSDouble activ_in;
+            public Attribute.Double activ_in;
 
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
@@ -674,7 +674,7 @@ import jams.model.*;
             lowerBound = 0,
             upperBound = 1000000000
             )
-            public JAMSDouble stabel_in;
+            public Attribute.Double stabel_in;
 
         @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
@@ -683,7 +683,7 @@ import jams.model.*;
             lowerBound = 0,
             upperBound = 1000000000
             )
-            public JAMSDouble NH4_out;
+            public Attribute.Double NH4_out;
 
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
@@ -692,7 +692,7 @@ import jams.model.*;
             lowerBound = 0,
             upperBound = 1000000000
             )
-            public JAMSDouble residue_out;
+            public Attribute.Double residue_out;
 
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
@@ -701,7 +701,7 @@ import jams.model.*;
             lowerBound = 0,
             upperBound = 1000000000
             )
-            public JAMSDouble activ_out;
+            public Attribute.Double activ_out;
 
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
@@ -710,7 +710,7 @@ import jams.model.*;
             lowerBound = 0,
             upperBound = 1000000000
             )
-            public JAMSDouble stabel_out;
+            public Attribute.Double stabel_out;
 
 
     // constants and calibration parameter
@@ -722,7 +722,7 @@ import jams.model.*;
             upperBound = 0.00001,
             defaultValue = "0.00001"
             )
-            public JAMSDouble Beta_trans;
+            public Attribute.Double Beta_trans;
 
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
@@ -732,7 +732,7 @@ import jams.model.*;
             upperBound = 0.003,
             defaultValue = "0.002"
             )
-            public JAMSDouble Beta_min;
+            public Attribute.Double Beta_min;
 
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
@@ -742,7 +742,7 @@ import jams.model.*;
             upperBound = 0.02,
             defaultValue = "0.03"
             )
-            public JAMSDouble Beta_rsd;
+            public Attribute.Double Beta_rsd;
 
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
@@ -752,7 +752,7 @@ import jams.model.*;
             upperBound = 1,
             defaultValue = "0.2"
             )
-            public JAMSDouble Beta_NO3;
+            public Attribute.Double Beta_NO3;
 
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
@@ -762,7 +762,7 @@ import jams.model.*;
             upperBound = 15,
             defaultValue = "1"
             )
-            public JAMSDouble Beta_Ndist;
+            public Attribute.Double Beta_Ndist;
 
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
@@ -772,7 +772,7 @@ import jams.model.*;
             upperBound = 1,
             defaultValue = "1"
             )
-            public JAMSDouble infil_conc_factor;
+            public Attribute.Double infil_conc_factor;
 
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
@@ -782,7 +782,7 @@ import jams.model.*;
             upperBound = 1,
             defaultValue = "0.91"
             )
-            public JAMSDouble denitfac;
+            public Attribute.Double denitfac;
 
 
     @JAMSVarDescription(
@@ -793,7 +793,7 @@ import jams.model.*;
             upperBound = 0.1,
             defaultValue = "0.03"
             )
-            public JAMSDouble deposition_factor;
+            public Attribute.Double deposition_factor;
 
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
@@ -803,7 +803,7 @@ import jams.model.*;
             upperBound = 10,
             defaultValue = "1"
             )
-            public JAMSDouble enrichment;
+            public Attribute.Double enrichment;
 
 
    @JAMSVarDescription(
@@ -814,7 +814,7 @@ import jams.model.*;
             upperBound = 1,
             defaultValue = "0"
             )
-            public JAMSInteger piadin;
+            public Attribute.Integer piadin;
 
    @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
@@ -824,7 +824,7 @@ import jams.model.*;
             upperBound = 1,
             defaultValue = "0"
             )
-            public JAMSInteger opti;
+            public Attribute.Integer opti;
 
 
 
@@ -906,13 +906,13 @@ import jams.model.*;
 
 
 
-    public void init() throws JAMSEntity.NoSuchAttributeException{
+    public void init() throws Attribute.Entity.NoSuchAttributeException{
 
 
     }
 
-    public void run() throws JAMSEntity.NoSuchAttributeException{
-/*         JAMSCalendar testtime = new JAMSCalendar();
+    public void run() throws Attribute.Entity.NoSuchAttributeException{
+/*         Attribute.Calendar testtime = new Attribute.Calendar();
        testtime.setValue("1993-10-12 07:30");
        if (time.equals(testtime)){
             System.out.println(time.getValue()) ;
@@ -1834,7 +1834,7 @@ import jams.model.*;
 
 
 
-    public void cleanup() throws JAMSEntity.NoSuchAttributeException{
+    public void cleanup() throws Attribute.Entity.NoSuchAttributeException{
 
     }
 }

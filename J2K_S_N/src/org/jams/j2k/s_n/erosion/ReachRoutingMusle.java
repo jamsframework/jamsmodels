@@ -43,59 +43,54 @@ import jams.model.*;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "The reach collection"
             )
-            public JAMSEntityCollection entities;
+            public Attribute.EntityCollection entities;
 
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "reach statevar sediment inflow")
-            public JAMSDouble insed;
+            public Attribute.Double insed;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "reach statevar sediment outflow")
-            public JAMSDouble outsed;
+            public Attribute.Double outsed;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "Catchment outlet sediment storage",
             defaultValue= "0"
             )
-            public JAMSDouble catchmentSed;
+            public Attribute.Double catchmentSed;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "Reach statevar sed storage"
             )
-            public JAMSDouble actsed;
+            public Attribute.Double actsed;
     /*
      *  Component run stages
      */
     
-    public void init() throws JAMSEntity.NoSuchAttributeException {
+    public void init() throws Attribute.Entity.NoSuchAttributeException {
         
     }
     
-    public void run() throws JAMSEntity.NoSuchAttributeException {
+    public void run() throws Attribute.Entity.NoSuchAttributeException {
         
         Attribute.Entity entity = entities.getCurrent();
         
-        JAMSEntity DestReach = (JAMSEntity)entity.getObject("to_reach");
+        Attribute.Entity DestReach = (Attribute.Entity)entity.getObject("to_reach");
         if (DestReach.getValue() == null) {
             DestReach = null;
         }
-        JAMSEntity DestReservoir = null;
+        Attribute.Entity DestReservoir = null;
         
         try{
-            DestReservoir = (JAMSEntity)entity.getObject("to_reservoir");
-        }catch(JAMSEntity.NoSuchAttributeException e){
+            DestReservoir = (Attribute.Entity)entity.getObject("to_reservoir");
+        }catch(Attribute.Entity.NoSuchAttributeException e){
             DestReservoir = null;
         }
        

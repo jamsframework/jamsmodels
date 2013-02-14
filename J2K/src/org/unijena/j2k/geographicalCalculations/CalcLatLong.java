@@ -49,21 +49,18 @@ import jams.model.*;
      */
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "entity x-coordinate"
             )
             public Attribute.Double x;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "entity y-coordinate"
             )
             public Attribute.Double y;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "entity slope",
             unit="degree",
             lowerBound = 0,
@@ -73,7 +70,6 @@ import jams.model.*;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "entity aspect",
             unit="degree from north",
             lowerBound = 0,
@@ -83,7 +79,6 @@ import jams.model.*;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "entity latitute",
             unit="degree",
             lowerBound = 0,
@@ -93,7 +88,6 @@ import jams.model.*;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "entity longitude",
             unit="degree",
             lowerBound = 0,
@@ -103,7 +97,6 @@ import jams.model.*;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "entity slopeAspectCorrectionFactor",
             unit="n/a",
             lowerBound = 0,
@@ -113,17 +106,15 @@ import jams.model.*;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.INIT,
             description = "Projection [GK, UTMZZL, LL]"
             )
-            public JAMSString projection;
+            public Attribute.String projection;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.INIT,
             description = "temporal resolution [d | h | m]"
             )
-            public JAMSString tempRes;
+            public Attribute.String tempRes;
     
     int[] monthMean = {15,45,74,105,135,166,196,227,258,288,319,349};
        
@@ -131,11 +122,11 @@ import jams.model.*;
      *  Component run stages
      */
     
-    public void init() throws JAMSEntity.NoSuchAttributeException {
+    public void init() throws Attribute.Entity.NoSuchAttributeException {
         
     }
     
-    public void run() throws JAMSEntity.NoSuchAttributeException{
+    public void run() throws Attribute.Entity.NoSuchAttributeException{
         double[] latLong = new double[2];
         String proj;
         if(this.projection.toString() == null)

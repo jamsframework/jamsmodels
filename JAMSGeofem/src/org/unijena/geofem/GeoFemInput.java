@@ -9,9 +9,8 @@
 
 package org.unijena.geofem;
 
-import org.unijena.jams.data.*;
-import org.unijena.jams.data.JAMSEntity.NoSuchAttributeException;
-import org.unijena.jams.model.*;
+import jams.data.*;
+import jams.model.*;
 
 /**
  *
@@ -26,29 +25,27 @@ title="GeoFemInputModule",
     
     @JAMSVarDescription(
     access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "Entity area",
             unit = "m²"
             )
-            public JAMSDouble area;
+            public Attribute.Double area;
     
     @JAMSVarDescription(
     access = JAMSVarDescription.AccessType.READWRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "precip"
             )
-            public JAMSDouble precip;
+            public Attribute.Double precip;
     
    
         /*
          *  Component run stages
          */
     
-    public void init() throws JAMSEntity.NoSuchAttributeException {
+    public void init() throws Attribute.Entity.NoSuchAttributeException {
         
     }
     
-    public void run() throws JAMSEntity.NoSuchAttributeException{
+    public void run() throws Attribute.Entity.NoSuchAttributeException{
             double precip = this.precip.getValue() * this.area.getValue();
             this.precip.setValue(precip);
     }

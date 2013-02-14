@@ -43,76 +43,67 @@ import jams.model.*;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "entity x-coordinate"
             )
             public Attribute.Double entityX;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "entity y-coordinate"
             )
             public Attribute.Double entityY;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "Array of station's x coordinates"
             )
             public Attribute.DoubleArray statX;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "Array of station's y coordinates"
             )
             public Attribute.DoubleArray statY;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.INIT,
             description = "Power of IDW function"
             )
             public Attribute.Double pidw;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "weights for IDW part of regionalisation"
             )
             public Attribute.DoubleArray statIDWeights;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "position array to determine best weights"
             )
-            public JAMSIntegerArray statOrder;
+            public Attribute.IntegerArray statOrder;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.INIT,
             description = "Doug Boyle's famous function"
             )
-            public JAMSBoolean equalWeights; 
+            public Attribute.Boolean equalWeights; 
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.INIT,
             description = "Calculation with geographical coordinates LL"
             )
-            public JAMSBoolean latLong; 
+            public Attribute.Boolean latLong; 
     
     /*
      *  Component run stages
      */
     
-    public void init() throws JAMSEntity.NoSuchAttributeException{
+    public void init() throws Attribute.Entity.NoSuchAttributeException{
         
     }
     
-    public void run() throws JAMSEntity.NoSuchAttributeException{
+    public void run() throws Attribute.Entity.NoSuchAttributeException{
         Attribute.DoubleArray idwWeights = getModel().getRuntime().getDataFactory().createDoubleArray();
         Attribute.IntegerArray wA = getModel().getRuntime().getDataFactory().createIntegerArray();
         double[] dist = null;
@@ -140,7 +131,7 @@ import jams.model.*;
         statOrder.setValue(wA.getValue());
     }
     
-    public void cleanup() throws JAMSEntity.NoSuchAttributeException{
+    public void cleanup() throws Attribute.Entity.NoSuchAttributeException{
         int nstat = statIDWeights.getValue().length;
         double[] sw = new double[nstat];
         for(int i = 0; i < nstat; i++)

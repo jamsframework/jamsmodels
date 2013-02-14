@@ -31,73 +31,63 @@ public class StationDataWriter_new extends JAMSComponent{
      */
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "time interval"
             )
-            public JAMSTimeInterval timeInterval;
+            public Attribute.TimeInterval timeInterval;
 
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
-                        update = JAMSVarDescription.UpdateType.RUN,
                         description = "time")
-    public JAMSCalendar time;
+    public Attribute.Calendar time;
 
    @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.INIT,
             description = "EntitySet"
             )
-            public JAMSEntityCollection entitySet;
+            public Attribute.EntityCollection entitySet;
 
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
-                        update = JAMSVarDescription.UpdateType.INIT,
                         description = "data set description [type min max unit]")
-    public JAMSString dataSetDesc;
+    public Attribute.String dataSetDesc;
 
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.INIT,
             description = "temporal resolution",
             defaultValue=EMPTY_CHAR
             )
-            public JAMSString tempRes;
+            public Attribute.String tempRes;
 
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.INIT,
             description = "the name of the attribute to write",
             defaultValue=EMPTY_CHAR
             )
-            public JAMSString value;
+            public Attribute.String value;
 
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.INIT,
             description = "missing data value"
             )
             public Attribute.Double missDataValue;
 
     @JAMSVarDescription(
     access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.INIT,
             description = "Output data precision"
             )
-            public JAMSInteger precision;
+            public Attribute.Integer precision;
 
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
-                        update = JAMSVarDescription.UpdateType.INIT,
                         description = "Output file name")
-    public JAMSString fileName;
+    public Attribute.String fileName;
 
     /**
      * this attribute controls, whether an input header is written or only 1 simple header-line
      */
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.INIT,
             description = "write file with input header",
             defaultValue="true"
             )
-            public JAMSString withInputHeader;
+            public Attribute.String withInputHeader;
 
     private GenericDataWriter writer;
     private DateFormat dateFormat;
@@ -107,7 +97,7 @@ public class StationDataWriter_new extends JAMSComponent{
      *  Component run stages
      */
     @Override
-    public void init() throws JAMSEntity.NoSuchAttributeException {
+    public void init() throws Attribute.Entity.NoSuchAttributeException {
         int ent = this.entitySet.getEntityArray().length;
         getModel().getRuntime().println(" start init " + fileName.getValue() + ".. ", JAMS.VERBOSE);
         Date dt = new Date();
@@ -197,7 +187,7 @@ public class StationDataWriter_new extends JAMSComponent{
     }
 
     @Override
-    public void run() throws JAMSEntity.NoSuchAttributeException {
+    public void run() throws Attribute.Entity.NoSuchAttributeException {
         int ent = this.entitySet.getEntityArray().length;
         writer.addData(time.toString(dateFormat));
         for(int i = 0; i < ent;i++){
@@ -212,7 +202,7 @@ public class StationDataWriter_new extends JAMSComponent{
     }
 
     @Override
-    public void cleanup() throws JAMSEntity.NoSuchAttributeException {
+    public void cleanup() throws Attribute.Entity.NoSuchAttributeException {
         try {
             writer.writer.flush();
             writer.writer.close();

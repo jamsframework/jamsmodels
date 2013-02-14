@@ -41,62 +41,53 @@ public class PrecipCorrection extends JAMSComponent {
      *  Component variables
      */
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
-    update = JAMSVarDescription.UpdateType.RUN,
     description = "the precip values")
-    public JAMSDoubleArray inputValues;
+    public Attribute.DoubleArray inputValues;
 
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.WRITE,
-    update = JAMSVarDescription.UpdateType.RUN,
     description = "the precip values")
-    public JAMSDoubleArray outputValues;
+    public Attribute.DoubleArray outputValues;
 
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
-    update = JAMSVarDescription.UpdateType.RUN,
     description = "Precipitation correction Factor",
     defaultValue = "1.0")
-    public JAMSDouble correctionFactor;
+    public Attribute.Double correctionFactor;
 
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
-    update = JAMSVarDescription.UpdateType.RUN,
     description = "Correction Factor for specific months",
     defaultValue = "1.0")
-    public JAMSDouble correctionMonth;
+    public Attribute.Double correctionMonth;
 
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
-    update = JAMSVarDescription.UpdateType.INIT,
     description = "Correction Factor for specific months")
-    public JAMSDouble correctionElevation;
+    public Attribute.Double correctionElevation;
 
 
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
-    update = JAMSVarDescription.UpdateType.RUN,
     description = "entity elevation")
-    public JAMSDouble entityElev;
+    public Attribute.Double entityElev;
 
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
-    update = JAMSVarDescription.UpdateType.INIT,
     description = "lower elevation for precip correction")
-    public JAMSDouble lowerElevation;
+    public Attribute.Double lowerElevation;
 
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
-    update = JAMSVarDescription.UpdateType.INIT,
     description = "higher elevation for precip correction")
-    public JAMSDouble higherElevation;
+    public Attribute.Double higherElevation;
 
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
-    update = JAMSVarDescription.UpdateType.RUN,
     description = "time")
-    public JAMSCalendar time;
+    public Attribute.Calendar time;
 
     /*
      *  Component run stages
      */
-    public void init() throws JAMSEntity.NoSuchAttributeException {
+    public void init() throws Attribute.Entity.NoSuchAttributeException {
     }
 
-    public void run() throws JAMSEntity.NoSuchAttributeException {
+    public void run() throws Attribute.Entity.NoSuchAttributeException {
 
-        int nowmonth = time.get(time.MONTH);
+        int nowmonth = time.get(JAMSCalendar.MONTH);
         // this.in_elevation = elevation.getValue();
         double[] inputValues = this.inputValues.getValue();
         double[] outputValues = new double[inputValues.length];

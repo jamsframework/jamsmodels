@@ -47,46 +47,40 @@ import org.unijena.jams.model.*;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.INIT,
             description = "List of parameter identifiers to be sampled"
             )
-            public JAMSString parameterIDs;
+            public Attribute.String parameterIDs;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.INIT,
             description = "List of parameter value bounaries corresponding to parameter identifiers"
             )
-            public JAMSString boundaries;
+            public Attribute.String boundaries;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.INIT,
             description = "sample resolution"
             )
-            public JAMSInteger sampleCount;
+            public Attribute.Integer sampleCount;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "efficiency criteria"
             )
-            public JAMSDouble[] effMethod;
+            public Attribute.Double[] effMethod;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.INIT,
             description = "Flag for disabling this sampler"
             )
-            public JAMSBoolean disable;
+            public Attribute.Boolean disable;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.INIT
             )
-            public JAMSString fileName;
+            public Attribute.String fileName;
     
-    JAMSDouble[] parameters;
+    Attribute.Double[] parameters;
     double[] lowBound;
     double[] upBound;
     double[] stepSize;
@@ -279,11 +273,11 @@ import org.unijena.jams.model.*;
         int i;
         StringTokenizer tok = new StringTokenizer(parameterIDs.getValue(), ";");
         String key;
-        parameters = new JAMSDouble[tok.countTokens()];
+        parameters = new Attribute.Double[tok.countTokens()];
         i = 0;
         while (tok.hasMoreTokens()) {
             key = tok.nextToken();
-            parameters[i++] = (JAMSDouble) getModel().getRuntime().getDataHandles().get(key);
+            parameters[i++] = (Attribute.Double) getModel().getRuntime().getDataHandles().get(key);
         }
         
         tok = new StringTokenizer(boundaries.getValue(), ";");

@@ -51,7 +51,7 @@ public class Regionalisation extends JAMSComponent {
 
     @JAMSVarDescription (access = JAMSVarDescription.AccessType.READ,
                          description = "Array position of weights")
-    public JAMSIntegerArray statOrder;
+    public Attribute.IntegerArray statOrder;
 
     @JAMSVarDescription (access = JAMSVarDescription.AccessType.WRITE,
                          description = "regionalised data value")
@@ -63,11 +63,11 @@ public class Regionalisation extends JAMSComponent {
 
     @JAMSVarDescription (access = JAMSVarDescription.AccessType.READ,
                          description = "Number of IDW stations")
-    public JAMSInteger nidw;
+    public Attribute.Integer nidw;
 
     @JAMSVarDescription (access = JAMSVarDescription.AccessType.READ,
                          description = "Apply elevation correction to measured data")
-    public JAMSBoolean elevationCorrection;
+    public Attribute.Boolean elevationCorrection;
 
     @JAMSVarDescription (access = JAMSVarDescription.AccessType.READ,
                          description = "Minimum r² value for elevation correction application")
@@ -80,7 +80,7 @@ public class Regionalisation extends JAMSComponent {
     @JAMSVarDescription (access = JAMSVarDescription.AccessType.READ,
                          description = "Caching configuration: 0 - write cache, 1 - use cache, 2 - caching off",
                          defaultValue = "0")
-    public JAMSInteger dataCaching;
+    public Attribute.Integer dataCaching;
 
     @JAMSVarDescription (access = JAMSVarDescription.AccessType.READ,
                          description = "Result value if no value is available",

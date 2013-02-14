@@ -41,28 +41,24 @@ public class InputErrorEstimation extends JAMSComponent {
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "original data"
             )
             public Attribute.DoubleArray inData;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "the biased data"
             )
             public Attribute.DoubleArray outData;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.INIT,
             description = "maximum relative error"
             )
             public Attribute.Double maxRelError;
 
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.INIT,
             description = "false for relativ error and true for absolute error",
             defaultValue = "0"
             )
@@ -70,7 +66,6 @@ public class InputErrorEstimation extends JAMSComponent {
 
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "sign (0 = +/-; 1 = +; -1 = -)"
             )            
             public Attribute.Double sign;

@@ -44,30 +44,25 @@ public class CalcDailyMaximumSunshineHours extends JAMSComponent {
      *  Component variables
      */
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
-    update = JAMSVarDescription.UpdateType.RUN,
     description = "time")
-    public JAMSCalendar time;
+    public Attribute.Calendar time;
 
      @JAMSVarDescription(access = JAMSVarDescription.AccessType.WRITE,
-    update = JAMSVarDescription.UpdateType.RUN,
     description = "Maximum sunshine duration in h",
     defaultValue = "0")
     public Attribute.Double sunhmax;
 
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
-    update = JAMSVarDescription.UpdateType.RUN,
     description = "attribute latitude [deg]")
     public Attribute.Double latitude;
 
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
-    update = JAMSVarDescription.UpdateType.RUN,
     description = "daily extraterrestic radiation [MJ/m²d]")
     public Attribute.Double actExtRad;
 
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
-    update = JAMSVarDescription.UpdateType.INIT,
     description = "temporal resolution [d | m]")
-    public JAMSString tempRes;
+    public Attribute.String tempRes;
 
     
     int[] monthMean = {15, 45, 74, 105, 135, 166, 196, 227, 258, 288, 319, 349};
@@ -75,15 +70,15 @@ public class CalcDailyMaximumSunshineHours extends JAMSComponent {
      *  Component run stages
      */
 
-    public void init() throws JAMSEntity.NoSuchAttributeException, IOException {
+    public void init() throws Attribute.Entity.NoSuchAttributeException, IOException {
         
     }
 
-    public void run() throws JAMSEntity.NoSuchAttributeException, IOException {
+    public void run() throws Attribute.Entity.NoSuchAttributeException, IOException {
 
         
-            int julDay = time.get(time.DAY_OF_YEAR);
-            int month = time.get(time.MONTH);
+            int julDay = time.get(JAMSCalendar.DAY_OF_YEAR);
+            int month = time.get(JAMSCalendar.MONTH);
             double lati = latitude.getValue();
             double extraterrRadiation = this.actExtRad.getValue();
             double declination = 0;

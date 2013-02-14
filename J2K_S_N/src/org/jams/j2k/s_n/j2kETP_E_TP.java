@@ -46,87 +46,75 @@ import jams.model.*;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "number of layers in soil profile in [-]"
             )
-            public JAMSDouble Layer;
+            public Attribute.Double Layer;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "Array of state variables LAI "
             )
-            public JAMSDouble LAI;
+            public Attribute.Double LAI;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "HRU actual Evapotranspiration in mm"
             )
-            public JAMSDoubleArray actETP_h;
+            public Attribute.DoubleArray actETP_h;
     
      @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "HRU actual Evapotranspiration in mm"
             )
-            public JAMSDouble aETP;
+            public Attribute.Double aETP;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "HRU actual Evaporation in mm"
             )
-            public JAMSDouble aEP;
+            public Attribute.Double aEP;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "HRU actual Transpiration in mm"
             )
-            public JAMSDouble aTP;
+            public Attribute.Double aTP;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "HRU potential Evapotranspiration in mm"
             )
-            public JAMSDouble pETP;
+            public Attribute.Double pETP;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "HRU potential Evaporation in mm"
             )
-            public JAMSDouble pEP;
+            public Attribute.Double pEP;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "HRU potential Transpiration in mm"
             )
-            public JAMSDouble pTP;
+            public Attribute.Double pTP;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "time"
             )
-            public JAMSCalendar time;
+            public Attribute.Calendar time;
     
      @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = " actual evaporation in mm"
             )
-            public JAMSDoubleArray aEP_h;
+            public Attribute.DoubleArray aEP_h;
      
      @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = " actual evaporation in mm"
             )
-            public JAMSDoubleArray aTP_h;
+            public Attribute.DoubleArray aTP_h;
      
      /*
      *  Component run stages
@@ -136,7 +124,7 @@ import jams.model.*;
         
     }
     
-    public void run() throws JAMSEntity.NoSuchAttributeException{
+    public void run() throws Attribute.Entity.NoSuchAttributeException{
         int layer = (int)Layer.getValue();
         double runpETP = pETP.getValue(); /*potential evapotranspiration in mm*/
         double runaETP = aETP.getValue(); /*actual evapotranspiration in mm*/

@@ -55,60 +55,49 @@ public class RefET extends JAMSComponent {
      *  Component variables
      */
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
-    update = JAMSVarDescription.UpdateType.RUN,
     description = "Current time")
-    public JAMSCalendar time;
+    public Attribute.Calendar time;
 
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
-    update = JAMSVarDescription.UpdateType.INIT,
     description = "temporal resolution [d | h | m]")
-    public JAMSString tempRes;
+    public Attribute.String tempRes;
 
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
-    update = JAMSVarDescription.UpdateType.RUN,
     description = "state variable wind")
-    public JAMSDouble wind;
+    public Attribute.Double wind;
 
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
-    update = JAMSVarDescription.UpdateType.RUN,
     description = "state variable mean temperature")
-    public JAMSDouble tmean;
+    public Attribute.Double tmean;
 
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
-    update = JAMSVarDescription.UpdateType.RUN,
     description = "state variable relative humidity")
-    public JAMSDouble rhum;
+    public Attribute.Double rhum;
 
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
-    update = JAMSVarDescription.UpdateType.RUN,
     description = "state variable net radiation")
-    public JAMSDouble netRad;
+    public Attribute.Double netRad;
 
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
-    update = JAMSVarDescription.UpdateType.RUN,
     description = "attribute elevation")
-    public JAMSDouble elevation;
+    public Attribute.Double elevation;
 
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
-    update = JAMSVarDescription.UpdateType.RUN,
     description = "attribute area")
-    public JAMSDouble area;
+    public Attribute.Double area;
 
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.WRITE,
-    update = JAMSVarDescription.UpdateType.RUN,
     description = "potential refET [mm/ timeUnit]")
-    public JAMSDouble refET;
+    public Attribute.Double refET;
 
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.WRITE,
-    update = JAMSVarDescription.UpdateType.RUN,
     description = "actual ET [mm/ timeUnit]")
-    public JAMSDouble actET;
+    public Attribute.Double actET;
 
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
-    update = JAMSVarDescription.UpdateType.INIT,
     description = "Caching configuration: 0 - write cache, 1 - use cache, 2 - caching off",
     defaultValue = "0")
-    public JAMSInteger dataCaching;
+    public Attribute.Integer dataCaching;
 
     private File cacheFile;
 
@@ -119,7 +108,7 @@ public class RefET extends JAMSComponent {
     /*
      *  Component run stages
      */
-    public void init() throws JAMSEntity.NoSuchAttributeException, IOException {
+    public void init() throws Attribute.Entity.NoSuchAttributeException, IOException {
         //first, check if cached data are available
         //cacheFile = new File(dirName.getValue() + "/$" + this.getInstanceName() + ".cache");
         cacheFile = new File(getModel().getWorkspace().getTempDirectory(), this.getInstanceName() + ".cache");
@@ -134,7 +123,7 @@ public class RefET extends JAMSComponent {
         }
     }
 
-    public void run() throws JAMSEntity.NoSuchAttributeException, IOException {
+    public void run() throws Attribute.Entity.NoSuchAttributeException, IOException {
 
         if (dataCaching.getValue() == 1) {
             this.refET.setValue(reader.readDouble());

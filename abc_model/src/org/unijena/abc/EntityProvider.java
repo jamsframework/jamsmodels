@@ -23,13 +23,7 @@
  */
 package org.unijena.abc;
 
-import jams.data.Attribute;
-import jams.data.Attribute.Entity;
-import jams.data.JAMSDataFactory;
-import jams.data.JAMSDouble;
-import jams.data.JAMSEntity;
-import jams.data.JAMSEntityCollection;
-import jams.data.JAMSString;
+import jams.data.*;
 import jams.io.GenericDataReader;
 import jams.io.JAMSTableDataArray;
 import jams.io.JAMSTableDataConverter;
@@ -45,16 +39,14 @@ import java.util.*;
 public class EntityProvider extends JAMSComponent {
     
     @JAMSVarDescription(
-            access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.INIT
+            access = JAMSVarDescription.AccessType.READ
             )
-            public JAMSString fileName;
+            public Attribute.String fileName;
     
     @JAMSVarDescription(
-            access = JAMSVarDescription.AccessType.WRITE,
-            update = JAMSVarDescription.UpdateType.INIT
+            access = JAMSVarDescription.AccessType.WRITE
             )
-            public JAMSEntityCollection entities;
+            public Attribute.EntityCollection entities;
     
     
     
@@ -62,34 +54,34 @@ public class EntityProvider extends JAMSComponent {
     
     public void init(){
         
-        ArrayList <Entity> entityList = new ArrayList<Entity>();
+        ArrayList<Attribute.Entity> entityList = new ArrayList<Attribute.Entity>();
         
         store = new GenericDataReader(fileName.getValue(), false, 4, 6);
         
         while (store.hasNext()) {
             
-            Entity e = JAMSDataFactory.createEntity();
+            Attribute.Entity e = getModel().getRuntime().getDataFactory().createEntity();
             
             JAMSTableDataArray da = store.getNext();
             double[] vals = JAMSTableDataConverter.toDouble(da);
 
             Attribute.Double d;
-            d = JAMSDataFactory.createDouble();
+            d = getModel().getRuntime().getDataFactory().createDouble();
             d.setValue(vals[0]);
             e.setObject("latitude", d);
-            d = JAMSDataFactory.createDouble();
+            d = getModel().getRuntime().getDataFactory().createDouble();
             d.setValue(vals[1]);
             e.setObject("soilMoistStorCap", d);
-            d = JAMSDataFactory.createDouble();
+            d = getModel().getRuntime().getDataFactory().createDouble();
             d.setValue(vals[2]);
             e.setObject("snowStorage", d);
-            d = JAMSDataFactory.createDouble();
+            d = getModel().getRuntime().getDataFactory().createDouble();
             d.setValue(vals[3]);
             e.setObject("runoffFactor", d);
-            d = JAMSDataFactory.createDouble();
+            d = getModel().getRuntime().getDataFactory().createDouble();
             d.setValue(vals[4]);
             e.setObject("prestor", d);
-            d = JAMSDataFactory.createDouble();
+            d = getModel().getRuntime().getDataFactory().createDouble();
             d.setValue(vals[5]);
             e.setObject("remain", d);
 /*            
@@ -104,7 +96,7 @@ public class EntityProvider extends JAMSComponent {
             
         }
         
-        entities = new JAMSEntityCollection();
+        entities = getModel().getRuntime().getDataFactory().createEntityCollection();
         entities.setEntities(entityList);
         
     }

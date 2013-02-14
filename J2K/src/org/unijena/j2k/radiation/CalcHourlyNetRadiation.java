@@ -44,77 +44,66 @@ import jams.model.*;
      */
 
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.INIT,
             description = "Caching configuration: 0 - write cache, 1 - use cache, 2 - caching off",
             defaultValue = "0")
-            public JAMSInteger dataCaching;
+            public Attribute.Integer dataCaching;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "state variable temperature"
             )
             public Attribute.Double temp;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "state variable relative humidity"
             )
             public Attribute.Double rhum;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "state variable solar radiation"
             )
             public Attribute.Double solRad;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "state variable solar radiation"
             )
             public Attribute.Double extRad;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "state variable albedo"
             )
             public Attribute.Double albedo;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "attribute elevation"
             )
             public Attribute.Double elevation;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "attribute latitude"
             )
             public Attribute.Double latitude;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "Current time"
             )
-            public JAMSCalendar time;
+            public Attribute.Calendar time;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.INIT,
             description = "calc refET with fixed values"
             )
-            public JAMSBoolean refET;
+            public Attribute.Boolean refET;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "daily net radiation [MJ/m²]"
             )
             public Attribute.Double netRad;
@@ -129,7 +118,7 @@ import jams.model.*;
      *  Component run stages
      */
     
-    public void init() throws JAMSEntity.NoSuchAttributeException, IOException {
+    public void init() throws Attribute.Entity.NoSuchAttributeException, IOException {
         //first, check if cached data are available
         //cacheFile = new File(dirName.getValue() + "/$" + this.getInstanceName() + ".cache");
         cacheFile = new File(getModel().getWorkspace().getTempDirectory(), this.getInstanceName() + ".cache");
@@ -144,13 +133,13 @@ import jams.model.*;
         
     }
     
-    public void run() throws JAMSEntity.NoSuchAttributeException, IOException{
+    public void run() throws Attribute.Entity.NoSuchAttributeException, IOException{
         if (dataCaching.getValue() == 1) {
             netRad.setValue(reader.readDouble());
         }
         else {
-            int julDay = time.get(time.DAY_OF_YEAR);
-            int idx = (julDay - 1) * 24 + time.get(time.HOUR_OF_DAY);
+            int julDay = time.get(JAMSCalendar.DAY_OF_YEAR);
+            int idx = (julDay - 1) * 24 + time.get(JAMSCalendar.HOUR_OF_DAY);
             double extraterrRadiation = extRad.getValue();
             double elev = elevation.getValue();
             double alb;

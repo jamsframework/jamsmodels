@@ -37,21 +37,18 @@ public class LeafRiverDataReader extends JAMSComponent {
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.INIT
             )
-            public JAMSString fileName;
+            public Attribute.String fileName;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
-            update = JAMSVarDescription.UpdateType.RUN
             )
-            public JAMSDouble precip;
+            public Attribute.Double precip;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
-            update = JAMSVarDescription.UpdateType.RUN
             )
-            public JAMSDouble obsRunoff;
+            public Attribute.Double obsRunoff;
  
     private JAMSTableDataStore store;
     public void init(){

@@ -46,53 +46,47 @@ import jams.model.*;
      */
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "The current spatial entity"
             )
-            public JAMSEntityCollection entities;
+            public Attribute.EntityCollection entities;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "Array with LAI values for a standard year"
             )
-            public JAMSDoubleArray LAIArray;
+            public Attribute.DoubleArray LAIArray;
     
 /*    @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "Array with eff. Height values for a standard year"
             )
-            public JAMSDoubleArray effHArray;
+            public Attribute.DoubleArray effHArray;
             * 
             */
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "Monthly crop coefficient values",
             lowerBound = 0,
             upperBound = 2,
             unit = "-"
             )
-            public JAMSDoubleArray cropcoeffArray;
+            public Attribute.DoubleArray cropcoeffArray;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "elevation of the spatial modelling entity",
             lowerBound = 0,
             //upperBound = 150,
             unit = "m"
             )
-            public JAMSDouble elevation;
+            public Attribute.Double elevation;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.INIT,
             description = "temporal resolution [d | h | m]"
             )
-            public JAMSString tempRes;
+            public Attribute.String tempRes;
     
     
     int[] monthMean = {15,45,74,105,135,166,196,227,258,288,319,349};

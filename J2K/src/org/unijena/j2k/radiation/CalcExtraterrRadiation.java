@@ -50,7 +50,6 @@ import jams.model.*;
      */
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "entity latidute [deg]",
             unit="degree",
             lowerBound = 0,
@@ -60,7 +59,6 @@ import jams.model.*;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "entity longitude [deg]",
              unit="degree",
             lowerBound = 0,
@@ -70,7 +68,6 @@ import jams.model.*;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.INIT,
             description = "longitude of time zone [deg]",
             unit="degree",
             lowerBound = 0,
@@ -81,22 +78,19 @@ import jams.model.*;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.INIT,
             description = "temporal resolution [d | h | m]",
             unit="n/a"
             )
-            public JAMSString tempRes;
+            public Attribute.String tempRes;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.INIT,
             description = "location from Greenwich [w | e]"
             )
-            public JAMSString locGrw;
+            public Attribute.String locGrw;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "extraterrestric radiation of each time step of the year [MJ/m² timeUnit]",
             unit="MJ / m^2 timeUnit",
             lowerBound = 0
@@ -110,11 +104,11 @@ import jams.model.*;
      *  Component run stages
      */
     
-    public void init() throws JAMSEntity.NoSuchAttributeException {
+    public void init() throws Attribute.Entity.NoSuchAttributeException {
         
     }
     
-    public void run() throws JAMSEntity.NoSuchAttributeException{
+    public void run() throws Attribute.Entity.NoSuchAttributeException{
         double[] extRadiation = null;
         if(tempRes.getValue().equals("d"))
             extRadiation = new double[366];

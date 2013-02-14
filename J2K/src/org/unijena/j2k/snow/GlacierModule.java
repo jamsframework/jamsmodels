@@ -58,7 +58,6 @@ import jams.model.*;
         
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "the actual air temperature",
             unit="°C"
             )
@@ -66,7 +65,6 @@ import jams.model.*;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "the actual rainfall",
             unit="L/m^2"
             )
@@ -74,7 +72,6 @@ import jams.model.*;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "the actual snowfall",
             unit="L/m^2"
             )
@@ -82,7 +79,6 @@ import jams.model.*;
 
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "the total precip",
             unit="L/m^2"
             )
@@ -90,7 +86,6 @@ import jams.model.*;
 
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "the actual global radiation",
             unit = "MJ/day"
             )
@@ -98,7 +93,6 @@ import jams.model.*;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "actual snow storage",
             unit = "L/m^2"
             )
@@ -106,7 +100,6 @@ import jams.model.*;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.INIT,
             description = "attribute area",
             unit="m^2"
             )
@@ -114,7 +107,6 @@ import jams.model.*;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "snow runoff of time step before",
             unit = "L"
             )
@@ -122,7 +114,6 @@ import jams.model.*;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "ice runoff of time step before",
             unit = "L"
             )
@@ -130,7 +121,6 @@ import jams.model.*;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "total runoff of unit", 
             unit = "L"
             )
@@ -138,7 +128,6 @@ import jams.model.*;
 
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "total runoff of unit",
             unit = "L"
             )
@@ -146,7 +135,6 @@ import jams.model.*;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "runoff from glacier melt",
             unit="L"
             )
@@ -154,7 +142,6 @@ import jams.model.*;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "runoff from snow melt and rain",
             unit = "L"
             )
@@ -162,7 +149,6 @@ import jams.model.*;
 
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "lateral inflow from glacier entities above",
             unit = "L"
             )
@@ -170,7 +156,6 @@ import jams.model.*;
 
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "remaining storage (only for balance calculation)",
             unit = "L"
             )
@@ -178,7 +163,6 @@ import jams.model.*;
 
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
-            update = JAMSVarDescription.UpdateType.INIT,
             description = "mass balance",
             unit = "L"
             )
@@ -186,73 +170,63 @@ import jams.model.*;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.INIT,
             description = "generalised melt factor for ice and snow"
             )
             public Attribute.Double meltFactor;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.INIT,
             description = "day degree factor for snow"
             )
             public Attribute.Double ddfSnow;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.INIT,
             description = "day degree factor for ice"
             )
             public Attribute.Double ddfIce;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.INIT,
             description = "melt coefficient for snow"
             )
             public Attribute.Double alphaSnow;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.INIT,
             description = "melt coefficient for ice"
             )
             public Attribute.Double alphaIce;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.INIT,
             description = "routing coefficient for snow"
             )
             public Attribute.Double kSnow;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.INIT,
             description = "routing coefficient for ice"
             )
             public Attribute.Double kIce;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.INIT,
             description = "threshold temperature"
             )
             public Attribute.Double tbase;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.INIT,
             description = "melt formula [1 = simple, 2 = complex]"
             )
-            public JAMSInteger meltFormula;
+            public Attribute.Integer meltFormula;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.INIT,
             description = "temporal resolution [d | h]"
             )
-            public JAMSString tempRes;
+            public Attribute.String tempRes;
     
     
     
@@ -260,7 +234,7 @@ import jams.model.*;
      *  Component run stages
      */
     
-    public void run() throws JAMSEntity.NoSuchAttributeException, IOException {
+    public void run() throws Attribute.Entity.NoSuchAttributeException, IOException {
         //retreive the actual states and input
         double snowStor = this.snowStorage.getValue();
         double temp = this.temperature.getValue();

@@ -37,75 +37,63 @@ public class Climate extends JAMSComponent {
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.INIT
             )
-            public JAMSString fileName;
+            public Attribute.String fileName;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
-            update = JAMSVarDescription.UpdateType.RUN
             )
-            public JAMSDouble precip;
+            public Attribute.Double precip;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
-            update = JAMSVarDescription.UpdateType.RUN
             )
-            public JAMSDouble temperature;
+            public Attribute.Double temperature;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
-            update = JAMSVarDescription.UpdateType.RUN
             )
-            public JAMSDouble obsRunoff;
+            public Attribute.Double obsRunoff;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
-            update = JAMSVarDescription.UpdateType.RUN
             )
-            public JAMSDouble compRD1;
+            public Attribute.Double compRD1;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
-            update = JAMSVarDescription.UpdateType.RUN
             )
-            public JAMSDouble compRD2;
+            public Attribute.Double compRD2;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
-            update = JAMSVarDescription.UpdateType.RUN
             )
-            public JAMSDouble compRG1;
+            public Attribute.Double compRG1;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
-            update = JAMSVarDescription.UpdateType.RUN
             )
-            public JAMSDouble compRG2;
+            public Attribute.Double compRG2;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
-            update = JAMSVarDescription.UpdateType.RUN
             )
-            public JAMSDouble compQdir;
+            public Attribute.Double compQdir;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
-            update = JAMSVarDescription.UpdateType.RUN
             )
-            public JAMSDouble compQbas;
+            public Attribute.Double compQbas;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
-            update = JAMSVarDescription.UpdateType.RUN
             )
-            public JAMSDoubleArray data = new JAMSDoubleArray();
+            public Attribute.DoubleArray data = new Attribute.DoubleArray();
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
-            update = JAMSVarDescription.UpdateType.RUN
             )
-            public JAMSStringArray dataNames = new JAMSStringArray();
+            public Attribute.StringArray dataNames = new Attribute.StringArray();
     
     
     

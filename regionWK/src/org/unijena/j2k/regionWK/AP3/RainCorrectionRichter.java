@@ -42,134 +42,117 @@ import jams.model.*;
      */
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "time"
             )
-            public JAMSCalendar time;
+            public Attribute.Calendar time;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "the precip values"
             )
-            public JAMSDoubleArray precip;
+            public Attribute.DoubleArray precip;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "temperature for the correction function"
             )
-            public JAMSDoubleArray temperature;
+            public Attribute.DoubleArray temperature;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "corrected precip values"
             )
-            public JAMSDoubleArray rcorr;
+            public Attribute.DoubleArray rcorr;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "Array of temperature station elevations"
             )
-            public JAMSDoubleArray tempElevation;
+            public Attribute.DoubleArray tempElevation;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "Array of temperature station's x coordinate"
             )
-            public JAMSDoubleArray tempXCoord;
+            public Attribute.DoubleArray tempXCoord;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "Array of temperature station's y coordinate"
             )
-            public JAMSDoubleArray tempYCoord;
+            public Attribute.DoubleArray tempYCoord;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "Regression coefficients for temperature"
             )
-            public JAMSDoubleArray tempRegCoeff;
+            public Attribute.DoubleArray tempRegCoeff;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "Array of precip station elevations"
             )
-            public JAMSDoubleArray rainElevation;
+            public Attribute.DoubleArray rainElevation;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "Array of precip station's x coordinate"
             )
-            public JAMSDoubleArray rainXCoord;
+            public Attribute.DoubleArray rainXCoord;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "Array of precip station's y coordinate"
             )
-            public JAMSDoubleArray rainYCoord;
+            public Attribute.DoubleArray rainYCoord;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "number of temperature station for IDW"
             )
-            public JAMSInteger tempNIDW;
+            public Attribute.Integer tempNIDW;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "power for IDW function"
             )
-            public JAMSDouble pIDW;
+            public Attribute.Double pIDW;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "regression threshold"
             )
-            public JAMSDouble regThres;
+            public Attribute.Double regThres;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "snow_trs"
             )
-            public JAMSDouble snow_trs;
+            public Attribute.Double snow_trs;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "snow_trans"
             )
-            public JAMSDouble snow_trans;
+            public Attribute.Double snow_trans;
     
     /*@JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "Caching configuration: 0 - write cache, 1 - use cache, 2 - caching off",
             defaultValue = "0"
             )
-            public JAMSInteger dataCaching;*/
+            public Attribute.Integer dataCaching;*/
     
     
     /*
      *  Component run stages
      */
     
-    public void init() throws JAMSEntity.NoSuchAttributeException {
+    public void init() throws Attribute.Entity.NoSuchAttributeException {
         
     }
     
-    public void run() throws JAMSEntity.NoSuchAttributeException {
+    public void run() throws Attribute.Entity.NoSuchAttributeException {
         
         
         //if(dataCaching.getValue() != 1){
@@ -281,7 +264,7 @@ import jams.model.*;
        // }
     }
     
-    public void cleanup() throws JAMSEntity.NoSuchAttributeException {
+    public void cleanup() throws Attribute.Entity.NoSuchAttributeException {
         
     }
 }

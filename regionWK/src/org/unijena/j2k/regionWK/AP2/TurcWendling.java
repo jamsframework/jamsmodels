@@ -42,34 +42,30 @@ public class TurcWendling extends JAMSComponent {
      */
     
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
-    update = JAMSVarDescription.UpdateType.RUN,
     description = "state variable mean temperature")
-    public JAMSDouble tmean;
+    public Attribute.Double tmean;
 
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
-    update = JAMSVarDescription.UpdateType.RUN,
     description = "daily solar radiation [MJ/m²d]")
-    public JAMSDouble solRad;
+    public Attribute.Double solRad;
     
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
-    update = JAMSVarDescription.UpdateType.RUN,
     description = "coast factor")
-    public JAMSDouble coastalFactor;
+    public Attribute.Double coastalFactor;
 
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.WRITE,
-    update = JAMSVarDescription.UpdateType.RUN,
     description = "potential ET [mm/ timeUnit]")
-    public JAMSDouble potET;
+    public Attribute.Double potET;
 
      /*
      *  Component run stages
      */
-    public void init() throws JAMSEntity.NoSuchAttributeException, IOException {
+    public void init() throws Attribute.Entity.NoSuchAttributeException, IOException {
        
         }
     
 
-    public void run() throws JAMSEntity.NoSuchAttributeException, IOException {
+    public void run() throws Attribute.Entity.NoSuchAttributeException, IOException {
 
         
             double gRad = 100 * this.solRad.getValue();

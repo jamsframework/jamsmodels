@@ -38,44 +38,40 @@ public class StandardNitrogenFlowReader extends JAMSComponent {
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.INIT,
             description = "Soil types parameter file name"
             )
-            public JAMSString Scenario0pFileName;
+            public Attribute.String Scenario0pFileName;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.INIT,
             description = "Soil types parameter file name"
             )
-            public JAMSString ScenarioFileNames;
+            public Attribute.String ScenarioFileNames;
         
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.INIT,
             description = "Soil types parameter file name"
             )
-            public JAMSString ScenarioISTFileName;
+            public Attribute.String ScenarioISTFileName;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "Collection of hru objects"
             )
-            public JAMSEntityCollection hrus;
+            public Attribute.EntityCollection hrus;
             
     @Override
-    public void init() throws JAMSEntity.NoSuchAttributeException {
+    public void init() throws Attribute.Entity.NoSuchAttributeException {
 	StringTokenizer tok = new StringTokenizer(ScenarioFileNames.getValue(), ";");
         
 	int N = tok.countTokens();
-        JAMSEntityCollection[] FlowData = new JAMSEntityCollection[N+1];
+        Attribute.EntityCollection[] FlowData = new Attribute.EntityCollection[N+1];
 	
 	for (int i=0;i<N;i++) {
-	    FlowData[i] = new JAMSEntityCollection();
+	    FlowData[i] = getModel().getRuntime().getDataFactory().createEntityCollection();
 	    FlowData[i].setEntities(J2KFunctions.readParas(getModel().getWorkspacePath()+"/"+tok.nextToken(), getModel()));
 	}
-	FlowData[N] = new JAMSEntityCollection();
+	FlowData[N] = getModel().getRuntime().getDataFactory().createEntityCollection();
 	FlowData[N].setEntities(J2KFunctions.readParas(getModel().getWorkspacePath()+"/"+ScenarioISTFileName.getValue(), getModel()));
 	
         HashMap<Double, Entity[]> fdMap = new HashMap<Double, Entity[]>();
@@ -92,7 +88,7 @@ public class StandardNitrogenFlowReader extends JAMSComponent {
 		field_fd = fdMap.get(fd.getDouble("ID"));
 		
 		if ( field_fd == null) {
-		    field_fd = new JAMSEntity[N+1];
+		    field_fd = new Attribute.Entity[N+1];
 		    fdMap.put(fd.getDouble("ID"),  field_fd);
 		}
 		

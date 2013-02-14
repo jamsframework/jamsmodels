@@ -21,20 +21,16 @@ title="J2KContourBanks_layerinterface_out",
 public class J2KContourBanks_layerinterface_out extends JAMSComponent {
 
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
-    update = JAMSVarDescription.UpdateType.INIT,
     description = "An- bzw. Ausschalten des Moduls")
-    public JAMSBoolean cbModulAktiv;
+    public Attribute.Boolean cbModulAktiv;
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
-    update = JAMSVarDescription.UpdateType.RUN,
     description = "The current hru entity")
-    public JAMSEntityCollection hrus;
+    public Attribute.EntityCollection hrus;
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READWRITE,
-    update = JAMSVarDescription.UpdateType.RUN,
     description = "actual LPS water content",
     unit = "l")
     public Attribute.DoubleArray actLPS;
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READWRITE,
-    update = JAMSVarDescription.UpdateType.RUN,
     description = "maximum LPS water content",
     unit = "l")
     public Attribute.DoubleArray maxLPS;
@@ -70,21 +66,19 @@ public class J2KContourBanks_layerinterface_out extends JAMSComponent {
     upperBound = 1)
     public Attribute.Double avgsatsoil;
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.WRITE,
-    update = JAMSVarDescription.UpdateType.RUN,
     description = "RD2 outflow")
     public Attribute.DoubleArray outRD2;
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
-    update = JAMSVarDescription.UpdateType.RUN,
     description = "RD2 outflow from contour banks")
     public Attribute.Double outRD2cb;
     boolean modulCBaktiv;
     double kalibZufluss;
 
-    public void init() throws JAMSEntity.NoSuchAttributeException {
+    public void init() throws Attribute.Entity.NoSuchAttributeException {
       
     }
 
-    public void run() throws JAMSEntity.NoSuchAttributeException {
+    public void run() throws Attribute.Entity.NoSuchAttributeException {
 
         int i = 0;
         int imax = (int)Layer.getValue();

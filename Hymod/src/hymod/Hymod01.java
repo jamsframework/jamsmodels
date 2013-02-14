@@ -26,253 +26,192 @@
  */
 package hymod;
 
-import java.util.Vector;
-import org.unijena.jams.data.*;
-import org.unijena.jams.model.*;
+import jams.data.Attribute;
+import jams.data.JAMSDouble;
+import jams.data.JAMSDoubleArray;
+import jams.data.JAMSEntity;
+import jams.model.JAMSComponent;
+import jams.model.JAMSComponentDescription;
+import jams.model.JAMSVarDescription;
 
 /**
  *
  * @author c0krpe
  */
 @JAMSComponentDescription(
-        title="Hymod01",
-        author="Peter Krause",
-        description="The HYMOD Model implemented based on the MatLab sources" +
-        "of Hoshin V. Gupta from 9/18/2005"
-        )
-        public class Hymod01 extends JAMSComponent {
-    
+        title = "Hymod01",
+author = "Peter Krause",
+description = "The HYMOD Model implemented based on the MatLab sources"
++ "of Hoshin V. Gupta from 9/18/2005")
+public class Hymod01 extends JAMSComponent {
+
     /*
      *  Input data
      */
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.RUN,
-            description = "precipitation"
-            )
-            public JAMSDouble precip;
-    
+    description = "precipitation")
+    public Attribute.Double precip;
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.INIT,
-            description = "potential evapotranspiration"
-            )
-            public JAMSDouble pet;
-    
+    description = "potential evapotranspiration")
+    public Attribute.Double pet;
     /*
      * Model parameters
      */
-    
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.INIT,
-            description = "Max height of soil moisture accounting tank"
-            )
-            public JAMSDouble huz;
-    
+    description = "Max height of soil moisture accounting tank")
+    public Attribute.Double huz;
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.INIT,
-            description = "Distribution function shape parameter"
-            )
-            public JAMSDouble b;
-    
+    description = "Distribution function shape parameter")
+    public Attribute.Double b;
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.INIT,
-            description = "Quick-slow split parameter"
-            )
-            public JAMSDouble alp;
-    
+    description = "Quick-slow split parameter")
+    public Attribute.Double alp;
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.INIT,
-            description = "Number of quickflow routing tanks"
-            )
-            public JAMSDouble nq;
-    
+    description = "Number of quickflow routing tanks")
+    public Attribute.Double nq;
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.INIT,
-            description = "Quickflow routing tanks rate parameter"
-            )
-            public JAMSDouble kq;
-    
+    description = "Quickflow routing tanks rate parameter")
+    public Attribute.Double kq;
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.INIT,
-            description = "Slowflow routing tanks rate parameter"
-            )
-            public JAMSDouble ks;
-    
+    description = "Slowflow routing tanks rate parameter")
+    public Attribute.Double ks;
     /*
      *Initialize state variables
      */
-        
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
-            update = JAMSVarDescription.UpdateType.INIT,
-            description = "Soil moisture accounting tank state contents"
-            )
-            public JAMSDouble xcuz;
-    
+    description = "Soil moisture accounting tank state contents")
+    public Attribute.Double xcuz;
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
-            update = JAMSVarDescription.UpdateType.INIT,
-            description = "Quickflow routing tanks state contents"
-            )
-            public JAMSDouble xq;
-    
+    description = "Quickflow routing tanks state contents")
+    public Attribute.Double xq;
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
-            update = JAMSVarDescription.UpdateType.INIT,
-            description = "Slowflow routing tank state content"
-            )
-            public JAMSDouble xs;
-    
+    description = "Slowflow routing tank state content")
+    public Attribute.Double xs;
     /*
      *model states
      */
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
-            description = "Model computed upper zone soil moisture tank state contents"
-            )
-            public JAMSDouble mxhuz;
-    
+    description = "Model computed upper zone soil moisture tank state contents")
+    public Attribute.Double mxhuz;
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
-            description = "Model computed upper zone soil moisture tank state contents"
-            )
-            public JAMSDouble mxcuz;
-    
+    description = "Model computed upper zone soil moisture tank state contents")
+    public Attribute.Double mxcuz;
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
-            description = "Model computed quickflow tank states contents"
-            )
-            public JAMSDoubleArray mxq;
-    
+    description = "Model computed quickflow tank states contents")
+    public JAMSDoubleArray mxq;
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
-            description = "Model computed slowflow tank state contentss"
-            )
-            public JAMSDouble mxs;
-    
+    description = "Model computed slowflow tank state contentss")
+    public Attribute.Double mxs;
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
-            description = "Model computed evapotranspiration flux"
-            )
-            public JAMSDouble met;
-    
+    description = "Model computed evapotranspiration flux")
+    public Attribute.Double met;
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
-            description = "Model computed precipitation excess flux"
-            )
-            public JAMSDouble mov;
-    
+    description = "Model computed precipitation excess flux")
+    public Attribute.Double mov;
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
-            description = "Model computed quickflow flux"
-            )
-            public JAMSDouble mqq;
-    
+    description = "Model computed quickflow flux")
+    public Attribute.Double mqq;
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
-            description = "Model computed slowflow flux"
-            )
-            public JAMSDouble mqs;
-    
+    description = "Model computed slowflow flux")
+    public Attribute.Double mqs;
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
-            description = "Model computed total streamflow flux"
-            )
-            public JAMSDouble mq;
-    
+    description = "Model computed total streamflow flux")
+    public Attribute.Double mq;
     /*
      *  Component run stages
      */
-    
     boolean firstDay = true;
-    
+
     public void init() throws JAMSEntity.NoSuchAttributeException {
-       
+        firstDay = true;
     }
-    
+
     public void run() throws JAMSEntity.NoSuchAttributeException {
-       //if(this.mxq.getValue() == null){
-        if(firstDay){
-            int n = (int)this.nq.getValue();
-            if(n <= 1)
+        //if(this.mxq.getValue() == null){
+        if (firstDay) {
+            int n = (int) this.nq.getValue();
+            if (n <= 1) {
                 n = 1;
+            }
             double[] stors = new double[n];
             this.mxq.setValue(stors);
             this.mxs.setValue(0);
             double cpar = this.huz.getValue() / (1 + this.b.getValue());
-            double huzIni = this.huz.getValue() * ( 1 - Math.pow((1-0/cpar),1/(1+this.b.getValue())));
+            double huzIni = this.huz.getValue() * (1 - Math.pow((1 - 0 / cpar), 1 / (1 + this.b.getValue())));
             this.mxhuz.setValue(huzIni);
             firstDay = false;
-       }
-       //Run Pdm soil moisture accounting including evapotranspiration
-       pdm();
-       //Run Nash Cascade routing of quickflow
-       double input = this.alp.getValue() * this.mov.getValue();
-       int n = (int)this.nq.getValue();
-       if(n <= 1)
-           n = 1;
-       double[] qOut = nash(input, n, this.kq.getValue(), this.mxq.getValue());
-       double[] stor = new double[qOut.length - 1]; 
-       
-       for(int i = 0; i < stor.length; i++)
-           stor[i] = qOut[i];
-       this.mxq.setValue(stor);
-       
-       this.mqq.setValue(qOut[stor.length]);
-       
-       //Run Infinite Linear tank (Nash Cascade with N=1) routing of slowflow
-       input = (1-this.alp.getValue()) * this.mov.getValue();
-       stor = new double[1];
-       stor[0] = this.mxs.getValue();
-       double[] bOut = nash(input, 1, this.ks.getValue(), stor);
-       this.mxs.setValue(bOut[0]);
-       this.mqs.setValue(bOut[1]);
-       this.mq.setValue(this.mqq.getValue() + this.mqs.getValue());
-    }
-    
-    
-    
-    
-    private void pdm(){
-        double bpar, cpar;
-        
-        if(this.b.getValue() == 2){
-            bpar = 1000000;
         }
-        else{
+        //Run Pdm soil moisture accounting including evapotranspiration
+        pdm();
+        //Run Nash Cascade routing of quickflow
+        double input = this.alp.getValue() * this.mov.getValue();
+        int n = (int) this.nq.getValue();
+        if (n <= 1) {
+            n = 1;
+        }
+        double[] qOut = nash(input, n, this.kq.getValue(), this.mxq.getValue());
+        double[] stor = new double[qOut.length - 1];
+
+        for (int i = 0; i < stor.length; i++) {
+            stor[i] = qOut[i];
+        }
+        this.mxq.setValue(stor);
+
+        this.mqq.setValue(qOut[stor.length]);
+
+        //Run Infinite Linear tank (Nash Cascade with N=1) routing of slowflow
+        input = (1 - this.alp.getValue()) * this.mov.getValue();
+        stor = new double[1];
+        stor[0] = this.mxs.getValue();
+        double[] bOut = nash(input, 1, this.ks.getValue(), stor);
+        this.mxs.setValue(bOut[0]);
+        this.mqs.setValue(bOut[1]);
+        this.mq.setValue(this.mqq.getValue() + this.mqs.getValue());
+    }
+
+    private void pdm() {
+        double bpar, cpar;
+
+        if (this.b.getValue() == 2) {
+            bpar = 1000000;
+        } else {
             //Convert from scaled B (0-2) to unscaled b (0 - Inf)
-            bpar = Math.log(1 - (this.b.getValue()/2)) / Math.log(0.5);
+            bpar = Math.log(1 - (this.b.getValue() / 2)) / Math.log(0.5);
         }
         //Compute maximum capacity of soil zone
         cpar = this.huz.getValue() / (1 + bpar);
-        
+
         //Execute model
         //contents at beginning
-        double cbeg = cpar * (1 - Math.pow((1-(this.mxhuz.getValue()/this.huz.getValue())), (1+bpar)));
+        double cbeg = cpar * (1 - Math.pow((1 - (this.mxhuz.getValue() / this.huz.getValue())), (1 + bpar)));
         //compute ov2 if enough precip
         double ov2 = Math.max(0, this.precip.getValue() + this.mxhuz.getValue() - this.huz.getValue());
         //precip that does not go to ov2
         double ppinf = this.precip.getValue() - ov2;
         //intermediate height
-        double hint = Math.min(this.huz.getValue(), (ppinf+this.mxhuz.getValue()));
+        double hint = Math.min(this.huz.getValue(), (ppinf + this.mxhuz.getValue()));
         //intermediate content
-        double cint = cpar * (1 - Math.pow((1-(hint/this.huz.getValue())),(1+bpar)));
+        double cint = cpar * (1 - Math.pow((1 - (hint / this.huz.getValue())), (1 + bpar)));
         //compute ov1
         double ov1 = Math.max(0, ppinf + cbeg - cint);
         //compute total ov
@@ -282,38 +221,35 @@ import org.unijena.jams.model.*;
         //final contents
         this.mxcuz.setValue(cint - this.met.getValue());
         //final height corresponding SMA contents
-        this.mxhuz.setValue(this.huz.getValue() * (1 - Math.pow((1-this.mxcuz.getValue()/cpar),1/(1+bpar))));
+        this.mxhuz.setValue(this.huz.getValue() * (1 - Math.pow((1 - this.mxcuz.getValue() / cpar), 1 / (1 + bpar))));
     }
-    
-    public double[] nash(double inp, int n, double k, double[] stor){
+
+    public double[] nash(double inp, int n, double k, double[] stor) {
         double[] oo = new double[n];
-        double[] xend = new double[n+1];
-        
-        for(int i = 0; i < n; i++){
+        double[] xend = new double[n + 1];
+
+        for (int i = 0; i < n; i++) {
             try {
                 oo[i] = k * stor[i];
-            } catch(java.lang.ArrayIndexOutOfBoundsException e) {
+            } catch (java.lang.ArrayIndexOutOfBoundsException e) {
                 System.out.println("ioofe");
             }
-            
+
             xend[i] = stor[i] - oo[i];
-            if(i == 0){
-                xend[i] = xend[i] + inp; 
-            }
-            else{
-                xend[i] = xend[i] + oo[i-1];
+            if (i == 0) {
+                xend[i] = xend[i] + inp;
+            } else {
+                xend[i] = xend[i] + oo[i - 1];
             }
         }
-        xend[n] = oo[n-1];
-        
+        xend[n] = oo[n - 1];
+
         return xend;
     }
-    
+
     public void cleanup() throws JAMSEntity.NoSuchAttributeException {
-       
-       this.mxs.setValue(0);
-       this.firstDay = true;
+
+        this.mxs.setValue(0);
+        this.firstDay = true;
     }
-    
-    
 }

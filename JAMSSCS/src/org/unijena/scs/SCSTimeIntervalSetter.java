@@ -49,10 +49,9 @@ public class SCSTimeIntervalSetter extends JAMSComponent {
      */
     @JAMSVarDescription(
     access = JAMSVarDescription.AccessType.WRITE,
-            update = JAMSVarDescription.UpdateType.INIT,
             description = "The model time interval"
             )
-            public JAMSTimeInterval modelTimeInterval;
+            public Attribute.TimeInterval modelTimeInterval;
     
     /**
      * the model's expected runtime in hours as first input for TI<br>
@@ -62,11 +61,10 @@ public class SCSTimeIntervalSetter extends JAMSComponent {
      */
     @JAMSVarDescription(
     access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.INIT,
             description = "model duration",
             unit="h"
             )
-            public JAMSInteger runtimeHours;
+            public Attribute.Integer runtimeHours;
     
     /**
      * the model's expected runtime temporal resolution as second input for TI<br>
@@ -76,20 +74,19 @@ public class SCSTimeIntervalSetter extends JAMSComponent {
      */
     @JAMSVarDescription(
     access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.INIT,
             description = "model runtime resolution",
             unit="s"
             )
-            public JAMSInteger runtimeResolution;
+            public Attribute.Integer runtimeResolution;
     
     /**
      * the component's init() method
-     * @throws org.unijena.jams.data.JAMSEntity.NoSuchAttributeException thrown when a model entity tries to access a non existent attribute
+     * @throws org.unijena.jams.data.Attribute.Entity.NoSuchAttributeException thrown when a model entity tries to access a non existent attribute
      */
-    public void init() throws JAMSEntity.NoSuchAttributeException {
-        JAMSCalendar start = new JAMSCalendar(1900,1,1,0,0,0);
-        JAMSCalendar end = new JAMSCalendar(1900,1,1,0,0,0);
-        end.add(JAMSCalendar.HOUR_OF_DAY, this.runtimeHours.getValue());
+    public void init() throws Attribute.Entity.NoSuchAttributeException {
+        Attribute.Calendar start = new Attribute.Calendar(1900,1,1,0,0,0);
+        Attribute.Calendar end = new Attribute.Calendar(1900,1,1,0,0,0);
+        end.add(Attribute.Calendar.HOUR_OF_DAY, this.runtimeHours.getValue());
         
         this.modelTimeInterval.setStart(start);
         this.modelTimeInterval.setEnd(end);

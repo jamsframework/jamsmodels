@@ -40,19 +40,17 @@ import jams.model.*;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.INIT,
             description = "the input variables to add"
             )
             public Attribute.Double[] inVars;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
-            update = JAMSVarDescription.UpdateType.INIT,
             description = "the result of the summation"
             )
             public Attribute.Double outVar;
     
-    public void run() throws JAMSEntity.NoSuchAttributeException {
+    public void run() throws Attribute.Entity.NoSuchAttributeException {
         
         double varSum = 0;
         for(int i = 0; i < inVars.length; i++)

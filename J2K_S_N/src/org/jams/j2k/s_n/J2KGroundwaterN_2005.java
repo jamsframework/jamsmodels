@@ -43,209 +43,180 @@ import jams.model.*;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "actual RG1 storage"
             )
-            public JAMSDouble actRG1;
+            public Attribute.Double actRG1;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "actual RG2 storage"
             )
-            public JAMSDouble actRG2;
+            public Attribute.Double actRG2;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "actual RG1 N storage in kgN"
             )
-            public JAMSDouble NActRG1;
+            public Attribute.Double NActRG1;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "actual RG2 N storage in kgN"
             )
-            public JAMSDouble NActRG2;
+            public Attribute.Double NActRG2;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "RG1 inflow"
             )
-            public JAMSDouble inRG1;
+            public Attribute.Double inRG1;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "RG2 inflow"
             )
-            public JAMSDouble inRG2;
+            public Attribute.Double inRG2;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "RG1 outflow"
             )
-            public JAMSDouble outRG1;
+            public Attribute.Double outRG1;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "RG2 outflow"
             )
-            public JAMSDouble outRG2;
+            public Attribute.Double outRG2;
     
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "RG1 N inflow in kgN"
             )
-            public JAMSDouble N_RG1_in;
+            public Attribute.Double N_RG1_in;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "RG2 N inflow in kgN"
             )
-            public JAMSDouble N_RG2_in;
+            public Attribute.Double N_RG2_in;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "RG1 N outflow in kgN"
             )
-            public JAMSDouble N_RG1_out;
+            public Attribute.Double N_RG1_out;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "RG2 N outflow in kgN"
             )
-            public JAMSDouble N_RG2_out;
+            public Attribute.Double N_RG2_out;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "N Percolation out of the soil profile in kgN"
             )
-            public JAMSDouble PercoNabs;
+            public Attribute.Double PercoNabs;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "N Percolation in the RG1 tank in kgN"
             )
-            public JAMSDouble percoN_delayRG1;
+            public Attribute.Double percoN_delayRG1;
 
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "N Percolation in the RG2 tank in kgN"
             )
-            public JAMSDouble percoN_delayRG2;
+            public Attribute.Double percoN_delayRG2;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "HRU Concentration in mgN/l for RG1"
             )
-            public JAMSDouble N_concRG1;
+            public Attribute.Double N_concRG1;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "HRU Concentration in mgN/l for RG2"
             )
-            public JAMSDouble N_concRG2;
+            public Attribute.Double N_concRG2;
     
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "maximum RG1 storage"
             )
-            public JAMSDouble maxRG1;
+            public Attribute.Double maxRG1;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "maximum RG2 storage"
             )
-            public JAMSDouble maxRG2;
+            public Attribute.Double maxRG2;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "gwExcess"
             )
-            public JAMSDouble gwExcess;
+            public Attribute.Double gwExcess;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "gwExcess"
             )
-            public JAMSDouble NExcess;
+            public Attribute.Double NExcess;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "portion of percolation to RG1 in l"
             )
-            public JAMSDouble pot_RG1;
+            public Attribute.Double pot_RG1;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "portion of percolation to RG2 in l"
             )
-            public JAMSDouble pot_RG2;
+            public Attribute.Double pot_RG2;
     
             
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "recision coefficient k RG1"
             )
-            public JAMSDouble kRG1;
+            public Attribute.Double kRG1;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "recision coefficient k RG2"
             )
-            public JAMSDouble kRG2;
+            public Attribute.Double kRG2;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "half-live time of nitrate in groundwater RG1 (time to reduce the amount of nitrate to its half) in a. If the value is 0 denitrifikation is inaktive (1 - 5)"
             )
-            public JAMSDouble halflife_RG1;
+            public Attribute.Double halflife_RG1;
     
      @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "half-live time of nitrate in groundwater RG2 (time to reduce the amount of nitrate to its half) in a. If the value is 0 denitrifikation is inaktive (1 - 5)"
             )
-            public JAMSDouble halflife_RG2;
+            public Attribute.Double halflife_RG2;
      
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "amount of denitrificated Nitrate on the current day in kgN out of RG1"
             )
-            public JAMSDouble denitRG1;
+            public Attribute.Double denitRG1;
      
      @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "amount of denitrificated Nitrate on the current day in kgN out of RG1"
             )
-            public JAMSDouble denitRG2;
+            public Attribute.Double denitRG2;
      
     
     
@@ -254,11 +225,11 @@ import jams.model.*;
      *  Component run stages
      */
     
-    public void init()  throws JAMSEntity.NoSuchAttributeException {
+    public void init()  throws Attribute.Entity.NoSuchAttributeException {
         
     }
     
-    public void run() throws JAMSEntity.NoSuchAttributeException {
+    public void run() throws Attribute.Entity.NoSuchAttributeException {
         
         double runN_RG1_out = 0;
         double runN_RG2_out = 0;

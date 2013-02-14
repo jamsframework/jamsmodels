@@ -41,37 +41,31 @@ public class TemperatureLapseRate extends JAMSComponent {
      *  Component variables
      */
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
-    update = JAMSVarDescription.UpdateType.RUN,
     description = "station elevation")
-    public JAMSDoubleArray statElev;
+    public Attribute.DoubleArray statElev;
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
-    update = JAMSVarDescription.UpdateType.RUN,
     description = "entity elevation")
-    public JAMSDouble entityElev;
+    public Attribute.Double entityElev;
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
-    update = JAMSVarDescription.UpdateType.RUN,
     description = "the measured input from a base station")
-    public JAMSDoubleArray inputValue;
+    public Attribute.DoubleArray inputValue;
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.WRITE,
-    update = JAMSVarDescription.UpdateType.RUN,
     description = "calculated output for the modelling entity")
-    public JAMSDouble outputValue;
+    public Attribute.Double outputValue;
 
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
-    update = JAMSVarDescription.UpdateType.INIT,
     description = "lapse rate per 100 m elevation difference")
-    public JAMSDouble lapseRateSummer;
+    public Attribute.Double lapseRateSummer;
 
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
-    update = JAMSVarDescription.UpdateType.INIT,
     description = "lapse rate per 100 m elevation difference")
-    public JAMSDouble lapseRateWinter;
+    public Attribute.Double lapseRateWinter;
 //    @JAMSVarDescription(
 //   access = JAMSVarDescription.AccessType.READ,
 //            update = JAMSVarDescription.UpdateType.INIT,
 //            description = "lapse rate per 100 m elevation difference"
 //            )
-//            public JAMSDouble lapseRate;
+//            public Attribute.Double lapseRate;
     @JAMSVarDescription(
             access=JAMSVarDescription.AccessType.READ,
             description="The current model time")
@@ -79,17 +73,16 @@ public class TemperatureLapseRate extends JAMSComponent {
 
     
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
-    update = JAMSVarDescription.UpdateType.RUN,
     description = "position array to determine best weights")
-    public JAMSIntegerArray statOrder;
+    public Attribute.IntegerArray statOrder;
     /*
      *  Component run stages
      */
 
-    public void init() throws JAMSEntity.NoSuchAttributeException {
+    public void init() throws Attribute.Entity.NoSuchAttributeException {
     }
 
-    public void run() throws JAMSEntity.NoSuchAttributeException {
+    public void run() throws Attribute.Entity.NoSuchAttributeException {
 
      
         
@@ -123,10 +116,10 @@ public class TemperatureLapseRate extends JAMSComponent {
 
 //
 //
-//    public void init() throws JAMSEntity.NoSuchAttributeException {
+//    public void init() throws Attribute.Entity.NoSuchAttributeException {
 //    }
 //
-//    public void run() throws JAMSEntity.NoSuchAttributeException {
+//    public void run() throws Attribute.Entity.NoSuchAttributeException {
 //
 //
 //

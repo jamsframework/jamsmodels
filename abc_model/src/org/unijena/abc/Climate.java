@@ -23,10 +23,7 @@
 
 package org.unijena.abc;
 
-import jams.data.JAMSDouble;
-import jams.data.JAMSDoubleArray;
-import jams.data.JAMSString;
-import jams.data.JAMSStringArray;
+import jams.data.*;
 import jams.io.GenericDataReader;
 import jams.io.JAMSTableDataArray;
 import jams.io.JAMSTableDataConverter;
@@ -41,76 +38,64 @@ import jams.model.JAMSVarDescription;
 public class Climate extends JAMSComponent {
     
     @JAMSVarDescription(
-            access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.INIT
+            access = JAMSVarDescription.AccessType.READ
             )
-            public JAMSString fileName;
+            public Attribute.String fileName;
     
     @JAMSVarDescription(
-            access = JAMSVarDescription.AccessType.WRITE,
-            update = JAMSVarDescription.UpdateType.RUN
+            access = JAMSVarDescription.AccessType.WRITE
             )
-            public JAMSDouble precip;
+            public Attribute.Double precip;
     
     @JAMSVarDescription(
-            access = JAMSVarDescription.AccessType.WRITE,
-            update = JAMSVarDescription.UpdateType.RUN
+            access = JAMSVarDescription.AccessType.WRITE
             )
-            public JAMSDouble temperature;
+            public Attribute.Double temperature;
     
     @JAMSVarDescription(
-            access = JAMSVarDescription.AccessType.WRITE,
-            update = JAMSVarDescription.UpdateType.RUN
+            access = JAMSVarDescription.AccessType.WRITE
             )
-            public JAMSDouble obsRunoff;
+            public Attribute.Double obsRunoff;
     
     @JAMSVarDescription(
-            access = JAMSVarDescription.AccessType.WRITE,
-            update = JAMSVarDescription.UpdateType.RUN
+            access = JAMSVarDescription.AccessType.WRITE
             )
-            public JAMSDouble compRD1;
+            public Attribute.Double compRD1;
     
     @JAMSVarDescription(
-            access = JAMSVarDescription.AccessType.WRITE,
-            update = JAMSVarDescription.UpdateType.RUN
+            access = JAMSVarDescription.AccessType.WRITE
             )
-            public JAMSDouble compRD2;
+            public Attribute.Double compRD2;
     
     @JAMSVarDescription(
-            access = JAMSVarDescription.AccessType.WRITE,
-            update = JAMSVarDescription.UpdateType.RUN
+            access = JAMSVarDescription.AccessType.WRITE
             )
-            public JAMSDouble compRG1;
+            public Attribute.Double compRG1;
     
     @JAMSVarDescription(
-            access = JAMSVarDescription.AccessType.WRITE,
-            update = JAMSVarDescription.UpdateType.RUN
+            access = JAMSVarDescription.AccessType.WRITE
             )
-            public JAMSDouble compRG2;
+            public Attribute.Double compRG2;
     
     @JAMSVarDescription(
-            access = JAMSVarDescription.AccessType.WRITE,
-            update = JAMSVarDescription.UpdateType.RUN
+            access = JAMSVarDescription.AccessType.WRITE
             )
-            public JAMSDouble compQdir;
+            public Attribute.Double compQdir;
     
     @JAMSVarDescription(
-            access = JAMSVarDescription.AccessType.WRITE,
-            update = JAMSVarDescription.UpdateType.RUN
+            access = JAMSVarDescription.AccessType.WRITE
             )
-            public JAMSDouble compQbas;
+            public Attribute.Double compQbas;
     
     @JAMSVarDescription(
-            access = JAMSVarDescription.AccessType.WRITE,
-            update = JAMSVarDescription.UpdateType.RUN
+            access = JAMSVarDescription.AccessType.WRITE
             )
-            public JAMSDoubleArray data;
+            public Attribute.DoubleArray data;
     
     @JAMSVarDescription(
-            access = JAMSVarDescription.AccessType.WRITE,
-            update = JAMSVarDescription.UpdateType.RUN
+            access = JAMSVarDescription.AccessType.WRITE
             )
-            public JAMSStringArray dataNames;
+            public Attribute.StringArray dataNames;
     
     
     

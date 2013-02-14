@@ -51,56 +51,48 @@ title="StandardEfficiencyCalculator",
     
     @JAMSVarDescription(
     access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "the current modelling time step"
             )
             public Attribute.Calendar time;
     
     @JAMSVarDescription(
     access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.INIT,
             description = "The model time interval"
             )
             public Attribute.TimeInterval modelTimeInterval;
     
     @JAMSVarDescription(
     access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.INIT,
             description = "The efficiency time interval, a subset of modelTimeInterval"
             )
-            public JAMSTimeInterval effTimeInterval;
+            public Attribute.TimeInterval effTimeInterval;
     
     @JAMSVarDescription(
     access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.INIT,
             description = "comma separated list of months (1-12) which should be evaluated, can be left out if not needed"
             )
-            public JAMSIntegerArray effMonthList;
+            public Attribute.IntegerArray effMonthList;
     
     @JAMSVarDescription(
     access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.INIT,
             description = "a comma separated list of integer values indicating which efficiency criteria should be computed"
             )
-            public JAMSIntegerArray effMethod;
+            public Attribute.IntegerArray effMethod;
     
     @JAMSVarDescription(
     access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "Prediction value"
             )
             public Attribute.Double prediction;
     
     @JAMSVarDescription(
     access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "Validation value"
             )
             public Attribute.Double validation;
     
     @JAMSVarDescription(
     access = JAMSVarDescription.AccessType.WRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "Nash-Sutcliffe-efficiency with power 1.0",
             unit="n/a",
             lowerBound = -9999,
@@ -110,7 +102,6 @@ title="StandardEfficiencyCalculator",
     
     @JAMSVarDescription(
     access = JAMSVarDescription.AccessType.WRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "Nash-Sutcliffe-efficiency with power 2.0",
             unit="n/a",
             lowerBound = -9999,
@@ -120,7 +111,6 @@ title="StandardEfficiencyCalculator",
     
     @JAMSVarDescription(
     access = JAMSVarDescription.AccessType.WRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "Nash-Sutcliffe-efficiency from logarithmic values with power 1.0",
             unit="n/a",
             lowerBound = -9999,
@@ -130,7 +120,6 @@ title="StandardEfficiencyCalculator",
     
     @JAMSVarDescription(
     access = JAMSVarDescription.AccessType.WRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "Nash-Sutcliffe-efficiency  from logarithmic values with power 2.0",
             unit="n/a",
             lowerBound = -9999,
@@ -140,7 +129,6 @@ title="StandardEfficiencyCalculator",
     
     @JAMSVarDescription(
     access = JAMSVarDescription.AccessType.WRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "Willmot's index of agreement with power 1.0",
             unit="n/a",
             lowerBound = 0,
@@ -150,7 +138,6 @@ title="StandardEfficiencyCalculator",
     
     @JAMSVarDescription(
     access = JAMSVarDescription.AccessType.WRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "Willmot's index of agreement with power 2.0",
             unit="n/a",
             lowerBound = 0,
@@ -160,7 +147,6 @@ title="StandardEfficiencyCalculator",
     
     @JAMSVarDescription(
     access = JAMSVarDescription.AccessType.WRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "coefficient of determination r^2",
             unit="n/a",
             lowerBound = 0,
@@ -170,7 +156,6 @@ title="StandardEfficiencyCalculator",
     
     @JAMSVarDescription(
     access = JAMSVarDescription.AccessType.WRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "gradient of linear regression",
             unit="n/a",
             lowerBound = 0,
@@ -180,7 +165,6 @@ title="StandardEfficiencyCalculator",
     
     @JAMSVarDescription(
     access = JAMSVarDescription.AccessType.WRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "weighted rsq",
             unit="n/a",
             lowerBound = 0,
@@ -189,7 +173,6 @@ title="StandardEfficiencyCalculator",
     
     @JAMSVarDescription(
     access = JAMSVarDescription.AccessType.WRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "gradient of double sum regression",
             unit="n/a",
             lowerBound = 0,
@@ -199,7 +182,6 @@ title="StandardEfficiencyCalculator",
     
     @JAMSVarDescription(
     access = JAMSVarDescription.AccessType.WRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "absolute volume error",
             unit="same as values",
             lowerBound = 0,
@@ -209,7 +191,6 @@ title="StandardEfficiencyCalculator",
     
     @JAMSVarDescription(
     access = JAMSVarDescription.AccessType.WRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "root mean square error",
             unit="same as values",
             lowerBound = 0,
@@ -219,7 +200,6 @@ title="StandardEfficiencyCalculator",
     
     @JAMSVarDescription(
     access = JAMSVarDescription.AccessType.WRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "percent bias",
             unit="%",
             lowerBound = 0,
@@ -229,7 +209,6 @@ title="StandardEfficiencyCalculator",
 
     @JAMSVarDescription(
     access = JAMSVarDescription.AccessType.WRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "absolute percent bias",
             unit="%",
             lowerBound = 0,
@@ -239,7 +218,6 @@ title="StandardEfficiencyCalculator",
     
     @JAMSVarDescription(
     access = JAMSVarDescription.AccessType.WRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "full set of predicted values"
             )
             public Attribute.DoubleArray predictionValues;

@@ -30,7 +30,7 @@ public class init_dissolvedOxygen extends JAMSComponent {
             lowerBound= 0,
             upperBound =20
             )
-            public JAMSDouble disOxy;
+            public Attribute.Double disOxy;
 
     
     /*
@@ -38,7 +38,7 @@ public class init_dissolvedOxygen extends JAMSComponent {
      */
 
 
-    public void init() throws JAMSEntity.NoSuchAttributeException {
+    public void init() throws Attribute.Entity.NoSuchAttributeException {
 
     }
     public void run() throws Attribute.Entity.NoSuchAttributeException {

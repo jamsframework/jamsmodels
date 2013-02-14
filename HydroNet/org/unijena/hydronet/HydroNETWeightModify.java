@@ -40,12 +40,11 @@ public class HydroNETWeightModify extends JAMSComponent {
         )
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "List of spatial entities"
             )
-            public JAMSEntityCollection entities;
+            public Attribute.EntityCollection entities;
     
-    public void run() throws JAMSEntity.NoSuchAttributeException { 	
+    public void run() throws Attribute.Entity.NoSuchAttributeException { 	
 	DistNeuron dist_neuron;
 	Iterator<Entity> Iterator = entities.getEntities().iterator();
 	while (Iterator.hasNext()) {

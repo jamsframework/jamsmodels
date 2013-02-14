@@ -16,28 +16,28 @@ import java.util.ArrayList;
 public class StandardEntityReaderRR extends JAMSComponent {
     
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ, update = JAMSVarDescription.UpdateType.INIT, description = "HRU parameter file name")
-    public JAMSString hruFileName;
+    public Attribute.String hruFileName;
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ, update = JAMSVarDescription.UpdateType.INIT, description = "Reach parameter file name")
-    public JAMSString reachFileName;
+    public Attribute.String reachFileName;
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.WRITE, update = JAMSVarDescription.UpdateType.RUN, description = "Collection of hru objects")
-    public JAMSEntityCollection hrus;
+    public Attribute.EntityCollection hrus;
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.WRITE, update = JAMSVarDescription.UpdateType.RUN, description = "Collection of reach objects")
-    public JAMSEntityCollection reaches;
+    public Attribute.EntityCollection reaches;
 
-    public void init() throws JAMSEntity.NoSuchAttributeException {
+    public void init() throws Attribute.Entity.NoSuchAttributeException {
         //to handle relative path names        
         hrus.setEntities(J2KFunctions.readParas(JAMSTools.CreateAbsoluteFileName(getModel().getWorkspaceDirectory().getPath(), hruFileName.getValue()), getModel()));
 
         for (Entity e : hrus.getEntityArray()) {
             try {
                 e.setId((long) e.getDouble("ID"));
-            } catch (JAMSEntity.NoSuchAttributeException nsae) {
+            } catch (Attribute.Entity.NoSuchAttributeException nsae) {
                 getModel().getRuntime().sendErrorMsg("Couldn't find attribute \"ID\" while reading J2K HRU parameter file (" + hruFileName.getValue() + ")!");
             }
         }
 
         //read reach parameter
-        //reaches = new JAMSEntityCollection();
+        //reaches = new Attribute.EntityCollection();
         reaches.setEntities(J2KFunctions.readParas(JAMSTools.CreateAbsoluteFileName(getModel().getWorkspaceDirectory().getPath(), reachFileName.getValue()), getModel()));
 
         //create object associations from id attributes for hrus and reaches
@@ -71,8 +71,8 @@ public class StandardEntityReaderRR extends JAMSComponent {
     }
 
     //do depth first search to find cycles
-    protected boolean cycleCheck(Entity node, Stack<Entity> searchStack, HashSet<Attribute.Double> closedList, HashSet<Attribute.Double> visitedList) throws JAMSEntity.NoSuchAttributeException {
-        JAMSEntity child_node;
+    protected boolean cycleCheck(Entity node, Stack<Entity> searchStack, HashSet<Attribute.Double> closedList, HashSet<Attribute.Double> visitedList) throws Attribute.Entity.NoSuchAttributeException {
+        Attribute.Entity child_node;
 
         //current node allready in search stack -> circle found
         if (searchStack.indexOf(node) != -1) {
@@ -80,7 +80,7 @@ public class StandardEntityReaderRR extends JAMSComponent {
 
             String cyc_output = new String();
             for (int i = index; i < searchStack.size(); i++) {
-                cyc_output += ((JAMSEntity) searchStack.get(i)).getDouble("ID") + " ";
+                cyc_output += ((Attribute.Entity) searchStack.get(i)).getDouble("ID") + " ";
             }
             getModel().getRuntime().println("Found circle with ids:" + cyc_output);
 
@@ -93,7 +93,7 @@ public class StandardEntityReaderRR extends JAMSComponent {
         //now this node is visited
         visitedList.add((Attribute.Double) node.getObject("ID"));
 
-        child_node = (JAMSEntity) node.getObject("to_poly");
+        child_node = (Attribute.Entity) node.getObject("to_poly");
         if (child_node.getValue() == null) {
             child_node = null;
         }
@@ -111,7 +111,7 @@ public class StandardEntityReaderRR extends JAMSComponent {
         return false;
     }
 
-    protected boolean cycleCheck() throws JAMSEntity.NoSuchAttributeException {
+    protected boolean cycleCheck() throws Attribute.Entity.NoSuchAttributeException {
         Iterator<Entity> hruIterator;
 
         HashSet<Attribute.Double> closedList = new HashSet<Attribute.Double>();
@@ -140,7 +140,7 @@ public class StandardEntityReaderRR extends JAMSComponent {
         return result;
     }
 
-    protected void createTopology() throws JAMSEntity.NoSuchAttributeException {
+    protected void createTopology() throws Attribute.Entity.NoSuchAttributeException {
 
         HashMap<Double, Entity> hruMap = new HashMap<Double, Entity>();
         HashMap<Double, Entity> reachMap = new HashMap<Double, Entity>();
@@ -192,7 +192,7 @@ public class StandardEntityReaderRR extends JAMSComponent {
 
     }
 
-    protected void createOrderedList(JAMSEntityCollection col, String asso) throws JAMSEntity.NoSuchAttributeException {
+    protected void createOrderedList(Attribute.EntityCollection col, String asso) throws Attribute.Entity.NoSuchAttributeException {
 
         Iterator<Entity> hruIterator;
         Entity e, f;
@@ -216,7 +216,7 @@ public class StandardEntityReaderRR extends JAMSComponent {
             while (hruIterator.hasNext()) {
                 e = hruIterator.next();
 
-                f = (JAMSEntity) e.getObject(asso);
+                f = (Attribute.Entity) e.getObject(asso);
                 if (f.getValue() == null) {
                     f = null;
                 }

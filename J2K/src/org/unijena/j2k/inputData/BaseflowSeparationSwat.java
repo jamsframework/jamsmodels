@@ -46,31 +46,27 @@ title="CalcAbsoluteHumidity",
      */
     @JAMSVarDescription(
     access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "the measured streamflow values"
             )
             public Attribute.DoubleArray strflow;
     
     @JAMSVarDescription(
     access = JAMSVarDescription.AccessType.WRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "the surface runoff values"
             )
             public Attribute.DoubleArray surfq;
     
     @JAMSVarDescription(
     access = JAMSVarDescription.AccessType.WRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "the baseflow values from pass 1"
             )
             public Attribute.DoubleArray baseq;
     
     @JAMSVarDescription(
     access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.INIT,
             description = "the filter level [1..3]"
             )
-            public JAMSInteger filterLevel;
+            public Attribute.Integer filterLevel;
     
     final double F1 = 0.925;
     final double F2 = 0.9625;
@@ -78,12 +74,12 @@ title="CalcAbsoluteHumidity",
      *  Component run stages
      */
     
-    public void init() throws JAMSEntity.NoSuchAttributeException {
+    public void init() throws Attribute.Entity.NoSuchAttributeException {
         
         
     }
     
-    public void run() throws JAMSEntity.NoSuchAttributeException {
+    public void run() throws Attribute.Entity.NoSuchAttributeException {
         
         //allocating the output arrays
         double[] strflw = this.strflow.getValue();
@@ -230,7 +226,7 @@ title="CalcAbsoluteHumidity",
         //integrate the alpha value
     }
     
-    public void cleanup() throws JAMSEntity.NoSuchAttributeException {
+    public void cleanup() throws Attribute.Entity.NoSuchAttributeException {
         
     }
 }

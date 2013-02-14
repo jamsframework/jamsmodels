@@ -43,24 +43,22 @@ import java.util.*;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
-            update = JAMSVarDescription.UpdateType.INIT
             )
-            public JAMSEntityCollection entities;
+            public Attribute.EntityCollection entities;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.INIT
             )
-            public JAMSLong max;
+            public Attribute.Long max;
     
     public void init(){
         
         System.out.println("SEProvider init");
         
-        JAMSEntity e;
+        Attribute.Entity e;
         
-        ArrayList <JAMSEntity> entityList = new ArrayList<JAMSEntity>();
-        JAMSDouble l;
+        ArrayList <Attribute.Entity> entityList = new ArrayList<Attribute.Entity>();
+        Attribute.Double l;
         
         for (long i = 1; i <= max.getValue(); i++) {
             e = JAMSDataFactory.createEntity();
@@ -68,7 +66,7 @@ import java.util.*;
             entityList.add(e);            
         }
         
-        //entities = new JAMSEntityCollection();
+        //entities = new Attribute.EntityCollection();
         entities.setEntities(entityList);
     }
     

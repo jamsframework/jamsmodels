@@ -44,10 +44,9 @@ public class ParallelStorageCascade extends JAMSComponent {
      */
    @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.INIT,
             description = "timeInterval"
             )
-            public JAMSTimeInterval timeInterval;
+            public Attribute.TimeInterval timeInterval;
     
     /**
      * the catchment's area<br>
@@ -57,11 +56,10 @@ public class ParallelStorageCascade extends JAMSComponent {
      */
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.RUN,
             unit = "km^2",
             description = "the entire area of the catchment"
             )
-            public JAMSDouble catchmentArea;
+            public Attribute.Double catchmentArea;
     
     /**
      * the runoff at the current time step<br>
@@ -71,11 +69,10 @@ public class ParallelStorageCascade extends JAMSComponent {
      */
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
             unit = "m³/s",
             description = "runoff"
             )
-            public JAMSDouble runoff;
+            public Attribute.Double runoff;
     /**
      * the maximum peak runoff produced by the model<br>
      * access: READWRITE<br> 
@@ -84,11 +81,10 @@ public class ParallelStorageCascade extends JAMSComponent {
      */
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
             unit = "m³/s",
             description = "max runoff"
             )
-            public JAMSDouble maxRunoff;
+            public Attribute.Double maxRunoff;
     
     /**
      * the cumulated runoff<br>
@@ -98,11 +94,10 @@ public class ParallelStorageCascade extends JAMSComponent {
      */
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
             unit = "m^3",
             description = "volume"
             )
-            public JAMSDouble volume;
+            public Attribute.Double volume;
     
     /**
      * an array containg the single runoff values for each time step<br>
@@ -112,11 +107,10 @@ public class ParallelStorageCascade extends JAMSComponent {
      */
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
             unit = "m³/s",
             description = "runoff_arr"
             )
-            public JAMSDoubleArray runoff_arr;
+            public Attribute.DoubleArray runoff_arr;
     
     /**
      * an array containg the single cumulated runoff volumes for each time step<br>
@@ -126,11 +120,10 @@ public class ParallelStorageCascade extends JAMSComponent {
      */
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
             unit = "mm",
             description = "volume_arr"
             )
-            public JAMSDoubleArray volume_arr;
+            public Attribute.DoubleArray volume_arr;
     
     /**
      * the unit hydrograph values from the quick Nash-cascade<br>
@@ -140,10 +133,9 @@ public class ParallelStorageCascade extends JAMSComponent {
      */
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "unit hydrograph 1"
             )
-            public JAMSDoubleArray uh1;
+            public Attribute.DoubleArray uh1;
     
     /**
      * the unit hydrograph values from the slow Nash-cascade<br>
@@ -153,10 +145,9 @@ public class ParallelStorageCascade extends JAMSComponent {
      */
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "unit hydrograph 2"
             )
-            public JAMSDoubleArray uh2;
+            public Attribute.DoubleArray uh2;
     
     /**
      * the input precipitation for the quick Nash-cascade<br>
@@ -166,10 +157,9 @@ public class ParallelStorageCascade extends JAMSComponent {
      */
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "precip for uh1"
             )
-            public JAMSDoubleArray hNe1;
+            public Attribute.DoubleArray hNe1;
     
     /**
      * the input precipitation for the slow Nash-cascade<br>
@@ -179,10 +169,9 @@ public class ParallelStorageCascade extends JAMSComponent {
      */
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "precip for uh2"
             )
-            public JAMSDoubleArray hNe2;
+            public Attribute.DoubleArray hNe2;
     
     /**
      * the elements of the unit hydrograph array. Equals precip duration divided by time step length
@@ -193,10 +182,9 @@ public class ParallelStorageCascade extends JAMSComponent {
      */
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "array length"
             )
-            public JAMSInteger arrayLength;
+            public Attribute.Integer arrayLength;
     
     
     double[] u1_arr, u2_arr; 
@@ -206,9 +194,9 @@ public class ParallelStorageCascade extends JAMSComponent {
     
     /**
      * the component's init() routine
-     * @throws org.unijena.jams.data.JAMSEntity.NoSuchAttributeException thrown when a model entity tries to access a non existent attribute
+     * @throws org.unijena.jams.data.Attribute.Entity.NoSuchAttributeException thrown when a model entity tries to access a non existent attribute
      */
-    public void init() throws JAMSEntity.NoSuchAttributeException {
+    public void init() throws Attribute.Entity.NoSuchAttributeException {
         this.timeStepCounter = 0;
         int timeSteps = (int)timeInterval.getNumberOfTimesteps()+1;
         vol_arr = new double[timeSteps]; 
@@ -219,9 +207,9 @@ public class ParallelStorageCascade extends JAMSComponent {
     
     /**
      * the components() run routine
-     * @throws org.unijena.jams.data.JAMSEntity.NoSuchAttributeException thrown when a model entity tries to access a non existent attribute
+     * @throws org.unijena.jams.data.Attribute.Entity.NoSuchAttributeException thrown when a model entity tries to access a non existent attribute
      */
-    public void run() throws JAMSEntity.NoSuchAttributeException {
+    public void run() throws Attribute.Entity.NoSuchAttributeException {
         //let it run until no relevant outflow occurs
     	this.u1_arr = this.uh1.getValue();
         this.u2_arr = this.uh2.getValue();

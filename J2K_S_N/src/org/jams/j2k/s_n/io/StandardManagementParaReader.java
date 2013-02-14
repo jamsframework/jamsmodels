@@ -39,59 +39,51 @@ public class StandardManagementParaReader extends JAMSComponent {
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.INIT,
             description = "Crop parameter file name"
             )
-            public JAMSString cropFileName;
+            public Attribute.String cropFileName;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.INIT,
             description = "Fertilization parameter file name"
             )
-            public JAMSString fertFileName;
+            public Attribute.String fertFileName;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.INIT,
             description = "Tillage parameter file name"
             )
-            public JAMSString tillFileName;
+            public Attribute.String tillFileName;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.INIT,
             description = "Management parameter file name"
             )
-            public JAMSString managementFileName;
+            public Attribute.String managementFileName;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.INIT,
             description = "Rotation parameter file name"
             )
-            public JAMSString rotationFileName;
+            public Attribute.String rotationFileName;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.INIT,
             description = "HRU rotation mapping file name"
             )
-            public JAMSString hruRotationFileName;
+            public Attribute.String hruRotationFileName;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "Collection of hru objects"
             )
-            public JAMSEntityCollection hrus;
+            public Attribute.EntityCollection hrus;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.INIT,
             description = "Attribute name of HRU ID"
             )
-            public JAMSString aNameHRUID;
+            public Attribute.String aNameHRUID;
     
     // HashMap für Fertilizer anlegen
     protected HashMap<Integer, J2KSNFertilizer> readFertPara(String fileName) {
@@ -345,7 +337,7 @@ public class StandardManagementParaReader extends JAMSComponent {
             hru = hruIterator.next();
             try {
                 hruMap.put(hru.getDouble(aNameHRUID.getValue()),  hru);
-            } catch (JAMSEntity.NoSuchAttributeException nsae) {
+            } catch (Attribute.Entity.NoSuchAttributeException nsae) {
 //                getModel().sendHalt("Attribute " + aNameHRUID + " not found!");
             }
         }

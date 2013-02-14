@@ -41,45 +41,39 @@ public class FullSetEntityWriter extends JAMSComponent {
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.INIT,
             description = "EntitySet"
             )
-            public JAMSEntityCollection entitySet;
+            public Attribute.EntityCollection entitySet;
 
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.INIT,
             description = "Output file name"
             )
-            public JAMSString fileName;
+            public Attribute.String fileName;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "Current time"
             )
-            public JAMSCalendar time;
+            public Attribute.Calendar time;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.INIT,
             description = "Output file header descriptions"
             )
-            public JAMSString header;
+            public Attribute.String header;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.INIT,
             description = "Output file attribute names"
             )
-            public JAMSString attributeName;
+            public Attribute.String attributeName;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.INIT,
             description = "entity attribute name for weight [attName | none]"
             )
-            public JAMSString weight;
+            public Attribute.String weight;
     
    
     private GenericDataWriter writer;
@@ -89,7 +83,7 @@ public class FullSetEntityWriter extends JAMSComponent {
      */
     
     @Override
-    public void init() throws JAMSEntity.NoSuchAttributeException {
+    public void init() throws Attribute.Entity.NoSuchAttributeException {
         writer = new GenericDataWriter(JAMSTools.CreateAbsoluteFileName(getModel().getWorkspaceDirectory().getPath(),fileName.getValue()));
         
         writer.addComment("J2K model output"+header.getValue());
@@ -99,7 +93,7 @@ public class FullSetEntityWriter extends JAMSComponent {
     }
     
     @Override
-    public void run() throws JAMSEntity.NoSuchAttributeException {
+    public void run() throws Attribute.Entity.NoSuchAttributeException {
         if(!this.headerWritten){
             //always write time
             writer.addColumn("date/time");

@@ -30,7 +30,7 @@ public class dissolvedOxygen extends JAMSComponent {
             lowerBound= 0,
             upperBound = 30
             )
-            public JAMSDouble DOsat;
+            public Attribute.Double DOsat;
      *
      */
 
@@ -41,7 +41,7 @@ public class dissolvedOxygen extends JAMSComponent {
             lowerBound= 0,
             upperBound = 30
             )
-            public JAMSDouble disOxy;
+            public Attribute.Double disOxy;
 
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
@@ -50,7 +50,7 @@ public class dissolvedOxygen extends JAMSComponent {
             lowerBound= 0,
             upperBound = 30
             )
-            public JAMSDouble Oxydis;
+            public Attribute.Double Oxydis;
 
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
@@ -59,17 +59,17 @@ public class dissolvedOxygen extends JAMSComponent {
             lowerBound= 0,
             upperBound = Double.POSITIVE_INFINITY
             )
-            public JAMSDouble RateReaer;
+            public Attribute.Double RateReaer;
   
     /*
      *  Component run stages
      */
 
 
-    public void init() throws JAMSEntity.NoSuchAttributeException {
+    public void init() throws Attribute.Entity.NoSuchAttributeException {
 
     }
-    public void run() throws JAMSEntity.NoSuchAttributeException, IOException {
+    public void run() throws Attribute.Entity.NoSuchAttributeException, IOException {
 
         // calculation of dissolved oxygen amount in water body
             // DO the mean dissolved oxygen amount in water body (mg/l)

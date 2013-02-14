@@ -44,7 +44,6 @@ import jams.model.*;
      */
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "HRU attribute name area",
             unit = "m"
             )
@@ -52,7 +51,6 @@ import jams.model.*;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.INIT,
             description = "Snow parameter TRS",
             lowerBound = -10.0,
             upperBound = 10.0,
@@ -63,7 +61,6 @@ import jams.model.*;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.INIT,
             description = "Snow parameter TRANS",
             lowerBound = 0.0,
             upperBound = 5.0,
@@ -74,7 +71,6 @@ import jams.model.*;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "state variable min temperature or mean",
             unit = "°C"
             )
@@ -82,7 +78,6 @@ import jams.model.*;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "state variable mean temperature",
             unit = "°C"
             )
@@ -90,7 +85,6 @@ import jams.model.*;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "state variable precipitation",
             unit = "mm"
             )
@@ -98,7 +92,6 @@ import jams.model.*;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "state variable rain",
             unit = "L"
             )
@@ -106,7 +99,6 @@ import jams.model.*;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "state variable snow",
             unit = "L"
             )
@@ -114,7 +106,6 @@ import jams.model.*;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "save variable rain",
             defaultValue= "0",
             unit = "L"
@@ -123,7 +114,6 @@ import jams.model.*;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "save variable snow",
             defaultValue= "0",
             unit = "L"
@@ -139,7 +129,7 @@ import jams.model.*;
         
     }
     
-    public void run() throws JAMSEntity.NoSuchAttributeException{
+    public void run() throws Attribute.Entity.NoSuchAttributeException{
         double temperature = (this.tmin.getValue() + this.tmean.getValue()) / 2.0;
         //determinining relative snow amount of total precip depending on temperature
         double pSnow = (snow_trs.getValue() + snow_trans.getValue() - temperature) /

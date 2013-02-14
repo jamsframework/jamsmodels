@@ -40,13 +40,12 @@ public class HydroNETPropagate extends JAMSComponent {
         )
      @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "List of spatial entities"
             )
-            public JAMSEntityCollection entities;
+            public Attribute.EntityCollection entities;
         
     @Override
-    public void run() throws JAMSEntity.NoSuchAttributeException { 
+    public void run() throws Attribute.Entity.NoSuchAttributeException { 
 	Iterator<Entity> Iterator = entities.getEntities().iterator();
 	while (Iterator.hasNext()) {
 	    Entity entity = Iterator.next();

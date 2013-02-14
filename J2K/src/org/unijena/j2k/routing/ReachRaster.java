@@ -32,30 +32,28 @@ public class ReachRaster extends JAMSComponent {
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = ""
             )
-            public JAMSEntity information;
+            public Attribute.Entity information;
     
      @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = ""
             )
-            public JAMSEntity fuellstand;
+            public Attribute.Entity fuellstand;
     
      
      
      
     
 
- public void init() throws JAMSEntity.NoSuchAttributeException
+ public void init() throws Attribute.Entity.NoSuchAttributeException
 {
     
 }
     
 @SuppressWarnings("unchecked")
-public void run()throws JAMSEntity.NoSuchAttributeException
+public void run()throws Attribute.Entity.NoSuchAttributeException
 {  
 
      double[][] RD1raster=null;

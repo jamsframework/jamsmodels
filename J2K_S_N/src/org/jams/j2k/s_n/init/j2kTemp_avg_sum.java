@@ -47,44 +47,38 @@ import jams.model.*;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "Daily mean temperature in °C"
             )
-            public JAMSDouble tmeanpre;
+            public Attribute.Double tmeanpre;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "mean temperature of the simulation period in °C"
             )
-            public JAMSDouble tmeanavg;
+            public Attribute.Double tmeanavg;
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "average yearly temperature sum of the simulation period in °C"
             )
-            public JAMSDouble tmeansum;
+            public Attribute.Double tmeansum;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "number of current days"
             )
-            public JAMSDouble I;
+            public Attribute.Double I;
     
      @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "soil temperature in layerdepth in °C"
             )
-            public JAMSDouble Soil_Temp_Layer;
+            public Attribute.Double Soil_Temp_Layer;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "in °C *  Output soil surface temperature"
             )
-            public JAMSDouble Surfacetemp;
+            public Attribute.Double Surfacetemp;
     
     
     /*
@@ -100,7 +94,7 @@ import jams.model.*;
         
     }
     
-    public void run() throws JAMSEntity.NoSuchAttributeException{
+    public void run() throws Attribute.Entity.NoSuchAttributeException{
         double tempmean = tmeanpre.getValue();
         double tempmeanavg = tmeanavg.getValue();
         double tempmeansum = tmeansum.getValue();

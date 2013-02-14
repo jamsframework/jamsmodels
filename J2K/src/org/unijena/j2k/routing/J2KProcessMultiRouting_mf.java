@@ -45,84 +45,72 @@ title="J2KProcessRouting_mf",
      */
     @JAMSVarDescription(
     access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "The current hru entity"
             )
-            public JAMSEntityCollection entities;
+            public Attribute.EntityCollection entities;
     
     @JAMSVarDescription(
     access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "Collection of reach objects"
             )
-            public JAMSEntityCollection reaches;
+            public Attribute.EntityCollection reaches;
     
     @JAMSVarDescription(
     access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "Collection of reservoir objects"
             )
-            public JAMSEntityCollection reservoirs;
+            public Attribute.EntityCollection reservoirs;
     
     @JAMSVarDescription(
     access = JAMSVarDescription.AccessType.READWRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "HRU statevar RD1 inflow"
             )
             public Attribute.Double inRD1;
     
     @JAMSVarDescription(
     access = JAMSVarDescription.AccessType.READWRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "HRU statevar RD2 inflow"
             )
             public Attribute.Double inRD2;
     
     @JAMSVarDescription(
     access = JAMSVarDescription.AccessType.READWRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "HRU statevar RG1 inflow"
             )
             public Attribute.Double inRG1;
     
     @JAMSVarDescription(
     access = JAMSVarDescription.AccessType.READWRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "HRU statevar RG2 inflow"
             )
             public Attribute.Double inRG2;
     
     @JAMSVarDescription(
     access = JAMSVarDescription.AccessType.READWRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "HRU statevar groundwater excess"
             )
             public Attribute.Double inGWExcess;
     
     @JAMSVarDescription(
     access = JAMSVarDescription.AccessType.READWRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "HRU statevar RD1 outflow"
             )
             public Attribute.Double outRD1;
     
     @JAMSVarDescription(
     access = JAMSVarDescription.AccessType.READWRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "HRU statevar RD2 outflow"
             )
             public Attribute.Double outRD2;
     
     @JAMSVarDescription(
     access = JAMSVarDescription.AccessType.READWRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "HRU statevar RG1 outflow"
             )
             public Attribute.Double outRG1;
     
     @JAMSVarDescription(
     access = JAMSVarDescription.AccessType.READWRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "HRU statevar RG2 outflow"
             )
             public Attribute.Double outRG2;
@@ -130,7 +118,6 @@ title="J2KProcessRouting_mf",
     @JAMSVarDescription(
 
     access = JAMSVarDescription.AccessType.READWRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "Downstream reach entity"
             )
             public Attribute.Entity toReach;

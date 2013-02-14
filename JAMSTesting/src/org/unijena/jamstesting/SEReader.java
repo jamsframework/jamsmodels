@@ -43,16 +43,15 @@ import java.util.*;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.INIT
             )
-            public JAMSEntityCollection entities;
+            public Attribute.EntityCollection entities;
     
     
     public void init() throws Exception {
         
         System.out.println("SEReader init");
         
-        JAMSEntity[] ea = entities.getEntityArray();
+        Attribute.Entity[] ea = entities.getEntityArray();
         for (int i = 0; i < ea.length; i++) {
             //System.out.println(ea[i].getDouble("attr"));
             ea[i].setDouble("landuse", 47);

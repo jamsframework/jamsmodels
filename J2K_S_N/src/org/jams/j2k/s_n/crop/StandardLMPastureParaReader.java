@@ -37,21 +37,19 @@ public class StandardLMPastureParaReader extends JAMSComponent {
 
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.INIT,
             description = "Pasture management parameter file name"
             )
-            public JAMSString lpFileName;
+            public Attribute.String lpFileName;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.INIT,
             description = "Collection of hru objects"
             )
-            public JAMSEntityCollection hrus;
+            public Attribute.EntityCollection hrus;
     
     
     
-    public void init() throws JAMSEntity.NoSuchAttributeException {
+    public void init() throws Attribute.Entity.NoSuchAttributeException {
         
         //read pasture management parameter
         Attribute.EntityCollection lmpas = getModel().getRuntime().getDataFactory().createEntityCollection();

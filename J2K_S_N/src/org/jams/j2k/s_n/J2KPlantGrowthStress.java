@@ -44,38 +44,33 @@ import jams.model.*;
    
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "in [-] plant growth nitrogen stress factor"
             )
-            public JAMSDouble nstrs;
+            public Attribute.Double nstrs;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "in [-] plant growth temperature stress factor"
             )
-            public JAMSDouble tstrs;
+            public Attribute.Double tstrs;
     
      @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "in [-] plant growth water stress factor"
             )
-            public JAMSDouble wstrs;
+            public Attribute.Double wstrs;
 
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "Biomass sum produced for a given day [kg/ha] drymass"
             )
-            public JAMSDouble BioAct;
+            public Attribute.Double BioAct;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "Plants daily biomass increase [kg/ha]"
             )
-            public JAMSDouble BioOpt_delta;
+            public Attribute.Double BioOpt_delta;
     
     
     

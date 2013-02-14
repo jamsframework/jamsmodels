@@ -43,102 +43,89 @@ import jams.model.*;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "The current hru entity"
             )
-            public JAMSEntityCollection entities;
+            public Attribute.EntityCollection entities;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "attribute area"
             )
-            public JAMSDouble area;
+            public Attribute.Double area;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "maximum RG1 storage"
             )
-            public JAMSDouble maxRG1;
+            public Attribute.Double maxRG1;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "maximum RG2 storage"
             )
-            public JAMSDouble maxRG2;
+            public Attribute.Double maxRG2;
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "actual RG1 storage"
             )
-            public JAMSDouble actRG1;
+            public Attribute.Double actRG1;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "actual RG2 storage"
             )
-            public JAMSDouble actRG2;
+            public Attribute.Double actRG2;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.INIT,
             description = "relative initial RG1 storage"
             )
-            public JAMSDouble initRG1;
+            public Attribute.Double initRG1;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.INIT,
             description = "relative initial RG2 storage"
             )
-            public JAMSDouble initRG2;
+            public Attribute.Double initRG2;
 
         @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
-            update = JAMSVarDescription.UpdateType.INIT,
             description = "maximum Volume of Lake"
             )
-            public JAMSDouble maxLakeStor;
+            public Attribute.Double maxLakeStor;
 
         @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
-            update = JAMSVarDescription.UpdateType.INIT,
             description = "actual Volume of Lake"
             )
-            public JAMSDouble actLakeStor;
+            public Attribute.Double actLakeStor;
         
         @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.INIT,
             description = "init Volume of Lake"
             )
-            public JAMSDouble initLakeStor;
+            public Attribute.Double initLakeStor;
         
         @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.INIT,
             description = "maximum Depth of Lake"
             )
-            public JAMSDouble maxLakeDepth;
+            public Attribute.Double maxLakeDepth;
         
         @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
-            update = JAMSVarDescription.UpdateType.INIT,
             description = "actual Depth of Lake"
             )
-            public JAMSDouble actLakeDepth;        
+            public Attribute.Double actLakeDepth;        
     /*
      *  Component run stages
      */
     
-    public void init() throws JAMSEntity.NoSuchAttributeException {
+    public void init() throws Attribute.Entity.NoSuchAttributeException {
         
     }
     
-    public void run() throws JAMSEntity.NoSuchAttributeException {
+    public void run() throws Attribute.Entity.NoSuchAttributeException {
         
         Attribute.Entity entity = entities.getCurrent();
         

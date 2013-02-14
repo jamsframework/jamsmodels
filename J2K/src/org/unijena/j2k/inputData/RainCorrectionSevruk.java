@@ -45,147 +45,126 @@ import jams.model.*;
      */
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "time"
             )
-            public JAMSCalendar time;
+            public Attribute.Calendar time;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "the precip values"
             )
             public Attribute.DoubleArray precip;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "temperature for the correction function"
             )
             public Attribute.DoubleArray temperature;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "wind speed for the correction function"
             )
             public Attribute.DoubleArray wind;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "corrected precip values"
             )
             public Attribute.DoubleArray rcorr;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "Array of temperature station elevations"
             )
             public Attribute.DoubleArray tempElevation;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "Array of temperature station's x coordinate"
             )
             public Attribute.DoubleArray tempXCoord;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "Array of temperature station's y coordinate"
             )
             public Attribute.DoubleArray tempYCoord;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "Regression coefficients for temperature"
             )
             public Attribute.DoubleArray tempRegCoeff;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "Array of precip station elevations"
             )
             public Attribute.DoubleArray rainElevation;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "Array of precip station's x coordinate"
             )
             public Attribute.DoubleArray rainXCoord;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "Array of precip station's y coordinate"
             )
             public Attribute.DoubleArray rainYCoord;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "Array of wind station elevations"
             )
             public Attribute.DoubleArray windElevation;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "Array of wind station's x coordinate"
             )
             public Attribute.DoubleArray windXCoord;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "Array of wind station's y coordinate"
             )
             public Attribute.DoubleArray windYCoord;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "Regression coefficients for wind"
             )
             public Attribute.DoubleArray windRegCoeff;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "number of temperature station for IDW"
             )
-            public JAMSInteger tempNIDW;
+            public Attribute.Integer tempNIDW;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "number of wind station for IDW"
             )
-            public JAMSInteger windNIDW;
+            public Attribute.Integer windNIDW;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "power for IDW function"
             )
             public Attribute.Double pIDW;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "regression threshold"
             )
             public Attribute.Double regThres;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "tbase"
             )
             public Attribute.Double tbase;
@@ -195,13 +174,12 @@ import jams.model.*;
 //            update = JAMSVarDescription.UpdateType.RUN,
 //            description = "Use caching of regionalised data?"
 //            )
-//            public JAMSBoolean dataCaching;
+//            public Attribute.Boolean dataCaching;
 
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
-                        update = JAMSVarDescription.UpdateType.RUN,
                         description = "Caching configuration: 0 - write cache, 1 - use cache, 2 - caching off",
                         defaultValue = "0")
-    public JAMSInteger dataCaching;
+    public Attribute.Integer dataCaching;
     
 
 
@@ -210,11 +188,11 @@ import jams.model.*;
      *  Component run stages
      */
     
-    public void init() throws JAMSEntity.NoSuchAttributeException {
+    public void init() throws Attribute.Entity.NoSuchAttributeException {
         
     }
     
-    public void run() throws JAMSEntity.NoSuchAttributeException {
+    public void run() throws Attribute.Entity.NoSuchAttributeException {
         //if(!dataCaching.getValue()){
              if (dataCaching.getValue() != 1) {
             double[] precip = this.precip.getValue();
@@ -303,7 +281,7 @@ import jams.model.*;
                 if(precip[r] < 0.1)
                     wetErr = 0;
                 else{
-                    if(time.get(time.MONTH) >= 4 & time.get(time.MONTH) < 10){ //Summer half of the year
+                    if(time.get(JAMSCalendar.MONTH) >= 4 & time.get(JAMSCalendar.MONTH) < 10){ //Summer half of the year
                         if(precip[r] >= 9.0)
                             wetErr = 0.47;
                         else
@@ -324,7 +302,7 @@ import jams.model.*;
         }
     }
     
-    public void cleanup() throws JAMSEntity.NoSuchAttributeException {
+    public void cleanup() throws Attribute.Entity.NoSuchAttributeException {
         
     }
 }

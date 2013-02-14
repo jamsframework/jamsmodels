@@ -34,14 +34,12 @@ public class VariableSupplier extends JAMSComponent {
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "variable list"
             )
             public Attribute.Double vars;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.INIT,
             description = "value list"
             )
             public Attribute.Double vals;

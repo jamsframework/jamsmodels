@@ -10,6 +10,7 @@
 package org.unijena.j2k;
 
 import jams.data.Attribute;
+import jams.data.Attribute.Calendar;
 import jams.data.JAMSCalendar;
 import java.util.Locale;
 import jams.data.JAMSDataFactory;

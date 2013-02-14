@@ -20,17 +20,15 @@ import jams.model.*;
 
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "HRU crop class"
             )
-            public JAMSDouble storageInput;
+            public Attribute.Double storageInput;
 
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "HRU crop class"
             )
-            public JAMSDouble storage;
+            public Attribute.Double storage;
 
 
 //Berechnung

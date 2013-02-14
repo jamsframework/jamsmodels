@@ -20,79 +20,62 @@ description = "IrrigationStorage calculation of irrigation demand")
 public class IrrigationdemandGW extends JAMSComponent {
 
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
-    update = JAMSVarDescription.UpdateType.RUN,
     description = "in [-] plant growth water stress factor")
-    public JAMSDouble wstrs;
+    public Attribute.Double wstrs;
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
-    update = JAMSVarDescription.UpdateType.RUN,
     description = "HRU attribute maximum MPS")
-    public JAMSDoubleArray maxMPS;
+    public Attribute.DoubleArray maxMPS;
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
-    update = JAMSVarDescription.UpdateType.RUN,
     description = "HRU attribute maximum LPS")
-    public JAMSDoubleArray maxLPS;
+    public Attribute.DoubleArray maxLPS;
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READWRITE,
-    update = JAMSVarDescription.UpdateType.RUN,
     description = "HRU state var saturation of MPS")
-    public JAMSDoubleArray satMPS;
+    public Attribute.DoubleArray satMPS;
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READWRITE,
-    update = JAMSVarDescription.UpdateType.RUN,
     description = "HRU state var saturation of LPS")
-    public JAMSDoubleArray satLPS;
+    public Attribute.DoubleArray satLPS;
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.WRITE,
-    update = JAMSVarDescription.UpdateType.RUN,
     description = "HRU crop class")
-    public JAMSDouble irrigation;
+    public Attribute.Double irrigation;
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READWRITE,
-    update = JAMSVarDescription.UpdateType.RUN,
     description = "HRU crop class")
-    public JAMSDouble irrigationsum;
+    public Attribute.Double irrigationsum;
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
-    update = JAMSVarDescription.UpdateType.RUN,
     description = "Waterstress thershold post season 0-1 (-)")
-    public JAMSDouble wst_thr_out;
+    public Attribute.Double wst_thr_out;
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
-    update = JAMSVarDescription.UpdateType.RUN,
     description = "Waterstress thershold 0-1 (-)")
-    public JAMSDouble wst_thr;
+    public Attribute.Double wst_thr;
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
-    update = JAMSVarDescription.UpdateType.RUN,
     description = "Irrigation multiplier (-)")
-    public JAMSDouble Irr_mult;
+    public Attribute.Double Irr_mult;
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
-    update = JAMSVarDescription.UpdateType.RUN,
     description = "Start of the Irrigation season in day of the year (-)")
-    public JAMSInteger Irr_Start;
+    public Attribute.Integer Irr_Start;
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
-    update = JAMSVarDescription.UpdateType.RUN,
     description = "End of the Irrigation season in day of the year (-)")
-    public JAMSInteger Irr_End;
+    public Attribute.Integer Irr_End;
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
-    update = JAMSVarDescription.UpdateType.RUN,
     description = "Exponent of the water use efficiency function (-)")
-    public JAMSDouble Eff_exp;
+    public Attribute.Double Eff_exp;
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
-    update = JAMSVarDescription.UpdateType.RUN,
     description = "reduction factor for dripper irrigation (-)")
-    public JAMSDouble dripperfactor;
+    public Attribute.Double dripperfactor;
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
-    update = JAMSVarDescription.UpdateType.RUN,
     description = "HRU crop class")
-    public JAMSDouble cropid;
+    public Attribute.Double cropid;
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
-    update = JAMSVarDescription.UpdateType.RUN,
     description = "Current time")            
-    public JAMSCalendar time;
+    public Attribute.Calendar time;
     
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.WRITE,
-    update = JAMSVarDescription.UpdateType.RUN,
     description = "Test value for water use efficiency function (-)")
-    public JAMSDouble Eff_test;
+    public Attribute.Double Eff_test;
     
     
 
     //Berechnung
-    public void run() throws JAMSEntity.NoSuchAttributeException {
+    public void run() throws Attribute.Entity.NoSuchAttributeException {
         
         double wst = 1 - wstrs.getValue();
         double satMPSArray[] = satMPS.getValue();

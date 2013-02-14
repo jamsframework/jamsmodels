@@ -43,25 +43,22 @@ import jams.model.*;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "HRU actual Transpiration in mm"
             )
-            public JAMSDouble aTP;
+            public Attribute.Double aTP;
     
      @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "HRU potential Transpiration in mm"
             )
-            public JAMSDouble pTP;
+            public Attribute.Double pTP;
     
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "in [-] plant groth water stress factor"
             )
-            public JAMSDouble wstrs;
+            public Attribute.Double wstrs;
     
     /*
      *  Component run stages

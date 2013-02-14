@@ -44,24 +44,21 @@ import jams.model.*;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "mean temperature of the simulation period in °C"
             )
-            public JAMSDouble tmeanavg;
+            public Attribute.Double tmeanavg;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "soil temperature in layerdepth in °C"
             )
-            public JAMSDouble Soil_Temp_Layer;
+            public Attribute.Double Soil_Temp_Layer;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "in °C *  Output soil surface temperature"
             )
-            public JAMSDouble Surfacetemp;
+            public Attribute.Double Surfacetemp;
     
     
     
@@ -69,12 +66,12 @@ import jams.model.*;
      *  Component run stages
      */
     
-    public void init() throws JAMSEntity.NoSuchAttributeException{
+    public void init() throws Attribute.Entity.NoSuchAttributeException{
         
         
     }
     
-    public void run() throws JAMSEntity.NoSuchAttributeException {
+    public void run() throws Attribute.Entity.NoSuchAttributeException {
         
     
         Soil_Temp_Layer.setValue(tmeanavg.getValue());

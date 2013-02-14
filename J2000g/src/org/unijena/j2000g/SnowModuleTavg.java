@@ -26,78 +26,69 @@ title="SnowModule",
     
     @JAMSVarDescription(
     access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "Entity area",
             unit = "m2"
             )
-            public JAMSDouble area;
+            public Attribute.Double area;
     
     @JAMSVarDescription(
     access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.INIT,
             description = "Parameter ddf"
             )
-            public JAMSDouble ddf;
+            public Attribute.Double ddf;
     
     @JAMSVarDescription(
     access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.INIT,
             description = "Parameter threshold"
             )
-            public JAMSDouble t_thres;
+            public Attribute.Double t_thres;
     
     @JAMSVarDescription(
     access = JAMSVarDescription.AccessType.READWRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "the snow storage "
             )
-            public JAMSDouble snowStorage;
+            public Attribute.Double snowStorage;
     
     @JAMSVarDescription(
     access = JAMSVarDescription.AccessType.READWRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "precip"
             )
-            public JAMSDouble precip;
+            public Attribute.Double precip;
     
     
     @JAMSVarDescription(
     access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "the air temperature input"
             )
-            public JAMSDouble temperature;
+            public Attribute.Double temperature;
     
     @JAMSVarDescription(
     access = JAMSVarDescription.AccessType.WRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "the snowmelt output"
             )
-            public JAMSDouble snowMelt;
+            public Attribute.Double snowMelt;
     
     @JAMSVarDescription(
     access = JAMSVarDescription.AccessType.WRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "remaining precip"
             )
-            public JAMSDouble restPrecip;
+            public Attribute.Double restPrecip;
     
     @JAMSVarDescription(
     access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.INIT,
             description = "module active"
             )
-            public JAMSBoolean active;
+            public Attribute.Boolean active;
         
     
     /*
      *  Component run stages
      */
-    public void init() throws JAMSEntity.NoSuchAttributeException {
+    public void init() throws Attribute.Entity.NoSuchAttributeException {
         
     }
     
-    public void run() throws JAMSEntity.NoSuchAttributeException{
+    public void run() throws Attribute.Entity.NoSuchAttributeException{
         if(this.active == null || this.active.getValue()){
             //System.out.println("RUN ABCModel");
             double snowStorage = this.snowStorage.getValue();

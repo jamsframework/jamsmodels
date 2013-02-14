@@ -45,282 +45,240 @@ import jams.model.*;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "The current hru entity"
             )
-            public JAMSEntityCollection entities;
+            public Attribute.EntityCollection entities;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "attribute area"
             )
-            public JAMSDouble area;
+            public Attribute.Double area;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "attribute slope"
             )
-            public JAMSDouble slope;
+            public Attribute.Double slope;
            
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "state variable net rain"
             )
-            public JAMSDouble netRain;
+            public Attribute.Double netRain;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "state variable net snow"
             )
-            public JAMSDouble netSnow;
+            public Attribute.Double netSnow;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "state variable potET"
             )
-            public JAMSDouble potET;
+            public Attribute.Double potET;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "state variable actET"
             )
-            public JAMSDouble actET;
+            public Attribute.Double actET;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "maximum RG1 storage"
             )
-            public JAMSDouble maxRG1;
+            public Attribute.Double maxRG1;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "maximum RG2 storage"
             )
-            public JAMSDouble maxRG2;
+            public Attribute.Double maxRG2;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "recision coefficient k RG1"
             )
-            public JAMSDouble kRG1;
+            public Attribute.Double kRG1;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "recision coefficient k RG2"
             )
-            public JAMSDouble kRG2;
+            public Attribute.Double kRG2;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "actual RG1 storage"
             )
-            public JAMSDouble actRD1;
+            public Attribute.Double actRD1;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "actual RG2 storage"
             )
-            public JAMSDouble actRD2;
+            public Attribute.Double actRD2;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "actual RG1 storage"
             )
-            public JAMSDouble actRG1;
+            public Attribute.Double actRG1;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "actual RG2 storage"
             )
-            public JAMSDouble actRG2;
+            public Attribute.Double actRG2;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "RD1 inflow"
             )
-            public JAMSDouble inRD1;
+            public Attribute.Double inRD1;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "RD2 inflow"
             )
-            public JAMSDouble inRD2;
+            public Attribute.Double inRD2;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "RG1 inflow"
             )
-            public JAMSDouble inRG1;
+            public Attribute.Double inRG1;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "RG2 inflow"
             )
-            public JAMSDouble inRG2;
+            public Attribute.Double inRG2;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "RG1 outflow"
             )
-            public JAMSDouble outRG1;
+            public Attribute.Double outRG1;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "RG2 outflow"
             )
-            public JAMSDouble outRG2;
+            public Attribute.Double outRG2;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "RG1 generation"
             )
-            public JAMSDouble genRG1;
+            public Attribute.Double genRG1;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "RG2 generation"
             )
-            public JAMSDouble genRG2;
+            public Attribute.Double genRG2;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.INIT,
             description = "RG1 correction factor"
             )
-            public JAMSDouble gwRG1Fact;
+            public Attribute.Double gwRG1Fact;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.INIT,
             description = "RG2 correction factor"
             )
-            public JAMSDouble gwRG2Fact;
+            public Attribute.Double gwRG2Fact;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.INIT,
             description = "RG1 RG2 distribution factor"
             )
-            public JAMSDouble gwRG1RG2dist;
+            public Attribute.Double gwRG1RG2dist;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "actual Volume of Lake"
             )
-            public JAMSDouble actLakeStor;
+            public Attribute.Double actLakeStor;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "actual Depth of Lake"
             )
-            public JAMSDouble actLakeDepth;        
+            public Attribute.Double actLakeDepth;        
     
         
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "actual Depth of Lake"
             )
-            public JAMSDouble lakeDepth;
+            public Attribute.Double lakeDepth;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "actual Depth of Lake"
             )
-            public JAMSDouble KfGeo;     
+            public Attribute.Double KfGeo;     
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
-            update = JAMSVarDescription.UpdateType.INIT,
             description = "clogging Factor of Lake Bank"
             )
-            public JAMSDouble cloggingFactor;  
+            public Attribute.Double cloggingFactor;  
     
         
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "HRU state var saturation of MPS"
             )
-            public JAMSDouble satMPS;
+            public Attribute.Double satMPS;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "HRU state var saturation of LPS"
             )
-            public JAMSDouble satLPS;
+            public Attribute.Double satLPS;
 
 
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READWRITE,
-    update = JAMSVarDescription.UpdateType.RUN,
     description = "Downstream hru entity")
-    public JAMSEntity toPoly;
+    public Attribute.Entity toPoly;
 
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READWRITE,
-    update = JAMSVarDescription.UpdateType.RUN,
     description = "Downstream reach entity")
-    public JAMSEntity toReach;
+    public Attribute.Entity toReach;
 
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READWRITE,
-    update = JAMSVarDescription.UpdateType.RUN,
     description = "Groundwater Level")
-    public JAMSDouble gwTable;
+    public Attribute.Double gwTable;
 
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
-    update = JAMSVarDescription.UpdateType.RUN,
     description = "estimated Porosity")
-    public JAMSDouble Peff;
+    public Attribute.Double Peff;
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
-    update = JAMSVarDescription.UpdateType.RUN,
     description = "estimated hydraulic conductivity in m/d")
-    public JAMSDouble Kf_geo;
+    public Attribute.Double Kf_geo;
 
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
-    update = JAMSVarDescription.UpdateType.RUN,
     description = "Thickness of the Aquifer")
-    public JAMSDouble aqThickness;
+    public Attribute.Double aqThickness;
 
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
-    update = JAMSVarDescription.UpdateType.RUN,
     description = "Heigth of the Aquifer Base in m + NN")
-    public JAMSDouble baseHeigth;
+    public Attribute.Double baseHeigth;
 
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
-    update = JAMSVarDescription.UpdateType.INIT,
     description = "Length of the border arc between adjacent entities")
-    public JAMSDouble gwArcLength;
+    public Attribute.Double gwArcLength;
 
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.WRITE,
-    update = JAMSVarDescription.UpdateType.RUN,
     description = "Distance between adjacent entities")
-    public JAMSDouble gwFlowLength;
+    public Attribute.Double gwFlowLength;
     
     
     double run_lakeArea, run_Kf_geo, run_cloggingFactor, run_maxRG1, run_maxRG2, run_actRD1, run_actRD2, run_actRG1, run_actRG2, run_actLakeStor, run_actLakeDepth, lakeInflow, lakeOutflow, run_inRain, run_inSnow, run_potET, run_actET, run_inRD1, run_inRD2, run_inRG1, run_inRG2, run_outRG1, run_outRG2, run_genRG1, run_genRG2,
@@ -331,11 +289,11 @@ import jams.model.*;
      *  Component run stages
      */
     
-    public void init() throws JAMSEntity.NoSuchAttributeException {
+    public void init() throws Attribute.Entity.NoSuchAttributeException {
         
     }
     
-    public void run() throws JAMSEntity.NoSuchAttributeException {
+    public void run() throws Attribute.Entity.NoSuchAttributeException {
         
         Attribute.Entity entity = entities.getCurrent();
         getModel().getRuntime().println("Das ist ein See!");
@@ -549,7 +507,7 @@ import jams.model.*;
         
         return true;
     }
-    private boolean calcDarcyGWout() throws JAMSEntity.NoSuchAttributeException {
+    private boolean calcDarcyGWout() throws Attribute.Entity.NoSuchAttributeException {
 
         // Ausfluss auf RG1 noch alte Variante
         double k_rg1 = 1 / this.run_RG1_rec;
@@ -573,7 +531,7 @@ import jams.model.*;
 
                     double gwFlowArea = this.run_gwArcLength * (this.run_gwTableUpper - this.run_baseHeigth);
                     rg2_out_m3 = gwFlowArea * this.run_Kf_geo * gwDifference / this.run_gwFlowLength;
-                    //[m³/s]   = [m²]       * [m/s]           * [m]          / [m]
+                    //[mÂ³/s]   = [mÂ²]       * [m/s]           * [m]          / [m]
                     if (rg2_out_m3 > potOutflow) {
                         rg2_out_m3 = potOutflow;
                         getModel().getRuntime().println("Alles raus!");

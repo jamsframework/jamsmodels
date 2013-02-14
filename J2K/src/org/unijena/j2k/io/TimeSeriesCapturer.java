@@ -49,42 +49,36 @@ title="Time series capturer",
     
     @JAMSVarDescription(
     access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "time"
             )
-            public JAMSCalendar time;
+            public Attribute.Calendar time;
     
     @JAMSVarDescription(
     access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.INIT,
             description = "The model time interval"
             )
-            public JAMSTimeInterval modelTimeInterval;
+            public Attribute.TimeInterval modelTimeInterval;
     
     @JAMSVarDescription(
     access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.INIT,
             description = "The time interval to capture"
             )
-            public JAMSTimeInterval captureTimeInterval;
+            public Attribute.TimeInterval captureTimeInterval;
     
     @JAMSVarDescription(
     access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.INIT,
             description = "The months to be captured"
             )
-            public JAMSIntegerArray captureMonthList;
+            public Attribute.IntegerArray captureMonthList;
     
     @JAMSVarDescription(
     access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "the timeSeries values to capture"
             )
             public Attribute.Double timeSeriesVal;
     
     @JAMSVarDescription(
     access = JAMSVarDescription.AccessType.WRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "the captured time series"
             )
             public Attribute.DoubleArray timeSeries;
@@ -214,7 +208,7 @@ title="Time series capturer",
         
         if(capture){
             if(monthly){
-                int month = time.get(time.MONTH) + 1;
+                int month = time.get(JAMSCalendar.MONTH) + 1;
                 for(int i = 0; i < this.captureMonthList.getValue().length; i++){
                     if(month == this.captureMonthList.getValue()[i]){
                         this.captData[counter] = this.timeSeriesVal.getValue();

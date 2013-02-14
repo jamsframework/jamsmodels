@@ -50,34 +50,34 @@ public class EntityProvider extends JAMSComponent {
 
         while (store.hasNext()) {
 
-            Attribute.Entity e = JAMSDataFactory.createEntity();
-
+            Attribute.Entity e = this.getModel().getRuntime().getDataFactory().createEntity();
+                    
             JAMSTableDataArray da = store.getNext();
             double[] vals = JAMSTableDataConverter.toDouble(da);
 
             Attribute.Double d;
 
-            d = JAMSDataFactory.createDouble();
+            d = this.getModel().getRuntime().getDataFactory().createDouble();
             d.setValue(vals[0]);
             e.setObject("latitude", d);
 
-            d = JAMSDataFactory.createDouble();
+            d = this.getModel().getRuntime().getDataFactory().createDouble();
             d.setValue(vals[1]);
             e.setObject("soilMoistStorCap", d);
 
-            d = JAMSDataFactory.createDouble();
+            d = this.getModel().getRuntime().getDataFactory().createDouble();
             d.setValue(vals[2]);
             e.setObject("snowStorage", d);
 
-            d = JAMSDataFactory.createDouble();
+            d = this.getModel().getRuntime().getDataFactory().createDouble();
             d.setValue(vals[3]);
             e.setObject("runoffFactor", d);
 
-            d = JAMSDataFactory.createDouble();
+            d = this.getModel().getRuntime().getDataFactory().createDouble();
             d.setValue(vals[4]);
             e.setObject("prestor", d);
 
-            d = JAMSDataFactory.createDouble();
+            d = this.getModel().getRuntime().getDataFactory().createDouble();
             d.setValue(vals[5]);
             e.setObject("remain", d);
             /*

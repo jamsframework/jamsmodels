@@ -44,108 +44,94 @@ import jams.model.*;
      */
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "The spatial modelling entities"
             )
-            public JAMSEntityCollection entities;
+            public Attribute.EntityCollection entities;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "Collection of reach objects"
             )
-            public JAMSEntityCollection reaches;
+            public Attribute.EntityCollection reaches;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "Collection of reservoir objects"
             )
-            public JAMSEntityCollection reservoirs;
+            public Attribute.EntityCollection reservoirs;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "RD1 inflow to modelling entity",
             unit = "L"
             )
-            public JAMSDouble inRD1;
+            public Attribute.Double inRD1;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "RD2 inflow to modelling entity",
             unit = "L"
             )
-            public JAMSDouble inRD2;
+            public Attribute.Double inRD2;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "RG1 inflow to modelling entity",
             unit = "L"
             )
-            public JAMSDouble inRG1;
+            public Attribute.Double inRG1;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "RG2 inflow to modelling entity",
             unit = "L"
             )
-            public JAMSDouble inRG2;
+            public Attribute.Double inRG2;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "groundwater excess as input to modelling entity",
             unit = "L",
             defaultValue= "0"
             )
-            public JAMSDouble inGWExcess;
+            public Attribute.Double inGWExcess;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "RD1 outflow from modellig entity",
             unit = "L"
             )
-            public JAMSDouble outRD1;
+            public Attribute.Double outRD1;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "RD2 outflow from modellig entity",
             unit = "L"
             )
-            public JAMSDouble outRD2;
+            public Attribute.Double outRD2;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "RG1 outflow from modellig entity",
             unit = "L"
             )
-            public JAMSDouble outRG1;
+            public Attribute.Double outRG1;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "RG2 outflow from modellig entity",
             unit = "L"
             )
-            public JAMSDouble outRG2;
+            public Attribute.Double outRG2;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "Downstream hru entity"
             )
             public Attribute.Entity toPoly;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "Downstream reach entity"
             )
             public Attribute.Entity toReach;
@@ -162,10 +148,10 @@ import jams.model.*;
         Attribute.Entity entity = entities.getCurrent();
         
         //receiving polygon
-        //JAMSEntity toPoly = (JAMSEntity) entity.getObject("to_poly");
+        //Attribute.Entity toPoly = (Attribute.Entity) entity.getObject("to_poly");
         
         //receiving reach
-        //JAMSEntity toReach = (JAMSEntity) entity.getObject("to_reach");
+        //Attribute.Entity toReach = (Attribute.Entity) entity.getObject("to_reach");
                 
         //receiving reservoir
         Attribute.Entity toReservoir = null;

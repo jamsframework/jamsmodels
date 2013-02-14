@@ -40,25 +40,23 @@ public class CalcHourlyMaximumSunshine extends JAMSComponent {
      *  Component variables
      */
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.WRITE,
-        update = JAMSVarDescription.UpdateType.RUN,
         description = "maximum sunshine [0|1]")
         public Attribute.Double maxSunshine;
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.WRITE,
-        update = JAMSVarDescription.UpdateType.RUN,
         description = "extraterrestic radiation [MJ/m²]")
         public Attribute.Double actExtRad;
 
     /*
      *  Component run stages
      */
-    public void init() throws JAMSEntity.NoSuchAttributeException, IOException {
+    public void init() throws Attribute.Entity.NoSuchAttributeException, IOException {
     }
 
-    public void run() throws JAMSEntity.NoSuchAttributeException, IOException {
+    public void run() throws Attribute.Entity.NoSuchAttributeException, IOException {
         double maximumSunshine = org.unijena.j2k.physicalCalculations.HourlySolarRadiationCalculationMethods.calc_HourlyMaxSunshine(this.actExtRad.getValue());
         maxSunshine.setValue(maximumSunshine);
     }
 
-    public void cleanup() throws JAMSEntity.NoSuchAttributeException, IOException {
+    public void cleanup() throws Attribute.Entity.NoSuchAttributeException, IOException {
     }
 }

@@ -46,13 +46,13 @@ public class J2KProcessGWRouting extends JAMSComponent {
             access = JAMSVarDescription.AccessType.READ,
             description = "The current hru entity"
             )
-            public JAMSEntityCollection entities;
+            public Attribute.EntityCollection entities;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
             description = "sum attribute"
             )
-            public JAMSEntity[] fP;
+            public Attribute.Entity[] fP;
 
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
@@ -61,25 +61,25 @@ public class J2KProcessGWRouting extends JAMSComponent {
             lowerBound = 0,
             upperBound = Double.POSITIVE_INFINITY
             )
-            public JAMSDouble area;
+            public Attribute.Double area;
 
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
             description = "elevation of HRU",
-            unit = "m", //[m ü NN] / [a.s.l.]
+            unit = "m", //[m Ã¼ NN] / [a.s.l.]
             lowerBound= -422,
             upperBound = 8848
             )
-            public JAMSDouble elevation;
+            public Attribute.Double elevation;
 
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
             description = "Heigth of the Aquifer Base in m + NN",
-            unit = "m", //[m ü NN] / [a.s.l.]
+            unit = "m", //[m Ã¼ NN] / [a.s.l.]
             lowerBound = 0,
             upperBound = Double.POSITIVE_INFINITY
             )
-            public JAMSDouble baseHeigth;
+            public Attribute.Double baseHeigth;
 
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
@@ -88,16 +88,16 @@ public class J2KProcessGWRouting extends JAMSComponent {
             lowerBound= 0,
             upperBound = 100
             )
-            public JAMSDouble FlurAbstand;
+            public Attribute.Double FlurAbstand;
 
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
             description = "Groundwater Level",
-            unit = "m", //[m ü NN] / [a.s.l.]
+            unit = "m", //[m Ã¼ NN] / [a.s.l.]
             lowerBound = 0,
             upperBound = Double.POSITIVE_INFINITY
             )
-            public JAMSDouble gwTable;
+            public Attribute.Double gwTable;
 
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
@@ -106,7 +106,7 @@ public class J2KProcessGWRouting extends JAMSComponent {
             lowerBound = 0,
             upperBound = Double.POSITIVE_INFINITY
             )
-            public JAMSDouble inGW;
+            public Attribute.Double inGW;
 
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
@@ -115,7 +115,7 @@ public class J2KProcessGWRouting extends JAMSComponent {
             lowerBound = 0,
             upperBound = Double.POSITIVE_INFINITY
             )
-            public JAMSDouble actGW;
+            public Attribute.Double actGW;
 
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
@@ -124,16 +124,16 @@ public class J2KProcessGWRouting extends JAMSComponent {
             lowerBound= 0.0,
             upperBound = 1.0
             )
-            public JAMSDouble Peff;
+            public Attribute.Double Peff;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
             description = "Calculation Factor for each HRU (static geographic variables) for use in GWRouting-module",
-            unit = "m²/d",
+            unit = "mÂ²/d",
             lowerBound = 0,
             upperBound = Double.POSITIVE_INFINITY
             )
-            public JAMSDouble calcFactor;
+            public Attribute.Double calcFactor;
 
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
@@ -143,7 +143,7 @@ public class J2KProcessGWRouting extends JAMSComponent {
             lowerBound = 0,
             upperBound = 2
             )
-            public JAMSInteger outflowReduction;
+            public Attribute.Integer outflowReduction;
 
     /*
      *  Component run stages
@@ -151,16 +151,16 @@ public class J2KProcessGWRouting extends JAMSComponent {
     double[] gradientNew;
     double gwVolume, run_area, run_Peff, run_gwTableUpper, run_gwTableLower, run_gwDepthUpper, run_gwDepthLower, run_baseHeigth,
             pot_gwTable, sumGWin, sumGWin_new, run_GWact, run_outGW, old_GWact, run_Flurabstand, oR, run_elevation;
-    //JAMSEntity[] fP;
+    //Attribute.Entity[] fP;
 
-    public void init() throws JAMSEntity.NoSuchAttributeException {
+    public void init() throws Attribute.Entity.NoSuchAttributeException {
     }
 
-    public void run() throws JAMSEntity.NoSuchAttributeException {
+    public void run() throws Attribute.Entity.NoSuchAttributeException {
 
         Attribute.Entity entity = entities.getCurrent();
 
-        fP = (JAMSEntity[]) entity.getObject("from_poly");
+        fP = (Attribute.Entity[]) entity.getObject("from_poly");
 
         //aktuelle HRU
         run_GWact = this.actGW.getValue();
@@ -182,7 +182,7 @@ public class J2KProcessGWRouting extends JAMSComponent {
         if (fP.length != 0) {   //is there any sender-HRU? Wenn kein Oberlieger, dann gibt es auch nichts zu tun.
             sumGWin_new = 0;
 
-            // Calculation of the accumulated input...  Hier wird zusammengefasst, was von oben zufließen könnte.
+            // Calculation of the accumulated input...  Hier wird zusammengefasst, was von oben zuflieÃŸen kÃ¶nnte.
             for (int i = 0; i < fP.length; i++) {
                 sumGWin_new = fP[i].getDouble("pot_outGW") + sumGWin_new;
             }
@@ -190,22 +190,22 @@ public class J2KProcessGWRouting extends JAMSComponent {
             //sumGWin_new ist nun der Zwischenspeicher aus dem verteilt wird
 
             // double new_gwVolume = (run_GWact + sumGWin_new) / 1000;
-            // der aktuelle Speicherinhalt wird um den zufließenden Betrag erhöht. Damit erhöht sich automatisch die
-            // Grundwasserspiegellage. Es besteht nun die Möglichkeit zu entscheiden, ob eine Gradientenreduktion
-            // auf Basis dieses vränderten Wasserstandes durchgeführt werden soll oder nicht.
+            // der aktuelle Speicherinhalt wird um den zuflieÃŸenden Betrag erhÃ¶ht. Damit erhÃ¶ht sich automatisch die
+            // Grundwasserspiegellage. Es besteht nun die MÃ¶glichkeit zu entscheiden, ob eine Gradientenreduktion
+            // auf Basis dieses vrÃ¤nderten Wasserstandes durchgefÃ¼hrt werden soll oder nicht.
             old_GWact = run_GWact;
             run_GWact = (run_GWact + sumGWin_new);
 
             //Calculation of the potential GW-Levels
             boolean flag = false;
             
-            updateGWTable(flag);  // wie würden die GW-Stände sein, wenn tatsächlich inGW fließen würde.
+            updateGWTable(flag);  // wie wÃ¼rden die GW-StÃ¤nde sein, wenn tatsÃ¤chlich inGW flieÃŸen wÃ¼rde.
             
             if (oR != 0) {
                 gradientNew = calcGradientReduction();  // Reduktion: JA
             } else {
                 for (int i = 0; i < fP.length; i++) {   // Reduktion: NEIN
-                    //es wird der Gradient von Zeitschritt t-1 unverändert verwendet
+                    //es wird der Gradient von Zeitschritt t-1 unverÃ¤ndert verwendet
                     gradientNew[i] = fP[i].getDouble("gwTable") - gwTable.getValue();   //fP("gwTable") = old_gwTable!
                     if (gradientNew[i] < 0) {
                         //getModel().getRuntime().println("Negativer Gradient!");
@@ -213,10 +213,10 @@ public class J2KProcessGWRouting extends JAMSComponent {
                 }
             }
             
-            run_GWact = recalcDarcyGWOut(gradientNew);  // Neuberechnung nötig, da eventuell mehr als eine HRU von oben zufließt!
+            run_GWact = recalcDarcyGWOut(gradientNew);  // Neuberechnung nÃ¶tig, da eventuell mehr als eine HRU von oben zuflieÃŸt!
             
             //gwVolume = (run_GWact + sumGWin_new)/1000;
-            flag = true;                                //neue Grundwasserspiegellage auf Basis der neu berechneten Zuflüsse
+            flag = true;                                //neue Grundwasserspiegellage auf Basis der neu berechneten ZuflÃ¼sse
 
             updateGWTable(flag);
 /*
@@ -240,7 +240,7 @@ public class J2KProcessGWRouting extends JAMSComponent {
         }
     }
 
-    private boolean updateGWTable(boolean flag) throws JAMSEntity.NoSuchAttributeException {
+    private boolean updateGWTable(boolean flag) throws Attribute.Entity.NoSuchAttributeException {
 
         for (int i = 0; i < fP.length; i++) {
             if (flag) {
@@ -275,7 +275,7 @@ public class J2KProcessGWRouting extends JAMSComponent {
         return true;
     }
 
-    private double[] calcGradientReduction() throws JAMSEntity.NoSuchAttributeException {
+    private double[] calcGradientReduction() throws Attribute.Entity.NoSuchAttributeException {
         double gradientPre;
         double gradientPost;
 
@@ -316,18 +316,18 @@ public class J2KProcessGWRouting extends JAMSComponent {
         return gradientNew;
     }
 
-    private double recalcDarcyGWOut(double[] gradientNew) throws JAMSEntity.NoSuchAttributeException {
+    private double recalcDarcyGWOut(double[] gradientNew) throws Attribute.Entity.NoSuchAttributeException {
         double GWout_new;
         double GWact_new;
 
         //this.run_gwTableUpper = 0;
-        sumGWin_new = 0;    //Neuberechnung des zufließenden Wassers!
+        sumGWin_new = 0;    //Neuberechnung des zuflieÃŸenden Wassers!
         if (this.run_gwTableUpper >= this.run_gwTableLower) {
-            sumGWin_new = 0;    //Neuberechnung des zufließenden Wassers!
+            sumGWin_new = 0;    //Neuberechnung des zuflieÃŸenden Wassers!
             double GWout_sum = 0;
 
             for (int i = 0; i < fP.length; i++) {
-                if (fP[i].getDouble("hgeoID") != 1){ //alle Flächen, die außerhalb des Squifers liegen geben ihr RG2 als GW ab
+                if (fP[i].getDouble("hgeoID") != 1){ //alle FlÃ¤chen, die auÃŸerhalb des Squifers liegen geben ihr RG2 als GW ab
                     GWout_new = fP[i].getDouble("outRG2");
                     
                 }else{

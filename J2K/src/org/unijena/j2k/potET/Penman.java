@@ -43,65 +43,53 @@ public class Penman extends JAMSComponent {
      *  Component variables
      */
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
-    update = JAMSVarDescription.UpdateType.RUN,
     description = "Current time")
-    public JAMSCalendar time;
+    public Attribute.Calendar time;
 
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
-    update = JAMSVarDescription.UpdateType.INIT,
     description = "temporal resolution [d | h | m]")
-    public JAMSString tempRes;
+    public Attribute.String tempRes;
 
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
-    update = JAMSVarDescription.UpdateType.RUN,
     description = "state variable wind")
     public Attribute.Double wind;
 
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
-    update = JAMSVarDescription.UpdateType.RUN,
     description = "state variable mean temperature")
     public Attribute.Double tmean;
 
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
-    update = JAMSVarDescription.UpdateType.RUN,
     description = "state variable relative humidity")
     public Attribute.Double rhum;
 
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
-    update = JAMSVarDescription.UpdateType.RUN,
     description = "state variable net radiation")
     public Attribute.Double netRad;
 
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
-    update = JAMSVarDescription.UpdateType.RUN,
     description = "attribute elevation")
     public Attribute.Double elevation;
 
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
-    update = JAMSVarDescription.UpdateType.RUN,
     description = "attribute area")
     public Attribute.Double area;
 
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.WRITE,
-    update = JAMSVarDescription.UpdateType.RUN,
     description = "potential ET [mm/ timeUnit]")
     public Attribute.Double potET;
 
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.WRITE,
-    update = JAMSVarDescription.UpdateType.RUN,
     description = "actual ET [mm/ timeUnit]")
     public Attribute.Double actET;
 
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
-    update = JAMSVarDescription.UpdateType.INIT,
     description = "et calibration parameter")
     public Attribute.Double et_cal;
 
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
-    update = JAMSVarDescription.UpdateType.INIT,
     description = "Caching configuration: 0 - write cache, 1 - use cache, 2 - caching off",
     defaultValue = "0")
-    public JAMSInteger dataCaching;
+    public Attribute.Integer dataCaching;
 
     private File cacheFile;
     //todo .. handle transient
@@ -112,7 +100,7 @@ public class Penman extends JAMSComponent {
     /*
      *  Component run stages
      */
-    public void init() throws JAMSEntity.NoSuchAttributeException, IOException {
+    public void init() throws Attribute.Entity.NoSuchAttributeException, IOException {
         //first, check if cached data are available
         //cacheFile = new File(dirName.getValue() + "/$" + this.getInstanceName() + ".cache");
         cacheFile = new File(getModel().getWorkspace().getTempDirectory(), this.getInstanceName() + ".cache");
@@ -127,7 +115,7 @@ public class Penman extends JAMSComponent {
         }
     }
 
-    public void run() throws JAMSEntity.NoSuchAttributeException, IOException {
+    public void run() throws Attribute.Entity.NoSuchAttributeException, IOException {
 
         if (dataCaching.getValue() == 1) {
             this.potET.setValue(reader.readDouble());
@@ -177,7 +165,7 @@ public class Penman extends JAMSComponent {
             //aggregation to monthly values
             if (this.time != null) {
                 if (this.tempRes.getValue().equals("m")) {
-                    int daysInMonth = this.time.getActualMaximum(time.DATE);
+                    int daysInMonth = this.time.getActualMaximum(JAMSCalendar.DATE);
                     pET = pET * daysInMonth;
                 }
             }

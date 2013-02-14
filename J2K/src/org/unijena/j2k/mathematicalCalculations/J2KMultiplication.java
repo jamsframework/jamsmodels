@@ -44,7 +44,6 @@ import jams.model.*;
      */
    @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "multiplier 1",
             unit="-"
             )
@@ -53,7 +52,6 @@ import jams.model.*;
     
    @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "multiplier 2",
             unit="-"
             )
@@ -61,7 +59,6 @@ import jams.model.*;
 
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "Product",
             unit="-"
             )
@@ -71,11 +68,11 @@ import jams.model.*;
      *  Component run stages
      */
     
-    public void init() throws JAMSEntity.NoSuchAttributeException{
+    public void init() throws Attribute.Entity.NoSuchAttributeException{
     
     }
     
-    public void run() throws JAMSEntity.NoSuchAttributeException{
+    public void run() throws Attribute.Entity.NoSuchAttributeException{
  
         Product.setValue(mult1.getValue() * mult2.getValue());
         }

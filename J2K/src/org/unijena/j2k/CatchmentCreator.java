@@ -39,10 +39,9 @@ public class CatchmentCreator extends JAMSComponent {
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "Collection with one (catchment) entity object"
             )
-            public JAMSEntityCollection catchment;
+            public Attribute.EntityCollection catchment;
     
     
     /*

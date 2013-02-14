@@ -43,357 +43,307 @@ import jams.model.*;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "The reach collection"
             )
-            public JAMSEntityCollection entities;
+            public Attribute.EntityCollection entities;
     
     
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "attribute length"
             )
-            public JAMSDouble length;
+            public Attribute.Double length;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "attribute slope"
             )
-            public JAMSDouble slope;
+            public Attribute.Double slope;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "attribute width"
             )
-            public JAMSDouble width;
+            public Attribute.Double width;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "attribute roughness"
             )
-            public JAMSDouble roughness;
+            public Attribute.Double roughness;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "Reach statevar RD1 inflow"
             )
-            public JAMSDouble inRD1;
+            public Attribute.Double inRD1;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "Reach statevar RD2 inflow"
             )
-            public JAMSDouble inRD2;
+            public Attribute.Double inRD2;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "Reach statevar RG1 inflow"
             )
-            public JAMSDouble inRG1;
+            public Attribute.Double inRG1;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "Reach statevar RG2 inflow"
             )
-            public JAMSDouble inRG2;
+            public Attribute.Double inRG2;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "Reach statevar RD1 outflow"
             )
-            public JAMSDouble outRD1;
+            public Attribute.Double outRD1;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "Reach statevar RD2 outflow"
             )
-            public JAMSDouble outRD2;
+            public Attribute.Double outRD2;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "Reach statevar RG1 outflow"
             )
-            public JAMSDouble outRG1;
+            public Attribute.Double outRG1;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "Reach statevar RG2 outflow"
             )
-            public JAMSDouble outRG2;
+            public Attribute.Double outRG2;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "Reach statevar simulated Runoff"
             )
-            public JAMSDouble simRunoff;
+            public Attribute.Double simRunoff;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "Reach statevar RD1 storage"
             )
-            public JAMSDouble actRD1;
+            public Attribute.Double actRD1;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "Reach statevar RD2 storage"
             )
-            public JAMSDouble actRD2;
+            public Attribute.Double actRD2;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "Reach statevar RG1 storage"
             )
-            public JAMSDouble actRG1;
+            public Attribute.Double actRG1;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "Reach statevar RG2 storage"
             )
-            public JAMSDouble actRG2;
+            public Attribute.Double actRG2;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "Channel storage"
             )
-            public JAMSDouble channelStorage;
+            public Attribute.Double channelStorage;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.INIT,
             description = "flow routing coefficient TA"
             )
-            public JAMSDouble flowRouteTA;
+            public Attribute.Double flowRouteTA;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "SurfaceN outflow in kgN"
             )
-            public JAMSDouble SurfaceNaClabs;
+            public Attribute.Double SurfaceNaClabs;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "(fast) InterflowN outflow in kgN"
             )
-            public JAMSDouble InterflowNaClabs;
+            public Attribute.Double InterflowNaClabs;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "(slow) InterflowN outflow in kgN"
             )
-            public JAMSDouble NaCl_RG1_out;
+            public Attribute.Double NaCl_RG1_out;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "GoundwaterN outflow in kgN"
             )
-            public JAMSDouble NaCl_RG2_out;
+            public Attribute.Double NaCl_RG2_out;
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "Reach statevar RD1_N (SurfaceN) storage in kgN"
             )
-            public JAMSDouble ActRD1_NaCl;
+            public Attribute.Double ActRD1_NaCl;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "Reach statevar RD2_N ((fast) InterflowN) storage in kgN"
             )
-            public JAMSDouble ActRD2_NaCl;
+            public Attribute.Double ActRD2_NaCl;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "Reach statevar RG1_N ((slow) InterflowN) storage in kgN"
             )
-            public JAMSDouble ActRG1_NaCl;
+            public Attribute.Double ActRG1_NaCl;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "Reach statevar RG2_N (GoundwaterN) storage in kgN"
             )
-            public JAMSDouble ActRG2_NaCl;
+            public Attribute.Double ActRG2_NaCl;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "Reach Channel storage N in kgN"
             )
-            public JAMSDouble ChannelStorage_NaCl;
+            public Attribute.Double ChannelStorage_NaCl;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "Simulated N Runoff in kgN"
             )
-            public JAMSDouble SimRunoff_NaCl;
+            public Attribute.Double SimRunoff_NaCl;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "SurfaceN inflow in kgN"
             )
-            public JAMSDouble SurfaceNaCl_in;
+            public Attribute.Double SurfaceNaCl_in;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "(fast) InterflowN inflow in kgN"
             )
-            public JAMSDouble InterflowNaCl_sum;
+            public Attribute.Double InterflowNaCl_sum;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "(slow) InterflowN inflow in kgN"
             )
-            public JAMSDouble NaCl_RG1_in;
+            public Attribute.Double NaCl_RG1_in;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "GoundwaterN inflow in kgN"
             )
-            public JAMSDouble NaCl_RG2_in;
+            public Attribute.Double NaCl_RG2_in;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "Current time"
             )
-            public JAMSCalendar time;
+            public Attribute.Calendar time;
     
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "Catchment outlet RD1 storage"
             )
-            public JAMSDouble catchmentRD1;
+            public Attribute.Double catchmentRD1;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "Catchment outlet RD2 storage"
             )
-            public JAMSDouble catchmentRD2;
+            public Attribute.Double catchmentRD2;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "Catchment outlet RG1 storage"
             )
-            public JAMSDouble catchmentRG1;
+            public Attribute.Double catchmentRG1;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "Catchment outlet RG2 storage"
             )
-            public JAMSDouble catchmentRG2;
+            public Attribute.Double catchmentRG2;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "Catchment outlet sim runoff"
             )
-            public JAMSDouble catchmentSimRunoff;
+            public Attribute.Double catchmentSimRunoff;
     
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "Catchment outlet NRD1 storage"
             )
-            public JAMSDouble catchmentNaClRD1;
+            public Attribute.Double catchmentNaClRD1;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "Catchment outlet NRD2 storage"
             )
-            public JAMSDouble catchmentNaClRD2;
+            public Attribute.Double catchmentNaClRD2;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "Catchment outlet NRG1 storage"
             )
-            public JAMSDouble catchmentNaClRG1;
+            public Attribute.Double catchmentNaClRG1;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "Catchment outlet NRG2 storage"
             )
-            public JAMSDouble catchmentNaClRG2;
+            public Attribute.Double catchmentNaClRG2;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "Catchment outlet sim Nitrogen runoff"
             )
-            public JAMSDouble catchmentSimRunoffNaCl;
+            public Attribute.Double catchmentSimRunoffNaCl;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "Catchment outlet sim Nitrogen runoff"
             )
-            public JAMSDouble catchmentSimNaClconc;
+            public Attribute.Double catchmentSimNaClconc;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "switch whether deep sink is allowed or not",
             defaultValue="0"
             )
-            public JAMSDouble deepsink;
+            public Attribute.Double deepsink;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "amount of water lost by deep sink in l/d"
             )
-            public JAMSDouble DeepsinkW;
+            public Attribute.Double DeepsinkW;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "amount of nitrogen lost by deep sink in kg/d"
             )
-            public JAMSDouble DeepsinkNaCl;
+            public Attribute.Double DeepsinkNaCl;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.INIT,
             description = "K-Value for the riverbed in cm/d"
             )
-            public JAMSDouble Ksink;
+            public Attribute.Double Ksink;
     
     
     private double depth; 
@@ -402,13 +352,13 @@ import jams.model.*;
      *  Component run stages
      */
     
-    public void init() throws JAMSEntity.NoSuchAttributeException {
+    public void init() throws Attribute.Entity.NoSuchAttributeException {
         
     }
     
-    public void run() throws JAMSEntity.NoSuchAttributeException {
+    public void run() throws Attribute.Entity.NoSuchAttributeException {
         Attribute.Entity entity = entities.getCurrent();
-        JAMSEntity DestReach = (JAMSEntity) entity.getObject("to_reach");
+        Attribute.Entity DestReach = (Attribute.Entity) entity.getObject("to_reach");
 //        int datumjul = time.get(time.DAY_OF_YEAR);
         
         double deepsinkW = 0;

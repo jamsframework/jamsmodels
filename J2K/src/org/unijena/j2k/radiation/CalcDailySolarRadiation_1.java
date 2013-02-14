@@ -59,80 +59,69 @@ import jams.model.*;
 
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "time"
             )
-            public JAMSCalendar time;
+            public Attribute.Calendar time;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "state variable sunshine hours [h/d]"
             )
             public Attribute.Double sunh;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "Maximum sunshine duration in h"
             )
             public Attribute.Double sunhmax;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "state variable slope aspect correction factor"
             )
             public Attribute.Double actSlAsCf;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "attribute latitude [deg]"
             )
             public Attribute.Double latitude;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "daily extraterrestic radiation [MJ/m²d]"
             )
             public Attribute.Double actExtRad;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "daily solar radiation [MJ/m²d]"
             )
             public Attribute.Double solRad;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.INIT,
             description = "Angstrom factor a"
             )
             public Attribute.Double angstrom_a;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.INIT,
             description = "Angstrom factor b"
             )
             public Attribute.Double angstrom_b;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.INIT,
             description = "temporal resolution [d | h | m]"
             )
-            public JAMSString tempRes;
+            public Attribute.String tempRes;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.INIT,
             description = "Use caching of regionalised data?"
             )
-            public JAMSBoolean dataCaching; 
+            public Attribute.Boolean dataCaching; 
     
     private File cacheFile;
     private boolean useCache = false;
@@ -143,14 +132,14 @@ import jams.model.*;
      *  Component run stages
      */
     
-    public void init() throws JAMSEntity.NoSuchAttributeException, IOException {
+    public void init() throws Attribute.Entity.NoSuchAttributeException, IOException {
  
     }
     
-    public void run() throws JAMSEntity.NoSuchAttributeException, IOException {
+    public void run() throws Attribute.Entity.NoSuchAttributeException, IOException {
        
-            int julDay = time.get(time.DAY_OF_YEAR);
-            int month = time.get(time.MONTH);
+            int julDay = time.get(JAMSCalendar.DAY_OF_YEAR);
+            int month = time.get(JAMSCalendar.MONTH);
             double SAC = actSlAsCf.getValue();
             double lati = latitude.getValue();
             double sunsh = sunh.getValue();

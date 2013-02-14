@@ -38,46 +38,43 @@ public class StandardLMArableParaReader extends JAMSComponent {
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.INIT,
             description = "Data file directory name"
             )
-            public JAMSString dirName;
+            public Attribute.String dirName;
 
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.INIT,
             description = "Arable crop rotation parameter file name"
             )
-            public JAMSString laFileName;
+            public Attribute.String laFileName;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.INIT,
             description = "Collection of hru objects"
             )
-            public JAMSEntityCollection hrus;
+            public Attribute.EntityCollection hrus;
     
     
     
-    public void init() throws JAMSEntity.NoSuchAttributeException {
+    public void init() throws Attribute.Entity.NoSuchAttributeException {
         
         //read crop rotation parameter
-        JAMSEntityCollection croprot = new JAMSEntityCollection();
+        Attribute.EntityCollection croprot = new Attribute.EntityCollection();
         croprot.setEntities(J2KFunctions.readParas(dirName.getValue()+"/"+laFileName.getValue()));
         
-        HashMap<Double, JAMSEntity> ctMap = new HashMap<Double, JAMSEntity>();
-        JAMSEntity ct, e;
+        HashMap<Double, Attribute.Entity> ctMap = new HashMap<Double, Attribute.Entity>();
+        Attribute.Entity ct, e;
         Object[] attrs;
         
         //put all entities into a HashMap with their ID as key
         
-        Iterator<JAMSEntity> ctIterator = croprot.getEntities().iterator();
+        Iterator<Attribute.Entity> ctIterator = croprot.getEntities().iterator();
         while (ctIterator.hasNext()) {
             ct = ctIterator.next();
             ctMap.put(ct.getDouble("ID"),  ct);//put all entities into a HashMap with their ID as key
                             }
         
-        Iterator<JAMSEntity> hruIterator = hrus.getEntities().iterator();
+        Iterator<Attribute.Entity> hruIterator = hrus.getEntities().iterator();
         while (hruIterator.hasNext()) {
             e = hruIterator.next();
             ct = ctMap.get(e.getDouble("croprotID"));

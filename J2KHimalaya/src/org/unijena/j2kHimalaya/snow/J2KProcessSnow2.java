@@ -67,128 +67,101 @@ public class J2KProcessSnow2 extends JAMSComponent {
      *  Component variables
      */
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
-    update = JAMSVarDescription.UpdateType.RUN,
     description = "time")
-    public JAMSCalendar time;
+    public Attribute.Calendar time;
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
-    update = JAMSVarDescription.UpdateType.RUN,
     description = "id")
-    public JAMSDouble id;
+    public Attribute.Double id;
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
-    update = JAMSVarDescription.UpdateType.RUN,
     description = "The current hru entity")
-    public JAMSEntity entity;
+    public Attribute.Entity entity;
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
-    update = JAMSVarDescription.UpdateType.RUN,
     description = "attribute area")
-    public JAMSDouble area;
+    public Attribute.Double area;
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
-    update = JAMSVarDescription.UpdateType.RUN,
     description = "state var slope-aspect-correction-factor")
-    public JAMSDouble actSlAsCf;
+    public Attribute.Double actSlAsCf;
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
-    update = JAMSVarDescription.UpdateType.RUN,
     description = "minimum temperature if available, else mean temp")
-    public JAMSDouble minTemp;
+    public Attribute.Double minTemp;
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
-    update = JAMSVarDescription.UpdateType.RUN,
     description = "mean temperature")
-    public JAMSDouble meanTemp;
+    public Attribute.Double meanTemp;
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
-    update = JAMSVarDescription.UpdateType.RUN,
     description = "maximum temperature if available, else mean temp")
-    public JAMSDouble maxTemp;
+    public Attribute.Double maxTemp;
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READWRITE,
-    update = JAMSVarDescription.UpdateType.RUN,
     description = "state variable net rain")
-    public JAMSDouble netRain;
+    public Attribute.Double netRain;
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READWRITE,
-    update = JAMSVarDescription.UpdateType.RUN,
     description = "state variable net snow")
-    public JAMSDouble netSnow;
+    public Attribute.Double netSnow;
 
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READWRITE,
-    update = JAMSVarDescription.UpdateType.RUN,
     description = "total snow water equivalent")
-    public JAMSDouble snowTotSWE;
+    public Attribute.Double snowTotSWE;
 
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READWRITE,
-    update = JAMSVarDescription.UpdateType.RUN,
     description = "dry snow water equivalent")
-    public JAMSDouble drySWE;
+    public Attribute.Double drySWE;
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READWRITE,
-    update = JAMSVarDescription.UpdateType.RUN,
     description = "total snow density")
-    public JAMSDouble totDens;
+    public Attribute.Double totDens;
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READWRITE,
-    update = JAMSVarDescription.UpdateType.RUN,
     description = "dry snow density")
-    public JAMSDouble dryDens;
+    public Attribute.Double dryDens;
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READWRITE,
-    update = JAMSVarDescription.UpdateType.RUN,
     description = "snow depth")
-    public JAMSDouble snowDepth;
+    public Attribute.Double snowDepth;
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READWRITE,
-    update = JAMSVarDescription.UpdateType.RUN,
     description = "snow age")
-    public JAMSDouble snowAge;
+    public Attribute.Double snowAge;
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READWRITE,
-    update = JAMSVarDescription.UpdateType.RUN,
     description = "snow cold content")
-    public JAMSDouble snowColdContent;
+    public Attribute.Double snowColdContent;
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.WRITE,
-    update = JAMSVarDescription.UpdateType.RUN,
     description = "daily snow melt")
-    public JAMSDouble snowMelt;
+    public Attribute.Double snowMelt;
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
-    update = JAMSVarDescription.UpdateType.INIT,
     description = "base temperature",
     defaultValue = "0")
-    public JAMSDouble baseTemp;
+    public Attribute.Double baseTemp;
     /*@JAMSVarDescription(
     access = JAMSVarDescription.AccessType.READ,
-    update = JAMSVarDescription.UpdateType.INIT,
     description = "Snow parameter TRANS"
     )
-    public JAMSDouble snow_trans;*/
+    public Attribute.Double snow_trans;*/
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
-    update = JAMSVarDescription.UpdateType.INIT,
     description = "temperature factor for snowmelt")
-    public JAMSDouble t_factor;
+    public Attribute.Double t_factor;
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
-    update = JAMSVarDescription.UpdateType.INIT,
     description = "rain factor for snowmelt")
-    public JAMSDouble r_factor;
+    public Attribute.Double r_factor;
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
-    update = JAMSVarDescription.UpdateType.INIT,
     description = "ground factor for snowmelt")
-    public JAMSDouble g_factor;
+    public Attribute.Double g_factor;
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
-    update = JAMSVarDescription.UpdateType.INIT,
     description = "critical density")
-    public JAMSDouble snowCritDens;
+    public Attribute.Double snowCritDens;
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
-    update = JAMSVarDescription.UpdateType.INIT,
     description = "cold content factor")
-    public JAMSDouble ccf_factor;
+    public Attribute.Double ccf_factor;
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
-    update = JAMSVarDescription.UpdateType.INIT,
     description = "0 - ddf, 1 - complex")
-    public JAMSInteger snowMeltFormula;
+    public Attribute.Integer snowMeltFormula;
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
-    update = JAMSVarDescription.UpdateType.INIT,
     description = "module active")
-    public JAMSBoolean active;
+    public Attribute.Boolean active;
 
 //        @JAMSVarDescription(access = JAMSVarDescription.AccessType.WRITE,
 //    update = JAMSVarDescription.UpdateType.RUN,
 //    description = " the input Snow which produce snowmelt")
-//    public JAMSDouble inSnow;
+//    public Attribute.Double inSnow;
 //
 //    @JAMSVarDescription(access = JAMSVarDescription.AccessType.WRITE,
 //    update = JAMSVarDescription.UpdateType.RUN,
 //    description = "Rain in snow part which is input for snowmelt")
-//    public JAMSDouble inRain;
+//    public Attribute.Double inRain;
     
     double run_area;
     double in_snow;
@@ -217,7 +190,7 @@ public class J2KProcessSnow2 extends JAMSComponent {
         }
     }
 
-    public void run() throws JAMSEntity.NoSuchAttributeException {
+    public void run() throws Attribute.Entity.NoSuchAttributeException {
 //
 //        Attribute.Calendar c = JAMSDataFactory.createCalendar();
 //        c.setValue("1997-01-21 00:00");

@@ -30,14 +30,14 @@ import java.util.*;
 import java.io.*;
 import jams.JAMS;
 import jams.data.Attribute;
-import jams.data.JAMSBoolean;
-import jams.data.JAMSCalendar;
+import jams.data.Attribute.Boolean;
+import jams.data.Attribute.Calendar;
 import jams.data.JAMSDataFactory;
-import jams.data.JAMSDoubleArray;
-import jams.data.JAMSInteger;
-import jams.data.JAMSString;
-import jams.data.JAMSStringArray;
-import jams.data.JAMSTimeInterval;
+import jams.data.Attribute.DoubleArray;
+import jams.data.Attribute.Integer;
+import jams.data.Attribute.String;
+import jams.data.Attribute.StringArray;
+import jams.data.Attribute.TimeInterval;
 import jams.tools.JAMSTools;
 
 /**
@@ -48,80 +48,69 @@ public class TSDataReader extends JAMSComponent {
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.INIT,
             description = "Data file name"
             )
-            public JAMSString dataFileName;
+            public Attribute.String dataFileName;
 
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.INIT,
             description = "Column of first data value"
             )
-            public JAMSInteger startColumn;
+            public Attribute.Integer startColumn;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.INIT,
             description = "Time interval of current temporal context"
             )
-            public JAMSTimeInterval timeInterval;
+            public Attribute.TimeInterval timeInterval;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "Array of data values for current time step"
             )
-            public JAMSDoubleArray dataArray;
+            public Attribute.DoubleArray dataArray;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "data set descriptor"
             )
-            public JAMSString dataSetName;
+            public Attribute.String dataSetName;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "Array of station elevations"
             )
-            public JAMSDoubleArray elevation;
+            public Attribute.DoubleArray elevation;
 
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "Array of station's x coordinate"
             )
-            public JAMSDoubleArray xCoord;
+            public Attribute.DoubleArray xCoord;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "Array of station's y coordinate"
             )
-            public JAMSDoubleArray yCoord;
+            public Attribute.DoubleArray yCoord;
 
      @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "station location"
             )
-            public JAMSStringArray corrFac;
+            public Attribute.StringArray corrFac;
 
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "Regression coefficients"
             )
-            public JAMSDoubleArray regCoeff;
+            public Attribute.DoubleArray regCoeff;
 
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.INIT,
             description = "Calculate regression coefficients? If not, regCoeff array stays empty!"
             )
-            public JAMSBoolean skipRegression;
+            public Attribute.Boolean skipRegression;
     
     
     private JAMSTableDataStore store;
@@ -281,22 +270,22 @@ public class TSDataReader extends JAMSComponent {
             int timeUnit = timeInterval.getTimeUnit();
             Attribute.Calendar tiStart = timeInterval.getStart();
             jams.data.Attribute.Calendar date = JAMSDataFactory.createCalendar();
-            if(timeUnit == JAMSCalendar.DAY_OF_YEAR) {
+            if(timeUnit == Attribute.Calendar.DAY_OF_YEAR) {
                     date.set(tiStart.get(Calendar.YEAR), tiStart.get(Calendar.MONTH), tiStart.get(Calendar.DAY_OF_MONTH), 0, 0, 0);
-            } else if(timeUnit == JAMSCalendar.HOUR_OF_DAY) {
+            } else if(timeUnit == Attribute.Calendar.HOUR_OF_DAY) {
                     date.set(tiStart.get(Calendar.YEAR), tiStart.get(Calendar.MONTH), tiStart.get(Calendar.DAY_OF_MONTH), tiStart.get(Calendar.HOUR_OF_DAY), tiStart.get(Calendar.MINUTE), 0);
-            } else if(timeUnit == JAMSCalendar.MONTH) {
+            } else if(timeUnit == Attribute.Calendar.MONTH) {
                     date.set(tiStart.get(Calendar.YEAR), tiStart.get(Calendar.MONTH), 1, 0, 0, 0);
             }
             
             while (startTime.before(date) && store.hasNext()) {
                 da = store.getNext();
-                if(timeUnit == JAMSCalendar.DAY_OF_YEAR)
-                    startTime.add(JAMSCalendar.DATE, 1);
-                else if(timeUnit == JAMSCalendar.HOUR_OF_DAY)
-                    startTime.add(JAMSCalendar.HOUR_OF_DAY, 1);
-                else if(timeUnit == JAMSCalendar.MONTH)
-                    startTime.add(JAMSCalendar.MONTH, 1);
+                if(timeUnit == Attribute.Calendar.DAY_OF_YEAR)
+                    startTime.add(Attribute.Calendar.DATE, 1);
+                else if(timeUnit == Attribute.Calendar.HOUR_OF_DAY)
+                    startTime.add(Attribute.Calendar.HOUR_OF_DAY, 1);
+                else if(timeUnit == Attribute.Calendar.MONTH)
+                    startTime.add(Attribute.Calendar.MONTH, 1);
                 
             }
         }

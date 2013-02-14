@@ -29,67 +29,58 @@ import java.io.*;
      */
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "The current hru entity"
             )
-            public JAMSEntity entity;
+            public Attribute.Entity entity;
  
  
      @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "start date of growing season"
             )
-            public JAMSDouble GRWstart;
+            public Attribute.Double GRWstart;
      
       @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "end date of growing season"
             )
-            public JAMSDouble GRWend;
+            public Attribute.Double GRWend;
 
      @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.INIT,
             description = "HRU daily mean temperature [°C]"
             )
-            public JAMSDouble Tmean;
+            public Attribute.Double Tmean;
      
       @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.INIT,
             description = "Plants base temperature required for growing[°C]"
             )
-            public JAMSDouble Tbase;
+            public Attribute.Double Tbase;
     
       @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.INIT,
             description = "Plants heat units sum to reach maturity [-]"
             )
-            public JAMSDouble PHU;
+            public Attribute.Double PHU;
       
         @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
-            update = JAMSVarDescription.UpdateType.INIT,
             description = "Daily plants heat units sum [-]"
             )
-            public JAMSDouble PHUact;
+            public Attribute.Double PHUact;
     
        @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
-            update = JAMSVarDescription.UpdateType.INIT,
             description = "HRU fraction daily potential heat units"
             )
-            public JAMSDouble FPHUact;
+            public Attribute.Double FPHUact;
        
            @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
-            update = JAMSVarDescription.UpdateType.INIT,
             description = "HRU half of annual potential heat units"
             )
-            public JAMSDouble PHU_50;
+            public Attribute.Double PHU_50;
            
                  
     /*
@@ -108,11 +99,11 @@ import java.io.*;
      private double tmean;
      private double tbase;
      
-    public void init() throws JAMSEntity.NoSuchAttributeException, IOException {
+    public void init() throws Attribute.Entity.NoSuchAttributeException, IOException {
         
             }
     
-    public void run() throws JAMSEntity.NoSuchAttributeException{
+    public void run() throws Attribute.Entity.NoSuchAttributeException{
         
         this.phu_abs = PHU.getValue(); /* absolut plant specific heat units sum needed */
         this.tmean = Tmean.getValue();
@@ -125,7 +116,7 @@ import java.io.*;
         PHU_50.setValue(phu_50);
              
  }
-     private boolean calc_dailyHU() throws JAMSEntity.NoSuchAttributeException {
+     private boolean calc_dailyHU() throws Attribute.Entity.NoSuchAttributeException {
          /*@todo wenn Wintergetreide dann startdate auf enddate gesetzt */
          if 
                 (this.startdate >=  this.enddate){

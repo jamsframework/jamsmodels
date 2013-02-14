@@ -25,7 +25,7 @@ public class HourlySolrad {
      * @param longSite the longitude of the point of interest in deg. west from Greenwich
      * @param longTZ the longitude of the time zone in deg. west from Greenwich
      */
-//    public static double calc_midTimeHourAngle(org.unijena.jams.data.JAMSCalendar time, int julDay, double longSite, double longTZ, boolean debug){
+//    public static double calc_midTimeHourAngle(org.unijena.jams.data.Attribute.Calendar time, int julDay, double longSite, double longTZ, boolean debug){
 //        long hour = time.get(time.HOUR_OF_DAY);//localTimeDateObject.decTime();
 //        long minute = time.get(time.MINUTE);
     public static double midTimeHourAngle(long hour, long minute, int julDay, double longSite, double longTZ, boolean debug) {

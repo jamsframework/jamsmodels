@@ -45,31 +45,28 @@ import org.unijena.jams.model.*;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.INIT,
             description = "Description"
             )
-            public JAMSDouble number1;
+            public Attribute.Double number1;
 
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.INIT,
             description = "Description"
             )
-            public JAMSDouble number2;
+            public Attribute.Double number2;
 
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "Description"
             )
-            public JAMSCalendar time;
+            public Attribute.Calendar time;
     
     
     /*
      *  Component run stages
      */
     
-    JAMSDouble x;
+    Attribute.Double x;
     double i = 0;
     
     public void init() {

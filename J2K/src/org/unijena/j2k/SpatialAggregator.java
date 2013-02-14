@@ -41,38 +41,33 @@ import jams.model.*;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.INIT,
             description = "Collection of hru objects"
             )
-            public JAMSEntityCollection hrus;
+            public Attribute.EntityCollection hrus;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.INIT,
             description = "Target entity keeping the aggregated data"
             )
-            public JAMSEntity targetEntity;
+            public Attribute.Entity targetEntity;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.INIT,
             description = "Attribute name of regionalised data"
             )
-            public JAMSString aNameData;
+            public Attribute.String aNameData;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.INIT,
             description = "Attribute name of entity area"
             )
-            public JAMSString aNameArea;
+            public Attribute.String aNameArea;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.INIT,
             description = "Aggregation type"
             )
-            public JAMSInteger aggregationType;
+            public Attribute.Integer aggregationType;
     
     
     public void run() throws Attribute.Entity.NoSuchAttributeException {

@@ -45,77 +45,66 @@ import jams.model.*;
 
     /*@JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "state variable sunshine hours"
             )
             public Attribute.Double sunh;
     */
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "state variable mean temperature"
             )
             public Attribute.Double tmean;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "state variable relative humidity"
             )
             public Attribute.Double rhum;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "state variable solar radiation"
             )
             public Attribute.Double extRad;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "state variable solar radiation"
             )
             public Attribute.Double solRad;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "state variable albedo"
             )
             public Attribute.Double albedo;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "attribute elevation"
             )
             public Attribute.Double elevation;
     
     /*@JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "attribute latitude"
             )
             public Attribute.Double latitude;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "Current time"
             )
-            public JAMSCalendar time;
+            public Attribute.Calendar time;
     */
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "daily net radiation [MJ/m²]"
             )
             public Attribute.Double netRad;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "daily shortwave radiation [MJ/m²]",
             defaultValue="0"            
             )
@@ -123,7 +112,6 @@ import jams.model.*;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "daily longwave radiation [MJ/m²]",
             defaultValue="0"
             )
@@ -131,7 +119,6 @@ import jams.model.*;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "daily net radiation for refET [MJ/m²]",
             defaultValue="0"
             )
@@ -139,10 +126,9 @@ import jams.model.*;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.INIT,
             description = "Use caching of regionalised data?"
             )
-            public JAMSBoolean dataCaching; 
+            public Attribute.Boolean dataCaching; 
     
  
     
@@ -151,11 +137,11 @@ import jams.model.*;
      *  Component run stages
      */
     
-    public void init() throws JAMSEntity.NoSuchAttributeException, IOException {
+    public void init() throws Attribute.Entity.NoSuchAttributeException, IOException {
      
     }
     
-    public void run() throws JAMSEntity.NoSuchAttributeException, IOException{
+    public void run() throws Attribute.Entity.NoSuchAttributeException, IOException{
         
             double elev = elevation.getValue();
             double temp = tmean.getValue();

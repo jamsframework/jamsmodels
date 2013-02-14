@@ -46,48 +46,40 @@ public class CalcDailySolarRadiation extends JAMSComponent {
      *  Component variables
      */
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
-    update = JAMSVarDescription.UpdateType.RUN,
     description = "time")
-    public JAMSCalendar time;
+    public Attribute.Calendar time;
 
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
-    update = JAMSVarDescription.UpdateType.RUN,
     description = "state variable sunshine hours",
     unit = "h/d")
     public Attribute.Double sunh;
 
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.WRITE,
-    update = JAMSVarDescription.UpdateType.RUN,
     description = "Maximum sunshine duration in h",
     unit = "h/d",
     defaultValue = "0")
     public Attribute.Double sunhmax;
 
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
-    update = JAMSVarDescription.UpdateType.RUN,
     description = "state variable slope aspect correction factor")
     public Attribute.Double actSlAsCf;
 
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
-    update = JAMSVarDescription.UpdateType.RUN,
     description = "attribute latitude",
     unit = "deg")
     public Attribute.Double latitude;
 
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
-    update = JAMSVarDescription.UpdateType.RUN,
     description = "daily extraterrestic radiation",
     unit = "MJ / m² d")
     public Attribute.Double actExtRad;
 
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.WRITE,
-    update = JAMSVarDescription.UpdateType.RUN,
     description = "daily solar radiation",
     unit = "MJ / m² d")
     public Attribute.Double solRad;
 
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
-    update = JAMSVarDescription.UpdateType.INIT,
     description = "Angstrom factor a",
     lowerBound = 0,
     upperBound = 1,
@@ -95,7 +87,6 @@ public class CalcDailySolarRadiation extends JAMSComponent {
     public Attribute.Double angstrom_a;
 
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
-    update = JAMSVarDescription.UpdateType.INIT,
     description = "Angstrom factor b",
     lowerBound = 0,
     upperBound = 1,
@@ -103,15 +94,13 @@ public class CalcDailySolarRadiation extends JAMSComponent {
     public Attribute.Double angstrom_b;
 
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
-    update = JAMSVarDescription.UpdateType.INIT,
     description = "temporal resolution [d | m]")
-    public JAMSString tempRes;
+    public Attribute.String tempRes;
 
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
-    update = JAMSVarDescription.UpdateType.INIT,
     description = "Caching configuration: 0 - write cache, 1 - use cache, 2 - caching off",
     defaultValue = "2")
-    public JAMSInteger dataCaching;
+    public Attribute.Integer dataCaching;
 
     private File cacheFile;
 
@@ -124,7 +113,7 @@ public class CalcDailySolarRadiation extends JAMSComponent {
      *  Component run stages
      */
 
-    public void init() throws JAMSEntity.NoSuchAttributeException, IOException {
+    public void init() throws Attribute.Entity.NoSuchAttributeException, IOException {
         //first, check if cached data are available
         //cacheFile = new File(dirName.getValue() + "/$" + this.getInstanceName() + ".cache");
         cacheFile = new File(getModel().getWorkspace().getTempDirectory(), this.getInstanceName() + ".cache");
@@ -138,13 +127,13 @@ public class CalcDailySolarRadiation extends JAMSComponent {
         }
     }
 
-    public void run() throws JAMSEntity.NoSuchAttributeException, IOException {
+    public void run() throws Attribute.Entity.NoSuchAttributeException, IOException {
 
         if (dataCaching.getValue() == 1) {
             solRad.setValue(reader.readDouble());
         } else {
-            int julDay = time.get(time.DAY_OF_YEAR);
-            int month = time.get(time.MONTH);
+            int julDay = time.get(JAMSCalendar.DAY_OF_YEAR);
+            int month = time.get(JAMSCalendar.MONTH);
             double SAC = actSlAsCf.getValue();
             double lati = latitude.getValue();
             double sunsh = sunh.getValue();

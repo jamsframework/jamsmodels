@@ -35,33 +35,30 @@ import java.util.*;
 public class HydroNETCreator extends JAMSComponent {
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "Collection of hru objects"
             )
-            public JAMSEntityCollection hrus;
+            public Attribute.EntityCollection hrus;
        
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "Collection of hru objects"
             )
-            public JAMSEntity NitrogenOutEntity;
+            public Attribute.Entity NitrogenOutEntity;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "Collection of hru objects"
             )
-            public JAMSEntity CostOutEntity;
+            public Attribute.Entity CostOutEntity;
     
     
     DistNeuron NitrogenOutNeuron = new DistNeuron();
     DistNeuron CostOutNeuron = new DistNeuron();
     
     @Override
-    public void init() throws JAMSEntity.NoSuchAttributeException {        
-        JAMSEntity e,downstreamPoly;
-	ArrayList<JAMSEntity> list = new ArrayList<JAMSEntity>();
+    public void init() throws Attribute.Entity.NoSuchAttributeException {        
+        Attribute.Entity e,downstreamPoly;
+	ArrayList<Attribute.Entity> list = new ArrayList<Attribute.Entity>();
         NONeuron nitr_neuron;
         CostNeuron cost_neuron;
         DistNeuron dist_neuron;
@@ -85,7 +82,7 @@ public class HydroNETCreator extends JAMSComponent {
         GenericFunction gen_id2 = new GenericFunction(lin_id2);
         //setup net
         for (int i=hrus.getEntities().size()-1;i>=0;i--) {
-            e = (JAMSEntity)hrus.getEntities().get(i);
+            e = (Attribute.Entity)hrus.getEntities().get(i);
 	    e.setDouble("reduction",0.0);
             //setup nitrogen neuron for each hru
             nitr_neuron = new NONeuron();
@@ -93,7 +90,7 @@ public class HydroNETCreator extends JAMSComponent {
             nitr_neuron.addFilter((GenericFunction)e.getObject("ActivationFunction"));            
 	    nitr_neuron.setID((long)e.getDouble("ID"));
 	    
-            downstreamPoly = (JAMSEntity)e.getObject("to_poly");
+            downstreamPoly = (Attribute.Entity)e.getObject("to_poly");
             //look if id is in hashmap
             if ( downstreamPoly == null || downstreamPoly.getId()==-1) {
                 nitr_neuron.setDownstreamNeuron(null,0);
@@ -142,8 +139,8 @@ public class HydroNETCreator extends JAMSComponent {
     }
     
 
-/*    public void run() throws JAMSEntity.NoSuchAttributeException {
-        JAMSEntity e;
+/*    public void run() throws Attribute.Entity.NoSuchAttributeException {
+        Attribute.Entity e;
         
         NONeuron nitr_neuron;
         CostNeuron cost_neuron;

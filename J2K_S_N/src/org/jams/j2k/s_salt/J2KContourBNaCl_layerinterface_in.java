@@ -19,100 +19,94 @@ public class J2KContourBNaCl_layerinterface_in extends JAMSComponent {
 
 
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
-    update = JAMSVarDescription.UpdateType.INIT,
     description = "An- bzw. Ausschalten des Moduls")
-    public JAMSBoolean cbModulAktiv;
+    public Attribute.Boolean cbModulAktiv;
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
-    update = JAMSVarDescription.UpdateType.RUN,
     description = "The current hru entity")
-    public JAMSEntityCollection hrus;
+    public Attribute.EntityCollection hrus;
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
-    update = JAMSVarDescription.UpdateType.RUN,
     description = "actual LPS water content",
     unit = "l")
-    public JAMSDoubleArray actLPS;
+    public Attribute.DoubleArray actLPS;
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
-    update = JAMSVarDescription.UpdateType.RUN,
     description = "maximum LPS water content",
     unit = "l")
-    public JAMSDoubleArray maxLPS;
+    public Attribute.DoubleArray maxLPS;
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
-    update = JAMSVarDescription.UpdateType.RUN,
     description = "in cm/d soil hydraulic conductivity")
-    public JAMSDoubleArray kf_h;
+    public Attribute.DoubleArray kf_h;
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
     description = "interflow reaching the HRU in every layer",
     unit = "L",
     lowerBound = 0,
     upperBound = 100000000)
-    public JAMSDoubleArray RD2_out;
+    public Attribute.DoubleArray RD2_out;
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
     description = " number of soil layers",
     unit = "-",
     lowerBound = 0,
     upperBound = 100)
-    public JAMSDouble Layer;
+    public Attribute.Double Layer;
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
     description = "depth of soil layer",
     unit = "cm",
     lowerBound = 0,
     upperBound = 10000)
-    public JAMSDoubleArray layerdepth;
+    public Attribute.DoubleArray layerdepth;
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.WRITE,
     description = "depth of soil layers cutted by the trench",
     unit = "cm",
     lowerBound = 0,
     upperBound = 10000)
-    public JAMSDouble sumlayer;
+    public Attribute.Double sumlayer;
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READWRITE,
     description = "number of the deepest soil layers cutted by the trench",
     unit = "-",
     lowerBound = 0,
     upperBound = 100)
-    public JAMSDouble layermax;
+    public Attribute.Double layermax;
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.WRITE,
     description = "interflow reaching the HRU in the layers affected by the trench",
     unit = "l",
     lowerBound = 0,
     upperBound = 100000000)
-    public JAMSDouble RD2_outsum;
+    public Attribute.Double RD2_outsum;
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.WRITE,
     description = "interflow salt reaching the HRU in the layers affected by the trench",
     unit = "l",
     lowerBound = 0,
     upperBound = 100000000)
-    public JAMSDouble RD2_outsumNaCl;
+    public Attribute.Double RD2_outsumNaCl;
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.WRITE,
     description = "average soil saturation of the layers affected by the trench",
     unit = "l",
     lowerBound = 0,
     upperBound = 100000000)
-    public JAMSDouble avgsatsoil;
+    public Attribute.Double avgsatsoil;
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READWRITE,
-    update = JAMSVarDescription.UpdateType.RUN,
     description = "RD2 NaCl inflow in kgNaCl")
-    public JAMSDoubleArray InterflowNaCl_out;
+    public Attribute.DoubleArray InterflowNaCl_out;
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.WRITE,
     description = "surface runoff leaving the HRU without Conturbanks",
     unit = "l",
     lowerBound = 0,
     upperBound = 100000000)
-    public JAMSDouble RD1_out_old;
+    public Attribute.Double RD1_out_old;
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
     description = "surface runoff leaving the HRU goes into Conturbanks",
     unit = "l",
     lowerBound = 0,
     upperBound = 100000000)
-    public JAMSDouble RD1_out;
+    public Attribute.Double RD1_out;
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.WRITE,
     description = "saturated conductivity of the Conturbanks",
     unit = "cm d^-1",
     lowerBound = 0,
     upperBound = 100000000)
-    public JAMSDouble Ks_bottom;
+    public Attribute.Double Ks_bottom;
     boolean modulCBaktiv;
 
-    public void init() throws JAMSEntity.NoSuchAttributeException {
+    public void init() throws Attribute.Entity.NoSuchAttributeException {
         Attribute.Entity actHRU;
         double runsumlayer = 0;
         //which Layer are cutted by the trench 
@@ -140,7 +134,7 @@ public class J2KContourBNaCl_layerinterface_in extends JAMSComponent {
 
     }
 
-    public void run() throws JAMSEntity.NoSuchAttributeException {
+    public void run() throws Attribute.Entity.NoSuchAttributeException {
         Attribute.Entity actHRU;
         int i = 0;
         double sumactLPS = 0;

@@ -51,10 +51,9 @@ title="CN-SoilParameters",
      */
     @JAMSVarDescription(
     access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.INIT,
             description = "Workspace directory name"
             )
-            public JAMSString dirName;
+            public Attribute.String dirName;
     
     /**
      * the filename of the CN-parameter file containing CN-values for specific landuse
@@ -65,10 +64,9 @@ title="CN-SoilParameters",
      */
     @JAMSVarDescription(
     access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.INIT,
             description = "CN-Number parameter file name"
             )
-            public JAMSString cnFileName;
+            public Attribute.String cnFileName;
     
     /**
      * the filename of the parameter file containing the spatial distributed information
@@ -80,10 +78,9 @@ title="CN-SoilParameters",
      */
     @JAMSVarDescription(
     access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.INIT,
             description = "HRUs parameter file name"
             )
-            public JAMSString hruFileName;
+            public Attribute.String hruFileName;
     
     /**
      * the catchment's mean CN value<br>
@@ -93,10 +90,9 @@ title="CN-SoilParameters",
      */
     @JAMSVarDescription(
     access = JAMSVarDescription.AccessType.WRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "catchment CN value"
             )
-            public JAMSDouble cnValue;
+            public Attribute.Double cnValue;
     
     /**
      * the catchment's area in square meters<br>
@@ -106,19 +102,18 @@ title="CN-SoilParameters",
      */
     @JAMSVarDescription(
     access = JAMSVarDescription.AccessType.WRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "catchment area"
             )
-            public JAMSDouble catchmentArea;
+            public Attribute.Double catchmentArea;
     
     int luEntries = 0;
     int hruEntries = 0;
     
     /**
      * the components init method
-     * @throws org.unijena.jams.data.JAMSEntity.NoSuchAttributeException thrown when a model entity tries to access a non existent attribute
+     * @throws org.unijena.jams.data.Attribute.Entity.NoSuchAttributeException thrown when a model entity tries to access a non existent attribute
      */
-    public void init() throws JAMSEntity.NoSuchAttributeException {
+    public void init() throws Attribute.Entity.NoSuchAttributeException {
         this.catchmentArea.setValue(0);
         this.cnValue.setValue(0);
         

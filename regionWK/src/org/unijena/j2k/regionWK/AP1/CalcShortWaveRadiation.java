@@ -39,30 +39,27 @@ public class CalcShortWaveRadiation extends JAMSComponent {
    
 
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
-    update = JAMSVarDescription.UpdateType.RUN,
     description = "state variable solar radiation")
-    public JAMSDouble solRad;
+    public Attribute.Double solRad;
 
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
-    update = JAMSVarDescription.UpdateType.RUN,
     description = "state variable albedo")
-    public JAMSDouble albedo;
+    public Attribute.Double albedo;
 
 
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.WRITE,
-    update = JAMSVarDescription.UpdateType.RUN,
     description = "daily shortwave radiation [MJ/m²]")
-    public JAMSDouble swRad;
+    public Attribute.Double swRad;
    
    
     /*
      *  Component run stages
      */
-    public void init() throws JAMSEntity.NoSuchAttributeException, IOException {
+    public void init() throws Attribute.Entity.NoSuchAttributeException, IOException {
         
     }
 
-    public void run() throws JAMSEntity.NoSuchAttributeException, IOException {
+    public void run() throws Attribute.Entity.NoSuchAttributeException, IOException {
         
             double  sR = solRad.getValue();
             double alb = albedo.getValue();

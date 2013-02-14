@@ -39,43 +39,37 @@ public class CalcLongWaveRadiation extends JAMSComponent {
 
    
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
-    update = JAMSVarDescription.UpdateType.RUN,
     description = "state variable mean temperature")
-    public JAMSDouble tmean;
+    public Attribute.Double tmean;
 
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
-    update = JAMSVarDescription.UpdateType.RUN,
     description = "state variable relative humidity")
-    public JAMSDouble rhum;
+    public Attribute.Double rhum;
 
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
-    update = JAMSVarDescription.UpdateType.RUN,
     description = "state variable solar radiation")
-    public JAMSDouble extRad;
+    public Attribute.Double extRad;
 
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
-    update = JAMSVarDescription.UpdateType.RUN,
     description = "state variable solar radiation")
-    public JAMSDouble solRad;
+    public Attribute.Double solRad;
 
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
-    update = JAMSVarDescription.UpdateType.RUN,
     description = "attribute elevation")
-    public JAMSDouble elevation;
+    public Attribute.Double elevation;
 
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.WRITE,
-    update = JAMSVarDescription.UpdateType.RUN,
     description = "daily longwave radiation [MJ/m²]")
-    public JAMSDouble lwRad;
+    public Attribute.Double lwRad;
 
     
 
     
-    public void init() throws JAMSEntity.NoSuchAttributeException, IOException {
+    public void init() throws Attribute.Entity.NoSuchAttributeException, IOException {
        
     }
 
-    public void run() throws JAMSEntity.NoSuchAttributeException, IOException {
+    public void run() throws Attribute.Entity.NoSuchAttributeException, IOException {
        
             double elev = elevation.getValue();
             double temp = tmean.getValue();

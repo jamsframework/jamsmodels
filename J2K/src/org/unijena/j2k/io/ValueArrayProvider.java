@@ -44,14 +44,12 @@ title="Value array provider",
     
    @JAMSVarDescription(
     access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "the timeSeries values to capture"
             )
             public Attribute.Double theValue;
     
     @JAMSVarDescription(
     access = JAMSVarDescription.AccessType.READWRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "the captured time series"
             )
             public Attribute.DoubleArray theValueArray;

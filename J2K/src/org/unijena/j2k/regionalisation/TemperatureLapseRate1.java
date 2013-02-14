@@ -41,29 +41,23 @@ public class TemperatureLapseRate1 extends JAMSComponent {
      *  Component variables
      */
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
-    update = JAMSVarDescription.UpdateType.RUN,
     description = "station elevation")
     public Attribute.DoubleArray statElev;
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
-    update = JAMSVarDescription.UpdateType.RUN,
     description = "entity elevation")
     public Attribute.Double entityElev;
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
-    update = JAMSVarDescription.UpdateType.RUN,
     description = "the measured input from a base station")
     public Attribute.DoubleArray inputValue;
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.WRITE,
-    update = JAMSVarDescription.UpdateType.RUN,
     description = "calculated output for the modelling entity")
     public Attribute.Double outputValue;
 
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
-    update = JAMSVarDescription.UpdateType.INIT,
     description = "lapse rate per 100 m elevation difference")
     public Attribute.Double lapseRateSummer;
 
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
-    update = JAMSVarDescription.UpdateType.INIT,
     description = "lapse rate per 100 m elevation difference")
     public Attribute.Double lapseRateWinter;
 //    @JAMSVarDescription(
@@ -79,17 +73,16 @@ public class TemperatureLapseRate1 extends JAMSComponent {
 
     
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
-    update = JAMSVarDescription.UpdateType.RUN,
     description = "position array to determine best weights")
-    public JAMSIntegerArray statOrder;
+    public Attribute.IntegerArray statOrder;
     /*
      *  Component run stages
      */
 
-    public void init() throws JAMSEntity.NoSuchAttributeException {
+    public void init() throws Attribute.Entity.NoSuchAttributeException {
     }
 
-    public void run() throws JAMSEntity.NoSuchAttributeException {
+    public void run() throws Attribute.Entity.NoSuchAttributeException {
 
      
         
@@ -123,10 +116,10 @@ public class TemperatureLapseRate1 extends JAMSComponent {
 
 //
 //
-//    public void init() throws JAMSEntity.NoSuchAttributeException {
+//    public void init() throws Attribute.Entity.NoSuchAttributeException {
 //    }
 //
-//    public void run() throws JAMSEntity.NoSuchAttributeException {
+//    public void run() throws Attribute.Entity.NoSuchAttributeException {
 //
 //
 //

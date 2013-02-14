@@ -50,53 +50,46 @@ import jams.model.*;
      */
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "The current hru entity"
             )
-            public JAMSEntityCollection entities;
+            public Attribute.EntityCollection entities;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "HRU statevar LAI values (366)"
             )
-            public JAMSDoubleArray LAIArray;
+            public Attribute.DoubleArray LAIArray;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "HRU statevar eff. Height values (366)"
             )
-            public JAMSDoubleArray effHArray;
+            public Attribute.DoubleArray effHArray;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "Monthly stomata resistance values"
             )
-            public JAMSDoubleArray rsc0Array;
+            public Attribute.DoubleArray rsc0Array;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "HRU attribute name elevation"
             )
-            public JAMSDouble elevation;
+            public Attribute.Double elevation;
     
      @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "Monthly stomata resistance values"
             )
-            public JAMSDoubleArray etMonthFactorArray;
+            public Attribute.DoubleArray etMonthFactorArray;
      
           
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.INIT,
             description = "temporal resolution [d | h | m]"
             )
-            public JAMSString tempRes;
+            public Attribute.String tempRes;
     
     
     int[] monthMean = {15,45,74,105,135,166,196,227,258,288,319,349};
@@ -107,11 +100,11 @@ import jams.model.*;
      *  Component run stages
      */
     
-    public void init() throws JAMSEntity.NoSuchAttributeException {
+    public void init() throws Attribute.Entity.NoSuchAttributeException {
       
     }
     
-    public void run() throws JAMSEntity.NoSuchAttributeException {
+    public void run() throws Attribute.Entity.NoSuchAttributeException {
         
         Attribute.Entity entity = entities.getCurrent();
         

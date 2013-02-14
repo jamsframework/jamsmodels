@@ -40,163 +40,134 @@ public class InitJ2KProcessGroundwater_D_N_1_newest extends JAMSComponent {
      *  Component variables
      */
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
-    update = JAMSVarDescription.UpdateType.RUN,
     description = "The current hru entity")
-    public JAMSEntityCollection hrus;
+    public Attribute.EntityCollection hrus;
     
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
-    update = JAMSVarDescription.UpdateType.RUN,
     description = "The elevation of the current hru entity")
-    public JAMSDouble elevation;
+    public Attribute.Double elevation;
 
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
-    update = JAMSVarDescription.UpdateType.RUN,
     description = "The current reach entity")
-    public JAMSEntityCollection reaches;
+    public Attribute.EntityCollection reaches;
 
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
-    update = JAMSVarDescription.UpdateType.RUN,
     description = "attribute area")
-    public JAMSDouble area;
+    public Attribute.Double area;
 
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.WRITE,
-    update = JAMSVarDescription.UpdateType.RUN,
     description = "Distance between adjacent entities")
-    public JAMSDouble gwFlowLength;
+    public Attribute.Double gwFlowLength;
 
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.WRITE,
-    update = JAMSVarDescription.UpdateType.RUN,
     description = "Length of the border arc between adjacent entities")
-    public JAMSDouble gwArcLength;
+    public Attribute.Double gwArcLength;
 
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.WRITE,
-    update = JAMSVarDescription.UpdateType.RUN,
     description = "maximum RG1 storage")
-    public JAMSDouble maxRG1;
+    public Attribute.Double maxRG1;
 
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.WRITE,
-    update = JAMSVarDescription.UpdateType.RUN,
     description = "maximum GW storage")
-    public JAMSDouble maxGW;
+    public Attribute.Double maxGW;
 
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.WRITE,
-    update = JAMSVarDescription.UpdateType.RUN,
     description = "maximum GW storage")
-    public JAMSDouble satGW;
+    public Attribute.Double satGW;
 
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.WRITE,
-    update = JAMSVarDescription.UpdateType.RUN,
     description = "actual RG1 storage")
-    public JAMSDouble actRG1;
+    public Attribute.Double actRG1;
 
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.WRITE,
-    update = JAMSVarDescription.UpdateType.RUN,
     description = "actual GW storage")
-    public JAMSDouble actGW;
+    public Attribute.Double actGW;
 
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
-    update = JAMSVarDescription.UpdateType.INIT,
     description = "relative initial RG1 storage")
-    public JAMSDouble initRG1;
+    public Attribute.Double initRG1;
 
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
-    update = JAMSVarDescription.UpdateType.INIT,
     description = "relative initial GW storage")
-    public JAMSDouble initGW;
+    public Attribute.Double initGW;
     
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READWRITE,
-    update = JAMSVarDescription.UpdateType.RUN,
     description = "Downstream hru entity")
-    public JAMSEntity toPoly;
+    public Attribute.Entity toPoly;
 
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READWRITE,
-    update = JAMSVarDescription.UpdateType.RUN,
     description = "Downstream reach entity")
-    public JAMSEntity toReach;
+    public Attribute.Entity toReach;
 
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
     description = "entity x-coordinate")
-    public JAMSDouble entityX;
+    public Attribute.Double entityX;
 
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
     description = "entity y-coordinate")
-    public JAMSDouble entityY;
+    public Attribute.Double entityY;
 
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.WRITE,
-        update = JAMSVarDescription.UpdateType.RUN,
         description = "HRU Groundwater Level"
         )
-        public JAMSDouble gwTable;
+        public Attribute.Double gwTable;
 
     @JAMSVarDescription(
     access = JAMSVarDescription.AccessType.WRITE,
     description = "Reach Water Level")
-    public JAMSDouble waterTable_NN;
+    public Attribute.Double waterTable_NN;
 
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
-    update = JAMSVarDescription.UpdateType.RUN,
     description = "estimated hydraulic conductivity in cm/d")
-    public JAMSDouble Kf_geo;
+    public Attribute.Double Kf_geo;
 
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
-    update = JAMSVarDescription.UpdateType.RUN,
     description = "estimated hydraulic conductivity in cm/d")
-    public JAMSDouble KfAdaptation;
+    public Attribute.Double KfAdaptation;
 
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.WRITE,
-    update = JAMSVarDescription.UpdateType.RUN,
     description = "estimated porosity")
-    public JAMSDouble Peff;
+    public Attribute.Double Peff;
 
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.WRITE,
-    update = JAMSVarDescription.UpdateType.RUN,
     description = "adapted Kf_geo")
-    public JAMSDouble Kf_geo_adapt;
+    public Attribute.Double Kf_geo_adapt;
 
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READWRITE,
-    update = JAMSVarDescription.UpdateType.RUN,
     description = "Height of the aquifer base in m + NN")
-    public JAMSDouble baseHeigth;
+    public Attribute.Double baseHeigth;
 
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
-    update = JAMSVarDescription.UpdateType.RUN,
     description = "Adaptation of Height of the aquifer base in m")
-    public JAMSDouble baseHeigth_v;
+    public Attribute.Double baseHeigth_v;
     
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
-    update = JAMSVarDescription.UpdateType.RUN,
     description = "Minimum Depth of the aquifer in m")
-    public JAMSDouble minimumAQ_h;
+    public Attribute.Double minimumAQ_h;
 
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READWRITE,
-    update = JAMSVarDescription.UpdateType.RUN,
     description = "Groundwater outflow")
-    public JAMSDouble pot_outGW;
+    public Attribute.Double pot_outGW;
 
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.WRITE,
-    update = JAMSVarDescription.UpdateType.RUN,
     description = "Height of potential groundwater Table (in Init the same as gwTable")
-    public JAMSDouble pot_gwTable;
+    public Attribute.Double pot_gwTable;
 
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.WRITE,
-    update = JAMSVarDescription.UpdateType.RUN,
     description = "Height of potential groundwater Table (in Init the same as gwTable")
-    public JAMSDouble preOutGW;
+    public Attribute.Double preOutGW;
     
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.WRITE,
-    update = JAMSVarDescription.UpdateType.RUN,
     description = "Height of potential groundwater Table (in Init the same as gwTable")
-    public JAMSDouble preActGW;
+    public Attribute.Double preActGW;
 
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
-    update = JAMSVarDescription.UpdateType.RUN,
     description = "Flowlength")
-    public JAMSDouble fll;
+    public Attribute.Double fll;
 
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.WRITE,
-    update = JAMSVarDescription.UpdateType.RUN,
     description = "Thickness of the Aquifer")
-    public JAMSDouble aqThickness;
+    public Attribute.Double aqThickness;
 
 
 
@@ -208,24 +179,24 @@ public class InitJ2KProcessGroundwater_D_N_1_newest extends JAMSComponent {
            run_gwDepth, run_gwTable, run_actGW, run_maxGW, run_satGW;
        
 
-    public void init() throws JAMSEntity.NoSuchAttributeException {
+    public void init() throws Attribute.Entity.NoSuchAttributeException {
 
     }
 
-    public void run() throws JAMSEntity.NoSuchAttributeException {
+    public void run() throws Attribute.Entity.NoSuchAttributeException {
 
         run_area = area.getValue();                                 //[m]
         run_Kf_geo = Kf_geo.getValue();                             //[cm/d]
         run_KfAdaptation = KfAdaptation.getValue();                 //[-]
         run_baseHeigth = baseHeigth.getValue();                     //[m]
         
-        double run_baseHeigth_v = baseHeigth_v.getValue();          //[m ¸ NN]
+        double run_baseHeigth_v = baseHeigth_v.getValue();          //[m √º NN]
 
         double min_AQ_h = minimumAQ_h.getValue();
         
         double HRU_elev = elevation.getValue();
         
-        //Berechnung der Flieﬂl‰nge, bzw. der Flieﬂdistanz von HRU zu HRU
+        //Berechnung der Flie√ül√§nge, bzw. der Flie√üdistanz von HRU zu HRU
         upFL = fll.getValue();
 
         if (toPoly.getValue() != null) {
@@ -255,23 +226,23 @@ public class InitJ2KProcessGroundwater_D_N_1_newest extends JAMSComponent {
         run_gwFlowLength = Math.pow((Math.pow((upY - downY), 2) + (Math.pow((upX - downX), 2))), 0.5);
         */
 
-        //Berechnung mit abgeleiteter Flieﬂl‰nge... die Flieﬂdistanz zwischen zwei HRUs entspricht 
-        //der Summe der halbierten Flieﬂl‰ngen der HRUs
+        //Berechnung mit abgeleiteter Flie√ül√§nge... die Flie√üdistanz zwischen zwei HRUs entspricht 
+        //der Summe der halbierten Flie√ül√§ngen der HRUs
         
         //run_gwFlowLength = (upFL / 2) + (downFL / 2);
         run_gwFlowLength = upFL; //Erstmal ein test...
 
-        //Anpassung des Durchl‰ssigkeitsbeiwerts mit Kalibrierungsfaktor und Umrechnung von [cm/d] auf [m/s]
+        //Anpassung des Durchl√§ssigkeitsbeiwerts mit Kalibrierungsfaktor und Umrechnung von [cm/d] auf [m/s]
         run_Kf_geo_adapted = run_Kf_geo * run_KfAdaptation / 100;
         
-        //Bestimmung der Porosit‰t nach Hˆlting s. 86
+        //Bestimmung der Porosit√§t nach H√∂lting s. 86
         run_Peff = 0.462 + 0.045 * Math.log(run_Kf_geo_adapted / 86400);
         if (run_Peff < 0.01){
             run_Peff = 0.01;
         }
 
-        // und wieder zur¸ck!
-        //run_Kf_geo_adapted = run_Kf_geo_adapted * 86400; // Entf‰llt wegen Modifikation von Zeile 265 und 268
+        // und wieder zur√ºck!
+        //run_Kf_geo_adapted = run_Kf_geo_adapted * 86400; // Entf√§llt wegen Modifikation von Zeile 265 und 268
 
         //Anpassung der Aquifersohle durch Kalibrierfaktor
 
@@ -294,17 +265,17 @@ public class InitJ2KProcessGroundwater_D_N_1_newest extends JAMSComponent {
 
         run_satGW = run_actGW / run_maxGW;
 
-        run_gwDepth = run_actGW / 1000 / run_area / run_Peff;      //M‰chtigkeit in [m]
+        run_gwDepth = run_actGW / 1000 / run_area / run_Peff;      //M√§chtigkeit in [m]
         
-        run_gwTable = run_gwDepth + run_baseHeigth;                 //Grundwasserspiegellage in [m ¸ NN]
+        run_gwTable = run_gwDepth + run_baseHeigth;                 //Grundwasserspiegellage in [m √º NN]
 
 
         //Setzen der Parameter
-        baseHeigth.setValue(run_baseHeigth);                        //[m ¸ NN]
-        aqThickness.setValue(run_aqThickness);                        //[m ¸ NN]
+        baseHeigth.setValue(run_baseHeigth);                        //[m √º NN]
+        aqThickness.setValue(run_aqThickness);                        //[m √º NN]
         gwFlowLength.setValue(run_gwFlowLength);                    //[m]
         gwTable.setValue(run_gwTable);                              //[m]
-        pot_gwTable.setValue(run_gwTable);                          //[m ¸ NN]
+        pot_gwTable.setValue(run_gwTable);                          //[m √º NN]
         Kf_geo_adapt.setValue(run_Kf_geo_adapted);                  //[m/s]
         Peff.setValue(run_Peff);                                    //[-]
         actRG1.setValue(0);                                         //[l]

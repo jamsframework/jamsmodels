@@ -42,42 +42,38 @@ import jams.model.*;
      */
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.INIT,
             description = "recision coefficient k"
             )
-            public JAMSDouble k;
+            public Attribute.Double k;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "groundwater recharge"
             )
-            public JAMSDouble gwRecharge;
+            public Attribute.Double gwRecharge;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "groundwater storages"
             )
-            public JAMSDouble storage;
+            public Attribute.Double storage;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "baseflow basQ"
             )
-            public JAMSDouble basQ;
+            public Attribute.Double basQ;
     
     
     /*
      *  Component run stages
      */
     
-    public void init() throws JAMSEntity.NoSuchAttributeException {
+    public void init() throws Attribute.Entity.NoSuchAttributeException {
         
     }
     
-    public void run() throws JAMSEntity.NoSuchAttributeException {
+    public void run() throws Attribute.Entity.NoSuchAttributeException {
        double storage = this.storage.getValue();
        double input = this.gwRecharge.getValue();
        

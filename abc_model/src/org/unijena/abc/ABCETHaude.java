@@ -23,9 +23,7 @@
 
 package org.unijena.abc;
 
-import jams.data.JAMSCalendar;
-import jams.data.JAMSDouble;
-import jams.data.JAMSEntity;
+import jams.data.*;
 import jams.model.JAMSComponent;
 import jams.model.JAMSComponentDescription;
 import jams.model.JAMSVarDescription;
@@ -52,38 +50,33 @@ import java.io.*;
      */
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "Current time"
             )
-            public JAMSCalendar time;
+            public Attribute.Calendar time;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "state variable mean temperature"
             )
-            public JAMSDouble temperature;
+            public Attribute.Double temperature;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "state variable relative humidity"
             )
-            public JAMSDouble rhum;
+            public Attribute.Double rhum;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.INIT,
             description = "multiplier to adapt et rates"
             )
-            public JAMSDouble et_adaptation;
+            public Attribute.Double et_adaptation;
     
         @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "daily potential ET [mm/d]"
             )
-            public JAMSDouble pET;
+            public Attribute.Double pET;
     
     
     
@@ -92,13 +85,13 @@ import java.io.*;
      *  Component run stages
      */
     
-    public void init() throws JAMSEntity.NoSuchAttributeException, IOException {
+    public void init() throws Attribute.Entity.NoSuchAttributeException, IOException {
         
     }
     
-    public void run() throws JAMSEntity.NoSuchAttributeException, IOException {
+    public void run() throws Attribute.Entity.NoSuchAttributeException, IOException {
            double[] haudeFactors ={0.08,0.04,0.14,0.35,0.39,0.34,0.31,0.25,0.2,0.13,0.07,0.05}; 
-           int month = time.get(time.MONTH);
+           int month = time.get(JAMSCalendar.MONTH);
            double temp = temperature.getValue();
            double rh = rhum.getValue();
            double hf = haudeFactors[month];
@@ -117,7 +110,7 @@ import java.io.*;
                pETP = 0;
            }
            
-           int days = time.getActualMaximum(time.DAY_OF_MONTH);
+           int days = time.getActualMaximum(JAMSCalendar.DAY_OF_MONTH);
            
            //conversion from daily to hourly values
            pETP = pETP * days;

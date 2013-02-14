@@ -37,18 +37,18 @@ public class Multiply extends JAMSComponent {
 	    update = JAMSVarDescription.UpdateType.RUN,
 	    description = "value attribute"
 	    )
-	    public JAMSDouble[] value;
+	    public Attribute.Double[] value;
     
     @JAMSVarDescription(
 	    access = JAMSVarDescription.AccessType.READWRITE,
 	    update = JAMSVarDescription.UpdateType.RUN,
 	    description = "multiplier"
 	    )
-	    public JAMSDouble multiplier;
+	    public Attribute.Double multiplier;
 
 
     @Override
-    public void run() throws JAMSEntity.NoSuchAttributeException {
+    public void run() throws Attribute.Entity.NoSuchAttributeException {
 	double mul = multiplier.getValue();
     
         for (int i=0;i<value.length;i++) {

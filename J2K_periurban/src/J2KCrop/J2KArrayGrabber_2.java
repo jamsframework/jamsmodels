@@ -62,125 +62,109 @@ import jams.model.*;
      */
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.INIT,
             description = "temporal resolution [m | d | h]"
             )
-            public JAMSString tempRes;
+            public Attribute.String tempRes;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "time"
             )
-            public JAMSCalendar time;
+            public Attribute.Calendar time;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "extraTerrRadiationArray"
             )
-            public JAMSDoubleArray extRadArray;
+            public Attribute.DoubleArray extRadArray;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "LeafAreaIndexArray"
             )
-            public JAMSDoubleArray LAIArray;
+            public Attribute.DoubleArray LAIArray;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "EffectiveHeightArray"
             )
-            public JAMSDoubleArray effHArray;
+            public Attribute.DoubleArray effHArray;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "rsc0 Array"
             )
-            public JAMSDoubleArray rsc0Array;
+            public Attribute.DoubleArray rsc0Array;
     
         @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "CropCoeff Array"
             )
-            public JAMSDoubleArray cropcoeffArray;
+            public Attribute.DoubleArray cropcoeffArray;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "slopeAscpectCorrectionFactorArray"
             )
-            public JAMSDoubleArray slAsCfArray;
+            public Attribute.DoubleArray slAsCfArray;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "actExtraTerrRadiation"
             )
-            public JAMSDouble actExtRad;
+            public Attribute.Double actExtRad;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "actLAI"
             )
-            public JAMSDouble actLAI;
+            public Attribute.Double actLAI;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "actEffH"
             )
-            public JAMSDouble actEffH;
+            public Attribute.Double actEffH;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "actRsc0"
             )
-            public JAMSDouble actRsc0;
+            public Attribute.Double actRsc0;
     
         @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "actCropCoeff"
             )
-            public JAMSDouble actCropCoeff;
+            public Attribute.Double actCropCoeff;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "Haude factor array"
             )
-            public JAMSDoubleArray haudeFactorArray;
+            public Attribute.DoubleArray haudeFactorArray;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "actHaudeFactor",
             defaultValue="0"
             )
-            public JAMSDouble actHaudeFactor;
+            public Attribute.Double actHaudeFactor;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "actSlopeAscpectCorrectionFactor"
             )
-            public JAMSDouble actSlAsCf;
+            public Attribute.Double actSlAsCf;
     /*
      *  Component run stages
      */
     
-    public void init() throws JAMSEntity.NoSuchAttributeException{
+    public void init() throws Attribute.Entity.NoSuchAttributeException{
         
     }
     
-    public void run() throws JAMSEntity.NoSuchAttributeException{
+    public void run() throws Attribute.Entity.NoSuchAttributeException{
     	
         int monthCount = time.get(time.MONTH);
         int dayCount = time.get(time.DAY_OF_YEAR) - 1;

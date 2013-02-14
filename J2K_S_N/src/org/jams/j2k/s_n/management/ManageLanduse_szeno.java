@@ -20,110 +20,84 @@ import jams.data.*;
 public class ManageLanduse_szeno extends JAMSComponent {
 
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
-    update = JAMSVarDescription.UpdateType.RUN,
     description = "Current hru object")
-    public JAMSEntityCollection entities;
+    public Attribute.EntityCollection entities;
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
-    update = JAMSVarDescription.UpdateType.RUN,
     description = "Current time")
-    public JAMSCalendar time;
+    public Attribute.Calendar time;
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.WRITE,
-    update = JAMSVarDescription.UpdateType.RUN,
     description = "Current NH4 fertilizer amount")
-    public JAMSDouble fertNH4N;
+    public Attribute.Double fertNH4N;
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.WRITE,
-    update = JAMSVarDescription.UpdateType.RUN,
     description = "Current NO3 fertilizer amount")
-    public JAMSDouble fertNO3N;
+    public Attribute.Double fertNO3N;
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.WRITE,
-    update = JAMSVarDescription.UpdateType.RUN,
     description = "Current organic fertilizer amount")
-    public JAMSDouble fertorgNactive;
+    public Attribute.Double fertorgNactive;
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.WRITE,
-    update = JAMSVarDescription.UpdateType.RUN,
     description = "Current organic fertilizer amount added to residue pool")
-    public JAMSDouble fertorgNfresh;
+    public Attribute.Double fertorgNfresh;
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READWRITE,
-    update = JAMSVarDescription.UpdateType.RUN,
     description = "Reduction Factor for Fertilisation 0 - 10 [-]")
-    public JAMSDouble ReductionFactor;
+    public Attribute.Double ReductionFactor;
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READWRITE,
-    update = JAMSVarDescription.UpdateType.RUN,
     description = "Current organic fertilizer amount")
-    public JAMSInteger RotPos;
+    public Attribute.Integer RotPos;
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READWRITE,
-    update = JAMSVarDescription.UpdateType.RUN,
     description = "Current organic fertilizer amount")
-    public JAMSInteger ManagementPos;
+    public Attribute.Integer ManagementPos;
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READWRITE,
-    update = JAMSVarDescription.UpdateType.RUN,
     description = "Plant exisiting or not")
-    public JAMSBoolean plantExisting;
+    public Attribute.Boolean plantExisting;
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.WRITE,
-    update = JAMSVarDescription.UpdateType.RUN,
     description = "Indicator for harvesting")
-    public JAMSBoolean doHarvest;
+    public Attribute.Boolean doHarvest;
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
-    update = JAMSVarDescription.UpdateType.INIT,
     description = "Date to start reduction")
-    public JAMSCalendar start;
+    public Attribute.Calendar start;
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
-    update = JAMSVarDescription.UpdateType.INIT,
     description = "Date to end reduction")
-    public JAMSCalendar end;
+    public Attribute.Calendar end;
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
-    update = JAMSVarDescription.UpdateType.INIT,
     description = "Encapsulating time interval")
-    public JAMSTimeInterval timeInterval;
+    public Attribute.TimeInterval timeInterval;
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
-    update = JAMSVarDescription.UpdateType.RUN,
     description = "Indicates fertilazation optimization with plant demand")
-    public JAMSDouble opti;
+    public Attribute.Double opti;
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READWRITE,
-    update = JAMSVarDescription.UpdateType.RUN,
     description = "Mineral nitrogen content in the soil profile down to 60 cm depth")
-    public JAMSDouble nmin;
+    public Attribute.Double nmin;
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READWRITE,
-    update = JAMSVarDescription.UpdateType.RUN,
     description = "optimal nitrogen content in Biomass in (kgN/ha)")
-    public JAMSDouble optibioN;
+    public Attribute.Double optibioN;
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READWRITE,
-    update = JAMSVarDescription.UpdateType.RUN,
     description = "actual nitrogen content in Biomass in (kgN/ha)")
-    public JAMSDouble actbioN;
+    public Attribute.Double actbioN;
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READWRITE,
-    update = JAMSVarDescription.UpdateType.RUN,
     description = "Fraction of actual potential heat units sum [-]")
-    public JAMSDouble FPHUact;
+    public Attribute.Double FPHUact;
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.WRITE,
-    update = JAMSVarDescription.UpdateType.RUN,
     description = "Fertilisation reduction due to the plant demand routine [kgN/ha]")
-    public JAMSDouble Nredu;
+    public Attribute.Double Nredu;
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READWRITE,
-    update = JAMSVarDescription.UpdateType.RUN,
     description = "Number of fertilisation action in crop [-]")
-    public JAMSDouble gift;
+    public Attribute.Double gift;
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
-    update = JAMSVarDescription.UpdateType.RUN,
     description = "Maximum amount of N-fertilizer in [kg/ha*a]")
-    public JAMSDouble maxfert;
+    public Attribute.Double maxfert;
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READWRITE,
-    update = JAMSVarDescription.UpdateType.RUN,
     description = "Rest after former gifts amount of N-fertilizer in [kg/ha*a]")
-    public JAMSDouble restfert;
+    public Attribute.Double restfert;
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READWRITE,
-    update = JAMSVarDescription.UpdateType.RUN,
     description = "in [-] plant groth nitrogen stress factor")
-    public JAMSDouble nstrs;
+    public Attribute.Double nstrs;
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READWRITE,
-    update = JAMSVarDescription.UpdateType.RUN,
     description = "Minimum counter between 2 fertilizer actions in days (only used when opti = 2)")
-    public JAMSDouble Dayintervall;
+    public Attribute.Double Dayintervall;
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.WRITE,
-    update = JAMSVarDescription.UpdateType.RUN,
     description = "Type of harvest to distiguish between crops with undersown plants and normal harvesting")
-    public JAMSInteger harvesttype;
-    private JAMSTimeInterval ti;
+    public Attribute.Integer harvesttype;
+    private Attribute.TimeInterval ti;
     double endbioN;
     double bion02;
     double bion04;
@@ -132,11 +106,14 @@ public class ManageLanduse_szeno extends JAMSComponent {
     double runNredu;
 
     public void init() {
-        ti = new JAMSTimeInterval(start, end, timeInterval.getTimeUnit(), timeInterval.getTimeUnitCount());
-
+        ti = getModel().getRuntime().getDataFactory().createTimeInterval();
+        ti.setStart(start);
+        ti.setEnd(end);
+        ti.setTimeUnit(timeInterval.getTimeUnit());
+        ti.setTimeUnitCount(timeInterval.getTimeUnitCount());
     }
 
-    public void run() throws JAMSEntity.NoSuchAttributeException {
+    public void run() throws Attribute.Entity.NoSuchAttributeException {
         double dayintervall = Dayintervall.getValue();
         Attribute.Entity entity = entities.getCurrent();
         this.fertNO3N.setValue(0);
@@ -166,9 +143,9 @@ public class ManageLanduse_szeno extends JAMSComponent {
         int nextDay = currentManagement.jDay;
         doHarvest.setValue(false);
 
-//            System.out.println("da" + nextDay + time.get(JAMSCalendar.DAY_OF_YEAR));
+//            System.out.println("da" + nextDay + time.get(Attribute.Calendar.DAY_OF_YEAR));
 
-        if ((nextDay - 1) == time.get(time.DAY_OF_YEAR)) {
+        if ((nextDay - 1) == time.get(JAMSCalendar.DAY_OF_YEAR)) {
             if (currentManagement.harvest != -1) {
                 //do harvesting here!!
                 //System.out.println(" Julianischer Tag  "+ time.get(time.DAY_OF_YEAR));
@@ -176,7 +153,7 @@ public class ManageLanduse_szeno extends JAMSComponent {
             }
         }
 
-        if (nextDay == time.get(time.DAY_OF_YEAR)) {
+        if (nextDay == time.get(JAMSCalendar.DAY_OF_YEAR)) {
 
             if ((managementPos + 1) == managementList.size()) {
                 ManagementPos.setValue(0);
@@ -210,7 +187,7 @@ public class ManageLanduse_szeno extends JAMSComponent {
             }
         }
 
-        double day = time.get(time.DAY_OF_YEAR);
+        double day = time.get(JAMSCalendar.DAY_OF_YEAR);
 
         if ((opti.getValue() == 2) && (day > 90.0 && day < 300.0) && (gift.getValue() > 0) && (idc == 1 || idc == 2 || idc == 4 || idc == 5)) {
             if (nstrs.getValue() > 0.03 && gift.getValue() < 4) {

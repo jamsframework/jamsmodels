@@ -44,63 +44,54 @@ import jams.model.*;
      */
 
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.INIT,
             description = "Caching configuration: 0 - write cache, 1 - use cache, 2 - caching off",
             defaultValue = "0")
-            public JAMSInteger dataCaching;
+            public Attribute.Integer dataCaching;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "latitude of entity"
             )
             public Attribute.Double latitude;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "state variable slope aspect correction factor"
             )
             public Attribute.Double actSlAsCf;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "state variable fraction of sunshine in one hour"
             )
             public Attribute.Double sunFrac;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "Current time"
             )
-            public JAMSCalendar time;
+            public Attribute.Calendar time;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.INIT,
             description = "Angstrom factor a"
             )
             public Attribute.Double angstrom_a;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.INIT,
             description = "Angstrom factor b"
             )
             public Attribute.Double angstrom_b;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "hourly solar radiation [MJ/m²]"
             )
             public Attribute.Double solRad;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "extraterrestic radiation [MJ/m²]"
             )
             public Attribute.Double actExtRad;
@@ -116,7 +107,7 @@ import jams.model.*;
      *  Component run stages
      */
     
-    public void init() throws JAMSEntity.NoSuchAttributeException, IOException {
+    public void init() throws Attribute.Entity.NoSuchAttributeException, IOException {
         //first, check if cached data are available
         //cacheFile = new File(dirName.getValue() + "/$" + this.getInstanceName() + ".cache");
         cacheFile = new File(getModel().getWorkspace().getTempDirectory(), this.getInstanceName() + ".cache");
@@ -130,14 +121,14 @@ import jams.model.*;
         }
     }
     
-    public void run() throws JAMSEntity.NoSuchAttributeException, IOException {
+    public void run() throws Attribute.Entity.NoSuchAttributeException, IOException {
         if (dataCaching.getValue() == 1) {
             solRad.setValue(reader.readDouble());
         }
         else {
             int oldjulDay = 0;
-            int julDay = time.get(time.DAY_OF_YEAR);
-            int idx = (julDay - 1) * 24 + time.get(time.HOUR_OF_DAY);
+            int julDay = time.get(JAMSCalendar.DAY_OF_YEAR);
+            int idx = (julDay - 1) * 24 + time.get(JAMSCalendar.HOUR_OF_DAY);
             
             double lat = latitude.getValue();
             double radLat = org.unijena.j2k.mathematicalCalculations.MathematicalCalculations.deg2rad(lat);
@@ -173,7 +164,7 @@ import jams.model.*;
         } 
     }
     
-    public void cleanup() throws JAMSEntity.NoSuchAttributeException, IOException {
+    public void cleanup() throws Attribute.Entity.NoSuchAttributeException, IOException {
         if (dataCaching.getValue() == 0) {
             writer.flush();
             writer.close();

@@ -47,60 +47,52 @@ import jams.model.*;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "maximum RG1 storage"
             )
-            public JAMSDouble maxRG1;
+            public Attribute.Double maxRG1;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "maximum RG2 storage"
             )
-            public JAMSDouble maxRG2;
+            public Attribute.Double maxRG2;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "actual RG1 N storage in kgN"
             )
-            public JAMSDouble NActRG1;
+            public Attribute.Double NActRG1;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "actual RG2 N storage in kgN"
             )
-            public JAMSDouble NActRG2;
+            public Attribute.Double NActRG2;
 
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.INIT,
             description = "HRU Concentration in mgN/l for RG1"
             )
-            public JAMSDouble N_concRG1;
+            public Attribute.Double N_concRG1;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.INIT,
             description = "HRU Concentration in mgN/l for RG2"
             )
-            public JAMSDouble N_concRG2;
+            public Attribute.Double N_concRG2;
    
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.INIT,
             description = "Relativ size of the groundwaterN damping tank RG1 0 - 10 to calibrate in -"
             )
-            public JAMSDouble N_delay_RG1;
+            public Attribute.Double N_delay_RG1;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.INIT,
             description = "Relativ size of the groundwaterN damping tank RG2 0 - 10 to calibrate in -"
             )
-            public JAMSDouble N_delay_RG2;
+            public Attribute.Double N_delay_RG2;
     
     
     
@@ -116,12 +108,12 @@ import jams.model.*;
     
  
     
-    public void init() throws JAMSEntity.NoSuchAttributeException{
+    public void init() throws Attribute.Entity.NoSuchAttributeException{
         
         
     }
     
-    public void run() throws JAMSEntity.NoSuchAttributeException{
+    public void run() throws Attribute.Entity.NoSuchAttributeException{
         
             
               
@@ -133,7 +125,7 @@ import jams.model.*;
     }
     
  
-    public void cleanup() throws JAMSEntity.NoSuchAttributeException{
+    public void cleanup() throws Attribute.Entity.NoSuchAttributeException{
         
     }
 }

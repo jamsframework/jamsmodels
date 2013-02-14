@@ -43,54 +43,48 @@ import jams.model.*;
      */
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "Collection of reach objects"
             )
-            public JAMSEntityCollection reaches;
+            public Attribute.EntityCollection reaches;
 
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "HRU statevar glacier melt outflow"
             )
-            public JAMSDouble glacierRunoff;
+            public Attribute.Double glacierRunoff;
 
      @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "HRU RD1 from upper HRUs"
             )
-            public JAMSDouble inRD1;
+            public Attribute.Double inRD1;
 
      @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "the receiving reach"
             )
             public Attribute.Entity toReach;
 
      @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "the receiving glacier HRU"
             )
             public Attribute.Entity toPoly;
 
      /*@JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "The reach collection"
             )
-            public JAMSEntityCollection entities;*/
+            public Attribute.EntityCollection entities;*/
 
     /*
      *  Component run stages
      */
 
-    public void init() throws JAMSEntity.NoSuchAttributeException {
+    public void init() throws Attribute.Entity.NoSuchAttributeException {
     }
 
-    public void run() throws JAMSEntity.NoSuchAttributeException {
+    public void run() throws Attribute.Entity.NoSuchAttributeException {
         double gm = glacierRunoff.getValue();
         //Attribute.Entity ent = entities.getCurrent();
         //long id = ent.getId();

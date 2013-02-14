@@ -35,81 +35,68 @@ public class Output extends JAMSComponent {
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.RUN
             )
-            public JAMSDouble simRunoff;
+            public Attribute.Double simRunoff;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.RUN
             )
-            public JAMSDouble precip;
+            public Attribute.Double precip;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.RUN
             )
-            public JAMSDouble simDirectFlow;
+            public Attribute.Double simDirectFlow;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.RUN
             )
-            public JAMSDouble simBaseFlow;
+            public Attribute.Double simBaseFlow;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.RUN
             )
-            public JAMSDouble simET;
+            public Attribute.Double simET;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.RUN
             )
-            public JAMSDouble pET;
+            public Attribute.Double pET;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.RUN
             )
-            public JAMSDouble snowStorage;
+            public Attribute.Double snowStorage;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.RUN
             )
-            public JAMSDouble snowMelt;
+            public Attribute.Double snowMelt;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.RUN
             )
-            public JAMSDouble storage;
+            public Attribute.Double storage;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.RUN
             )
-            public JAMSCalendar time;
+            public Attribute.Calendar time;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.RUN
             )
-            public JAMSDouble obsRunoff;
+            public Attribute.Double obsRunoff;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.INIT
             )
-            public JAMSString workspace;
+            public Attribute.String workspace;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.INIT
             )
-            public JAMSString fileName;
+            public Attribute.String fileName;
     
     
     private GenericDataWriter writer;

@@ -44,42 +44,36 @@ import jams.model.*;
      */
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "entity latidute [deg]"
             )
             public Attribute.Double latitude;
 
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "entity longitude [deg]"
             )
             public Attribute.Double longitude;
 
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.INIT,
             description = "longitude of time zone [deg]"
             )
             public Attribute.Double longTZ;
 
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.INIT,
             description = "temporal resolution [d | h | m]"
             )
-            public JAMSString tempRes;
+            public Attribute.String tempRes;
 
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.INIT,
             description = "location from Greenwich [w | e]"
             )
-            public JAMSString locGrw;
+            public Attribute.String locGrw;
 
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "extraterrestric radiation of each time step of the year [MJ/m² timeUnit]"
             )
             public Attribute.DoubleArray extRadArray;
@@ -91,7 +85,7 @@ import jams.model.*;
      */
     double[] extRadiation = null;
 
-    public void init() throws JAMSEntity.NoSuchAttributeException {
+    public void init() throws Attribute.Entity.NoSuchAttributeException {
         if(tempRes.getValue().equals("d"))
             extRadiation = new double[366];
         else if(tempRes.getValue().equals("h"))
@@ -147,7 +141,7 @@ import jams.model.*;
         }
     }
 
-    public void run() throws JAMSEntity.NoSuchAttributeException{
+    public void run() throws Attribute.Entity.NoSuchAttributeException{
         this.extRadArray.setValue(extRadiation);
     }
 

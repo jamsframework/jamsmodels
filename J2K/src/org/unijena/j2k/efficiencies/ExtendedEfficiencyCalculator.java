@@ -51,56 +51,48 @@ title="ExtendedEfficiencyCalculator",
     
     @JAMSVarDescription(
     access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "time"
             )
-            public JAMSCalendar time;
+            public Attribute.Calendar time;
     
     @JAMSVarDescription(
     access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.INIT,
             description = "The model time interval"
             )
-            public JAMSTimeInterval modelTimeInterval;
+            public Attribute.TimeInterval modelTimeInterval;
     
     @JAMSVarDescription(
     access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.INIT,
             description = "The efficiency time interval"
             )
-            public JAMSTimeInterval effTimeInterval;
+            public Attribute.TimeInterval effTimeInterval;
     
     @JAMSVarDescription(
     access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.INIT,
             description = "The months to be evaluated interval"
             )
-            public JAMSIntegerArray effMonthList;
+            public Attribute.IntegerArray effMonthList;
     
     @JAMSVarDescription(
     access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.INIT,
             description = "Efficiency method used"
             )
-            public JAMSIntegerArray effMethod;
+            public Attribute.IntegerArray effMethod;
     
     @JAMSVarDescription(
     access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "Prediction value"
             )
             public Attribute.Double prediction;
     
     @JAMSVarDescription(
     access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "Validation value"
             )
             public Attribute.Double validation;
     
     @JAMSVarDescription(
     access = JAMSVarDescription.AccessType.WRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "custom efficiency measure",
             defaultValue= "0"
             )
@@ -108,7 +100,6 @@ title="ExtendedEfficiencyCalculator",
     
     @JAMSVarDescription(
     access = JAMSVarDescription.AccessType.WRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "custom efficiency measure",
             defaultValue= "0"
             )
@@ -116,7 +107,6 @@ title="ExtendedEfficiencyCalculator",
     
     @JAMSVarDescription(
     access = JAMSVarDescription.AccessType.WRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "fourier transform based efficiency measure",
             defaultValue= "0"
             )
@@ -124,7 +114,6 @@ title="ExtendedEfficiencyCalculator",
     
     @JAMSVarDescription(
     access = JAMSVarDescription.AccessType.WRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "cosine metric",
             defaultValue= "0"
             )
@@ -132,7 +121,6 @@ title="ExtendedEfficiencyCalculator",
     
     @JAMSVarDescription(
     access = JAMSVarDescription.AccessType.WRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "similB measure, based on cross power operator",
             defaultValue= "0"
             )
@@ -140,7 +128,6 @@ title="ExtendedEfficiencyCalculator",
     
     @JAMSVarDescription(
     access = JAMSVarDescription.AccessType.WRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "likelihood ration based distance measure",
             defaultValue= "0"
             )
@@ -148,7 +135,6 @@ title="ExtendedEfficiencyCalculator",
     
     @JAMSVarDescription(
     access = JAMSVarDescription.AccessType.WRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "likelihood ration based distance measure",
             defaultValue= "0"
             )
@@ -156,7 +142,6 @@ title="ExtendedEfficiencyCalculator",
             
     @JAMSVarDescription(
     access = JAMSVarDescription.AccessType.WRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "full set of predicted values"
             )
             public Attribute.DoubleArray predictionValues;
@@ -265,7 +250,7 @@ title="ExtendedEfficiencyCalculator",
                     
     public void run() {
         if(monthly){
-            int month = time.get(time.MONTH) + 1;
+            int month = time.get(JAMSCalendar.MONTH) + 1;
             for(int i = 0; i < this.effMonthList.getValue().length; i++){
                 if(month == this.effMonthList.getValue()[i]){
                     this.valData[counter] = validation.getValue();

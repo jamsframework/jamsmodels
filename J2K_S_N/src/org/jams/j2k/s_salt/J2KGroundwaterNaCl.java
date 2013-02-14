@@ -43,177 +43,154 @@ import jams.model.*;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "actual RG1 storage"
             )
-            public JAMSDouble actRG1;
+            public Attribute.Double actRG1;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "actual RG2 storage"
             )
-            public JAMSDouble actRG2;
+            public Attribute.Double actRG2;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "actual RG1 NaCl storage in kgNaCl"
             )
-            public JAMSDouble NaClActRG1;
+            public Attribute.Double NaClActRG1;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "actual RG2 NaCl storage in kgNaCl"
             )
-            public JAMSDouble NaClActRG2;
+            public Attribute.Double NaClActRG2;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "RG1 inflow"
             )
-            public JAMSDouble inRG1;
+            public Attribute.Double inRG1;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "RG2 inflow"
             )
-            public JAMSDouble inRG2;
+            public Attribute.Double inRG2;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "RG1 outflow"
             )
-            public JAMSDouble outRG1;
+            public Attribute.Double outRG1;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "RG2 outflow"
             )
-            public JAMSDouble outRG2;
+            public Attribute.Double outRG2;
     
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "RG1 NaCl inflow in kgNaCl"
             )
-            public JAMSDouble NaCl_RG1_in;
+            public Attribute.Double NaCl_RG1_in;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "RG2 NaCl inflow in kgNaCl"
             )
-            public JAMSDouble NaCl_RG2_in;
+            public Attribute.Double NaCl_RG2_in;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "RG1 NaCl outflow in kgNaCl"
             )
-            public JAMSDouble NaCl_RG1_out;
+            public Attribute.Double NaCl_RG1_out;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "RG2 NaCl outflow in kgNaCl"
             )
-            public JAMSDouble NaCl_RG2_out;
+            public Attribute.Double NaCl_RG2_out;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "NaCl Percolation out of the soil profile in kgNaCl"
             )
-            public JAMSDouble PercoNaClabs;
+            public Attribute.Double PercoNaClabs;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "HRU Concentration in mgNaCl/l for RG1"
             )
-            public JAMSDouble NaCl_concRG1;
+            public Attribute.Double NaCl_concRG1;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "HRU Concentration in mgNaCl/l for RG2"
             )
-            public JAMSDouble NaCl_concRG2;
+            public Attribute.Double NaCl_concRG2;
     
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "maximum RG1 storage"
             )
-            public JAMSDouble maxRG1;
+            public Attribute.Double maxRG1;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "maximum RG2 storage"
             )
-            public JAMSDouble maxRG2;
+            public Attribute.Double maxRG2;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "gwExcess"
             )
-            public JAMSDouble gwExcess;
+            public Attribute.Double gwExcess;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "gwExcess"
             )
-            public JAMSDouble NaClExcess;
+            public Attribute.Double NaClExcess;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "portion of percolation to RG1 in l"
             )
-            public JAMSDouble pot_RG1;
+            public Attribute.Double pot_RG1;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "portion of percolation to RG2 in l"
             )
-            public JAMSDouble pot_RG2;
+            public Attribute.Double pot_RG2;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.INIT,
             description = "Relativ size of the groundwaterN damping tank RG1 0 - 10 to calibrate in -"
             )
-            public JAMSDouble NaCl_delay_RG1;
+            public Attribute.Double NaCl_delay_RG1;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.INIT,
             description = "Relativ size of the groundwaterN damping tank RG2 0 - 10 to calibrate in -"
             )
-            public JAMSDouble NaCl_delay_RG2;
+            public Attribute.Double NaCl_delay_RG2;
     
     
     /*
      *  Component run stages
      */
     
-    public void init()  throws JAMSEntity.NoSuchAttributeException {
+    public void init()  throws Attribute.Entity.NoSuchAttributeException {
         
     }
     
-    public void run() throws JAMSEntity.NoSuchAttributeException {
+    public void run() throws Attribute.Entity.NoSuchAttributeException {
         
         double runNaCl_RG1_out = 0;
         double runNaCl_RG2_out = 0;

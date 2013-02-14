@@ -23,12 +23,7 @@
 
 package org.unijena.abc;
 
-import jams.data.Attribute;
-import jams.data.JAMSCalendar;
-import jams.data.JAMSDataFactory;
-import jams.data.JAMSDouble;
-import jams.data.JAMSString;
-import jams.data.JAMSTimeInterval;
+import jams.data.*;
 import jams.io.GenericDataReader;
 import jams.io.JAMSTableDataArray;
 import jams.io.JAMSTableDataConverter;
@@ -45,63 +40,54 @@ import java.util.*;
 public class GehlbergDataReader extends JAMSComponent {
     
     @JAMSVarDescription(
-            access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.INIT
+            access = JAMSVarDescription.AccessType.READ
             )
-            public JAMSString fileName;
+            public Attribute.String fileName;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.INIT,
             description = "Time interval of current temporal context"
             )
-            public JAMSTimeInterval timeInterval;
+            public Attribute.TimeInterval timeInterval;
     
     /*@JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "Current time"
             )
-            public JAMSCalendar time;*/
+            public Attribute.Calendar time;*/
     
     @JAMSVarDescription(
-            access = JAMSVarDescription.AccessType.WRITE,
-            update = JAMSVarDescription.UpdateType.RUN
+            access = JAMSVarDescription.AccessType.WRITE
             )
-            public JAMSDouble precip;
+            public Attribute.Double precip;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "the tmin input"
             )
-            public JAMSDouble tmin;
+            public Attribute.Double tmin;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "the tmean input"
             )
-            public JAMSDouble tmean;
+            public Attribute.Double tmean;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "the tmax input"
             )
-            public JAMSDouble tmax;
+            public Attribute.Double tmax;
     
     @JAMSVarDescription(
-            access = JAMSVarDescription.AccessType.WRITE,
-            update = JAMSVarDescription.UpdateType.RUN
+            access = JAMSVarDescription.AccessType.WRITE
             )
-            public JAMSDouble rhum;
+            public Attribute.Double rhum;
     
     @JAMSVarDescription(
-            access = JAMSVarDescription.AccessType.WRITE,
-            update = JAMSVarDescription.UpdateType.RUN
+            access = JAMSVarDescription.AccessType.WRITE
             )
-            public JAMSDouble obsRunoff;
+            public Attribute.Double obsRunoff;
     
     
     private JAMSTableDataStore store;
@@ -133,7 +119,7 @@ public class GehlbergDataReader extends JAMSComponent {
         if(timeInterval != null){
             int timeUnit = timeInterval.getTimeUnit();
             Attribute.Calendar tiStart = timeInterval.getStart();
-            Attribute.Calendar date = JAMSDataFactory.createCalendar();
+            Attribute.Calendar date = getModel().getRuntime().getDataFactory().createCalendar();
             date.set(tiStart.get(Calendar.YEAR), tiStart.get(Calendar.MONTH), tiStart.get(Calendar.DAY_OF_MONTH), startTime.get(Calendar.HOUR_OF_DAY), startTime.get(Calendar.MINUTE),startTime.get(Calendar.SECOND));
             while (startTime.before(date) && store.hasNext()) {
                 JAMSTableDataArray da = store.getNext();
@@ -178,7 +164,7 @@ public class GehlbergDataReader extends JAMSComponent {
             timeArray[i] = st.nextToken();
         }
         
-        Attribute.Calendar cal = JAMSDataFactory.createCalendar();
+        Attribute.Calendar cal = getModel().getRuntime().getDataFactory().createCalendar();
         cal.setValue(timeArray[0]+"-"+timeArray[1]+"-"+timeArray[2]+" "+timeArray[3]+":"+timeArray[4]);
         return cal;
     }

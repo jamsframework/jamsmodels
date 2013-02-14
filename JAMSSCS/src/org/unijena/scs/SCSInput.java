@@ -43,11 +43,10 @@ public class SCSInput extends JAMSComponent {
      */
    @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.INIT,
             unit = "mm",
             description = "the input precip"
             )
-            public JAMSDouble inputPrecip;
+            public Attribute.Double inputPrecip;
     
     /**
      * The effective precipitation computed from input precipitation and CN-Value<br>
@@ -55,12 +54,11 @@ public class SCSInput extends JAMSComponent {
      */
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
             unit = "mm",
             description = "the effective precip, calculated from input" +
             "precipitation and CN-Value"
             )
-            public JAMSDouble effectivePrecip; 
+            public Attribute.Double effectivePrecip; 
     
     /**
      * The length in kilometer of the main channel or stream<br>
@@ -68,11 +66,10 @@ public class SCSInput extends JAMSComponent {
      */
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.INIT,
             unit = "km",
             description = "the length of the main channel or stream"
             )
-            public JAMSDouble streamLength;
+            public Attribute.Double streamLength;
     
     /**
      * the maximum elevation in meter of the main channel or stream (source)<br>
@@ -80,11 +77,10 @@ public class SCSInput extends JAMSComponent {
      */
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.INIT,
             unit = "m",
             description = "the maximum elevation of the main stream (source)"
             )
-            public JAMSDouble maxElevation;
+            public Attribute.Double maxElevation;
     
     /**
      * the minimum elevation in meter of the main channel or stream (outlet)<br>
@@ -92,11 +88,10 @@ public class SCSInput extends JAMSComponent {
      */
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.INIT,
             unit = "m",
             description = "the minimum elevation of the main stream (outlet)"
             )
-            public JAMSDouble minElevation;
+            public Attribute.Double minElevation;
     
     /**
      * the slope of the stream in percent calculated from min, max elevation and length<br>
@@ -104,12 +99,11 @@ public class SCSInput extends JAMSComponent {
      */
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
             unit = "%",
             description = "slope of stream, calculated from elevation and length" +
             "of the main channel or stream"
             )
-            public JAMSDouble streamSlope;
+            public Attribute.Double streamSlope;
     
     /**
      * the catchment's mean CN value<br>
@@ -117,19 +111,18 @@ public class SCSInput extends JAMSComponent {
      */
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.INIT,
             description = "the catchment's mean CN value"
             )
-            public JAMSDouble cnValue;
+            public Attribute.Double cnValue;
     
     
     
     
     /**
      * run model
-     * @throws org.unijena.jams.data.JAMSEntity.NoSuchAttributeException thrown when a model entity tries to access a non existent attribute
+     * @throws org.unijena.jams.data.Attribute.Entity.NoSuchAttributeException thrown when a model entity tries to access a non existent attribute
      */
-    public void run() throws JAMSEntity.NoSuchAttributeException {
+    public void run() throws Attribute.Entity.NoSuchAttributeException {
        /*
         *compute slope in percent
         */

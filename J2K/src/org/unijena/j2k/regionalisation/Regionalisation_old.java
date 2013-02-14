@@ -36,129 +36,111 @@ public class Regionalisation_old extends JAMSComponent {
     
     @JAMSVarDescription(
     access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.INIT,
             description = "Workspace directory name"
             )
-            public JAMSString dirName;
+            public Attribute.String dirName;
     
     @JAMSVarDescription(
     access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "Array of data values for current time step"
             )
             public Attribute.DoubleArray dataArray;
     
     @JAMSVarDescription(
     access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "Regression coefficients"
             )
             public Attribute.DoubleArray regCoeff;
     
     @JAMSVarDescription(
     access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "Array of station elevations"
             )
             public Attribute.DoubleArray statElevation;
     
     @JAMSVarDescription(
     access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "data set descriptor"
             )
-            public JAMSString dataSetName;
+            public Attribute.String dataSetName;
     
     @JAMSVarDescription(
     access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "Array of station's x coordinates"
             )
             public Attribute.DoubleArray statX;
     
     @JAMSVarDescription(
     access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "Array of station's y coordinates"
             )
             public Attribute.DoubleArray statY;
     
     @JAMSVarDescription(
     access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "Array of station's weights"
             )
             public Attribute.DoubleArray statWeights;
     
     @JAMSVarDescription(
     access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "Array position of weights"
             )
-            public JAMSIntegerArray wArray;
+            public Attribute.IntegerArray wArray;
     
     @JAMSVarDescription(
     access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.INIT,
             description = "Attribute name x coordinate (hru)"
             )
             public Attribute.Double unitX;
     
     @JAMSVarDescription(
     access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.INIT,
             description = "Attribute name y coordinate (hru)"
             )
             public Attribute.Double unitY;
     
     @JAMSVarDescription(
     access = JAMSVarDescription.AccessType.WRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "regionalised data value"
             )
             public Attribute.Double dataValue;
     
     @JAMSVarDescription(
     access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "Attribute name elevation"
             )
             public Attribute.Double entityElevation;
     
     @JAMSVarDescription(
     access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.INIT,
             description = "Number of IDW stations"
             )
-            public JAMSInteger nidw;
+            public Attribute.Integer nidw;
     
     @JAMSVarDescription(
     access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.INIT,
             description = "Apply elevation correction to measured data"
             )
-            public JAMSBoolean elevationCorrection;
+            public Attribute.Boolean elevationCorrection;
     
     @JAMSVarDescription(
     access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.INIT,
             description = "Minimum r² value for elevation correction application"
             )
             public Attribute.Double rsqThreshold;
     
     @JAMSVarDescription(
     access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.INIT,
             description = "Absolute possible minimum value for data set"
             )
             public Attribute.Double fixedMinimum;
     
     @JAMSVarDescription(
     access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.INIT,
             description = "Caching configuration: 0 - write cache, 1 - use cache, 2 - caching off",
             defaultValue = "0")
-            public JAMSInteger dataCaching;
+            public Attribute.Integer dataCaching;
     
     private File cacheFile;
     private boolean useCache = false;
@@ -167,7 +149,7 @@ public class Regionalisation_old extends JAMSComponent {
     transient private ObjectInputStream reader;
     double NODATA = -9999.0;
     
-    public void init() throws JAMSEntity.NoSuchAttributeException, IOException {
+    public void init() throws Attribute.Entity.NoSuchAttributeException, IOException {
         
         //first, check if cached data are available
         cacheFile = new File(getModel().getWorkspace().getTempDirectory(), this.getInstanceName() + ".cache");
@@ -185,7 +167,7 @@ public class Regionalisation_old extends JAMSComponent {
         }
     }
     
-    public void run() throws JAMSEntity.NoSuchAttributeException, IOException {
+    public void run() throws Attribute.Entity.NoSuchAttributeException, IOException {
         //data is read from cache file
         if (dataCaching.getValue() == 1) {
             dataValue.setValue(reader.readDouble());

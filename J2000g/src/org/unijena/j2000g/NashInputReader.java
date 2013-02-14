@@ -37,42 +37,36 @@ import java.util.*;
 public class NashInputReader extends JAMSComponent {
     
     @JAMSVarDescription(
-            access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.INIT
+            access = JAMSVarDescription.AccessType.READ
             )
-            public JAMSString fileName;
+            public Attribute.String fileName;
     
     @JAMSVarDescription(
-            access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.INIT
+            access = JAMSVarDescription.AccessType.READ
             )
-            public JAMSString workspace;
+            public Attribute.String workspace;
     
     @JAMSVarDescription(
-            access = JAMSVarDescription.AccessType.WRITE,
-            update = JAMSVarDescription.UpdateType.RUN
+            access = JAMSVarDescription.AccessType.WRITE
             )
-            public JAMSDouble sq;
+            public Attribute.Double sq;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "the tmin input"
             )
-            public JAMSDouble ssq;
+            public Attribute.Double ssq;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "the tmean input"
             )
-            public JAMSDouble bq;
+            public Attribute.Double bq;
     
     @JAMSVarDescription(
-            access = JAMSVarDescription.AccessType.WRITE,
-            update = JAMSVarDescription.UpdateType.RUN
+            access = JAMSVarDescription.AccessType.WRITE
             )
-            public JAMSDouble obsRunoff;
+            public Attribute.Double obsRunoff;
     
     
     private JAMSTableDataStore store;

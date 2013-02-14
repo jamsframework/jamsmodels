@@ -34,7 +34,6 @@ public class VarSummation extends JAMSComponent {
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "input values"
             )
             public Attribute.Double[] value;

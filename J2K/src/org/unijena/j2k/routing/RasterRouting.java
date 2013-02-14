@@ -36,63 +36,54 @@ import javax.naming.directory.NoSuchAttributeException;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = ""
             )
-            public JAMSEntity information;
+            public Attribute.Entity information;
     
      @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = ""
             )
-            public JAMSEntity fuellstand;
+            public Attribute.Entity fuellstand;
      
      @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "Catchment outlet RG2 storage"
             )
             public Attribute.Double catchmentSimRunoff;
      
      @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "Reach statevar simulated Runoff"
             )
             public Attribute.Double simRunoff;
     
      @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "Reach statevar simulated Runoff"
             )
             public Attribute.Double RD1_RR_Koeff;
    
      @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "Reach statevar simulated Runoff"
             )
             public Attribute.Double RD2_RR_Koeff;
      
      @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "Reach statevar simulated Runoff"
             )
             public Attribute.Double RG1_RR_Koeff;
      
      @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "Reach statevar simulated Runoff"
             )
             public Attribute.Double RG2_RR_Koeff;
       
      @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "spatial grid resolution"
             )
             public Attribute.Double gridresolution;
@@ -230,13 +221,13 @@ public Point[][] Pfad1(double[][] dgm,Point[][] routing,double[][]fliessrichtung
 }
 
 
-public void init()throws JAMSEntity.NoSuchAttributeException
+public void init()throws Attribute.Entity.NoSuchAttributeException
 {
    
 }
     
 @SuppressWarnings("unchecked")    
-public void run()throws JAMSEntity.NoSuchAttributeException{
+public void run()throws Attribute.Entity.NoSuchAttributeException{
 
  double[][] RD1raster=null;
  double[][] RD2raster=null;

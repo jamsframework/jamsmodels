@@ -40,58 +40,45 @@ public class J2KProcessMultiRouting_h_cb extends JAMSComponent {
      *  Component variables
      */
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
-    update = JAMSVarDescription.UpdateType.RUN,
     description = "The current hru entity")
-    public JAMSEntityCollection entities;
+    public Attribute.EntityCollection entities;
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
-    update = JAMSVarDescription.UpdateType.RUN,
     description = "Collection of reach objects")
-    public JAMSEntityCollection reaches;
+    public Attribute.EntityCollection reaches;
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
-    update = JAMSVarDescription.UpdateType.RUN,
     description = "Collection of reservoir objects")
-    public JAMSEntityCollection reservoirs;
+    public Attribute.EntityCollection reservoirs;
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READWRITE,
-    update = JAMSVarDescription.UpdateType.RUN,
     description = "HRU statevar RD1 inflow")
     public Attribute.Double inRD1;
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READWRITE,
-    update = JAMSVarDescription.UpdateType.RUN,
     description = "HRU statevar RD2 inflow")
     public Attribute.DoubleArray inRD2_h;
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READWRITE,
-    update = JAMSVarDescription.UpdateType.RUN,
     description = "HRU statevar RD2 inflow")
     public Attribute.DoubleArray outRD2_h;
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READWRITE,
-    update = JAMSVarDescription.UpdateType.RUN,
     description = "HRU statevar RG1 inflow")
     public Attribute.Double inRG1;
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READWRITE,
-    update = JAMSVarDescription.UpdateType.RUN,
     description = "HRU statevar RG2 inflow")
     public Attribute.Double inRG2;
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READWRITE,
-    update = JAMSVarDescription.UpdateType.RUN,
     description = "HRU statevar groundwater excess",
     defaultValue = "0")
     public Attribute.Double inGWExcess;
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READWRITE,
-    update = JAMSVarDescription.UpdateType.RUN,
     description = "HRU statevar RD1 outflow")
     public Attribute.Double outRD1;
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READWRITE,
-    update = JAMSVarDescription.UpdateType.RUN,
     description = "HRU statevar RG1 outflow")
     public Attribute.Double outRG1;
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READWRITE,
-    update = JAMSVarDescription.UpdateType.RUN,
     description = "HRU statevar RG2 outflow")
     public Attribute.Double outRG2;
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
-    update = JAMSVarDescription.UpdateType.INIT,
     description = "An- bzw. Ausschalten des Moduls")
-    public JAMSBoolean cbModulAktiv;
+    public Attribute.Boolean cbModulAktiv;
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.WRITE,
     description = "An- bzw. Ausschalten des Moduls")
     public Attribute.Double cbModulRD2out;
@@ -105,11 +92,11 @@ public class J2KProcessMultiRouting_h_cb extends JAMSComponent {
     /*
      *  Component run stages
      */
-    public void init() throws JAMSEntity.NoSuchAttributeException {
+    public void init() throws Attribute.Entity.NoSuchAttributeException {
         this.modulCBaktiv = cbModulAktiv.getValue();
     }
 
-    public void run() throws JAMSEntity.NoSuchAttributeException {
+    public void run() throws Attribute.Entity.NoSuchAttributeException {
 
         Attribute.Entity entity = entities.getCurrent();
 

@@ -19,49 +19,38 @@ import java.util.StringTokenizer;
 public class musle extends JAMSComponent {
 
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
-    update = JAMSVarDescription.UpdateType.RUN,
     description = "Current hru object")
-    public JAMSEntityCollection entities;
+    public Attribute.EntityCollection entities;
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
-    update = JAMSVarDescription.UpdateType.RUN,
     description = "Collection of reach objects")
-    public JAMSEntityCollection reaches;
+    public Attribute.EntityCollection reaches;
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
-    update = JAMSVarDescription.UpdateType.RUN,
     description = "Current time")
-    public JAMSCalendar time;
+    public Attribute.Calendar time;
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
-    update = JAMSVarDescription.UpdateType.RUN,
     description = "state variable rain")
-    public JAMSDouble rain;
+    public Attribute.Double rain;
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
-    update = JAMSVarDescription.UpdateType.RUN,
     description = "precipitation in mm")
-    public JAMSDouble precip;
+    public Attribute.Double precip;
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
-    update = JAMSVarDescription.UpdateType.RUN,
     description = "HRU statevar RD1")
-    public JAMSDouble outRD1;
+    public Attribute.Double outRD1;
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.WRITE,
-    update = JAMSVarDescription.UpdateType.RUN,
     description = "soil loss in t/d")
-    public JAMSDouble gensed;
+    public Attribute.Double gensed;
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READWRITE,
-    update = JAMSVarDescription.UpdateType.RUN,
     description = "HRU statevar sediment inflow")
-    public JAMSDouble insed;
+    public Attribute.Double insed;
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.WRITE,
-    update = JAMSVarDescription.UpdateType.RUN,
     description = "HRU statevar sediment outflow")
-    public JAMSDouble outsed;
+    public Attribute.Double outsed;
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.WRITE,
-    update = JAMSVarDescription.UpdateType.RUN,
     description = "HRU statevar sediment outflow")
-    public JAMSDouble akksed;
+    public Attribute.Double akksed;
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.WRITE,
-    update = JAMSVarDescription.UpdateType.RUN,
     description = "HRU statevar sediment outflow")
-    public JAMSDouble sedpool;
+    public Attribute.Double sedpool;
     
     
     double run_outRD1, run_outsed, run_insed, run_gensed, run_akksed;
@@ -70,7 +59,7 @@ public class musle extends JAMSComponent {
     public void init() {
     }
 
-    public void run() throws JAMSEntity.NoSuchAttributeException {
+    public void run() throws Attribute.Entity.NoSuchAttributeException {
 
 
         double Sfac = 0;
@@ -90,7 +79,7 @@ public class musle extends JAMSComponent {
         this.run_insed = insed.getValue();
        
 
-        int Day = time.get(time.DAY_OF_YEAR);
+        int Day = time.get(JAMSCalendar.DAY_OF_YEAR);
         
         //System.out.println("Tag: " + Day+ "RD1 l/hru :" + this.run_genRD1);
         

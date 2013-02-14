@@ -45,31 +45,27 @@ import jams.model.*;
      */
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "time"
             )
-            public JAMSCalendar time;
+            public Attribute.Calendar time;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "the uncorrected precip values"
             )
-            public JAMSDoubleArray inPrecip;
+            public Attribute.DoubleArray inPrecip;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "the corrected precip values"
             )
-            public JAMSDoubleArray corrPrecip;
+            public Attribute.DoubleArray corrPrecip;
 
      @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "the correction factor"
             )
-            public JAMSStringArray corrFac;
+            public Attribute.StringArray corrFac;
     
     double NODATA = -9999;
     double[] richter3_b = {0.233, 0.245, 0.203, 0.151, 0.111, 0.098, 0.100, 0.095, 0.115, 0.127, 0.168, 0.198};
@@ -80,11 +76,11 @@ import jams.model.*;
      *  Component run stages
      */
     
-    public void init() throws JAMSEntity.NoSuchAttributeException {
+    public void init() throws Attribute.Entity.NoSuchAttributeException {
         
     }
     
-    public void run() throws JAMSEntity.NoSuchAttributeException {
+    public void run() throws Attribute.Entity.NoSuchAttributeException {
         
         /*
          *right at the moment the module assumes that all station are
@@ -127,7 +123,7 @@ import jams.model.*;
         
     }
     
-    public void cleanup() throws JAMSEntity.NoSuchAttributeException {
+    public void cleanup() throws Attribute.Entity.NoSuchAttributeException {
         
     }
 }

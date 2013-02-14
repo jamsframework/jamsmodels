@@ -23,57 +23,51 @@ public class CreateReachAttributeList extends JAMSComponent {
  
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "The reach collection"
             )
-            public JAMSEntityCollection entities;
+            public Attribute.EntityCollection entities;
     
  
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "attribute slope"
             )
             public Attribute.Double slope;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "attribute width"
             )
             public Attribute.Double width;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "attribute roughness"
             )
             public Attribute.Double roughness;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = ""
             )
-            public JAMSEntity information;
+            public Attribute.Entity information;
      @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "Reach statevar RG2 storage"
             )
             public Attribute.Double reachID; 
       
     
-    public void init()throws JAMSEntity.NoSuchAttributeException
+    public void init()throws Attribute.Entity.NoSuchAttributeException
 {
 
 }
     
 @SuppressWarnings("unchecked")    
-public void run()throws JAMSEntity.NoSuchAttributeException{
+public void run()throws Attribute.Entity.NoSuchAttributeException{
  
-// JAMSEntity entity = entities.getCurrent();
+// Attribute.Entity entity = entities.getCurrent();
  double reachID=this.reachID.getValue();
  double width = this.width.getValue();
  double slope = this.slope.getValue();

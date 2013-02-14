@@ -43,112 +43,97 @@ import jams.model.*;
     
      @JAMSVarDescription(
              access = JAMSVarDescription.AccessType.READWRITE,
-             update = JAMSVarDescription.UpdateType.RUN,
              description = "Collection of hru objects"
              )
-    public JAMSEntityCollection hrus;
+    public Attribute.EntityCollection hrus;
     
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "in cm depth of soil layer"
             )
-            public JAMSDoubleArray layerdepth;
+            public Attribute.DoubleArray layerdepth;
     
     
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "in kg/dm³ soil bulk density"
             )
-            public JAMSDoubleArray soil_bulk_density;
+            public Attribute.DoubleArray soil_bulk_density;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = " in % organic Carbon in soil"
             )
-            public JAMSDoubleArray C_org;
+            public Attribute.DoubleArray C_org;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = " NO3-Pool in kgN/ha"
             )
-            public JAMSDoubleArray NaCl_Pool;
+            public Attribute.DoubleArray NaCl_Pool;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = " Residue in Layer in kgN/ha"
             )
-            public JAMSDoubleArray Residue_pool;
+            public Attribute.DoubleArray Residue_pool;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = " N-Organic fresh Pool from Residue in kgN/ha"
             )
-            public JAMSDoubleArray NaCl_residue_pool_fresh;
+            public Attribute.DoubleArray NaCl_residue_pool_fresh;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = " Nitrate in interflow in added to HRU layer in kgN"
             )
-            public JAMSDoubleArray InterflowNaCl_in ;
+            public Attribute.DoubleArray InterflowNaCl_in ;
    
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = " Input of plant residues kg/ha"
             )
-            public JAMSDouble inp_biomass;
+            public Attribute.Double inp_biomass;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "Nitrogen input of plant residues in kgN/ha"
             )
-            public JAMSDouble inpNaCl_biomass;
+            public Attribute.Double inpNaCl_biomass;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "number of layers in soil profile in [-]"
             )
-            public JAMSDouble Layer;
+            public Attribute.Double Layer;
     
      @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "flag plant existing yes or no " // attention its a boolean!
             )
-            public JAMSBoolean plantExisting;
+            public Attribute.Boolean plantExisting;
      
       @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = " state variable LAI in [-]"
             )
-            public JAMSDouble LAI;
+            public Attribute.Double LAI;
          
        @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "Actual rooting depth [dm]"
             )
-            public JAMSDouble ZRootD;
+            public Attribute.Double ZRootD;
     
       @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "actual salt uptake by plants in kgNaCl/ha"
             )
-            public JAMSDouble actNaCl_up;
+            public Attribute.Double actNaCl_up;
     
     /*
      *  Component run stages
@@ -158,12 +143,12 @@ import jams.model.*;
     
     
     
-    public void init() throws JAMSEntity.NoSuchAttributeException{
+    public void init() throws Attribute.Entity.NoSuchAttributeException{
         
         
     }
     
-    public void run() throws JAMSEntity.NoSuchAttributeException{
+    public void run() throws Attribute.Entity.NoSuchAttributeException{
         Attribute.Entity actHRU;
         actHRU = hrus.getCurrent();
 
@@ -240,7 +225,7 @@ import jams.model.*;
     }
     
     
-    public void cleanup() throws JAMSEntity.NoSuchAttributeException{
+    public void cleanup() throws Attribute.Entity.NoSuchAttributeException{
         
     }
 }

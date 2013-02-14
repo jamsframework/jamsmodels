@@ -64,21 +64,21 @@ public class IDWWeightCalculator extends JAMSComponent {
 
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.WRITE,
                         description = "position array to determine best weights")
-    public JAMSIntegerArray statOrder;
+    public Attribute.IntegerArray statOrder;
 
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
                         description = "Weights for Thiessen polygons",
                         defaultValue = "false")
-    public JAMSBoolean equalWeights;
+    public Attribute.Boolean equalWeights;
 
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
                         description = "Calculation with geographical coordinates lat, long",
                         defaultValue = "false")
-    public JAMSBoolean latLong;
+    public Attribute.Boolean latLong;
 
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
                         description = "ID of the datastore to read station coordinates from")
-    public JAMSString dataStoreID;
+    public Attribute.String dataStoreID;
 
     private double[] statX;
 
@@ -113,7 +113,7 @@ public class IDWWeightCalculator extends JAMSComponent {
         statY = listToDoubleArray(yList);
     }
 
-    public void run() throws JAMSEntity.NoSuchAttributeException {
+    public void run() throws Attribute.Entity.NoSuchAttributeException {
         double[] idwWeights;
         int[] wA;
         double[] dist;
@@ -140,7 +140,7 @@ public class IDWWeightCalculator extends JAMSComponent {
         statOrder.setValue(wA);
     }
 
-    public void cleanup() throws JAMSEntity.NoSuchAttributeException {
+    public void cleanup() throws Attribute.Entity.NoSuchAttributeException {
         int nstat = statWeights.getValue().length;
         double[] sw = new double[nstat];
         for (int i = 0; i < nstat; i++) {

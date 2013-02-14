@@ -39,45 +39,39 @@ public class ReservoirDataReader extends JAMSComponent {
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.INIT,
             description = "Data file name"
             )
-            public JAMSString dataFileName;
+            public Attribute.String dataFileName;
 
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.INIT,
             description = "Column of first data value"
             )
-            public JAMSInteger startColumn;
+            public Attribute.Integer startColumn;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.INIT,
             description = "Time interval of current temporal context"
             )
-            public JAMSTimeInterval timeInterval;
+            public Attribute.TimeInterval timeInterval;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "Array of data values for current time step"
             )
             public Attribute.DoubleArray dataArray;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "data field descriptors"
             )
-            public JAMSStringArray dataNames;
+            public Attribute.StringArray dataNames;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "data set descriptor"
             )
-            public JAMSString dataSetName;
+            public Attribute.String dataSetName;
     
     
 

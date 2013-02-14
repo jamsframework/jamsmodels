@@ -48,61 +48,53 @@ import jams.model.*;
      */
  @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "time"
             )
-            public JAMSCalendar time;
+            public Attribute.Calendar time;
  
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "state variable mean temperature"
             )
-            public JAMSDouble tmean;
+            public Attribute.Double tmean;
 
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "state variable maximum temperature"
             )
-            public JAMSDouble tmax;
+            public Attribute.Double tmax;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "state variable relative humidity"
             )
-            public JAMSDouble rhum;
+            public Attribute.Double rhum;
 
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "attribute area"
             )
-            public JAMSDouble area;
+            public Attribute.Double area;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "daily potential ETP [mm/d]"
             )
-            public JAMSDouble pET;
+            public Attribute.Double pET;
     
      @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "actHaudeFactor",
             defaultValue="0"
             )
-            public JAMSDouble actHaudeFactor;
+            public Attribute.Double actHaudeFactor;
      
      @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "Haude factor array"
             )
-            public JAMSDoubleArray haudeFactorArray;
+            public Attribute.DoubleArray haudeFactorArray;
     
     
     
@@ -110,10 +102,10 @@ import jams.model.*;
      *  Component run stages
      */
     
-    public void init() throws JAMSEntity.NoSuchAttributeException, IOException {
+    public void init() throws Attribute.Entity.NoSuchAttributeException, IOException {
         
     }
-    public void run() throws JAMSEntity.NoSuchAttributeException, IOException {
+    public void run() throws Attribute.Entity.NoSuchAttributeException, IOException {
         
         int monthCount = time.get(time.MONTH);
         int dayCount = time.get(time.DAY_OF_YEAR) - 1;

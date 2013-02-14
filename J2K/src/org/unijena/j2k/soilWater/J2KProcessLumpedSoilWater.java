@@ -44,21 +44,18 @@ import jams.model.*;
      */
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "time"
             )
-            public JAMSCalendar time;
+            public Attribute.Calendar time;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "The current spatial modelling entity"
             )
-            public JAMSEntity entity;
+            public Attribute.Entity entity;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "attribute area",
             unit="m²"
             )
@@ -66,7 +63,6 @@ import jams.model.*;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "attribute slope",
             unit="deg"
             )
@@ -74,14 +70,12 @@ import jams.model.*;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "sealed grade"
             )
             public Attribute.Double sealedGrade;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "state variable net rain",
             unit="L"
             )
@@ -89,7 +83,6 @@ import jams.model.*;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "state variable net snow",
             unit="L"
             )
@@ -97,7 +90,6 @@ import jams.model.*;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "state variable potET",
             unit="L"
             )
@@ -105,7 +97,6 @@ import jams.model.*;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "state variable actET",
             unit="L"
             )
@@ -113,7 +104,6 @@ import jams.model.*;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "snow depth",
             unit="mm"
             )
@@ -121,7 +111,6 @@ import jams.model.*;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "daily snow melt",
             unit="L"
             )
@@ -129,7 +118,6 @@ import jams.model.*;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "maximum MPS",
             unit="L"
             )
@@ -137,7 +125,6 @@ import jams.model.*;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "maximum LPS",
             unit="L"
             )
@@ -145,7 +132,6 @@ import jams.model.*;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "state var actual MPS",
             unit="L"
             )
@@ -153,7 +139,6 @@ import jams.model.*;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "state var actual LPS",
             unit="L"
             )
@@ -161,7 +146,6 @@ import jams.model.*;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "state var actual depression storage",
             unit="L"
             )
@@ -169,28 +153,24 @@ import jams.model.*;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "state var saturation of MPS"
             )
             public Attribute.Double satMPS;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "state var saturation of LPS"
             )
             public Attribute.Double satLPS;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "state var saturation of whole soil"
             )
             public Attribute.Double satSoil;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "statevar infiltration",
             unit="L"
             )
@@ -198,7 +178,6 @@ import jams.model.*;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "statevar interflow",
             unit="L"
             )
@@ -206,7 +185,6 @@ import jams.model.*;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "statevar percolation",
             unit="L"
             )
@@ -214,7 +192,6 @@ import jams.model.*;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "statevar RD1 inflow",
             unit="L"
             )
@@ -222,7 +199,6 @@ import jams.model.*;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "statevar RD1 outflow",
             unit="L"
             )
@@ -230,7 +206,6 @@ import jams.model.*;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "statevar RD1 generation",
             unit="L"
             )
@@ -238,7 +213,6 @@ import jams.model.*;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "statevar RD2 inflow",
             unit="L"
             )
@@ -246,7 +220,6 @@ import jams.model.*;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "statevar RD2 outflow",
             unit="L"
             )
@@ -254,7 +227,6 @@ import jams.model.*;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "statevar RD2 generation",
             unit="L"
             )
@@ -262,7 +234,6 @@ import jams.model.*;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.INIT,
             description = "maximum depression storage",
             unit="L"
             )
@@ -270,7 +241,6 @@ import jams.model.*;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.INIT,
             description = "poly reduction of ETP",
             lowerBound = 0.0,
             upperBound = 10.0,
@@ -280,7 +250,6 @@ import jams.model.*;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.INIT,
             description = "linear reduction of ETP",
             lowerBound = 0.0,
             upperBound = 1.0,
@@ -290,7 +259,6 @@ import jams.model.*;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.INIT,
             description = "maximum infiltration rate in summer",
             lowerBound = 0.0,
             upperBound = 100.0,
@@ -301,7 +269,6 @@ import jams.model.*;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.INIT,
             description = "maximum infiltration rate in winter",
             lowerBound = 0.0,
             upperBound = 100.0,
@@ -312,7 +279,6 @@ import jams.model.*;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.INIT,
             description = "maximum infiltration rate on snow",
             lowerBound = 0.0,
             upperBound = 100.0,
@@ -323,7 +289,6 @@ import jams.model.*;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.INIT,
             description = "maximum infiltration part on sealed areas (gt 80%)",
             lowerBound = 0.0,
             upperBound = 1.0,
@@ -333,7 +298,6 @@ import jams.model.*;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.INIT,
             description = "maximum infiltration part on sealed areas (lt 80%)",
             lowerBound = 0.0,
             upperBound = 1.0,
@@ -343,7 +307,6 @@ import jams.model.*;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.INIT,
             description = "MPS/LPS distribution coefficient for inflow",
             lowerBound = 0.0,
             upperBound = 10.0,
@@ -353,7 +316,6 @@ import jams.model.*;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.INIT,
             description = "MPS/LPS diffusion coefficient",
             lowerBound = 0.0,
             upperBound = 10.0,
@@ -363,7 +325,6 @@ import jams.model.*;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.INIT,
             description = "LPS outflow coefficient",
             lowerBound = 0.0,
             upperBound = 10.0,
@@ -373,7 +334,6 @@ import jams.model.*;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.INIT,
             description = "LPS lateral-vertical distribution coefficient",
             lowerBound = 0.0,
             upperBound = 10.0,
@@ -383,7 +343,6 @@ import jams.model.*;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.INIT,
             description = "maximum percolation rate [mm/d]",
             lowerBound = 0.0,
             upperBound = 20.0,
@@ -394,7 +353,6 @@ import jams.model.*;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.INIT,
             description = "concentration coefficient for RD1",
             lowerBound = 0.0,
             upperBound = 10.0,
@@ -404,7 +362,6 @@ import jams.model.*;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.INIT,
             description = "concentration coefficient for RD2",
             lowerBound = 1.0,
             upperBound = 20.0,
@@ -421,13 +378,13 @@ import jams.model.*;
      *  Component run stages
      */
     
-    public void init() throws JAMSEntity.NoSuchAttributeException {
+    public void init() throws Attribute.Entity.NoSuchAttributeException {
        
 
         
     }
     
-    public void run() throws JAMSEntity.NoSuchAttributeException {
+    public void run() throws Attribute.Entity.NoSuchAttributeException {
         this.run_area = area.getValue();
         this.run_slope = slope.getValue();
         
@@ -482,7 +439,7 @@ import jams.model.*;
         this.calcInfImperv(sealedGrade.getValue());
         
         /** determining maximal infiltration rate */
-        double maxInf = this.calcMaxInfiltration(time.get(time.MONTH)+1);
+        double maxInf = this.calcMaxInfiltration(time.get(JAMSCalendar.MONTH)+1);
         if(maxInf < this.run_infiltration){
             double deltaInf = this.run_infiltration - maxInf;
             this.run_actDPS = this.run_actDPS + deltaInf;

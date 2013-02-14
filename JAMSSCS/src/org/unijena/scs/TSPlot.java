@@ -65,12 +65,12 @@ import org.jfree.chart.renderer.xy.XYStepRenderer;
 import org.jfree.data.time.Second;
 import org.jfree.data.time.TimeSeries;
 import org.jfree.data.time.TimeSeriesCollection;
-import org.unijena.jams.data.JAMSBoolean;
-import org.unijena.jams.data.JAMSCalendar;
-import org.unijena.jams.data.JAMSDouble;
-import org.unijena.jams.data.JAMSInteger;
-import org.unijena.jams.data.JAMSString;
-import org.unijena.jams.data.JAMSStringArray;
+import org.unijena.jams.data.Attribute.Boolean;
+import org.unijena.jams.data.Attribute.Calendar;
+import org.unijena.jams.data.Attribute.Double;
+import org.unijena.jams.data.Attribute.Integer;
+import org.unijena.jams.data.Attribute.String;
+import org.unijena.jams.data.Attribute.StringArray;
 import org.unijena.jams.model.JAMSGUIComponent;
 import org.unijena.jams.model.JAMSVarDescription;
 
@@ -88,11 +88,10 @@ public class TSPlot extends JAMSGUIComponent {//implements MouseListener {
      */
     @JAMSVarDescription(
     access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.INIT,
             description = "Title string for plot",
             defaultValue = ""
             )
-            public JAMSString plotTitle;
+            public Attribute.String plotTitle;
     
     /**
      * the static descriptor for the series displayed on the left Y-Axis<br>
@@ -102,10 +101,9 @@ public class TSPlot extends JAMSGUIComponent {//implements MouseListener {
      */
     @JAMSVarDescription(
     access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.INIT,
             description = "Title strings for left graphs"
             )
-            public JAMSStringArray titleLeft;
+            public Attribute.StringArray titleLeft;
     
     /**
      * a variable descriptor for the series displayed on the left Y-Axis<br>
@@ -115,10 +113,9 @@ public class TSPlot extends JAMSGUIComponent {//implements MouseListener {
      */
     @JAMSVarDescription(
     access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.INIT,
             description = "Variable title strings for left graphs"
             )
-            public JAMSStringArray varTitleLeft;
+            public Attribute.StringArray varTitleLeft;
     
     /**
      * the static descriptor for the series displayed on the right Y-Axis<br>
@@ -128,10 +125,9 @@ public class TSPlot extends JAMSGUIComponent {//implements MouseListener {
      */
     @JAMSVarDescription(
     access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.INIT,
             description = "Title strings for right graphs"
             )
-            public JAMSStringArray titleRight;
+            public Attribute.StringArray titleRight;
     
     /**
      * a comma separated list of color names for the series drawn on the left Y-Axis<br>
@@ -141,10 +137,9 @@ public class TSPlot extends JAMSGUIComponent {//implements MouseListener {
      */
     @JAMSVarDescription(
     access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.INIT,
             description = "Colors for left graphs (yellow, orange, red, pink, magenta, cyan, yellow, green, lightgray, gray, black)"
             )
-            public JAMSStringArray colorLeft;
+            public Attribute.StringArray colorLeft;
     
     /**
      * a comma separated list of color names for the series drawn on the right Y-Axis<br>
@@ -154,10 +149,9 @@ public class TSPlot extends JAMSGUIComponent {//implements MouseListener {
      */
     @JAMSVarDescription(
     access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.INIT,
             description = "Colors for right graphs (yellow, orange, red, pink, magenta, cyan, yellow, green, lightgray, gray, black)"
             )
-            public JAMSStringArray colorRight;
+            public Attribute.StringArray colorRight;
     
     /**
      * selector for the plot type drawn on the left axis<br>
@@ -169,11 +163,10 @@ public class TSPlot extends JAMSGUIComponent {//implements MouseListener {
      */
     @JAMSVarDescription(
     access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.INIT,
             description = "Graph type for left y axis graphs",
             defaultValue = "1"
             )
-            public JAMSInteger typeLeft;
+            public Attribute.Integer typeLeft;
     
     /**
      * selector for the plot type drawn on the right axis<br>
@@ -185,11 +178,10 @@ public class TSPlot extends JAMSGUIComponent {//implements MouseListener {
      */
     @JAMSVarDescription(
     access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.INIT,
             description = "Graph type for right y axis graphs",
             defaultValue = "1"
             )
-            public JAMSInteger typeRight;
+            public Attribute.Integer typeRight;
     
     /**
      * a title string for the plot's X-axis<br>
@@ -199,11 +191,10 @@ public class TSPlot extends JAMSGUIComponent {//implements MouseListener {
      */
     @JAMSVarDescription(
     access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.INIT,
             description = "Title string for x axis",
             defaultValue = ""
             )
-            public JAMSString xAxisTitle;
+            public Attribute.String xAxisTitle;
     
     /**
      * a title string for the plot's left Y-axis<br>
@@ -213,11 +204,10 @@ public class TSPlot extends JAMSGUIComponent {//implements MouseListener {
      */
     @JAMSVarDescription(
     access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.INIT,
             description = "Title string for left y axis",
             defaultValue = ""
             )
-            public JAMSString leftAxisTitle;
+            public Attribute.String leftAxisTitle;
     
     /**
      * a title string for the plot's right Y-axis<br>
@@ -227,11 +217,10 @@ public class TSPlot extends JAMSGUIComponent {//implements MouseListener {
      */
     @JAMSVarDescription(
     access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.INIT,
             description = "Title string for right y axis",
             defaultValue = ""
             )
-            public JAMSString rightAxisTitle;
+            public Attribute.String rightAxisTitle;
     
     /**
      * flag for inverting (low values up) the right Y-axis<br>
@@ -241,11 +230,10 @@ public class TSPlot extends JAMSGUIComponent {//implements MouseListener {
      */
     @JAMSVarDescription(
     access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.INIT,
             description = "Paint inverted right y axis?",
             defaultValue = "true"
             )
-            public JAMSBoolean rightAxisInverted;
+            public Attribute.Boolean rightAxisInverted;
     
     /**
      * a format string for the display of time on the X-axis<br>
@@ -255,11 +243,10 @@ public class TSPlot extends JAMSGUIComponent {//implements MouseListener {
      */
     @JAMSVarDescription(
     access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.INIT,
             description = "Date format",
             defaultValue = "DD.MM.YYYY hh:mm:ss"
             )
-            public JAMSString dateFormat; //"dd-MM-yyyy"
+            public Attribute.String dateFormat; //"dd-MM-yyyy"
     
     /**
      * the model's current time step<br>
@@ -269,10 +256,9 @@ public class TSPlot extends JAMSGUIComponent {//implements MouseListener {
      */
     @JAMSVarDescription(
     access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "Current time"
             )
-            public JAMSCalendar time;
+            public Attribute.Calendar time;
     
     /**
      * a comma separated list of variables displayed on the left Y-Axis<br>
@@ -282,10 +268,9 @@ public class TSPlot extends JAMSGUIComponent {//implements MouseListener {
      */
     @JAMSVarDescription(
     access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "Values to be plotted on left x-axis"
             )
-            public JAMSDouble[] valueLeft;
+            public Attribute.Double[] valueLeft;
     
     /**
      * a comma separated list of variables displayed on the right Y-Axis<br>
@@ -295,10 +280,9 @@ public class TSPlot extends JAMSGUIComponent {//implements MouseListener {
      */
     @JAMSVarDescription(
     access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "Values to be plotted on right x-axis"
             )
-            public JAMSDouble[] valueRight;
+            public Attribute.Double[] valueRight;
     
     /**
      * the no-data-value of the variables<br>
@@ -311,7 +295,7 @@ public class TSPlot extends JAMSGUIComponent {//implements MouseListener {
             description = "Value for \"No data\" (shouldn't be plotted)",
             defaultValue = "-9999"
             )
-            public JAMSDouble noDataValue;
+            public Attribute.Double noDataValue;
     
     /**
      * a number indicating how often the plot is updated during runtime<br>
@@ -324,7 +308,7 @@ public class TSPlot extends JAMSGUIComponent {//implements MouseListener {
             description = "Plot data after cacheSize values have been collected",
             defaultValue = "10"
             )
-            public JAMSInteger cacheSize;
+            public Attribute.Integer cacheSize;
     
     
     TimeSeries[] tsLeft, tsRight;

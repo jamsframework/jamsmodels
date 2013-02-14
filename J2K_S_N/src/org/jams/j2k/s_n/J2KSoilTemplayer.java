@@ -44,173 +44,149 @@ import jams.model.*;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "HRU attribute name area in m²"
             )
-            public JAMSDouble area;
+            public Attribute.Double area;
     
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "in °C daily max. temperature"
             )
-            public JAMSDouble atemp_max;
+            public Attribute.Double atemp_max;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "in °C dayly min. temperature"
             )
-            public JAMSDouble atemp_min;
+            public Attribute.Double atemp_min;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "in °C dayly mean. temperature"
             )
-            public JAMSDouble atemp_mean;
+            public Attribute.Double atemp_mean;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "in °C anual mean temperature"
             )
-            public JAMSDouble anatemp_mean;
+            public Attribute.Double anatemp_mean;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "in mm depth of soil layer"
             )
-            public JAMSDoubleArray layerdepth;
+            public Attribute.DoubleArray layerdepth;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "in mm depth of soil profile"
             )
-            public JAMSDouble totaldepth;
+            public Attribute.Double totaldepth;
     
      @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "number of layers in soil profile in [-]"
             )
-            public JAMSDouble Layer;
+            public Attribute.Double Layer;
     
      @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "Soil bulk density in g/cm³"
             )
-            public JAMSDoubleArray bulk_density_h;
+            public Attribute.DoubleArray bulk_density_h;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.INIT,
             description = "Temperature lag coefficient perhaps to calibrate, typcal value 0.8, range  0 - 1"
             )
-            public JAMSDouble temp_lag;
+            public Attribute.Double temp_lag;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "actual LPS in portion of sto_LPS soil water content"
             )
-            public JAMSDoubleArray Sat_LPS;
+            public Attribute.DoubleArray Sat_LPS;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "actual MPS in portion of sto_MPS soil water content"
             )
-            public JAMSDoubleArray Sat_MPS;
+            public Attribute.DoubleArray Sat_MPS;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "maximum MPS  in l soil water content"
             )
-            public JAMSDoubleArray stohru_MPS;
+            public Attribute.DoubleArray stohru_MPS;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "maximum LPS  in l soil water content"
             )
-            public JAMSDoubleArray stohru_LPS;
+            public Attribute.DoubleArray stohru_LPS;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "maximum FPS  in l soil water content"
             )
-             public JAMSDoubleArray stohru_FPS;
+             public Attribute.DoubleArray stohru_FPS;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "snowcover in mm water aequivalent"
             )
-            public JAMSDouble snowcover;
+            public Attribute.Double snowcover;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "soilalbedo"
             )
-            public JAMSDouble soilalbedo;
+            public Attribute.Double soilalbedo;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "global radiation in MJ/(m²*d)"
             )
-            public JAMSDouble radiation;
+            public Attribute.Double radiation;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "soil temperature in different layerdepths in °C"
             )
-            public JAMSDoubleArray Soil_Temp_Layer;
+            public Attribute.DoubleArray Soil_Temp_Layer;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "in °C *  Output soil surface temperature"
             )
-            public JAMSDouble Surfacetemp;
+            public Attribute.Double Surfacetemp;
 
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "in °C *  Output soil average temperature"
             )
-            public JAMSDouble Soil_Tempaverage;
+            public Attribute.Double Soil_Tempaverage;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "aboveground biomass in kg/ha"
             )
-            public JAMSDouble biomass;
+            public Attribute.Double biomass;
     
     @JAMSVarDescription(
     access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = " Residue in Layer in kgN/ha"
             )
-            public JAMSDoubleArray Residue_pool;
+            public Attribute.DoubleArray Residue_pool;
 
     
       @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "switch for mulch drilling scenario"
             )
-            public JAMSDouble sceno;
+            public Attribute.Double sceno;
     
  
     double[] Soiltemp_hor;
@@ -224,11 +200,11 @@ import jams.model.*;
      *  Component run stages
      */
     
-    public void init() throws JAMSEntity.NoSuchAttributeException{
+    public void init() throws Attribute.Entity.NoSuchAttributeException{
         
     }
     
-    public void run() throws JAMSEntity.NoSuchAttributeException {
+    public void run() throws Attribute.Entity.NoSuchAttributeException {
         int i = 0;
         int layer = (int)Layer.getValue();
         double Soil_Temp_Sum = 0;
@@ -264,7 +240,7 @@ import jams.model.*;
         Soil_Temp_Layer.setValue(Soiltemp_hor);
     }
     
-    private double calc_Soil_Temp_Layer(int i) throws JAMSEntity.NoSuchAttributeException {
+    private double calc_Soil_Temp_Layer(int i) throws Attribute.Entity.NoSuchAttributeException {
         
         
         
@@ -295,7 +271,7 @@ import jams.model.*;
         return Soil_Temp;
     }
     
-    private double calc_water_content(int i) throws JAMSEntity.NoSuchAttributeException {
+    private double calc_water_content(int i) throws Attribute.Entity.NoSuchAttributeException {
         double soilwater = 0;
         double area_ = area.getValue();
         double sto_LPS = stohru_LPS.getValue()[i] / area_;
@@ -311,7 +287,7 @@ import jams.model.*;
         
         return soilwater;
     }
-    private double calc_Soil_Temp_Depth_Factor(int i) throws JAMSEntity.NoSuchAttributeException {
+    private double calc_Soil_Temp_Depth_Factor(int i) throws Attribute.Entity.NoSuchAttributeException {
         double depthfactor;
         
         double dampingdepth = calc_Soil_Temp_Dampingdepth(i);
@@ -321,7 +297,7 @@ import jams.model.*;
         return depthfactor;
     }
     
-    private double calc_Soil_Temp_Dampingdepth(int i) throws JAMSEntity.NoSuchAttributeException {
+    private double calc_Soil_Temp_Dampingdepth(int i) throws Attribute.Entity.NoSuchAttributeException {
         double dampingdepth;
         double dd;
         double dd_max;
@@ -341,7 +317,7 @@ import jams.model.*;
         
         return dampingdepth;
     }
-    private double calc_Soil_Surface_Temp() throws JAMSEntity.NoSuchAttributeException {   /* after SWAT */
+    private double calc_Soil_Surface_Temp() throws Attribute.Entity.NoSuchAttributeException {   /* after SWAT */
         double coverweightsnow;
         double coverweightveg;
         double coverweight;
@@ -388,7 +364,7 @@ import jams.model.*;
     }
     
     
-    private double calc_Soil_Surface_Temp2() throws JAMSEntity.NoSuchAttributeException {   /* after ArcEgmo  "Williams-algorithm"*/
+    private double calc_Soil_Surface_Temp2() throws Attribute.Entity.NoSuchAttributeException {   /* after ArcEgmo  "Williams-algorithm"*/
         double  albedofactor;
         double temp_min = atemp_min.getValue();
         double temp_max = atemp_max.getValue();

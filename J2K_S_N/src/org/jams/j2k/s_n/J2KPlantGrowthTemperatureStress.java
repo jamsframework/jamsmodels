@@ -43,31 +43,27 @@ import jams.model.*;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "in °C dayly mean temperature"
             )
-            public JAMSDouble tmean;
+            public Attribute.Double tmean;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "in °C plant groth base temperature"
             )
-            public JAMSDouble tbase;
+            public Attribute.Double tbase;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "in °C plant groth optimal temperature"
             )
-            public JAMSDouble topti;
+            public Attribute.Double topti;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "in [-] plant groth temperature stress factor"
             )
-            public JAMSDouble tstrs;
+            public Attribute.Double tstrs;
     
     /*
      *  Component run stages

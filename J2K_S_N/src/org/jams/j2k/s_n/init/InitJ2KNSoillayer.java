@@ -46,145 +46,125 @@ title="InitJ2KNSoillayer",
     
     @JAMSVarDescription(
     access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "in cm depth of soil layer"
             )
-            public JAMSDoubleArray layerdepth;
+            public Attribute.DoubleArray layerdepth;
     
     
     
     @JAMSVarDescription(
     access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.INIT,
             description = "in kg/dm³ soil bulk density"
             )
-            public JAMSDoubleArray soil_bulk_density;
+            public Attribute.DoubleArray soil_bulk_density;
     
     @JAMSVarDescription(
     access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.INIT,
             description = " in % organic Carbon in soil"
             )
-            public JAMSDoubleArray C_org;
+            public Attribute.DoubleArray C_org;
     
     @JAMSVarDescription(
     access = JAMSVarDescription.AccessType.READWRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = " NO3-Pool in kgN/ha"
             )
-            public JAMSDoubleArray NO3_Pool;
+            public Attribute.DoubleArray NO3_Pool;
     
     @JAMSVarDescription(
     access = JAMSVarDescription.AccessType.READWRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = " NH4-Pool in kgN/ha"
             )
-            public JAMSDoubleArray NH4_Pool;
+            public Attribute.DoubleArray NH4_Pool;
     
     @JAMSVarDescription(
     access = JAMSVarDescription.AccessType.READWRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = " N-Organic Pool with reactive organic matter in kgN/ha"
             )
-            public JAMSDoubleArray N_activ_pool;
+            public Attribute.DoubleArray N_activ_pool;
     
     @JAMSVarDescription(
     access = JAMSVarDescription.AccessType.READWRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = " N-Organic Pool with stable organic matter in kgN/ha"
             )
-            public JAMSDoubleArray N_stabel_pool;
+            public Attribute.DoubleArray N_stabel_pool;
     
     @JAMSVarDescription(
     access = JAMSVarDescription.AccessType.READWRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = " Residue in Layer in kgN/ha"
             )
-            public JAMSDoubleArray Residue_pool;
+            public Attribute.DoubleArray Residue_pool;
     
     @JAMSVarDescription(
     access = JAMSVarDescription.AccessType.READWRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = " N-Organic fresh Pool from Residue in kgN/ha"
             )
-            public JAMSDoubleArray N_residue_pool_fresh;
+            public Attribute.DoubleArray N_residue_pool_fresh;
     
     @JAMSVarDescription(
     access = JAMSVarDescription.AccessType.READWRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = " Nitrate in interflow in added to HRU layer in kgN"
             )
-            public JAMSDoubleArray InterflowN_in ;
+            public Attribute.DoubleArray InterflowN_in ;
     
     @JAMSVarDescription(
     access = JAMSVarDescription.AccessType.WRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = " Nitrate input due to Fertilisation in kgN/ha"
             )
-            public JAMSDouble fertNO3;
+            public Attribute.Double fertNO3;
     
     @JAMSVarDescription(
     access = JAMSVarDescription.AccessType.WRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = " Ammonium input due to Fertilisation in kgN/ha"
             )
-            public JAMSDouble fertNH4;
+            public Attribute.Double fertNH4;
     
     @JAMSVarDescription(
     access = JAMSVarDescription.AccessType.WRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = " Stable organig N input due to Fertilisation in kgN/ha"
             )
-            public JAMSDouble fertstableorg;
+            public Attribute.Double fertstableorg;
     
     @JAMSVarDescription(
     access = JAMSVarDescription.AccessType.WRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = " Activ organig N input due to Fertilisation in kgN/ha"
             )
-            public JAMSDouble fertactivorg;
+            public Attribute.Double fertactivorg;
     
     /*@JAMSVarDescription(
     access = JAMSVarDescription.AccessType.WRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = " Input of plant residues kg/ha"
             )
-            public JAMSDouble inp_biomass;
+            public Attribute.Double inp_biomass;
     
     @JAMSVarDescription(
     access = JAMSVarDescription.AccessType.WRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "Nitrogen input of plant residues in kgN/ha"
             )
-            public JAMSDouble inpN_biomass;*/
+            public Attribute.Double inpN_biomass;*/
     
     @JAMSVarDescription(
     access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "number of layers in soil profile in [-]"
             )
-            public JAMSDouble Layer;
+            public Attribute.Double Layer;
     
     @JAMSVarDescription(
     access = JAMSVarDescription.AccessType.WRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "flag plant existing yes or no " // attention its a boolean!
             )
-            public JAMSBoolean plantExisting;
+            public Attribute.Boolean plantExisting;
     
     @JAMSVarDescription(
     access = JAMSVarDescription.AccessType.WRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "Actual rooting depth [m]"
             )
-            public JAMSDouble ZRootD;
+            public Attribute.Double ZRootD;
     
     @JAMSVarDescription(
     access = JAMSVarDescription.AccessType.WRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "actual LAI"
             )
-            public JAMSDouble LAI;
+            public Attribute.Double LAI;
     
     
     /*
@@ -195,12 +175,12 @@ title="InitJ2KNSoillayer",
     
     
     
-    public void init() throws JAMSEntity.NoSuchAttributeException{
+    public void init() throws Attribute.Entity.NoSuchAttributeException{
         
         
     }
     
-    public void run() throws JAMSEntity.NoSuchAttributeException{
+    public void run() throws Attribute.Entity.NoSuchAttributeException{
         int i = 0;
         double orgNhum = 0; /*concentration of humic organic nitrogen in the layer (mg/kg)*/
         int layer = (int)Layer.getValue();
@@ -281,7 +261,7 @@ title="InitJ2KNSoillayer",
     }
     
     
-    public void cleanup() throws JAMSEntity.NoSuchAttributeException{
+    public void cleanup() throws Attribute.Entity.NoSuchAttributeException{
         
     }
 }

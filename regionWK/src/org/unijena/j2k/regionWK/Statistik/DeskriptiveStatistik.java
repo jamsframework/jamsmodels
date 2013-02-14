@@ -19,109 +19,95 @@ title="Extremwerte",
      */
     @JAMSVarDescription(
     access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "the relative humidity values"
             )
-            public JAMSDoubleArray rhum;
+            public Attribute.DoubleArray rhum;
 
     @JAMSVarDescription(
     access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "temperature for the computation"
             )
-            public JAMSDoubleArray temperature;
+            public Attribute.DoubleArray temperature;
 
     @JAMSVarDescription(
     access = JAMSVarDescription.AccessType.WRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "temperature for the computation"
             )
-            public JAMSDouble min;
+            public Attribute.Double min;
 
     @JAMSVarDescription(
     access = JAMSVarDescription.AccessType.WRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "temperature for the computation"
             )
-            public JAMSDouble max;
+            public Attribute.Double max;
 
     @JAMSVarDescription(
     access = JAMSVarDescription.AccessType.WRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "mean"
             )
-            public JAMSDouble mean;
+            public Attribute.Double mean;
 
     @JAMSVarDescription(
     access = JAMSVarDescription.AccessType.WRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "median"
             )
-            public JAMSDouble median;
+            public Attribute.Double median;
 
     @JAMSVarDescription(
     access = JAMSVarDescription.AccessType.WRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "first quartil"
             )
-            public JAMSDouble q1;
+            public Attribute.Double q1;
 
     @JAMSVarDescription(
     access = JAMSVarDescription.AccessType.WRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "third quartil"
             )
-            public JAMSDouble q3;
+            public Attribute.Double q3;
 
     @JAMSVarDescription(
     access = JAMSVarDescription.AccessType.WRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "variance"
             )
-            public JAMSDouble var;
+            public Attribute.Double var;
 
     @JAMSVarDescription(
     access = JAMSVarDescription.AccessType.WRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "standard deviation"
             )
-            public JAMSDouble sA;
+            public Attribute.Double sA;
 
     @JAMSVarDescription(
     access = JAMSVarDescription.AccessType.WRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "spannweite"
             )
-            public JAMSDouble sw;
+            public Attribute.Double sw;
 
     @JAMSVarDescription(
     access = JAMSVarDescription.AccessType.WRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "durchschnittliche Abweichung"
             )
-            public JAMSDouble da;
+            public Attribute.Double da;
 
     @JAMSVarDescription(
     access = JAMSVarDescription.AccessType.WRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "durchschnittliche Abweichung"
             )
-            public JAMSDouble kurtosis;
+            public Attribute.Double kurtosis;
 
     @JAMSVarDescription(
     access = JAMSVarDescription.AccessType.WRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "durchschnittliche Abweichung"
             )
-            public JAMSDouble skewness;
+            public Attribute.Double skewness;
 
 
 
-public void init() throws JAMSEntity.NoSuchAttributeException {
+public void init() throws Attribute.Entity.NoSuchAttributeException {
 
     }
 
-    public void run() throws JAMSEntity.NoSuchAttributeException {
+    public void run() throws Attribute.Entity.NoSuchAttributeException {
 
         double[] rHum = this.rhum.getValue();
 
@@ -180,7 +166,7 @@ public void init() throws JAMSEntity.NoSuchAttributeException {
     }
 
 
-    public void cleanup() throws JAMSEntity.NoSuchAttributeException {
+    public void cleanup() throws Attribute.Entity.NoSuchAttributeException {
 
     }
 

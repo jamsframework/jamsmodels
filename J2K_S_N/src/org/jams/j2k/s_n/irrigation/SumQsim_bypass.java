@@ -21,46 +21,40 @@ import jams.model.*;
 
  @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "HRU crop class"
             )
-                public JAMSDouble Storage;
+                public Attribute.Double Storage;
 
 
  @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "HRU crop class"
             )
-            public JAMSDouble catchmentSimRunoff_qm;
+            public Attribute.Double catchmentSimRunoff_qm;
  
  @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "HRU crop class"
             )
-            public JAMSDouble catchmentSimRunoffN;
+            public Attribute.Double catchmentSimRunoffN;
 
  @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "HRU crop class"
             )
-            public JAMSDouble Irrigation_Bypass_water;
+            public Attribute.Double Irrigation_Bypass_water;
 
  @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "HRU crop class"
             )
-            public JAMSDouble irrigationN_conc;
+            public Attribute.Double irrigationN_conc;
  
  @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "HRU crop class"
             )
-            public JAMSDouble bypass_N;
+            public Attribute.Double bypass_N;
  
 
     public void run() {

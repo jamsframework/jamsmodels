@@ -40,26 +40,23 @@ public class PrecipCorrectionSimple extends JAMSComponent {
      *  Component variables
      */
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
-    update = JAMSVarDescription.UpdateType.RUN,
     description = "the precip values")
-    public JAMSDoubleArray inputValues;
+    public Attribute.DoubleArray inputValues;
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.WRITE,
-    update = JAMSVarDescription.UpdateType.RUN,
     description = "the precip values")
-    public JAMSDoubleArray outputValues;
+    public Attribute.DoubleArray outputValues;
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
-    update = JAMSVarDescription.UpdateType.RUN,
     description = "Array of temperature station elevations",
     defaultValue = "1.0")
-    public JAMSDouble correctionFactor;
+    public Attribute.Double correctionFactor;
 
     /*
      *  Component run stages
      */
-    public void init() throws JAMSEntity.NoSuchAttributeException {
+    public void init() throws Attribute.Entity.NoSuchAttributeException {
     }
 
-    public void run() throws JAMSEntity.NoSuchAttributeException {
+    public void run() throws Attribute.Entity.NoSuchAttributeException {
 
 
         double[] inputValues = this.inputValues.getValue();

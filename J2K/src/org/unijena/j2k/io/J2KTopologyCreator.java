@@ -36,26 +36,23 @@ public class J2KTopologyCreator extends JAMSComponent {
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "Collection of hru objects"
             )
-            public JAMSEntityCollection hrus;
+            public Attribute.EntityCollection hrus;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "Collection of reach objects"
             )
-            public JAMSEntityCollection reaches;
+            public Attribute.EntityCollection reaches;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "Collection of reservoir objects"
             )
-            public JAMSEntityCollection reservoirs;
+            public Attribute.EntityCollection reservoirs;
     
-    public void init() throws JAMSEntity.NoSuchAttributeException {
+    public void init() throws Attribute.Entity.NoSuchAttributeException {
         
         //create object associations from id attributes for hrus and reaches
         createTopology();
@@ -70,7 +67,7 @@ public class J2KTopologyCreator extends JAMSComponent {
     }
     
     //do depth first search to find cycles
-    protected boolean cycleCheck(Attribute.Entity node,Stack<Attribute.Entity> searchStack,HashSet<Attribute.Double> closedList,HashSet<Attribute.Double> visitedList) throws JAMSEntity.NoSuchAttributeException {
+    protected boolean cycleCheck(Attribute.Entity node,Stack<Attribute.Entity> searchStack,HashSet<Attribute.Double> closedList,HashSet<Attribute.Double> visitedList) throws Attribute.Entity.NoSuchAttributeException {
         Attribute.Entity child_node;
         
         //current node allready in search stack -> circle found
@@ -208,7 +205,7 @@ public class J2KTopologyCreator extends JAMSComponent {
         
     }
     
-    protected void createOrderedList(JAMSEntityCollection col, String asso) throws Attribute.Entity.NoSuchAttributeException {
+    protected void createOrderedList(Attribute.EntityCollection col, String asso) throws Attribute.Entity.NoSuchAttributeException {
         
         Iterator<Attribute.Entity> hruIterator;
         Attribute.Entity e, f;

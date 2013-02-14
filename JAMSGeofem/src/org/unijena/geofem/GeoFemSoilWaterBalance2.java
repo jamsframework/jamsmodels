@@ -23,8 +23,8 @@
 
 package org.unijena.geofem;
 
-import org.unijena.jams.data.*;
-import org.unijena.jams.model.*;
+import jams.data.*;
+import jams.model.*;
 
 /**
  *
@@ -43,147 +43,128 @@ import org.unijena.jams.model.*;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "attribute slope"
             )
-            public JAMSDouble slope;
+            public Attribute.Double slope;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "HRU attribute maximum MPS"
             )
-            public JAMSDouble maxMPS;
+            public Attribute.Double maxMPS;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "HRU attribute maximum LPS"
             )
-            public JAMSDouble maxLPS;
+            public Attribute.Double maxLPS;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "HRU state var actual MPS"
             )
-            public JAMSDouble actMPS;
+            public Attribute.Double actMPS;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "HRU state var actual LPS"
             )
-            public JAMSDouble actLPS;
+            public Attribute.Double actLPS;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "subsurface runoff storage"
             )
-            public JAMSDouble ssroStorage;
+            public Attribute.Double ssroStorage;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "HRU state var relative saturation of MPS"
             )
-            public JAMSDouble satMPS;
+            public Attribute.Double satMPS;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "HRU state var relative saturation of LPS"
             )
-            public JAMSDouble satLPS;
+            public Attribute.Double satLPS;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "surface runoff"
             )
-            public JAMSDouble sro;
+            public Attribute.Double sro;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "sub-surface runoff"
             )
-            public JAMSDouble ssro;
+            public Attribute.Double ssro;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "groundwater recharge"
             )
-            public JAMSDouble gwRecharge;
+            public Attribute.Double gwRecharge;
     
     /*@JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "total runoff"
             )
-            public JAMSDouble totQ;*/
+            public Attribute.Double totQ;*/
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "potential ET"
             )
-            public JAMSDouble potET;
+            public Attribute.Double potET;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "actual ET"
             )
-            public JAMSDouble actET;
+            public Attribute.Double actET;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "precipitation"
             )
-            public JAMSDouble precip;
+            public Attribute.Double precip;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "snow melt"
             )
-            public JAMSDouble snowMelt;
+            public Attribute.Double snowMelt;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.INIT,
             description = "lateral-vertical distribution coefficient"
             )
-            public JAMSDouble latVertDist;
+            public Attribute.Double latVertDist;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.INIT,
             description = "ET reduction factor"
             )
-            public JAMSDouble linETRed;
+            public Attribute.Double linETRed;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.INIT,
             description = "ssro recession factor"
             )
-            public JAMSDouble k_factor;
+            public Attribute.Double k_factor;
 
     /*
      *  Component run stages
      */
     
-    public void init() throws JAMSEntity.NoSuchAttributeException {
+    public void init() throws Attribute.Entity.NoSuchAttributeException {
         
         
     }
     
-    public void run() throws JAMSEntity.NoSuchAttributeException {
+    public void run() throws Attribute.Entity.NoSuchAttributeException {
         //double k_factor = 1;
         //double maxExcStor = 100000.0;
     

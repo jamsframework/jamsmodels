@@ -21,8 +21,8 @@
  *
  */
 package org.unijena.scs;
-import org.unijena.jams.data.JAMSDouble;
-import org.unijena.jams.data.JAMSEntity;
+import org.unijena.jams.data.Attribute.Double;
+import org.unijena.jams.data.Attribute.Entity;
 import org.unijena.jams.model.JAMSComponent;
 import org.unijena.jams.model.JAMSComponentDescription;
 import org.unijena.jams.model.JAMSVarDescription;
@@ -58,10 +58,9 @@ public class CalcRetentionFactors extends JAMSComponent {
      */
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "distribution factor beta"
             )
-            public JAMSDouble beta;
+            public Attribute.Double beta;
     
     /**
      * the retention coefficient for the fast Nash-cascade<br>
@@ -71,10 +70,9 @@ public class CalcRetentionFactors extends JAMSComponent {
      */
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "recession factor k1"
             )
-            public JAMSDouble k1;
+            public Attribute.Double k1;
     
     /**
      * the retention coefficient for the slow Nash-cascade<br>
@@ -84,10 +82,9 @@ public class CalcRetentionFactors extends JAMSComponent {
      */
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "recession factor k2"
             )
-            public JAMSDouble k2;
+            public Attribute.Double k2;
     
     /**
      * the slope of the main channel<br>
@@ -97,10 +94,9 @@ public class CalcRetentionFactors extends JAMSComponent {
      */
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "stream slope"
             )
-            public JAMSDouble streamSlope;
+            public Attribute.Double streamSlope;
     
     /**
      * the length of the main channel<br>
@@ -110,18 +106,17 @@ public class CalcRetentionFactors extends JAMSComponent {
      */
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "stream length",
             unit = "km^2"
             )
-            public JAMSDouble streamLength;
+            public Attribute.Double streamLength;
     
     
     /**
      * the components run method
-     * @throws org.unijena.jams.data.JAMSEntity.NoSuchAttributeException thrown when a model entity tries to access a non existent attribute
+     * @throws org.unijena.jams.data.Attribute.Entity.NoSuchAttributeException thrown when a model entity tries to access a non existent attribute
      */
-    public void run() throws JAMSEntity.NoSuchAttributeException {
+    public void run() throws Attribute.Entity.NoSuchAttributeException {
         /*the length slope factor of the catchment */
         double lengthSlope = this.streamLength.getValue() / Math.sqrt(this.streamSlope.getValue());
         

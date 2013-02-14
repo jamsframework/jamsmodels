@@ -47,7 +47,7 @@ public class IrrigationNadd extends JAMSComponent {
             lowerBound = 0,
             upperBound = 1000000000
             )
-            public JAMSDouble irrigationN;
+            public Attribute.Double irrigationN;
 
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
@@ -56,7 +56,7 @@ public class IrrigationNadd extends JAMSComponent {
             lowerBound = 0,
             upperBound = 1000000000
             )
-            public JAMSDouble SurfaceN_in;
+            public Attribute.Double SurfaceN_in;
                 
     /*
      *  Component run stages

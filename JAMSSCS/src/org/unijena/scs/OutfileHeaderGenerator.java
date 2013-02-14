@@ -50,10 +50,9 @@ public class OutfileHeaderGenerator extends JAMSComponent {
      */
     @JAMSVarDescription(
     access = JAMSVarDescription.AccessType.WRITE,
-            update = JAMSVarDescription.UpdateType.INIT,
             description = "The outfile header"
             )
-            public JAMSString outfileHeader;
+            public Attribute.String outfileHeader;
     
     /**
      * catchment area<br>
@@ -63,11 +62,10 @@ public class OutfileHeaderGenerator extends JAMSComponent {
      */
     @JAMSVarDescription(
     access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.INIT,
             description = "catchment area",
             unit="km^2"
             )
-            public JAMSDouble catchmentArea;
+            public Attribute.Double catchmentArea;
     
     /**
      * the cnValue<br>
@@ -77,11 +75,10 @@ public class OutfileHeaderGenerator extends JAMSComponent {
      */
     @JAMSVarDescription(
     access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.INIT,
             description = "the cnValue",
             unit=""
             )
-            public JAMSDouble cnValue;
+            public Attribute.Double cnValue;
     
     /**
      * the precip distribution<br>
@@ -91,11 +88,10 @@ public class OutfileHeaderGenerator extends JAMSComponent {
      */
     @JAMSVarDescription(
     access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.INIT,
             description = "the precip distribution",
             unit=""
             )
-            public JAMSString precipDistribution;
+            public Attribute.String precipDistribution;
     
     /**
      * the streamLength<br>
@@ -105,11 +101,10 @@ public class OutfileHeaderGenerator extends JAMSComponent {
      */
     @JAMSVarDescription(
     access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.INIT,
             description = "the streamLength",
             unit=""
             )
-            public JAMSDouble streamLength;
+            public Attribute.Double streamLength;
     
     /**
      * the cnValue<br>
@@ -119,11 +114,10 @@ public class OutfileHeaderGenerator extends JAMSComponent {
      */
     @JAMSVarDescription(
     access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.INIT,
             description = "the minimum stream elevation",
             unit=""
             )
-            public JAMSDouble minElevation;
+            public Attribute.Double minElevation;
     
     /**
      * the maximum stream elevation<br>
@@ -133,16 +127,15 @@ public class OutfileHeaderGenerator extends JAMSComponent {
      */
     @JAMSVarDescription(
     access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.INIT,
             description = "the maximum stream elevation",
             unit=""
             )
-            public JAMSDouble maxElevation;
+            public Attribute.Double maxElevation;
     /**
      * the component's init() method
-     * @throws org.unijena.jams.data.JAMSEntity.NoSuchAttributeException thrown when a model entity tries to access a non existent attribute
+     * @throws org.unijena.jams.data.Attribute.Entity.NoSuchAttributeException thrown when a model entity tries to access a non existent attribute
      */
-    public void init() throws JAMSEntity.NoSuchAttributeException {
+    public void init() throws Attribute.Entity.NoSuchAttributeException {
         String header = "";
         header = header + "Einzugsgebietsgröße: " + String.format(Locale.US,"%.2f",(this.catchmentArea.getValue()/1000000.)) + " km²\n";
         header = header + "Vorfluterlänge: " + String.format(Locale.US,"%.2f",(this.streamLength.getValue())) + " km\n";

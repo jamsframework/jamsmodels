@@ -42,80 +42,70 @@ import jams.model.*;
      */
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.INIT,
             description = "The current hru entity"
             )
-            public JAMSEntity entity;
+            public Attribute.Entity entity;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.INIT,
             description = "attribute x-coordinate"
             )
             public Attribute.Double x;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.INIT,
             description = "attribute y-coordinate"
             )
             public Attribute.Double y;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.INIT,
             description = "attribute slope"
             )
             public Attribute.Double slope;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.INIT,
             description = "attribute aspect"
             )
             public Attribute.Double aspect;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
-            update = JAMSVarDescription.UpdateType.INIT,
             description = "attribute latidute"
             )
             public Attribute.Double latitude;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
-            update = JAMSVarDescription.UpdateType.INIT,
             description = "attribute longitude"
             )
             public Attribute.Double longitude;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
-            update = JAMSVarDescription.UpdateType.INIT,
             description = "attribute slopeAspectCorrection factor"
             )
             public Attribute.Double slAsCf;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "Current time"
             )
-            public JAMSCalendar time;
+            public Attribute.Calendar time;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.INIT,
             description = "temporal resolution [d | h | m]"
             )
-            public JAMSString tempRes;
+            public Attribute.String tempRes;
     
     int[] monthMean = {15,45,74,105,135,166,196,227,258,288,319,349};
     /*
      *  Component run stages
      */
     
-    public void init() throws JAMSEntity.NoSuchAttributeException {
+    public void init() throws Attribute.Entity.NoSuchAttributeException {
         double[] latLong = new double[2];
         latLong = org.unijena.j2k.geographicalCalculations.GKConversion.GK2LatLon(x.getValue(), y.getValue());
         latitude.setValue(latLong[0]);
@@ -123,14 +113,14 @@ import jams.model.*;
         getModel().getRuntime().println("slope:"+slope.getValue());
     }
     
-    public void run() throws JAMSEntity.NoSuchAttributeException{
+    public void run() throws Attribute.Entity.NoSuchAttributeException{
         int julDay = 0; 
         
         if(this.tempRes == null || this.tempRes.equals("d") || this.tempRes.equals("h")){
-            julDay = this.time.get(time.DAY_OF_YEAR);
+            julDay = this.time.get(JAMSCalendar.DAY_OF_YEAR);
         }
         else if(this.tempRes.equals("m")){
-            int month = this.time.get(time.MONTH);
+            int month = this.time.get(JAMSCalendar.MONTH);
             julDay = this.monthMean[month];
         }
         double sloAspCorr = org.unijena.j2k.geographicalCalculations.CalcSlopeAspectCorrectionFactor.calc_slopeAspectCorrectionFactor(julDay, latitude.getValue(), slope.getValue(), aspect.getValue());

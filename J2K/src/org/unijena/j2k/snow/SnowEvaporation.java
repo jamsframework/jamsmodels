@@ -26,28 +26,24 @@ title="SnowEvaporation",
     
     @JAMSVarDescription(
     access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "the potential ET"
             )
             public Attribute.Double potET;
 
     @JAMSVarDescription(
     access = JAMSVarDescription.AccessType.READWRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "the actual ET"
             )
             public Attribute.Double actET;
     
     @JAMSVarDescription(
     access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.INIT,
             description = "snow ET coefficient"
             )
             public Attribute.Double set_factor;
     
     @JAMSVarDescription(
     access = JAMSVarDescription.AccessType.READWRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "snow water equivalent"
             )
             public Attribute.Double swe;
@@ -56,7 +52,6 @@ title="SnowEvaporation",
     
     @JAMSVarDescription(
     access = JAMSVarDescription.AccessType.READWRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "the snow storage "
             )
             public Attribute.Double snowET;
@@ -66,11 +61,11 @@ title="SnowEvaporation",
          *  Component run stages
          */
     
-    public void init() throws JAMSEntity.NoSuchAttributeException {
+    public void init() throws Attribute.Entity.NoSuchAttributeException {
         
     }
     
-    public void run() throws JAMSEntity.NoSuchAttributeException{
+    public void run() throws Attribute.Entity.NoSuchAttributeException{
         double snow_et = 0;
         double run_swe = swe.getValue();
         double res_et = this.potET.getValue() * this.set_factor.getValue();

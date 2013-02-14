@@ -36,53 +36,48 @@ public class StandardEntityCreator extends JAMSComponent {
     
     /*@JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.INIT,
             description = "Workspace directory name"
             )
-            public JAMSString dirName;
+            public Attribute.String dirName;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.INIT,
             description = "HRU parameter file name"
             )
-            public JAMSString hruFileName;
+            public Attribute.String hruFileName;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.INIT,
             description = "Reach parameter file name"
             )
-            public JAMSString reachFileName;*/
+            public Attribute.String reachFileName;*/
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
-            update = JAMSVarDescription.UpdateType.INIT,
             description = "Collection of spatial objects"
             )
-            public JAMSEntityCollection spObj;
+            public Attribute.EntityCollection spObj;
     
     /*@JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
-            update = JAMSVarDescription.UpdateType.INIT,
             description = "Collection of reach objects"
             )
-            public JAMSEntityCollection reaches;*/
+            public Attribute.EntityCollection reaches;*/
     
-    public void init() throws JAMSEntity.NoSuchAttributeException {
+    public void init() throws Attribute.Entity.NoSuchAttributeException {
         
         //read hru parameter
-        spObj = new JAMSEntityCollection();
-        ArrayList <JAMSEntity> entityList = new ArrayList<JAMSEntity>();
+        spObj = new Attribute.EntityCollection();
+        ArrayList <Attribute.Entity> entityList = new ArrayList<Attribute.Entity>();
         for(int i = 0; i < 3; i++){
-            JAMSEntity e = JAMSDataFactory.createEntity();
+            Attribute.Entity e = JAMSDataFactory.createEntity();
             entityList.add(e);
         }
         spObj.setEntities(entityList);
         //hrus.setEntities(J2KFunctions.readParas(dirName.getValue() + "/" + hruFileName.getValue(), getModel()));
         
         //read reach parameter
-        //reaches = new JAMSEntityCollection();
+        //reaches = new Attribute.EntityCollection();
         //reaches.setEntities(J2KFunctions.readParas(dirName.getValue() + "/" + reachFileName.getValue(), getModel()));
         
         //create object associations from id attributes for hrus and reaches
@@ -96,13 +91,13 @@ public class StandardEntityCreator extends JAMSComponent {
         //getModel().getRuntime().println("Entities read successfull!");
     }
     
-    /*private void createTopology() throws JAMSEntity.NoSuchAttributeException {
+    /*private void createTopology() throws Attribute.Entity.NoSuchAttributeException {
         
-        HashMap<Double, JAMSEntity> hruMap = new HashMap<Double, JAMSEntity>();
-        HashMap<Double, JAMSEntity> reachMap = new HashMap<Double, JAMSEntity>();
-        Iterator<JAMSEntity> hruIterator;
-        Iterator<JAMSEntity> reachIterator;
-        JAMSEntity e;
+        HashMap<Double, Attribute.Entity> hruMap = new HashMap<Double, Attribute.Entity>();
+        HashMap<Double, Attribute.Entity> reachMap = new HashMap<Double, Attribute.Entity>();
+        Iterator<Attribute.Entity> hruIterator;
+        Iterator<Attribute.Entity> reachIterator;
+        Attribute.Entity e;
         
         //put all entities into a HashMap with their ID as key
         hruIterator = hrus.getEntities().iterator();
@@ -133,12 +128,12 @@ public class StandardEntityCreator extends JAMSComponent {
         
     }
     
-    private void createOrderedList(JAMSEntityCollection col, String asso) throws JAMSEntity.NoSuchAttributeException {
+    private void createOrderedList(Attribute.EntityCollection col, String asso) throws Attribute.Entity.NoSuchAttributeException {
         
-        Iterator<JAMSEntity> hruIterator;
-        JAMSEntity e, f;
-        ArrayList<JAMSEntity> newList = new ArrayList<JAMSEntity>();
-        HashMap<JAMSEntity, Integer> depthMap = new HashMap<JAMSEntity, Integer>();
+        Iterator<Attribute.Entity> hruIterator;
+        Attribute.Entity e, f;
+        ArrayList<Attribute.Entity> newList = new ArrayList<Attribute.Entity>();
+        HashMap<Attribute.Entity, Integer> depthMap = new HashMap<Attribute.Entity, Integer>();
         Integer eDepth, fDepth;
         boolean mapChanged = true;
         
@@ -155,7 +150,7 @@ public class StandardEntityCreator extends JAMSComponent {
             while (hruIterator.hasNext()) {
                 
                 e = hruIterator.next();
-                f = (JAMSEntity) e.getObject(asso);
+                f = (Attribute.Entity) e.getObject(asso);
                 if (f != null) {
                     eDepth = depthMap.get(e);
                     fDepth = depthMap.get(f);
@@ -177,9 +172,9 @@ public class StandardEntityCreator extends JAMSComponent {
         }
         
         //create ArrayList of ArrayList objects, each element keeping the entities of one level
-        ArrayList<ArrayList<JAMSEntity>> alList = new ArrayList<ArrayList<JAMSEntity>>();
+        ArrayList<ArrayList<Attribute.Entity>> alList = new ArrayList<ArrayList<Attribute.Entity>>();
         for (int i=0; i<=maxDepth; i++) {
-            alList.add(new ArrayList<JAMSEntity>());
+            alList.add(new ArrayList<Attribute.Entity>());
         }
         
         //fill the ArrayList objects within the ArrayList with entity objects

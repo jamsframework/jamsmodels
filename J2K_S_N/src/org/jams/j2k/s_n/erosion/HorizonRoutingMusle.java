@@ -42,41 +42,37 @@ import jams.model.*;
      */
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "The current hru entity"
             )
-            public JAMSEntityCollection entities;
+            public Attribute.EntityCollection entities;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "Collection of reach objects"
             )
-            public JAMSEntityCollection reaches;
+            public Attribute.EntityCollection reaches;
 
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READWRITE,
-    update = JAMSVarDescription.UpdateType.RUN,
     description = "HRU statevar sediment inflow")
-    public JAMSDouble insed;
+    public Attribute.Double insed;
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READWRITE,
-    update = JAMSVarDescription.UpdateType.RUN,
     description = "HRU statevar sediment outflow")
-    public JAMSDouble outsed;
+    public Attribute.Double outsed;
 
     /*
      *  Component run stages
      */
     
-    public void init() throws JAMSEntity.NoSuchAttributeException {
+    public void init() throws Attribute.Entity.NoSuchAttributeException {
         
     }
     
-    public void run() throws JAMSEntity.NoSuchAttributeException {
+    public void run() throws Attribute.Entity.NoSuchAttributeException {
         Attribute.Entity entity = entities.getCurrent();
         //receiving polygon
-        JAMSEntity toPoly = (JAMSEntity) entity.getObject("to_poly");
+        Attribute.Entity toPoly = (Attribute.Entity) entity.getObject("to_poly");
         //receiving reach
-        JAMSEntity toReach = (JAMSEntity) entity.getObject("to_reach");
+        Attribute.Entity toReach = (Attribute.Entity) entity.getObject("to_reach");
         
         double sedout = outsed.getValue();
                 

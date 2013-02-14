@@ -29,7 +29,7 @@ public class Reaeration extends JAMSComponent {
             lowerBound= 0,
             upperBound = Double.POSITIVE_INFINITY
             )
-            public JAMSDouble wind;
+            public Attribute.Double wind;
 
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
@@ -38,16 +38,16 @@ public class Reaeration extends JAMSComponent {
             lowerBound= -300,
             upperBound = 10000
             )
-            public JAMSDouble elevation;
+            public Attribute.Double elevation;
 
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
             description = "average water temperature for specific reach",
-            unit = "캜",
+            unit = "째C",
             lowerBound= 0,
             upperBound = 100
             )
-            public JAMSDouble watertempavg;
+            public Attribute.Double watertempavg;
 
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
@@ -56,7 +56,7 @@ public class Reaeration extends JAMSComponent {
             lowerBound= 0,
             upperBound = 100
             )
-            public JAMSDouble waterdepth;
+            public Attribute.Double waterdepth;
 
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
@@ -65,7 +65,7 @@ public class Reaeration extends JAMSComponent {
             lowerBound= 0,
             upperBound = Double.POSITIVE_INFINITY
             )
-            public JAMSDouble velocity;
+            public Attribute.Double velocity;
 
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
@@ -74,7 +74,7 @@ public class Reaeration extends JAMSComponent {
             lowerBound= 0,
             upperBound = 30
             )
-            public JAMSDouble disOxy;
+            public Attribute.Double disOxy;
 
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
@@ -83,7 +83,7 @@ public class Reaeration extends JAMSComponent {
             lowerBound= 0,
             upperBound = 30
             )
-            public JAMSDouble DOsat;
+            public Attribute.Double DOsat;
 
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
@@ -92,7 +92,7 @@ public class Reaeration extends JAMSComponent {
             lowerBound= 0,
             upperBound = Double.POSITIVE_INFINITY
             )
-            public JAMSDouble RateReaer;
+            public Attribute.Double RateReaer;
 
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
@@ -101,23 +101,23 @@ public class Reaeration extends JAMSComponent {
             lowerBound= 0,
             upperBound = Double.POSITIVE_INFINITY
             )
-            public JAMSDouble ReaerRate;
+            public Attribute.Double ReaerRate;
   
     /*
      *  Component run stages
      */
 
 
-    public void init() throws JAMSEntity.NoSuchAttributeException {
+    public void init() throws Attribute.Entity.NoSuchAttributeException {
 
     }
-    public void run() throws JAMSEntity.NoSuchAttributeException, IOException {
+    public void run() throws Attribute.Entity.NoSuchAttributeException, IOException {
             
 
          // calculation of temperature and elevation depended oxygen saturation concentration
             // DOsatT the temperature depended oxygen saturation concentration (mg/l)
             // DOsatTE the temperature and elevation depended oxygen saturation concentration (mg/l)
-            // T the mean water temperature of specific reach (캜)
+            // T the mean water temperature of specific reach (째C)
             // elev the mean elavation of specific reach (m)
 
 
@@ -129,8 +129,8 @@ public class Reaeration extends JAMSComponent {
         DOsatTE = Math.exp(DOsatT) * (1 - 0.0001148 * elev);
         DOsat.setValue(DOsatTE);
         
-        // hydraulic-based formulas to compute the reaeration coefficient at 20캜
-            // Kah20 the reaeration rate at 20캜 based on hydraulic charakteristics (1/d)
+        // hydraulic-based formulas to compute the reaeration coefficient at 20째C
+            // Kah20 the reaeration rate at 20째C based on hydraulic charakteristics (1/d)
             // U the mean water velocity (m/s)
             // H the mean water depth (m)
 
@@ -164,8 +164,8 @@ public class Reaeration extends JAMSComponent {
         // Klw = 0.0986 * Math.pow(Uw10, 1.64);
 
 
-        // calculation of the reaeration coefficient at 20캜
-            // Ka20 the reaeration coefficient at 20캜
+        // calculation of the reaeration coefficient at 20째C
+            // Ka20 the reaeration coefficient at 20째C
 
         double Ka20 = 0;
         Ka20 = Kah20 + Klw / H;
@@ -174,8 +174,8 @@ public class Reaeration extends JAMSComponent {
          // calculation of the contribution of reaeration to the conversion rate of dissolved oxygen
             // Reaeration the daily reaeration rate (mg/l)
             // Ktemp the temperature-dependent oxygen reaeration coefficient (1/d)
-            // k temperature constant (0.069 1/캜)
-            // T the mean water temperature of specific reach (캜)
+            // k temperature constant (0.069 1/째C)
+            // T the mean water temperature of specific reach (째C)
             // DOsatTE the temperature and elevation depended oxygen saturation concentration (mg/l)
             // DO the dissolved oxygen concentration in water body (mg/l)
             

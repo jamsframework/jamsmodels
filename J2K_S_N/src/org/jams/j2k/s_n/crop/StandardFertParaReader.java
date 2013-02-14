@@ -37,21 +37,19 @@ public class StandardFertParaReader extends JAMSComponent {
 
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.INIT,
             description = "Fertilizer parameter file name"
             )
-            public JAMSString ftFileName;
+            public Attribute.String ftFileName;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.INIT,
             description = "Collection of hru objects"
             )
-            public JAMSEntityCollection hrus;
+            public Attribute.EntityCollection hrus;
     
     
     
-    public void init() throws JAMSEntity.NoSuchAttributeException {
+    public void init() throws Attribute.Entity.NoSuchAttributeException {
         
         //read fertilizer parameter
         Attribute.EntityCollection fert = getModel().getRuntime().getDataFactory().createEntityCollection();

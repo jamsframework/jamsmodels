@@ -24,12 +24,7 @@ package org.unijena.j2k.io;
 
 //import org.unijena.j2k.*;
 import jams.data.Attribute;
-import jams.data.JAMSDataFactory;
-import jams.data.Attribute.DoubleArray;
-import jams.data.JAMSEntity;
-import jams.data.JAMSIntegerArray;
-import jams.data.JAMSString;
-import jams.data.JAMSStringArray;
+import jams.data.*;
 import jams.model.JAMSComponent;
 import jams.model.JAMSComponentDescription;
 import jams.model.JAMSVarDescription;
@@ -57,34 +52,29 @@ public class StationEntityCreator extends JAMSComponent {
             access = JAMSVarDescription.AccessType.READ,
             description = "Input climates station data file"
             )
-            public JAMSString inFile;
+            public Attribute.String inFile;
 
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
                         description = "ID of the datastore to read station coordinates from")
-    public JAMSString dataStoreID;
+    public Attribute.String dataStoreID;
 
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.WRITE,
-                        update = JAMSVarDescription.UpdateType.RUN,
                         description = "the station names")
-    public JAMSStringArray statNames;
+    public Attribute.StringArray statNames;
 
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.WRITE,
-                        update = JAMSVarDescription.UpdateType.RUN,
                         description = "the station Ids")
-    public JAMSIntegerArray statId;
+    public Attribute.IntegerArray statId;
 
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.WRITE,
-                        update = JAMSVarDescription.UpdateType.RUN,
                         description = "the station elevation")
     public Attribute.DoubleArray statElev;
 
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.WRITE,
-                        update = JAMSVarDescription.UpdateType.RUN,
                         description = "the station x-coordinates")
     public Attribute.DoubleArray statX;
 
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.WRITE,
-                        update = JAMSVarDescription.UpdateType.RUN,
                         description = "the station y-coordinates")
     public Attribute.DoubleArray statY;
     
@@ -105,9 +95,9 @@ public class StationEntityCreator extends JAMSComponent {
         int nEntities = statNames.getValue().length;
         Attribute.EntityCollection ents = getModel().getRuntime().getDataFactory().createEntityCollection();
         for(int i = 0; i < nEntities; i++){
-           JAMSEntity e;
+           Attribute.Entity e;
                 try {
-                    e = (JAMSEntity) getModel().getRuntime().getDataFactory().createInstance(JAMSEntity.class);
+                    e = (Attribute.Entity) getModel().getRuntime().getDataFactory().createInstance(Attribute.Entity.class);
                     e.setObject("NAME", statNames.getValue()[i]);
                     e.setInt("ID", this.statId.getValue()[i]);
                     e.setDouble("ELEVATION", this.statElev.getValue()[i]);
@@ -138,7 +128,7 @@ public class StationEntityCreator extends JAMSComponent {
         int[] result = new int[list.size()];
         int i = 0;
         for (Object o : list) {
-            result[i] = Integer.parseInt((String)o);
+            result[i] = Integer.parseInt(o.toString());
             i++;
         }
         return result;
@@ -148,7 +138,7 @@ public class StationEntityCreator extends JAMSComponent {
         String[] result = new String[list.size()];
         int i = 0;
         for (Object o : list) {
-            result[i] = (String)o;
+            result[i] = (String)o.toString();
             i++;
         }
         return result;

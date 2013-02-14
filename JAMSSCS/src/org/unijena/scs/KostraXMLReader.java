@@ -11,9 +11,9 @@ package org.unijena.scs;
 
 import java.util.HashMap;
 import java.util.Map;
-import org.unijena.jams.data.JAMSDouble;
-import org.unijena.jams.data.JAMSEntity;
-import org.unijena.jams.data.JAMSString;
+import org.unijena.jams.data.Attribute.Double;
+import org.unijena.jams.data.Attribute.Entity;
+import org.unijena.jams.data.Attribute.String;
 import org.unijena.jams.io.XMLIO;
 import org.unijena.jams.model.JAMSComponent;
 import org.unijena.jams.model.JAMSVarDescription;
@@ -33,10 +33,9 @@ public class KostraXMLReader extends JAMSComponent {
      */
     @JAMSVarDescription(
     access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.INIT,
             description = "workspace directory name"
             )
-            public JAMSString workspaceDir;
+            public Attribute.String workspaceDir;
     
     /**
      * the KOSTRA XML input file<br>
@@ -46,10 +45,9 @@ public class KostraXMLReader extends JAMSComponent {
      */
     @JAMSVarDescription(
     access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.INIT,
             description = "HRU parameter file name"
             )
-            public JAMSString KostraXMLFile;
+            public Attribute.String KostraXMLFile;
     
     /**
      * the two dimensional table created from the KOSTRA XML input file<br>
@@ -59,31 +57,30 @@ public class KostraXMLReader extends JAMSComponent {
      */
     @JAMSVarDescription(
     access = JAMSVarDescription.AccessType.WRITE,
-            update = JAMSVarDescription.UpdateType.INIT,
             description = "the kostra table object as result"
             )
-            public JAMSEntity table;
+            public Attribute.Entity table;
     
     int numDEntries = 0, numAEntries = 0;
-    HashMap<Integer,Map<Integer,JAMSDouble>>	tmpTable;
-    HashMap<Integer,JAMSDouble>			tmpHeaderD;
-    HashMap<Integer,JAMSDouble>			tmpHeaderA;
+    HashMap<Integer,Map<Integer,Attribute.Double>>	tmpTable;
+    HashMap<Integer,Attribute.Double>			tmpHeaderD;
+    HashMap<Integer,Attribute.Double>			tmpHeaderA;
     
-    JAMSDouble Table[][];
-    JAMSDouble HeaderD[];
-    JAMSDouble HeaderA[];
+    Attribute.Double Table[][];
+    Attribute.Double HeaderD[];
+    Attribute.Double HeaderA[];
     
     /**
      * the component's init() method
-     * @throws org.unijena.jams.data.JAMSEntity.NoSuchAttributeException thrown when a model entity tries to access a non existent attribute
+     * @throws org.unijena.jams.data.Attribute.Entity.NoSuchAttributeException thrown when a model entity tries to access a non existent attribute
      */
-    public void init() throws JAMSEntity.NoSuchAttributeException {
+    public void init() throws Attribute.Entity.NoSuchAttributeException {
         if(KostraXMLFile.getValue().compareTo("") != 0){
             Document dwdData = null;
             
-            tmpTable = new HashMap<Integer,Map<Integer,JAMSDouble>>();
-            tmpHeaderD = new HashMap<Integer,JAMSDouble>();
-            tmpHeaderA = new HashMap<Integer,JAMSDouble>();
+            tmpTable = new HashMap<Integer,Map<Integer,Attribute.Double>>();
+            tmpHeaderD = new HashMap<Integer,Attribute.Double>();
+            tmpHeaderA = new HashMap<Integer,Attribute.Double>();
             //read document
             try {
                 dwdData = XMLIO.getDocument(workspaceDir.getValue()+"/"+KostraXMLFile.getValue());
@@ -101,9 +98,9 @@ public class KostraXMLReader extends JAMSComponent {
                 node = node.getNextSibling();
             }
             //convert hashmaps to arrays
-            Table = new JAMSDouble[numDEntries][numAEntries];
-            HeaderD = new JAMSDouble[numDEntries];
-            HeaderA = new JAMSDouble[numAEntries];
+            Table = new Attribute.Double[numDEntries][numAEntries];
+            HeaderD = new Attribute.Double[numDEntries];
+            HeaderA = new Attribute.Double[numAEntries];
             
             for (int i=0;i<numDEntries;i++) {
                 HeaderD[i] = this.tmpHeaderD.get(new Integer(i));
@@ -140,10 +137,10 @@ public class KostraXMLReader extends JAMSComponent {
     private void ProcessDNode(Node node) {
         Element element = (Element)node;
         //this is a new row in our table --> add to header
-        JAMSDouble dauer = new JAMSDouble(new Double(element.getAttribute("dauer")).doubleValue());
+        Attribute.Double dauer = new Attribute.Double(new Double(element.getAttribute("dauer")).doubleValue());
         
         tmpHeaderD.put(new Integer(numDEntries),dauer);
-        tmpTable.put(new Integer(numDEntries),new HashMap<Integer,JAMSDouble>());
+        tmpTable.put(new Integer(numDEntries),new HashMap<Integer,Attribute.Double>());
         
         Node childnode = node.getFirstChild();
         
@@ -154,7 +151,7 @@ public class KostraXMLReader extends JAMSComponent {
             if (childnode.getNodeName().compareTo("T") == 0) {
                 if (numDEntries == 0) {
                     element = (Element)childnode;
-                    JAMSDouble a = new JAMSDouble(new Double(element.getAttribute("a")).doubleValue());
+                    Attribute.Double a = new Attribute.Double(new Double(element.getAttribute("a")).doubleValue());
                     tmpHeaderA.put(new Integer(curAEntry),a);
                 }
                 ProcessTNode(childnode,numDEntries,curAEntry);
@@ -177,7 +174,7 @@ public class KostraXMLReader extends JAMSComponent {
         while (childnode != null) {
             if (childnode.getNodeName().compareTo("hN") == 0) {
                 this.tmpTable.get(DIndex).put(new Integer(AIndex),
-                        new JAMSDouble(new Double(childnode.getTextContent()).doubleValue()));
+                        new Attribute.Double(new Double(childnode.getTextContent()).doubleValue()));
             }
             childnode = childnode.getNextSibling();
         }

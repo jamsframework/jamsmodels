@@ -26,9 +26,11 @@
  */
 package hymod;
 
-import java.util.Vector;
-import org.unijena.jams.data.*;
-import org.unijena.jams.model.*;
+import jams.data.*;
+import jams.model.JAMSComponent;
+import jams.model.JAMSComponentDescription;
+import jams.model.JAMSVarDescription;
+
 
 /**
  *
@@ -47,17 +49,15 @@ import org.unijena.jams.model.*;
      */
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "precipitation"
             )
-            public JAMSDouble precip;
+            public Attribute.Double precip;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.INIT,
             description = "potential evapotranspiration"
             )
-            public JAMSDouble pet;
+            public Attribute.Double pet;
     
     /*
      * Model parameters
@@ -65,45 +65,39 @@ import org.unijena.jams.model.*;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.INIT,
             description = "Max height of soil moisture accounting tank"
             )
-            public JAMSDouble huz;
+            public Attribute.Double huz;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.INIT,
             description = "Distribution function shape parameter"
             )
-            public JAMSDouble b;
+            public Attribute.Double b;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.INIT,
             description = "Quick-slow split parameter"
             )
-            public JAMSDouble alp;
+            public Attribute.Double alp;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.INIT,
             description = "Number of quickflow routing tanks"
             )
-            public JAMSDouble nq;
+            public Attribute.Double nq;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.INIT,
             description = "Quickflow routing tanks rate parameter"
             )
-            public JAMSDouble kq;
+            public Attribute.Double kq;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.INIT,
             description = "Slowflow routing tanks rate parameter"
             )
-            public JAMSDouble ks;
+            public Attribute.Double ks;
     
     /*
      *Initialize state variables
@@ -111,90 +105,78 @@ import org.unijena.jams.model.*;
         
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
-            update = JAMSVarDescription.UpdateType.INIT,
             description = "Soil moisture accounting tank state contents"
             )
-            public JAMSDouble xcuz;
+            public Attribute.Double xcuz;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
-            update = JAMSVarDescription.UpdateType.INIT,
             description = "Quickflow routing tanks state contents"
             )
-            public JAMSDouble xq;
+            public Attribute.Double xq;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
-            update = JAMSVarDescription.UpdateType.INIT,
             description = "Slowflow routing tank state content"
             )
-            public JAMSDouble xs;
+            public Attribute.Double xs;
     
     /*
      *model states
      */
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "Model computed upper zone soil moisture tank state contents"
             )
-            public JAMSDouble mxhuz;
+            public Attribute.Double mxhuz;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "Model computed upper zone soil moisture tank state contents"
             )
-            public JAMSDouble mxcuz;
+            public Attribute.Double mxcuz;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "Model computed quickflow tank states contents"
             )
-            public JAMSDoubleArray mxq;
+            public Attribute.DoubleArray mxq;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "Model computed slowflow tank state contentss"
             )
-            public JAMSDouble mxs;
+            public Attribute.Double mxs;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "Model computed evapotranspiration flux"
             )
-            public JAMSDouble met;
+            public Attribute.Double met;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "Model computed precipitation excess flux"
             )
-            public JAMSDouble mov;
+            public Attribute.Double mov;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "Model computed quickflow flux"
             )
-            public JAMSDouble mqq;
+            public Attribute.Double mqq;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "Model computed slowflow flux"
             )
-            public JAMSDouble mqs;
+            public Attribute.Double mqs;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "Model computed total streamflow flux"
             )
-            public JAMSDouble mq;
+            public Attribute.Double mq;
     
     /*
      *  Component run stages

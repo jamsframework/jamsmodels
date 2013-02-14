@@ -38,29 +38,26 @@ description = "Description")
 public class CalcDailyNetRadiation extends JAMSComponent {
 
      @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
-    update = JAMSVarDescription.UpdateType.RUN,
     description = "daily longwave radiation [MJ/m²]")
-    public JAMSDouble lwRad;
+    public Attribute.Double lwRad;
      
      @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
-    update = JAMSVarDescription.UpdateType.RUN,
     description = "daily shortwave radiation [MJ/m²]")
-    public JAMSDouble swRad;
+    public Attribute.Double swRad;
       
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.WRITE,
-    update = JAMSVarDescription.UpdateType.RUN,
     description = "daily net radiation [MJ/m²]")
-    public JAMSDouble netRad;
+    public Attribute.Double netRad;
 
         
     /*
      *  Component run stages
      */
-    public void init() throws JAMSEntity.NoSuchAttributeException, IOException {
+    public void init() throws Attribute.Entity.NoSuchAttributeException, IOException {
        
     }
 
-    public void run() throws JAMSEntity.NoSuchAttributeException, IOException {
+    public void run() throws Attribute.Entity.NoSuchAttributeException, IOException {
                        
             //double netSWRadiation = org.unijena.j2k.regionWK.AP1.CalcShortWaveRadiation.shortwaveRad();
             //double netLWRadiation = org.unijena.j2k.regionWK.AP1.CalcLongWaveRadiation.longwaveRad();

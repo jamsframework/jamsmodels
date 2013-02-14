@@ -15,101 +15,77 @@ import java.lang.Math.*;
 public class J2KProcessContourBanks extends JAMSComponent {
 
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
-    update = JAMSVarDescription.UpdateType.INIT,
     description = "An- bzw. Ausschalten des Moduls")
-    public JAMSBoolean cbModulAktiv;
+    public Attribute.Boolean cbModulAktiv;
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
-    update = JAMSVarDescription.UpdateType.INIT,
     description = "Zufluss in die ContourBank ausschlie?lich ueber die gesaettigte oder aber die gesamte Maechtigkeit von RD2")
-    public JAMSBoolean cbZuflussMgesRD2Aktiv;
+    public Attribute.Boolean cbZuflussMgesRD2Aktiv;
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
-    update = JAMSVarDescription.UpdateType.INIT,
     description = "Zufluss in die ContourBank ausschlie?lich ueber die gesaettigte oder aber die gesamte Maechtigkeit von RG1")
-    public JAMSBoolean cbZuflussMgesRG1Aktiv;
+    public Attribute.Boolean cbZuflussMgesRG1Aktiv;
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
-    update = JAMSVarDescription.UpdateType.INIT,
     description = "Kalibrationskoeffizient zur Anpassung des Zuflusses in die ContourBank aus RD2 bzw. RG1")
     public Attribute.Double cbKalibZufluss;
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
-    update = JAMSVarDescription.UpdateType.INIT,
     description = "Kalibrationskoeffizient zur Anpassung der Infiltration aus der ContourBank in RD2 bzw. RG1")
     public Attribute.Double cbKalibInfiltration;
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
-    update = JAMSVarDescription.UpdateType.INIT,
     description = "Kalibrationskoeffizient zur Anpassung der gesattigten Maechtigkeit von RD2")
     public Attribute.Double cbKalibGesaettigteMaechtigkeit;
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
-    update = JAMSVarDescription.UpdateType.INIT,
     description = "Anteil des Wassers, welches aus der ContourBank in RD2 bzw. RG1 infiltriert und anschliessend in unterliegende HRUs verteilt wird")
     public Attribute.Double cbKalibInfiltrationRouting;
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
-    update = JAMSVarDescription.UpdateType.INIT,
     description = "Routingkoeffizient zur Anpassung des Grabenabflusses im ContourBank-System")
     public Attribute.Double cbKalibAbflussReach;
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
-    update = JAMSVarDescription.UpdateType.RUN,
     description = "The current hru entity")
-    public JAMSEntityCollection hrus;
+    public Attribute.EntityCollection hrus;
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
-    update = JAMSVarDescription.UpdateType.INIT,
     description = "temporal resolution [d | h | m]")
-    public JAMSString tempRes;
+    public Attribute.String tempRes;
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
-    update = JAMSVarDescription.UpdateType.RUN,
     description = "attribute slope")
     public Attribute.Double slope;
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
-    update = JAMSVarDescription.UpdateType.INIT,
     description = "ContourBank-Boeschungswinkel hinten")
     public Attribute.Double cbBoeschungswinkelWall_hinten;
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
-    update = JAMSVarDescription.UpdateType.INIT,
     description = "ContourBank-Grabenbreite")
     public Attribute.Double cbBreiteGraben;
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
-    update = JAMSVarDescription.UpdateType.INIT,
     description = "Rauhigkeitsbeiwert im ContourBank-Graben")
     public Attribute.Double cbRauhigkeitsbeiwertGraben;
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.WRITE,
-    update = JAMSVarDescription.UpdateType.RUN,
     description = "RD1 outflow")
     public Attribute.Double outRD1;
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READWRITE,
-    update = JAMSVarDescription.UpdateType.RUN,
     description = "saturation of LPS")
     public Attribute.Double satLPS;
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.WRITE,
-    update = JAMSVarDescription.UpdateType.RUN,
     description = "RD2 outflow")
     public Attribute.Double outRD2;
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READWRITE,
-    update = JAMSVarDescription.UpdateType.RUN,
     description = "HRU statevar RD2 inflow")
     public Attribute.Double inRD2;
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READWRITE,
-    update = JAMSVarDescription.UpdateType.RUN,
     description = "maximum RG1 storage")
     public Attribute.Double maxRG1;
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READWRITE,
-    update = JAMSVarDescription.UpdateType.RUN,
     description = "actual RG1 storage")
     public Attribute.Double actRG1;
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.WRITE,
-    update = JAMSVarDescription.UpdateType.RUN,
     description = "RG1 outflow")
     public Attribute.Double outRG1;
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READWRITE,
-    update = JAMSVarDescription.UpdateType.RUN,
     description = "RG1 inflow")
     public Attribute.Double inRG1;
     // zusätliches rausschreiben für das Layerinterface
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.WRITE,
-    update = JAMSVarDescription.UpdateType.RUN,
     description = "conturbanks outflow",
     unit = "l")
     public Attribute.Double cbAbfussReach;
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READWRITE,
-    update = JAMSVarDescription.UpdateType.RUN,
     description = "conturbanks storage",
     unit = "l")
     public Attribute.Double cbSpeicherAkt;
@@ -122,7 +98,7 @@ public class J2KProcessContourBanks extends JAMSComponent {
             HRUsSlope, boeschungswinkelWall_hinten, breiteGraben, rauhigkeitsbeiwertGraben, run_outRD1, run_satLPS, run_outRD2, run_inRD2,
             run_maxRG1, run_actRG1, run_outRG1, run_inRG1;
 
-    public void init() throws JAMSEntity.NoSuchAttributeException {
+    public void init() throws Attribute.Entity.NoSuchAttributeException {
 
         this.modulCBaktiv = cbModulAktiv.getValue();
 
@@ -146,7 +122,7 @@ public class J2KProcessContourBanks extends JAMSComponent {
         }
     }
 
-    public void run() throws JAMSEntity.NoSuchAttributeException {
+    public void run() throws Attribute.Entity.NoSuchAttributeException {
     
         Attribute.Entity aktuelleHRU;
     

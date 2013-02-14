@@ -16,133 +16,115 @@ public class ShuttleworthWallace extends JAMSComponent{
    
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.INIT,
             description = "temporal resolution [d | h | m]"
             )
-            public JAMSString tempRes;
+            public Attribute.String tempRes;
     
      @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.INIT,
             description = "extinction coefficient of the canopy for incoming radiation"
             )
-            public JAMSDouble extCoeff;
+            public Attribute.Double extCoeff;
      
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "state variable leaf area index LAI"
             )
-            public JAMSDouble actLAI;
+            public Attribute.Double actLAI;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "state variable canopy height"
             )
-            public JAMSDouble absoluteHeight;
+            public Attribute.Double absoluteHeight;
     
     
      @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "messured wind velocity"
             )
-            public JAMSDouble wind;
+            public Attribute.Double wind;
     
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "actual temperature"
             )
-            public JAMSDouble actT;
+            public Attribute.Double actT;
         
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "incoming global radiation"
             )
-            public JAMSDouble solRad;
+            public Attribute.Double solRad;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "saturation vapour pressure"
             )
-            public JAMSDouble es_T;
+            public Attribute.Double es_T;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "actual vapour pressure"
             )
-            public JAMSDouble ea;
+            public Attribute.Double ea;
     
      @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "attribute elevation"
             )
-            public JAMSDouble elevation;
+            public Attribute.Double elevation;
      
       @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "state variable net radiation"
             )
-            public JAMSDouble netRad;
+            public Attribute.Double netRad;
      
                
           @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "latent heat of vaporization"
             )
-            public JAMSDouble L;
+            public Attribute.Double L;
           
           @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "psychrometric constant"
             )
-            public JAMSDouble psy;
+            public Attribute.Double psy;
           
            @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "slope of saturation vapour pressure curve"
             )
-            public JAMSDouble sospc;
+            public Attribute.Double sospc;
            
             
              @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "air density at constant pressure"
             )
-            public JAMSDouble da;
+            public Attribute.Double da;
                      
       @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "potential transpiration"
             )
-            public JAMSDouble potT; 
+            public Attribute.Double potT; 
       
        @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "potential evaporation"
             )
-            public JAMSDouble potE; 
+            public Attribute.Double potE; 
        
        @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "potential evapotranspiration"
             )
-            public JAMSDouble SWpotET; 
+            public Attribute.Double SWpotET; 
        
            
     /* ***roughness variables*** 
@@ -196,11 +178,11 @@ public class ShuttleworthWallace extends JAMSComponent{
      double es;
      double ec;
     
-    public void init() throws JAMSEntity.NoSuchAttributeException {        
+    public void init() throws Attribute.Entity.NoSuchAttributeException {        
     }
    
    // public static void main(String[] args)throws IOException {
-    public void run() throws JAMSEntity.NoSuchAttributeException, IOException {     
+    public void run() throws Attribute.Entity.NoSuchAttributeException, IOException {     
         
         double LAI        = this.actLAI.getValue();
         double ch          = this.absoluteHeight.getValue();

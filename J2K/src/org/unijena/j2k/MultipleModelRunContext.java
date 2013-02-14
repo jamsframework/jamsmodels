@@ -50,54 +50,46 @@ title="InErrorContext",
 
     @JAMSVarDescription(
     access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.INIT,
             description = "Number of model evaluations"
             )
-            public JAMSInteger modelRuns;
+            public Attribute.Integer modelRuns;
     
     @JAMSVarDescription(
     access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.INIT,
             description = "efficiency methods"
             )
-            public JAMSString effMethodNames;
+            public Attribute.String effMethodNames;
     
     @JAMSVarDescription(
     access = JAMSVarDescription.AccessType.READWRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "efficiency values"
             )
             public Attribute.Double[] effValues;
     
     @JAMSVarDescription(
     access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.INIT,
             description = "Flag for dis/enabling this sampler"
             )
-            public JAMSBoolean enable;
+            public Attribute.Boolean enable;
     
     @JAMSVarDescription(
-    access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.INIT
+    access = JAMSVarDescription.AccessType.READ
             )
-            public JAMSString effFileName;
+            public Attribute.String effFileName;
     
     @JAMSVarDescription(
-    access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.INIT
+    access = JAMSVarDescription.AccessType.READ
             )
-            public JAMSString targetFileName;
+            public Attribute.String targetFileName;
     
     @JAMSVarDescription(
     access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.INIT,
             description = "The model time interval"
             )
-            public JAMSTimeInterval modelTimeInterval;
+            public Attribute.TimeInterval modelTimeInterval;
     
     @JAMSVarDescription(
     access = JAMSVarDescription.AccessType.READWRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "Output file attribute"
             )
             public Attribute.DoubleArray targetValue;

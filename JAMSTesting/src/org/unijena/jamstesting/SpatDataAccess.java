@@ -34,13 +34,11 @@ public class SpatDataAccess extends JAMSComponent {
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.RUN
             ) 
-    public JAMSEntity entity;   
+    public Attribute.Entity entity;   
 
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.RUN
             ) 
     public double d;   
     
@@ -50,11 +48,11 @@ public class SpatDataAccess extends JAMSComponent {
  *
  */
     long x;
-    JAMSLong l;
+    Attribute.Long l;
     
-    public void run() throws JAMSEntity.NoSuchAttributeException {
+    public void run() throws Attribute.Entity.NoSuchAttributeException {
         //x = entity.getLong("x"); //771
-        x = ((JAMSLong) entity.getObject("x")).getValue();
+        x = ((Attribute.Long) entity.getObject("x")).getValue();
         System.out.println(x);
     }
 }

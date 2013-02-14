@@ -83,7 +83,7 @@ public class StandardGroundwaterParaReader extends JAMSComponent {
             for (int i = 0; i < attrs.length; i++) {
                 //e.setDouble((String) attrs[i], lu.getDouble((String) attrs[i]));
                 Object o = gw.getObject((String) attrs[i]);
-                if (!(o instanceof JAMSString)) {
+                if (!(o instanceof Attribute.String)) {
                     e.setObject((String) attrs[i], o);
                 }
             }

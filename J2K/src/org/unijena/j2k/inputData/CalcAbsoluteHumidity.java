@@ -43,70 +43,60 @@ title="CalcAbsoluteHumidity",
      */
     @JAMSVarDescription(
     access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "the relative humidity values"
             )
             public Attribute.DoubleArray rhum;
     
     @JAMSVarDescription(
     access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "temperature for the computation"
             )
             public Attribute.DoubleArray temperature;
     
     @JAMSVarDescription(
     access = JAMSVarDescription.AccessType.WRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "absolute humidity values"
             )
             public Attribute.DoubleArray ahum;
     
     @JAMSVarDescription(
     access = JAMSVarDescription.AccessType.WRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "Array of temperature station elevations"
             )
             public Attribute.DoubleArray tempElevation;
     
     @JAMSVarDescription(
     access = JAMSVarDescription.AccessType.WRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "Array of temperature station's x coordinate"
             )
             public Attribute.DoubleArray tempXCoord;
     
     @JAMSVarDescription(
     access = JAMSVarDescription.AccessType.WRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "Array of temperature station's y coordinate"
             )
             public Attribute.DoubleArray tempYCoord;
     
     @JAMSVarDescription(
     access = JAMSVarDescription.AccessType.WRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "Array of rhum station elevations"
             )
             public Attribute.DoubleArray rhumElevation;
     
     @JAMSVarDescription(
     access = JAMSVarDescription.AccessType.WRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "Array of rhum station's x coordinate"
             )
             public Attribute.DoubleArray rhumXCoord;
     
     @JAMSVarDescription(
     access = JAMSVarDescription.AccessType.WRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "Array of rhum station's y coordinate"
             )
             public Attribute.DoubleArray rhumYCoord;
     
     @JAMSVarDescription(
     access = JAMSVarDescription.AccessType.WRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "rsqr for ahum stations"
             )
             public Attribute.DoubleArray regCoeffAhum;
@@ -115,11 +105,11 @@ title="CalcAbsoluteHumidity",
      *  Component run stages
      */
     
-    public void init() throws JAMSEntity.NoSuchAttributeException {
+    public void init() throws Attribute.Entity.NoSuchAttributeException {
         
     }
     
-    public void run() throws JAMSEntity.NoSuchAttributeException {
+    public void run() throws Attribute.Entity.NoSuchAttributeException {
 
         double[] rhum = this.rhum.getValue();
         double[] temperature = this.temperature.getValue();
@@ -180,7 +170,7 @@ title="CalcAbsoluteHumidity",
         regCoeffAhum.setValue(org.unijena.j2k.statistics.Regression.calcLinReg(rhumElevation.getValue(), this.ahum.getValue()));
     }
     
-    public void cleanup() throws JAMSEntity.NoSuchAttributeException {
+    public void cleanup() throws Attribute.Entity.NoSuchAttributeException {
         
     }
 }

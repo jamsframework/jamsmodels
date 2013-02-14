@@ -37,46 +37,43 @@ public class StandardLMPastureParaReader extends JAMSComponent {
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.INIT,
             description = "Data file directory name"
             )
-            public JAMSString dirName;
+            public Attribute.String dirName;
 
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.INIT,
             description = "Pasture management parameter file name"
             )
-            public JAMSString lpFileName;
+            public Attribute.String lpFileName;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.INIT,
             description = "Collection of hru objects"
             )
-            public JAMSEntityCollection hrus;
+            public Attribute.EntityCollection hrus;
     
     
     
-    public void init() throws JAMSEntity.NoSuchAttributeException {
+    public void init() throws Attribute.Entity.NoSuchAttributeException {
         
         //read pasture management parameter
-        JAMSEntityCollection lmpas = new JAMSEntityCollection();
+        Attribute.EntityCollection lmpas = new Attribute.EntityCollection();
         lmpas.setEntities(J2KFunctions.readParas(dirName.getValue()+"/"+lpFileName.getValue()));
         
-        HashMap<Double, JAMSEntity> lpMap = new HashMap<Double, JAMSEntity>();
-        JAMSEntity lp, e;
+        HashMap<Double, Attribute.Entity> lpMap = new HashMap<Double, Attribute.Entity>();
+        Attribute.Entity lp, e;
         Object[] attrs;
         
         //put all entities into a HashMap with their ID as key
         
-        Iterator<JAMSEntity> lpIterator = lmpas.getEntities().iterator();
+        Iterator<Attribute.Entity> lpIterator = lmpas.getEntities().iterator();
         while (lpIterator.hasNext()) {
             lp = lpIterator.next();
             lpMap.put(lp.getDouble("ID"),  lp);//put all entities into a HashMap with their ID as key
                             }
         
-        Iterator<JAMSEntity> hruIterator = hrus.getEntities().iterator();
+        Iterator<Attribute.Entity> hruIterator = hrus.getEntities().iterator();
         while (hruIterator.hasNext()) {
             e = hruIterator.next();
             lp = lpMap.get(e.getDouble("lmpasID"));

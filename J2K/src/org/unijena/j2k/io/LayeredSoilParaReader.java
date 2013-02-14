@@ -37,17 +37,15 @@ public class LayeredSoilParaReader extends JAMSComponent {
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.INIT,
             description = "Soil types parameter file name"
             )
-            public JAMSString stFileName;
+            public Attribute.String stFileName;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "Collection of hru objects"
             )
-            public JAMSEntityCollection hrus;
+            public Attribute.EntityCollection hrus;
     
     
     
@@ -87,7 +85,7 @@ public class LayeredSoilParaReader extends JAMSComponent {
                 for (int i = 0; i < attrs.length; i++) {
                     //e.setDouble((String) attrs[i], lu.getDouble((String) attrs[i]));
                     Object o = st.getObject((String)attrs[i]);
-                    if(!(o instanceof JAMSString))
+                    if(!(o instanceof Attribute.String))
                         e.setObject((String)attrs[i]+"_h"+horizon, o);
                 }
                 hruSID++;

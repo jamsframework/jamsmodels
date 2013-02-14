@@ -38,17 +38,15 @@ public class j2000gGroundwaterParaReader extends JAMSComponent {
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.INIT,
             description = "Hydrogeology parameter file name"
             )
-            public JAMSString gwFileName;
+            public Attribute.String gwFileName;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "Collection of hru objects"
             )
-            public JAMSEntityCollection hrus;
+            public Attribute.EntityCollection hrus;
     
     
     
@@ -82,7 +80,7 @@ public class j2000gGroundwaterParaReader extends JAMSComponent {
             for (int i = 0; i < attrs.length; i++) {
                 //e.setDouble((String) attrs[i], lu.getDouble((String) attrs[i]));
                 Object o = gw.getObject((String)attrs[i]);
-                if(!(o instanceof JAMSString))
+                if(!(o instanceof Attribute.String))
                     e.setObject((String)attrs[i], o);
             }
         }

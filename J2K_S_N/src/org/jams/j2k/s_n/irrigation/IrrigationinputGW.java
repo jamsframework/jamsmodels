@@ -17,20 +17,17 @@ description = "Calculation of irrigation input")
 public class IrrigationinputGW extends JAMSComponent {
 
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
-    update = JAMSVarDescription.UpdateType.RUN,
     description = "in [-] plant growth water stress factor")
-    public JAMSDouble netRain;
+    public Attribute.Double netRain;
 
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READWRITE,
-    update = JAMSVarDescription.UpdateType.RUN,
     description = "HRU crop class",
     defaultValue = "0")
-    public JAMSDouble irrigation;
+    public Attribute.Double irrigation;
 
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.WRITE,
-    update = JAMSVarDescription.UpdateType.RUN,
     description = "HRU crop class")
-    public JAMSDouble Waterinput;
+    public Attribute.Double Waterinput;
 
 
     

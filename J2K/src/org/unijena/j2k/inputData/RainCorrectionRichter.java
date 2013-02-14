@@ -43,81 +43,66 @@ public class RainCorrectionRichter extends JAMSComponent {
      *  Component variables
      */
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
-                        update = JAMSVarDescription.UpdateType.RUN,
                         description = "time")
-    public JAMSCalendar time;
+    public Attribute.Calendar time;
 
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
-                        update = JAMSVarDescription.UpdateType.RUN,
                         description = "the precip values")
     public Attribute.DoubleArray precip;
 
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
-                        update = JAMSVarDescription.UpdateType.RUN,
                         description = "temperature for the correction function",
                         unit = "°C")
     public Attribute.DoubleArray temperature;
 
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.WRITE,
-                        update = JAMSVarDescription.UpdateType.RUN,
                         description = "corrected precip values",
                         unit = "mm")
     public Attribute.DoubleArray rcorr;
 
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
-                        update = JAMSVarDescription.UpdateType.RUN,
                         description = "array of temperature station elevations",
                         unit = "m")
     public Attribute.DoubleArray tempElevation;
 
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
-                        update = JAMSVarDescription.UpdateType.RUN,
                         description = "array of temperature station's x coordinate")
     public Attribute.DoubleArray tempXCoord;
 
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
-                        update = JAMSVarDescription.UpdateType.RUN,
                         description = "array of temperature station's y coordinate")
     public Attribute.DoubleArray tempYCoord;
 
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
-                        update = JAMSVarDescription.UpdateType.RUN,
                         description = "Regression coefficients for temperature")
     public Attribute.DoubleArray tempRegCoeff;
 
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
-                        update = JAMSVarDescription.UpdateType.RUN,
                         description = "array of precip station elevations",
                         unit = "m")
     public Attribute.DoubleArray rainElevation;
 
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
-                        update = JAMSVarDescription.UpdateType.RUN,
                         description = "array of precip station's x coordinate")
     public Attribute.DoubleArray rainXCoord;
 
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
-                        update = JAMSVarDescription.UpdateType.RUN,
                         description = "array of precip station's y coordinate")
     public Attribute.DoubleArray rainYCoord;
 
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
-                        update = JAMSVarDescription.UpdateType.RUN,
                         description = "number of temperature station for IDW")
-    public JAMSInteger tempNIDW;
+    public Attribute.Integer tempNIDW;
 
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
-                        update = JAMSVarDescription.UpdateType.RUN,
                         description = "power for IDW function")
     public Attribute.Double pIDW;
 
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
-                        update = JAMSVarDescription.UpdateType.RUN,
                         description = "regression threshold")
     public Attribute.Double regThres;
 
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
-                        update = JAMSVarDescription.UpdateType.RUN,
                         description = "snow_trs",
                         upperBound = 5.0,
                         lowerBound = -5.0,
@@ -125,7 +110,6 @@ public class RainCorrectionRichter extends JAMSComponent {
     public Attribute.Double snow_trs;
 
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
-                        update = JAMSVarDescription.UpdateType.RUN,
                         description = "snow_trans",
                         upperBound = 10,
                         lowerBound = 0,
@@ -133,20 +117,17 @@ public class RainCorrectionRichter extends JAMSComponent {
     public Attribute.Double snow_trans;
 
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
-                        update = JAMSVarDescription.UpdateType.RUN,
                         description = "Caching configuration: 0 - write cache, 1 - use cache, 2 - caching off",
                         defaultValue = "0")
-    public JAMSInteger dataCaching;
+    public Attribute.Integer dataCaching;
 
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
-                        update = JAMSVarDescription.UpdateType.INIT,
                         description = "Data file directory name")
-    public JAMSString dirName;
+    public Attribute.String dirName;
 
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
-                        update = JAMSVarDescription.UpdateType.INIT,
                         description = "Output file name")
-    public JAMSString fileName;
+    public Attribute.String fileName;
 
     private GenericDataWriter writer,  writer2;
 
@@ -157,7 +138,7 @@ public class RainCorrectionRichter extends JAMSComponent {
     /*
      *  Component run stages
      */
-    public void init() throws JAMSEntity.NoSuchAttributeException {
+    public void init() throws Attribute.Entity.NoSuchAttributeException {
         if (this.fileName != null) {
             writer = new GenericDataWriter(dirName.getValue() + "/" + fileName.getValue());
             writer2 = new GenericDataWriter(dirName.getValue() + "/" + "rainTempFile.dat");
@@ -165,7 +146,7 @@ public class RainCorrectionRichter extends JAMSComponent {
         }
     }
 
-    public void run() throws JAMSEntity.NoSuchAttributeException {
+    public void run() throws Attribute.Entity.NoSuchAttributeException {
 
         if (this.fileName != null) {
             int nstat = precip.getValue().length;
@@ -324,7 +305,7 @@ public class RainCorrectionRichter extends JAMSComponent {
                 if (precip[r] < 0.1) {
                     wetErr = 0;
                 } else {
-                    if (time.get(time.MONTH) >= 4 & time.get(time.MONTH) < 10) { //Summer half of the year
+                    if (time.get(JAMSCalendar.MONTH) >= 4 & time.get(JAMSCalendar.MONTH) < 10) { //Summer half of the year
                         if (precip[r] >= 9.0) {
                             wetErr = 0.47;
                         } else {
@@ -366,7 +347,7 @@ public class RainCorrectionRichter extends JAMSComponent {
         }
     }
 
-    public void cleanup() throws JAMSEntity.NoSuchAttributeException {
+    public void cleanup() throws Attribute.Entity.NoSuchAttributeException {
         if (this.fileName != null) {
             writer.write("#eof");
             writer2.write("#eof");

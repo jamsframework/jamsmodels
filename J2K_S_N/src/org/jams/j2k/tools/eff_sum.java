@@ -44,24 +44,21 @@ public class eff_sum extends JAMSComponent {
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "average objective function"
             )
-            public JAMSDouble obj_sum;
+            public Attribute.Double obj_sum;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "values objective function"
             )
-            public JAMSDouble[] obj_values;
+            public Attribute.Double[] obj_values;
     
      @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "aggregation mode: 1 = average, 2 = sum"
             )
-            public JAMSInteger mode;
+            public Attribute.Integer mode;
     
     
     /*

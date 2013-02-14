@@ -58,7 +58,7 @@ import lib.*;
 //            update = JAMSVarDescription.UpdateType.RUN,
 //            description = "daily shortwave radiation [MJ/mï¿½?ï¿½]"
 //            )
-//            public JAMSDouble swRad;
+//            public Attribute.Double swRad;
     @Description("daily shortwave radiation")
     @Unit("MJ/mï¿½?ï¿½")
     @Out public double swRad;
@@ -69,7 +69,7 @@ import lib.*;
 //            update = JAMSVarDescription.UpdateType.RUN,
 //            description = "daily longwave radiation [MJ/mï¿½?ï¿½]"
 //            )
-//            public JAMSDouble lwRad;
+//            public Attribute.Double lwRad;
     @Description("daily longwave radiation")
     @Unit("MJ/mï¿½?ï¿½")
     @Out public double lwRad;
@@ -79,7 +79,7 @@ import lib.*;
 //            update = JAMSVarDescription.UpdateType.RUN,
 //            description = "daily net radiation for refET [MJ/mï¿½?ï¿½]"
 //            )
-//            public JAMSDouble refETNetRad;
+//            public Attribute.Double refETNetRad;
     @Description("daily net radiation for refET")
     @Unit("MJ/mï¿½?ï¿½")
     @Out public double refETNetRad;

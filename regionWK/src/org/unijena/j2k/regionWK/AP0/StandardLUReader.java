@@ -39,21 +39,19 @@ public class StandardLUReader extends JAMSComponent {
 
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.INIT,
             description = "Land use parameter file name"
             )
-            public JAMSString luFileName;
+            public Attribute.String luFileName;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "Collection of hru objects"
             )
-            public JAMSEntityCollection hrus;
+            public Attribute.EntityCollection hrus;
     
     
     
-    public void init() throws JAMSEntity.NoSuchAttributeException {
+    public void init() throws Attribute.Entity.NoSuchAttributeException {
         //read lu parameter
         EntityCollection lus = JAMSDataFactory.createEntityCollection();
         
@@ -81,7 +79,7 @@ public class StandardLUReader extends JAMSComponent {
             for (int i = 0; i < attrs.length; i++) {
                 //e.setDouble((String) attrs[i], lu.getDouble((String) attrs[i]));
                 Object o = lu.getObject((String)attrs[i]);
-                if(!(o instanceof JAMSString))
+                if(!(o instanceof Attribute.String))
                     e.setObject((String)attrs[i], o);
             }
             

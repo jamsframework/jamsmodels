@@ -38,28 +38,25 @@ public class HydroNETCalc extends JAMSComponent {
         )    
    @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "Collection of hru objects"
             )
-            public JAMSEntity NitrogenOutEntity;
+            public Attribute.Entity NitrogenOutEntity;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "Collection of hru objects"
             )
-            public JAMSEntity CostOutEntity;    
+            public Attribute.Entity CostOutEntity;    
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "largest accepted nitrogen value",
             defaultValue= "0.0"
             )
-            public JAMSDouble nitrogen_goal;    
+            public Attribute.Double nitrogen_goal;    
     
     @Override
-    public void run() throws JAMSEntity.NoSuchAttributeException {            
+    public void run() throws Attribute.Entity.NoSuchAttributeException {            
 	DistNeuron NitrogenOutNeuron = (DistNeuron)NitrogenOutEntity.getObject("NEURON");
 	DistNeuron CostOutNeuron = (DistNeuron)CostOutEntity.getObject("NEURON");
 	

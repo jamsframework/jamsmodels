@@ -56,101 +56,87 @@ title="Title",
 
     @JAMSVarDescription(
     access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.INIT,
             description = "List of parameter identifiers to be sampled"
             )
-            public JAMSString parameterIDs;
+            public Attribute.String parameterIDs;
 
     @JAMSVarDescription(
     access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.INIT,
             description = "List of parameter value bounaries corresponding to parameter identifiers"
             )
-            public JAMSString boundaries;
+            public Attribute.String boundaries;
 
     @JAMSVarDescription(
     access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.INIT,
             description = "objective function name"
             )
-            public JAMSString effMethodName;
+            public Attribute.String effMethodName;
 
     /*@JAMSVarDescription(
     access = JAMSVarDescription.AccessType.READWRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "objective function value"
             )
             public Attribute.Double effValue;*/
 
     @JAMSVarDescription(
     access = JAMSVarDescription.AccessType.READWRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "the prediction series"
             )
             public Attribute.DoubleArray prediction;
 
     @JAMSVarDescription(
     access = JAMSVarDescription.AccessType.READWRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "the observation series"
             )
             public Attribute.DoubleArray observation;
 
     @JAMSVarDescription(
     access = JAMSVarDescription.AccessType.READWRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "maximize efficiency?"
             )
-            public JAMSInteger MaximizeEff;
+            public Attribute.Integer MaximizeEff;
 
     @JAMSVarDescription(
     access = JAMSVarDescription.AccessType.READWRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "number of complexes"
             )
-            public JAMSInteger NumberOfComplexes;
+            public Attribute.Integer NumberOfComplexes;
 
     @JAMSVarDescription(
     access = JAMSVarDescription.AccessType.READWRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "maximum runs"
             )
-            public JAMSInteger maxn;
+            public Attribute.Integer maxn;
 
     @JAMSVarDescription(
     access = JAMSVarDescription.AccessType.READWRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "kstop"
             )
-            public JAMSInteger kstop;
+            public Attribute.Integer kstop;
 
     @JAMSVarDescription(
     access = JAMSVarDescription.AccessType.READWRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "pcento"
             )
             public Attribute.Double pcento;
 
     @JAMSVarDescription(
     access = JAMSVarDescription.AccessType.READWRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "peps"
             )
             public Attribute.Double peps;
 
     @JAMSVarDescription(
     access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.INIT,
             description = "Flag for enabling/disabling this sampler"
             )
-            public JAMSBoolean enable;
+            public Attribute.Boolean enable;
 
     @JAMSVarDescription(
     access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.INIT,
             description = "Output file name"
             )
-            public JAMSString sceFileName;
+            public Attribute.String sceFileName;
 
     Attribute.Double[] parameters;
     String[] parameterNames;

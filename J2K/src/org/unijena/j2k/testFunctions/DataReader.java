@@ -43,15 +43,13 @@ public class DataReader extends JAMSComponent {
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.INIT,
             description="A full qualfied file name pointing to a testFunction" +
             "compliant data file"
             )
-            public JAMSString fileName;
+            public Attribute.String fileName;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
             description="Internal variable name for the input value of" +
             "each time step"
             )
@@ -59,7 +57,6 @@ public class DataReader extends JAMSComponent {
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
             description="Internal variable name for the observed value of" +
             "each time step"
             )
@@ -67,10 +64,9 @@ public class DataReader extends JAMSComponent {
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.INIT,
             description = "Time interval of current temporal context"
             )
-            public JAMSTimeInterval timeInterval;
+            public Attribute.TimeInterval timeInterval;
 
     private JAMSTableDataStore store;
     public java.util.HashMap dataMap = new java.util.HashMap();

@@ -40,21 +40,18 @@ public class HosakiTestFunction extends JAMSComponent {
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.INIT,
             description = "parameter X1"
             )
             public Attribute.Double paraX1;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.INIT,
             description = "parameter X2"
             )
             public Attribute.Double paraX2; 
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "function y"            
             )
             public Attribute.Double yVal;

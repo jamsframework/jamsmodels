@@ -37,46 +37,43 @@ public class StandardTillParaReader extends JAMSComponent {
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.INIT,
             description = "Data file directory name"
             )
-            public JAMSString dirName;
+            public Attribute.String dirName;
 
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.INIT,
             description = "Tillage parameter file name"
             )
-            public JAMSString tlFileName;
+            public Attribute.String tlFileName;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.INIT,
             description = "Collection of hru objects"
             )
-            public JAMSEntityCollection hrus;
+            public Attribute.EntityCollection hrus;
     
     
     
-    public void init() throws JAMSEntity.NoSuchAttributeException {
+    public void init() throws Attribute.Entity.NoSuchAttributeException {
         
         //read tillage parameter
-        JAMSEntityCollection till = new JAMSEntityCollection();
+        Attribute.EntityCollection till = new Attribute.EntityCollection();
         till.setEntities(J2KFunctions.readParas(dirName.getValue()+"/"+tlFileName.getValue()));
         
-        HashMap<Double, JAMSEntity> tlMap = new HashMap<Double, JAMSEntity>();
-        JAMSEntity tl, e;
+        HashMap<Double, Attribute.Entity> tlMap = new HashMap<Double, Attribute.Entity>();
+        Attribute.Entity tl, e;
         Object[] attrs;
         
         //put all entities into a HashMap with their ID as key
         
-        Iterator<JAMSEntity> tlIterator = till.getEntities().iterator();
+        Iterator<Attribute.Entity> tlIterator = till.getEntities().iterator();
         while (tlIterator.hasNext()) {
             tl = tlIterator.next();
             tlMap.put(tl.getDouble("ID"),  tl);//put all entities into a HashMap with their ID as key
                             }
         
-        Iterator<JAMSEntity> hruIterator = hrus.getEntities().iterator();
+        Iterator<Attribute.Entity> hruIterator = hrus.getEntities().iterator();
         while (hruIterator.hasNext()) {
             e = hruIterator.next();
             tl = tlMap.get(e.getDouble("tillID"));

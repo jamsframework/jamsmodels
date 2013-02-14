@@ -37,61 +37,52 @@ public class GehlbergDataReader extends JAMSComponent {
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.INIT
             )
-            public JAMSString fileName;
+            public Attribute.String fileName;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.INIT
             )
-            public JAMSString workspace;
+            public Attribute.String workspace;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.INIT,
             description = "Time interval of current temporal context"
             )
-            public JAMSTimeInterval timeInterval;
+            public Attribute.TimeInterval timeInterval;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
-            update = JAMSVarDescription.UpdateType.RUN
             )
-            public JAMSDouble precip;
+            public Attribute.Double precip;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "the tmin input"
             )
-            public JAMSDouble tmin;
+            public Attribute.Double tmin;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "the tmean input"
             )
-            public JAMSDouble tmean;
+            public Attribute.Double tmean;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "the tmax input"
             )
-            public JAMSDouble tmax;
+            public Attribute.Double tmax;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
-            update = JAMSVarDescription.UpdateType.RUN
             )
-            public JAMSDouble rhum;
+            public Attribute.Double rhum;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
-            update = JAMSVarDescription.UpdateType.RUN
             )
-            public JAMSDouble obsRunoff;
+            public Attribute.Double obsRunoff;
     
     
     private JAMSTableDataStore store;
@@ -118,8 +109,8 @@ public class GehlbergDataReader extends JAMSComponent {
         } catch (IOException ioe) {
             getModel().getRuntime().handle(ioe);
         }
-        JAMSCalendar startTime = parseTime(startEntry);
-        JAMSCalendar endTime = parseTime(endEntry);
+        Attribute.Calendar startTime = parseTime(startEntry);
+        Attribute.Calendar endTime = parseTime(endEntry);
         store = new GenericDataReader(fName, true, 1, 4);
         //calc offset if start date of time series and temporal context do not match
         if(timeInterval != null){
@@ -132,14 +123,14 @@ public class GehlbergDataReader extends JAMSComponent {
                 timeInterval.setEnd(endTime);
             }
             int timeUnit = timeInterval.getTimeUnit();
-            JAMSCalendar tiStart = timeInterval.getStart();
-            JAMSCalendar date = new JAMSCalendar(tiStart.get(Calendar.YEAR), tiStart.get(Calendar.MONTH), tiStart.get(Calendar.DAY_OF_MONTH), startTime.get(Calendar.HOUR_OF_DAY), startTime.get(Calendar.MINUTE),startTime.get(Calendar.SECOND));
+            Attribute.Calendar tiStart = timeInterval.getStart();
+            Attribute.Calendar date = new Attribute.Calendar(tiStart.get(Calendar.YEAR), tiStart.get(Calendar.MONTH), tiStart.get(Calendar.DAY_OF_MONTH), startTime.get(Calendar.HOUR_OF_DAY), startTime.get(Calendar.MINUTE),startTime.get(Calendar.SECOND));
             while (startTime.before(date) && store.hasNext()) {
                 JAMSTableDataArray da = store.getNext();
-                if(timeUnit == JAMSCalendar.MONTH)
-                    startTime.add(JAMSCalendar.MONTH, 1);
-                else if(timeUnit == JAMSCalendar.YEAR)
-                    startTime.add(JAMSCalendar.YEAR, 1);
+                if(timeUnit == Attribute.Calendar.MONTH)
+                    startTime.add(Attribute.Calendar.MONTH, 1);
+                else if(timeUnit == Attribute.Calendar.YEAR)
+                    startTime.add(Attribute.Calendar.YEAR, 1);
             }
         }
     }
@@ -161,7 +152,7 @@ public class GehlbergDataReader extends JAMSComponent {
         store.close();
     }
     
-    private JAMSCalendar parseTime(String timeString) {
+    private Attribute.Calendar parseTime(String timeString) {
         
         //Array keeping values for year, month, day, hour, minute
         String[] timeArray = new String[5];
@@ -178,7 +169,7 @@ public class GehlbergDataReader extends JAMSComponent {
             timeArray[i] = st.nextToken();
         }
         
-        JAMSCalendar cal = new JAMSCalendar();
+        Attribute.Calendar cal = new Attribute.Calendar();
         cal.setValue(timeArray[0]+"-"+timeArray[1]+"-"+timeArray[2]+" "+timeArray[3]+":"+timeArray[4]);
         return cal;
     }

@@ -16,6 +16,7 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.StringTokenizer;
+import java.util.TimeZone;
 
 /**
  *
@@ -32,93 +33,78 @@ public class StationDataWriter extends JAMSComponent{
      */
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "time interval"
             )
-            public JAMSTimeInterval timeInterval;
+            public Attribute.TimeInterval timeInterval;
 
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
-                        update = JAMSVarDescription.UpdateType.RUN,
                         description = "time")
-    public JAMSCalendar time;
+    public Attribute.Calendar time;
 
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READWRITE,
-                        update = JAMSVarDescription.UpdateType.RUN,
                         description = "the data values")
     public Attribute.DoubleArray values;
 
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
-                        update = JAMSVarDescription.UpdateType.RUN,
                         description = "the station names")
-    public JAMSStringArray statNames;
+    public Attribute.StringArray statNames;
 
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
-                        update = JAMSVarDescription.UpdateType.RUN,
                         description = "the station Ids")
-    public JAMSIntegerArray statId;
+    public Attribute.IntegerArray statId;
 
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
-                        update = JAMSVarDescription.UpdateType.RUN,
                         description = "the station elevation")
     public Attribute.DoubleArray statElev;
 
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
-                        update = JAMSVarDescription.UpdateType.RUN,
                         description = "the station x-coordinates")
     public Attribute.DoubleArray statX;
 
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
-                        update = JAMSVarDescription.UpdateType.RUN,
                         description = "the station y-coordinates")
     public Attribute.DoubleArray statY;
 
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
-                        update = JAMSVarDescription.UpdateType.INIT,
                         description = "data set description [type min max unit]")
-    public JAMSString dataSetDesc;
+    public Attribute.String dataSetDesc;
 
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.INIT,
             description = "temporal resolution",
             defaultValue=EMPTY_CHAR
             )
-            public JAMSString tempRes;
+            public Attribute.String tempRes;
 
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.INIT,
             description = "missing data value"
             )
             public Attribute.Double missDataValue;
 
     @JAMSVarDescription(
     access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.INIT,
             description = "Output data precision"
             )
-            public JAMSInteger precision;
+            public Attribute.Integer precision;
 
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
-                        update = JAMSVarDescription.UpdateType.INIT,
                         description = "Output file name")
-    public JAMSString fileName;
+    public Attribute.String fileName;
 
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
-                        update = JAMSVarDescription.UpdateType.INIT,
                         description = "Data store description")
-    public JAMSString xmlDSD;
+    public Attribute.String xmlDSD;
 
     /**
      * this attribute controls, whether an input header is written or only 1 simple header-line
      */
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.INIT,
             description = "write file with input header",
             defaultValue="true"
             )
-            public JAMSString withInputHeader;
+            public Attribute.String withInputHeader;
 
     private GenericDataWriter writer;
     private DateFormat dateFormat;
@@ -128,7 +114,7 @@ public class StationDataWriter extends JAMSComponent{
      *  Component run stages
      */
     @Override
-    public void init() throws JAMSEntity.NoSuchAttributeException {
+    public void init() throws Attribute.Entity.NoSuchAttributeException {
         
         getModel().getRuntime().println(" start init " + fileName.getValue() + ".. ", JAMS.VERBOSE);
         Date dt = new Date();
@@ -218,7 +204,7 @@ public class StationDataWriter extends JAMSComponent{
     }
 
     @Override
-    public void run() throws JAMSEntity.NoSuchAttributeException {
+    public void run() throws Attribute.Entity.NoSuchAttributeException {
         writer.addData(time.toString(dateFormat));
         for(int i = 0; i < values.getValue().length;i++){
             writer.addData(values.getValue()[i], precision.getValue());
@@ -234,7 +220,7 @@ public class StationDataWriter extends JAMSComponent{
     }
 
     @Override
-    public void cleanup() throws JAMSEntity.NoSuchAttributeException {
+    public void cleanup() throws Attribute.Entity.NoSuchAttributeException {
         try {
             writer.writer.flush();
             writer.writer.close();

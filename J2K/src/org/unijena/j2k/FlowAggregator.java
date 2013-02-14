@@ -40,45 +40,39 @@ import jams.model.*;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "Collection of reach objects"
             )
-            public JAMSEntityCollection reaches;
+            public Attribute.EntityCollection reaches;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.INIT,
             description = "Target entity keeping the aggregated data"
             )
-            public JAMSEntity targetEntity;
+            public Attribute.Entity targetEntity;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.INIT,
             description = "Attribute name of flow component"
             )
-            public JAMSString aNameFlowComponent;
+            public Attribute.String aNameFlowComponent;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.INIT,
             description = "Reach entity last = 1, all = 0"
             )
-            public JAMSInteger reachEntity;
+            public Attribute.Integer reachEntity;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.INIT,
             description = "Area of the target entity"
             )
-            public JAMSString aNameArea;
+            public Attribute.String aNameArea;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.INIT,
             description = "Aggregation type"
             )
-            public JAMSInteger aggregationType;
+            public Attribute.Integer aggregationType;
     
     final int NO_TRANSFORMATION = 0;
     final int LITRES_2_CUBIC_METERS = 1;

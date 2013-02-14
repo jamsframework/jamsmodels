@@ -36,15 +36,13 @@ public class EntityProvider extends JAMSComponent {
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.INIT
             )
-            public JAMSString fileName;
+            public Attribute.String fileName;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
-            update = JAMSVarDescription.UpdateType.INIT
             )
-            public JAMSEntityCollection entities;
+            public Attribute.EntityCollection entities;
     
     
     
@@ -52,23 +50,23 @@ public class EntityProvider extends JAMSComponent {
     
     public void init(){
         
-        ArrayList <JAMSEntity> entityList = new ArrayList<JAMSEntity>();
+        ArrayList <Attribute.Entity> entityList = new ArrayList<Attribute.Entity>();
         
         store = new GenericDataReader(fileName.getValue(), false, 4, 6);
         
         while (store.hasNext()) {
             
-            JAMSEntity e = JAMSDataFactory.createEntity();
+            Attribute.Entity e = JAMSDataFactory.createEntity();
             
             JAMSTableDataArray da = store.getNext();
             double[] vals = JAMSTableDataConverter.toDouble(da);
             
-            e.setObject("latitude", new JAMSDouble(vals[0]));
-            e.setObject("soilMoistStorCap", new JAMSDouble(vals[1]));
-            e.setObject("snowStorage", new JAMSDouble(vals[2]));
-            e.setObject("runoffFactor", new JAMSDouble(vals[3]));
-            e.setObject("prestor", new JAMSDouble(vals[4]));
-            e.setObject("remain", new JAMSDouble(vals[5]));
+            e.setObject("latitude", new Attribute.Double(vals[0]));
+            e.setObject("soilMoistStorCap", new Attribute.Double(vals[1]));
+            e.setObject("snowStorage", new Attribute.Double(vals[2]));
+            e.setObject("runoffFactor", new Attribute.Double(vals[3]));
+            e.setObject("prestor", new Attribute.Double(vals[4]));
+            e.setObject("remain", new Attribute.Double(vals[5]));
 /*            
             e.setDouble("latitude", vals[0]);
             e.setDouble("soilMoistStorCap", vals[1]);
@@ -81,7 +79,7 @@ public class EntityProvider extends JAMSComponent {
             
         }
         
-        entities = new JAMSEntityCollection();
+        entities = new Attribute.EntityCollection();
         entities.setEntities(entityList);
         
     }

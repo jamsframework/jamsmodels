@@ -24,14 +24,14 @@ import jams.model.*;
             description = "The current hru entity",
             unit = "-"
             )
-            public JAMSEntityCollection entities;
+            public Attribute.EntityCollection entities;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
             description = "Collection of reach objects",
             unit = "-"
             )
-            public JAMSEntityCollection reaches;
+            public Attribute.EntityCollection reaches;
 
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
@@ -40,7 +40,7 @@ import jams.model.*;
             lowerBound= 0,
             upperBound = Double.POSITIVE_INFINITY
             )
-            public JAMSDouble EnergyRD1_in;
+            public Attribute.Double EnergyRD1_in;
 
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
@@ -49,7 +49,7 @@ import jams.model.*;
             lowerBound= 0,
             upperBound = Double.POSITIVE_INFINITY
             )
-            public JAMSDouble EnergyRD2_in;
+            public Attribute.Double EnergyRD2_in;
 
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
@@ -58,7 +58,7 @@ import jams.model.*;
             lowerBound= 0,
             upperBound = Double.POSITIVE_INFINITY
             )
-            public JAMSDouble EnergyRG1_in;
+            public Attribute.Double EnergyRG1_in;
 
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
@@ -67,7 +67,7 @@ import jams.model.*;
             lowerBound= 0,
             upperBound = Double.POSITIVE_INFINITY
             )
-            public JAMSDouble EnergyRG2_in;
+            public Attribute.Double EnergyRG2_in;
 
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
@@ -76,7 +76,7 @@ import jams.model.*;
             lowerBound= 0,
             upperBound = Double.POSITIVE_INFINITY
             )
-            public JAMSDouble SurfaceN_in;
+            public Attribute.Double SurfaceN_in;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
@@ -85,7 +85,7 @@ import jams.model.*;
             lowerBound= 0,
             upperBound = Double.POSITIVE_INFINITY
             )
-            public JAMSDouble InterflowN_in;
+            public Attribute.Double InterflowN_in;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
@@ -94,7 +94,7 @@ import jams.model.*;
             lowerBound= 0,
             upperBound = Double.POSITIVE_INFINITY
             )
-            public JAMSDouble N_RG1_in;
+            public Attribute.Double N_RG1_in;
 
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
@@ -103,7 +103,7 @@ import jams.model.*;
             lowerBound= 0,
             upperBound = Double.POSITIVE_INFINITY
             )
-            public JAMSDouble N_RG2_in;
+            public Attribute.Double N_RG2_in;
 
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
@@ -112,7 +112,7 @@ import jams.model.*;
             lowerBound= 0,
             upperBound = Double.POSITIVE_INFINITY
             )
-            public JAMSDouble Energy_RD1_out;
+            public Attribute.Double Energy_RD1_out;
 
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
@@ -121,7 +121,7 @@ import jams.model.*;
             lowerBound= 0,
             upperBound = Double.POSITIVE_INFINITY
             )
-            public JAMSDouble Energy_RD2_out;
+            public Attribute.Double Energy_RD2_out;
 
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
@@ -130,7 +130,7 @@ import jams.model.*;
             lowerBound= 0,
             upperBound = Double.POSITIVE_INFINITY
             )
-            public JAMSDouble Energy_RG1_out;
+            public Attribute.Double Energy_RG1_out;
 
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
@@ -139,7 +139,7 @@ import jams.model.*;
             lowerBound= 0,
             upperBound = Double.POSITIVE_INFINITY
             )
-            public JAMSDouble Energy_RG2_out;
+            public Attribute.Double Energy_RG2_out;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
@@ -148,7 +148,7 @@ import jams.model.*;
             lowerBound= 0,
             upperBound = Double.POSITIVE_INFINITY
             )
-            public JAMSDouble SurfaceNabs;
+            public Attribute.Double SurfaceNabs;
 
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
@@ -157,7 +157,7 @@ import jams.model.*;
             lowerBound= 0,
             upperBound = Double.POSITIVE_INFINITY
             )
-            public JAMSDouble InterflowNabs;
+            public Attribute.Double InterflowNabs;
 
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
@@ -166,7 +166,7 @@ import jams.model.*;
             lowerBound= 0,
             upperBound = Double.POSITIVE_INFINITY
             )
-            public JAMSDouble N_RG1_out;
+            public Attribute.Double N_RG1_out;
 
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
@@ -175,22 +175,22 @@ import jams.model.*;
             lowerBound= 0,
             upperBound = Double.POSITIVE_INFINITY
             )
-            public JAMSDouble N_RG2_out;
+            public Attribute.Double N_RG2_out;
     
     /*
      *  Component run stages
      */
     
-    public void init() throws JAMSEntity.NoSuchAttributeException {
+    public void init() throws Attribute.Entity.NoSuchAttributeException {
 
     }
     
-    public void run() throws JAMSEntity.NoSuchAttributeException {
+    public void run() throws Attribute.Entity.NoSuchAttributeException {
         Attribute.Entity entity = entities.getCurrent();
         //receiving polygon
-        JAMSEntity toPoly = (JAMSEntity) entity.getObject("to_poly");
+        Attribute.Entity toPoly = (Attribute.Entity) entity.getObject("to_poly");
         //receiving reach
-        JAMSEntity toReach = (JAMSEntity) entity.getObject("to_reach");
+        Attribute.Entity toReach = (Attribute.Entity) entity.getObject("to_reach");
 
         double EnergyRD1out = Energy_RD1_out.getValue();
         double EnergyRD2out = Energy_RD2_out.getValue();

@@ -30,77 +30,66 @@ import java.awt.Point;
                      
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "The current hru entity"
             )
-            public JAMSEntityCollection entities;
+            public Attribute.EntityCollection entities;
     
      @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "Collection of reach objects"
             )
-            public JAMSEntityCollection reaches;
+            public Attribute.EntityCollection reaches;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "Collection of reservoir objects"
             )
-            public JAMSEntityCollection reservoirs;
+            public Attribute.EntityCollection reservoirs;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "Reach statevar RD1 inflow"
             )
             public Attribute.Double inRD1;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "Reach statevar RD2 inflow"
             )
             public Attribute.Double inRD2;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "Reach statevar RG1 inflow"
             )
             public Attribute.Double inRG1;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "Reach statevar RG2 inflow"
             )
             public Attribute.Double inRG2;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "Reach statevar RD1 outflow"
             )
             public Attribute.Double outRD1;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "Reach statevar RD2 outflow"
             )
             public Attribute.Double outRD2;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "Reach statevar RG1 outflow"
             )
             public Attribute.Double outRG1;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "Reach statevar RG2 outflow"
             )
             public Attribute.Double outRG2;
@@ -108,35 +97,30 @@ import java.awt.Point;
 
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "Reach statevar RD1 storage"
             )
             public Attribute.Double actRD1;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "Reach statevar RD2 storage"
             )
             public Attribute.Double actRD2;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "Reach statevar RG1 storage"
             )
             public Attribute.Double actRG1;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "Reach statevar RG2 storage"
             )
             public Attribute.Double actRG2;       
      
      @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "Reach statevar RG2 storage"
             )
             public Attribute.Double reachID;    
@@ -147,35 +131,30 @@ import java.awt.Point;
        
        @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = ""
             )
-            public JAMSEntity information;
+            public Attribute.Entity information;
        
        @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = ""
             )
-            public JAMSEntity fuellstand;
+            public Attribute.Entity fuellstand;
        
          @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "Downstream hru entity"
             )
-            public JAMSEntity toPoly;
+            public Attribute.Entity toPoly;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "Downstream reach entity"
             )
-            public JAMSEntity toReach;
+            public Attribute.Entity toReach;
     
       @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "HRU statevar groundwater excess"
             )
             public Attribute.Double inGWExcess;
@@ -224,7 +203,7 @@ public void init()
 }
     
 @SuppressWarnings("unchecked")    
-public void run()throws JAMSEntity.NoSuchAttributeException
+public void run()throws Attribute.Entity.NoSuchAttributeException
 {
      
     //Variablendeklaration
@@ -375,8 +354,8 @@ public void run()throws JAMSEntity.NoSuchAttributeException
         
         Entity toReservoir = null;
         try{
-            toReservoir = (JAMSEntity)entity.getObject("to_reservoir");
-        }catch(JAMSEntity.NoSuchAttributeException e){
+            toReservoir = (Attribute.Entity)entity.getObject("to_reservoir");
+        }catch(Attribute.Entity.NoSuchAttributeException e){
             toReservoir = null;
         }
         double RD1out = outRD1.getValue();

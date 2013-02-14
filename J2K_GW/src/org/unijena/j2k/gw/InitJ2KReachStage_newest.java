@@ -42,17 +42,16 @@ public class InitJ2KReachStage_newest extends JAMSComponent {
     @JAMSVarDescription(
     access = JAMSVarDescription.AccessType.READWRITE,
     description = "river bed height")
-    public JAMSDouble reachBed;
+    public Attribute.Double reachBed;
 
     @JAMSVarDescription(
     access = JAMSVarDescription.AccessType.WRITE,
     description = "Reach Water Level")
-    public JAMSDouble waterTable_NN;
+    public Attribute.Double waterTable_NN;
 
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
-    update = JAMSVarDescription.UpdateType.RUN,
     description = "reachBed adaptation")
-    public JAMSDouble rB_adapt;
+    public Attribute.Double rB_adapt;
 
     /*
      *  Component run stages
@@ -61,16 +60,16 @@ public class InitJ2KReachStage_newest extends JAMSComponent {
     double run_rB, run_wT, run_rB_adapt;
        
 
-    public void init() throws JAMSEntity.NoSuchAttributeException {
+    public void init() throws Attribute.Entity.NoSuchAttributeException {
 
     }
 
-    public void run() throws JAMSEntity.NoSuchAttributeException {
+    public void run() throws Attribute.Entity.NoSuchAttributeException {
 
         run_rB = reachBed.getValue();                     //[m]
         run_rB_adapt = rB_adapt.getValue();               //[-]
         
-        run_rB = run_rB - run_rB_adapt;                   //[m ü NN]
+        run_rB = run_rB - run_rB_adapt;                   //[m Ã¼ NN]
 
         run_wT = run_rB + 0.1;
         

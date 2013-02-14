@@ -43,64 +43,63 @@ title="JAMS_Scenario",
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.INIT,
             description = "Date to start the scenario"
             )
-            public JAMSCalendar start;
+            public Attribute.Calendar start;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.INIT,
             description = "Date to end the scenario"
             )
-            public JAMSCalendar end;
+            public Attribute.Calendar end;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.INIT,
             description = "Normal Value"
             )
-            public JAMSDouble StandardValue;
+            public Attribute.Double StandardValue;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.INIT,
             description = "Scenario Value"
             )
-            public JAMSDouble ScenarioValue;
+            public Attribute.Double ScenarioValue;
     
      @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
-            update = JAMSVarDescription.UpdateType.INIT,
             description = "Output Value"
             )
-            public JAMSDouble OutputValue;
+            public Attribute.Double OutputValue;
      
       @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.INIT,
             description = "Encapsulating time interval"
             )
-            public JAMSTimeInterval timeInterval;
+            public Attribute.TimeInterval timeInterval;
       
       @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "Current time"
             )
-            public JAMSCalendar time;
+            public Attribute.Calendar time;
     
     
     /*
      *  Component run stages
      */
     
-     private JAMSTimeInterval ti;
+     private Attribute.TimeInterval ti;
      
+    @Override
     public void init() {
-     ti = new JAMSTimeInterval(start, end, timeInterval.getTimeUnit(), timeInterval.getTimeUnitCount());   
+     ti = this.getModel().getRuntime().getDataFactory().createTimeInterval();
+     ti.setStart(start);
+     ti.setEnd(end);
+     ti.setTimeUnit(timeInterval.getTimeUnit());
+     ti.setTimeUnitCount(timeInterval.getTimeUnitCount());
     }
     
+    @Override
     public void run() {
      double value = 0;
         if (time.after(ti.getStart()) && time.before(ti.getEnd())) {
@@ -115,6 +114,7 @@ title="JAMS_Scenario",
         
     }
     
+    @Override
     public void cleanup() {
         
     }

@@ -45,40 +45,35 @@ import jams.model.*;
 	        update = JAMSVarDescription.UpdateType.RUN,
 	        description = "time"
 	        )
-	        public JAMSCalendar time;
+	        public Attribute.Calendar time;
 
 //Entity attributes
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "Entity area"
             )
             public Attribute.Double area;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "Entity cover density in winter"
             )
             public Attribute.Double covDensWin;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "Entity cover density in summer"
             )
             public Attribute.Double covDensSum;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "cover type of entity 0 = bareSoil, 1 = grass, 2 = shrubs, 3 = trees"
             )
             public Attribute.Double covType;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "type of entity 1 = land, 2 = water"
             )
             public Attribute.Double entityType;
@@ -86,49 +81,42 @@ import jams.model.*;
 //state variables recheck read/write access    
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "variable snowCrv [PRMS: Scrv]"
             )
             public Attribute.Double snowCurve;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "variable snowCovAreaSave [PRMS: Snowcov_areasv]"
             )
             public Attribute.Double snowCovAreaSave;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "variable albedoSave [PRMS: Salb]"
             )
             public Attribute.Double packAlbedoSave;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "variable lstSave [PRMS: Slst]"
             )
             public Attribute.Double lstSave;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "variable intAlbedo [PRMS: Int_alb]"
             )
-            public JAMSInteger intAlbedo;
+            public Attribute.Integer intAlbedo;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "snow surface albedo [PRMS: Albedo]"
             )
             public Attribute.Double packAlbedo;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "precipitation added to snowpack [PRMS: Pk_precip]",
             unit = "mm"
             )
@@ -136,7 +124,6 @@ import jams.model.*;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "temperature of the snowpack [PRMS: Pk_temp]",
             unit = "°C"
             )
@@ -144,7 +131,6 @@ import jams.model.*;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "density of the snowpack [PRMS: Pk_den]",
             unit = "g/cm^3"
             )
@@ -152,14 +138,12 @@ import jams.model.*;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "net snowpack energy balance [PRMS: Tcal]"
             )
             public Attribute.Double packEnergyBal;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "evaporation and sublimation from snowpack [PRMS: Snow_evap]",
             unit = "mm"	
             )
@@ -167,7 +151,6 @@ import jams.model.*;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "snowmelt from snowpack [PRMS: Snowmelt]",
             unit = "mm"	
             )
@@ -175,7 +158,6 @@ import jams.model.*;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "snowpack water equivalent [PRMS: Pkwater_equiv]",
             unit = "mm"	
             )
@@ -183,78 +165,67 @@ import jams.model.*;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "snow-covered area (decimal percent) [PRMS: Snowcov_area]"	
             )
             public Attribute.Double snowCovArea;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "indicator that a rain-snow mix event has occured with" +
             		      "no snowpack present [PRMS: Pptmix_nopack]"	
             )
-            public JAMSBoolean pptMixNoSnow;
+            public Attribute.Boolean pptMixNoSnow;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "var iasw/flag [PRMS: Iasw]"	
             )
-            public JAMSBoolean iasw;
+            public Attribute.Boolean iasw;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "var iso/flag [PRMS: Iso]"	
             )
-            public JAMSInteger iso;
+            public Attribute.Integer iso;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "var/flag mso [PRMS: Mso]"	
             )
-            public JAMSInteger mso;
+            public Attribute.Integer mso;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "var/flag lso [PRMS: Lso]"	
             )
-            public JAMSInteger lso;
+            public Attribute.Integer lso;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "var/flag lst [PRMS: Lst]"	
             )
-            public JAMSBoolean lst;
+            public Attribute.Boolean lst;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "heat deficit in the lower snowpack [PRMS: Pk_def]"	
             )
             public Attribute.Double packDef;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "frozen part of the pack's swe [PRMS: Pk_ice]"	
             )
             public Attribute.Double packIce;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "liquid part of the pack's swe [PRMS: freeh2o]"	
             )
             public Attribute.Double packFreeWater;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "depth of the snowpack [PRMS: Pk_depth]",
             unit = "mm"
             )
@@ -262,21 +233,18 @@ import jams.model.*;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "var pss [PRMS: Pss]"	
             )
             public Attribute.Double pss;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "var pst [PRMS: Pst]"	
             )
             public Attribute.Double pst;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "captures the old swe of the time step before [PRMS: Snsv]"	
             )
             public Attribute.Double packSWEtm1;
@@ -286,7 +254,6 @@ import jams.model.*;
 //calibration parameters   
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.INIT,
             description = "density of new snow [PRMS: Den_init]",
             unit = "g/cm^3"	
             )
@@ -294,14 +261,12 @@ import jams.model.*;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.INIT,
             description = "Snowpack settlement time constant [PRMS: Settle_const]"
             )
             public Attribute.Double settleConst;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.INIT,
             description = "Average maximum snowpack density [PRMS: Den_max]",
             unit = "g/cm^3"	
             )
@@ -309,28 +274,25 @@ import jams.model.*;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.INIT,
             description = "Julian date to start looking for spring snowmelt, " +
             		      "Julian date to start looking for spring snowmelt stage. " +
             		      "Varies with region depending on length of time that permanent " +
             		      "snowpack exists [PRMS: Melt_look]",
             unit = "julDay"	
             )
-            public JAMSInteger meltLook;
+            public Attribute.Integer meltLook;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.INIT,
             description = "Julian date to force snowpack to spring snowmelt stage." +
             		      "Varies with region depending on length of time that" +
             		      "permanent snowpack exists' [PRMS: Melt_force]",
             unit = "julDay"	
             )
-            public JAMSInteger meltForce;
+            public Attribute.Integer meltForce;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.INIT,
             description = "Transmission coefficient for short-wave radiation through" +
             		      "the winter vegetation canopy in decimal percent [PRMS: Rad_trncf]"
             )
@@ -338,7 +300,6 @@ import jams.model.*;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.INIT,
             description = "Maximum threshold water equivalent for snow depletion." +
             		      "The maximum threshold snowpack water equivalent below" +
             		      "which the snow-covered-area curve is applied. " +
@@ -348,7 +309,6 @@ import jams.model.*;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.INIT,
             description = "Albedo reset - rain,  melt stage," +
             		      "Proportion of rain (decimal percent) in a rain-snow precipitation event" +
             		      "above which the snow albedo is not reset. Applied during" +
@@ -358,7 +318,6 @@ import jams.model.*;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.INIT,
             description = "Albedo reset - rain, accumulation stage," +
             		      "Proportion of rain (decimal percent) in a rain-snow precipitation event" +
             		      "above which the snow albedo is not reset. Applied during" +
@@ -368,7 +327,6 @@ import jams.model.*;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.INIT,
             description = "Albedo reset - snow, melt stage," +
             		      "Minimum snowfall, in water equivalent, needed to reset" +
             		      "snow albedo during the snowpack melt stage" +
@@ -379,7 +337,6 @@ import jams.model.*;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.INIT,
             description = "Albedo reset - snow, accumulation stage" +
             		      "Minimum snowfall, in water equivalent, needed to reset" +
             		      "snow albedo during the snowpack accumulation stage" +
@@ -390,7 +347,6 @@ import jams.model.*;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.INIT,
             description = "Emissivity of air on days without precipitation" +
             		      "Average emissivity of air on days without precipitation" +
             		      "[PRMS: Emis_noppt]"
@@ -399,7 +355,6 @@ import jams.model.*;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.INIT,
             description = "Proportion (decimal percent) of potential ET that is sublimated from the" +
             		      "snow surface [PRMS: Potet_sublim]"
             )
@@ -407,7 +362,6 @@ import jams.model.*;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.INIT,
             description = "Free-water holding capacity (decimal percent) of " +
             		      "snowpack expressed as decimal fraction of total " +
             		      "snowpack water equivalent [PRMS: Freeh2o_cap]"
@@ -416,7 +370,6 @@ import jams.model.*;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.INIT,
             description = "Precip all snow if hru max temperature below this value." +
             		      "If HRU maximum temperature is less than or equal to this" +
             		      "value, precipitation is assumed to be snow [PRMS: Tmax_allsnow]",
@@ -426,7 +379,6 @@ import jams.model.*;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.INIT,
             description = "Multiplier for the cecn values [PRMS: n/a]"
             )
             public Attribute.Double cecnFactor;
@@ -434,7 +386,6 @@ import jams.model.*;
 //driving variables    
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "minum temperature",
             unit = "°C"
             )
@@ -442,7 +393,6 @@ import jams.model.*;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "mean temperature",
             unit = "°C"
             )
@@ -450,7 +400,6 @@ import jams.model.*;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "max temperature",
             unit = "°C"
             )
@@ -458,7 +407,6 @@ import jams.model.*;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "observed or calculated solar radiation",
             unit = "MJ"
             )
@@ -466,7 +414,6 @@ import jams.model.*;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "observed or calculated shortwave radiation",
             unit = "MJ"
             )
@@ -474,7 +421,6 @@ import jams.model.*;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "total precipitation (rain and snow)",
             unit = "mm"
             )
@@ -482,7 +428,6 @@ import jams.model.*;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "rain amount of precipitation, will be changed during snow modelling",
             unit = "mm"
             )
@@ -490,7 +435,6 @@ import jams.model.*;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "snow amount of precipitation, will be changed during snow modelling",
             unit = "mm"
             )
@@ -498,21 +442,18 @@ import jams.model.*;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "save rain for output"
             )
             public Attribute.Double svRain;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "save snow for output"
             )
             public Attribute.Double svSnow;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "actual evapotranspiration so far",
             unit = "mm"
             )
@@ -520,7 +461,6 @@ import jams.model.*;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "potential evapotranspiration",
             unit = "mm"
             )
@@ -591,7 +531,7 @@ import jams.model.*;
     }
     
 
-	public void run() throws JAMSEntity.NoSuchAttributeException{
+	public void run() throws Attribute.Entity.NoSuchAttributeException{
 		this.denInv = 1. / this.initDens.getValue();
 		this.setDen = this.settleConst.getValue() / this.maxDens.getValue();
 		this.set1 = 1. / (1. +  this.settleConst.getValue());
@@ -641,8 +581,8 @@ import jams.model.*;
         double balIn = this.inSnow.getValue() + this.inRain.getValue();
         double balStorStart = this.snowWaterEquivalent.getValue();
         
-        int julDay = this.time.get(time.DAY_OF_YEAR);
-        int month = this.time.get(time.MONTH);
+        int julDay = this.time.get(JAMSCalendar.DAY_OF_YEAR);
+        int month = this.time.get(JAMSCalendar.MONTH);
         
         //other than PRMS, have to think about that later
         if(julDay > 85 && julDay < 305)

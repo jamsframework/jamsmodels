@@ -45,77 +45,66 @@ public class TSDataReader extends JAMSComponent {
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.INIT,
             description = "Data file name"
             )
-            public JAMSString dataFileName;
+            public Attribute.String dataFileName;
 
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.INIT,
             description = "Column of first data value"
             )
-            public JAMSInteger startColumn;
+            public Attribute.Integer startColumn;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.INIT,
             description = "Time interval of current temporal context"
             )
-            public JAMSTimeInterval timeInterval;
+            public Attribute.TimeInterval timeInterval;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "Array of data values for current time step"
             )
             public Attribute.DoubleArray dataArray;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "data set descriptor"
             )
-            public JAMSString dataSetName;
+            public Attribute.String dataSetName;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "Array of station elevations"
             )
             public Attribute.DoubleArray elevation;
 
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "Array of station's x coordinate"
             )
             public Attribute.DoubleArray xCoord;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "Array of station's y coordinate"
             )
             public Attribute.DoubleArray yCoord;
 
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "Regression coefficients"
             )
             public Attribute.DoubleArray regCoeff;
 
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.INIT,
             description = "Calculate regression coefficients? If not, regCoeff array stays empty!"
             )
-            public JAMSBoolean skipRegression;
+            public Attribute.Boolean skipRegression;
 
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "Array of numerical station ids",
             defaultValue=""
             )
@@ -123,24 +112,21 @@ public class TSDataReader extends JAMSComponent {
 
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "names of the stations",
             defaultValue=""
             )
-            public JAMSStringArray statNames;
+            public Attribute.StringArray statNames;
 
 
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "temporal resolution",
             defaultValue=""
             )
-            public JAMSString tempRes;
+            public Attribute.String tempRes;
 
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "missing data value"
             )
             public Attribute.Double missDataValue;

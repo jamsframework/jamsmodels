@@ -23,11 +23,11 @@ public class SurfaceHeatFlux extends JAMSComponent {
 
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
             description = "state variable mean temperature",
-            unit = "캜",
+            unit = "째C",
             lowerBound= -70,
             upperBound = 70
             )
-            public JAMSDouble tmean;
+            public Attribute.Double tmean;
 
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
             description = "state variable wind",
@@ -35,7 +35,7 @@ public class SurfaceHeatFlux extends JAMSComponent {
             lowerBound= 0,
             upperBound = Double.POSITIVE_INFINITY
             )
-            public JAMSDouble wind;
+            public Attribute.Double wind;
 
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
             description = "state variable relative humidity",
@@ -43,7 +43,7 @@ public class SurfaceHeatFlux extends JAMSComponent {
             lowerBound= 0,
             upperBound = 100
             )
-            public JAMSDouble rhum;
+            public Attribute.Double rhum;
 
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
             description = "state variable net radiation",
@@ -51,7 +51,7 @@ public class SurfaceHeatFlux extends JAMSComponent {
             lowerBound= 0,
             upperBound = Double.POSITIVE_INFINITY
             )
-            public JAMSDouble netRad;
+            public Attribute.Double netRad;
 
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
             description = "attribute elevation",
@@ -59,7 +59,7 @@ public class SurfaceHeatFlux extends JAMSComponent {
             lowerBound= -300,
             upperBound = 10000
             )
-            public JAMSDouble elevation;
+            public Attribute.Double elevation;
 
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
             description = "attribute area",
@@ -67,7 +67,7 @@ public class SurfaceHeatFlux extends JAMSComponent {
             lowerBound= 0,
             upperBound = Double.POSITIVE_INFINITY
             )
-            public JAMSDouble area;
+            public Attribute.Double area;
 
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
             description = "potential ET",
@@ -75,7 +75,7 @@ public class SurfaceHeatFlux extends JAMSComponent {
             lowerBound= 0,
             upperBound = Double.POSITIVE_INFINITY
             )
-            public JAMSDouble potET;
+            public Attribute.Double potET;
 
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.WRITE,
             description = "potential ET",
@@ -83,15 +83,15 @@ public class SurfaceHeatFlux extends JAMSComponent {
             lowerBound= 0,
             upperBound = Double.POSITIVE_INFINITY
             )
-            public JAMSDouble potET_Reach;
+            public Attribute.Double potET_Reach;
 
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
             description = "average water temperature for specific reach",
-            unit = "캜",
+            unit = "째C",
             lowerBound= 0,
             upperBound = 100
             )
-            public JAMSDouble watertempavg;
+            public Attribute.Double watertempavg;
 
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.WRITE,
             description = "potET energy amount of specific reach",
@@ -99,7 +99,7 @@ public class SurfaceHeatFlux extends JAMSComponent {
             lowerBound= 0,
             upperBound = Double.POSITIVE_INFINITY
             )
-            public JAMSDouble potETenergy;
+            public Attribute.Double potETenergy;
 
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
             description = "state variable sunshine hours",
@@ -107,7 +107,7 @@ public class SurfaceHeatFlux extends JAMSComponent {
             lowerBound= 0,
             upperBound = 24
             )
-            public JAMSDouble sunh;
+            public Attribute.Double sunh;
 
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
             description = "Maximum sunshine duration",
@@ -115,7 +115,7 @@ public class SurfaceHeatFlux extends JAMSComponent {
             lowerBound= 0,
             upperBound = 24
             )
-            public JAMSDouble sunhmax;
+            public Attribute.Double sunhmax;
 
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.WRITE,
             description = "energy amount of atmospheric longwave radiation",
@@ -123,7 +123,7 @@ public class SurfaceHeatFlux extends JAMSComponent {
             lowerBound= 0,
             upperBound = Double.POSITIVE_INFINITY
             )
-            public JAMSDouble atloRadEnergy;
+            public Attribute.Double atloRadEnergy;
 
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
             description = "state variable albedo",
@@ -131,7 +131,7 @@ public class SurfaceHeatFlux extends JAMSComponent {
             lowerBound= 0,
             upperBound = 1
             )
-            public JAMSDouble albedo;
+            public Attribute.Double albedo;
 
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
             description = "state variable solar radiation",
@@ -139,7 +139,7 @@ public class SurfaceHeatFlux extends JAMSComponent {
             lowerBound= 0,
             upperBound = Double.POSITIVE_INFINITY
             )
-            public JAMSDouble solRad;
+            public Attribute.Double solRad;
 
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.WRITE,
             description = "state variable net solar radiation",
@@ -147,7 +147,7 @@ public class SurfaceHeatFlux extends JAMSComponent {
             lowerBound= 0,
             upperBound = Double.POSITIVE_INFINITY
             )
-            public JAMSDouble Rns;
+            public Attribute.Double Rns;
     
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.WRITE,
             description = "back radiation from the water surface",
@@ -155,7 +155,7 @@ public class SurfaceHeatFlux extends JAMSComponent {
             lowerBound= 0,
             upperBound = Double.POSITIVE_INFINITY
             )
-            public JAMSDouble waterbr;
+            public Attribute.Double waterbr;
 
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.WRITE,
             description = "heat transfer due to conduction and convection",
@@ -163,22 +163,22 @@ public class SurfaceHeatFlux extends JAMSComponent {
             lowerBound= 0,
             upperBound = Double.POSITIVE_INFINITY
             )
-            public JAMSDouble coco;
+            public Attribute.Double coco;
   
     /*
      *  Component run stages
      */
 
 
-    public void init() throws JAMSEntity.NoSuchAttributeException {
+    public void init() throws Attribute.Entity.NoSuchAttributeException {
 
     }
-    public void run() throws JAMSEntity.NoSuchAttributeException, IOException {
+    public void run() throws Attribute.Entity.NoSuchAttributeException, IOException {
             
 
          // calculation of potET energy amount
             // PET the potET of specific reach [liter]
-            // T the water temperature of specific reach [캜]
+            // T the water temperature of specific reach [째C]
             // m   the molar mass of water [g/mol]
             // Hv  the molar evaporation enthalpy [KJ/mol]
             // sHv the specific evaporation enthalpy [KJ/g]
@@ -238,7 +238,7 @@ public class SurfaceHeatFlux extends JAMSComponent {
          // calculation of back radiation from the water surface in cal/(cm^2*d)
             // boltzmann (1.17e-7)
             // e the emissivity of water (0.97)
-            // T the absolute water temperature [캩]
+            // T the absolute water temperature [째K]
             double br = 0;
             double e = 0.97;
             br = e * boltzmann * Math.pow(T + 273, 4);

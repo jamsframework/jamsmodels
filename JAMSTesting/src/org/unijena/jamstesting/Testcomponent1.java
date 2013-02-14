@@ -36,19 +36,17 @@ public class Testcomponent1  extends JAMSComponent {
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
             lowerBound = 0,
             upperBound = 1000,
             unit = "km",
             description = "This is a short description"
             )
-            public JAMSDouble[] length;
+            public Attribute.Double[] length;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
-            update = JAMSVarDescription.UpdateType.RUN
             )
-            public JAMSDouble test;
+            public Attribute.Double test;
     
     
     public void init() {

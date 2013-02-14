@@ -26,28 +26,26 @@ title="Extremwerte",
      */
     @JAMSVarDescription(
     access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "the relative humidity values"
             )
-            public JAMSDoubleArray rhum;
+            public Attribute.DoubleArray rhum;
     
     @JAMSVarDescription(
     access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "temperature for the computation"
             )
-            public JAMSDoubleArray temperature;
+            public Attribute.DoubleArray temperature;
    
     
     /*
      *  Component run stages
      */
     
-    public void init() throws JAMSEntity.NoSuchAttributeException {
+    public void init() throws Attribute.Entity.NoSuchAttributeException {
         
     }
     
-    public void run() throws JAMSEntity.NoSuchAttributeException {
+    public void run() throws Attribute.Entity.NoSuchAttributeException {
         
             double[] rhum = this.rhum.getValue();
             
@@ -68,7 +66,7 @@ title="Extremwerte",
             }
             
    
-    public void cleanup() throws JAMSEntity.NoSuchAttributeException {
+    public void cleanup() throws Attribute.Entity.NoSuchAttributeException {
         
     }
     

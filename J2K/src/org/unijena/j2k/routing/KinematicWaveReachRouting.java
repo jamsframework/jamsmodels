@@ -33,21 +33,18 @@ import javax.naming.directory.NoSuchAttributeException;
    
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = ""
             )
-            public JAMSEntity information;
+            public Attribute.Entity information;
     
      @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = ""
             )
-            public JAMSEntity fuellstand;
+            public Attribute.Entity fuellstand;
      
      @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "Catchment outlet RG2 storage"
             )
             public Attribute.Double catchmentSimRunoff;
@@ -55,41 +52,35 @@ import javax.naming.directory.NoSuchAttributeException;
     
         @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "Time bin of simulation"
             )
             public Attribute.Double timescale;
     
         @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "spatial grid resolution"
             )
             public Attribute.Double modelrastersize;
                @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "Catchment outlet RD1 storage"
             )
             public Attribute.Double catchmentRD1;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "Catchment outlet RD2 storage"
             )
             public Attribute.Double catchmentRD2;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "Catchment outlet RG1 storage"
             )
             public Attribute.Double catchmentRG1;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "Catchment outlet RG2 storage"
             )
             public Attribute.Double catchmentRG2;
@@ -213,13 +204,13 @@ public Point[][] Pfad1(double[][] flgew,Point[][] routing,double[][]fliessrichtu
 }
 
     
-public void init()throws JAMSEntity.NoSuchAttributeException
+public void init()throws Attribute.Entity.NoSuchAttributeException
 {
    
 }
     
 @SuppressWarnings("unchecked")    
-public void run()throws JAMSEntity.NoSuchAttributeException{
+public void run()throws Attribute.Entity.NoSuchAttributeException{
  
     
  

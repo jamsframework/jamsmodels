@@ -36,22 +36,20 @@ public class Testcomponent3 extends JAMSComponent {
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.RUN,
             lowerBound = 0,
             upperBound = 1000,
             unit = "L/min",
             description = "This is a short description"
             )
-            public JAMSEntityCollection entities;
+            public Attribute.EntityCollection entities;
 
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.RUN
             )
-            public JAMSCalendar time;
+            public Attribute.Calendar time;
 
     public void run() throws Exception {
-        JAMSEntity current = entities.getCurrent();
+        Attribute.Entity current = entities.getCurrent();
         System.out.println(current.getDouble("attr") + " - " + time);
     }
     

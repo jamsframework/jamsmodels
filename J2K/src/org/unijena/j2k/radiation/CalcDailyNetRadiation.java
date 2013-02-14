@@ -44,70 +44,59 @@ public class CalcDailyNetRadiation extends JAMSComponent {
      */
 
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
-    update = JAMSVarDescription.UpdateType.RUN,
     description = "state variable mean temperature",
     unit = "°C")
     public Attribute.Double tmean;
 
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
-    update = JAMSVarDescription.UpdateType.RUN,
     description = "state variable relative humidity",
     unit = "%")
     public Attribute.Double rhum;
 
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
-    update = JAMSVarDescription.UpdateType.RUN,
     description = "state variable solar radiation",
     unit = "MJ m^-2 d^-1")
     public Attribute.Double extRad;
 
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
-    update = JAMSVarDescription.UpdateType.RUN,
     description = "state variable solar radiation",
     unit = "MJ m^-2 d^-1")
     public Attribute.Double solRad;
 
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
-    update = JAMSVarDescription.UpdateType.RUN,
     description = "state variable albedo")
     public Attribute.Double albedo;
 
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
-    update = JAMSVarDescription.UpdateType.RUN,
     description = "attribute elevation",
     unit = "m")
     public Attribute.Double elevation;
 
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.WRITE,
-    update = JAMSVarDescription.UpdateType.RUN,
     description = "daily net radiation",
     unit = "MJ m^-2 d^-1")
     public Attribute.Double netRad;
 
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.WRITE,
-    update = JAMSVarDescription.UpdateType.RUN,
     description = "daily shortwave radiation",
     unit = "MJ m^-2 d^-1")
     public Attribute.Double swRad;
 
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.WRITE,
-    update = JAMSVarDescription.UpdateType.RUN,
     description = "daily longwave radiation",
     unit = "MJ m^-2 d^-1")
     public Attribute.Double lwRad;
 
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.WRITE,
-    update = JAMSVarDescription.UpdateType.RUN,
     description = "daily net radiation for refET",
     defaultValue = "0",
     unit = "MJ m^-2 d^-1")
     public Attribute.Double refETNetRad;
 
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
-    update = JAMSVarDescription.UpdateType.INIT,
     description = "Caching configuration: 0 - write cache, 1 - use cache, 2 - caching off",
     defaultValue = "0")
-    public JAMSInteger dataCaching;
+    public Attribute.Integer dataCaching;
 
     private File cacheFile_n,  cacheFile_refET;
 
@@ -118,7 +107,7 @@ public class CalcDailyNetRadiation extends JAMSComponent {
     /*
      *  Component run stages
      */
-    public void init() throws JAMSEntity.NoSuchAttributeException, IOException {
+    public void init() throws Attribute.Entity.NoSuchAttributeException, IOException {
         //first, check if cached data are available
         cacheFile_n = new File(getModel().getWorkspace().getTempDirectory(), this.getInstanceName() + "_norm.cache");
         cacheFile_refET = new File(getModel().getWorkspace().getTempDirectory(), this.getInstanceName() + "_refET.cache");
@@ -138,7 +127,7 @@ public class CalcDailyNetRadiation extends JAMSComponent {
         }
     }
 
-    public void run() throws JAMSEntity.NoSuchAttributeException, IOException {
+    public void run() throws Attribute.Entity.NoSuchAttributeException, IOException {
         if (dataCaching.getValue() == 1) {
             netRad.setValue(reader_norm.readDouble());
             refETNetRad.setValue(reader_refET.readDouble());

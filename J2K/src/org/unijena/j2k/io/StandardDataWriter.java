@@ -43,45 +43,39 @@ public class StandardDataWriter extends JAMSComponent {
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "time interval"
             )
-            public JAMSTimeInterval timeInterval;
+            public Attribute.TimeInterval timeInterval;
 
     @JAMSVarDescription(
     access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.INIT,
             description = "Output file name"
             )
-            public JAMSString fileName;
+            public Attribute.String fileName;
     
     @JAMSVarDescription(
     access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "Current time"
             )
-            public JAMSCalendar time;
+            public Attribute.Calendar time;
     
     @JAMSVarDescription(
     access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.INIT,
             description = "Output file header descriptions"
             )
-            public JAMSStringArray headers;
+            public Attribute.StringArray headers;
     
     @JAMSVarDescription(
     access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "Output file attributes"
             )
             public Attribute.Double[] value;
     
     @JAMSVarDescription(
     access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.INIT,
             description = "Output data precision"
             )
-            public JAMSInteger precision;    
+            public Attribute.Integer precision;    
     
     private GenericDataWriter writer;
     private int prec;
@@ -135,7 +129,7 @@ public class StandardDataWriter extends JAMSComponent {
         dateFormat.setTimeZone(JAMSCalendar.STANDARD_TIME_ZONE);
     }
     
-    public void run() throws JAMSEntity.NoSuchAttributeException {
+    public void run() throws Attribute.Entity.NoSuchAttributeException {
         //always write time
         //the time also knows a toString() method with additional formatting parameters
         //e.g. time.toString("%1$tY-%1$tm-%1$td %1$tH:%1$tM")

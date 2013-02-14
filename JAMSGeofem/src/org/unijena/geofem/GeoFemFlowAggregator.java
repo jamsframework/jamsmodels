@@ -23,8 +23,8 @@
 
 package org.unijena.geofem;
 
-import org.unijena.jams.data.*;
-import org.unijena.jams.model.*;
+import jams.data.*;
+import jams.model.*;
 
 /**
  *
@@ -42,76 +42,67 @@ import org.unijena.jams.model.*;
      */
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "hru area"
             )
-            public JAMSDouble area;
+            public Attribute.Double area;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "surface runoff"
             )
-            public JAMSDouble sro;
+            public Attribute.Double sro;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "subsurface runoff"
             )
-            public JAMSDouble ssro;
+            public Attribute.Double ssro;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "ground water runoff"
             )
-            public JAMSDouble gwro;
+            public Attribute.Double gwro;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "surface runoff"
             )
-            public JAMSDouble c_sro;
+            public Attribute.Double c_sro;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "subsurface runoff"
             )
-            public JAMSDouble c_ssro;
+            public Attribute.Double c_ssro;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "ground water runoff"
             )
-            public JAMSDouble c_gwro;
+            public Attribute.Double c_gwro;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "total runoff in mm"
             )
-            public JAMSDouble totRunoff_mm;
+            public Attribute.Double totRunoff_mm;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "total runoff in cms"
             )
-            public JAMSDouble totRunoff_cms;
+            public Attribute.Double totRunoff_cms;
     
     /*
      *  Component run stages
      */
     
-    public void init() throws JAMSEntity.NoSuchAttributeException {
+    public void init() throws Attribute.Entity.NoSuchAttributeException {
         
     }
     
-    public void run() throws JAMSEntity.NoSuchAttributeException {
+    public void run() throws Attribute.Entity.NoSuchAttributeException {
         double totOut = this.sro.getValue() + this.ssro.getValue() + this.gwro.getValue();
         this.totRunoff_mm.setValue(totOut / area.getValue());
         //conversion from l/d to m³/s

@@ -27,7 +27,7 @@ import java.util.Locale;
 import java.util.StringTokenizer;
 import org.unijena.jams.JAMS;
 import org.unijena.jams.data.*;
-import org.unijena.jams.data.JAMSEntity.NoSuchAttributeException;
+import org.unijena.jams.data.Attribute.Entity.NoSuchAttributeException;
 import org.unijena.jams.io.GenericDataWriter;
 import org.unijena.jams.model.*;
 
@@ -56,10 +56,9 @@ title="KostraPrecipDuration",
      */
     @JAMSVarDescription(
     access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.INIT,
             description = "Data file directory name"
             )
-            public JAMSString dirName;
+            public Attribute.String dirName;
     
     /**
      * the variable name for the parameter precipDuration as used in the XML model
@@ -70,10 +69,9 @@ title="KostraPrecipDuration",
      */
     @JAMSVarDescription(
     access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "current precip duration"
             )
-            public JAMSString precipDurationName;
+            public Attribute.String precipDurationName;
     
     /**
      * the variable name for the parameter "input precipitation" as used in the XML model
@@ -84,10 +82,9 @@ title="KostraPrecipDuration",
      */
     @JAMSVarDescription(
     access = JAMSVarDescription.AccessType.READWRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "current precip height"
             )
-            public JAMSString precipHeightName;
+            public Attribute.String precipHeightName;
     
     /**
      * the maximum peak flow for the specific precipitation event<br>
@@ -97,10 +94,9 @@ title="KostraPrecipDuration",
      */
     @JAMSVarDescription(
     access = JAMSVarDescription.AccessType.READWRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "peak runoff"
             )
-            public JAMSDouble maxRunoff;
+            public Attribute.Double maxRunoff;
     
     /**
      * the cumulated runoff of the specific precipitation event<br>
@@ -110,10 +106,9 @@ title="KostraPrecipDuration",
      */
     @JAMSVarDescription(
     access = JAMSVarDescription.AccessType.READWRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "cumulated volume of all runoff"
             )
-            public JAMSDouble cumVolume;
+            public Attribute.Double cumVolume;
     
     /**
      * flag for en/disabling the component<br>
@@ -123,10 +118,9 @@ title="KostraPrecipDuration",
      */
     @JAMSVarDescription(
     access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.INIT,
             description = "Flag for enabling this component"
             )
-            public JAMSBoolean enable;
+            public Attribute.Boolean enable;
     
     /**
      * filename for the output summary<br>
@@ -136,9 +130,8 @@ title="KostraPrecipDuration",
      */
     @JAMSVarDescription(
     access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.INIT
             )
-            public JAMSString kostraSummaryFile;
+            public Attribute.String kostraSummaryFile;
     
     /**
      * filename for the detailed output <br>
@@ -148,9 +141,8 @@ title="KostraPrecipDuration",
      */
     @JAMSVarDescription(
     access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.INIT
             )
-            public JAMSString kostraDetailFile;
+            public Attribute.String kostraDetailFile;
     
     /**
      * the model't time interval<br>
@@ -160,10 +152,9 @@ title="KostraPrecipDuration",
      */
     @JAMSVarDescription(
     access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.INIT,
             description = "The model time interval"
             )
-            public JAMSTimeInterval modelTimeInterval;
+            public Attribute.TimeInterval modelTimeInterval;
     
     /**
      * an array of values used in the detailed output<br>
@@ -173,10 +164,9 @@ title="KostraPrecipDuration",
      */
     @JAMSVarDescription(
     access = JAMSVarDescription.AccessType.READWRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "Output file attribute"
             )
-            public JAMSDoubleArray targetValue;
+            public Attribute.DoubleArray targetValue;
     
     /**
      * a title used for the of the graphical output<br>
@@ -186,10 +176,9 @@ title="KostraPrecipDuration",
      */
     @JAMSVarDescription(
     access = JAMSVarDescription.AccessType.WRITE,
-            update = JAMSVarDescription.UpdateType.INIT,
             description = "runoff plot title"
             )
-            public JAMSString runoffPlotTitle;
+            public Attribute.String runoffPlotTitle;
     
     /**
      * a title used for the of the graphical output<br>
@@ -199,10 +188,9 @@ title="KostraPrecipDuration",
      */
     @JAMSVarDescription(
     access = JAMSVarDescription.AccessType.WRITE,
-            update = JAMSVarDescription.UpdateType.INIT,
             description = "volume plot title"
             )
-            public JAMSString volumePlotTitle;
+            public Attribute.String volumePlotTitle;
     
     /**
      * a text used for the of the graphical output<br>
@@ -212,10 +200,9 @@ title="KostraPrecipDuration",
      */
     @JAMSVarDescription(
     access = JAMSVarDescription.AccessType.READWRITE,
-            update = JAMSVarDescription.UpdateType.INIT,
             description = "Legend entry"
             )
-            public JAMSString legendEntry;
+            public Attribute.String legendEntry;
     
     /**
      * additional information for the header of the output file<br>
@@ -225,10 +212,9 @@ title="KostraPrecipDuration",
      */
     @JAMSVarDescription(
     access = JAMSVarDescription.AccessType.READWRITE,
-            update = JAMSVarDescription.UpdateType.INIT,
             description = "outfile header"
             )
-            public JAMSString outfileHeader;
+            public Attribute.String outfileHeader;
     /**
      * a two dimensional table containing precipitation sums for a combination of 
      * various precipitation duration and return periods.<br>
@@ -238,10 +224,9 @@ title="KostraPrecipDuration",
      */
     @JAMSVarDescription(
     access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.INIT,
             description = "the kostra table object as input"
             )
-            public JAMSEntity kostraTable;
+            public Attribute.Entity kostraTable;
     
     /**
      * the annuality of the precipitation event. Is either iterated or set to a fixed 
@@ -252,10 +237,9 @@ title="KostraPrecipDuration",
      */
     @JAMSVarDescription(
     access = JAMSVarDescription.AccessType.READWRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "precip annualtiy"
             )
-            public JAMSDouble precipAnnuality;
+            public Attribute.Double precipAnnuality;
     
     /**
      * flag for selection of variable precipitation annualities<br>
@@ -265,10 +249,9 @@ title="KostraPrecipDuration",
      */
     @JAMSVarDescription(
     access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.INIT,
             description = "variable annualtiy"
             )
-            public JAMSBoolean varAnnuality;
+            public Attribute.Boolean varAnnuality;
     
     /**
      * flag for selection of variable precipitatio durations<br>
@@ -278,10 +261,9 @@ title="KostraPrecipDuration",
      */
     @JAMSVarDescription(
     access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.INIT,
             description = "variable duration"
             )
-            public JAMSBoolean varDuration;
+            public Attribute.Boolean varDuration;
     
     /**
      * a semicolon separated list of precipitation annualities higher than 100 years<br>
@@ -291,10 +273,9 @@ title="KostraPrecipDuration",
      */
     @JAMSVarDescription(
     access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.INIT,
             description = "the annualities for penPrecip computations"
             )
-            public JAMSString penPrecipAnnualities;
+            public Attribute.String penPrecipAnnualities;
     
     /**
      * flag for computation of precipitation events for extreme annuality.<br>
@@ -304,14 +285,13 @@ title="KostraPrecipDuration",
      */
     @JAMSVarDescription(
     access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.INIT,
             description = "switch for penPrecip computations"
             )
-            public JAMSBoolean penPrecipOn;
+            public Attribute.Boolean penPrecipOn;
     
-    //JAMSDouble pDuration;
-    JAMSDouble pIn;
-    JAMSDouble pDur;
+    //Attribute.Double pDuration;
+    Attribute.Double pIn;
+    Attribute.Double pDur;
     double[] inPrecip;
     String[] legEntries;
     int currentCount;
@@ -327,9 +307,9 @@ title="KostraPrecipDuration",
     
     int sampleCount = 0;
     
-    JAMSDoubleArray varValues = new JAMSDoubleArray();
+    Attribute.DoubleArray varValues = new Attribute.DoubleArray();
     double[] pA;// = {200,500,1000,5000,10000};
-    JAMSDoubleArray penAnnualities = new JAMSDoubleArray();
+    Attribute.DoubleArray penAnnualities = new Attribute.DoubleArray();
     double[] penPrecip;
     
     
@@ -355,8 +335,8 @@ title="KostraPrecipDuration",
         if(this.varDuration.getValue()){
             //number of durations in kostra table
             try {
-                JAMSDouble[] durHeaders  = (JAMSDouble[])this.kostraTable.getObject("HeaderD");
-                JAMSDouble[] annHeaders  = (JAMSDouble[])this.kostraTable.getObject("HeaderA");
+                Attribute.Double[] durHeaders  = (Attribute.Double[])this.kostraTable.getObject("HeaderD");
+                Attribute.Double[] annHeaders  = (Attribute.Double[])this.kostraTable.getObject("HeaderA");
                 int nDur = durHeaders.length;
                 int nAnn = annHeaders.length;
                 
@@ -377,7 +357,7 @@ title="KostraPrecipDuration",
                 }
                 //retrieve the 1 and 100 annual precip events
                 //the precip value table
-                JAMSDouble[][] pV = (JAMSDouble[][])kostraTable.getObject("table");
+                Attribute.Double[][] pV = (Attribute.Double[][])kostraTable.getObject("table");
                 for(int i = 0; i < nDur; i++){
                     kostra_1[i] = pV[i][pos_1].getValue();
                     kostra_100[i] = pV[i][pos_100].getValue();
@@ -405,10 +385,10 @@ title="KostraPrecipDuration",
            
             try {
                 String para = this.precipDurationName.getValue();
-                JAMSDouble pD = (JAMSDouble)getModel().getRuntime().getDataHandles().get(para);
+                Attribute.Double pD = (Attribute.Double)getModel().getRuntime().getDataHandles().get(para);
                 
-                JAMSDouble[] durHeaders  = (JAMSDouble[])this.kostraTable.getObject("HeaderD");
-                JAMSDouble[] annHeaders  = (JAMSDouble[])this.kostraTable.getObject("HeaderA");
+                Attribute.Double[] durHeaders  = (Attribute.Double[])this.kostraTable.getObject("HeaderD");
+                Attribute.Double[] annHeaders  = (Attribute.Double[])this.kostraTable.getObject("HeaderA");
                 
                 //determine the position of the duration in the kostra table and
                 //retrieve the position of annuality 1 and 100
@@ -430,7 +410,7 @@ title="KostraPrecipDuration",
                 }
                 
                 //retrieve precip events with 1 and 100 year annuality
-                JAMSDouble[][] pV = (JAMSDouble[][])kostraTable.getObject("table");
+                Attribute.Double[][] pV = (Attribute.Double[][])kostraTable.getObject("table");
                 double kostra_1 = pV[durPos][pos_1].getValue();
                 double kostra_100 = pV[durPos][pos_100].getValue();
                 
@@ -463,8 +443,8 @@ title="KostraPrecipDuration",
             //add more checks!!!
             String para = this.precipDurationName.getValue();
             String para2 = this.precipHeightName.getValue();
-            pIn = (JAMSDouble)getModel().getRuntime().getDataHandles().get(para2);
-            pDur = (JAMSDouble)getModel().getRuntime().getDataHandles().get(para);
+            pIn = (Attribute.Double)getModel().getRuntime().getDataHandles().get(para2);
+            pDur = (Attribute.Double)getModel().getRuntime().getDataHandles().get(para);
             //create para output file
             summaryWriter = new GenericDataWriter(dirName.getValue()+"/"+this.kostraSummaryFile.getValue());
             
@@ -482,12 +462,12 @@ title="KostraPrecipDuration",
                 summaryWriter.addColumn("Wellenvolumen [Mio m³]");
                 summaryWriter.writeHeader();
                 try {
-                    JAMSDouble[] tmp  = (JAMSDouble[])this.kostraTable.getObject("HeaderD");
+                    Attribute.Double[] tmp  = (Attribute.Double[])this.kostraTable.getObject("HeaderD");
                     double[] tmp2 = new double[tmp.length];
                     for(int i = 0; i < tmp.length; i++)
                         tmp2[i] = tmp[i].getValue();
                     varValues.setValue(tmp2);
-                } catch (JAMSEntity.NoSuchAttributeException ex) {
+                } catch (Attribute.Entity.NoSuchAttributeException ex) {
                     ex.printStackTrace();
                 }
             } else if(varAnnuality.getValue()){
@@ -504,7 +484,7 @@ title="KostraPrecipDuration",
                 summaryWriter.addColumn("Wellenvolumen [Mio m³]");
                 summaryWriter.writeHeader();
                 try {
-                    JAMSDouble[] tmp  = (JAMSDouble[])this.kostraTable.getObject("HeaderA");
+                    Attribute.Double[] tmp  = (Attribute.Double[])this.kostraTable.getObject("HeaderA");
                     int arrLen = 0;
                     double[] tmp2 = null;
                     if(this.penPrecipOn.getValue()){
@@ -529,7 +509,7 @@ title="KostraPrecipDuration",
                     }
                     
                     varValues.setValue(tmp2);
-                } catch (JAMSEntity.NoSuchAttributeException ex) {
+                } catch (Attribute.Entity.NoSuchAttributeException ex) {
                     ex.printStackTrace();
                 }
             }
@@ -553,11 +533,11 @@ title="KostraPrecipDuration",
             }
             this.currentStep = 0;
             try {
-                JAMSDouble[] hA = (JAMSDouble[]) kostraTable.getObject("HeaderA");
+                Attribute.Double[] hA = (Attribute.Double[]) kostraTable.getObject("HeaderA");
                 //precip duration
-                JAMSDouble[] hD = (JAMSDouble[])kostraTable.getObject("HeaderD");
+                Attribute.Double[] hD = (Attribute.Double[])kostraTable.getObject("HeaderD");
                 //precip values
-                JAMSDouble[][] pV = (JAMSDouble[][])kostraTable.getObject("table");
+                Attribute.Double[][] pV = (Attribute.Double[][])kostraTable.getObject("table");
                 
                 if(varDuration.getValue())
                     inPrecip = new double[hD.length];
@@ -710,7 +690,7 @@ title="KostraPrecipDuration",
                 
                 detailWriter.writeHeader();
                 
-            } catch (JAMSEntity.NoSuchAttributeException ex) {
+            } catch (Attribute.Entity.NoSuchAttributeException ex) {
                 ex.printStackTrace();
             }
             
@@ -847,7 +827,7 @@ title="KostraPrecipDuration",
     public void cleanup() {
         if (enable.getValue()) {
             int sampleCount = varValues.getValue().length;
-            JAMSCalendar timeStamp = this.modelTimeInterval.getStart();
+            Attribute.Calendar timeStamp = this.modelTimeInterval.getStart();
             for(int t = 0; t < this.timeSteps; t++){
                 detailWriter.addData(timeStamp.toString("%1$tH:%1$tM:%1$tS"));
                 timeStamp.add(modelTimeInterval.getTimeUnit(), modelTimeInterval.getTimeUnitCount());

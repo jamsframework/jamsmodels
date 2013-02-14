@@ -41,35 +41,28 @@ import javax.swing.JOptionPane;
 public class MultiEntityReaderTS extends JAMSComponent {
 
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
-    update = JAMSVarDescription.UpdateType.INIT,
     description = "HRU parameter file name")
-    public JAMSString hruFileName;
+    public Attribute.String hruFileName;
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
-    update = JAMSVarDescription.UpdateType.INIT,
     description = "Reach parameter file name")
-    public JAMSString reachFileName;
+    public Attribute.String reachFileName;
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
-    update = JAMSVarDescription.UpdateType.INIT,
     description = "Parameter file name for topological linkage with receiver entities")
-    public JAMSString to_hru_FileName;
+    public Attribute.String to_hru_FileName;
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
-    update = JAMSVarDescription.UpdateType.INIT,
     description = "Parameter file name for weighting of contribution area to receiver entities")
-    public JAMSString bfl_FileName;
+    public Attribute.String bfl_FileName;
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.WRITE,
-    update = JAMSVarDescription.UpdateType.RUN,
     description = "Collection of hru objects")
-    public JAMSEntityCollection hrus;
+    public Attribute.EntityCollection hrus;
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.WRITE,
-    update = JAMSVarDescription.UpdateType.RUN,
     description = "Collection of reach objects")
-    public JAMSEntityCollection reaches;
+    public Attribute.EntityCollection reaches;
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.WRITE,
-    update = JAMSVarDescription.UpdateType.RUN,
     description = "Collection of hru objects with their topology")
-    public JAMSEntityCollection topology;
+    public Attribute.EntityCollection topology;
 
-    public void init() throws JAMSEntity.NoSuchAttributeException, FileNotFoundException, IOException {
+    public void init() throws Attribute.Entity.NoSuchAttributeException, FileNotFoundException, IOException {
 
          //read hru parameter
         hrus.setEntities(J2KFunctions.readParas(FileTools.createAbsoluteFileName(getModel().getWorkspaceDirectory().getPath(), hruFileName.getValue()), getModel()));
@@ -106,7 +99,7 @@ public class MultiEntityReaderTS extends JAMSComponent {
 
     }
 
-    private void createTopology() throws JAMSEntity.NoSuchAttributeException {
+    private void createTopology() throws Attribute.Entity.NoSuchAttributeException {
 
         BufferedReader reader1, reader2;
         HashMap<Double, Attribute.Entity> hruMap = new HashMap<Double, Attribute.Entity>();
@@ -132,7 +125,7 @@ public class MultiEntityReaderTS extends JAMSComponent {
         }
 
         //create empty entities, i.e. those that are linked to in case there is no linkage ;-)
-        /*JAMSEntity nullEntity = (JAMSEntity) getModel().getRuntime().getDataFactory().createInstance(JAMSEntity.class, getModel().getRuntime());
+        /*Attribute.Entity nullEntity = (Attribute.Entity) getModel().getRuntime().getDataFactory().createInstance(Attribute.Entity.class, getModel().getRuntime());
         nullEntity.setValue((HashMap<String, Object>) null);
         reachMap.put(new Integer(0), nullEntity);*/
         
@@ -237,8 +230,8 @@ public class MultiEntityReaderTS extends JAMSComponent {
                 }
 
                 //converting the ArrayLists into Arrays
-                JAMSEntity[] toHRUsArray = toHRUsArrayList.toArray(new JAMSEntity[toHRUsArrayList.size()]);
-                JAMSEntity[] toReachesArray = toReachesArrayList.toArray(new JAMSEntity[toReachesArrayList.size()]);
+                Attribute.Entity[] toHRUsArray = toHRUsArrayList.toArray(new Attribute.Entity[toHRUsArrayList.size()]);
+                Attribute.Entity[] toReachesArray = toReachesArrayList.toArray(new Attribute.Entity[toReachesArrayList.size()]);
 
                 Double[] toHRUsWeightsArray = toHRUsWeightsArrayList.toArray(new Double[toHRUsWeightsArrayList.size()]);
                 Double[] toReachesWeightsArray = toReachesWeightsArrayList.toArray(new Double[toReachesWeightsArrayList.size()]);
@@ -273,7 +266,7 @@ public class MultiEntityReaderTS extends JAMSComponent {
         }
     }
 
-    protected void createOrderedList(JAMSEntityCollection hrus, String asso) throws JAMSEntity.NoSuchAttributeException, FileNotFoundException, IOException {
+    protected void createOrderedList(Attribute.EntityCollection hrus, String asso) throws Attribute.Entity.NoSuchAttributeException, FileNotFoundException, IOException {
 
 
         Iterator<Attribute.Entity> hruIterator;
@@ -282,9 +275,9 @@ public class MultiEntityReaderTS extends JAMSComponent {
         Attribute.Entity aktuelleHRU = null;
         ArrayList<Attribute.Entity> hruList = new ArrayList<Attribute.Entity>();
 
-        HashMap<JAMSEntity, Integer> statusMap = new HashMap<JAMSEntity, Integer>();
-        HashMap<JAMSEntity, JAMSEntity> fromHRUMap = new HashMap<JAMSEntity, JAMSEntity>();
-        HashMap<JAMSEntity, Integer> fromIMap = new HashMap<JAMSEntity, Integer>();
+        HashMap<Attribute.Entity, Integer> statusMap = new HashMap<Attribute.Entity, Integer>();
+        HashMap<Attribute.Entity, Attribute.Entity> fromHRUMap = new HashMap<Attribute.Entity, Attribute.Entity>();
+        HashMap<Attribute.Entity, Integer> fromIMap = new HashMap<Attribute.Entity, Integer>();
         
         HashMap<Attribute.Entity, Integer> depthMap = new HashMap<Attribute.Entity, Integer>();
 
@@ -297,7 +290,7 @@ public class MultiEntityReaderTS extends JAMSComponent {
 
             writer2 = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(getModel().getWorkspaceDirectory().getPath() + "/unaufloesbareZirkel.txt")));
 
-            JAMSEntity aktuelleHRU = null;
+            Attribute.Entity aktuelleHRU = null;
 
             hruIterator = hrus.getEntities().iterator();
 
@@ -310,26 +303,26 @@ public class MultiEntityReaderTS extends JAMSComponent {
                 System.out.println("Untersuche HRU " + (int)aktuelleHRU.getDouble("ID") + " auf Zirkelbezuege");
 
                 aufloesbar = false;
-                JAMSEntity zielHRU_neu = aktuelleHRU;
+                Attribute.Entity zielHRU_neu = aktuelleHRU;
 
                 hruIterator2 = hrus.getEntities().iterator();
                 while (hruIterator2.hasNext()) {
-                    JAMSEntity initialisierungHRU = hruIterator2.next();
+                    Attribute.Entity initialisierungHRU = hruIterator2.next();
                     statusMap.put(initialisierungHRU, new Integer(0)); //Status 0: Noch nicht markiert, Status 1: Markiert, Bearbeitung aber noch nicht gestartet, Status -2: Bearbeitung gestartet, aber ncch nicht abgeschlossen, STatus -3: Bearabeitung abgeschlossen
                     fromHRUMap.put(initialisierungHRU, null);
                     fromIMap.put(initialisierungHRU, new Integer(0));
                 }
 
                 while (statusMap.get(aktuelleHRU) != -3) {
-                    JAMSEntity zielHRU = zielHRU_neu;
+                    Attribute.Entity zielHRU = zielHRU_neu;
 
                     statusMap.put(zielHRU, new Integer(-2));
-                    JAMSEntity[] zielHRU_toHRU = (JAMSEntity[]) zielHRU.getObject("to_poly");
+                    Attribute.Entity[] zielHRU_toHRU = (Attribute.Entity[]) zielHRU.getObject("to_poly");
 
                     if (zielHRU_toHRU.length > 0) {
 
                         for (int i = 0; i < zielHRU_toHRU.length; i++) {
-                            JAMSEntity untersuchteHRU = zielHRU_toHRU[i];
+                            Attribute.Entity untersuchteHRU = zielHRU_toHRU[i];
 
                             if (untersuchteHRU != null) {
 
@@ -340,13 +333,13 @@ public class MultiEntityReaderTS extends JAMSComponent {
 
                                 if (aktuelleHRU == untersuchteHRU) {
                                     // Identifikation der kleinsten Beitragenden Flaeche
-                                    JAMSEntity zirkelHRU = zielHRU, HRU_BflMin = null;
+                                    Attribute.Entity zirkelHRU = zielHRU, HRU_BflMin = null;
                                     int iZirkel = i, iZirkelMin = -1, teilerMin = -1;
                                     double bflZirkel, bflZirkelMin = -1;
 
                                     while (zirkelHRU != null) {
-                                        JAMSEntity[] zirkelHRU_toReaches = (JAMSEntity[]) zirkelHRU.getObject("to_reach");
-                                        JAMSEntity[] zirkelHRU_toHRU = (JAMSEntity[]) zirkelHRU.getObject("to_poly");
+                                        Attribute.Entity[] zirkelHRU_toReaches = (Attribute.Entity[]) zirkelHRU.getObject("to_reach");
+                                        Attribute.Entity[] zirkelHRU_toHRU = (Attribute.Entity[]) zirkelHRU.getObject("to_poly");
 
                                         int zirkelHRU_Richtungen = 0;
                                         for (int l = 0; l < zirkelHRU_toHRU.length; l++) {
@@ -375,8 +368,8 @@ public class MultiEntityReaderTS extends JAMSComponent {
                                     //Zirkelaufloesung
                                     if (HRU_BflMin != null && iZirkelMin != -1 && teilerMin != -1) {
 
-                                        JAMSEntity[] HRU_BFlMin_toHRUs = (JAMSEntity[]) HRU_BflMin.getObject("to_poly");
-                                        JAMSEntity[] HRU_BFlMin_toReaches = (JAMSEntity[]) HRU_BflMin.getObject("to_reach");                                        
+                                        Attribute.Entity[] HRU_BFlMin_toHRUs = (Attribute.Entity[]) HRU_BflMin.getObject("to_poly");
+                                        Attribute.Entity[] HRU_BFlMin_toReaches = (Attribute.Entity[]) HRU_BflMin.getObject("to_reach");                                        
 
                                         Double[] HRU_BFlMin_toHRUsWeights = (Double[]) HRU_BflMin.getObject("to_poly_weights");
                                         Double[] HRU_BFlMin_toReachesWeights = (Double[]) HRU_BflMin.getObject("to_reach_weights");                                        
@@ -425,7 +418,7 @@ public class MultiEntityReaderTS extends JAMSComponent {
                         }
 
                         for (int i = 0; i < zielHRU_toHRU.length; i++) {
-                            JAMSEntity tempHRU = zielHRU_toHRU[i];
+                            Attribute.Entity tempHRU = zielHRU_toHRU[i];
 
                             if (statusMap.get(tempHRU) != null && statusMap.get(tempHRU) == 1 && zielHRU == fromHRUMap.get(tempHRU)) {
                                 zielHRU_neu = tempHRU;
@@ -437,7 +430,7 @@ public class MultiEntityReaderTS extends JAMSComponent {
                     int freieRichtungen = 0;
 
                     for (int i = 0; i < zielHRU_toHRU.length; i++) {
-                        JAMSEntity tempHRU2 = zielHRU_toHRU[i];
+                        Attribute.Entity tempHRU2 = zielHRU_toHRU[i];
 
                         if (statusMap.get(tempHRU2) != null && statusMap.get(tempHRU2) >= 0) {
 
@@ -484,7 +477,7 @@ public class MultiEntityReaderTS extends JAMSComponent {
                 eDepth = depthMap.get(aktuelleHRU);
 
                 if ((asso.toString()).equals("to_poly")) {
-                    JAMSEntity[] aktuelleHRU_toHRUs = (JAMSEntity[]) aktuelleHRU.getObject(asso);
+                    Attribute.Entity[] aktuelleHRU_toHRUs = (Attribute.Entity[]) aktuelleHRU.getObject(asso);
 
                     if (aktuelleHRU_toHRUs.length > 0) {
 
@@ -503,7 +496,7 @@ public class MultiEntityReaderTS extends JAMSComponent {
                 }
 
                 if ((asso.toString()).equals("to_reach")) {
-                    JAMSEntity aktuelleHRU_toReaches = (JAMSEntity) aktuelleHRU.getObject(asso);
+                    Attribute.Entity aktuelleHRU_toReaches = (Attribute.Entity) aktuelleHRU.getObject(asso);
 
                     if (aktuelleHRU_toReaches.getValue() == null) {
                         aktuelleHRU_toReaches = null;
@@ -530,7 +523,7 @@ public class MultiEntityReaderTS extends JAMSComponent {
             maxDepth = Math.max(maxDepth, depthMap.get(aktuelleHRU).intValue());
         }
         //create ArrayList of ArrayList objects, each element keeping the entities of one level
-        //ArrayList<ArrayList<JAMSEntity>> alList = new ArrayList<ArrayList<JAMSEntity>>();
+        //ArrayList<ArrayList<Attribute.Entity>> alList = new ArrayList<ArrayList<Attribute.Entity>>();
         ArrayList<ArrayList<Attribute.Entity>> alList = new ArrayList<ArrayList<Attribute.Entity>>();
 
 

@@ -44,33 +44,26 @@ import javax.swing.JOptionPane;
 public class MultiEntityReaderTS_2 extends JAMSComponent {
 
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
-    update = JAMSVarDescription.UpdateType.INIT,
     description = "HRU parameter file name")
-    public JAMSString hruFileName;
+    public Attribute.String hruFileName;
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
-    update = JAMSVarDescription.UpdateType.INIT,
     description = "Reach parameter file name")
-    public JAMSString reachFileName;
+    public Attribute.String reachFileName;
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
-    update = JAMSVarDescription.UpdateType.INIT,
     description = "Parameter file name for topological linkage with receiver entities")
-    public JAMSString to_hru_FileName;
+    public Attribute.String to_hru_FileName;
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
-    update = JAMSVarDescription.UpdateType.INIT,
     description = "Parameter file name for weighting of receiver entity")
-    public JAMSString bfl_FileName;
+    public Attribute.String bfl_FileName;
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.WRITE,
-    update = JAMSVarDescription.UpdateType.RUN,
     description = "Collection of hru objects")
-    public JAMSEntityCollection hrus;
+    public Attribute.EntityCollection hrus;
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.WRITE,
-    update = JAMSVarDescription.UpdateType.RUN,
     description = "Collection of reach objects")
-    public JAMSEntityCollection reaches;
+    public Attribute.EntityCollection reaches;
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.WRITE,
-    update = JAMSVarDescription.UpdateType.RUN,
     description = "Collection of hru objects with their topology")
-    public JAMSEntityCollection topology;
+    public Attribute.EntityCollection topology;
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
     description = "Name of the attribute containing the HRU identifiers",
     defaultValue = "ID")
@@ -330,7 +323,7 @@ public class MultiEntityReaderTS_2 extends JAMSComponent {
         }
     }
 
-    protected void createOrderedList(JAMSEntityCollection col, String asso) throws Attribute.Entity.NoSuchAttributeException {
+    protected void createOrderedList(Attribute.EntityCollection col, String asso) throws Attribute.Entity.NoSuchAttributeException {
 
         Iterator<Attribute.Entity> entityIterator;
         Attribute.Entity e = null ;

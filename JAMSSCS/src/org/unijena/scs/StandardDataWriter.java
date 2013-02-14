@@ -41,10 +41,9 @@ public class StandardDataWriter extends JAMSComponent {
      */  
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.INIT,
             description = "Data file directory name"
             )
-            public JAMSString dirName;
+            public Attribute.String dirName;
     
     /**
      * the name of the output file<br>
@@ -54,10 +53,9 @@ public class StandardDataWriter extends JAMSComponent {
      */ 
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.INIT,
             description = "Output file name"
             )
-            public JAMSString fileName;
+            public Attribute.String fileName;
     
     /**
      * the model's current time step <br>
@@ -67,10 +65,9 @@ public class StandardDataWriter extends JAMSComponent {
      */ 
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "Current time"
             )
-            public JAMSCalendar time;
+            public Attribute.Calendar time;
     
     /**
      * the header description for each variable written to the output file<br>
@@ -80,10 +77,9 @@ public class StandardDataWriter extends JAMSComponent {
      */ 
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.INIT,
             description = "Output file header descriptions"
             )
-            public JAMSStringArray headers;
+            public Attribute.StringArray headers;
     
      /**
      * additional information for the header of the output file<br>
@@ -93,10 +89,9 @@ public class StandardDataWriter extends JAMSComponent {
      */
     @JAMSVarDescription(
     access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.INIT,
             description = "outfile header"
             )
-            public JAMSString outfileHeader;
+            public Attribute.String outfileHeader;
     
     /**
      * the set of output values written to the file<br>
@@ -106,10 +101,9 @@ public class StandardDataWriter extends JAMSComponent {
      */ 
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "Output file attributes"
             )
-            public JAMSDouble[] value;
+            public Attribute.Double[] value;
     
     
     private GenericDataWriter writer;
@@ -138,9 +132,9 @@ public class StandardDataWriter extends JAMSComponent {
     
     /**
      * the component's run() method
-     * @throws org.unijena.jams.data.JAMSEntity.NoSuchAttributeException thrown when a model entity tries to access a non existent attribute
+     * @throws org.unijena.jams.data.Attribute.Entity.NoSuchAttributeException thrown when a model entity tries to access a non existent attribute
      */
-    public void run() throws JAMSEntity.NoSuchAttributeException {
+    public void run() throws Attribute.Entity.NoSuchAttributeException {
         //always write time
         //the time also knows a toString() method with additional formatting parameters
         //e.g. time.toString("%1$tY-%1$tm-%1$td %1$tH:%1$tM")

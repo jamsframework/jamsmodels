@@ -47,14 +47,12 @@ import java.util.Vector;
     //input values
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "the current time step"
             )
             public Attribute.Calendar time;
 
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "daily runoff value",
             unit = "m³/s"
             )
@@ -63,7 +61,6 @@ import java.util.Vector;
     //calibration parameters
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.INIT,
             description = "the X% lowest values can be interpreted as human " +
             "influenced and removed from the analysis. Default value is 5%.",
             defaultValue="0.05"
@@ -73,7 +70,6 @@ import java.util.Vector;
     //output values
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "the baseflow index expressed as the ration of reduced" +
             "mean monthly low flows and mean monthly runoff"
             )

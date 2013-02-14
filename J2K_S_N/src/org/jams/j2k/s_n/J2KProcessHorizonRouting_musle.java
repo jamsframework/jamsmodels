@@ -42,89 +42,76 @@ import jams.model.*;
      */
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "The current hru entity"
             )
-            public JAMSEntityCollection entities;
+            public Attribute.EntityCollection entities;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "Collection of reach objects"
             )
-            public JAMSEntityCollection reaches;
+            public Attribute.EntityCollection reaches;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "HRU statevar RD1 inflow"
             )
-            public JAMSDouble inRD1;
+            public Attribute.Double inRD1;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "HRU statevar RD2 inflow"
             )
-            public JAMSDoubleArray inRD2_h;
+            public Attribute.DoubleArray inRD2_h;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "HRU statevar groundwater excess",
             defaultValue= "0"
             )
-            public JAMSDouble inGWExcess;
+            public Attribute.Double inGWExcess;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "HRU statevar RG1 inflow"
             )
-            public JAMSDouble inRG1;
+            public Attribute.Double inRG1;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "HRU statevar RG2 inflow"
             )
-            public JAMSDouble inRG2;
+            public Attribute.Double inRG2;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "HRU statevar RD1 outflow"
             )
-            public JAMSDouble outRD1;
+            public Attribute.Double outRD1;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "HRU statevar RD2 outflow"
             )
-            public JAMSDoubleArray outRD2_h;
+            public Attribute.DoubleArray outRD2_h;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "HRU statevar RG1 outflow"
             )
-            public JAMSDouble outRG1;
+            public Attribute.Double outRG1;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "HRU statevar RG2 outflow"
             )
-            public JAMSDouble outRG2;
+            public Attribute.Double outRG2;
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READWRITE,
-    update = JAMSVarDescription.UpdateType.RUN,
     description = "HRU statevar sediment inflow")
-    public JAMSDouble insed;
+    public Attribute.Double insed;
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READWRITE,
-    update = JAMSVarDescription.UpdateType.RUN,
     description = "HRU statevar sediment outflow")
-    public JAMSDouble outsed;
+    public Attribute.Double outsed;
     
     double[][] fracOut;
     double[] percOut;
@@ -132,16 +119,16 @@ import jams.model.*;
      *  Component run stages
      */
     
-    public void init() throws JAMSEntity.NoSuchAttributeException {
+    public void init() throws Attribute.Entity.NoSuchAttributeException {
         
     }
     
-    public void run() throws JAMSEntity.NoSuchAttributeException {
+    public void run() throws Attribute.Entity.NoSuchAttributeException {
         Attribute.Entity entity = entities.getCurrent();
         //receiving polygon
-        JAMSEntity toPoly = (JAMSEntity) entity.getObject("to_poly");
+        Attribute.Entity toPoly = (Attribute.Entity) entity.getObject("to_poly");
         //receiving reach
-        JAMSEntity toReach = (JAMSEntity) entity.getObject("to_reach");
+        Attribute.Entity toReach = (Attribute.Entity) entity.getObject("to_reach");
         
         double RD1out = outRD1.getValue();
         double sedout = outsed.getValue();
@@ -153,19 +140,19 @@ import jams.model.*;
         
         
         if(toPoly.getValue() != null){
-            int id = (int)((JAMSDouble)entity.getObject("ID")).getValue();
+            int id = (int)((Attribute.Double)entity.getObject("ID")).getValue();
             //System.out.getRuntime().println("to poly ID: " + entity.getObject("ID"));
             //if(id == 36)
             //    System.out.getRuntime().println("stop");
-            double[] srcDepth = ((JAMSDoubleArray)entity.getObject("depth_h")).getValue(); 
-            double[] recDepth = ((JAMSDoubleArray)toPoly.getObject("depth_h")).getValue();
+            double[] srcDepth = ((Attribute.DoubleArray)entity.getObject("depth_h")).getValue(); 
+            double[] recDepth = ((Attribute.DoubleArray)toPoly.getObject("depth_h")).getValue();
             int srcHors = srcDepth.length;
             int recHors = recDepth.length;
             double[] RD2in = new double[recHors];
             this.calcParts(srcDepth, recDepth);
             
             //System.out.getRuntime().println("to Poly ID: " + toPoly.getDouble("ID"));
-            double[] rdAr = ((JAMSDoubleArray)toPoly.getObject("inRD2_h")).getValue();
+            double[] rdAr = ((Attribute.DoubleArray)toPoly.getObject("inRD2_h")).getValue();
             /*for(int i = 0; i < RD2out.length; i++){
                 RD2in[i] = RD2in[i] + RD2out[i];
                 RD2out[i] = 0;
@@ -207,7 +194,7 @@ import jams.model.*;
             outRG2.setValue(0);
             inGWExcess.setValue(0);
             
-            JAMSDoubleArray rdA = (JAMSDoubleArray)toPoly.getObject("inRD2_h");
+            Attribute.DoubleArray rdA = (Attribute.DoubleArray)toPoly.getObject("inRD2_h");
             rdA.setValue(RD2in);
             toPoly.setDouble("inRD1", RD1in);
             toPoly.setDouble("insed", sedin);

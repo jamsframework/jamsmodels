@@ -45,145 +45,125 @@ import jams.model.*;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.INIT,
             description = "Collection of hru objects"
             )
-            public JAMSEntityCollection hrus;
+            public Attribute.EntityCollection hrus;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "The current hru entity"
             )
-            public JAMSEntity entity;
+            public Attribute.Entity entity;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.INIT,
             description = "attribute area"
             )
-            public JAMSString aNameArea;
+            public Attribute.String aNameArea;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.INIT,
             description = "actual RG1 storage"
             )
-            public JAMSString aNameActRG1;
+            public Attribute.String aNameActRG1;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.INIT,
             description = "actual RG2 storage"
             )
-            public JAMSString aNameActRG2;
+            public Attribute.String aNameActRG2;
     
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.INIT,
             description = "actual RG N storage in kgN"
             )
-            public JAMSString aNameNActRG;
+            public Attribute.String aNameNActRG;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.INIT,
             description = "RG1 inflow"
             )
-            public JAMSString aNameInRG1;
+            public Attribute.String aNameInRG1;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.INIT,
             description = "RG2 inflow"
             )
-            public JAMSString aNameInRG2;
+            public Attribute.String aNameInRG2;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.INIT,
             description = "RG1 outflow"
             )
-            public JAMSString aNameOutRG1;
+            public Attribute.String aNameOutRG1;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.INIT,
             description = "RG2 outflow"
             )
-            public JAMSString aNameOutRG2;
+            public Attribute.String aNameOutRG2;
     
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.INIT,
             description = "RG1 N inflow in kgN"
             )
-            public JAMSString aNameN_RG1_in;
+            public Attribute.String aNameN_RG1_in;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.INIT,
             description = "RG2 N inflow in kgN"
             )
-            public JAMSString aNameN_RG2_in;
+            public Attribute.String aNameN_RG2_in;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.INIT,
             description = "RG1 N outflow in kgN"
             )
-            public JAMSString aNameN_RG1_out;
+            public Attribute.String aNameN_RG1_out;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.INIT,
             description = "RG2 N outflow in kgN"
             )
-            public JAMSString aNameN_RG2_out;
+            public Attribute.String aNameN_RG2_out;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.INIT,
             description = "N Percolation out of the soil profile in kgN"
             )
-            public JAMSString aNamePercoNabs;
+            public Attribute.String aNamePercoNabs;
 
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.INIT,
             description = "HRU Concentration in mgN/l for RG1"
             )
-            public JAMSString aNameN_concRG;
+            public Attribute.String aNameN_concRG;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.INIT,
             description = "maximum RG1 storage"
             )
-            public JAMSString aNameMaxRG1;
+            public Attribute.String aNameMaxRG1;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.INIT,
             description = "maximum RG2 storage"
             )
-            public JAMSString aNameMaxRG2;
+            public Attribute.String aNameMaxRG2;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.INIT,
             description = "N Grounwater buffer storage in kgN"
             )
-            public JAMSString aNameNGWbuffer;
+            public Attribute.String aNameNGWbuffer;
    
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.INIT,
             description = "Relativ size of the groundwaterN damping tank 0 - 10 to calibrate in -"
             )
-            public JAMSDouble N_delay;
+            public Attribute.Double N_delay;
     
     
     double N_RG1_in = 0;
@@ -197,7 +177,7 @@ import jams.model.*;
      *  Component run stages
      */
     
-    public void init()  throws JAMSEntity.NoSuchAttributeException {
+    public void init()  throws Attribute.Entity.NoSuchAttributeException {
         EntityEnumerator eEnum = hrus.getEntityEnumerator();
         Attribute.Entity[] entities = hrus.getEntityArray();
         
@@ -219,7 +199,7 @@ import jams.model.*;
         }
     }
     
-    public void run() throws JAMSEntity.NoSuchAttributeException {
+    public void run() throws Attribute.Entity.NoSuchAttributeException {
         
         double RG1_out = entity.getDouble(aNameOutRG1.getValue());
         double RG2_out = entity.getDouble(aNameOutRG2.getValue());

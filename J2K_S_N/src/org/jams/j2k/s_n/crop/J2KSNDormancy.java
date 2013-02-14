@@ -43,52 +43,45 @@ import jams.model.*;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "Maximum sunshine duration in h"
             )
-            public JAMSDouble sunhmax;
+            public Attribute.Double sunhmax;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "Minimum yearly sunshine duration in h"
             )
-            public JAMSDouble sunhmin;
+            public Attribute.Double sunhmin;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "entity latidute"
             )
-            public JAMSDouble latitude;
+            public Attribute.Double latitude;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "indicates dormancy of plants"
             )
-            public JAMSBoolean dormancy;
+            public Attribute.Boolean dormancy;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "Plants base growth temperature [°C]"
             )
-            public JAMSDouble tbase;
+            public Attribute.Double tbase;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "HRU daily mean temperature [°C]"
             )
-            public JAMSDouble Tmean;
+            public Attribute.Double Tmean;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "Fraction of actual potential heat units sum [-]"
             )
-            public JAMSDouble FPHUact;  
+            public Attribute.Double FPHUact;  
     
     /*
      *  Component run stages

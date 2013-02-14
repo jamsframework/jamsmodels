@@ -10,7 +10,7 @@
 package org.unijena.abc;
 
 import org.unijena.jams.data.*;
-import org.unijena.jams.data.JAMSEntity.NoSuchAttributeException;
+import org.unijena.jams.data.Attribute.Entity.NoSuchAttributeException;
 import org.unijena.jams.model.*;
 
 /**
@@ -27,76 +27,67 @@ import org.unijena.jams.model.*;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.INIT,
             description = "Parameter ddf"
             )
-            public JAMSDouble ddf;
+            public Attribute.Double ddf;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.INIT,
             description = "Parameter threshold"
             )
-            public JAMSDouble t_thres;
+            public Attribute.Double t_thres;
 
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "the snow storage "
             )
-            public JAMSDouble snowStorage;
+            public Attribute.Double snowStorage;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "the precip input"
             )
-            public JAMSDouble precip;
+            public Attribute.Double precip;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "the tmin input"
             )
-            public JAMSDouble tmin;
+            public Attribute.Double tmin;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "the tmean input"
             )
-            public JAMSDouble tmean;
+            public Attribute.Double tmean;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "the tmax input"
             )
-            public JAMSDouble tmax;
+            public Attribute.Double tmax;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "the snowmelt output"
             )
-            public JAMSDouble snowMelt;
+            public Attribute.Double snowMelt;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "the total output"
             )
-            public JAMSDouble total_output;
+            public Attribute.Double total_output;
     
     /*
      *  Component run stages
      */
     
-    public void init() throws JAMSEntity.NoSuchAttributeException {
+    public void init() throws Attribute.Entity.NoSuchAttributeException {
         
     }
     
-    public void run() throws JAMSEntity.NoSuchAttributeException{
+    public void run() throws Attribute.Entity.NoSuchAttributeException{
         //System.out.println("RUN ABCModel");
         double snowStorage = this.snowStorage.getValue();
         double precip = this.precip.getValue();

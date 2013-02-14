@@ -37,46 +37,43 @@ public class StandardFertParaReader extends JAMSComponent {
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.INIT,
             description = "Data file directory name"
             )
-            public JAMSString dirName;
+            public Attribute.String dirName;
 
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.INIT,
             description = "Fertilizer parameter file name"
             )
-            public JAMSString ftFileName;
+            public Attribute.String ftFileName;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.INIT,
             description = "Collection of hru objects"
             )
-            public JAMSEntityCollection hrus;
+            public Attribute.EntityCollection hrus;
     
     
     
-    public void init() throws JAMSEntity.NoSuchAttributeException {
+    public void init() throws Attribute.Entity.NoSuchAttributeException {
         
         //read fertilizer parameter
-        JAMSEntityCollection fert = new JAMSEntityCollection();
+        Attribute.EntityCollection fert = new Attribute.EntityCollection();
         fert.setEntities(J2KFunctions.readParas(dirName.getValue()+"/"+ftFileName.getValue()));
         
-        HashMap<Double, JAMSEntity> ftMap = new HashMap<Double, JAMSEntity>();
-        JAMSEntity ft, e;
+        HashMap<Double, Attribute.Entity> ftMap = new HashMap<Double, Attribute.Entity>();
+        Attribute.Entity ft, e;
         Object[] attrs;
         
         //put all entities into a HashMap with their ID as key
         
-        Iterator<JAMSEntity> ftIterator = fert.getEntities().iterator();
+        Iterator<Attribute.Entity> ftIterator = fert.getEntities().iterator();
         while (ftIterator.hasNext()) {
             ft = ftIterator.next();
             ftMap.put(ft.getDouble("ID"),  ft);//put all entities into a HashMap with their ID as key
                             }
         
-        Iterator<JAMSEntity> hruIterator = hrus.getEntities().iterator();
+        Iterator<Attribute.Entity> hruIterator = hrus.getEntities().iterator();
         while (hruIterator.hasNext()) {
             e = hruIterator.next();
             ft = ftMap.get(e.getDouble("fertID"));

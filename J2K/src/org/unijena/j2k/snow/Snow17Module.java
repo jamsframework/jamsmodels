@@ -27,22 +27,19 @@ title="ABCSnowModule",
     
     @JAMSVarDescription(
     access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "time interval"
             )
-            public JAMSTimeInterval timeInterval;
+            public Attribute.TimeInterval timeInterval;
     
     @JAMSVarDescription(
     access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "time"
             )
-            public JAMSCalendar time;
+            public Attribute.Calendar time;
     
     //entity attributes
     @JAMSVarDescription(
     access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "Entity area"
             //unit = "m²"
             )
@@ -50,7 +47,6 @@ title="ABCSnowModule",
     
     @JAMSVarDescription(
     access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "Entity elevation"
             //unit = "m"
             )
@@ -58,7 +54,6 @@ title="ABCSnowModule",
     
     @JAMSVarDescription(
     access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "Entity latitude"
             //unit = "deg"
             )
@@ -67,35 +62,30 @@ title="ABCSnowModule",
     //input data
     @JAMSVarDescription(
     access = JAMSVarDescription.AccessType.READWRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "rain amount"
             )
             public Attribute.Double rain_1;
     
     @JAMSVarDescription(
     access = JAMSVarDescription.AccessType.READWRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "snow amount"
             )
             public Attribute.Double snow_1;
     
     @JAMSVarDescription(
     access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "the temperature"
             )
             public Attribute.Double airTemperature;
     
     @JAMSVarDescription(
     access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "the daily minimum temperature"
             )
             public Attribute.Double tmin;
     
     @JAMSVarDescription(
     access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "the daily maximum temperature"
             )
             public Attribute.Double tmax;
@@ -105,7 +95,6 @@ title="ABCSnowModule",
      *******************************************/
     @JAMSVarDescription(
     access = JAMSVarDescription.AccessType.READWRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
             //unit = "mm",
             description = "snow water equivalent [WE]"
             )
@@ -113,7 +102,6 @@ title="ABCSnowModule",
     
     @JAMSVarDescription(
     access = JAMSVarDescription.AccessType.READWRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
             //unit = "mm",
             description = "negative snow heat [NEGHS]"
             )
@@ -121,7 +109,6 @@ title="ABCSnowModule",
     
     @JAMSVarDescription(
     access = JAMSVarDescription.AccessType.READWRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
             //unit = "mm",
             description = "cnhs not clear [CNHS]"
             )
@@ -129,7 +116,6 @@ title="ABCSnowModule",
     
     @JAMSVarDescription(
     access = JAMSVarDescription.AccessType.READWRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
             //unit = "mm",
             description = "liquid water in snow pack [LIQW]"
             )
@@ -137,7 +123,6 @@ title="ABCSnowModule",
     
     @JAMSVarDescription(
     access = JAMSVarDescription.AccessType.READWRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
             //unit = "degC",
             description = "Antecedent temperature index [TINDEX]"
             )
@@ -145,7 +130,6 @@ title="ABCSnowModule",
     
     @JAMSVarDescription(
     access = JAMSVarDescription.AccessType.READWRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
             //unit = "mm",
             description = "Cumulated snow water including liquid [ACCMAX]"
             )
@@ -153,7 +137,6 @@ title="ABCSnowModule",
     
     @JAMSVarDescription(
     access = JAMSVarDescription.AccessType.READWRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
             //unit = "mm",
             description = "Snow liquid water attenuation storage [STORGE]"
             )
@@ -161,7 +144,6 @@ title="ABCSnowModule",
     
     @JAMSVarDescription(
     access = JAMSVarDescription.AccessType.READWRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
             //unit = "decimal",
             description = "Adjusted areal snow cover fraction [AEADJ]"
             )
@@ -169,7 +151,6 @@ title="ABCSnowModule",
     
     @JAMSVarDescription(
     access = JAMSVarDescription.AccessType.READWRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
             //unit = "mm",
             description = "Array of lagged liquid water values [EXLAG]"
             )
@@ -177,7 +158,6 @@ title="ABCSnowModule",
     
     @JAMSVarDescription(
     access = JAMSVarDescription.AccessType.READWRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
             //unit = "degC",
             description = "Average snow temperature [SNTMP]"
             )
@@ -185,7 +165,6 @@ title="ABCSnowModule",
     
     @JAMSVarDescription(
     access = JAMSVarDescription.AccessType.READWRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
             //unit = "cm",
             description = "Average snow depth [SNDPT]"
             )
@@ -193,7 +172,6 @@ title="ABCSnowModule",
     
     @JAMSVarDescription(
     access = JAMSVarDescription.AccessType.READWRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
             //unit = "",
             description = "Average snow density [DS]"
             )
@@ -201,7 +179,6 @@ title="ABCSnowModule",
     
     @JAMSVarDescription(
     access = JAMSVarDescription.AccessType.READWRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
             //unit = "",
             description = "Areal snow cover [AESC]"
             )
@@ -209,7 +186,6 @@ title="ABCSnowModule",
     
     @JAMSVarDescription(
     access = JAMSVarDescription.AccessType.READWRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
             //unit = "",
             description = "internal state [SB]"
             )
@@ -217,7 +193,6 @@ title="ABCSnowModule",
     
     @JAMSVarDescription(
     access = JAMSVarDescription.AccessType.READWRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
             //unit = "",
             description = "internal state [SBWS]"
             )
@@ -225,7 +200,6 @@ title="ABCSnowModule",
     
     @JAMSVarDescription(
     access = JAMSVarDescription.AccessType.READWRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
             //unit = "",
             description = "internal state [SBAESC]"
             )
@@ -236,7 +210,6 @@ title="ABCSnowModule",
      **********************************************/
     @JAMSVarDescription(
     access = JAMSVarDescription.AccessType.READWRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
             //unit = "mm",
             description = "rain passed by the snow module [RAIN]"
             )
@@ -244,7 +217,6 @@ title="ABCSnowModule",
     
     @JAMSVarDescription(
     access = JAMSVarDescription.AccessType.READWRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
             //unit = "mm",
             description = "snow pack runoff [PACKRO]"
             )
@@ -252,7 +224,6 @@ title="ABCSnowModule",
     
     @JAMSVarDescription(
     access = JAMSVarDescription.AccessType.READWRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
             //unit = "mm",
             description = "ground melt runoff [GMRO]"
             )
@@ -260,7 +231,6 @@ title="ABCSnowModule",
     
     @JAMSVarDescription(
     access = JAMSVarDescription.AccessType.READWRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
             //unit = "mm",
             description = "pack melt [MELT]"
             )
@@ -268,7 +238,6 @@ title="ABCSnowModule",
     
     @JAMSVarDescription(
     access = JAMSVarDescription.AccessType.READWRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
             //unit = "mm",
             description = "rain on bare ground [ROBG]"
             )
@@ -276,7 +245,6 @@ title="ABCSnowModule",
     
     @JAMSVarDescription(
     access = JAMSVarDescription.AccessType.READWRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
             //unit = "mm",
             description = "refrozen water [SXRFRZ]"
             )
@@ -284,7 +252,6 @@ title="ABCSnowModule",
     
     @JAMSVarDescription(
     access = JAMSVarDescription.AccessType.READWRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
             //unit = "mm",
             description = "total output [RM]"
             )
@@ -292,7 +259,6 @@ title="ABCSnowModule",
     
     @JAMSVarDescription(
     access = JAMSVarDescription.AccessType.READWRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
             //unit = "mm",
             description = "net surface energy exchange [QNET]"
             )
@@ -300,7 +266,6 @@ title="ABCSnowModule",
     
     @JAMSVarDescription(
     access = JAMSVarDescription.AccessType.READWRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
             //unit = "mm",
             description = "snow evaporation"
             )
@@ -308,7 +273,6 @@ title="ABCSnowModule",
     
     @JAMSVarDescription(
     access = JAMSVarDescription.AccessType.READWRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
             //unit = "degC",
             description = "maximum temperature at timeStep-1"
             )
@@ -320,7 +284,6 @@ title="ABCSnowModule",
      **********************************************/
     @JAMSVarDescription(
     access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.INIT,
             description = "snow correction factor [SCF]"
             //unit=""
             )
@@ -328,7 +291,6 @@ title="ABCSnowModule",
     
     @JAMSVarDescription(
     access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.INIT,
             description = "minimum melt factor [MFMIN]"
             //unit = "mm/degC/6hr"
             )
@@ -336,7 +298,6 @@ title="ABCSnowModule",
     
     @JAMSVarDescription(
     access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.INIT,
             description = "maximum melt factor [MFMAX]"
             //unit = "mm/degC/6hr"
             )
@@ -344,7 +305,6 @@ title="ABCSnowModule",
     
     @JAMSVarDescription(
     access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.INIT,
             description = "average wind function [UADJ]"
             //unit = "mm/mb"
             )
@@ -352,7 +312,6 @@ title="ABCSnowModule",
     
     @JAMSVarDescription(
     access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.INIT,
             description = "minimum SWE for 100% cover [SI]"
             //unit = "mm"
             )
@@ -360,7 +319,6 @@ title="ABCSnowModule",
     
     @JAMSVarDescription(
     access = JAMSVarDescription.AccessType.READWRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "ordinates of the areal depletion curve [ADC]"
             //unit = ""
             )
@@ -368,7 +326,6 @@ title="ABCSnowModule",
     
     @JAMSVarDescription(
     access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.INIT,
             description = "maximum negative melt factor [NMF]"
             //unit = "mm/degC/6hr"
             )
@@ -376,7 +333,6 @@ title="ABCSnowModule",
     
     @JAMSVarDescription(
     access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.INIT,
             description = "antecedent temperature index parameter [TIPM]"
             //unit = ""
             )
@@ -384,7 +340,6 @@ title="ABCSnowModule",
     
     @JAMSVarDescription(
     access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.INIT,
             description = "temperature which delineates rain from snow [PXTEMP]" +
             "not used in this version, because rain and snow comes as input"
             //unit = "degC"
@@ -393,7 +348,6 @@ title="ABCSnowModule",
     
     @JAMSVarDescription(
     access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.INIT,
             description = "percent (decimal) liquid water holding capacity [PLWHC]"
             //unit = "dec"
             )
@@ -401,7 +355,6 @@ title="ABCSnowModule",
     
     @JAMSVarDescription(
     access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.INIT,
             description = "constant amount of melt at the snow-soil interface [DAYGM]"
             //unit = "mm/day"
             )
@@ -409,7 +362,6 @@ title="ABCSnowModule",
     
     @JAMSVarDescription(
     access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.INIT,
             description = "base temperature for snowmelt computations during non-rain periods [MBASE]"
             //unit = "degC"
             )
@@ -418,21 +370,19 @@ title="ABCSnowModule",
     //flags
     @JAMSVarDescription(
     access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.INIT,
             description = "melt factor variation type: [LMFV]" +
             "0 & latitude < 54 default;" +
             "0 & latitude > 54 Alaska type;" +
             "1 user specified "
             //unit = ""
             )
-            public JAMSInteger lmfv_1;
+            public Attribute.Integer lmfv_1;
     
     @JAMSVarDescription(
     access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.INIT,
             description = "module active"
             )
-            public JAMSBoolean active;
+            public Attribute.Boolean active;
     
     
     //internal vars
@@ -471,11 +421,11 @@ title="ABCSnowModule",
          *  Component run stages
          */
     
-    public void init() throws JAMSEntity.NoSuchAttributeException {
+    public void init() throws Attribute.Entity.NoSuchAttributeException {
         
     }
     
-    public void run() throws JAMSEntity.NoSuchAttributeException{
+    public void run() throws Attribute.Entity.NoSuchAttributeException{
         if(this.active == null || this.active.getValue()){
             //exlag has not been initalised so far
             if(this.exlag_1.getValue() == null){
@@ -510,9 +460,9 @@ title="ABCSnowModule",
             netSurfaceEnergyExchange = 0;
             
             //date and time
-            this.month = this.time.get(time.MONTH);
-            this.date = this.time.get(time.DATE);
-            this.julDay = this.time.get(time.DAY_OF_YEAR);
+            this.month = this.time.get(JAMSCalendar.MONTH);
+            this.date = this.time.get(JAMSCalendar.DATE);
+            this.julDay = this.time.get(JAMSCalendar.DAY_OF_YEAR);
             
             //input data
             rainIn = this.rain_1.getValue();

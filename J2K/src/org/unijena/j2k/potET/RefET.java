@@ -57,18 +57,15 @@ public class RefET extends JAMSComponent {
      *  Component variables
      */
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
-    update = JAMSVarDescription.UpdateType.RUN,
     description = "Current time")
-    public JAMSCalendar time;
+    public Attribute.Calendar time;
 
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
-    update = JAMSVarDescription.UpdateType.INIT,
     description = "temporal resolution [d | h | m]")
-    public JAMSString tempRes;
+    public Attribute.String tempRes;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "state variable wind",
             unit="m/s"
             )
@@ -76,7 +73,6 @@ public class RefET extends JAMSComponent {
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "state variable mean temperature",
             unit="°C"
             )
@@ -84,7 +80,6 @@ public class RefET extends JAMSComponent {
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "state variable relative humidity",
             unit="%"
             )
@@ -92,7 +87,6 @@ public class RefET extends JAMSComponent {
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "state variable net radiation",
             unit="MJ m^-2 d^-1"
             )
@@ -100,7 +94,6 @@ public class RefET extends JAMSComponent {
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "state extraterrestric radiation",
             unit="MJ m^-2 d^-1"
             )
@@ -108,7 +101,6 @@ public class RefET extends JAMSComponent {
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "state variable solar radiation",
             unit="MJ m^-2 d^-1"
             )
@@ -116,7 +108,6 @@ public class RefET extends JAMSComponent {
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "attribute elevation",
             unit="m"
             )
@@ -124,27 +115,23 @@ public class RefET extends JAMSComponent {
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "attribute area",
             unit="m²"
             )
             public Attribute.Double area;
 
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.WRITE,
-    update = JAMSVarDescription.UpdateType.RUN,
     description = "potential refET [mm/ timeUnit]")
     public Attribute.Double refET;
 
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.WRITE,
-    update = JAMSVarDescription.UpdateType.RUN,
     description = "actual ET [mm/ timeUnit]")
     public Attribute.Double actET;
 
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
-    update = JAMSVarDescription.UpdateType.INIT,
     description = "Caching configuration: 0 - write cache, 1 - use cache, 2 - caching off",
     defaultValue = "0")
-    public JAMSInteger dataCaching;
+    public Attribute.Integer dataCaching;
 
     private File cacheFile;
 
@@ -155,7 +142,7 @@ public class RefET extends JAMSComponent {
     /*
      *  Component run stages
      */
-    public void init() throws JAMSEntity.NoSuchAttributeException, IOException {
+    public void init() throws Attribute.Entity.NoSuchAttributeException, IOException {
         //first, check if cached data are available
         //cacheFile = new File(dirName.getValue() + "/$" + this.getInstanceName() + ".cache");
         cacheFile = new File(getModel().getWorkspace().getTempDirectory(), this.getInstanceName() + ".cache");
@@ -170,7 +157,7 @@ public class RefET extends JAMSComponent {
         }
     }
 
-    public void run() throws JAMSEntity.NoSuchAttributeException, IOException {
+    public void run() throws Attribute.Entity.NoSuchAttributeException, IOException {
 
         if (dataCaching.getValue() == 1) {
             this.refET.setValue(reader.readDouble());
@@ -216,7 +203,7 @@ public class RefET extends JAMSComponent {
             //aggregation to monthly values
             if (this.time != null) {
                 if (this.tempRes.getValue().equals("m")) {
-                    int daysInMonth = this.time.getActualMaximum(time.DATE);
+                    int daysInMonth = this.time.getActualMaximum(JAMSCalendar.DATE);
                     pET = pET * daysInMonth;
                 }
             }

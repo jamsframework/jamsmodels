@@ -38,24 +38,22 @@ public class StandardEntityReader_1 extends JAMSComponent {
 
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.INIT,
             description = "entity parameter file name"
             )
-            public JAMSString entityFileName;
+            public Attribute.String entityFileName;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "entity collection"
             )
-            public JAMSEntityCollection entities;
+            public Attribute.EntityCollection entities;
 
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
             description = "Name of identifier",
             defaultValue = "ID"
             )
-            public JAMSString identName;
+            public Attribute.String identName;
     
     public void init() throws Attribute.Entity.NoSuchAttributeException {
        

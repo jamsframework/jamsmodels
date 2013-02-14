@@ -42,86 +42,76 @@ import jams.model.*;
      */
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "catchment area"
             )
-            public JAMSDouble cArea;
+            public Attribute.Double cArea;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "direct runoff"
             )
-            public JAMSDouble dirQ;
+            public Attribute.Double dirQ;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "interflow"
             )
-            public JAMSDouble interflow;
+            public Attribute.Double interflow;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "base flow"
             )
-            public JAMSDouble basQ;
+            public Attribute.Double basQ;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "direct runoff cbm"
             )
-            public JAMSDouble dirQcbm;
+            public Attribute.Double dirQcbm;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "interflow runoff cbm"
             )
-            public JAMSDouble infQcbm;
+            public Attribute.Double infQcbm;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "baseflow cbm"
             )
-            public JAMSDouble basQcbm;
+            public Attribute.Double basQcbm;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "total outflow cbm"
             )
-            public JAMSDouble totQcbm;
+            public Attribute.Double totQcbm;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "total outflow mm"
             )
-            public JAMSDouble totQmm;
+            public Attribute.Double totQmm;
 
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "the actual time step"
             )
-            public JAMSCalendar timeStep;
+            public Attribute.Calendar timeStep;
     
     /*
      *  Component run stages
      */
     
-    public void init() throws JAMSEntity.NoSuchAttributeException {
+    public void init() throws Attribute.Entity.NoSuchAttributeException {
         
     }
     
-    public void run() throws JAMSEntity.NoSuchAttributeException {
+    public void run() throws Attribute.Entity.NoSuchAttributeException {
         long days = 1;
         if(this.timeStep != null)
-            days = timeStep.getActualMaximum(timeStep.DAY_OF_MONTH);
+            days = timeStep.getActualMaximum(JAMSCalendar.DAY_OF_MONTH);
         double totOut = 0;
         
         if(this.interflow != null)

@@ -31,60 +31,48 @@ import jams.model.*;
  */
 @JAMSComponentDescription(title = "Array_cracker1ß",
 author = "Manfred Fink",
-description = "split the frist 10 values of a JAMSDoubleArray into 10 JAMSDouble values")
+description = "split the frist 10 values of a Attribute.DoubleArray into 10 Attribute.Double values")
 public class Array_cracker10 extends JAMSComponent {
 
     /*
      * Component variables
      */
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
-    update = JAMSVarDescription.UpdateType.RUN,
     description = "Array to be splited")
-    public JAMSDoubleArray Array;
+    public Attribute.DoubleArray Array;
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.WRITE,
-    update = JAMSVarDescription.UpdateType.RUN,
     description = "value 0")
-    public JAMSDouble value0;
+    public Attribute.Double value0;
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.WRITE,
-    update = JAMSVarDescription.UpdateType.RUN,
     description = "value 1")
-    public JAMSDouble value1;
+    public Attribute.Double value1;
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.WRITE,
-    update = JAMSVarDescription.UpdateType.RUN,
     description = "value 2")
-    public JAMSDouble value2;
+    public Attribute.Double value2;
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.WRITE,
-    update = JAMSVarDescription.UpdateType.RUN,
     description = "value 3")
-    public JAMSDouble value3;
+    public Attribute.Double value3;
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.WRITE,
-    update = JAMSVarDescription.UpdateType.RUN,
     description = "value 4")
-    public JAMSDouble value4;
+    public Attribute.Double value4;
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.WRITE,
-    update = JAMSVarDescription.UpdateType.RUN,
     description = "value 5")
-    public JAMSDouble value5;
+    public Attribute.Double value5;
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.WRITE,
-    update = JAMSVarDescription.UpdateType.RUN,
     description = "value 6")
-    public JAMSDouble value6;
+    public Attribute.Double value6;
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.WRITE,
-    update = JAMSVarDescription.UpdateType.RUN,
     description = "value 7")
-    public JAMSDouble value7;
+    public Attribute.Double value7;
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.WRITE,
-    update = JAMSVarDescription.UpdateType.RUN,
     description = "value 8")
-    public JAMSDouble value8;
+    public Attribute.Double value8;
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.WRITE,
-    update = JAMSVarDescription.UpdateType.RUN,
     description = "value 9")
-    public JAMSDouble value9;
+    public Attribute.Double value9;
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.WRITE,
-    update = JAMSVarDescription.UpdateType.RUN,
     description = "value 10")
-    public JAMSDouble value10;
+    public Attribute.Double value10;
 
     /*
      * Component run stages

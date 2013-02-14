@@ -23,92 +23,80 @@ public class ManageLanduse extends JAMSComponent {
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "Current hru object"
             )
-            public JAMSEntityCollection entities;
+            public Attribute.EntityCollection entities;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "Current time"
             )
-            public JAMSCalendar time;
+            public Attribute.Calendar time;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "Current NH4 fertilizer amount"
             )
-            public JAMSDouble fertNH4N;
+            public Attribute.Double fertNH4N;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "Current NO3 fertilizer amount"
             )
-            public JAMSDouble fertNO3N;
+            public Attribute.Double fertNO3N;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "Current organic fertilizer amount"
             )
-            public JAMSDouble fertorgNactive;
+            public Attribute.Double fertorgNactive;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "Current organic fertilizer amount"
             )
-            public JAMSDouble fertorgNfresh;
+            public Attribute.Double fertorgNfresh;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "Reduction Factor for Fertilisation 0 - 10 [-]"
             )
-            public JAMSDouble ReductionFactor;
+            public Attribute.Double ReductionFactor;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "Current organic fertilizer amount"
             )
-            public JAMSInteger RotPos;
+            public Attribute.Integer RotPos;
     
      @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "Current organic fertilizer amount"
             )
-            public JAMSInteger ManagementPos;
+            public Attribute.Integer ManagementPos;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "Plant exisiting or not"
             )
-            public JAMSBoolean plantExisting;
+            public Attribute.Boolean plantExisting;
 
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "Indicator for harvesting"
             )
-            public JAMSBoolean doHarvest;
+            public Attribute.Boolean doHarvest;
     
     
     
 /*    @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "actual potential heat units sum [-]"
             )
-            public JAMSDouble PHUact; */
+            public Attribute.Double PHUact; */
     
     
-    public void run() throws JAMSEntity.NoSuchAttributeException {
+    public void run() throws Attribute.Entity.NoSuchAttributeException {
         
         Attribute.Entity entity = entities.getCurrent();
         this.fertNO3N.setValue(0);
@@ -133,9 +121,9 @@ public class ManageLanduse extends JAMSComponent {
         int nextDay = currentManagement.jDay;
         doHarvest.setValue(false);
         
-//            System.out.println("da" + nextDay + time.get(JAMSCalendar.DAY_OF_YEAR));
+//            System.out.println("da" + nextDay + time.get(Attribute.Calendar.DAY_OF_YEAR));
         
-        if ((nextDay-1) == time.get(time.DAY_OF_YEAR)) {
+        if ((nextDay-1) == time.get(JAMSCalendar.DAY_OF_YEAR)) {
             if (currentManagement.harvest != -1) {
                 //do harvesting here!!
                 //System.out.println(" Julianischer Tag  "+ time.get(time.DAY_OF_YEAR));
@@ -143,7 +131,7 @@ public class ManageLanduse extends JAMSComponent {
             }
         }
         
-        if (nextDay == time.get(time.DAY_OF_YEAR)) {
+        if (nextDay == time.get(JAMSCalendar.DAY_OF_YEAR)) {
             
             if ((managementPos+1) ==  managementList.size()) {
                 ManagementPos.setValue(0);

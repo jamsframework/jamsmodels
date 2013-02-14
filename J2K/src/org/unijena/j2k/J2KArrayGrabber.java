@@ -62,91 +62,78 @@ import jams.model.*;
      */
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.INIT,
             description = "temporal resolution [m | d | h]"
             )
-            public JAMSString tempRes;
+            public Attribute.String tempRes;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "time"
             )
-            public JAMSCalendar time;
+            public Attribute.Calendar time;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "extraTerrRadiationArray"
             )
             public Attribute.DoubleArray extRadArray;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "LeafAreaIndexArray"
             )
             public Attribute.DoubleArray LAIArray;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "EffectiveHeightArray"
             )
             public Attribute.DoubleArray effHArray;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "rsc0 Array"
             )
             public Attribute.DoubleArray rsc0Array;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "slopeAscpectCorrectionFactorArray"
             )
             public Attribute.DoubleArray slAsCfArray;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "actExtraTerrRadiation"
             )
             public Attribute.Double actExtRad;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "actLAI"
             )
             public Attribute.Double actLAI;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "actEffH"
             )
             public Attribute.Double actEffH;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "actRsc0"
             )
             public Attribute.Double actRsc0;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "Haude factor array"
             )
             public Attribute.DoubleArray haudeFactorArray;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "actHaudeFactor",
             defaultValue="0"
             )
@@ -154,7 +141,6 @@ import jams.model.*;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "actSlopeAscpectCorrectionFactor"
             )
             public Attribute.Double actSlAsCf;
@@ -162,15 +148,15 @@ import jams.model.*;
      *  Component run stages
      */
     
-    public void init() throws JAMSEntity.NoSuchAttributeException{
+    public void init() throws Attribute.Entity.NoSuchAttributeException{
         
     }
     
-    public void run() throws JAMSEntity.NoSuchAttributeException{
+    public void run() throws Attribute.Entity.NoSuchAttributeException{
     	
-        int monthCount = time.get(time.MONTH);
-        int dayCount = time.get(time.DAY_OF_YEAR) - 1;
-        int hourCount = time.get(time.HOUR_OF_DAY) + (24 * dayCount);
+        int monthCount = time.get(JAMSCalendar.MONTH);
+        int dayCount = time.get(JAMSCalendar.DAY_OF_YEAR) - 1;
+        int hourCount = time.get(JAMSCalendar.HOUR_OF_DAY) + (24 * dayCount);
         
         double in_LAI = -9999;
         double in_effH = -9999;

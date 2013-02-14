@@ -42,35 +42,28 @@ import jams.tools.JAMSTools;
 public class MultiEntityReaderBS extends JAMSComponent {
 
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
-    update = JAMSVarDescription.UpdateType.INIT,
     description = "HRU parameter file name")
-    public JAMSString hruFileName;
+    public Attribute.String hruFileName;
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
-    update = JAMSVarDescription.UpdateType.INIT,
     description = "Reach parameter file name")
-    public JAMSString reachFileName;
+    public Attribute.String reachFileName;
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
-    update = JAMSVarDescription.UpdateType.INIT,
     description = "Parameter file name for topological linkage with receiver entities")
-    public JAMSString to_hru_FileName;
+    public Attribute.String to_hru_FileName;
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
-    update = JAMSVarDescription.UpdateType.INIT,
     description = "Parameter file name for weighting of receiver entity")
-    public JAMSString bfl_FileName;
+    public Attribute.String bfl_FileName;
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.WRITE,
-    update = JAMSVarDescription.UpdateType.RUN,
     description = "Collection of hru objects")
-    public JAMSEntityCollection hrus;
+    public Attribute.EntityCollection hrus;
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.WRITE,
-    update = JAMSVarDescription.UpdateType.RUN,
     description = "Collection of reach objects")
-    public JAMSEntityCollection reaches;
+    public Attribute.EntityCollection reaches;
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.WRITE,
-    update = JAMSVarDescription.UpdateType.RUN,
     description = "Collection of hru objects with their topology")
-    public JAMSEntityCollection topology;
+    public Attribute.EntityCollection topology;
 
-    public void init() throws JAMSEntity.NoSuchAttributeException {
+    public void init() throws Attribute.Entity.NoSuchAttributeException {
 
         //read hru parameter
         hrus.setEntities(J2KFunctions.readParas(JAMSTools.CreateAbsoluteFileName(getModel().getWorkspaceDirectory().getPath(), hruFileName.getValue()), getModel()));
@@ -216,8 +209,8 @@ public class MultiEntityReaderBS extends JAMSComponent {
                 }
 
                 //converting the ArrayLists into Arrays
-                JAMSEntity[] to_poly_Array = receiverPolys.toArray(new JAMSEntity[receiverPolys.size()]);
-                JAMSEntity[] to_reach_Array = receiverReaches.toArray(new JAMSEntity[receiverReaches.size()]);
+                Attribute.Entity[] to_poly_Array = receiverPolys.toArray(new Attribute.Entity[receiverPolys.size()]);
+                Attribute.Entity[] to_reach_Array = receiverReaches.toArray(new Attribute.Entity[receiverReaches.size()]);
                 Double[] to_poly_weights_Array = receiverPolysWeights.toArray(new Double[receiverPolysWeights.size()]);
                 Double[] to_reach_weights_Array = receiverReachesWeights.toArray(new Double[receiverReachesWeights.size()]);
                 Double[] to_poly_bfl_Array = receiverArea.toArray(new Double[receiverPolysWeights.size()]);
@@ -248,7 +241,7 @@ public class MultiEntityReaderBS extends JAMSComponent {
         }
     }
 
-    protected void createOrderedList(JAMSEntityCollection col, String asso) throws Attribute.Entity.NoSuchAttributeException {
+    protected void createOrderedList(Attribute.EntityCollection col, String asso) throws Attribute.Entity.NoSuchAttributeException {
 
         Iterator<Attribute.Entity> entityIterator, entityIterator2, entityIterator3;
         Attribute.Entity e, e_ziel, e_ziel_temp, e_temp, f;
@@ -300,7 +293,7 @@ public class MultiEntityReaderBS extends JAMSComponent {
                             mapChanged = true;
                             circleMap.put(e_ziel, new Integer(2));
 
-                            JAMSEntity[] e_ziel_to_poly = (JAMSEntity[]) e_ziel.getObject("to_poly");
+                            Attribute.Entity[] e_ziel_to_poly = (Attribute.Entity[]) e_ziel.getObject("to_poly");
 
                             if (e_ziel_to_poly.length > 0) {
 
@@ -371,7 +364,7 @@ public class MultiEntityReaderBS extends JAMSComponent {
 
                                             bfl_zirkel_min = bfl_zirkel;
 
-                                            JAMSEntity[] e_temp_to_poly = (JAMSEntity[]) e_temp.getObject("to_poly");
+                                            Attribute.Entity[] e_temp_to_poly = (Attribute.Entity[]) e_temp.getObject("to_poly");
                                             e = e_temp_to_poly[i];
                                             e_ziel_temp = e_temp;
                                             arrayfeld_min = i;
@@ -417,8 +410,8 @@ public class MultiEntityReaderBS extends JAMSComponent {
 
                                     mapChanged = true;
 
-                                    JAMSEntity[] e_ziel_to_reach = (JAMSEntity[]) e_ziel.getObject("to_reach");
-                                    JAMSEntity[] e_ziel_to_poly = (JAMSEntity[]) e_ziel.getObject("to_poly");
+                                    Attribute.Entity[] e_ziel_to_reach = (Attribute.Entity[]) e_ziel.getObject("to_reach");
+                                    Attribute.Entity[] e_ziel_to_poly = (Attribute.Entity[]) e_ziel.getObject("to_poly");
 
                                     int arraylaenge_poly = 0;
 
@@ -535,7 +528,7 @@ public class MultiEntityReaderBS extends JAMSComponent {
 
             mapChanged = true;
 
-            JAMSEntity[] e_ziel_to_poly = (JAMSEntity[]) e_ziel.getObject("to_poly");
+            Attribute.Entity[] e_ziel_to_poly = (Attribute.Entity[]) e_ziel.getObject("to_poly");
 
             if (e_ziel_to_poly.length > 0) {
 

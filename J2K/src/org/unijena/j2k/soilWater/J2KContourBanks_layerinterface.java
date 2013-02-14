@@ -18,20 +18,16 @@ description = "Interface for the layered soilwater modul before the calculation 
 public class J2KContourBanks_layerinterface extends JAMSComponent {
 
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
-    update = JAMSVarDescription.UpdateType.INIT,
     description = "An- bzw. Ausschalten des Moduls")
-    public JAMSBoolean cbModulAktiv;
+    public Attribute.Boolean cbModulAktiv;
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
-    update = JAMSVarDescription.UpdateType.RUN,
     description = "The current hru entity")
-    public JAMSEntityCollection hrus;
+    public Attribute.EntityCollection hrus;
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
-    update = JAMSVarDescription.UpdateType.RUN,
     description = "actual LPS water content",
     unit = "l")
     public Attribute.DoubleArray actLPS;
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
-    update = JAMSVarDescription.UpdateType.RUN,
     description = "maximum LPS water content",
     unit = "l")
     public Attribute.DoubleArray maxLPS;
@@ -82,7 +78,7 @@ public class J2KContourBanks_layerinterface extends JAMSComponent {
     boolean modulCBaktiv;
     
 
-    public void init() throws JAMSEntity.NoSuchAttributeException {
+    public void init() throws Attribute.Entity.NoSuchAttributeException {
         Attribute.Entity actHRU;
         double runsumlayer = 0;
         //which Layer are cutted by the trench 
@@ -106,7 +102,7 @@ public class J2KContourBanks_layerinterface extends JAMSComponent {
         layermax.setValue(runlayermax);
     }
 
-    public void run() throws JAMSEntity.NoSuchAttributeException {
+    public void run() throws Attribute.Entity.NoSuchAttributeException {
 
         int i = 0;
         double sumactLPS = 0;

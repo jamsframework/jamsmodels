@@ -27,490 +27,423 @@ import java.util.*;
         
      @JAMSVarDescription(
              access = JAMSVarDescription.AccessType.READ,
-             update = JAMSVarDescription.UpdateType.INIT
              )
-             public JAMSString fileName;
+             public Attribute.String fileName;
      
      @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.INIT,
             description = "Collection of hru objects"
             )
-            public JAMSEntityCollection hrus;
+            public Attribute.EntityCollection hrus;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "The current hru entity"
             )
-            public JAMSEntity entity;
+            public Attribute.Entity entity;
     
         @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.INIT,
             description = "HRU attribute name area"
             )
-            public JAMSString aNameArea;
+            public Attribute.String aNameArea;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.INIT,
             description = "HRU crop id"
             )
-            public JAMSString aNameCropID;
+            public Attribute.String aNameCropID;
     
       @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.INIT,
             description = "HRU crop class"
             )
-            public JAMSString aNameCropClass; 
+            public Attribute.String aNameCropClass; 
       
      @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.INIT,
             description = "HRU land use typ (same as J2K land use id)"
             )
-            public JAMSString aNamePTyp;             
+            public Attribute.String aNamePTyp;             
      
    @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.INIT,
             description = "HRU daily potential heat units"
             )
-            public JAMSString aNamePHU_daily;
+            public Attribute.String aNamePHU_daily;
    
    
    @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.INIT,
             description = "HRU daily zero based heat units"
             )
-            public JAMSString aNameHU_daily;
+            public Attribute.String aNameHU_daily;
           
    @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.INIT,
             description = "HRU fraction daily potential heat units"
             )
-            public JAMSString aNameFPHU_daily;      
+            public Attribute.String aNameFPHU_daily;      
    
    
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.INIT,
             description = "HRU fraction daily zero based potential heat units"
             )
-            public JAMSString aNameFHU0_daily;
+            public Attribute.String aNameFHU0_daily;
  
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.INIT,
             description = "HRU half of yearly potential heat units"
             )
-            public JAMSString aNamePHU_50;
+            public Attribute.String aNamePHU_50;
     
 /*     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.INIT,
             description = "First shape coefficient to determine LAI development"
             )
-            public JAMSString aNameSC1_LAI;
+            public Attribute.String aNameSC1_LAI;
      
      @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.INIT,
             description = "Second shape coefficient to determine LAI development"
             )
-            public JAMSString aNameSC2_LAI;  */
+            public Attribute.String aNameSC2_LAI;  */
         
      @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.INIT,
             description = "Max LAI corresponding to the first point of the optimal LAI development"
             )
-            public JAMSString aNameMLAI_1;
+            public Attribute.String aNameMLAI_1;
      
      @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.INIT,
             description = "Max LAI corresponding to the second point of the optimal LAI development"
              
             )
-            public JAMSString aNameMLAI_2;
+            public Attribute.String aNameMLAI_2;
      
       @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.INIT,
             description = "Maximimum LAI"
             )
-            public JAMSString aNameMLAI;
+            public Attribute.String aNameMLAI;
     
     
      @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.INIT,
             description = "Fraction of growing season corresponding to the first point of the optimal LAI development"
             )
-            public JAMSString aNameFrcGrow1;
+            public Attribute.String aNameFrcGrow1;
      
       @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.INIT,
             description = "Fraction of growing season corresponding to the second point of the optimal LAI development"
             )
-            public JAMSString aNameFrcGrow2;
+            public Attribute.String aNameFrcGrow2;
       
      @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.INIT,
             description = "Daily solar radiation [MJ/m²]"
             )
-            public JAMSString aNameSolRad;
+            public Attribute.String aNameSolRad;
     
      
      @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.INIT,
             description = "Crop specific radiation use efficiency ([kg/ha] drymass per[MJm²])"
             )
-            public JAMSString aNameRadUse;
+            public Attribute.String aNameRadUse;
      
      @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.INIT,
             description = "Intercepted photosynthetically active radiation [MJ/m²]"
             )
-            public JAMSString aNameHphosyn;
+            public Attribute.String aNameHphosyn;
      
      @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.INIT,
             description = "Biomass produced for a given day [kg/ha] drymass"
             )
-            public JAMSString aNameBiomass;
+            public Attribute.String aNameBiomass;
      
      @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.INIT,
             description = "Canopy Height [m]"
             )
-            public JAMSString aNameCanHeight;
+            public Attribute.String aNameCanHeight;
      
        @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.INIT,
             description = "Maximum Canopy Height [m]"
             )
-            public JAMSString aNameMCanHeight;   
+            public Attribute.String aNameMCanHeight;   
        
        @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.INIT,
             description = "Daily LAI [-]"
             )
-            public JAMSString aNameLAI_daily;
+            public Attribute.String aNameLAI_daily;
             
             
        @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.INIT,
             description = "Maximum rooting depth [mm]"
             )
-            public JAMSString aNameMRootD;
+            public Attribute.String aNameMRootD;
     
        @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.INIT,
             description = "Total rooting depth [mm]"
             )
-            public JAMSString aNameTrootD;
+            public Attribute.String aNameTrootD;
     
          @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.INIT,
             description = "Normal fraction of N in the plant biomass at the emergence"
             )
-            public JAMSString aNameNuptake_1;
+            public Attribute.String aNameNuptake_1;
          
           @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.INIT,
             description = "Normal fraction of N in the plant biomass at 50% of maturity"
             )
-            public JAMSString aNameNuptake_2;
+            public Attribute.String aNameNuptake_2;
           
       @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.INIT,
             description = "Normal fraction of N in the plant biomass at maturity"
             )
-            public JAMSString aNameNuptake_3;
+            public Attribute.String aNameNuptake_3;
       
         @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.INIT,
             description = "First shape coefficient for nitrogen uptake in biomass"
             )
-            public JAMSString aNameSC3_NBio;
+            public Attribute.String aNameSC3_NBio;
         
         @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.INIT,
             description = "second shape coefficient for nitrogen uptake in biomass"
             )
-            public JAMSString aNameSC4_NBio;
+            public Attribute.String aNameSC4_NBio;
         
         @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.INIT,
             description = "Optimal fraction of nitrogen in the plant biomass at the current growth's stage"
             )
-            public JAMSString aNameFNPlant;
+            public Attribute.String aNameFNPlant;
             
          @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.INIT,
             description = "Optimal plant nitrogen content in the plants biomass for a given day"
             )
-            public JAMSString aNameBioNopt;
+            public Attribute.String aNameBioNopt;
             
        @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.INIT,
             description = "Plants nitrogen demand for a given day"
             )
-            public JAMSString aNameBioNdem;       
+            public Attribute.String aNameBioNdem;       
           
        @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.INIT,
             description = "Actual nitrogen stored in the plants biomass for a given day"
             )
-            public JAMSString aNameBioNact;
+            public Attribute.String aNameBioNact;
         
         @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.INIT,
             description = "Harvest Index [0-1]"
             )
-            public JAMSString aNameHarvIndex;
+            public Attribute.String aNameHarvIndex;
         
           @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.INIT,
             description = "Fraction of harvest"
             )
-            public JAMSString aNameFracHarv;
+            public Attribute.String aNameFracHarv;
         
         
         @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.INIT,
             description = "Lower boundary of harvest index [0-1]"
             )
-            public JAMSString aNameLHarIndex;
+            public Attribute.String aNameLHarIndex;
         
          @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.INIT,
             description = "Potential Crop Yield [kg/ha]"
             )
-            public JAMSString aNameYieldPot;
+            public Attribute.String aNameYieldPot;
          
          @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.INIT,
             description = "Actual Crop Yield [kg/ha]"
             )
-            public JAMSString aNameYieldAct;
+            public Attribute.String aNameYieldAct;
          
          @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.INIT,
             description = "Biomass above ground on the day of harvest [kg/ha]"
             )
-            public JAMSString aNameBioAg;
+            public Attribute.String aNameBioAg;
          
          @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.INIT,
             description = "Fraction N in Yield"
             )
-            public JAMSString aNameFrcNYld;
+            public Attribute.String aNameFrcNYld;
          
          @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.INIT,
             description = "Fraction P in Yield"
             )
-            public JAMSString aNameFrcPyld;
+            public Attribute.String aNameFrcPyld;
          
          @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.INIT,
             description = "Actual N mass stored in plant material [kg N/ha]"
             )
-            public JAMSString aNameBioAct;
+            public Attribute.String aNameBioAct;
          
   @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.INIT,
             description = "Scaling factor for N stress"
             )
-            public JAMSString aNameScalN;
+            public Attribute.String aNameScalN;
   
          
   @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.INIT,
             description = "Actual LAI for a given day"
             )
-            public JAMSString aNameLAIact;
+            public Attribute.String aNameLAIact;
   
      @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.INIT,
             description = "Optimal temperature for plant growth [°C]"
             )
-            public JAMSString aNameTOpt; 
+            public Attribute.String aNameTOpt; 
      
        @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.INIT,
             description = "Residuen pool (biomass)"
             )
-            public JAMSString aNameResidue_pool;
+            public Attribute.String aNameResidue_pool;
 
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.INIT,
             description = "Water stress for a given day [mm H2O]"
             )
-            public JAMSString aNameWstrs;
+            public Attribute.String aNameWstrs;
             
  @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.INIT,
             description = "HRU actual Transpiration in mm"
             )
-            public JAMSString aNameaTP;
+            public Attribute.String aNameaTP;
  
      @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.INIT,
             description = "HRU potential Transpiration in mm"
             )
-            public JAMSString aNamepTP;
+            public Attribute.String aNamepTP;
      
          @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.INIT,
             description = "Light Extinct Coefficient [-0.65]"
             )
-            public JAMSDouble LExCoef;
+            public Attribute.Double LExCoef;
     
    /*  @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.INIT,
             description = "Initial Leaf Area Index [-]"
             )
-            public JAMSString aNameLai_init;*/ //@todo muss noch im ParaReader für jedes Crop initialisiert werden (ALAI)
+            public Attribute.String aNameLai_init;*/ //@todo muss noch im ParaReader für jedes Crop initialisiert werden (ALAI)
      
       @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.INIT,
             description = "Actual daily biomass [kg/ha]"
             )
-            public JAMSString aNamebio_daily; 
+            public Attribute.String aNamebio_daily; 
       
       @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.INIT,
             description = "Actual daily LAI [-]"
             )
-            public JAMSString aNamelai_daily; 
+            public Attribute.String aNamelai_daily; 
       
       @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.INIT,
             description = "Actual daily Canopy Height [m]"
             )
-            public JAMSString aNamehc_daily;       
+            public Attribute.String aNamehc_daily;       
           
       
       @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.INIT,
             description = "Actual daily fraction of root biomass [-]"
             )
-            public JAMSString aNamefrroot_daily;    
+            public Attribute.String aNamefrroot_daily;    
       
          @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.INIT,
             description = "Actual daily root development [mm]"
             )
-            public JAMSString aNameZRroot_daily;  
+            public Attribute.String aNameZRroot_daily;  
          
          @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.INIT,
             description = "Actual fraction N in plant [-]"
             )
-            public JAMSString aNamefNPlant_daily;   
+            public Attribute.String aNamefNPlant_daily;   
          
           @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.INIT,
             description = "Actual N content in plants biomass [kg N/ha]"
             )
-            public JAMSString aNamebioNopt_daily;   
+            public Attribute.String aNamebioNopt_daily;   
           
           @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.INIT,
             description = "Daily plants N demand [kg N/ha]"
             )
-            public JAMSString aNamebioNUp_daily;   
+            public Attribute.String aNamebioNUp_daily;   
         
           @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.INIT,
             description = "Daily fraction of max LAI [-]"
             )
-            public JAMSString aNamefrLAImx_daily;   
+            public Attribute.String aNamefrLAImx_daily;   
      
           @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.INIT,
             description = "Daily fraction of max root development [-]"
             )
-            public JAMSString aNamefrRoot_daily;   
+            public Attribute.String aNamefrRoot_daily;   
               
           @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.INIT,
             description = "Daily rooting depth [-]"
             )
-            public JAMSString aNameZRoot_daily;   
+            public Attribute.String aNameZRoot_daily;   
           
        
           @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.INIT,
             description = "N content in yield [kg N/ha]"
             )
-            public JAMSString aNameyldN;   
+            public Attribute.String aNameyldN;   
         
                            
  
 
     
-      public void init() throws JAMSEntity.NoSuchAttributeException, IOException {
-        JAMSEntityEnumerator eEnum = hrus.getEntityEnumerator(); /*Entity Array*/
-        JAMSEntity[] entities = hrus.getEntityArray();
+      public void init() throws Attribute.Entity.NoSuchAttributeException, IOException {
+        Attribute.EntityEnumerator eEnum = hrus.getEntityEnumerator(); /*Entity Array*/
+        Attribute.Entity[] entities = hrus.getEntityArray();
           
      
      for (int i = 0; i < entities.length; i++) {
@@ -526,7 +459,7 @@ import java.util.*;
          }          
      }
      
-         public void run() throws JAMSEntity.NoSuchAttributeException{
+         public void run() throws Attribute.Entity.NoSuchAttributeException{
      
          double fphu = entity.getDouble(aNameFPHU_daily.getValue()); /* fraction of daily PHU */
          double aTP = entity.getDouble(aNameaTP.getValue()); /*actual transpiration in mm*/     
@@ -586,7 +519,7 @@ import java.util.*;
          // calculation the maximum leaf area corresponding to fraction of heat units,
          // expressed as LAI fraction of the known max LAI
         
-        private void calc_lai() throws JAMSEntity.NoSuchAttributeException {
+        private void calc_lai() throws Attribute.Entity.NoSuchAttributeException {
                
          /* Shape coefficients 
             sc to determine LAI development */
@@ -620,7 +553,7 @@ import java.util.*;
          // radiation-use efficiency declared in the crop growth database by parameter 'rue' in crop.par
          // whereas the total biomass on a given day is summed up 
                       
-        private double calc_biomass() throws JAMSEntity.NoSuchAttributeException {
+        private double calc_biomass() throws Attribute.Entity.NoSuchAttributeException {
                    
          double Hphosyn = 0.5 * this.solrad * (1 - Math.exp(this.LExCoef * this.lai_daily));       
          double bio_delta = this.raduse * this.Hphosyn;
@@ -635,7 +568,7 @@ import java.util.*;
          // chtmx = maximum canopy height (m), Parameter from crop.par
          // frLAImx = fraction of plants maximum canopy height
         
-         private double calc_canopy() throws JAMSEntity.NoSuchAttributeException {
+         private double calc_canopy() throws Attribute.Entity.NoSuchAttributeException {
          
          double hc_delta = this.chtmx * Math.sqrt(this.frLAImx_daily);
          double hc_daily = this.hc_delta + this.hc_daily;
@@ -649,7 +582,7 @@ import java.util.*;
          // daily fraction of root biomass is calculated by
          
          // Fraction of root biomass
-         private void calc_root() throws JAMSEntity.NoSuchAttributeException {
+         private void calc_root() throws Attribute.Entity.NoSuchAttributeException {
         
          double frroot_delta = 0.40 - 0.20 * this.fphu;
          frroot_daily = this.frroot_delta + this.frroot_daily;
@@ -726,7 +659,7 @@ import java.util.*;
                   
          // Nutrient uptake by plants
          
-          private void calc_nuptake() throws JAMSEntity.NoSuchAttributeException {        
+          private void calc_nuptake() throws Attribute.Entity.NoSuchAttributeException {        
          // is calculated by the fraction of the plant biomass as a function of growth stage given the optimal conditions
                             // fnplant =fraction N in plant biomass
                             // with bn1 as fraction of N in the plant biomass at the emergence
@@ -781,7 +714,7 @@ import java.util.*;
         // Phosphorus uptake
          
          // Crop Yield
-           private void calc_cropyield() throws JAMSEntity.NoSuchAttributeException {     
+           private void calc_cropyield() throws Attribute.Entity.NoSuchAttributeException {     
         
           //for harvesting 4 codes are implemented:
 				// (1) assumes harvesting with Haupt- & Nebenfrucht, plant growth stopped

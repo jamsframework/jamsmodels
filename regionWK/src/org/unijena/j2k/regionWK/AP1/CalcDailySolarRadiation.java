@@ -44,55 +44,45 @@ public class CalcDailySolarRadiation extends JAMSComponent {
      *  Component variables
      */
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
-    update = JAMSVarDescription.UpdateType.RUN,
     description = "time")
-    public JAMSCalendar time;
+    public Attribute.Calendar time;
 
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
-    update = JAMSVarDescription.UpdateType.RUN,
     description = "state variable sunshine hours [h/d]")
-    public JAMSDouble sunh;
+    public Attribute.Double sunh;
 
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.WRITE,
-    update = JAMSVarDescription.UpdateType.RUN,
     description = "Maximum sunshine duration in h",
     defaultValue = "0")
-    public JAMSDouble sunhmax;
+    public Attribute.Double sunhmax;
 
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
-    update = JAMSVarDescription.UpdateType.RUN,
     description = "state variable slope aspect correction factor")
-    public JAMSDouble actSlAsCf;
+    public Attribute.Double actSlAsCf;
 
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
-    update = JAMSVarDescription.UpdateType.RUN,
     description = "attribute latitude [deg]")
-    public JAMSDouble latitude;
+    public Attribute.Double latitude;
 
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
-    update = JAMSVarDescription.UpdateType.RUN,
     description = "daily extraterrestic radiation [MJ/m²d]")
-    public JAMSDouble actExtRad;
+    public Attribute.Double actExtRad;
 
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.WRITE,
-    update = JAMSVarDescription.UpdateType.RUN,
     description = "daily solar radiation [MJ/m²d]")
-    public JAMSDouble solRad;
+    public Attribute.Double solRad;
 
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
-    update = JAMSVarDescription.UpdateType.INIT,
     description = "Angstrom factor a")
-    public JAMSDouble angstrom_a;
+    public Attribute.Double angstrom_a;
 
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
-    update = JAMSVarDescription.UpdateType.INIT,
     description = "Angstrom factor b")
-    public JAMSDouble angstrom_b;
+    public Attribute.Double angstrom_b;
 
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
-    update = JAMSVarDescription.UpdateType.INIT,
     description = "temporal resolution [d | h | m]")
-    public JAMSString tempRes;
+    public Attribute.String tempRes;
  
 
     int[] monthMean = {15, 45, 74, 105, 135, 166, 196, 227, 258, 288, 319, 349};
@@ -100,11 +90,11 @@ public class CalcDailySolarRadiation extends JAMSComponent {
      *  Component run stages
      */
 
-    public void init() throws JAMSEntity.NoSuchAttributeException, IOException {
+    public void init() throws Attribute.Entity.NoSuchAttributeException, IOException {
         
     }
 
-    public void run() throws JAMSEntity.NoSuchAttributeException, IOException {
+    public void run() throws Attribute.Entity.NoSuchAttributeException, IOException {
 
        
             int julDay = time.get(time.DAY_OF_YEAR);

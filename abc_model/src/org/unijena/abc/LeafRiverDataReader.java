@@ -23,8 +23,7 @@
 
 package org.unijena.abc;
 
-import jams.data.JAMSDouble;
-import jams.data.JAMSString;
+import jams.data.*;
 import jams.io.GenericDataReader;
 import jams.io.JAMSTableDataArray;
 import jams.io.JAMSTableDataConverter;
@@ -39,22 +38,19 @@ import jams.model.JAMSVarDescription;
 public class LeafRiverDataReader extends JAMSComponent {
     
     @JAMSVarDescription(
-            access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.INIT
+            access = JAMSVarDescription.AccessType.READ
             )
-            public JAMSString fileName;
+            public Attribute.String fileName;
     
     @JAMSVarDescription(
-            access = JAMSVarDescription.AccessType.WRITE,
-            update = JAMSVarDescription.UpdateType.RUN
+            access = JAMSVarDescription.AccessType.WRITE
             )
-            public JAMSDouble precip;
+            public Attribute.Double precip;
     
     @JAMSVarDescription(
-            access = JAMSVarDescription.AccessType.WRITE,
-            update = JAMSVarDescription.UpdateType.RUN
+            access = JAMSVarDescription.AccessType.WRITE
             )
-            public JAMSDouble obsRunoff;
+            public Attribute.Double obsRunoff;
     
     
     

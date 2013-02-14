@@ -44,17 +44,15 @@ title="InErrorContext",
     
     @JAMSVarDescription(
     access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.INIT,
             description = "Number of model evaluations"
             )
-            public JAMSInteger modelRuns;
+            public Attribute.Integer modelRuns;
     
     @JAMSVarDescription(
     access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.INIT,
             description = "Flag for dis/enabling this sampler"
             )
-            public JAMSBoolean enable;
+            public Attribute.Boolean enable;
     
     
     int currentCount; 

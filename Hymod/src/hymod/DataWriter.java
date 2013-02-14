@@ -23,9 +23,13 @@
 
 package hymod;
 
-import org.unijena.jams.model.*;
-import org.unijena.jams.data.*;
-import org.unijena.jams.io.*;
+import jams.data.*;
+import jams.io.GenericDataWriter;
+import jams.model.JAMSComponent;
+import jams.model.JAMSComponentDescription;
+import jams.model.JAMSVarDescription;
+
+
 
 /**
  *
@@ -40,66 +44,57 @@ public class DataWriter extends JAMSComponent {
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.INIT,
             description = "full qualified path name for model output file"
             )
-            public JAMSString outFileName;
+            public Attribute.String outFileName;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "the current date provided by the temporal context"
             )
-            public JAMSCalendar time;
+            public Attribute.Calendar time;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "the precipitation value of the respective time step"
             )
-            public JAMSDouble precip;
+            public Attribute.Double precip;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "the potential ET value of the respective time step"
             )
-            public JAMSDouble pET;
+            public Attribute.Double pET;
         
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "the simulated actual ET value of the respective time step"
             )
-            public JAMSDouble simET;
+            public Attribute.Double simET;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "the simulated direct flow component of the respective time step"
             )
-            public JAMSDouble simDirectFlow;
+            public Attribute.Double simDirectFlow;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "the simulated base flow component of the respective time step"
             )
-            public JAMSDouble simBaseFlow;
+            public Attribute.Double simBaseFlow;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "the simulated total runoff of the respective time step"
             )
-            public JAMSDouble simRunoff;
+            public Attribute.Double simRunoff;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "the observed of the respective time step"
             )
-            public JAMSDouble obsRunoff;
+            public Attribute.Double obsRunoff;
         
     private GenericDataWriter writer;
     
@@ -133,7 +128,7 @@ public class DataWriter extends JAMSComponent {
         writer.addData(pET);
         try {
             writer.writeData();
-        } catch (org.unijena.jams.runtime.RuntimeException jre) {
+        } catch (jams.runtime.RuntimeException jre) {
             System.out.println(jre.getMessage());
         }
         

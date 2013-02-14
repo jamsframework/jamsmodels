@@ -6,10 +6,10 @@
 package org.jams.j2k.s_n.soillayer;
 
 import jams.data.Attribute;
-import jams.data.JAMSBoolean;
-import jams.data.JAMSCalendar;
+import jams.data.Attribute.Boolean;
+import jams.data.Attribute.Calendar;
 import jams.data.JAMSDataFactory;
-import jams.data.JAMSDouble;
+import jams.data.Attribute.Double;
 import jams.model.JAMSComponent;
 import jams.model.JAMSComponentDescription;
 import jams.model.JAMSVarDescription;
@@ -26,207 +26,172 @@ public class J2KProcessSoilCarbonate extends JAMSComponent {
      *  Component variables
      */
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
-    update = JAMSVarDescription.UpdateType.RUN,
     description = "time")
-    public JAMSCalendar time;
+    public Attribute.Calendar time;
 
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
-    update = JAMSVarDescription.UpdateType.RUN,
     description = "attribute area")
-    public JAMSDouble area;
+    public Attribute.Double area;
 
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
-    update = JAMSVarDescription.UpdateType.RUN,
     description = "kg / ha")
-    public JAMSDouble carbonIn;
+    public Attribute.Double carbonIn;
 
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
-    update = JAMSVarDescription.UpdateType.RUN,
     description = "layer count of soil")
     public Attribute.Double nLayer;
 
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
-    update = JAMSVarDescription.UpdateType.RUN,
     description = "depth of soil layer in cm")
     public Attribute.DoubleArray depth;
 
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READWRITE,
-    update = JAMSVarDescription.UpdateType.RUN,
     description = "fast AOM1",
     unit = "kg*m^-3")
     public Attribute.DoubleArray addedOrganicMatterConcentrationFast;
 
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READWRITE,
-    update = JAMSVarDescription.UpdateType.RUN,
     description = "fast AOM2",
     unit = "kg*m^-3")
     public Attribute.DoubleArray addedOrganicMatterConcentrationSlow;
 
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READWRITE,
-    update = JAMSVarDescription.UpdateType.RUN,
     description = "fast BOM",
     unit = "kg*m^-3")
     public Attribute.DoubleArray microbialBiomassConcentrationFast;
 
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READWRITE,
-    update = JAMSVarDescription.UpdateType.RUN,
     description = "slow BOM",
     unit = "kg*m^-3")
     public Attribute.DoubleArray microbialBiomassConcentrationSlow;
 
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READWRITE,
-    update = JAMSVarDescription.UpdateType.RUN,
     description = "fast SOM",
     unit = "kg*m^-3")
     public Attribute.DoubleArray soilOrganicMatterConcentrationFast;
 
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READWRITE,
-    update = JAMSVarDescription.UpdateType.RUN,
     description = "slow SOM",
     unit = "kg*m^-3")
     public Attribute.DoubleArray soilOrganicMatterConcentrationSlow;
 
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
-    update = JAMSVarDescription.UpdateType.RUN,
     description = "clay content",
     unit = "kg*kg^-1")
     public Attribute.DoubleArray clayContent;
 
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
-    update = JAMSVarDescription.UpdateType.RUN,
     description = "temperature of soillayer",
     unit = "°C")
     public Attribute.DoubleArray soilTemperature;
 
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
-    update = JAMSVarDescription.UpdateType.RUN,
     description = "potential pressure",
     unit = "-cm H2o")
     public Attribute.DoubleArray potentialPressure;
 
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.WRITE,
-    update = JAMSVarDescription.UpdateType.RUN,
     description = "co2 output")
-    public JAMSDouble co2Out;
+    public Attribute.Double co2Out;
 
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
-    update = JAMSVarDescription.UpdateType.RUN,
     description = "co2 output",
     defaultValue = "2.7E-6")
-    public JAMSDouble kSOM1;
+    public Attribute.Double kSOM1;
 
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
-    update = JAMSVarDescription.UpdateType.RUN,
     description = "co2 output",
     defaultValue = "1.4E-4")
-    public JAMSDouble kSOM2;
+    public Attribute.Double kSOM2;
 
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
-    update = JAMSVarDescription.UpdateType.RUN,
     description = "co2 output",
     defaultValue = "1.2E-2")
-    public JAMSDouble kAOM1;
+    public Attribute.Double kAOM1;
 
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
-    update = JAMSVarDescription.UpdateType.RUN,
     description = "co2 output",
     defaultValue = "5.0E-2")
-    public JAMSDouble kAOM2;
+    public Attribute.Double kAOM2;
 
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
-    update = JAMSVarDescription.UpdateType.RUN,
     description = "co2 output",
     defaultValue = "1.85E-4")
-    public JAMSDouble kDeathRate1;
+    public Attribute.Double kDeathRate1;
 
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
-    update = JAMSVarDescription.UpdateType.RUN,
     description = "co2 output",
     defaultValue = "1.0E-2")
-    public JAMSDouble kDeathRate2;
+    public Attribute.Double kDeathRate2;
 
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
-    update = JAMSVarDescription.UpdateType.RUN,
     description = "co2 output",
     defaultValue = "1.8E-3")
-    public JAMSDouble mBOM1;
+    public Attribute.Double mBOM1;
 
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
-    update = JAMSVarDescription.UpdateType.RUN,
     description = "co2 output",
     defaultValue = "1.0E-2")
-    public JAMSDouble mBOM2;
+    public Attribute.Double mBOM2;
 
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
-    update = JAMSVarDescription.UpdateType.RUN,
     description = "co2 output",
     defaultValue = "0.6")
-    public JAMSDouble EBOM1;
+    public Attribute.Double EBOM1;
 
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
-    update = JAMSVarDescription.UpdateType.RUN,
     description = "co2 output",
     defaultValue = "0.6")
-    public JAMSDouble EBOM2;
+    public Attribute.Double EBOM2;
 
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
-    update = JAMSVarDescription.UpdateType.RUN,
     description = "co2 output",
     defaultValue = "0.00165")
-    public JAMSDouble BCS;
+    public Attribute.Double BCS;
 
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
-    update = JAMSVarDescription.UpdateType.RUN,
     description = "co2 output",
     defaultValue = "0.00165")
-    public JAMSDouble BCF;
+    public Attribute.Double BCF;
 
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
-    update = JAMSVarDescription.UpdateType.RUN,
     description = "co2 output",
     defaultValue = "24.75")
-    public JAMSDouble BMCS;
+    public Attribute.Double BMCS;
 
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
-    update = JAMSVarDescription.UpdateType.RUN,
     description = "co2 output",
     defaultValue = "8.25")
-    public JAMSDouble BMCF;
+    public Attribute.Double BMCF;
 
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
-    update = JAMSVarDescription.UpdateType.RUN,
     description = "co2 output",
     defaultValue = "0.8")
-    public JAMSDouble fAOM1;
+    public Attribute.Double fAOM1;
 
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
-    update = JAMSVarDescription.UpdateType.RUN,
     description = "co2 output",
     defaultValue = "0.2")
-    public JAMSDouble fAOM2;
+    public Attribute.Double fAOM2;
 
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
-    update = JAMSVarDescription.UpdateType.RUN,
     description = "co2 output",
     defaultValue = "0.5")
-    public JAMSDouble fBOM1;
+    public Attribute.Double fBOM1;
 
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
-    update = JAMSVarDescription.UpdateType.RUN,
     description = "co2 output",
     defaultValue = "0.1")
-    public JAMSDouble fSOM1;
+    public Attribute.Double fSOM1;
 
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
-    update = JAMSVarDescription.UpdateType.RUN,
     description = "co2 output",
     defaultValue = "0.4")
-    public JAMSDouble fSOM2;
+    public Attribute.Double fSOM2;
 
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READWRITE,
-    update = JAMSVarDescription.UpdateType.INIT,
     description = "co2 output")
-    public JAMSBoolean isInit;
+    public Attribute.Boolean isInit;
 
     private double clayContentFunction(double Xc){
         final double XcStar = 0.25; //limit for the effect of clay content in kg/kg

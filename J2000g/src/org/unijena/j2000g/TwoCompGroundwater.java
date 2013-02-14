@@ -48,100 +48,87 @@ import jams.model.*;
      */
      @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "groundwater recharge from antecedent module"
             )
-            public JAMSDouble gwRecharge;
+            public Attribute.Double gwRecharge;
 
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.INIT,
             description = "number of storages of cascade 1"
             )
-            public JAMSInteger n1;
+            public Attribute.Integer n1;
 
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.INIT,
             description = "recision coefficient of cascade 1"
             )
-            public JAMSDouble k1;
+            public Attribute.Double k1;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "groundwater storages of cascade 1"
             )
-            public JAMSDoubleArray gwStor1;
+            public Attribute.DoubleArray gwStor1;
 
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "total groundwater storage content of cascade 1"
             )
-            public JAMSDouble gwStorCont1;
+            public Attribute.Double gwStorCont1;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "outflow from cascade 1"
             )
-            public JAMSDouble q1;
+            public Attribute.Double q1;
 
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.INIT,
             description = "number of storages of cascade 2"
             )
-            public JAMSInteger n2;
+            public Attribute.Integer n2;
 
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.INIT,
             description = "recision coefficient k2"
             )
-            public JAMSDouble k2;
+            public Attribute.Double k2;
 
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "groundwater storages of cascade 2"
             )
-            public JAMSDoubleArray gwStor2;
+            public Attribute.DoubleArray gwStor2;
 
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "total groundwater storage content of cascade 2"
             )
-            public JAMSDouble gwStorCont2;
+            public Attribute.Double gwStorCont2;
 
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "outflow from cascade 2"
             )
-            public JAMSDouble q2;
+            public Attribute.Double q2;
 
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "aggregated outflow from both cascades"
             )
-            public JAMSDouble basQ;
+            public Attribute.Double basQ;
 
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.INIT,
             description = "distribution coefficient alpha"
             )
-            public JAMSDouble alpha;
+            public Attribute.Double alpha;
     
     /*
      *  Component run stages
      */
     
-    public void init() throws JAMSEntity.NoSuchAttributeException {
+    public void init() throws Attribute.Entity.NoSuchAttributeException {
         //cascade 1 setup
         double[] stor1 = new double[this.n1.getValue()];
         for(int i = 0; i < this.n1.getValue(); i++)
@@ -157,7 +144,7 @@ import jams.model.*;
         gwStor2.setValue(stor2);
     }
     
-    public void run() throws JAMSEntity.NoSuchAttributeException {
+    public void run() throws Attribute.Entity.NoSuchAttributeException {
        double inflow = this.gwRecharge.getValue();
        double inC1 = this.alpha.getValue() * inflow;
        double inC2 = (1 - this.alpha.getValue()) * inflow;

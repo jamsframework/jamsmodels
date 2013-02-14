@@ -20,56 +20,49 @@ public class irigation_amount extends JAMSComponent {
 
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "Irrigation water which is not used for irrigation but left in the irrigation channel [l]"
             )
-            public JAMSDouble Bypasswater;
+            public Attribute.Double Bypasswater;
 
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "Irrigation water which is damped in the irrigation channel [l]"
             )
-            public JAMSDouble Bypassrest;
+            public Attribute.Double Bypassrest;
 
     
     
 
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "HRU crop class"
             )
-            public JAMSDouble irrigationsum;
+            public Attribute.Double irrigationsum;
 
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "HRU crop class"
             )
-            public JAMSDouble irrigationpart;
+            public Attribute.Double irrigationpart;
     
    @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "Portion of the irrigation which bypasses the fields and goes directly into the dainage cannel [0 - 100] default = 0"
             )
-            public JAMSDouble Bypassfactor;
+            public Attribute.Double Bypassfactor;
    
      @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "Factor for the delay of the irrigation which bypasses the fields and goes directly into the dainage cannel [1 - 100] default = 1"
             )
-            public JAMSDouble Bypassdamping;
+            public Attribute.Double Bypassdamping;
    
    
    @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "Portion of the irrigation water depending on the demand [0 - 100] default = 0"
             )
-            public JAMSDouble IrrWaterfactor;
+            public Attribute.Double IrrWaterfactor;
 
  
 

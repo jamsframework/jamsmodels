@@ -43,88 +43,76 @@ import jams.model.*;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "The current hru entity"
             )
-            public JAMSEntityCollection entities;
+            public Attribute.EntityCollection entities;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "Collection of reach objects"
             )
-            public JAMSEntityCollection reaches;
+            public Attribute.EntityCollection reaches;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "RD1 NaCl inflow in kgNaCl"
             )
-            public JAMSDouble SurfaceNaCl_in;
+            public Attribute.Double SurfaceNaCl_in;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "RD2 NaCl inflow in kgNaCl"
             )
-            public JAMSDoubleArray InterflowNaCl_in;
+            public Attribute.DoubleArray InterflowNaCl_in;
     
 /*    @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "RD2 N inflow in kgN lumped"
             )
-            public JAMSDouble InterflowN_sum;
+            public Attribute.Double InterflowN_sum;
  */
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "RG1 NaCl inflow in kgNaCl"
             )
-            public JAMSDouble NaCl_RG1_in;
+            public Attribute.Double NaCl_RG1_in;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "RG2 NaCl inflow in kgNaCl"
             )
-            public JAMSDouble NaCl_RG2_in;
+            public Attribute.Double NaCl_RG2_in;
     
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "RD1 NaCl outflow in kgNaCl"
             )
-            public JAMSDouble SurfaceNaClabs;
+            public Attribute.Double SurfaceNaClabs;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "RD2 NaCl outflow in kgNaCl"
             )
-            public JAMSDoubleArray InterflowNaClabs ;
+            public Attribute.DoubleArray InterflowNaClabs ;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "RG1 N outflow in kgNaCl"
             )
-            public JAMSDouble NaCl_RG1_out;
+            public Attribute.Double NaCl_RG1_out;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "RG2 N outflow in kgNaCl"
             )
-            public JAMSDouble NaCl_RG2_out;
+            public Attribute.Double NaCl_RG2_out;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "gwExcess"
             )
-            public JAMSDouble NaClExcess;
+            public Attribute.Double NaClExcess;
     
     double[][] fracOut;
     double[] percNOut;
@@ -132,16 +120,16 @@ import jams.model.*;
      *  Component run stages
      */
     
-    public void init() throws JAMSEntity.NoSuchAttributeException {
+    public void init() throws Attribute.Entity.NoSuchAttributeException {
         
     }
     
-    public void run() throws JAMSEntity.NoSuchAttributeException {
+    public void run() throws Attribute.Entity.NoSuchAttributeException {
         Attribute.Entity entity = entities.getCurrent();
         //receiving polygon
-        JAMSEntity toPoly = (JAMSEntity) entity.getObject("to_poly");
+        Attribute.Entity toPoly = (Attribute.Entity) entity.getObject("to_poly");
         //receiving reach
-        JAMSEntity toReach = (JAMSEntity) entity.getObject("to_reach");
+        Attribute.Entity toReach = (Attribute.Entity) entity.getObject("to_reach");
         
         
         
@@ -154,21 +142,21 @@ import jams.model.*;
 //        System.out.println("NRD2out: " + NRD2out);
         
        if((toPoly != null && toPoly.getId() != -1)){
-            double[] srcDepth = ((JAMSDoubleArray)entity.getObject("depth_h")).getValue();
-            double[] recDepth = ((JAMSDoubleArray)toPoly.getObject("depth_h")).getValue();
+            double[] srcDepth = ((Attribute.DoubleArray)entity.getObject("depth_h")).getValue();
+            double[] recDepth = ((Attribute.DoubleArray)toPoly.getObject("depth_h")).getValue();
             int srcHors = srcDepth.length;
             int recHors = recDepth.length;
             double[] NRD2in_h = new double[recHors];
             //this.calcParts(srcDepth, recDepth);
             
             double NRD1in = toPoly.getDouble("SurfaceNaCl_in");
-            double[] rdArN = ((JAMSDoubleArray)toPoly.getObject("InterflowNaCl_in")).getValue();
+            double[] rdArN = ((Attribute.DoubleArray)toPoly.getObject("InterflowNaCl_in")).getValue();
 /*
             Object o = toPoly.getObject("InterflowN_in");
  
             double[] rdArN = null;
             try {
-                rdArN = ((JAMSDoubleArray)o).getValue();
+                rdArN = ((Attribute.DoubleArray)o).getValue();
  
             } catch (Exception e) {
                 System.out.println("MIST");
@@ -211,7 +199,7 @@ import jams.model.*;
             NaCl_RG2_out.setValue(0);
             NaClExcess.setValue(0);
             
-            JAMSDoubleArray rdAN = (JAMSDoubleArray)toPoly.getObject("InterflowNaCl_in");
+            Attribute.DoubleArray rdAN = (Attribute.DoubleArray)toPoly.getObject("InterflowNaCl_in");
             rdAN.setValue(NRD2in_h);
             toPoly.setDouble("SurfaceNaCl_in",NRD1in);
             toPoly.setObject("InterflowNaCl_in", rdAN);

@@ -39,13 +39,11 @@ public class MultiRoutingNT extends JAMSComponent {
      *  Component variables
      */
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
-    update = JAMSVarDescription.UpdateType.RUN,
     description = "The current hru entity")
-    public JAMSEntityCollection entities;
+    public Attribute.EntityCollection entities;
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
-    update = JAMSVarDescription.UpdateType.RUN,
     description = "Collection of reach objects")
-    public JAMSEntityCollection reaches;
+    public Attribute.EntityCollection reaches;
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
             description = "NH4 in surface runoff added to HRU in N",
@@ -53,7 +51,7 @@ public class MultiRoutingNT extends JAMSComponent {
             lowerBound = 0,
             upperBound = 1000000000
             )
-            public JAMSDouble NH4_in;
+            public Attribute.Double NH4_in;
 
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
@@ -62,7 +60,7 @@ public class MultiRoutingNT extends JAMSComponent {
             lowerBound = 0,
             upperBound = 1000000000
             )
-            public JAMSDouble residue_in;
+            public Attribute.Double residue_in;
 
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
@@ -71,7 +69,7 @@ public class MultiRoutingNT extends JAMSComponent {
             lowerBound = 0,
             upperBound = 1000000000
             )
-            public JAMSDouble activ_in;
+            public Attribute.Double activ_in;
 
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
@@ -80,7 +78,7 @@ public class MultiRoutingNT extends JAMSComponent {
             lowerBound = 0,
             upperBound = 1000000000
             )
-            public JAMSDouble stable_in;
+            public Attribute.Double stable_in;
 
         @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
@@ -89,7 +87,7 @@ public class MultiRoutingNT extends JAMSComponent {
             lowerBound = 0,
             upperBound = 1000000000
             )
-            public JAMSDouble NH4_out;
+            public Attribute.Double NH4_out;
 
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
@@ -98,7 +96,7 @@ public class MultiRoutingNT extends JAMSComponent {
             lowerBound = 0,
             upperBound = 1000000000
             )
-            public JAMSDouble residue_out;
+            public Attribute.Double residue_out;
 
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
@@ -107,7 +105,7 @@ public class MultiRoutingNT extends JAMSComponent {
             lowerBound = 0,
             upperBound = 1000000000
             )
-            public JAMSDouble activ_out;
+            public Attribute.Double activ_out;
 
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
@@ -116,7 +114,7 @@ public class MultiRoutingNT extends JAMSComponent {
             lowerBound = 0,
             upperBound = 1000000000
             )
-            public JAMSDouble stable_out;
+            public Attribute.Double stable_out;
     
    
     /*

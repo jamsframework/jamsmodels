@@ -41,25 +41,23 @@ public class J2KProcessGWRoutingPreparator extends JAMSComponent {
      */
     @JAMSVarDescription(
         access = JAMSVarDescription.AccessType.READ,
-        update = JAMSVarDescription.UpdateType.RUN,
         description = "The current hru entity"
         )
-        public JAMSEntityCollection hrus;
+        public Attribute.EntityCollection hrus;
 
     @JAMSVarDescription(
         access = JAMSVarDescription.AccessType.READ,
-        update = JAMSVarDescription.UpdateType.RUN,
         description = "The current reach entity"
         )
-        public JAMSEntityCollection reaches;
+        public Attribute.EntityCollection reaches;
 
     /*
      *  Component run stages
      */
-    public void init() throws JAMSEntity.NoSuchAttributeException {
+    public void init() throws Attribute.Entity.NoSuchAttributeException {
     }
 
-    public void run() throws JAMSEntity.NoSuchAttributeException {
+    public void run() throws Attribute.Entity.NoSuchAttributeException {
 
         Attribute.Entity e, f, r;
         HashMap<Attribute.Entity, ArrayList<Attribute.Entity>> routingMap = new HashMap<Attribute.Entity, ArrayList<Attribute.Entity>>();
@@ -71,7 +69,7 @@ public class J2KProcessGWRoutingPreparator extends JAMSComponent {
         while (hruIterator.hasNext()) {
             e = hruIterator.next();
             if (e.getDouble("type") < 3) {
-                f = (JAMSEntity) e.getObject("to_poly");
+                f = (Attribute.Entity) e.getObject("to_poly");
 
                 //getModel().getRuntime().println("Processing Entity: " + e.getDouble("ID"));
 
@@ -91,12 +89,12 @@ public class J2KProcessGWRoutingPreparator extends JAMSComponent {
             if (senderPolys != null) {
 
                 //converting the ArrayLists into Arrays
-                JAMSEntity[] from_poly_Array = senderPolys.toArray(new JAMSEntity[senderPolys.size()]);
+                Attribute.Entity[] from_poly_Array = senderPolys.toArray(new Attribute.Entity[senderPolys.size()]);
 
                 //creating new Objects for each entity
                 r.setObject("from_poly", from_poly_Array);
             } else {
-                r.setObject("from_poly", new JAMSEntity[0]);
+                r.setObject("from_poly", new Attribute.Entity[0]);
             }
         }
 
@@ -105,7 +103,7 @@ public class J2KProcessGWRoutingPreparator extends JAMSComponent {
         while (hruIterator.hasNext()) {
             e = hruIterator.next();
             if (e.getDouble("type") == 3) {
-                f = (JAMSEntity) e.getObject("to_reach");
+                f = (Attribute.Entity) e.getObject("to_reach");
 
                 if (!routingMap.containsKey(f)) {
                     routingMap.put(f, new ArrayList<Attribute.Entity>());
@@ -123,12 +121,12 @@ public class J2KProcessGWRoutingPreparator extends JAMSComponent {
             if (senderPolys != null) {
 
                 //converting the ArrayLists into Arrays
-                JAMSEntity[] from_poly_Array = senderPolys.toArray(new JAMSEntity[senderPolys.size()]);
+                Attribute.Entity[] from_poly_Array = senderPolys.toArray(new Attribute.Entity[senderPolys.size()]);
 
                 //creating new Objects for each entity
                 r.setObject("from_poly", from_poly_Array);
             } else {
-                r.setObject("from_poly", new JAMSEntity[0]);
+                r.setObject("from_poly", new Attribute.Entity[0]);
             }
         }
 

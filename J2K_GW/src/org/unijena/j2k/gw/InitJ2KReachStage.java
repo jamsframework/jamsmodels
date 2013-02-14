@@ -42,20 +42,20 @@ public class InitJ2KReachStage extends JAMSComponent {
     @JAMSVarDescription(
         access = JAMSVarDescription.AccessType.READWRITE,
         description = "river bed height",
-        unit = "m", //[m ü NN] / [a.s.l.]
+        unit = "m", //[m Ã¼ NN] / [a.s.l.]
         lowerBound = 0,
         upperBound = Double.POSITIVE_INFINITY
         )
-        public JAMSDouble reachBed;
+        public Attribute.Double reachBed;
 
     @JAMSVarDescription(
         access = JAMSVarDescription.AccessType.WRITE,
         description = "Reach Water Level",
-        unit = "m", //[m ü NN] / [a.s.l.]
+        unit = "m", //[m Ã¼ NN] / [a.s.l.]
         lowerBound = 0,
         upperBound = Double.POSITIVE_INFINITY
         )
-        public JAMSDouble waterTable_NN;
+        public Attribute.Double waterTable_NN;
 
     @JAMSVarDescription(
         access = JAMSVarDescription.AccessType.READ,
@@ -65,7 +65,7 @@ public class InitJ2KReachStage extends JAMSComponent {
         lowerBound = 0,
         upperBound = Double.POSITIVE_INFINITY
         )
-        public JAMSDouble rB_adapt;
+        public Attribute.Double rB_adapt;
 
     /*
      *  Component run stages
@@ -74,11 +74,11 @@ public class InitJ2KReachStage extends JAMSComponent {
     double run_rB, run_wT, run_rB_adapt;
        
 
-    public void init() throws JAMSEntity.NoSuchAttributeException {
+    public void init() throws Attribute.Entity.NoSuchAttributeException {
 
     }
 
-    public void run() throws JAMSEntity.NoSuchAttributeException {
+    public void run() throws Attribute.Entity.NoSuchAttributeException {
 
         run_rB = reachBed.getValue();
         run_rB_adapt = rB_adapt.getValue();

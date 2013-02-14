@@ -42,44 +42,40 @@ import jams.model.*;
      */
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "catchment area"
             )
-            public JAMSDouble cArea;
+            public Attribute.Double cArea;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "the input variables to convert"
             )
-            public JAMSDouble[] inVars;
+            public Attribute.Double[] inVars;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "the converted output variables"
             )
-            public JAMSDouble[] outVars;
+            public Attribute.Double[] outVars;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "the actual time step"
             )
-            public JAMSCalendar timeStep;
+            public Attribute.Calendar timeStep;
     
     /*
      *  Component run stages
      */
     
-    public void init() throws JAMSEntity.NoSuchAttributeException {
+    public void init() throws Attribute.Entity.NoSuchAttributeException {
         
     }
     
-    public void run() throws JAMSEntity.NoSuchAttributeException {
+    public void run() throws Attribute.Entity.NoSuchAttributeException {
         long days = 1;
         if(this.timeStep != null)
-            days = timeStep.getActualMaximum(timeStep.DAY_OF_MONTH);
+            days = timeStep.getActualMaximum(JAMSCalendar.DAY_OF_MONTH);
         //double totOut = 0;
 
         for(int i = 0; i < this.inVars.length; i++){

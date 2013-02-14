@@ -17,21 +17,17 @@ description = "Calculation of the groundwater outtake due to pumping for irrigat
 public class ReservoirManagementGW extends JAMSComponent {
 
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READWRITE,
-    update = JAMSVarDescription.UpdateType.RUN,
     description = "RG2storage")
-    public JAMSDouble actRG2;
+    public Attribute.Double actRG2;
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READWRITE,
-    update = JAMSVarDescription.UpdateType.RUN,
     description = "RG2storage")
-    public JAMSDouble NActRG2;
+    public Attribute.Double NActRG2;
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
-    update = JAMSVarDescription.UpdateType.RUN,
     description = "Amount of irrigation Water")
-    public JAMSDouble irrigation;
+    public Attribute.Double irrigation;
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READWRITE,
-    update = JAMSVarDescription.UpdateType.RUN,
     description = "Amount of irrigation Water surplus")
-    public JAMSDouble irrigation_deficit;
+    public Attribute.Double irrigation_deficit;
 
 //Berechnung
     public void init() {

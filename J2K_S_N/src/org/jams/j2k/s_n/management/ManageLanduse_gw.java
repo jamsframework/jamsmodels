@@ -20,16 +20,14 @@ import jams.data.*;
 public class ManageLanduse_gw extends ManageLanduse_szeno {
 
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.WRITE,
-    update = JAMSVarDescription.UpdateType.RUN,
     description = "Type of harvest to distiguish between crops with undersown plants and normal harvesting")
-    public JAMSDouble Irrigation_mm;
+    public Attribute.Double Irrigation_mm;
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
-    update = JAMSVarDescription.UpdateType.RUN,
     description = "attribute area",
     unit = "m^2")
     public Attribute.Double area;
 
-    public void run() throws JAMSEntity.NoSuchAttributeException {
+    public void run() throws Attribute.Entity.NoSuchAttributeException {
         
         double dayintervall = Dayintervall.getValue();
         Attribute.Entity entity = entities.getCurrent();
@@ -61,7 +59,7 @@ public class ManageLanduse_gw extends ManageLanduse_szeno {
         int nextDay = currentManagement.jDay;
         doHarvest.setValue(false);
 
-//            System.out.println("da" + nextDay + time.get(JAMSCalendar.DAY_OF_YEAR));
+//            System.out.println("da" + nextDay + time.get(Attribute.Calendar.DAY_OF_YEAR));
 
         if ((nextDay - 1) == time.get(JAMSCalendar.DAY_OF_YEAR)) {
             if (currentManagement.harvest != -1) {
@@ -71,7 +69,7 @@ public class ManageLanduse_gw extends ManageLanduse_szeno {
             }
         }
 
-        if (nextDay == time.get(time.DAY_OF_YEAR)) {
+        if (nextDay == time.get(JAMSCalendar.DAY_OF_YEAR)) {
 
             if ((managementPos + 1) == managementList.size()) {
                 ManagementPos.setValue(0);
@@ -112,7 +110,7 @@ public class ManageLanduse_gw extends ManageLanduse_szeno {
 
 
 
-        double day = time.get(time.DAY_OF_YEAR);
+        double day = time.get(JAMSCalendar.DAY_OF_YEAR);
 
         if ((opti.getValue() == 2) && (day > 90.0 && day < 300.0) && (gift.getValue() > 0) && (idc == 1 || idc == 2 || idc == 4 || idc == 5)) {
             if (nstrs.getValue() > 0.03 && gift.getValue() < 4) {

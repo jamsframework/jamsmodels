@@ -17,46 +17,38 @@ description = "Calculation of irrigation input")
 public class Irrigationinput extends JAMSComponent {
 
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
-    update = JAMSVarDescription.UpdateType.RUN,
     description = "in [-] plant growth water stress factor")
-    public JAMSDouble netRain;
+    public Attribute.Double netRain;
 
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READWRITE,
-    update = JAMSVarDescription.UpdateType.RUN,
     description = "HRU crop class",
     defaultValue = "0")
-    public JAMSDouble irrigation;
+    public Attribute.Double irrigation;
 
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READWRITE,
-    update = JAMSVarDescription.UpdateType.RUN,
     description = "HRU crop class")
-    public JAMSDouble storage;
+    public Attribute.Double storage;
 
     /*     @JAMSVarDescription(
     access = JAMSVarDescription.AccessType.READ,
-    update = JAMSVarDescription.UpdateType.RUN,
     description = "HRU crop class"
     )
-    public JAMSDouble area;*/
+    public Attribute.Double area;*/
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.WRITE,
-    update = JAMSVarDescription.UpdateType.RUN,
     description = "HRU crop class")
-    public JAMSDouble irrigationAct;
+    public Attribute.Double irrigationAct;
 
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.WRITE,
-    update = JAMSVarDescription.UpdateType.RUN,
     description = "HRU crop class")
-    public JAMSDouble Waterinput;
+    public Attribute.Double Waterinput;
 
     /*@JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
-    update = JAMSVarDescription.UpdateType.RUN,
     description = "HRU crop class")
-    public JAMSDouble re_use;*/
+    public Attribute.Double re_use;*/
 
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
-    update = JAMSVarDescription.UpdateType.RUN,
     description = "HRU crop class")
-    public JAMSDouble irrigationpart;
+    public Attribute.Double irrigationpart;
     
 
     public void init() {

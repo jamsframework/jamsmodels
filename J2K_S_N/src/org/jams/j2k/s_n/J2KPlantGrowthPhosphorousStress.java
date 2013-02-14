@@ -43,25 +43,22 @@ import jams.model.*;
     
  @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "optimal nitrogen content in Biomass in (kgN/ha)"
             )
-            public JAMSDouble optibioP;
+            public Attribute.Double optibioP;
     
      @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "actual nitrogen content in Biomass in (kgN/ha)"
             )
-            public JAMSDouble actbioP;
+            public Attribute.Double actbioP;
     
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "in [-] plant groth nitrogen stress factor"
             )
-            public JAMSDouble pstrs;
+            public Attribute.Double pstrs;
     
    
     

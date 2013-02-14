@@ -42,45 +42,40 @@ title="NashCascade",
      */
     @JAMSVarDescription(
     access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.INIT,
             description = "number of tanks"
             )
-            public JAMSInteger nTanks;
+            public Attribute.Integer nTanks;
     
     @JAMSVarDescription(
     access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.INIT,
             description = "recision coefficient k for all tanks"
             )
-            public JAMSDouble k;
+            public Attribute.Double k;
     
     @JAMSVarDescription(
     access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "input to the first tank in the cascade"
             )
-            public JAMSDouble input;
+            public Attribute.Double input;
     
     @JAMSVarDescription(
     access = JAMSVarDescription.AccessType.READWRITE,
-            update = JAMSVarDescription.UpdateType.INIT,
             description = "the tanks itself"
             )
-            public JAMSDoubleArray storages;
+            public Attribute.DoubleArray storages;
     
     @JAMSVarDescription(
     access = JAMSVarDescription.AccessType.WRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
             description = "outflow from the last tank in the cascade"
             )
-            public JAMSDouble output;
+            public Attribute.Double output;
     
     
     /*
      *  Component run stages
      */
     
-    public void init() throws JAMSEntity.NoSuchAttributeException {
+    public void init() throws Attribute.Entity.NoSuchAttributeException {
         //build the cascade and initalize all tanks with a value of zero
         double[] tanks = new double[this.nTanks.getValue()];
         for(int i = 0; i < this.nTanks.getValue(); i++)
@@ -89,7 +84,7 @@ title="NashCascade",
         this.storages.setValue(tanks);
     }
     
-    public void run() throws JAMSEntity.NoSuchAttributeException {
+    public void run() throws Attribute.Entity.NoSuchAttributeException {
         double[] tanks = this.storages.getValue();
         double[] outflow = new double[tanks.length];
         double rec = this.k.getValue();

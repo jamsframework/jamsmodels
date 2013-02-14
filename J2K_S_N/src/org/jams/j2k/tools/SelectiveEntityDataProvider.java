@@ -40,29 +40,25 @@ public class SelectiveEntityDataProvider extends JAMSComponent {
      *  Component variables
      */
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
-    update = JAMSVarDescription.UpdateType.INIT,
     description = "EntitySet")
-    public JAMSEntityCollection entitySet;
+    public Attribute.EntityCollection entitySet;
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
-    update = JAMSVarDescription.UpdateType.INIT,
     description = "Output file attribute name")
-    public JAMSString attributeName;
+    public Attribute.String attributeName;
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
-    update = JAMSVarDescription.UpdateType.INIT,
     description = "Output entities")
-    public JAMSInteger ID;
+    public Attribute.Integer ID;
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
-    update = JAMSVarDescription.UpdateType.INIT,
     description = "Output Variable")
-    public JAMSDouble output;
+    public Attribute.Double output;
 
     /*
      *  Component runstages
      */
-    public void init() throws JAMSEntity.NoSuchAttributeException {
+    public void init() throws Attribute.Entity.NoSuchAttributeException {
     }
 
-    public void run() throws JAMSEntity.NoSuchAttributeException {
+    public void run() throws Attribute.Entity.NoSuchAttributeException {
 
         int curID = (int) (int) entitySet.getCurrent().getDouble("ID");
         if (this.ID.getValue() == curID) {
