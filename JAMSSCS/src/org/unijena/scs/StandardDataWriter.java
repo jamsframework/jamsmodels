@@ -23,9 +23,10 @@
 
 package org.unijena.scs;
 
-import org.unijena.jams.data.*;
-import org.unijena.jams.model.*;
-import org.unijena.jams.io.*;
+import jams.data.*;
+import jams.model.*;
+import jams.io.*;
+import java.text.SimpleDateFormat;
 
 /**
  * writes output to a user defined output file
@@ -132,13 +133,13 @@ public class StandardDataWriter extends JAMSComponent {
     
     /**
      * the component's run() method
-     * @throws org.unijena.jams.data.Attribute.Entity.NoSuchAttributeException thrown when a model entity tries to access a non existent attribute
+     * @throws jams.data.Attribute.Entity.NoSuchAttributeException thrown when a model entity tries to access a non existent attribute
      */
     public void run() throws Attribute.Entity.NoSuchAttributeException {
         //always write time
         //the time also knows a toString() method with additional formatting parameters
         //e.g. time.toString("%1$tY-%1$tm-%1$td %1$tH:%1$tM")
-        writer.addData(time.toString("%1$tH:%1$tM:%1$tS"));
+        writer.addData(time.toString(new SimpleDateFormat("%1$tH:%1$tM:%1$tS")));
         
         for (int i = 0; i < value.length; i++) {
             writer.addData(value[i].getValue(), 3);
@@ -146,7 +147,7 @@ public class StandardDataWriter extends JAMSComponent {
         
         try {
             writer.writeData();
-        } catch (org.unijena.jams.runtime.RuntimeException jre) {
+        } catch (jams.runtime.RuntimeException jre) {
             getModel().getRuntime().println(jre.getMessage());
         }
     }

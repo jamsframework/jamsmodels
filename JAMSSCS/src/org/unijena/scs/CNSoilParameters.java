@@ -21,6 +21,11 @@
  *
  */
 package org.unijena.scs;
+import jams.data.Attribute;
+import jams.model.JAMSComponent;
+import jams.model.JAMSComponentDescription;
+import jams.model.JAMSVarDescription;
+import jams.model.Model;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
@@ -28,8 +33,7 @@ import java.util.Locale;
 import java.util.StringTokenizer;
 import java.util.Vector;
 
-import org.unijena.jams.model.*;
-import org.unijena.jams.data.*;
+
 
 /**
  * Computes the catchment's mean CN value based on spatial distributed input values
@@ -113,7 +117,7 @@ title="CN-SoilParameters",
      * the components init method
      * @throws org.unijena.jams.data.Attribute.Entity.NoSuchAttributeException thrown when a model entity tries to access a non existent attribute
      */
-    public void init() throws Attribute.Entity.NoSuchAttributeException {
+    public void init() {
         this.catchmentArea.setValue(0);
         this.cnValue.setValue(0);
         
@@ -124,7 +128,7 @@ title="CN-SoilParameters",
         String hruFN = this.dirName.getValue() + java.io.File.separator + this.hruFileName.getValue();
         readParameters(cnFN, hruFN, this.getModel());
         
-        getModel().getRuntime().println("Einzugsgebietsgröße [km²]: " + String.format(Locale.US,"%.2f",this.catchmentArea.getValue()/ 1000000));
+        getModel().getRuntime().println("Einzugsgebietsgrï¿½ï¿½e [kmï¿½]: " + String.format(Locale.US,"%.2f",this.catchmentArea.getValue()/ 1000000));
     }
     
     /**
@@ -133,7 +137,7 @@ title="CN-SoilParameters",
      * @param hruFileName
      * @param model
      */
-    private void readParameters(String cnFileName, String hruFileName, JAMSModel model){
+    private void readParameters(String cnFileName, String hruFileName, Model model){
         BufferedReader cnReader, hruReader;
         StringTokenizer tokenizer;
         

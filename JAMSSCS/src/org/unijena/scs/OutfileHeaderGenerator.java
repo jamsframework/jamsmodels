@@ -22,8 +22,8 @@
  */
 package org.unijena.scs;
 import java.util.Locale;
-import org.unijena.jams.model.*;
-import org.unijena.jams.data.*;
+import jams.model.*;
+import jams.data.*;
 
 /**
  * Creates a model time interval for JAMSSCS. The user has
@@ -137,10 +137,10 @@ public class OutfileHeaderGenerator extends JAMSComponent {
      */
     public void init() throws Attribute.Entity.NoSuchAttributeException {
         String header = "";
-        header = header + "Einzugsgebietsgröße: " + String.format(Locale.US,"%.2f",(this.catchmentArea.getValue()/1000000.)) + " km²\n";
-        header = header + "Vorfluterlänge: " + String.format(Locale.US,"%.2f",(this.streamLength.getValue())) + " km\n";
-        header = header + "Maximale Vorfluterhöhe (Quelle): " + String.format(Locale.US,"%.2f",(this.maxElevation.getValue())) + " m ü. NN\n";
-        header = header + "Minimale Vorfluterhöhe (Auslass): " + String.format(Locale.US,"%.2f",(this.minElevation.getValue())) + " m ü. NN\n";
+        header = header + "Einzugsgebietsgrï¿½ï¿½e: " + String.format(Locale.US,"%.2f",(this.catchmentArea.getValue()/1000000.)) + " kmï¿½\n";
+        header = header + "Vorfluterlï¿½nge: " + String.format(Locale.US,"%.2f",(this.streamLength.getValue())) + " km\n";
+        header = header + "Maximale Vorfluterhï¿½he (Quelle): " + String.format(Locale.US,"%.2f",(this.maxElevation.getValue())) + " m ï¿½. NN\n";
+        header = header + "Minimale Vorfluterhï¿½he (Auslass): " + String.format(Locale.US,"%.2f",(this.minElevation.getValue())) + " m ï¿½. NN\n";
         if(this.precipDistribution.getValue().equalsIgnoreCase("B"))
             header = header + "Niederschlagsverteilung: Blockregen\n";
         if(this.precipDistribution.getValue().equalsIgnoreCase("M"))

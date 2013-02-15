@@ -21,8 +21,8 @@
  *
  */
 package org.unijena.scs;
-import org.unijena.jams.model.*;
-import org.unijena.jams.data.*;
+import jams.model.*;
+import jams.data.*;
 
 /**
  * computes the catchment's runoff based on two unit hydrographs and specific 
@@ -52,7 +52,7 @@ public class ParallelStorageCascade extends JAMSComponent {
      * the catchment's area<br>
      * access: READ<br> 
      * update: run<br> 
-     * unit: m²
+     * unit: mï¿½
      */
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
@@ -69,7 +69,7 @@ public class ParallelStorageCascade extends JAMSComponent {
      */
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
-            unit = "m³/s",
+            unit = "mï¿½/s",
             description = "runoff"
             )
             public Attribute.Double runoff;
@@ -81,7 +81,7 @@ public class ParallelStorageCascade extends JAMSComponent {
      */
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
-            unit = "m³/s",
+            unit = "mï¿½/s",
             description = "max runoff"
             )
             public Attribute.Double maxRunoff;
@@ -107,7 +107,7 @@ public class ParallelStorageCascade extends JAMSComponent {
      */
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
-            unit = "m³/s",
+            unit = "mï¿½/s",
             description = "runoff_arr"
             )
             public Attribute.DoubleArray runoff_arr;

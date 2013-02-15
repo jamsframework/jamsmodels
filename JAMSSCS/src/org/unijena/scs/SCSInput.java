@@ -22,8 +22,8 @@
  */
 package org.unijena.scs;
 import java.util.Locale;
-import org.unijena.jams.model.*;
-import org.unijena.jams.data.*;
+import jams.model.*;
+import jams.data.*;
 
 /**
  * Input class for JAMSSCS. Computes additional values for the catchment

@@ -9,14 +9,13 @@
 
 package org.unijena.scs;
 
+import jams.data.Attribute;
 import java.util.HashMap;
 import java.util.Map;
-import org.unijena.jams.data.Attribute.Double;
-import org.unijena.jams.data.Attribute.Entity;
-import org.unijena.jams.data.Attribute.String;
-import org.unijena.jams.io.XMLIO;
-import org.unijena.jams.model.JAMSComponent;
-import org.unijena.jams.model.JAMSVarDescription;
+import jams.data.Attribute.Double;
+import jams.model.JAMSComponent;
+import jams.model.JAMSVarDescription;
+import jams.tools.XMLTools;
 import org.w3c.dom.*;
 /**
  * component for reading a specific XML file provided by the KOSTRA software of the
@@ -72,7 +71,7 @@ public class KostraXMLReader extends JAMSComponent {
     
     /**
      * the component's init() method
-     * @throws org.unijena.jams.data.Attribute.Entity.NoSuchAttributeException thrown when a model entity tries to access a non existent attribute
+     * @throws jams.data.Attribute.Entity.NoSuchAttributeException thrown when a model entity tries to access a non existent attribute
      */
     public void init() throws Attribute.Entity.NoSuchAttributeException {
         if(KostraXMLFile.getValue().compareTo("") != 0){
@@ -83,7 +82,7 @@ public class KostraXMLReader extends JAMSComponent {
             tmpHeaderA = new HashMap<Integer,Attribute.Double>();
             //read document
             try {
-                dwdData = XMLIO.getDocument(workspaceDir.getValue()+"/"+KostraXMLFile.getValue());
+                dwdData = XMLTools.getDocument(workspaceDir.getValue()+"/"+KostraXMLFile.getValue());
             } catch (Exception e) {
                 this.getModel().getRuntime().println("Can't read XML because:" + e.toString());
             }
@@ -137,7 +136,8 @@ public class KostraXMLReader extends JAMSComponent {
     private void ProcessDNode(Node node) {
         Element element = (Element)node;
         //this is a new row in our table --> add to header
-        Attribute.Double dauer = new Attribute.Double(new Double(element.getAttribute("dauer")).doubleValue());
+        Attribute.Double dauer = getModel().getRuntime().getDataFactory().createDouble();
+        dauer.setValue(java.lang.Double.parseDouble(element.getAttribute("dauer")));
         
         tmpHeaderD.put(new Integer(numDEntries),dauer);
         tmpTable.put(new Integer(numDEntries),new HashMap<Integer,Attribute.Double>());
@@ -151,7 +151,8 @@ public class KostraXMLReader extends JAMSComponent {
             if (childnode.getNodeName().compareTo("T") == 0) {
                 if (numDEntries == 0) {
                     element = (Element)childnode;
-                    Attribute.Double a = new Attribute.Double(new Double(element.getAttribute("a")).doubleValue());
+                    Attribute.Double a = getModel().getRuntime().getDataFactory().createDouble();
+                    a.setValue(java.lang.Double.parseDouble(element.getAttribute("a")));
                     tmpHeaderA.put(new Integer(curAEntry),a);
                 }
                 ProcessTNode(childnode,numDEntries,curAEntry);
@@ -173,8 +174,9 @@ public class KostraXMLReader extends JAMSComponent {
         
         while (childnode != null) {
             if (childnode.getNodeName().compareTo("hN") == 0) {
-                this.tmpTable.get(DIndex).put(new Integer(AIndex),
-                        new Attribute.Double(new Double(childnode.getTextContent()).doubleValue()));
+                Attribute.Double d = getModel().getRuntime().getDataFactory().createDouble();
+                d.setValue(java.lang.Double.parseDouble(childnode.getTextContent()));
+                this.tmpTable.get(DIndex).put(new Integer(AIndex), d);
             }
             childnode = childnode.getNextSibling();
         }

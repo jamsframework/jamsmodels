@@ -21,8 +21,8 @@
  *
  */
 package org.unijena.scs;
-import org.unijena.jams.model.*;
-import org.unijena.jams.data.*;
+import jams.model.*;
+import jams.data.*;
 
 /**
  * Creates a model time interval for JAMSSCS. The user has
@@ -81,11 +81,13 @@ public class SCSTimeIntervalSetter extends JAMSComponent {
     
     /**
      * the component's init() method
-     * @throws org.unijena.jams.data.Attribute.Entity.NoSuchAttributeException thrown when a model entity tries to access a non existent attribute
+     * @throws jams.data.Attribute.Entity.NoSuchAttributeException thrown when a model entity tries to access a non existent attribute
      */
     public void init() throws Attribute.Entity.NoSuchAttributeException {
-        Attribute.Calendar start = new Attribute.Calendar(1900,1,1,0,0,0);
-        Attribute.Calendar end = new Attribute.Calendar(1900,1,1,0,0,0);
+        Attribute.Calendar start = getModel().getRuntime().getDataFactory().createCalendar();
+        start.set(1900,1,1,0,0,0);
+        Attribute.Calendar end = getModel().getRuntime().getDataFactory().createCalendar();
+        end.set(1900,1,1,0,0,0);
         end.add(Attribute.Calendar.HOUR_OF_DAY, this.runtimeHours.getValue());
         
         this.modelTimeInterval.setStart(start);

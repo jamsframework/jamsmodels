@@ -22,9 +22,7 @@
  */
 package org.unijena.j2kHimalaya.inputData;
 
-import jams.JAMS;
 import jams.data.*;
-import jams.io.GenericDataWriter;
 import jams.model.*;
 
 /**
@@ -87,7 +85,7 @@ public class PrecipCorrection extends JAMSComponent {
 
     public void run() throws Attribute.Entity.NoSuchAttributeException {
 
-        int nowmonth = time.get(JAMSCalendar.MONTH);
+        int nowmonth = time.get(Attribute.Calendar.MONTH);
         // this.in_elevation = elevation.getValue();
         double[] inputValues = this.inputValues.getValue();
         double[] outputValues = new double[inputValues.length];

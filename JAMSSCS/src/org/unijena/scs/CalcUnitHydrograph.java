@@ -21,8 +21,8 @@
  *
  */
 package org.unijena.scs;
-import org.unijena.jams.model.*;
-import org.unijena.jams.data.*;
+import jams.model.*;
+import jams.data.*;
 
 /**
  * This components calculates the unit-hydrographs

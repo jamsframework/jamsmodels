@@ -21,11 +21,10 @@
  *
  */
 package org.unijena.scs;
-import org.unijena.jams.data.Attribute.Double;
-import org.unijena.jams.data.Attribute.Entity;
-import org.unijena.jams.model.JAMSComponent;
-import org.unijena.jams.model.JAMSComponentDescription;
-import org.unijena.jams.model.JAMSVarDescription;
+import jams.data.Attribute;
+import jams.model.JAMSComponent;
+import jams.model.JAMSComponentDescription;
+import jams.model.JAMSVarDescription;
 
 /**
  * Calculates the recession coefficients k1 and k2

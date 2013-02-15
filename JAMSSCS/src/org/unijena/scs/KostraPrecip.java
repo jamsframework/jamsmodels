@@ -23,13 +23,18 @@
 
 package org.unijena.scs;
 
+import jams.JAMS;
+import jams.data.Attribute;
+import jams.data.Attribute.Entity.NoSuchAttributeException;
+import jams.io.GenericDataWriter;
+import jams.model.Component;
+import jams.model.JAMSComponentDescription;
+import jams.model.JAMSContext;
+import jams.model.JAMSVarDescription;
+import java.text.SimpleDateFormat;
 import java.util.Locale;
 import java.util.StringTokenizer;
-import org.unijena.jams.JAMS;
-import org.unijena.jams.data.*;
-import org.unijena.jams.data.Attribute.Entity.NoSuchAttributeException;
-import org.unijena.jams.io.GenericDataWriter;
-import org.unijena.jams.model.*;
+
 
 /**
  * Context component which iterates through a set of precipitation events. These
@@ -129,7 +134,7 @@ title="KostraPrecipDuration",
      * unit: n/a
      */
     @JAMSVarDescription(
-    access = JAMSVarDescription.AccessType.READ,
+    access = JAMSVarDescription.AccessType.READ
             )
             public Attribute.String kostraSummaryFile;
     
@@ -140,7 +145,7 @@ title="KostraPrecipDuration",
      * unit: n/a
      */
     @JAMSVarDescription(
-    access = JAMSVarDescription.AccessType.READ,
+    access = JAMSVarDescription.AccessType.READ
             )
             public Attribute.String kostraDetailFile;
     
@@ -307,9 +312,9 @@ title="KostraPrecipDuration",
     
     int sampleCount = 0;
     
-    Attribute.DoubleArray varValues = new Attribute.DoubleArray();
+    Attribute.DoubleArray varValues = getModel().getRuntime().getDataFactory().createDoubleArray();
     double[] pA;// = {200,500,1000,5000,10000};
-    Attribute.DoubleArray penAnnualities = new Attribute.DoubleArray();
+    Attribute.DoubleArray penAnnualities = getModel().getRuntime().getDataFactory().createDoubleArray();
     double[] penPrecip;
     
     
@@ -449,8 +454,8 @@ title="KostraPrecipDuration",
             summaryWriter = new GenericDataWriter(dirName.getValue()+"/"+this.kostraSummaryFile.getValue());
             
             if(varDuration.getValue()){
-                this.runoffPlotTitle.setValue("Kostra Abfluss für Wiederkehrintervall T = " + String.format(Locale.US,"%.0f",this.precipAnnuality.getValue()) + " a");
-                this.volumePlotTitle.setValue("Kostra Volumen für Wiederkehrintervall T = " + String.format(Locale.US,"%.0f",this.precipAnnuality.getValue()) + " a");
+                this.runoffPlotTitle.setValue("Kostra Abfluss fï¿½r Wiederkehrintervall T = " + String.format(Locale.US,"%.0f",this.precipAnnuality.getValue()) + " a");
+                this.volumePlotTitle.setValue("Kostra Volumen fï¿½r Wiederkehrintervall T = " + String.format(Locale.US,"%.0f",this.precipAnnuality.getValue()) + " a");
                 summaryWriter.writeLine(this.outfileHeader.getValue());
                 summaryWriter.writeLine("***********************************************************************************************");
                 summaryWriter.writeLine("Wiederkehrintervall T = " + this.precipAnnuality.getValue() + " a");
@@ -458,8 +463,8 @@ title="KostraPrecipDuration",
                 
                 summaryWriter.addColumn("Dauerstufe D [min]");
                 summaryWriter.addColumn("Niederschlag [mm]");
-                summaryWriter.addColumn("Scheitelabfluss [m³/s]");
-                summaryWriter.addColumn("Wellenvolumen [Mio m³]");
+                summaryWriter.addColumn("Scheitelabfluss [mï¿½/s]");
+                summaryWriter.addColumn("Wellenvolumen [Mio mï¿½]");
                 summaryWriter.writeHeader();
                 try {
                     Attribute.Double[] tmp  = (Attribute.Double[])this.kostraTable.getObject("HeaderD");
@@ -471,17 +476,17 @@ title="KostraPrecipDuration",
                     ex.printStackTrace();
                 }
             } else if(varAnnuality.getValue()){
-                this.runoffPlotTitle.setValue("Kostra Abfluss für Dauerstufe D = " + String.format(Locale.US, "%.0f",this.pDur.getValue()) + " Min.");
-                this.volumePlotTitle.setValue("Kostra Volumen für Dauerstufe D = " + String.format(Locale.US, "%.0f",this.pDur.getValue()) + " Min.");
+                this.runoffPlotTitle.setValue("Kostra Abfluss fï¿½r Dauerstufe D = " + String.format(Locale.US, "%.0f",this.pDur.getValue()) + " Min.");
+                this.volumePlotTitle.setValue("Kostra Volumen fï¿½r Dauerstufe D = " + String.format(Locale.US, "%.0f",this.pDur.getValue()) + " Min.");
                 
                 summaryWriter.writeLine(this.outfileHeader.getValue());
                 summaryWriter.writeLine("***********************************************************************************************");
                 summaryWriter.writeLine("Dauerstufe D = " + (pDur) + " min.");
                 summaryWriter.writeLine("***********************************************************************************************");
-                summaryWriter.addColumn("Jährlichkeit T [a]");
+                summaryWriter.addColumn("Jï¿½hrlichkeit T [a]");
                 summaryWriter.addColumn("Niederschlag [mm]");
-                summaryWriter.addColumn("Scheitelabfluss [m³/s]");
-                summaryWriter.addColumn("Wellenvolumen [Mio m³]");
+                summaryWriter.addColumn("Scheitelabfluss [mï¿½/s]");
+                summaryWriter.addColumn("Wellenvolumen [Mio mï¿½]");
                 summaryWriter.writeHeader();
                 try {
                     Attribute.Double[] tmp  = (Attribute.Double[])this.kostraTable.getObject("HeaderA");
@@ -638,7 +643,7 @@ title="KostraPrecipDuration",
                         detailWriter.write("\t"+String.format(Locale.US,"%.0f",kv[i]));
                     }
                     detailWriter.write("\n");
-                    detailWriter.write("N-Höhe [mm]:");
+                    detailWriter.write("N-Hï¿½he [mm]:");
                     for(int i = 0; i < inPrecip.length; i++){
                         detailWriter.write("\t"+String.format(Locale.US,"%.1f",inPrecip[i]));
                     }
@@ -660,13 +665,13 @@ title="KostraPrecipDuration",
                     detailWriter.writeLine("  Dauerstufe D = " + pDur.getValue() + " min.");
                     detailWriter.writeLine("***********************************************************************************************");
                     
-                    detailWriter.write("N-Jährlichkeit [a]:");
+                    detailWriter.write("N-Jï¿½hrlichkeit [a]:");
                     kv = varValues.getValue();
                     for(int i = 0; i < kv.length; i++){
                         detailWriter.write("\t"+String.format(Locale.US,"%.1f",kv[i]));
                     }
                     detailWriter.write("\n");
-                    detailWriter.write("N-Höhe [mm]:");
+                    detailWriter.write("N-Hï¿½he [mm]:");
                     for(int i = 0; i < inPrecip.length; i++){
                         detailWriter.write("\t"+String.format(Locale.US,"%.1f",inPrecip[i]));
                     }
@@ -742,7 +747,7 @@ title="KostraPrecipDuration",
         
         runEnumerator.reset();
         while(runEnumerator.hasNext() && doRun) {
-            JAMSComponent comp = runEnumerator.next();
+            Component comp = runEnumerator.next();
             //comp.updateInit();
             try {
                 comp.init();
@@ -754,7 +759,7 @@ title="KostraPrecipDuration",
         
         runEnumerator.reset();
         while(runEnumerator.hasNext() && doRun) {
-            JAMSComponent comp = runEnumerator.next();
+            Component comp = runEnumerator.next();
             //comp.updateRun();
             try {
                 comp.run();
@@ -765,7 +770,7 @@ title="KostraPrecipDuration",
         
         runEnumerator.reset();
         while(runEnumerator.hasNext() && doRun) {
-            JAMSComponent comp = runEnumerator.next();
+            Component comp = runEnumerator.next();
             try {
                 comp.cleanup();
             } catch (Exception e) {
@@ -804,7 +809,7 @@ title="KostraPrecipDuration",
                 try{
                     summaryWriter.writeData();
                     summaryWriter.flush();
-                }catch(org.unijena.jams.runtime.RuntimeException e){
+                }catch(jams.runtime.RuntimeException e){
                     
                 }
                 
@@ -829,7 +834,7 @@ title="KostraPrecipDuration",
             int sampleCount = varValues.getValue().length;
             Attribute.Calendar timeStamp = this.modelTimeInterval.getStart();
             for(int t = 0; t < this.timeSteps; t++){
-                detailWriter.addData(timeStamp.toString("%1$tH:%1$tM:%1$tS"));
+                detailWriter.addData(timeStamp.toString(new SimpleDateFormat("%1$tH:%1$tM:%1$tS")));
                 timeStamp.add(modelTimeInterval.getTimeUnit(), modelTimeInterval.getTimeUnitCount());
                 for(int r = 0; r < sampleCount; r++){
                     String dStr = String.format(Locale.US,"%.4f",this.valueArray[r][t]);
@@ -837,7 +842,7 @@ title="KostraPrecipDuration",
                 }
                 try {
                     detailWriter.writeData();
-                } catch (org.unijena.jams.runtime.RuntimeException jre) {
+                } catch (jams.runtime.RuntimeException jre) {
                     getModel().getRuntime().println(jre.getMessage());
                 }
             }

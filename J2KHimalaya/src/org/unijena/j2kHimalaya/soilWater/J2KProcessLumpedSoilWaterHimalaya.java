@@ -22,7 +22,6 @@
  */
 package org.unijena.j2kHimalaya.soilWater;
 
-import jams.JAMS;
 import jams.data.*;
 import jams.model.*;
 
@@ -269,7 +268,7 @@ public class J2KProcessLumpedSoilWaterHimalaya extends JAMSComponent {
         this.calcInfImperv(sealedGrade.getValue());
 
         /** determining maximal infiltration rate */
-        double maxInf = this.calcMaxInfiltration(time.get(JAMSCalendar.MONTH) + 1);
+        double maxInf = this.calcMaxInfiltration(time.get(Attribute.Calendar.MONTH) + 1);
         if (maxInf < this.run_infiltration) {
             double deltaInf = this.run_infiltration - maxInf;
             this.run_actDPS = this.run_actDPS + deltaInf;
