@@ -36,7 +36,6 @@ title="NashCascade",
         description="Description"
         )
         public class NashCascade extends JAMSComponent {
-    
     /*
      *  Component variables
      */
@@ -103,15 +102,9 @@ title="NashCascade",
         this.output.setValue(outflow[this.nTanks.getValue()-1]);
         //saving storages
         this.storages.setValue(tanks);
-        //System.out.println("in: " + this.input.getValue() + ", out: " + this.output.getValue());
-        
     }
     
     public void cleanup() {
         
-    }
-    
-    
-    
-    
+    }    
 }
