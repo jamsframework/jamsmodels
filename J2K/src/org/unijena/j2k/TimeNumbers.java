@@ -30,7 +30,7 @@ public class TimeNumbers {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        Attribute.Calendar time = JAMSDataFactory.getDataFactory().createCalendar();
+        Attribute.Calendar time = JAMSDataFactory.createCalendar();
         System.out.println("seconds: " + Attribute.Calendar.SECOND);
         System.out.println("Minutes: " + Attribute.Calendar.MINUTE);
         System.out.println("Hours: " + Attribute.Calendar.HOUR_OF_DAY);

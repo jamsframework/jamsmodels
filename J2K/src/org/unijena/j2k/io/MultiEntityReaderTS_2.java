@@ -131,8 +131,8 @@ public class MultiEntityReaderTS_2 extends JAMSComponent {
         BufferedReader reader1;
         BufferedReader reader2;
 
-        HashMap<Double, Attribute.Entity> hruMap = new HashMap<Double, Attribute.Entity>();
-        HashMap<Double, Attribute.Entity> reachMap = new HashMap<Double, Attribute.Entity>();
+        TreeMap<Double, Attribute.Entity> hruMap = new TreeMap<Double, Attribute.Entity>();
+        TreeMap<Double, Attribute.Entity> reachMap = new TreeMap<Double, Attribute.Entity>();
         Iterator<Attribute.Entity> hruIterator;
         Iterator<Attribute.Entity> reachIterator;
 
@@ -209,6 +209,9 @@ public class MultiEntityReaderTS_2 extends JAMSComponent {
                 String toHRUsString = toHRUsSplitArray[3];
 
                 e = hruMap.get(HRUsID);
+                if (e == null){
+                    getModel().getRuntime().sendHalt("missing HRU with ID = " + HRUsID);
+                }
                 e.setDouble("BFLDouble", HRUsBFl);
 
                 double HRUsID2 = Double.parseDouble(toHRUsWeightsSplitArray[0]);
