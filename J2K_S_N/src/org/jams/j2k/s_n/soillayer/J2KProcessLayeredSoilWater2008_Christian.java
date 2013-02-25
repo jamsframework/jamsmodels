@@ -969,61 +969,61 @@ public class J2KProcessLayeredSoilWater2008_Christian extends JAMSComponent {
 
             int horz = generator.nextInt(20) + 1;
 
-            ref.time = JAMSDataFactory.getDataFactory().createCalendar();
+            ref.time = DefaultDataFactory.getDataFactory().createCalendar();
             ref.time.set(2000, 10, 10, 1, 1, 1);
             test.time = ref.time;
 
-            ref.soil_root = JAMSDataFactory.getDataFactory().createDouble();
-            test.soil_root = JAMSDataFactory.getDataFactory().createDouble();
+            ref.soil_root = DefaultDataFactory.getDataFactory().createDouble();
+            test.soil_root = DefaultDataFactory.getDataFactory().createDouble();
 
-            ref.soilMaxMPS = JAMSDataFactory.getDataFactory().createDouble();
-            test.soilMaxMPS = JAMSDataFactory.getDataFactory().createDouble();
+            ref.soilMaxMPS = DefaultDataFactory.getDataFactory().createDouble();
+            test.soilMaxMPS = DefaultDataFactory.getDataFactory().createDouble();
 
-            ref.soilMaxLPS = JAMSDataFactory.getDataFactory().createDouble();
-            test.soilMaxLPS = JAMSDataFactory.getDataFactory().createDouble();
+            ref.soilMaxLPS = DefaultDataFactory.getDataFactory().createDouble();
+            test.soilMaxLPS = DefaultDataFactory.getDataFactory().createDouble();
 
-            ref.soilActMPS = (Attribute.Double) JAMSDataFactory.getDataFactory().createDouble();
-            test.soilActMPS = (Attribute.Double) JAMSDataFactory.getDataFactory().createDouble();
+            ref.soilActMPS = (Attribute.Double) DefaultDataFactory.getDataFactory().createDouble();
+            test.soilActMPS = (Attribute.Double) DefaultDataFactory.getDataFactory().createDouble();
 
-            ref.soilActLPS = (Attribute.Double) JAMSDataFactory.getDataFactory().createDouble();
-            test.soilActLPS = (Attribute.Double) JAMSDataFactory.getDataFactory().createDouble();
+            ref.soilActLPS = (Attribute.Double) DefaultDataFactory.getDataFactory().createDouble();
+            test.soilActLPS = (Attribute.Double) DefaultDataFactory.getDataFactory().createDouble();
 
-            ref.soilSatMPS = (Attribute.Double) JAMSDataFactory.getDataFactory().createDouble();
-            test.soilSatMPS = (Attribute.Double) JAMSDataFactory.getDataFactory().createDouble();
+            ref.soilSatMPS = (Attribute.Double) DefaultDataFactory.getDataFactory().createDouble();
+            test.soilSatMPS = (Attribute.Double) DefaultDataFactory.getDataFactory().createDouble();
 
-            ref.soilSatLPS = (Attribute.Double) JAMSDataFactory.getDataFactory().createDouble();
-            test.soilSatLPS = (Attribute.Double) JAMSDataFactory.getDataFactory().createDouble();
+            ref.soilSatLPS = (Attribute.Double) DefaultDataFactory.getDataFactory().createDouble();
+            test.soilSatLPS = (Attribute.Double) DefaultDataFactory.getDataFactory().createDouble();
 
-            ref.infiltration = (Attribute.Double) JAMSDataFactory.getDataFactory().createDouble();
-            test.infiltration = (Attribute.Double) JAMSDataFactory.getDataFactory().createDouble();
+            ref.infiltration = (Attribute.Double) DefaultDataFactory.getDataFactory().createDouble();
+            test.infiltration = (Attribute.Double) DefaultDataFactory.getDataFactory().createDouble();
 
-            ref.interflow = (Attribute.Double) JAMSDataFactory.getDataFactory().createDouble();
-            test.interflow = (Attribute.Double) JAMSDataFactory.getDataFactory().createDouble();
+            ref.interflow = (Attribute.Double) DefaultDataFactory.getDataFactory().createDouble();
+            test.interflow = (Attribute.Double) DefaultDataFactory.getDataFactory().createDouble();
 
-            ref.percolation = (Attribute.Double) JAMSDataFactory.getDataFactory().createDouble();
-            test.percolation = (Attribute.Double) JAMSDataFactory.getDataFactory().createDouble();
+            ref.percolation = (Attribute.Double) DefaultDataFactory.getDataFactory().createDouble();
+            test.percolation = (Attribute.Double) DefaultDataFactory.getDataFactory().createDouble();
 
-            ref.outRD1 = (Attribute.Double) JAMSDataFactory.getDataFactory().createDouble();
-            test.outRD1 = (Attribute.Double) JAMSDataFactory.getDataFactory().createDouble();
+            ref.outRD1 = (Attribute.Double) DefaultDataFactory.getDataFactory().createDouble();
+            test.outRD1 = (Attribute.Double) DefaultDataFactory.getDataFactory().createDouble();
 
-            ref.genRD1 = (Attribute.Double) JAMSDataFactory.getDataFactory().createDouble();
-            test.genRD1 = (Attribute.Double) JAMSDataFactory.getDataFactory().createDouble();
+            ref.genRD1 = (Attribute.Double) DefaultDataFactory.getDataFactory().createDouble();
+            test.genRD1 = (Attribute.Double) DefaultDataFactory.getDataFactory().createDouble();
 
             double area = rnd(10, 100000);
-            ref.area = (Attribute.Double) JAMSDataFactory.getDataFactory().createDouble();
-            test.area = (Attribute.Double) JAMSDataFactory.getDataFactory().createDouble();
+            ref.area = (Attribute.Double) DefaultDataFactory.getDataFactory().createDouble();
+            test.area = (Attribute.Double) DefaultDataFactory.getDataFactory().createDouble();
             ref.area.setValue(area);
             test.area.setValue(area);
 
             double slope = rnd(0.01, 2);
-            ref.slope = (Attribute.Double) JAMSDataFactory.getDataFactory().createDouble();
-            test.slope = (Attribute.Double) JAMSDataFactory.getDataFactory().createDouble();
+            ref.slope = (Attribute.Double) DefaultDataFactory.getDataFactory().createDouble();
+            test.slope = (Attribute.Double) DefaultDataFactory.getDataFactory().createDouble();
             ref.slope.setValue(slope);
             test.slope.setValue(slope);
 
             double sealedGrade = rnd(0.01, 2);
-            ref.sealedGrade = (Attribute.Double) JAMSDataFactory.getDataFactory().createDouble();
-            test.sealedGrade = (Attribute.Double) JAMSDataFactory.getDataFactory().createDouble();
+            ref.sealedGrade = (Attribute.Double) DefaultDataFactory.getDataFactory().createDouble();
+            test.sealedGrade = (Attribute.Double) DefaultDataFactory.getDataFactory().createDouble();
             ref.sealedGrade.setValue(sealedGrade);
             test.sealedGrade.setValue(sealedGrade);
 
@@ -1031,14 +1031,14 @@ public class J2KProcessLayeredSoilWater2008_Christian extends JAMSComponent {
             if (netRain > 150) {
                 netRain = 0;
             }
-            ref.netRain = (Attribute.Double) JAMSDataFactory.getDataFactory().createDouble();
-            test.netRain = (Attribute.Double) JAMSDataFactory.getDataFactory().createDouble();
+            ref.netRain = (Attribute.Double) DefaultDataFactory.getDataFactory().createDouble();
+            test.netRain = (Attribute.Double) DefaultDataFactory.getDataFactory().createDouble();
             ref.netRain.setValue(netRain);
             test.netRain.setValue(netRain);
 
             double netSnow = rnd(0.0, 200);
-            ref.netSnow = (Attribute.Double) JAMSDataFactory.getDataFactory().createDouble();
-            test.netSnow = (Attribute.Double) JAMSDataFactory.getDataFactory().createDouble();
+            ref.netSnow = (Attribute.Double) DefaultDataFactory.getDataFactory().createDouble();
+            test.netSnow = (Attribute.Double) DefaultDataFactory.getDataFactory().createDouble();
             if (netSnow > 100) {
                 netSnow = 0;
             }
@@ -1047,31 +1047,31 @@ public class J2KProcessLayeredSoilWater2008_Christian extends JAMSComponent {
             test.netSnow.setValue(netSnow);
 
             double potET = rnd(0.0, 50);
-            ref.potET = (Attribute.Double) JAMSDataFactory.getDataFactory().createDouble();
-            test.potET = (Attribute.Double) JAMSDataFactory.getDataFactory().createDouble();
+            ref.potET = (Attribute.Double) DefaultDataFactory.getDataFactory().createDouble();
+            test.potET = (Attribute.Double) DefaultDataFactory.getDataFactory().createDouble();
             ref.potET.setValue(potET);
             test.potET.setValue(potET);
 
             double actET = rnd(0.0, 50);
-            ref.actET = (Attribute.Double) JAMSDataFactory.getDataFactory().createDouble();
-            test.actET = (Attribute.Double) JAMSDataFactory.getDataFactory().createDouble();
+            ref.actET = (Attribute.Double) DefaultDataFactory.getDataFactory().createDouble();
+            test.actET = (Attribute.Double) DefaultDataFactory.getDataFactory().createDouble();
             ref.actET.setValue(actET);
             test.actET.setValue(actET);
 
             double snowDepth = rnd(0.0, 100);
-            ref.snowDepth = (Attribute.Double) JAMSDataFactory.getDataFactory().createDouble();
-            test.snowDepth = (Attribute.Double) JAMSDataFactory.getDataFactory().createDouble();
+            ref.snowDepth = (Attribute.Double) DefaultDataFactory.getDataFactory().createDouble();
+            test.snowDepth = (Attribute.Double) DefaultDataFactory.getDataFactory().createDouble();
             ref.snowDepth.setValue(snowDepth);
             test.snowDepth.setValue(snowDepth);
 
             double snowMelt = rnd(0.0, 50);
-            ref.snowMelt = (Attribute.Double) JAMSDataFactory.getDataFactory().createDouble();
-            test.snowMelt = (Attribute.Double) JAMSDataFactory.getDataFactory().createDouble();
+            ref.snowMelt = (Attribute.Double) DefaultDataFactory.getDataFactory().createDouble();
+            test.snowMelt = (Attribute.Double) DefaultDataFactory.getDataFactory().createDouble();
             ref.snowMelt.setValue(snowMelt);
             test.snowMelt.setValue(snowMelt);
 
-            ref.horizons = (Attribute.Double) JAMSDataFactory.getDataFactory().createDouble();
-            test.horizons = (Attribute.Double) JAMSDataFactory.getDataFactory().createDouble();
+            ref.horizons = (Attribute.Double) DefaultDataFactory.getDataFactory().createDouble();
+            test.horizons = (Attribute.Double) DefaultDataFactory.getDataFactory().createDouble();
             ref.horizons.setValue(horz);
             test.horizons = ref.horizons;
 
@@ -1104,236 +1104,236 @@ public class J2KProcessLayeredSoilWater2008_Christian extends JAMSComponent {
                 root_h[i] = generator.nextInt(2);
             }
 
-            ref.inRD2 = (Attribute.DoubleArray) JAMSDataFactory.getDataFactory().createDoubleArray();
-            test.inRD2 = (Attribute.DoubleArray) JAMSDataFactory.getDataFactory().createDoubleArray();
+            ref.inRD2 = (Attribute.DoubleArray) DefaultDataFactory.getDataFactory().createDoubleArray();
+            test.inRD2 = (Attribute.DoubleArray) DefaultDataFactory.getDataFactory().createDoubleArray();
             ref.inRD2.setValue(in_RD2);
             test.inRD2.setValue(in_RD2.clone());
 
-            ref.infiltration_hor = (Attribute.DoubleArray) JAMSDataFactory.getDataFactory().createDoubleArray();
-            test.infiltration_hor = (Attribute.DoubleArray) JAMSDataFactory.getDataFactory().createDoubleArray();
+            ref.infiltration_hor = (Attribute.DoubleArray) DefaultDataFactory.getDataFactory().createDoubleArray();
+            test.infiltration_hor = (Attribute.DoubleArray) DefaultDataFactory.getDataFactory().createDoubleArray();
             ref.infiltration_hor.setValue(new double[horz]);
             test.infiltration_hor.setValue(new double[horz]);
 
-            ref.perco_hor = (Attribute.DoubleArray) JAMSDataFactory.getDataFactory().createDoubleArray();
-            test.perco_hor = (Attribute.DoubleArray) JAMSDataFactory.getDataFactory().createDoubleArray();
+            ref.perco_hor = (Attribute.DoubleArray) DefaultDataFactory.getDataFactory().createDoubleArray();
+            test.perco_hor = (Attribute.DoubleArray) DefaultDataFactory.getDataFactory().createDoubleArray();
             ref.perco_hor.setValue(new double[horz]);
             test.perco_hor.setValue(new double[horz]);
 
-            ref.actETP_h = (Attribute.DoubleArray) JAMSDataFactory.getDataFactory().createDoubleArray();
-            test.actETP_h = (Attribute.DoubleArray) JAMSDataFactory.getDataFactory().createDoubleArray();
+            ref.actETP_h = (Attribute.DoubleArray) DefaultDataFactory.getDataFactory().createDoubleArray();
+            test.actETP_h = (Attribute.DoubleArray) DefaultDataFactory.getDataFactory().createDoubleArray();
             ref.actETP_h.setValue(new double[horz]);
             test.actETP_h.setValue(new double[horz]);
 
-            ref.w_layer_diff = (Attribute.DoubleArray) JAMSDataFactory.getDataFactory().createDoubleArray();
-            test.w_layer_diff = (Attribute.DoubleArray) JAMSDataFactory.getDataFactory().createDoubleArray();
+            ref.w_layer_diff = (Attribute.DoubleArray) DefaultDataFactory.getDataFactory().createDoubleArray();
+            test.w_layer_diff = (Attribute.DoubleArray) DefaultDataFactory.getDataFactory().createDoubleArray();
             ref.w_layer_diff.setValue(new double[horz]);
             test.w_layer_diff.setValue(new double[horz]);
 
-            ref.outRD2 = (Attribute.DoubleArray) JAMSDataFactory.getDataFactory().createDoubleArray();
-            test.outRD2 = (Attribute.DoubleArray) JAMSDataFactory.getDataFactory().createDoubleArray();
+            ref.outRD2 = (Attribute.DoubleArray) DefaultDataFactory.getDataFactory().createDoubleArray();
+            test.outRD2 = (Attribute.DoubleArray) DefaultDataFactory.getDataFactory().createDoubleArray();
             ref.outRD2.setValue(new double[horz]);
             test.outRD2.setValue(new double[horz]);
 
-            ref.genRD2 = (Attribute.DoubleArray) JAMSDataFactory.getDataFactory().createDoubleArray();
-            test.genRD2 = (Attribute.DoubleArray) JAMSDataFactory.getDataFactory().createDoubleArray();
+            ref.genRD2 = (Attribute.DoubleArray) DefaultDataFactory.getDataFactory().createDoubleArray();
+            test.genRD2 = (Attribute.DoubleArray) DefaultDataFactory.getDataFactory().createDoubleArray();
             ref.genRD2.setValue(new double[horz]);
             test.genRD2.setValue(new double[horz]);
 
 
 
-            ref.layerdepth = (Attribute.DoubleArray) JAMSDataFactory.getDataFactory().createDoubleArray();
-            test.layerdepth = (Attribute.DoubleArray) JAMSDataFactory.getDataFactory().createDoubleArray();
+            ref.layerdepth = (Attribute.DoubleArray) DefaultDataFactory.getDataFactory().createDoubleArray();
+            test.layerdepth = (Attribute.DoubleArray) DefaultDataFactory.getDataFactory().createDoubleArray();
             ref.layerdepth.setValue(layerdepth);
             test.layerdepth.setValue(layerdepth.clone());
 
             double rootdepth = rnd(0.0, 10);
-            ref.rootdepth = (Attribute.Double) JAMSDataFactory.getDataFactory().createDouble();
-            test.rootdepth = (Attribute.Double) JAMSDataFactory.getDataFactory().createDouble();
+            ref.rootdepth = (Attribute.Double) DefaultDataFactory.getDataFactory().createDouble();
+            test.rootdepth = (Attribute.Double) DefaultDataFactory.getDataFactory().createDouble();
             ref.rootdepth.setValue(rootdepth);
             test.rootdepth.setValue(rootdepth);
 
-            ref.maxMPS = (Attribute.DoubleArray) JAMSDataFactory.getDataFactory().createDoubleArray();
-            test.maxMPS = (Attribute.DoubleArray) JAMSDataFactory.getDataFactory().createDoubleArray();
+            ref.maxMPS = (Attribute.DoubleArray) DefaultDataFactory.getDataFactory().createDoubleArray();
+            test.maxMPS = (Attribute.DoubleArray) DefaultDataFactory.getDataFactory().createDoubleArray();
             ref.maxMPS.setValue(maxMPS);
             test.maxMPS.setValue(maxMPS.clone());
 
-            ref.maxLPS = (Attribute.DoubleArray) JAMSDataFactory.getDataFactory().createDoubleArray();
-            test.maxLPS = (Attribute.DoubleArray) JAMSDataFactory.getDataFactory().createDoubleArray();
+            ref.maxLPS = (Attribute.DoubleArray) DefaultDataFactory.getDataFactory().createDoubleArray();
+            test.maxLPS = (Attribute.DoubleArray) DefaultDataFactory.getDataFactory().createDoubleArray();
             ref.maxLPS.setValue(maxLPS);
             test.maxLPS.setValue(maxLPS.clone());
 
-            ref.actMPS = (Attribute.DoubleArray) JAMSDataFactory.getDataFactory().createDoubleArray();
-            test.actMPS = (Attribute.DoubleArray) JAMSDataFactory.getDataFactory().createDoubleArray();
+            ref.actMPS = (Attribute.DoubleArray) DefaultDataFactory.getDataFactory().createDoubleArray();
+            test.actMPS = (Attribute.DoubleArray) DefaultDataFactory.getDataFactory().createDoubleArray();
             ref.actMPS.setValue(actMPS);
             test.actMPS.setValue(actMPS.clone());
 
-            ref.actLPS = (Attribute.DoubleArray) JAMSDataFactory.getDataFactory().createDoubleArray();
-            test.actLPS = (Attribute.DoubleArray) JAMSDataFactory.getDataFactory().createDoubleArray();
+            ref.actLPS = (Attribute.DoubleArray) DefaultDataFactory.getDataFactory().createDoubleArray();
+            test.actLPS = (Attribute.DoubleArray) DefaultDataFactory.getDataFactory().createDoubleArray();
             ref.actLPS.setValue(actLPS);
             test.actLPS.setValue(actLPS.clone());
 
-            ref.satMPS = (Attribute.DoubleArray) JAMSDataFactory.getDataFactory().createDoubleArray();
-            test.satMPS = (Attribute.DoubleArray) JAMSDataFactory.getDataFactory().createDoubleArray();
+            ref.satMPS = (Attribute.DoubleArray) DefaultDataFactory.getDataFactory().createDoubleArray();
+            test.satMPS = (Attribute.DoubleArray) DefaultDataFactory.getDataFactory().createDoubleArray();
             ref.satMPS.setValue(satMPS);
             test.satMPS.setValue(satMPS.clone());
 
-            ref.satLPS = (Attribute.DoubleArray) JAMSDataFactory.getDataFactory().createDoubleArray();
-            test.satLPS = (Attribute.DoubleArray) JAMSDataFactory.getDataFactory().createDoubleArray();
+            ref.satLPS = (Attribute.DoubleArray) DefaultDataFactory.getDataFactory().createDoubleArray();
+            test.satLPS = (Attribute.DoubleArray) DefaultDataFactory.getDataFactory().createDoubleArray();
             ref.satLPS.setValue(satLPS);
             test.satLPS.setValue(satLPS.clone());
 
             double actDPS = rnd(0.0, 10);
-            ref.actDPS = (Attribute.Double) JAMSDataFactory.getDataFactory().createDouble();
-            test.actDPS = (Attribute.Double) JAMSDataFactory.getDataFactory().createDouble();
+            ref.actDPS = (Attribute.Double) DefaultDataFactory.getDataFactory().createDouble();
+            test.actDPS = (Attribute.Double) DefaultDataFactory.getDataFactory().createDouble();
             ref.actDPS.setValue(actDPS);
             test.actDPS.setValue(actDPS);
 
             double satSoil = rnd(0.0, 10);
-            ref.satSoil = (Attribute.Double) JAMSDataFactory.getDataFactory().createDouble();
-            test.satSoil = (Attribute.Double) JAMSDataFactory.getDataFactory().createDouble();
+            ref.satSoil = (Attribute.Double) DefaultDataFactory.getDataFactory().createDouble();
+            test.satSoil = (Attribute.Double) DefaultDataFactory.getDataFactory().createDouble();
             ref.satSoil.setValue(satSoil);
             test.satSoil.setValue(satSoil);
 
             double inRD1 = rnd(0.0, 50);
-            ref.inRD1 = (Attribute.Double) JAMSDataFactory.getDataFactory().createDouble();
-            test.inRD1 = (Attribute.Double) JAMSDataFactory.getDataFactory().createDouble();
+            ref.inRD1 = (Attribute.Double) DefaultDataFactory.getDataFactory().createDouble();
+            test.inRD1 = (Attribute.Double) DefaultDataFactory.getDataFactory().createDouble();
             ref.inRD1.setValue(inRD1);
             test.inRD1.setValue(inRD1);
 
             double soilMaxDPS = rnd(0.0, 50);
-            ref.soilMaxDPS = (Attribute.Double) JAMSDataFactory.getDataFactory().createDouble();
-            test.soilMaxDPS = (Attribute.Double) JAMSDataFactory.getDataFactory().createDouble();
+            ref.soilMaxDPS = (Attribute.Double) DefaultDataFactory.getDataFactory().createDouble();
+            test.soilMaxDPS = (Attribute.Double) DefaultDataFactory.getDataFactory().createDouble();
             ref.soilMaxDPS.setValue(soilMaxDPS);
             test.soilMaxDPS.setValue(soilMaxDPS);
 
             double soilID = rnd(0.0, 50);
-            ref.soilID = (Attribute.Double) JAMSDataFactory.getDataFactory().createDouble();
-            test.soilID = (Attribute.Double) JAMSDataFactory.getDataFactory().createDouble();
+            ref.soilID = (Attribute.Double) DefaultDataFactory.getDataFactory().createDouble();
+            test.soilID = (Attribute.Double) DefaultDataFactory.getDataFactory().createDouble();
             ref.soilID.setValue(soilMaxDPS);
             test.soilID.setValue(soilMaxDPS);
 
             double soilPolRed = rnd(0.05, 10);
-            ref.soilPolRed = (Attribute.Double) JAMSDataFactory.getDataFactory().createDouble();
-            test.soilPolRed = (Attribute.Double) JAMSDataFactory.getDataFactory().createDouble();
+            ref.soilPolRed = (Attribute.Double) DefaultDataFactory.getDataFactory().createDouble();
+            test.soilPolRed = (Attribute.Double) DefaultDataFactory.getDataFactory().createDouble();
             ref.soilPolRed.setValue(soilPolRed);
             test.soilPolRed.setValue(soilPolRed);
 
             double soilLinRed = rnd(0.05, 10);
-            ref.soilLinRed = (Attribute.Double) JAMSDataFactory.getDataFactory().createDouble();
-            test.soilLinRed = (Attribute.Double) JAMSDataFactory.getDataFactory().createDouble();
+            ref.soilLinRed = (Attribute.Double) DefaultDataFactory.getDataFactory().createDouble();
+            test.soilLinRed = (Attribute.Double) DefaultDataFactory.getDataFactory().createDouble();
             ref.soilLinRed.setValue(soilLinRed);
             test.soilLinRed.setValue(soilLinRed);
 
             double soilMaxInfSummer = rnd(10.05, 250);
-            ref.soilMaxInfSummer = (Attribute.Double) JAMSDataFactory.getDataFactory().createDouble();
-            test.soilMaxInfSummer = (Attribute.Double) JAMSDataFactory.getDataFactory().createDouble();
+            ref.soilMaxInfSummer = (Attribute.Double) DefaultDataFactory.getDataFactory().createDouble();
+            test.soilMaxInfSummer = (Attribute.Double) DefaultDataFactory.getDataFactory().createDouble();
             ref.soilMaxInfSummer.setValue(soilMaxInfSummer);
             test.soilMaxInfSummer.setValue(soilMaxInfSummer);
 
             double soilMaxInfWinter = rnd(10.05, 250);
-            ref.soilMaxInfWinter = (Attribute.Double) JAMSDataFactory.getDataFactory().createDouble();
-            test.soilMaxInfWinter = (Attribute.Double) JAMSDataFactory.getDataFactory().createDouble();
+            ref.soilMaxInfWinter = (Attribute.Double) DefaultDataFactory.getDataFactory().createDouble();
+            test.soilMaxInfWinter = (Attribute.Double) DefaultDataFactory.getDataFactory().createDouble();
             ref.soilMaxInfWinter.setValue(soilMaxInfWinter);
             test.soilMaxInfWinter.setValue(soilMaxInfWinter);
 
             double soilMaxInfSnow = rnd(0.05, 50);
-            ref.soilMaxInfSnow = (Attribute.Double) JAMSDataFactory.getDataFactory().createDouble();
-            test.soilMaxInfSnow = (Attribute.Double) JAMSDataFactory.getDataFactory().createDouble();
+            ref.soilMaxInfSnow = (Attribute.Double) DefaultDataFactory.getDataFactory().createDouble();
+            test.soilMaxInfSnow = (Attribute.Double) DefaultDataFactory.getDataFactory().createDouble();
             ref.soilMaxInfSnow.setValue(soilMaxInfSnow);
             test.soilMaxInfSnow.setValue(soilMaxInfSnow);
 
             double soilImpGT80 = rnd(0.05, 50);
-            ref.soilImpGT80 = (Attribute.Double) JAMSDataFactory.getDataFactory().createDouble();
-            test.soilImpGT80 = (Attribute.Double) JAMSDataFactory.getDataFactory().createDouble();
+            ref.soilImpGT80 = (Attribute.Double) DefaultDataFactory.getDataFactory().createDouble();
+            test.soilImpGT80 = (Attribute.Double) DefaultDataFactory.getDataFactory().createDouble();
             ref.soilImpGT80.setValue(soilImpGT80);
             test.soilImpGT80.setValue(soilImpGT80);
 
             double soilImpLT80 = rnd(0.05, 50);
-            ref.soilImpLT80 = (Attribute.Double) JAMSDataFactory.getDataFactory().createDouble();
-            test.soilImpLT80 = (Attribute.Double) JAMSDataFactory.getDataFactory().createDouble();
+            ref.soilImpLT80 = (Attribute.Double) DefaultDataFactory.getDataFactory().createDouble();
+            test.soilImpLT80 = (Attribute.Double) DefaultDataFactory.getDataFactory().createDouble();
             ref.soilImpLT80.setValue(soilImpLT80);
             test.soilImpLT80.setValue(soilImpLT80);
 
             double soilDistMPSLPS = rnd(0.0, 1.0);
-            ref.soilDistMPSLPS = (Attribute.Double) JAMSDataFactory.getDataFactory().createDouble();
-            test.soilDistMPSLPS = (Attribute.Double) JAMSDataFactory.getDataFactory().createDouble();
+            ref.soilDistMPSLPS = (Attribute.Double) DefaultDataFactory.getDataFactory().createDouble();
+            test.soilDistMPSLPS = (Attribute.Double) DefaultDataFactory.getDataFactory().createDouble();
             ref.soilDistMPSLPS.setValue(soilDistMPSLPS);
             test.soilDistMPSLPS.setValue(soilDistMPSLPS);
 
             double soilDiffMPSLPS = rnd(0.0, 1.0);
-            ref.soilDiffMPSLPS = (Attribute.Double) JAMSDataFactory.getDataFactory().createDouble();
-            test.soilDiffMPSLPS = (Attribute.Double) JAMSDataFactory.getDataFactory().createDouble();
+            ref.soilDiffMPSLPS = (Attribute.Double) DefaultDataFactory.getDataFactory().createDouble();
+            test.soilDiffMPSLPS = (Attribute.Double) DefaultDataFactory.getDataFactory().createDouble();
             ref.soilDiffMPSLPS.setValue(soilDiffMPSLPS);
             test.soilDiffMPSLPS.setValue(soilDiffMPSLPS);
 
             double soilOutLPS = rnd(0.0, 1.0);
-            ref.soilOutLPS = (Attribute.Double) JAMSDataFactory.getDataFactory().createDouble();
-            test.soilOutLPS = (Attribute.Double) JAMSDataFactory.getDataFactory().createDouble();
+            ref.soilOutLPS = (Attribute.Double) DefaultDataFactory.getDataFactory().createDouble();
+            test.soilOutLPS = (Attribute.Double) DefaultDataFactory.getDataFactory().createDouble();
             ref.soilOutLPS.setValue(soilOutLPS);
             test.soilOutLPS.setValue(soilOutLPS);
 
             double soilLatVertLPS = rnd(0.0, 10.0);
-            ref.soilLatVertLPS = (Attribute.Double) JAMSDataFactory.getDataFactory().createDouble();
-            test.soilLatVertLPS = (Attribute.Double) JAMSDataFactory.getDataFactory().createDouble();
+            ref.soilLatVertLPS = (Attribute.Double) DefaultDataFactory.getDataFactory().createDouble();
+            test.soilLatVertLPS = (Attribute.Double) DefaultDataFactory.getDataFactory().createDouble();
             ref.soilLatVertLPS.setValue(soilLatVertLPS);
             test.soilLatVertLPS.setValue(soilLatVertLPS);
 
             double soilMaxPerc = rnd(5.0, 100.0);
-            ref.soilMaxPerc = (Attribute.Double) JAMSDataFactory.getDataFactory().createDouble();
-            test.soilMaxPerc = (Attribute.Double) JAMSDataFactory.getDataFactory().createDouble();
+            ref.soilMaxPerc = (Attribute.Double) DefaultDataFactory.getDataFactory().createDouble();
+            test.soilMaxPerc = (Attribute.Double) DefaultDataFactory.getDataFactory().createDouble();
             ref.soilMaxPerc.setValue(soilMaxPerc);
             test.soilMaxPerc.setValue(soilMaxPerc);
 
             double geoMaxPerc = rnd(5.0, 100.0);
-            ref.geoMaxPerc = (Attribute.Double) JAMSDataFactory.getDataFactory().createDouble();
-            test.geoMaxPerc = (Attribute.Double) JAMSDataFactory.getDataFactory().createDouble();
+            ref.geoMaxPerc = (Attribute.Double) DefaultDataFactory.getDataFactory().createDouble();
+            test.geoMaxPerc = (Attribute.Double) DefaultDataFactory.getDataFactory().createDouble();
             ref.geoMaxPerc.setValue(geoMaxPerc);
             test.geoMaxPerc.setValue(geoMaxPerc);
 
             double soilConcRD1 = rnd(0.0, 10.0);
-            ref.soilConcRD1 = (Attribute.Double) JAMSDataFactory.getDataFactory().createDouble();
-            test.soilConcRD1 = (Attribute.Double) JAMSDataFactory.getDataFactory().createDouble();
+            ref.soilConcRD1 = (Attribute.Double) DefaultDataFactory.getDataFactory().createDouble();
+            test.soilConcRD1 = (Attribute.Double) DefaultDataFactory.getDataFactory().createDouble();
             ref.soilConcRD1.setValue(soilConcRD1);
             test.soilConcRD1.setValue(soilConcRD1);
 
             double soilConcRD2 = rnd(0.0, 10.0);
-            ref.soilConcRD2 = (Attribute.Double) JAMSDataFactory.getDataFactory().createDouble();
-            test.soilConcRD2 = (Attribute.Double) JAMSDataFactory.getDataFactory().createDouble();
+            ref.soilConcRD2 = (Attribute.Double) DefaultDataFactory.getDataFactory().createDouble();
+            test.soilConcRD2 = (Attribute.Double) DefaultDataFactory.getDataFactory().createDouble();
             ref.soilConcRD2.setValue(soilConcRD2);
             test.soilConcRD2.setValue(soilConcRD2);
 
             double BetaW = rnd(0.05, 10.0);
-            ref.BetaW = (Attribute.Double) JAMSDataFactory.getDataFactory().createDouble();
-            test.BetaW = (Attribute.Double) JAMSDataFactory.getDataFactory().createDouble();
+            ref.BetaW = (Attribute.Double) DefaultDataFactory.getDataFactory().createDouble();
+            test.BetaW = (Attribute.Double) DefaultDataFactory.getDataFactory().createDouble();
             ref.BetaW.setValue(BetaW);
             test.BetaW.setValue(BetaW);
 
             double LAI = rnd(0.05, 10.0);
-            ref.LAI = (Attribute.Double) JAMSDataFactory.getDataFactory().createDouble();
-            test.LAI = (Attribute.Double) JAMSDataFactory.getDataFactory().createDouble();
+            ref.LAI = (Attribute.Double) DefaultDataFactory.getDataFactory().createDouble();
+            test.LAI = (Attribute.Double) DefaultDataFactory.getDataFactory().createDouble();
             ref.LAI.setValue(LAI);
             test.LAI.setValue(LAI);
 
             double Kf_geo = rnd(0.05, 10.0);
-            ref.Kf_geo = (Attribute.Double) JAMSDataFactory.getDataFactory().createDouble();
-            test.Kf_geo = (Attribute.Double) JAMSDataFactory.getDataFactory().createDouble();
+            ref.Kf_geo = (Attribute.Double) DefaultDataFactory.getDataFactory().createDouble();
+            test.Kf_geo = (Attribute.Double) DefaultDataFactory.getDataFactory().createDouble();
             ref.Kf_geo.setValue(Kf_geo);
             test.Kf_geo.setValue(Kf_geo);
 
 
-            ref.kf_h = (Attribute.DoubleArray) JAMSDataFactory.getDataFactory().createDoubleArray();
-            test.kf_h = (Attribute.DoubleArray) JAMSDataFactory.getDataFactory().createDoubleArray();
+            ref.kf_h = (Attribute.DoubleArray) DefaultDataFactory.getDataFactory().createDoubleArray();
+            test.kf_h = (Attribute.DoubleArray) DefaultDataFactory.getDataFactory().createDoubleArray();
             ref.kf_h.setValue(kf_h);
             test.kf_h.setValue(kf_h);
 
-            ref.root_h = (Attribute.DoubleArray) JAMSDataFactory.getDataFactory().createDoubleArray();
-            test.root_h = (Attribute.DoubleArray) JAMSDataFactory.getDataFactory().createDoubleArray();
+            ref.root_h = (Attribute.DoubleArray) DefaultDataFactory.getDataFactory().createDoubleArray();
+            test.root_h = (Attribute.DoubleArray) DefaultDataFactory.getDataFactory().createDoubleArray();
             ref.root_h.setValue(root_h);
             test.root_h.setValue(root_h);
 
             double kdiff_layer = rnd(1, 20.0);
-            ref.kdiff_layer = (Attribute.Double) JAMSDataFactory.getDataFactory().createDouble();
-            test.kdiff_layer = (Attribute.Double) JAMSDataFactory.getDataFactory().createDouble();
+            ref.kdiff_layer = (Attribute.Double) DefaultDataFactory.getDataFactory().createDouble();
+            test.kdiff_layer = (Attribute.Double) DefaultDataFactory.getDataFactory().createDouble();
             ref.kdiff_layer.setValue(kdiff_layer);
             test.kdiff_layer.setValue(kdiff_layer);
 

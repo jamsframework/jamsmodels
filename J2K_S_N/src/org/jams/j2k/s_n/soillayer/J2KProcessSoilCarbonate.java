@@ -8,7 +8,7 @@ package org.jams.j2k.s_n.soillayer;
 import jams.data.Attribute;
 import jams.data.Attribute.Boolean;
 import jams.data.Attribute.Calendar;
-import jams.data.JAMSDataFactory;
+import jams.data.DefaultDataFactory;
 import jams.data.Attribute.Double;
 import jams.model.JAMSComponent;
 import jams.model.JAMSComponentDescription;
