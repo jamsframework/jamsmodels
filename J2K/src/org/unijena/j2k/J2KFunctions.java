@@ -79,7 +79,7 @@ public class J2KFunctions {
 
                 Attribute.Entity e;
 
-                e = JAMSDataFactory.createEntity();
+                e = DefaultDataFactory.getDataFactory().createEntity();
                 tokenizer = new StringTokenizer(s, "\t");
 
                 String token;

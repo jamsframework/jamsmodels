@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <sect1 version="5.0" xmlns="http://docbook.org/ns/docbook" xmlns:ns6="http://www.w3.org/1999/xlink" xmlns:ns5="http://www.w3.org/1999/xhtml" xmlns:ns4="http://www.w3.org/2000/svg" xmlns:ns3="http://www.w3.org/1998/Math/MathML" xmlns:ns="http://docbook.org/ns/docbook" >
   <title>J2KProcessReachRouting</title>
-  <subtitle>A component used for the modeling of flow processes in the on-site preflooders of the
+  <subtitle>A component used for the modeling of flow processes in the reaches of the
     catchment area.</subtitle>
   <informaltable>
     <tgroup cols="2">
@@ -163,7 +163,7 @@
   </sect2>
   <sect2>
     <title>Component Description</title>
-    <para>This component is used for modeling flow processes in the on-site preflooder network of
+    <para>This component is used for modeling flow processes in the reach network of
       the catchment area. First, separate reaches have to be parameterized. The individual
       parameters which have to be assigned, are length in meters, slope in %, the mean width in
       meters and the reach roughness according to Manning-Strickler. Those are stored in a parameter
@@ -173,8 +173,8 @@
       to contain the ID 0. </para>
     <para>The individual reaches receive water by neighboring spatial model entities and upstream
       reaches. In the reach, a velocity for water amount is calculated and then a certain amount is
-      given to the next downstream reach based on the velocity and the length of the on-site
-      preflooder. For the calculation a rectangular cross section is assumed to simplify matters.
+      given to the next downstream reach based on the velocity and the length of the reach. 
+      For the calculation a rectangular cross section is assumed to simplify matters.
       Although the complete amount of water is routed, the relative amounts of the individual runoff
       components are maintained, so they can be considered separately anytime and in every reach. </para>
     <para>The module describes flow processes in the channel by using the kinematic wave approach
