@@ -196,9 +196,15 @@ import jams.model.*;
         }
         mxMPS = mxMPS * this.area.getValue();
         mxMPS = mxMPS * this.FCAdaptation.getValue();
+        if (mxMPS == 0){
+            mxMPS = 1;
+        }
         
         double mxLPS = entity.getDouble("aircap") * area.getValue();
         mxLPS = mxLPS * this.ACAdaptation.getValue();    
+        if (mxLPS == 0){
+            mxLPS = 1;
+        }
 
 
 
