@@ -276,7 +276,7 @@ import jams.model.*;
         
     }
     
-    public void run() {
+    public void run() throws Attribute.Entity.NoSuchAttributeException{
         
         Attribute.Entity entity = entities.getCurrent();
         

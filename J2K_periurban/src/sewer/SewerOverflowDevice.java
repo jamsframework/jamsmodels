@@ -119,7 +119,7 @@ public class SewerOverflowDevice extends JAMSComponent {
      * Component run stages
      */
 
-    public void run() {
+    public void run() throws Attribute.Entity.NoSuchAttributeException{
 
         if (ts++ > 60) {
 //            System.out.println("");
@@ -129,7 +129,7 @@ public class SewerOverflowDevice extends JAMSComponent {
             return;
         }
 
-        //getModel().getRuntime().println(time.toString());
+        getModel().getRuntime().println(time.toString());
 
         double volume = 0;
         double[] frac = new double[inValues.length];
@@ -168,12 +168,14 @@ public class SewerOverflowDevice extends JAMSComponent {
             double height2 = (diffVolume / 1000) / (length.getValue() * width.getValue()); //in m
 
             if (height <= pipeHeight.getValue()) {
+                
+                getModel().getRuntime().println("a");
                 q = dischCoeff.getValue() * pipeWidth.getValue() * height * Math.sqrt(2 * g * height) * seconds * 1000;
 //              getModel().getRuntime().println("");
-//                getModel().getRuntime().println("x");
+                getModel().getRuntime().println("b");
             } else {
                 q = dischCoeff.getValue() * pipeWidth.getValue() * pipeHeight.getValue() * Math.sqrt(2 * g * height) * seconds * 1000;
-//                getModel().getRuntime().println("y");
+                getModel().getRuntime().println("c");
             }
             q = Math.min(q, diffVolume);
 
