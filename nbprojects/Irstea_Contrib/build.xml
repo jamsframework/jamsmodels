@@ -12,7 +12,7 @@
     <import file="nbproject/build-impl.xml"/>
     
     <target name="-post-jar">
-        <property name="deployDir" value="../../../jams/lib"/>
+        <property name="deployDir" value="../../lib"/>
         <copy file="${dist.jar}" todir="${deployDir}"/>
     </target>    
     
