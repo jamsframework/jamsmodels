@@ -30,6 +30,7 @@ import jams.tools.FileTools;
 import java.util.*;
 import jams.tools.JAMSTools;
 
+
 /**
  *
  * @author M. Labbas
@@ -53,7 +54,7 @@ public class StandardRainwaterManagementReader extends JAMSComponent {
     public void init() {
 
         //read rwm parameter
-        Attribute.EntityCollection rwmTypes = JAMSDataFactory.getDataFactory().createEntityCollection();
+        Attribute.EntityCollection rwmTypes = getModel().getRuntime().getDataFactory().createEntityCollection();
 
         rwmTypes.setEntities(J2KFunctions.readParas(FileTools.createAbsoluteFileName(getModel().getWorkspaceDirectory().getPath(), rwmFileName.getValue()), getModel()));
 

@@ -166,9 +166,9 @@ import jams.model.*;
     
     public void run() throws Attribute.Entity.NoSuchAttributeException{
     	
-        int monthCount = time.get(JAMSCalendar.MONTH);
-        int dayCount = time.get(time.DAY_OF_YEAR) - 1;
-        int hourCount = time.get(time.HOUR_OF_DAY) + (24 * dayCount);
+        int monthCount = time.get(Attribute.Calendar.MONTH);
+        int dayCount = time.get(Attribute.Calendar.DAY_OF_YEAR) - 1;
+        int hourCount = time.get(Attribute.Calendar.HOUR_OF_DAY) + (24 * dayCount);
         
         double in_LAI = -9999;
         double in_effH = -9999;
