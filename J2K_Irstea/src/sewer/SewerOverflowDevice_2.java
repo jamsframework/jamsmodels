@@ -1,5 +1,5 @@
 /*
- * SewerOverflowDevice.java
+ * SewerOverflowDevice_2.java
  * Created on 05. October 2012, 17:02
  *
  * This file is part of JAMS
@@ -36,7 +36,7 @@ import java.util.GregorianCalendar;
         + "coming from a sewer reach(threshold test) and adds it to the receiving reach river.",
         version = "1.0_0",
         date = "2012-10-05")
-public class SewerOverflowDevice extends JAMSComponent {
+public class SewerOverflowDevice_2 extends JAMSComponent {
 
     /*
      * Component variables
@@ -53,13 +53,6 @@ public class SewerOverflowDevice extends JAMSComponent {
             description = "SOD threshold",
             unit = "m")
     public Attribute.Double threshold;
-    @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
-            description = "SOD slope",
-            unit = "deg")
-    public Attribute.Double slope;
-    @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
-            description = "SOD roughness")
-    public Attribute.Double roughness;
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
             description = "Coefficient discharge",
             unit = "-")
@@ -98,6 +91,9 @@ public class SewerOverflowDevice extends JAMSComponent {
             description = "time interval",
             unit = "d")
     public Attribute.TimeInterval ti;
+    @JAMSVarDescription(access = JAMSVarDescription.AccessType.READWRITE,
+            description = "water level in sewer")
+    public Attribute.Double waterLevel;
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.WRITE,
             description = "sewer overflow sum")
     public Attribute.Double sewerOverflow;
@@ -123,73 +119,69 @@ public class SewerOverflowDevice extends JAMSComponent {
      * Component run stages
      */
 
-    public void run() {
+    public void run() throws Attribute.Entity.NoSuchAttributeException{
+
+        if (ts++ > 60) {
+//            System.out.println("");
+        }
 
         if (to_river.getValue() == null) {
             return;
         }
 
-        // calc active and inflow volumes
-        double volumeAct = 0, volumeIn = 0;
+        getModel().getRuntime().println(time.toString());
 
-        for (int i = 0; i < actValues.length; i++) {
-            volumeAct = volumeAct + actValues[i].getValue();
-        }
-        for (int i = 0; i < inValues.length; i++) {
-            volumeIn = volumeIn + inValues[i].getValue();
-        }
-
-        // calc overall volume
-        double volumeAll = volumeAct + volumeIn;
-//        double volumeAvg = (volumeAll + volumeAct) / 2;
-
-        // calc fractions related to overall volume
+        double volume = 0;
         double[] frac = new double[inValues.length];
 
         for (int i = 0; i < inValues.length; i++) {
-            if (volumeAll > 0) {
-                frac[i] = (inValues[i].getValue() + actValues[i].getValue()) / volumeAll;
+            volume = volume + inValues[i].getValue();
+        }
+        for (int i = 0; i < actValues.length; i++) {
+            volume = volume + actValues[i].getValue();
+        }
+        for (int i = 0; i < inValues.length; i++) {
+            if (volume > 0) {
+                frac[i] = (inValues[i].getValue() + actValues[i].getValue()) / volume;
             }
         }
-        
-        // calc average reach water level based on overall volume, reach volume 
-        // and flow velocity (beware of to high slope values!)
-        double flowVelocity = calcFlowVelocity(volumeAll, width.getValue(), slope.getValue(), roughness.getValue(), seconds);
-        double flowLength = flowVelocity * seconds;
-        double waterLevel = volumeAll / (flowLength * width.getValue() * 1000);
-        
+
+        double maxVolume = threshold.getValue() * length.getValue() * width.getValue() * 1000; //in L
+        double diffVolume = 0, height = 0, q = 0;
+        double overflowComp = 0;
+        double g = 9.80665; //gravitationnal constant
+
+        if (waterLevel != null) {
+            height = waterLevel.getValue();
+        } else {
+            height = 0;
+        }
+
         // overflow is happening?
-        if (waterLevel > threshold.getValue()) {
+        if (height > threshold.getValue()) {
 
-            double g = 9.80665; //gravitationnal constant
-            double q;
-            // let's use var names as defined in Faure (2007)
-            double c = threshold.getValue();
-            double L = pipeWidth.getValue();
-            double T = c + pipeHeight.getValue();
-            double h = waterLevel;
-
-//            if (time.get(Attribute.Calendar.MONTH) > 5) {
-                System.out.println(ID + " : " + time);
+//            if (ID.getValue() == 17 && time.get(Attribute.Calendar.MONTH) > 5) {
+//                System.out.println(ID + " : " + time);
 //            }
 
-            if (h <= T) {
-                
-                q = dischCoeff.getValue() * L * h * Math.sqrt(2 * g * h) * seconds * 1000;
-                
-            } else {
-                
-                q = dischCoeff.getValue() * L * (T - c) * Math.sqrt(2 * g * h) * seconds * 1000;
-                
-            }
+            diffVolume = volume - maxVolume; //in L
+            double height2 = (diffVolume / 1000) / (length.getValue() * width.getValue()); //in m
 
-            double diffVolume = (h - c) * flowLength * width.getValue() * 1000;
-            
+            if (height <= pipeHeight.getValue()) {
+                
+                getModel().getRuntime().println("a");
+                q = dischCoeff.getValue() * pipeWidth.getValue() * height * Math.sqrt(2 * g * height) * seconds * 1000;
+//              getModel().getRuntime().println("");
+                getModel().getRuntime().println("b");
+            } else {
+                q = dischCoeff.getValue() * pipeWidth.getValue() * pipeHeight.getValue() * Math.sqrt(2 * g * height) * seconds * 1000;
+                getModel().getRuntime().println("c");
+            }
             q = Math.min(q, diffVolume);
 
             for (int i = 0; i < inValues.length; i++) {
                 // The overflow of the SOD is limited by its pipe diameter               
-                double overflowComp = frac[i] * q;
+                overflowComp = frac[i] * q;
 
                 inValues[i].setValue(inValues[i].getValue() - overflowComp);
                 to_river.setDouble(inNames[i].getValue(), overflowComp + to_river.getDouble(inNames[i].getValue()));
@@ -203,52 +195,4 @@ public class SewerOverflowDevice extends JAMSComponent {
             sewerOverflow.setValue(0);
         }
     }
-    
-    /**
-     * Calculates flow velocity in specific reach
-     * @param q the runoff in the reach
-     * @param width the width of reach
-     * @param slope the slope of reach
-     * @param rough the roughness of reach
-     * @param secondsOfTimeStep the current time step in seconds
-     * @return flow_velocity in m/s
-     */
-    public static double calcFlowVelocity(double q, double width, double slope, double rough, int secondsOfTimeStep){
-        double afv = 1;
-        double veloc = 0;
-        
-        /**
-         *transfering liter/time to m³/s
-         **/
-        double q_m = q / (1000 * secondsOfTimeStep);
-        double rh = calcHydraulicRadius(afv, q_m, width);
-        boolean cont = true;
-        while(cont){
-            veloc = (rough) * Math.pow(rh, (2.0/3.0)) * Math.sqrt(slope);
-            if((Math.abs(veloc - afv)) > 0.001){
-                afv = veloc;
-                rh = calcHydraulicRadius(afv, q_m, width);
-            } else{
-                cont = false;
-                afv = veloc;
-            }
-        }
-        return afv;
-    }
-    
-    /**
-     * Calculates the hydraulic radius of a rectangular
-     * stream bed depending on daily runoff and flow_velocity
-     * @param v the flow velocity
-     * @param q the daily runoff
-     * @param width the width of reach
-     * @return hydraulic radius in m
-     */
-    public static double calcHydraulicRadius(double v, double q, double width){
-        double A = (q / v);
-        
-        double rh = A / (width + 2*(A / width));
-        
-        return rh;
-    }    
 }
