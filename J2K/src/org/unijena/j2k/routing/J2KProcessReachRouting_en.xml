@@ -43,7 +43,7 @@
         </row>
         <row>
           <entry>slope</entry>
-          <entry>reach slope [%]</entry>
+          <entry>reach slope [(start_elevation-end_elevation)/length]</entry>
         </row>
         <row>
           <entry>width</entry>

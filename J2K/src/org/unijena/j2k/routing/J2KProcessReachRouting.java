@@ -51,28 +51,27 @@ import jams.model.*;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            description = "attribute length",
+            description = "reach length",
             unit = "m"
             )
             public Attribute.Double length;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            description = "attribute slope",
-            unit = "deg"
+            description = "reach slope [(start_elevation-end_elevation)/length]"
             )
             public Attribute.Double slope;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            description = "attribute width",
+            description = "reach width",
             unit = "m"
             )
             public Attribute.Double width;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            description = "attribute roughness"
+            description = "reach roughness"
             )
             public Attribute.Double roughness;
     
