@@ -28,14 +28,14 @@ import java.util.GregorianCalendar;
 
 /**
  *
- * @author Sven Kralisch & Mériem Labbas & Christian Fischer
+ * @author Sven Kralisch & MÃ©riem Labbas & Christian Fischer
  */
 @JAMSComponentDescription(title = "DoubleTransfer",
-        author = "Sven Kralisch & Mériem Labbas & Christian Fischer",
+        author = "Sven Kralisch & Meriem Labbas & Christian Fischer",
         description = "Component used for the simulation of an overflow device. It takes the different components outflows"
         + "coming from a sewer reach(threshold test) and adds it to the receiving reach river.",
-        version = "1.0_0",
-        date = "2012-10-05")
+        version = "3.0_0",
+        date = "2013-03-25")
 public class SewerOverflowDevice extends JAMSComponent {
 
     /*
@@ -170,7 +170,7 @@ public class SewerOverflowDevice extends JAMSComponent {
             double h = waterLevel;
 
 //            if (time.get(Attribute.Calendar.MONTH) > 5) {
-                System.out.println(ID + " : " + time);
+              System.out.println(ID + " : " + time);
 //            }
 
             if (h <= T) {
@@ -218,7 +218,7 @@ public class SewerOverflowDevice extends JAMSComponent {
         double veloc = 0;
         
         /**
-         *transfering liter/time to m³/s
+         *transfering liter/time to mÂ³/s
          **/
         double q_m = q / (1000 * secondsOfTimeStep);
         double rh = calcHydraulicRadius(afv, q_m, width);
