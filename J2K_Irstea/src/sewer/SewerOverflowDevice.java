@@ -28,10 +28,10 @@ import java.util.GregorianCalendar;
 
 /**
  *
- * @author Sven Kralisch & MÃ©riem Labbas & Christian Fischer
+ * @author Sven Kralisch & Mériem Labbas & Christian Fischer
  */
 @JAMSComponentDescription(title = "DoubleTransfer",
-        author = "Sven Kralisch & Meriem Labbas & Christian Fischer",
+        author = "Sven Kralisch & Mériem Labbas & Christian Fischer",
         description = "Component used for the simulation of an overflow device. It takes the different components outflows"
         + "coming from a sewer reach(threshold test) and adds it to the receiving reach river.",
         version = "3.0_0",
