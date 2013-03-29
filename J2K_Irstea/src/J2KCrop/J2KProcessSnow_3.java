@@ -256,14 +256,14 @@ import jams.model.*;
             )
             public JAMSBoolean active;
     
- //        @JAMSVarDescription(
+ // Pour le debug, on fixe l'id des HRUs et un index de temps
+    
+ //   @JAMSVarDescription(
  //           access = JAMSVarDescription.AccessType.READ,
  //           update = JAMSVarDescription.UpdateType.RUN,
  //           description = "id de la HRU pour debug"
  //          )
  //       public JAMSDouble HRU_id;
-      
-         
 //      @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
 //            description = "Current time step",
 //            unit = "d")
@@ -276,12 +276,6 @@ import jams.model.*;
            )
         public JAMSDouble snow_density;
         
-        @JAMSVarDescription(
-            access = JAMSVarDescription.AccessType.WRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
-            description = "total snow density"
-           )
-        public JAMSDouble tot_snow_density;
     
     double run_area;
     double in_snow;
@@ -296,7 +290,6 @@ import jams.model.*;
     double run_coldContent;
     double run_snowMelt = 0;
     double out_height = 0;
-    double total_snow_density = 0;
    
     /*
      *  Component run stages
@@ -312,7 +305,6 @@ import jams.model.*;
 	        this.snowAge.setValue(0);
 	        this.snowColdContent.setValue(0.0);
                 this.snow_density.setValue(0.0);
-                this.tot_snow_density.setValue(0.0);
     	}
     }
     
@@ -379,13 +371,13 @@ import jams.model.*;
 	        }
 	        
 	        if(in_snow > 0){
-	            
+// we want to have the snow accumulation at each timestep
 	            out_height = this.calcSnowAccumulation(in_meanTemp, run_area, critDens);
 	        }
 	        
 	        
 	        if((meltTemp >= TRS) && (this.run_snowDepth > 0)){
-	            total_snow_density = this.calcMetamorphosis(meltTemp, TRS, temp_fac, rain_fac, ground_fac, run_area, SAC, critDens);
+	            this.calcMetamorphosis(meltTemp, TRS, temp_fac, rain_fac, ground_fac, run_area, SAC, critDens);
 	        }
 	        
 	        this.calcSnowDensities(run_area);
@@ -398,7 +390,7 @@ import jams.model.*;
 	        this.dryDens.setValue(this.run_dryDens);
 	        this.snowDepth.setValue(this.run_snowDepth);
                 this.snow_density.setValue(this.calcNewSnowDensity(in_meanTemp));
-                this.tot_snow_density.setValue(total_snow_density);
+      
                 
      
    //             if (HRU_id.getValue() == 1.0){
@@ -525,6 +517,8 @@ import jams.model.*;
             new_snow_density = 0.13 + 0.0135 * temp + 0.00045 * Math.pow(temp, 2);
         } else
             new_snow_density = 0.02875;
+        
+ // we force new snow density = 0.3 to avoid enormous snowDepth 
         new_snow_density = 0.3;
         return new_snow_density;
     }
@@ -595,7 +589,7 @@ import jams.model.*;
         return potRunoff;
     }
     
-    private double calcMetamorphosis(double temp, double TRS, double temp_fac, double rain_fac, double ground_fac, double area, double SAC, double critDens){
+    private boolean calcMetamorphosis(double temp, double TRS, double temp_fac, double rain_fac, double ground_fac, double area, double SAC, double critDens){
         /**calculation of snowmelt - complex formula*/
         //@todo integration of canopy shadow by LAI
         double potMeltrate = 0;
@@ -634,7 +628,7 @@ import jams.model.*;
             //if(this.run_snowMelt < 0)
             //System.out.getRuntime().println("negative SM 1.5");
             //nothing more to do -- no snow left
-            return 0;
+            return true;
         }
         //if(this.run_snowMelt < 0)
         //    System.out.getRuntime().println("negative SM 2");
@@ -672,7 +666,7 @@ import jams.model.*;
         
         //if snow pack has vanished, nothing more to do
         if(this.run_snowDepth == 0)
-            return 0;
+            return true;
         
         //Calculation of new snow densities
         this.calcSnowDensities(area);
@@ -691,7 +685,7 @@ import jams.model.*;
         }
         
         this.calcSnowDensities(area);
-        return this.run_totDens;
+        return true;
     }
     
     private double calcPotMR_semiComp(double temp, double TRS, double temp_fac, double rain_fac, double ground_fac, double area){
