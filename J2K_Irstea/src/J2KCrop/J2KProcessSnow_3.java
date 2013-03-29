@@ -31,14 +31,14 @@ import jams.model.*;
 
 /**
  *
- * @author Peter Krause
+ * @author Francois Tilmant
  */
 @JAMSComponentDescription(
         title="J2KProcessSnow_3",
-        author="Peter Krause",
+        author="Francois Tilmant",
         description="Calculates snow accumulation, metamorphosis and melt",
         version="1.0_0",
-        date="2012-10-26")
+        date="2013-03-29")
         public class J2KProcessSnow_3 extends JAMSComponent {
     
     /*

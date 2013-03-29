@@ -1,6 +1,10 @@
 /*
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
+ * 
+ * Dans ce module, on a change l'initialisation de l'ET0
+ * et on a applique un changement d'unite pour potET (conversion de mm en L)
+ * 
  */
 package J2KCrop;
 
@@ -10,14 +14,14 @@ import jams.model.*;
 
 /**
 *
-* @author Peter Krause
+* @author Francois Tilmant
 */
 @JAMSComponentDescription(
-        title="J2KProcessInterception",
-        author="Peter Krause",
+        title="J2KProcessInterception3",
+        author="Francois Tilmant",
         description="Calculates daily interception based on DICKINSON 1984",
-        version="1.1_0",
-        date="2012-10-10"
+        version="1.0_0",
+        date="2013-03-19"
         )
 public class J2KProcessInterception3 extends JAMSComponent {
 
