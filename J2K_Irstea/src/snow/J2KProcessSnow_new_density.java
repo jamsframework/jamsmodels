@@ -1,10 +1,14 @@
 /*
- * J2KProcessSnow_2.java
+ * J2KProcessSnow_new_density.java
  * This is a slightly modified version of the original J2KProcessSnow component by P. Krause
  * Only change: deactivation of aspect correction factor for snow melt
  * F. Branger, Irstea, October 26, 2012
  * Created on 25. November 2005, 10:19
  *
+ * Change of new snow density function (forced to 0.3)
+ * F. Tilmant, Irstea, March 29, 2013
+ * 
+ * 
  * This file is part of JAMS
  * Copyright (C) 2005 FSU Jena, c0krpe
  *
@@ -34,12 +38,12 @@ import jams.model.*;
  * @author Francois Tilmant
  */
 @JAMSComponentDescription(
-        title="J2KProcessSnow_3",
+        title="J2KProcessSnow_new_density",
         author="Francois Tilmant",
         description="Calculates snow accumulation, metamorphosis and melt",
         version="1.0_0",
         date="2013-03-29")
-        public class J2KProcessSnow_3 extends JAMSComponent {
+        public class J2KProcessSnow_new_density extends JAMSComponent {
     
     /*
      *  Component variables
@@ -518,7 +522,7 @@ import jams.model.*;
         } else
             new_snow_density = 0.02875;
         
- // we force new snow density = 0.3 to avoid enormous snowDepth 
+ // Francois Tilmant : we force new snow density = 0.3 to avoid enormous snowDepth 
         new_snow_density = 0.3;
         return new_snow_density;
     }

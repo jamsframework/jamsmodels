@@ -1,4 +1,7 @@
 /*
+ * J2KProcessInterception_conv_potET
+ * Created on 29-03-2013 after J2KProcessInterception.java by P. Krause
+ * 
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  * 
@@ -17,13 +20,13 @@ import jams.model.*;
 * @author Francois Tilmant
 */
 @JAMSComponentDescription(
-        title="J2KProcessInterception3",
+        title="J2KProcessInterception_conv_potET",
         author="Francois Tilmant",
         description="Calculates daily interception based on DICKINSON 1984",
         version="1.0_0",
         date="2013-03-19"
         )
-public class J2KProcessInterception3 extends JAMSComponent {
+public class J2KProcessInterception_conv_potET extends JAMSComponent {
 
     /*
      *  Component variables

@@ -1,5 +1,5 @@
 /*
- * J2KArrayGrabber_2.java
+ * J2KArrayGrabber_cropcoeff.java
  * Created on 17 April 2012
  *
  * This file is part of JAMS
@@ -48,14 +48,14 @@ import jams.model.*;
  * @author Peter Krause
  */
 @JAMSComponentDescription(
-        title="J2KArrayGrabber_2",
+        title="J2KArrayGrabber_cropcoeff",
         author="Peter Krause",
         description="This component selects data values from arrays representing"
         + "a standard year.",
         version="1.0_0",
         date="2012-04-17"
         )
-        public class J2KArrayGrabber_2 extends JAMSComponent {
+        public class J2KArrayGrabber_cropcoeff extends JAMSComponent {
     
     /*
      *  Component variables

@@ -1,5 +1,5 @@
 /*
- * CalcLanduseStateVars_2.java
+ * CalcLanduseStateVars_cropcoeff.java
  * Created on 17. April 2012 after CalcLanduseStateVars.java by P. Krause
  *
  * This file is part of JAMS
@@ -30,7 +30,7 @@ import jams.model.*;
  * @author c0krpe
  */
 @JAMSComponentDescription(
-        title="CalcLanduseStateVars_2",
+        title="CalcLanduseStateVars_cropcoeff",
         author="Peter Krause",
         description="Calculates landuse state variables for a modelling unit"
         + "For evapotranspiration calculation using crop coeff."
@@ -39,7 +39,7 @@ import jams.model.*;
         version="1.0_0",
         date="2011-05-30"
         )
-        public class CalcLanduseStateVars_2 extends JAMSComponent {
+        public class CalcLanduseStateVars_cropcoeff extends JAMSComponent {
     
     /*
      *  Component variables
