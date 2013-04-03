@@ -5,15 +5,7 @@
         <data xmlns="http://www.netbeans.org/ns/j2se-project/3">
             <name>J2K_Irstea</name>
             <source-roots>
-                <root id="src.crop.dir"/>
-                <root id="src.crop.dir"/>
-                <root id="src.interception.dir"/>
-                <root id="src.io.dir"/>
-                <root id="src.routing.dir"/>
-                <root id="src.sewer.dir"/>
-                <root id="src.sidra.dir"/>
-                <root id="src.snow.dir"/>
-                <root id="src.tools.dir"/>
+                <root id="src.src.dir"/>
             </source-roots>
             <test-roots/>
         </data>
