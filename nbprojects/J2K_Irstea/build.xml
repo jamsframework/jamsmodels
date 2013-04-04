@@ -10,6 +10,12 @@
 <project name="J2K_Irstea" default="default" basedir=".">
     <description>Builds, tests, and runs the project J2K_Irstea.</description>
     <import file="nbproject/build-impl.xml"/>
+        
+    <target name="-post-jar">
+        <property name="deployDir" value="../../../jams/lib"/>
+        <copy file="${dist.jar}" todir="${deployDir}"/>
+    </target>
+    
     <!--
 
     There exist several targets which are by default empty and which can be 
