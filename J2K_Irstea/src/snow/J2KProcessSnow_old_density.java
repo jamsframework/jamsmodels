@@ -378,7 +378,7 @@ import jams.model.*;
 	        }
 	        
 	        if(in_snow > 0){
-// we want to have the snow accumulation at each timestep
+// Francois Tilmant (29.03.13) : give the new snow at each timestep
 	            out_height = this.calcSnowAccumulation(in_meanTemp, run_area, critDens);
 	        }
 	        
@@ -525,8 +525,8 @@ import jams.model.*;
         } else
             new_snow_density = 0.02875;
         
- // Francois Tilmant : we force new snow density = 0.3 to avoid enormous snowDepth 
-        new_snow_density = 0.3;
+ // Francois Tilmant  (29.03.13) : we force new snow density = 0.3 to avoid enormous snowDepth 
+ //        new_snow_density = 0.3;
         return new_snow_density;
     }
     
