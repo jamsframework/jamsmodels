@@ -381,7 +381,7 @@ import jams.model.*;
 	        
 	        
 	        if((meltTemp >= TRS) && (this.run_snowDepth > 0)){
-	            this.calcMetamorphosis(meltTemp, TRS, temp_fac, rain_fac, ground_fac, run_area, SAC, critDens);
+	            this.calcMetamorphosis(in_meanTemp, TRS, temp_fac, rain_fac, ground_fac, run_area, SAC, critDens);
 	        }
 	        
 	        this.calcSnowDensities(run_area);
