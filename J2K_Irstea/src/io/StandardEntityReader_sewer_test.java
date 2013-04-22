@@ -35,7 +35,6 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Stack;
-import org.unijena.j2k.J2KFunctions;
 
 /**
  *
