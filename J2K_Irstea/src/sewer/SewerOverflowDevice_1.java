@@ -91,6 +91,9 @@ public class SewerOverflowDevice_1 extends JAMSComponent {
     description = "time interval",
     unit = "d")
     public Attribute.TimeInterval ti;
+    @JAMSVarDescription(access = JAMSVarDescription.AccessType.WRITE,
+            description = "sewer overflow sum")
+    public Attribute.Double sewerOverflow;
     
     private int seconds;
 
@@ -167,12 +170,15 @@ public class SewerOverflowDevice_1 extends JAMSComponent {
                 inValues[i].setValue(inValues[i].getValue() - overflowComp);
                 to_river.setDouble(inNames[i].getValue(), overflowComp + to_river.getDouble(inNames[i].getValue()));
                 outValues[i].setValue(overflowComp);
+                
+                sewerOverflow.setValue(q);
             }
         }else
         {
             for (int i = 0; i < inValues.length; i++) {
                 outValues[i].setValue(overflowComp);
             }
+            sewerOverflow.setValue(0);
         }
     }
 }

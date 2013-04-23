@@ -1,5 +1,5 @@
 /*
- * SewerOverflowDevice.java
+ * SewerOverflowDevice_3.java
  * Created on 05. October 2012, 17:02
  *
  * This file is part of JAMS
@@ -35,8 +35,8 @@ import java.util.GregorianCalendar;
         description = "Component used for the simulation of an overflow device. It takes the different components outflows"
         + "coming from a sewer reach(threshold test) and adds it to the receiving reach river.",
         version = "3.0_0",
-        date = "2013-04-23")
-public class SewerOverflowDevice extends JAMSComponent {
+        date = "2013-03-25")
+public class SewerOverflowDevice_3 extends JAMSComponent {
 
     /*
      * Component variables
@@ -104,11 +104,6 @@ public class SewerOverflowDevice extends JAMSComponent {
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
             description = "ID")
     public Attribute.Double ID;
-    @JAMSVarDescription(access = JAMSVarDescription.AccessType.WRITE,
-            description = "resulting water level in the reach")
-    public Attribute.Double waterLevel;
-    
-    
     private int seconds;
 
     public void init() {
@@ -131,105 +126,82 @@ public class SewerOverflowDevice extends JAMSComponent {
     public void run() {
 
         if (to_river.getValue() == null) {
-//            return;
+            return;
         }
 
         // calc active and inflow volumes
-        double volumeInit = 0, volumeIn = 0;
+        double volumeAct = 0, volumeIn = 0;
 
         for (int i = 0; i < actValues.length; i++) {
-            volumeInit = volumeInit + actValues[i].getValue();
+            volumeAct = volumeAct + actValues[i].getValue();
         }
         for (int i = 0; i < inValues.length; i++) {
             volumeIn = volumeIn + inValues[i].getValue();
         }
 
         // calc overall volume
-        double volumeMax = volumeInit + volumeIn;
+        double volumeAll = volumeAct + volumeIn;
 //        double volumeAvg = (volumeAll + volumeAct) / 2;
 
         // calc fractions related to overall volume
         double[] frac = new double[inValues.length];
 
         for (int i = 0; i < inValues.length; i++) {
-            if (volumeMax > 0) {
-                frac[i] = (inValues[i].getValue() + actValues[i].getValue()) / volumeMax;
+            if (volumeAll > 0) {
+                frac[i] = (inValues[i].getValue() + actValues[i].getValue()) / volumeAll;
             }
         }
         
-        double percIn = volumeIn / volumeMax;
-        double percAct = volumeInit / volumeMax;
-        
-        double[] initState = calcWaterLevel(volumeInit, width.getValue(), slope.getValue(), roughness.getValue(), seconds);
-        double[] maxState = calcWaterLevel(volumeMax, width.getValue(), slope.getValue(), roughness.getValue(), seconds);
-
-        double waterLevelInit = initState[0];
-        double waterLevelMax = maxState[0];
-        double flowLengthMax = maxState[1];
+        // calc average reach water level based on overall volume, reach volume 
+        // and flow velocity (beware of to high slope values!)
+        double flowVelocity = calcFlowVelocity(volumeAll, width.getValue(), slope.getValue(), roughness.getValue(), seconds);
+        double flowLength = flowVelocity * seconds;
+        double waterLevel = volumeAll / (flowLength * width.getValue() * 1000);
         
         // overflow is happening?
-        if (waterLevelMax > threshold.getValue() && to_river.getValue() != null) {
-          
+        if (waterLevel > threshold.getValue()) {
+
             double g = 9.80665; //gravitationnal constant
             double q;
             // let's use var names as defined in Faure (2007)
             double c = threshold.getValue();
             double L = pipeWidth.getValue();
             double T = c + pipeHeight.getValue();
-            double h = waterLevelMax - c;
+            double h = waterLevel - c;
 
-            double overflowSeconds = seconds * (waterLevelMax - c) / (waterLevelMax - waterLevelInit);            
-            
-            if (ID.getValue() == 98) {
+//            if (time.get(Attribute.Calendar.MONTH) > 5) {
               System.out.println(ID + " : " + time);
-            }
+//            }
 
             if (h <= T) {
                 
-                q = dischCoeff.getValue() * L * Math.sqrt(2 * g) * overflowSeconds * 1000 * 2.5 * (Math.pow(waterLevelMax, 2.5) - Math.pow(c, 2.5));
+                q = dischCoeff.getValue() * L * h * Math.sqrt(2 * g * h) * seconds * 1000;
                 
             } else {
                 
-                q = dischCoeff.getValue() * L * (T - c) * Math.sqrt(2 * g) * overflowSeconds * 1000 * 1.5 * (Math.pow(waterLevelMax, 1.5) - Math.pow(c, 1.5));
+                q = dischCoeff.getValue() * L * (T - c) * Math.sqrt(2 * g * h) * seconds * 1000;
                 
             }
 
-            double diffVolume = h * flowLengthMax * width.getValue() * 1000;
+            double diffVolume = h * flowLength * width.getValue() * 1000;
             
             q = Math.min(q, diffVolume);
-            double[] finalState = calcWaterLevel(volumeMax-q, width.getValue(), slope.getValue(), roughness.getValue(), seconds);
-            waterLevel.setValue(finalState[0]);
 
             for (int i = 0; i < inValues.length; i++) {
                 // The overflow of the SOD is limited by its pipe diameter               
                 double overflowComp = frac[i] * q;
 
-                inValues[i].setValue(inValues[i].getValue() - overflowComp * percIn);
-                actValues[i].setValue(actValues[i].getValue() - overflowComp * percAct);
+                inValues[i].setValue(inValues[i].getValue() - overflowComp);
                 to_river.setDouble(inNames[i].getValue(), overflowComp + to_river.getDouble(inNames[i].getValue()));
                 outValues[i].setValue(overflowComp);
             }
             sewerOverflow.setValue(q);
-            
-            
         } else {
             for (int i = 0; i < inValues.length; i++) {
                 outValues[i].setValue(0);
             }
             sewerOverflow.setValue(0);
-            waterLevel.setValue(waterLevelMax);
         }
-    }
-    
-    
-    private double[] calcWaterLevel(double volume, double width, double slope, double roughness, int seconds) {
-                // calc average reach water level based on overall volume, reach volume 
-        // and flow velocity (beware of to high slope values!)
-        double flowVelocity = calcFlowVelocity(volume, width, slope, roughness, seconds);
-        double flowLength = flowVelocity * seconds;
-        double waterLevel = volume / (flowLength * width * 1000);
-        double[] result = {waterLevel, flowLength};
-        return result;
     }
     
     /**
