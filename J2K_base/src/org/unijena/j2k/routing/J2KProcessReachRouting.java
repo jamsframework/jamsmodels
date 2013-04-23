@@ -58,9 +58,17 @@ import jams.model.*;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            description = "reach slope [(start_elevation-end_elevation)/length]"
+            description = "reach slope",
+            unit = "%"
             )
             public Attribute.Double slope;
+
+    @JAMSVarDescription(
+            access = JAMSVarDescription.AccessType.READ,
+            description = "Is slope provided as fraction [m/m]?",
+            defaultValue = "false"
+            )
+            public Attribute.Boolean slopeAsFraction;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
@@ -286,9 +294,13 @@ import jams.model.*;
         }        
              
         double width = this.width.getValue();
-        double slope = this.slope.getValue();
         double rough = this.roughness.getValue();
         double length = this.length.getValue();
+        
+        double slope = this.slope.getValue();
+        if (!slopeAsFraction.getValue()) {
+            slope = slope / 100;
+        }
         
         double RD1act = actRD1.getValue() + inRD1.getValue();
         double RD2act = actRD2.getValue() + inRD2.getValue();
