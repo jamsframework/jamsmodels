@@ -65,10 +65,10 @@ import jams.model.*;
 
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            description = "Is slope provided as fraction [m/m]?",
+            description = "Is slope provided as proportion of length and elevation difference [m/m]?",
             defaultValue = "false"
             )
-            public Attribute.Boolean slopeAsFraction;
+            public Attribute.Boolean slopeAsProportion;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
@@ -298,7 +298,7 @@ import jams.model.*;
         double length = this.length.getValue();
         
         double slope = this.slope.getValue();
-        if (!slopeAsFraction.getValue()) {
+        if (!slopeAsProportion.getValue()) {
             slope = slope / 100;
         }
         
