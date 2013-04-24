@@ -176,7 +176,7 @@ public class SewerOverflowDevice_1 extends JAMSComponent {
         }else
         {
             for (int i = 0; i < inValues.length; i++) {
-                outValues[i].setValue(overflowComp);
+                outValues[i].setValue(0);
             }
             sewerOverflow.setValue(0);
         }
