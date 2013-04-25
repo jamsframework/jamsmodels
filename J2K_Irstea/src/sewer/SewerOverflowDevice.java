@@ -57,6 +57,11 @@ public class SewerOverflowDevice extends JAMSComponent {
             description = "SOD slope",
             unit = "deg")
     public Attribute.Double slope;
+    @JAMSVarDescription(
+            access = JAMSVarDescription.AccessType.READ,
+            description = "Is slope provided as proportion of length and elevation difference [m/m]?",
+            defaultValue = "false")
+    public Attribute.Boolean slopeAsProportion;    
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
             description = "SOD roughness")
     public Attribute.Double roughness;
@@ -107,6 +112,7 @@ public class SewerOverflowDevice extends JAMSComponent {
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.WRITE,
             description = "resulting water level in the reach")
     public Attribute.Double waterLevel;
+
     private int seconds;
 
     public void init() {
@@ -164,8 +170,13 @@ public class SewerOverflowDevice extends JAMSComponent {
             percAct = 0;
         }
 
-        double[] initState = calcWaterLevel(volumeInit, width.getValue(), slope.getValue(), roughness.getValue(), seconds);
-        double[] maxState = calcWaterLevel(volumeMax, width.getValue(), slope.getValue(), roughness.getValue(), seconds);
+        double slope = this.slope.getValue();
+        if (!slopeAsProportion.getValue()) {
+            slope = slope / 100;
+        }
+
+        double[] initState = calcWaterLevel(volumeInit, width.getValue(), slope, roughness.getValue(), seconds);
+        double[] maxState = calcWaterLevel(volumeMax, width.getValue(), slope, roughness.getValue(), seconds);
 
         double waterLevelInit = initState[0];
         double waterLevelMax = maxState[0];
@@ -200,7 +211,7 @@ public class SewerOverflowDevice extends JAMSComponent {
 
             q = Math.min(q, diffVolume);
 
-            double[] finalState = calcWaterLevel(volumeMax - q, width.getValue(), slope.getValue(), roughness.getValue(), seconds);
+            double[] finalState = calcWaterLevel(volumeMax - q, width.getValue(), slope, roughness.getValue(), seconds);
             waterLevel.setValue(finalState[0]);
 
             for (int i = 0; i < inValues.length; i++) {
