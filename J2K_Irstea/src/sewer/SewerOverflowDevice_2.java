@@ -32,10 +32,12 @@ import java.util.GregorianCalendar;
  */
 @JAMSComponentDescription(title = "DoubleTransfer",
         author = "Sven Kralisch & Mériem Labbas & Christian Fischer",
-        description = "Component used for the simulation of an overflow device. It takes the different components outflows"
-        + "coming from a sewer reach(threshold test) and adds it to the receiving reach river.",
+        description = "Component used for the simulation of a sewer overflow device. It takes the different components outflows"
+        + "coming from a sewer reach(threshold test) and adds it to the receiving reach river. "
+        + "The water level used to be compared to the threshold comes from the J2KPRocessReachRouting_SOD2, "
+        + "ie the waterlevel based on the channelstorage after routing (previous time step).",
         version = "1.0_0",
-        date = "2013-01-02")
+        date = "2013-03-15")
 public class SewerOverflowDevice_2 extends JAMSComponent {
 
     /*

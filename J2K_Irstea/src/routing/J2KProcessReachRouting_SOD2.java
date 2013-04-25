@@ -33,10 +33,11 @@ import jams.model.*;
 @JAMSComponentDescription(
         title="Title",
         author="Author",
-        description="Calculates flow processes in the river network by a simplified kinematic wave approach. Calculate a water level in the reach"
-        + "which is used then for the calculation of the overflow in SODs.",
+        description="Calculates flow processes in the river network by a simplified kinematic wave approach. "
+        + "Calculate a water level in the reach based on the channel storage after routing, the width and the lenght of the reach."
+        + "This water level is then used for the calculation of the overflow in SODs.",
         version="1.0_0",
-        date="2013-02-01"
+        date="2013-03-15"
         )
         public class J2KProcessReachRouting_SOD2 extends JAMSComponent {
     
