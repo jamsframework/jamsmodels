@@ -152,7 +152,6 @@ public class SewerOverflowDevice_1 extends JAMSComponent {
 
         double maxVolume = threshold.getValue() * length.getValue() * width.getValue() * 1000; //in L
         double diffVolume = 0, height = 0, q = 0;
-        double overflowComp = 0;
         double g = 9.80665; //gravitationnal constant
 
         // overflow is happening?
@@ -161,7 +160,8 @@ public class SewerOverflowDevice_1 extends JAMSComponent {
             height = (diffVolume / 1000) / (length.getValue() * width.getValue()); //in m
             q = diffVolume;
             
-         /*if (height <= pipeHeight.getValue()) {
+            // The overflow of the SOD is limited by its pipe diameter   
+            /*if (height <= pipeHeight.getValue()) {
                 q = dischCoeff.getValue() * pipeWidth.getValue() * height * Math.sqrt(2 * g * height) * seconds * 1000;
 //              getModel().getRuntime().println("");
 //                getModel().getRuntime().println("x");
@@ -174,18 +174,14 @@ public class SewerOverflowDevice_1 extends JAMSComponent {
             
 
             for (int i = 0; i < inValues.length; i++) {
-                // The overflow of the SOD is limited by its pipe diameter               
-                  overflowComp = frac[i] * q;
-
+                double overflowComp = frac[i] * q;
                 inValues[i].setValue(inValues[i].getValue() - overflowComp * percIn);
                 actValues[i].setValue(actValues[i].getValue() - overflowComp * percAct);
                 to_river.setDouble(inNames[i].getValue(), overflowComp + to_river.getDouble(inNames[i].getValue()));
                 outValues[i].setValue(overflowComp);
-                
-                sewerOverflow.setValue(q);
             }
-        }else
-        {
+            sewerOverflow.setValue(q);
+        } else {
             for (int i = 0; i < inValues.length; i++) {
                 outValues[i].setValue(0);
             }

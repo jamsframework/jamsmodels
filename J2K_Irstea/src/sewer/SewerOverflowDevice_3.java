@@ -171,18 +171,10 @@ public class SewerOverflowDevice_3 extends JAMSComponent {
             double T = c + pipeHeight.getValue();
             double h = waterLevel - c;
 
-//            if (time.get(Attribute.Calendar.MONTH) > 5) {
-              System.out.println(ID + " : " + time);
-//            }
-
-            if (h <= T-c) {
-                
-                q = dischCoeff.getValue() * L * h * Math.sqrt(2 * g * h) * seconds * 1000;
-                
-            } else {
-                
-                q = dischCoeff.getValue() * L * (T - c) * Math.sqrt(2 * g * h) * seconds * 1000;
-                
+            if (h <= T-c) {  
+                q = dischCoeff.getValue() * L * h * Math.sqrt(2 * g * h) * seconds * 1000;   
+            } else {  
+                q = dischCoeff.getValue() * L * (T - c) * Math.sqrt(2 * g * h) * seconds * 1000;  
             }
 
             double diffVolume = h * flowLength * width.getValue() * 1000;
@@ -190,9 +182,7 @@ public class SewerOverflowDevice_3 extends JAMSComponent {
             q = Math.min(q, diffVolume);
 
             for (int i = 0; i < inValues.length; i++) {
-                // The overflow of the SOD is limited by its pipe diameter               
                 double overflowComp = frac[i] * q;
-
                 inValues[i].setValue(inValues[i].getValue() - overflowComp * percIn);
                 actValues[i].setValue(actValues[i].getValue() - overflowComp * percAct);
                 to_river.setDouble(inNames[i].getValue(), overflowComp + to_river.getDouble(inNames[i].getValue()));
