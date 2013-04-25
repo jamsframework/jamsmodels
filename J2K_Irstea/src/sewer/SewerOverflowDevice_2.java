@@ -35,7 +35,7 @@ import java.util.GregorianCalendar;
         description = "Component used for the simulation of an overflow device. It takes the different components outflows"
         + "coming from a sewer reach(threshold test) and adds it to the receiving reach river.",
         version = "1.0_0",
-        date = "2012-10-05")
+        date = "2013-01-02")
 public class SewerOverflowDevice_2 extends JAMSComponent {
 
     /*
@@ -152,37 +152,26 @@ public class SewerOverflowDevice_2 extends JAMSComponent {
         double g = 9.80665; //gravitationnal constant
 
         if (waterLevel != null) {
-            height = waterLevel.getValue();
+            height = waterLevel.getValue();//waterLevel of the sewer reach after routing at the previous time step
         } else {
             height = 0;
         }
 
         // overflow is happening?
         if (height > threshold.getValue()) {
-
-//            if (ID.getValue() == 17 && time.get(Attribute.Calendar.MONTH) > 5) {
-//                System.out.println(ID + " : " + time);
-//            }
-
+            
             diffVolume = volume - maxVolume; //in L
-            double height2 = (diffVolume / 1000) / (length.getValue() * width.getValue()); //in m
 
-            if (height <= pipeHeight.getValue()) {
-                
-                getModel().getRuntime().println("a");
+            if (height <= pipeHeight.getValue()) {         
                 q = dischCoeff.getValue() * pipeWidth.getValue() * height * Math.sqrt(2 * g * height) * seconds * 1000;
-//              getModel().getRuntime().println("");
-                getModel().getRuntime().println("b");
             } else {
                 q = dischCoeff.getValue() * pipeWidth.getValue() * pipeHeight.getValue() * Math.sqrt(2 * g * height) * seconds * 1000;
-                getModel().getRuntime().println("c");
             }
             q = Math.min(q, diffVolume);
 
             for (int i = 0; i < inValues.length; i++) {
                 // The overflow of the SOD is limited by its pipe diameter               
                 overflowComp = frac[i] * q;
-
                 inValues[i].setValue(inValues[i].getValue() - overflowComp);
                 to_river.setDouble(inNames[i].getValue(), overflowComp + to_river.getDouble(inNames[i].getValue()));
                 outValues[i].setValue(overflowComp);
