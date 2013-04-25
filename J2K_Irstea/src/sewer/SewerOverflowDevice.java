@@ -107,8 +107,6 @@ public class SewerOverflowDevice extends JAMSComponent {
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.WRITE,
             description = "resulting water level in the reach")
     public Attribute.Double waterLevel;
-    
-    
     private int seconds;
 
     public void init() {
@@ -155,20 +153,27 @@ public class SewerOverflowDevice extends JAMSComponent {
                 frac[i] = (inValues[i].getValue() + actValues[i].getValue()) / volumeMax;
             }
         }
-        
-        double percIn = volumeIn / volumeMax;
-        double percAct = volumeInit / volumeMax;
-        
+
+        double percIn;
+        double percAct;
+        if (volumeMax > 0) {
+            percIn = volumeIn / volumeMax;
+            percAct = volumeInit / volumeMax;
+        } else {
+            percIn = 0;
+            percAct = 0;
+        }
+
         double[] initState = calcWaterLevel(volumeInit, width.getValue(), slope.getValue(), roughness.getValue(), seconds);
         double[] maxState = calcWaterLevel(volumeMax, width.getValue(), slope.getValue(), roughness.getValue(), seconds);
 
         double waterLevelInit = initState[0];
         double waterLevelMax = maxState[0];
         double flowLengthMax = maxState[1];
-        
+
         // overflow is happening?
         if (waterLevelMax > threshold.getValue() && to_river.getValue() != null) {
-          
+
             double g = 9.80665; //gravitationnal constant
             double q;
             // let's use var names as defined in Faure (2007)
@@ -177,19 +182,25 @@ public class SewerOverflowDevice extends JAMSComponent {
             double T = c + pipeHeight.getValue();
             double h = waterLevelMax - c;
 
-            double overflowSeconds = seconds * (waterLevelMax - c) / (waterLevelMax - waterLevelInit);            
+            double overflowSeconds;
+
+//            if (c > waterLevelInit) {
+            overflowSeconds = seconds * (waterLevelMax - c) / (waterLevelMax - waterLevelInit);
+//            } else {
+//                overflowSeconds = seconds;
+//            }
 
             if (h <= T - c) {
                 q = dischCoeff.getValue() * L * Math.sqrt(2 * g) * overflowSeconds * 1000 * 2.5 * (Math.pow(h, 2.5));
             } else {
-                q = dischCoeff.getValue() * L * Math.sqrt(2 * g) * overflowSeconds * 1000 * (2.5 * Math.pow(T-c, 2.5) + (T - c) * 1.5 * (Math.pow(h, 1.5) - Math.pow(T-c, 1.5))); 
+                q = dischCoeff.getValue() * L * Math.sqrt(2 * g) * overflowSeconds * 1000 * (2.5 * Math.pow(T - c, 2.5) + (T - c) * 1.5 * (Math.pow(h, 1.5) - Math.pow(T - c, 1.5)));
             }
 
             double diffVolume = h * flowLengthMax * width.getValue() * 1000;
-            
+
             q = Math.min(q, diffVolume);
-            
-            double[] finalState = calcWaterLevel(volumeMax-q, width.getValue(), slope.getValue(), roughness.getValue(), seconds);
+
+            double[] finalState = calcWaterLevel(volumeMax - q, width.getValue(), slope.getValue(), roughness.getValue(), seconds);
             waterLevel.setValue(finalState[0]);
 
             for (int i = 0; i < inValues.length; i++) {
@@ -202,8 +213,8 @@ public class SewerOverflowDevice extends JAMSComponent {
                 outValues[i].setValue(overflowComp);
             }
             sewerOverflow.setValue(q);
-            
-            
+
+
         } else {
             for (int i = 0; i < inValues.length; i++) {
                 outValues[i].setValue(0);
@@ -212,10 +223,9 @@ public class SewerOverflowDevice extends JAMSComponent {
             waterLevel.setValue(waterLevelMax);
         }
     }
-    
-    
+
     private double[] calcWaterLevel(double volume, double width, double slope, double roughness, int seconds) {
-                // calc average reach water level based on overall volume, reach volume 
+        // calc average reach water level based on overall volume, reach volume 
         // and flow velocity (beware of to high slope values!)
         double flowVelocity = calcFlowVelocity(volume, width, slope, roughness, seconds);
         double flowLength = flowVelocity * seconds;
@@ -223,9 +233,10 @@ public class SewerOverflowDevice extends JAMSComponent {
         double[] result = {waterLevel, flowLength};
         return result;
     }
-    
+
     /**
      * Calculates flow velocity in specific reach
+     *
      * @param q the runoff in the reach
      * @param width the width of reach
      * @param slope the slope of reach
@@ -233,42 +244,44 @@ public class SewerOverflowDevice extends JAMSComponent {
      * @param secondsOfTimeStep the current time step in seconds
      * @return flow_velocity in m/s
      */
-    public static double calcFlowVelocity(double q, double width, double slope, double rough, int secondsOfTimeStep){
+    public static double calcFlowVelocity(double q, double width, double slope, double rough, int secondsOfTimeStep) {
         double afv = 1;
         double veloc = 0;
-        
+
         /**
-         *transfering liter/time to mÂ³/s
-         **/
+         * transfering liter/time to mÂ³/s
+         *
+         */
         double q_m = q / (1000 * secondsOfTimeStep);
         double rh = calcHydraulicRadius(afv, q_m, width);
         boolean cont = true;
-        while(cont){
-            veloc = (rough) * Math.pow(rh, (2.0/3.0)) * Math.sqrt(slope);
-            if((Math.abs(veloc - afv)) > 0.001){
+        while (cont) {
+            veloc = (rough) * Math.pow(rh, (2.0 / 3.0)) * Math.sqrt(slope);
+            if ((Math.abs(veloc - afv)) > 0.001) {
                 afv = veloc;
                 rh = calcHydraulicRadius(afv, q_m, width);
-            } else{
+            } else {
                 cont = false;
                 afv = veloc;
             }
         }
         return afv;
     }
-    
+
     /**
-     * Calculates the hydraulic radius of a rectangular
-     * stream bed depending on daily runoff and flow_velocity
+     * Calculates the hydraulic radius of a rectangular stream bed depending on
+     * daily runoff and flow_velocity
+     *
      * @param v the flow velocity
      * @param q the daily runoff
      * @param width the width of reach
      * @return hydraulic radius in m
      */
-    public static double calcHydraulicRadius(double v, double q, double width){
+    public static double calcHydraulicRadius(double v, double q, double width) {
         double A = (q / v);
-        
-        double rh = A / (width + 2*(A / width));
-        
+
+        double rh = A / (width + 2 * (A / width));
+
         return rh;
-    }    
+    }
 }
