@@ -180,17 +180,17 @@ public class SewerOverflowDevice extends JAMSComponent {
 
             double overflowSeconds = seconds * (waterLevelMax - c) / (waterLevelMax - waterLevelInit);            
             
-            if (ID.getValue() == 98) {
-              System.out.println(ID + " : " + time);
-            }
+//            if (ID.getValue() == 98) {
+//              System.out.println(ID + " : " + time);
+//            }
 
-            if (h <= T) {
+            if (h <= T - c) {
                 
-                q = dischCoeff.getValue() * L * Math.sqrt(2 * g) * overflowSeconds * 1000 * 2.5 * (Math.pow(waterLevelMax, 2.5) - Math.pow(c, 2.5));
+                q = dischCoeff.getValue() * L * Math.sqrt(2 * g) * overflowSeconds * 1000 * 2.5 * (Math.pow(h, 2.5));
                 
             } else {
                 
-                q = dischCoeff.getValue() * L * (T - c) * Math.sqrt(2 * g) * overflowSeconds * 1000 * 1.5 * (Math.pow(waterLevelMax, 1.5) - Math.pow(c, 1.5));
+                q = dischCoeff.getValue() * L * Math.sqrt(2 * g) * overflowSeconds * 1000 * (2.5 * Math.pow(T-c, 2.5) + (T - c) * 1.5 * (Math.pow(h, 1.5) - Math.pow(T-c, 1.5)));
                 
             }
 
