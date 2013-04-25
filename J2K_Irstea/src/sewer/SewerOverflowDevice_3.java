@@ -142,10 +142,11 @@ public class SewerOverflowDevice_3 extends JAMSComponent {
 
         // calc overall volume
         double volumeAll = volumeAct + volumeIn;
-//        double volumeAvg = (volumeAll + volumeAct) / 2;
 
         // calc fractions related to overall volume
         double[] frac = new double[inValues.length];
+        double percIn = volumeIn / volumeAll;
+        double percAct = volumeAct / volumeAll;
 
         for (int i = 0; i < inValues.length; i++) {
             if (volumeAll > 0) {
@@ -174,7 +175,7 @@ public class SewerOverflowDevice_3 extends JAMSComponent {
               System.out.println(ID + " : " + time);
 //            }
 
-            if (h <= T) {
+            if (h <= T-c) {
                 
                 q = dischCoeff.getValue() * L * h * Math.sqrt(2 * g * h) * seconds * 1000;
                 
@@ -192,7 +193,8 @@ public class SewerOverflowDevice_3 extends JAMSComponent {
                 // The overflow of the SOD is limited by its pipe diameter               
                 double overflowComp = frac[i] * q;
 
-                inValues[i].setValue(inValues[i].getValue() - overflowComp);
+                inValues[i].setValue(inValues[i].getValue() - overflowComp * percIn);
+                actValues[i].setValue(actValues[i].getValue() - overflowComp * percAct);
                 to_river.setDouble(inNames[i].getValue(), overflowComp + to_river.getDouble(inNames[i].getValue()));
                 outValues[i].setValue(overflowComp);
             }

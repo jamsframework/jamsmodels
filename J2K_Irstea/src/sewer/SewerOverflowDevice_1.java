@@ -125,23 +125,30 @@ public class SewerOverflowDevice_1 extends JAMSComponent {
         if (to_river.getValue() == null) {
             return;
         }
-        
-        /*getModel().getRuntime().println(time.toString());*/
 
-        double volume = 0;
-        double[] frac = new double[inValues.length];
+        // calc active and inflow volumes
+        double volumeAct = 0, volumeIn = 0;
 
-        for (int i = 0; i < inValues.length; i++) {
-            volume = volume + inValues[i].getValue();
-        }
         for (int i = 0; i < actValues.length; i++) {
-            volume = volume + actValues[i].getValue();
+            volumeAct = volumeAct + actValues[i].getValue();
         }
         for (int i = 0; i < inValues.length; i++) {
-            if (volume > 0) {
-                frac[i] = (inValues[i].getValue() + actValues[i].getValue())/ volume;
+            volumeIn = volumeIn + inValues[i].getValue();
+        }
+
+        // calc overall volume
+        double volumeAll = volumeAct + volumeIn;
+
+        // calc fractions related to overall volume
+        double[] frac = new double[inValues.length];
+        double percIn = volumeIn / volumeAll;
+        double percAct = volumeAct / volumeAll;
+
+        for (int i = 0; i < inValues.length; i++) {
+            if (volumeAll > 0) {
+                frac[i] = (inValues[i].getValue() + actValues[i].getValue()) / volumeAll;
             }
-        }        
+        }
 
         double maxVolume = threshold.getValue() * length.getValue() * width.getValue() * 1000; //in L
         double diffVolume = 0, height = 0, q = 0;
@@ -149,8 +156,8 @@ public class SewerOverflowDevice_1 extends JAMSComponent {
         double g = 9.80665; //gravitationnal constant
 
         // overflow is happening?
-        if (volume - maxVolume > 0) {
-            diffVolume = volume - maxVolume; //in L
+        if (volumeAll - maxVolume > 0) {
+            diffVolume = volumeAll - maxVolume; //in L
             height = (diffVolume / 1000) / (length.getValue() * width.getValue()); //in m
             q = diffVolume;
             
@@ -170,7 +177,8 @@ public class SewerOverflowDevice_1 extends JAMSComponent {
                 // The overflow of the SOD is limited by its pipe diameter               
                   overflowComp = frac[i] * q;
 
-                inValues[i].setValue(inValues[i].getValue() - overflowComp);
+                inValues[i].setValue(inValues[i].getValue() - overflowComp * percIn);
+                actValues[i].setValue(actValues[i].getValue() - overflowComp * percAct);
                 to_river.setDouble(inNames[i].getValue(), overflowComp + to_river.getDouble(inNames[i].getValue()));
                 outValues[i].setValue(overflowComp);
                 

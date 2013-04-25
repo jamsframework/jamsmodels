@@ -132,49 +132,63 @@ public class SewerOverflowDevice_2 extends JAMSComponent {
         }
 
         getModel().getRuntime().println(time.toString());
+       
+        // calc active and inflow volumes
+        double volumeAct = 0, volumeIn = 0;
 
-        double volume = 0;
-        double[] frac = new double[inValues.length];
-
-        for (int i = 0; i < inValues.length; i++) {
-            volume = volume + inValues[i].getValue();
-        }
         for (int i = 0; i < actValues.length; i++) {
-            volume = volume + actValues[i].getValue();
+            volumeAct = volumeAct + actValues[i].getValue();
         }
         for (int i = 0; i < inValues.length; i++) {
-            if (volume > 0) {
-                frac[i] = (inValues[i].getValue() + actValues[i].getValue()) / volume;
+            volumeIn = volumeIn + inValues[i].getValue();
+        }
+
+        // calc overall volume
+        double volumeAll = volumeAct + volumeIn;
+
+        // calc fractions related to overall volume
+        double[] frac = new double[inValues.length];
+        double percIn = volumeIn / volumeAll;
+        double percAct = volumeAct / volumeAll;
+
+        for (int i = 0; i < inValues.length; i++) {
+            if (volumeAll > 0) {
+                frac[i] = (inValues[i].getValue() + actValues[i].getValue()) / volumeAll;
             }
         }
 
         double maxVolume = threshold.getValue() * length.getValue() * width.getValue() * 1000; //in L
-        double diffVolume = 0, height = 0, q = 0;
+        double diffVolume = 0, h = 0, q = 0;
         double overflowComp = 0;
         double g = 9.80665; //gravitationnal constant
+        // let's use var names as defined in Faure (2007)
+        double c = threshold.getValue();
+        double L = pipeWidth.getValue();
+        double T = c + pipeHeight.getValue();
 
-        if (waterLevel != null) {
-            height = waterLevel.getValue();//waterLevel of the sewer reach after routing at the previous time step
+        if (waterLevel != null) { 
+            h = waterLevel.getValue()-c; //waterLevel of the sewer reach after routing at the previous time step - threshold
         } else {
-            height = 0;
+            h = 0;
         }
 
         // overflow is happening?
-        if (height > threshold.getValue()) {
+        if (waterLevel.getValue() > threshold.getValue()) {
             
-            diffVolume = volume - maxVolume; //in L
+            diffVolume = volumeAll - maxVolume; //in L
 
-            if (height <= pipeHeight.getValue()) {         
-                q = dischCoeff.getValue() * pipeWidth.getValue() * height * Math.sqrt(2 * g * height) * seconds * 1000;
+            if (h <= T-c) {         
+                q = dischCoeff.getValue() * L * h * Math.sqrt(2 * g * h) * seconds * 1000;
             } else {
-                q = dischCoeff.getValue() * pipeWidth.getValue() * pipeHeight.getValue() * Math.sqrt(2 * g * height) * seconds * 1000;
+                q = dischCoeff.getValue() * L * (T-c) * Math.sqrt(2 * g * h) * seconds * 1000;
             }
             q = Math.min(q, diffVolume);
 
             for (int i = 0; i < inValues.length; i++) {
                 // The overflow of the SOD is limited by its pipe diameter               
                 overflowComp = frac[i] * q;
-                inValues[i].setValue(inValues[i].getValue() - overflowComp);
+                inValues[i].setValue(inValues[i].getValue() - overflowComp * percIn);
+                actValues[i].setValue(actValues[i].getValue() - overflowComp * percAct);
                 to_river.setDouble(inNames[i].getValue(), overflowComp + to_river.getDouble(inNames[i].getValue()));
                 outValues[i].setValue(overflowComp);
             }
