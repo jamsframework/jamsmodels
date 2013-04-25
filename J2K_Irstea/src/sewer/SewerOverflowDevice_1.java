@@ -141,13 +141,21 @@ public class SewerOverflowDevice_1 extends JAMSComponent {
 
         // calc fractions related to overall volume
         double[] frac = new double[inValues.length];
-        double percIn = volumeIn / volumeAll;
-        double percAct = volumeAct / volumeAll;
 
         for (int i = 0; i < inValues.length; i++) {
             if (volumeAll > 0) {
                 frac[i] = (inValues[i].getValue() + actValues[i].getValue()) / volumeAll;
             }
+        }
+        
+        double percIn;
+        double percAct;
+        if (volumeAll > 0) {
+            percIn = volumeIn / volumeAll;
+            percAct = volumeAct / volumeAll;
+        } else {
+            percIn = 0;
+            percAct = 0;
         }
 
         double maxVolume = threshold.getValue() * length.getValue() * width.getValue() * 1000; //in L

@@ -150,8 +150,6 @@ public class SewerOverflowDevice_3 extends JAMSComponent {
 
         // calc fractions related to overall volume
         double[] frac = new double[inValues.length];
-        double percIn = volumeIn / volumeAll;
-        double percAct = volumeAct / volumeAll;
         
         double slope = this.slope.getValue();
         if (!slopeAsProportion.getValue()) {
@@ -162,6 +160,16 @@ public class SewerOverflowDevice_3 extends JAMSComponent {
             if (volumeAll > 0) {
                 frac[i] = (inValues[i].getValue() + actValues[i].getValue()) / volumeAll;
             }
+        }
+        
+        double percIn;
+        double percAct;
+        if (volumeAll > 0) {
+            percIn = volumeIn / volumeAll;
+            percAct = volumeAct / volumeAll;
+        } else {
+            percIn = 0;
+            percAct = 0;
         }
         
         // calc average reach water level based on overall volume, reach volume 
