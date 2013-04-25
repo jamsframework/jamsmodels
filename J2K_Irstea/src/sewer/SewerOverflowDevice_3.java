@@ -58,6 +58,11 @@ public class SewerOverflowDevice_3 extends JAMSComponent {
             description = "SOD slope",
             unit = "deg")
     public Attribute.Double slope;
+    @JAMSVarDescription(
+            access = JAMSVarDescription.AccessType.READ,
+            description = "Is slope provided as proportion of length and elevation difference [m/m]?",
+            defaultValue = "false")
+    public Attribute.Boolean slopeAsProportion; 
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
             description = "SOD roughness")
     public Attribute.Double roughness;
@@ -147,6 +152,11 @@ public class SewerOverflowDevice_3 extends JAMSComponent {
         double[] frac = new double[inValues.length];
         double percIn = volumeIn / volumeAll;
         double percAct = volumeAct / volumeAll;
+        
+        double slope = this.slope.getValue();
+        if (!slopeAsProportion.getValue()) {
+            slope = slope / 100;
+        }
 
         for (int i = 0; i < inValues.length; i++) {
             if (volumeAll > 0) {
@@ -156,7 +166,7 @@ public class SewerOverflowDevice_3 extends JAMSComponent {
         
         // calc average reach water level based on overall volume, reach volume 
         // and flow velocity (beware of to high slope values!)
-        double flowVelocity = calcFlowVelocity(volumeAll, width.getValue(), slope.getValue(), roughness.getValue(), seconds);
+        double flowVelocity = calcFlowVelocity(volumeAll, width.getValue(), slope, roughness.getValue(), seconds);
         double flowLength = flowVelocity * seconds;
         double waterLevel = volumeAll / (flowLength * width.getValue() * 1000);
         
