@@ -107,9 +107,9 @@ public class SewerOverflowDevice_3 extends JAMSComponent {
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.WRITE,
             description = "sewer overflow sum")
     public Attribute.Double sewerOverflow;
-    @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
-            description = "ID")
-    public Attribute.Double ID;
+    @JAMSVarDescription(access = JAMSVarDescription.AccessType.READWRITE,
+            description = "number of overflow events")
+    public Attribute.Double overflowCount;
     private int seconds;
 
     public void init() {
@@ -197,7 +197,7 @@ public class SewerOverflowDevice_3 extends JAMSComponent {
 
             double diffVolume = h * flowLength * width.getValue() * 1000;
             
-            q = Math.min(q, diffVolume);
+            q = Math.min(q, diffVolume);           
 
             for (int i = 0; i < inValues.length; i++) {
                 double overflowComp = frac[i] * q;
@@ -207,6 +207,7 @@ public class SewerOverflowDevice_3 extends JAMSComponent {
                 outValues[i].setValue(overflowComp);
             }
             sewerOverflow.setValue(q);
+            overflowCount.setValue(overflowCount.getValue() + 1);
         } else {
             for (int i = 0; i < inValues.length; i++) {
                 outValues[i].setValue(0);
