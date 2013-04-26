@@ -30,7 +30,7 @@ import java.util.GregorianCalendar;
  *
  * @author Sven Kralisch & Mériem Labbas & Christian Fischer
  */
-@JAMSComponentDescription(title = "DoubleTransfer",
+@JAMSComponentDescription(title = "SewerOverflowDevice",
         author = "Sven Kralisch & Mériem Labbas & Christian Fischer",
         description = "Component used for the simulation of an overflow device. It takes the different components outflows"
         + "coming from a sewer reach(threshold test) and adds it to the receiving reach river.",
@@ -112,6 +112,9 @@ public class SewerOverflowDevice extends JAMSComponent {
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.WRITE,
             description = "resulting water level in the reach")
     public Attribute.Double waterLevel;
+    @JAMSVarDescription(access = JAMSVarDescription.AccessType.READWRITE,
+            description = "number of overflow events")
+    public Attribute.Double overflowCount;
 
     private int seconds;
 
@@ -126,6 +129,7 @@ public class SewerOverflowDevice extends JAMSComponent {
         } else if (ti.getTimeUnit() == GregorianCalendar.MONTH) {
             seconds = time.getActualMaximum(GregorianCalendar.DAY_OF_MONTH) * 24 * 3600 * ti.getTimeUnitCount();
         }
+        
     }
     int ts = 0;
     /*
@@ -224,7 +228,7 @@ public class SewerOverflowDevice extends JAMSComponent {
                 outValues[i].setValue(overflowComp);
             }
             sewerOverflow.setValue(q);
-
+            overflowCount.setValue(overflowCount.getValue() + 1);
 
         } else {
             for (int i = 0; i < inValues.length; i++) {
