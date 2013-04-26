@@ -34,8 +34,8 @@ import jams.model.*;
         title="J2KGroundwater",
         author="Peter Krause",
         description="A two-component groundwater module",
-        version="1.0_0",
-        date="2011-05-30"
+        version="1.0_1",
+        date="2013-04-26"
         )
         public class J2KProcessGroundwater extends JAMSComponent {
     
@@ -66,7 +66,7 @@ import jams.model.*;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            description = "recision coefficient k RG1",
+            description = "recision coefficient k RG1 for one time step",
             lowerBound = 1.0,
             upperBound = 500.0,
             defaultValue = "10.0"
@@ -75,7 +75,7 @@ import jams.model.*;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            description = "recision coefficient k RG2",
+            description = "recision coefficient k RG2 for one time step",
             lowerBound = 1.0,
             upperBound = 700.0,
             defaultValue = "10.0"
@@ -140,7 +140,7 @@ import jams.model.*;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            description = "percolation",
+            description = "percolation for one time step",
             unit = "L"
             )
             public Attribute.Double percolation;
