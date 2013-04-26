@@ -259,31 +259,31 @@ import jams.model.*;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            description = "maximum infiltration rate in summer",
+            description = "maximum infiltration rate in summer for one time step",
             lowerBound = 0.0,
             upperBound = 100.0,
             defaultValue = "50.0",
-            unit="mm d^-1"
+            unit="mm"
             )
             public Attribute.Double soilMaxInfSummer;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            description = "maximum infiltration rate in winter",
+            description = "maximum infiltration rate in winter for one time step",
             lowerBound = 0.0,
             upperBound = 100.0,
             defaultValue = "50.0",
-            unit="mm d^-1"
+            unit="mm"
             )
             public Attribute.Double soilMaxInfWinter;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            description = "maximum infiltration rate on snow",
+            description = "maximum infiltration rate on snow for one time step",
             lowerBound = 0.0,
             upperBound = 100.0,
             defaultValue = "50.0",
-            unit="mm d^-1"
+            unit="mm"
             )
             public Attribute.Double soilMaxInfSnow;
     
