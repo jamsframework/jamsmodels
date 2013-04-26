@@ -101,10 +101,10 @@ public class PenmanMonteith extends JAMSComponent {
     unit="mm d^-1")
     public Attribute.Double potET;
 
-    @JAMSVarDescription(access = JAMSVarDescription.AccessType.WRITE,
-    description = "actual ET [mm/ timeUnit]",
-    unit="mm d^-1")
-    public Attribute.Double actET;
+//    @JAMSVarDescription(access = JAMSVarDescription.AccessType.WRITE,
+//    description = "actual ET [mm/ timeUnit]",
+//    unit="mm d^-1")
+//    public Attribute.Double actET;
 
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.WRITE,
     description = "rs",
@@ -149,7 +149,7 @@ public class PenmanMonteith extends JAMSComponent {
 
         if (dataCaching.getValue() == 1) {
             this.potET.setValue(reader.readDouble());
-            this.actET.setValue(0.0);
+//            this.actET.setValue(0.0);
         } else {
             double netRad = this.netRad.getValue();
             double temperature = this.tmean.getValue();
@@ -214,7 +214,7 @@ public class PenmanMonteith extends JAMSComponent {
             this.potET.setValue(pET);
             this.ra.setValue(ra);
             this.rs.setValue(rs);
-            this.actET.setValue(aET);
+//            this.actET.setValue(aET);
             
             if (dataCaching.getValue() == 0) {
                 writer.writeDouble(pET);
