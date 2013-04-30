@@ -262,11 +262,6 @@ import jams.model.*;
             description = "temporal resolution [d or h]"
             )
             public Attribute.String tempRes;
-      @JAMSVarDescription(
-            access = JAMSVarDescription.AccessType.READWRITE,
-            description = "Reach statevar RG2 storage"
-            )
-            public Attribute.Double reachID;   
      
     
     /*
