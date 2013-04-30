@@ -156,6 +156,7 @@ public class Regionalisation extends JAMSComponent {
             while (counter < nIDW && cont) {
                 int t = wA[element];
                 //check if data is valid or no data
+//                if (sourceData[t] == noData.getValue() || Double.isNaN(sourceData[t])) {
                 if (sourceData[t] == noData.getValue()) {
 
                     element++;
