@@ -180,13 +180,6 @@ import jams.model.*;
             )
             public JAMSDouble snowMelt;
     
-     @JAMSVarDescription(
-            access = JAMSVarDescription.AccessType.WRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
-            description = "snow height",
-            unit = "mm"
-            )
-            public JAMSDouble Height;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
@@ -260,25 +253,7 @@ import jams.model.*;
             )
             public JAMSBoolean active;
     
- // Pour le debug, on fixe l'id des HRUs et un index de temps
-    
- //   @JAMSVarDescription(
- //           access = JAMSVarDescription.AccessType.READ,
- //           update = JAMSVarDescription.UpdateType.RUN,
- //           description = "id de la HRU pour debug"
- //          )
- //       public JAMSDouble HRU_id;
-//      @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
-//            description = "Current time step",
-//            unit = "d")
-//        public Attribute.Calendar time2;
 
-        @JAMSVarDescription(
-            access = JAMSVarDescription.AccessType.WRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
-            description = "snow density"
-           )
-        public JAMSDouble snow_density;
         
     
     double run_area;
@@ -293,7 +268,7 @@ import jams.model.*;
     double run_snowAge;
     double run_coldContent;
     double run_snowMelt = 0;
-    double out_height = 0;
+
    
     /*
      *  Component run stages
@@ -308,7 +283,7 @@ import jams.model.*;
 	        this.dryDens.setValue(0.0);
 	        this.snowAge.setValue(0);
 	        this.snowColdContent.setValue(0.0);
-                this.snow_density.setValue(0.0);
+
     	}
     }
     
@@ -325,10 +300,7 @@ import jams.model.*;
 	        
 	        this.in_snow = this.netSnow.getValue();
 	
-//               if (HRU_id.getValue() == 1.0){
-//           System.out.println(time2.toString());
-//       }
-                
+
                 
                 this.in_rain = this.netRain.getValue();
 	        double balIn = this.in_snow + this.in_rain;
@@ -337,11 +309,9 @@ import jams.model.*;
 	        double in_meanTemp = this.meanTemp.getValue();
 	        double in_maxTemp = this.maxTemp.getValue();
 	        
-	//        this.run_snowDepth = snowDepth.getValue();
+
                 this.run_snowDepth = this.snowDepth.getValue();
-//        if (HRU_id.getValue() == 1.0){
-//           System.out.println(time2.toString());
-//       }                
+
        
 	        this.run_totSWE    = snowTotSWE.getValue();
 	        double balStorStart = this.run_totSWE;
@@ -376,7 +346,7 @@ import jams.model.*;
 	        
 	        if(in_snow > 0){
 // we want to have the snow accumulation at each timestep
-	            out_height = this.calcSnowAccumulation(in_meanTemp, run_area, critDens);
+	            this.calcSnowAccumulation(in_meanTemp, run_area, critDens);
 	        }
 	        
 	        
@@ -393,16 +363,13 @@ import jams.model.*;
 	        this.totDens.setValue(this.run_totDens);
 	        this.dryDens.setValue(this.run_dryDens);
 	        this.snowDepth.setValue(this.run_snowDepth);
-                this.snow_density.setValue(this.calcNewSnowDensity(in_meanTemp));
+
       
                 
-     
-   //             if (HRU_id.getValue() == 1.0){
-   //        System.out.println(time2.toString());
-   //    }  
+    
 	        this.snowAge.setValue(this.run_snowAge);
 	        this.snowColdContent.setValue(this.run_coldContent);
-                this.Height.setValue(out_height);
+
 	        if(this.run_snowMelt > 0){
 	            int i = 0;
 	        }
@@ -434,7 +401,7 @@ import jams.model.*;
 	        this.dryDens.setValue(0.0);
 	        this.snowAge.setValue(0);
 	        this.snowColdContent.setValue(0.0);
-                this.snow_density.setValue(0.0);
+
     	}
     }
     
@@ -451,7 +418,7 @@ import jams.model.*;
      * are set to zero after accumulation
      * @return true if successfull, false otherwise
      */
-    private double calcSnowAccumulation(double temp, double area, double critDens){
+    private boolean calcSnowAccumulation(double temp, double area, double critDens){
         double deltaHeight = 0;
         double out_height = 0;
         //increase of snow pack because of snow fall
@@ -460,7 +427,7 @@ import jams.model.*;
             double new_snow_density = this.calcNewSnowDensity(temp);
             deltaHeight = this.in_snow / (new_snow_density * area);
             this.run_snowDepth = this.run_snowDepth + deltaHeight;
-            out_height = out_height + deltaHeight;
+            
             
             //increase of dry and total snow water equivalent by snow precip amount
             //double old_SWE = this.tot_SWE;
@@ -484,8 +451,8 @@ import jams.model.*;
             this.in_rain = 0;
         }
         //if snow pack has vanished, nothing more to do
- //       if(this.run_snowDepth == 0)
- //           return true;
+        if(this.run_snowDepth == 0)
+            return true;
         
         //Calculation of new snow densities
         this.calcSnowDensities(area);
@@ -505,7 +472,7 @@ import jams.model.*;
         
         //Calculation of new snow densities
         this.calcSnowDensities(area);
-        return out_height;
+        return true;
     }
     
     /** calculates density of new fallen snow depending
