@@ -190,44 +190,41 @@ public class SewerOverflowDevice extends JAMSComponent {
         if (waterLevelMax > threshold.getValue() && to_river.getValue() != null) {
 
             double g = 9.80665; //gravitationnal constant
-            double q;
+            double overflowedVolume;
             // let's use var names as defined in Faure (2007)
             double c = threshold.getValue();
             double L = pipeWidth.getValue();
             double T = c + pipeHeight.getValue();
             double h = waterLevelMax - c;
+            
+            // Let's assume that h is a linear function : h(t) = coeffLinearInterp * t + constant
+            double coeffLinearInterp;
 
-            double overflowSeconds;
-
-//            if (c > waterLevelInit) {
-            overflowSeconds = seconds * (waterLevelMax - c) / (waterLevelMax - waterLevelInit);
-//            } else {
-//                overflowSeconds = seconds;
-//            }
+            coeffLinearInterp =  (waterLevelMax - waterLevelInit) / seconds;
 
             if (h <= T - c) {
-                q = dischCoeff.getValue() * L * Math.sqrt(2 * g) * overflowSeconds * 1000 * 2.5 * (Math.pow(h, 2.5));
+                overflowedVolume = dischCoeff.getValue() * L * Math.sqrt(2 * g) * coeffLinearInterp * 1000 * 2/5 * (Math.pow(h, 2.5));
             } else {
-                q = dischCoeff.getValue() * L * Math.sqrt(2 * g) * overflowSeconds * 1000 * (2.5 * Math.pow(T - c, 2.5) + (T - c) * 1.5 * (Math.pow(h, 1.5) - Math.pow(T - c, 1.5)));
+                overflowedVolume = dischCoeff.getValue() * L * Math.sqrt(2 * g) * coeffLinearInterp * 1000 * (2/5 * Math.pow(T - c, 2.5) + (T - c) * 2/3 * (Math.pow(h, 1.5) - Math.pow(T - c, 1.5)));
             }
 
             double diffVolume = h * flowLengthMax * width.getValue() * 1000;
 
-            q = Math.min(q, diffVolume);
+            overflowedVolume = Math.min(overflowedVolume, diffVolume);
 
-            double[] finalState = calcWaterLevel(volumeMax - q, width.getValue(), slope, roughness.getValue(), seconds);
+            double[] finalState = calcWaterLevel(volumeMax - overflowedVolume, width.getValue(), slope, roughness.getValue(), seconds);
             waterLevel.setValue(finalState[0]);
 
             for (int i = 0; i < inValues.length; i++) {
                 // The overflow of the SOD is limited by its pipe diameter               
-                double overflowComp = frac[i] * q;
+                double overflowComp = frac[i] * overflowedVolume;
 
                 inValues[i].setValue(inValues[i].getValue() - overflowComp * percIn);
                 actValues[i].setValue(actValues[i].getValue() - overflowComp * percAct);
                 to_river.setDouble(inNames[i].getValue(), overflowComp + to_river.getDouble(inNames[i].getValue()));
                 outValues[i].setValue(overflowComp);
             }
-            sewerOverflow.setValue(q);
+            sewerOverflow.setValue(overflowedVolume);
             overflowCount.setValue(overflowCount.getValue() + 1);
 
         } else {
