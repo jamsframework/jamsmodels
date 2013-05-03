@@ -278,7 +278,7 @@ title="StandardEfficiencyCalculator",
         
         Attribute.Calendar eff_sd = this.effTimeInterval.getStart().clone();
         Attribute.Calendar eff_ed = this.effTimeInterval.getEnd().clone();
-        int eff_tres = this.effTimeInterval.getTimeUnit();
+        //int eff_tres = this.effTimeInterval.getTimeUnit();
         long sdEff = eff_sd.getTimeInMillis();
         long edEff = eff_ed.getTimeInMillis();
         
@@ -315,13 +315,13 @@ title="StandardEfficiencyCalculator",
         
         //determine start and end array index for timeInterval
         
-        if(eff_tres == GregorianCalendar.DAY_OF_YEAR){
+        if(model_tres == GregorianCalendar.DAY_OF_YEAR){
             this.interValStart =(int)((sdEff - sdMod) / (1000 * 60 * 60 * 24));
             this.interValEnd = this.interValStart + this.effTsteps;
-        } else if(eff_tres == GregorianCalendar.HOUR_OF_DAY){
+        } else if(model_tres == GregorianCalendar.HOUR_OF_DAY){
             this.interValStart =(int)((sdEff - sdMod) / (1000 * 60 * 60));
             this.interValEnd = this.interValStart + this.effTsteps;
-        } else if(eff_tres == GregorianCalendar.MONTH){
+        } else if(model_tres == GregorianCalendar.MONTH){
             Attribute.Calendar modStart = modelTimeInterval.getStart().clone();
             Attribute.Calendar effStart = effTimeInterval.getStart().clone();
             int startStep = 0;
@@ -331,7 +331,7 @@ title="StandardEfficiencyCalculator",
             }
             this.interValStart = startStep;
             this.interValEnd = this.interValStart + this.effTsteps;
-        } else if(eff_tres == GregorianCalendar.YEAR){
+        } else if(model_tres == GregorianCalendar.YEAR){
             Attribute.Calendar modStart = modelTimeInterval.getStart().clone();
             Attribute.Calendar effStart = effTimeInterval.getStart().clone();
             int startStep = 0;
