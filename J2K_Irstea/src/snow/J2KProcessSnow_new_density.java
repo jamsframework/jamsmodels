@@ -245,7 +245,7 @@ import jams.model.*;
             defaultValue="0.01"
             )
             public JAMSDouble ccf_factor;
-    
+
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
             update = JAMSVarDescription.UpdateType.INIT,
@@ -363,7 +363,7 @@ import jams.model.*;
 	        this.totDens.setValue(this.run_totDens);
 	        this.dryDens.setValue(this.run_dryDens);
 	        this.snowDepth.setValue(this.run_snowDepth);
-
+           
       
                 
     
@@ -401,7 +401,7 @@ import jams.model.*;
 	        this.dryDens.setValue(0.0);
 	        this.snowAge.setValue(0);
 	        this.snowColdContent.setValue(0.0);
-
+   
     	}
     }
     
@@ -420,7 +420,6 @@ import jams.model.*;
      */
     private boolean calcSnowAccumulation(double temp, double area, double critDens){
         double deltaHeight = 0;
-        double out_height = 0;
         //increase of snow pack because of snow fall
         if(this.in_snow > 0){
             
