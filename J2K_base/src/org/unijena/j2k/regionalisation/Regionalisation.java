@@ -31,6 +31,17 @@ import jams.model.*;
  *
  * @author Peter Krause
  */
+ @JAMSComponentDescription(
+        title="Regionalisation",
+        author="Peter Krause",
+        description="This component takes a number of values related to "
+         + "measurement stations (e.g. measured climate parameter) and "
+         + "according weight values to calculate a weighted average value. "
+         + "In addition, an elevation value can be provided to make an "
+         + "additional elevation correction of the calulated average.",
+        date = "2005-11-17",
+        version = "1.0_0"
+        )
 public class Regionalisation extends JAMSComponent {
 
     @JAMSVarDescription (access = JAMSVarDescription.AccessType.READ,
