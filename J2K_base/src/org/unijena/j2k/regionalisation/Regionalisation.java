@@ -40,8 +40,12 @@ import jams.model.*;
          + "In addition, an elevation value can be provided to make an "
          + "additional elevation correction of the calulated average.",
         date = "2005-11-17",
-        version = "1.0_0"
+        version = "1.1_0"
         )
+@VersionComments(entries = {
+    @VersionComments.Entry(version = "1.0_0", comment = "Initial version"),
+    @VersionComments.Entry(version = "1.1_0", comment = "Added new output weightedElevation")
+}) 
 public class Regionalisation extends JAMSComponent {
 
     @JAMSVarDescription (access = JAMSVarDescription.AccessType.READ,
@@ -67,6 +71,10 @@ public class Regionalisation extends JAMSComponent {
     @JAMSVarDescription (access = JAMSVarDescription.AccessType.WRITE,
                          description = "regionalised data value")
     public Attribute.Double dataValue;
+    
+    @JAMSVarDescription (access = JAMSVarDescription.AccessType.WRITE,
+                         description = "weighted elevation of stations used")
+    public Attribute.Double weightedElevation;    
 
     @JAMSVarDescription (access = JAMSVarDescription.AccessType.READ,
                          description = "Attribute name elevation")
@@ -146,6 +154,7 @@ public class Regionalisation extends JAMSComponent {
 
             double value = 0;
             double deltaElev = 0;
+            double wElev = 0;       
             int nIDW = this.nidw.getValue();
             
             //make sure that the arrays are intialized with 0s
@@ -203,9 +212,12 @@ public class Regionalisation extends JAMSComponent {
             for (int i = 0; i < counter; i++) {
                 weights[i] = weights[i] / weightsum;
             }
-
+            
             if (valid) {
                 for (int i = 0; i < counter; i++) {
+
+                    wElev = wElev + elev[i] * weights[i];
+                    
                     if ((rsq >= rsqThreshold.getValue()) && (elevationCorrection.getValue())) {  //Elevation correction is applied
                         deltaElev = targetElevation - elev[i];  //Elevation difference between unit and Station
                         double tVal = ((deltaElev * gradient + data[i]) * weights[i]);
@@ -231,6 +243,7 @@ public class Regionalisation extends JAMSComponent {
             }
 
             dataValue.setValue(value);
+            weightedElevation.setValue(wElev);
 
             //Write cache file
             if (dataCaching.getValue() == 0) {
