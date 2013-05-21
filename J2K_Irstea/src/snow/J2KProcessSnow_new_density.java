@@ -659,7 +659,7 @@ import jams.model.*;
     }
     
     private double calcPotMR_semiComp(double temp, double TRS, double temp_fac, double rain_fac, double ground_fac, double area){
-        double meltTemp = temp - TRS;
+        double meltTemp = temp; //- TRS;
         double potMR = (temp_fac * meltTemp + ground_fac + rain_fac * (this.in_rain / area) * meltTemp);
         //avoid negative melt rates
         if(potMR < 0)
