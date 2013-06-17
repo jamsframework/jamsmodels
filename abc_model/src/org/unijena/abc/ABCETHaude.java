@@ -91,7 +91,7 @@ import java.io.*;
     
     public void run() throws Attribute.Entity.NoSuchAttributeException, IOException {
            double[] haudeFactors ={0.08,0.04,0.14,0.35,0.39,0.34,0.31,0.25,0.2,0.13,0.07,0.05}; 
-           int month = time.get(JAMSCalendar.MONTH);
+           int month = time.get(Attribute.Calendar.MONTH);
            double temp = temperature.getValue();
            double rh = rhum.getValue();
            double hf = haudeFactors[month];
@@ -110,7 +110,7 @@ import java.io.*;
                pETP = 0;
            }
            
-           int days = time.getActualMaximum(JAMSCalendar.DAY_OF_MONTH);
+           int days = time.getActualMaximum(Attribute.Calendar.DAY_OF_MONTH);
            
            //conversion from daily to hourly values
            pETP = pETP * days;

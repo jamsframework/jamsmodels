@@ -123,10 +123,10 @@ public class GehlbergDataReader extends JAMSComponent {
             date.set(tiStart.get(Calendar.YEAR), tiStart.get(Calendar.MONTH), tiStart.get(Calendar.DAY_OF_MONTH), startTime.get(Calendar.HOUR_OF_DAY), startTime.get(Calendar.MINUTE),startTime.get(Calendar.SECOND));
             while (startTime.before(date) && store.hasNext()) {
                 JAMSTableDataArray da = store.getNext();
-                if(timeUnit == JAMSCalendar.MONTH)
-                    startTime.add(JAMSCalendar.MONTH, 1);
-                else if(timeUnit == JAMSCalendar.YEAR)
-                    startTime.add(JAMSCalendar.YEAR, 1);
+                if(timeUnit == Attribute.Calendar.MONTH)
+                    startTime.add(Attribute.Calendar.MONTH, 1);
+                else if(timeUnit == Attribute.Calendar.YEAR)
+                    startTime.add(Attribute.Calendar.YEAR, 1);
             }
         }
     }
