@@ -25,6 +25,7 @@ package org.unijena.j2k.regionalisation;
 
 import jams.data.*;
 import jams.model.*;
+import org.unijena.j2k.statistics.IDW;
 
 /**
  *
@@ -91,32 +92,41 @@ import jams.model.*;
     
     /*
      *  Component run stages
-     */
-    
-    public void init() throws Attribute.Entity.NoSuchAttributeException{
+     */       
+    IDW idw = new IDW();
+    public void run() throws Attribute.Entity.NoSuchAttributeException{                
+        double w[] = statWeights.getValue();
         
-    }
-    
-    public void run() throws Attribute.Entity.NoSuchAttributeException{
-        Attribute.DoubleArray idwWeights = getModel().getRuntime().getDataFactory().createDoubleArray();
+        int n = statX.getValue().length;
+        
+        if (w == null || w.length != n){
+            w = new double[n];
+        }
+        
         if(equalWeights == null || !equalWeights.getValue()){
-        	idwWeights.setValue(org.unijena.j2k.statistics.IDW.calcNidwWeights(entityX.getValue(), entityY.getValue(), statX.getValue(), statY.getValue(), pidw.getValue(), nidw.getValue()));
+            idw.init(statX.getValue(), statY.getValue(), null, (int)pidw.getValue(), IDW.Projection.ANY);
+            idw.getIDW(entityX.getValue(), entityY.getValue(), null, nidw.getValue());
+            
+            System.arraycopy(idw.getWeights(), 0, w, 0, n);
+            
+        	//idwWeights.setValue(org.unijena.j2k.statistics.IDW2.calcNidwWeights(entityX.getValue(), entityY.getValue(), statX.getValue(), statY.getValue(), pidw.getValue(), nidw.getValue()));
         }
         else if(equalWeights.getValue()){
-        	idwWeights.setValue(org.unijena.j2k.statistics.IDW.equalWeights(nidw.getValue()));
+            for (int i=0;i<n;i++){
+                w[i] = 1./(double)n;
+            }
+        	//idwWeights.setValue(org.unijena.j2k.statistics.IDW2.equalWeights(nidw.getValue()));
         }
         	
-        statWeights.setValue(idwWeights.getValue());
+        statWeights.setValue(w);
         
     }
     
+    @Override
     public void cleanup() throws Attribute.Entity.NoSuchAttributeException{
-        int nstat = statWeights.getValue().length;
-        double[] sw = new double[nstat];
-        for(int i = 0; i < nstat; i++)
-            sw[i] = 0;
-        
-        statWeights.setValue(sw);
-        
+        int nstat = statWeights.getValue().length;        
+        for(int i = 0; i < nstat; i++){
+            statWeights.getValue()[i] = 0; 
+        }
     }
 }

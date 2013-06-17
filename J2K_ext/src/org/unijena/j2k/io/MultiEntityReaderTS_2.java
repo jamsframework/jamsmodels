@@ -27,6 +27,7 @@ package org.unijena.j2k.io;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
+import java.util.HashSet;
 import org.unijena.j2k.*;
 import jams.data.*;
 import jams.model.*;
@@ -34,7 +35,6 @@ import java.util.*;
 import jams.JAMS;
 import java.lang.Math.*;
 import jams.tools.FileTools;
-import javax.swing.JOptionPane;
 
 /**
  *
@@ -89,29 +89,31 @@ public class MultiEntityReaderTS_2 extends JAMSComponent {
     public void init() {
  
 
-        //read hru parameter
-        hrus.setEntities(J2KFunctions.readParas(FileTools.createAbsoluteFileName(getModel().getWorkspaceDirectory().getPath(), hruFileName.getValue()), getModel()));
-
+        ArrayList<Attribute.Entity> hruCollection = J2KFunctions.readParas(FileTools.createAbsoluteFileName(getModel().getWorkspaceDirectory().getPath(), hruFileName.getValue()), getModel());
+                
         //assign IDs to all hru entities
-        for (Attribute.Entity e : hrus.getEntityArray()) {
+        for (Attribute.Entity e : hruCollection) {
             try {
                 e.setId((long) e.getDouble(hruIDAttribute.getValue()));
             } catch (Attribute.Entity.NoSuchAttributeException nsae) {
                 getModel().getRuntime().sendErrorMsg("Couldn't find attribute \"ID\" while reading J2K HRUu parameter file (" + hruFileName.getValue() + ")!");
             }
         }
-
+        hrus.setEntities(hruCollection);
+        
         //read reach parameter
-        reaches.setEntities(J2KFunctions.readParas(FileTools.createAbsoluteFileName(getModel().getWorkspaceDirectory().getPath(), reachFileName.getValue()), getModel()));
-
+        ArrayList<Attribute.Entity> reachCollection = J2KFunctions.readParas(FileTools.createAbsoluteFileName(getModel().getWorkspaceDirectory().getPath(), reachFileName.getValue()), getModel());
+        
         //assign IDs to all reach entities
-        for (Attribute.Entity e : reaches.getEntityArray()) {
+        for (Attribute.Entity e : reachCollection) {
             try {
                 e.setId((long) e.getDouble(reachIDAttribute.getValue()));
             } catch (Attribute.Entity.NoSuchAttributeException nsae) {
                 getModel().getRuntime().sendErrorMsg("Couldn't find attribute \"ID\" while reading J2K Reach parameter file (" + reachFileName.getValue() + ")!");
             }
         }
+        
+        reaches.setEntities(reachCollection);
 
         //create object associations from id attributes for hrus and reaches
         createTopology();
@@ -126,8 +128,7 @@ public class MultiEntityReaderTS_2 extends JAMSComponent {
 
     }
 
-    private void createTopology() {
-
+    private void createTopology() {          
         BufferedReader reader1;
         BufferedReader reader2;
 
@@ -167,9 +168,14 @@ public class MultiEntityReaderTS_2 extends JAMSComponent {
             toPoly = hruMap.get(e.getDouble(hru2hruAttribute.getValue()));
             toReach = reachMap.get(e.getDouble(hru2reachAttribute.getValue()));
 
-            if ((toPoly == null) || (toReach == null)) {
-                getModel().getRuntime().sendErrorMsg("Topological neighbour for HRU with ID "
-                        + e.getId() + " could not be found. This may cause errors!");
+            if ((toPoly == null) ) {
+                getModel().getRuntime().sendErrorMsg("Topological hru neighbour for HRU with ID "
+                        + e.getId() + " could not be found. This may cause errors! The neighbour in question is " + e.getDouble(hru2hruAttribute.getValue()));
+            }
+            
+            if ((toReach == null) ) {
+                getModel().getRuntime().sendErrorMsg("Topological reach neighbour for HRU with ID "
+                        + e.getId() + " could not be found. This may cause errors! The neighbour in question is " + e.getDouble(hru2reachAttribute.getValue()));
             }
 
             e.setObject(hru2hruAttribute.getValue(), toPoly);
@@ -239,15 +245,26 @@ public class MultiEntityReaderTS_2 extends JAMSComponent {
                 double sumWeights = 1;
 
                 while (toHRUsToken.hasMoreTokens() && tschuessnull == false) {
-                    double toHRUsID = Double.parseDouble(toHRUsToken.nextToken());
-                    double toHRUsWeight = Double.parseDouble(toHRUsWeightsToken.nextToken());
+                    double toHRUsID = 0;
+                    double toHRUsWeight = 0;
 
+                    try{
+                        toHRUsID = Double.parseDouble(toHRUsToken.nextToken());                    
+                    }catch(NoSuchElementException nsee){
+                        nsee.printStackTrace();
+                        System.out.println("Not enough tokens in line:" + toHRUsLine);
+                    }
+                    try{
+                        toHRUsWeight = Double.parseDouble(toHRUsWeightsToken.nextToken());
+                    }catch(NoSuchElementException nsee){
+                        nsee.printStackTrace();
+                        System.out.println("Not enough tokens in line:" + toHRUsWeightsLine);
+                    }
+                    
                     sumWeights = 0.0001 * Math.round((sumWeights - toHRUsWeight) * 10000);
 
                     if ((toHRUsID == 0 && toHRUsWeight != 0) || (toHRUsID != 0 && toHRUsWeight == 0)) {
-                        System.out.println("Fehler bei HRU " + HRUsID + ". Anzahl der Empfaenger-HRUs und der Wichtungen stimmen nicht ueberein.");
-                        JOptionPane.showMessageDialog(null, "Fehler bei HRU " + HRUsID + ". Anzahl der Empfaenger-HRUs und der Wichtungen stimmen nicht ueberein.");
-                        System.exit(-1);
+                        getModel().getRuntime().sendHalt("Fehler bei HRU " + HRUsID + ". Anzahl der Empfaenger-HRUs und der Wichtungen stimmen nicht ueberein.");
                     }
 
                     //for receiver HRUs
@@ -271,10 +288,8 @@ public class MultiEntityReaderTS_2 extends JAMSComponent {
                 }
 
                 sumWeights = Math.abs(sumWeights);
-                if (sumWeights >= 0.001) {
-                    System.out.println("Fehler bei HRU " + HRUsID + ". Summe der einzelnen Gewichte ungleich 1");
-                    JOptionPane.showMessageDialog(null, "Fehler bei HRU " + HRUsID + ". Summe der einzelnen Gewichte ungleich 1");
-                    System.exit(-1);
+                if (sumWeights > 0.01) {
+                    getModel().getRuntime().sendHalt("Fehler bei HRU " + HRUsID + ". Summe der einzelnen Gewichte ungleich 1");
                 }
 
                 //converting the ArrayLists into Arrays
@@ -324,10 +339,75 @@ public class MultiEntityReaderTS_2 extends JAMSComponent {
 
             e.setObject(reach2reachAttribute.getValue(), toReach);
         }
+        //if (this.getModel().getRuntime().)
+        cycleCheck();
     }
 
-    protected void createOrderedList(Attribute.EntityCollection col, String asso) {
-
+    //do depth first search to find cycles
+    protected boolean cycleCheck(Attribute.Entity node,Stack<Attribute.Entity> searchStack,HashSet<Attribute.Double> closedList,HashSet<Attribute.Double> visitedList) {
+        Attribute.Entity child_node[];
+        
+        //current node allready in search stack -> circle found
+        if ( searchStack.indexOf(node) != -1) {
+            int index = searchStack.indexOf(node);
+            
+            String cyc_output = new String();
+            for (int i = index; i < searchStack.size(); i++) {
+                cyc_output += ((Attribute.Entity)searchStack.get(i)).getDouble("ID") + " ";
+                closedList.add((Attribute.Double)((Attribute.Entity)searchStack.get(i)).getObject("ID"));
+            }
+            getModel().getRuntime().println("Found circle with ids:" + cyc_output);            
+            return true;
+        }
+        //node in closed list? -> then skip it
+        if (closedList.contains(node.getObject("ID")) == true)
+            return false;
+        //now this node is visited
+        visitedList.add((Attribute.Double)node.getObject("ID"));
+        
+        child_node = (Attribute.Entity[])node.getObject("to_poly");
+        
+        boolean result = false;
+        searchStack.push(node);
+        for (int i=0;i<child_node.length;i++) {
+            //push current node to search stack                        
+            result = cycleCheck(child_node[i],searchStack,closedList,visitedList);                                               
+        }
+        searchStack.pop();
+        return result;
+    }
+    
+    protected boolean cycleCheck() {
+        Iterator<Attribute.Entity> hruIterator;
+        
+        HashSet<Attribute.Double> closedList = new HashSet<Attribute.Double>();
+        HashSet<Attribute.Double> visitedList = new HashSet<Attribute.Double>();
+        
+        Attribute.Entity start_node;
+        
+        getModel().getRuntime().println("Cycle checking...");
+        
+        hruIterator = hrus.getEntities().iterator();
+        
+        boolean result = false;
+        
+        while (hruIterator.hasNext()) {
+            start_node = hruIterator.next();
+            //connected component of start_node allready processed?
+            if (closedList.contains(start_node.getObject("ID")) == false) {
+                if ( cycleCheck(start_node,new Stack<Attribute.Entity>(),closedList,visitedList) == true) {
+                    result = true;
+                }
+                closedList.addAll(visitedList);
+                visitedList.clear();
+            }
+            
+        }
+        return result;
+    }
+    
+    protected void createOrderedList(Attribute.EntityCollection col, String asso) {        
+        
         Iterator<Attribute.Entity> entityIterator;
         Attribute.Entity e = null ;
         ArrayList<Attribute.Entity> newList = new ArrayList<Attribute.Entity>();
@@ -342,7 +422,8 @@ public class MultiEntityReaderTS_2 extends JAMSComponent {
         mapChanged = true;
         entityIterator = col.getEntities().iterator();
         while (entityIterator.hasNext()) {
-            depthMap.put(entityIterator.next(), new Integer(0));
+            Attribute.Entity entity = entityIterator.next();
+            depthMap.put(entity, new Integer(0));    
         }
 
         //put all collection elements (keys) and their maximum depth (values) into a HashMap
@@ -357,7 +438,7 @@ public class MultiEntityReaderTS_2 extends JAMSComponent {
 
                     Attribute.Entity[] e_ziel_to_hru;
                     e_ziel_to_hru = (Attribute.Entity[]) e.getObject(asso);
-
+                                        
                     if (e_ziel_to_hru.length > 0) {
 
                         for (int i = 0; i < e_ziel_to_hru.length; i++) {

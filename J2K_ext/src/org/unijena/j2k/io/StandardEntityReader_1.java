@@ -28,6 +28,7 @@ import jams.data.*;
 import jams.model.*;
 import jams.JAMS;
 import jams.tools.JAMSTools;
+import java.util.ArrayList;
 
 
 /**
@@ -58,16 +59,16 @@ public class StandardEntityReader_1 extends JAMSComponent {
     public void init() {
        
         //read entity parameter        
-        entities.setEntities(J2KFunctions.readParas(JAMSTools.CreateAbsoluteFileName(getModel().getWorkspaceDirectory().getPath(),entityFileName.getValue()), getModel()));
-
-        for (Attribute.Entity e : entities.getEntityArray()) {
+        ArrayList<Attribute.Entity> collection = J2KFunctions.readParas(JAMSTools.CreateAbsoluteFileName(getModel().getWorkspaceDirectory().getPath(),entityFileName.getValue()), getModel());        
+        //first initialize ids .. otherwise it will be too late
+        for (Attribute.Entity e : collection) {
             try {
                 e.setId((long) e.getDouble(identName.getValue()));
             } catch (Attribute.Entity.NoSuchAttributeException nsae) {
                 getModel().getRuntime().sendErrorMsg("Couldn't find attribute \"" + identName + "\" while reading J2K HRU parameter file (" + entityFileName.getValue() + ")!");
             }
         }
-
+        entities.setEntities(collection);
         int nEnt = entities.getEntityArray().length;
         getModel().getRuntime().println("Entities read and created successfull! ("+nEnt+")", JAMS.STANDARD);
         
