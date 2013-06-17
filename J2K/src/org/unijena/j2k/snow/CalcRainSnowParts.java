@@ -121,14 +121,7 @@ import jams.model.*;
             public Attribute.Double svSnow;
     
     
-    /*
-     *  Component run stages
-     */
-    
-    public void init() {
-        
-    }
-    
+    @Override
     public void run() throws Attribute.Entity.NoSuchAttributeException{
         double temperature = (this.tmin.getValue() + this.tmean.getValue()) / 2.0;
         //determinining relative snow amount of total precip depending on temperature
@@ -138,7 +131,7 @@ import jams.model.*;
         //fixing upper and lower bound for pSnow (has to be between 0 and 1
         if(pSnow > 1.0)
             pSnow = 1.0;
-        else if(pSnow < 0)
+        else
             pSnow = 0;
         
         //converting mm/m² to absolute litres
@@ -155,9 +148,5 @@ import jams.model.*;
         
         this.svSnow.setValue(snow);
         this.svRain.setValue(rain);
-    }
-    
-    public void cleanup() {
-        
     }
 }
