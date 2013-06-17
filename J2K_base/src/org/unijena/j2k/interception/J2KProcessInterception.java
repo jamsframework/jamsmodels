@@ -168,12 +168,7 @@ import jams.model.*;
      *  Component run stages
      */
 
-    public void init() throws Attribute.Entity.NoSuchAttributeException{
-        this.intercStorage.setValue(0);
-    }
-
     public void run() throws Attribute.Entity.NoSuchAttributeException{
-
         double alpha = 0;
         double out_throughfall = 0;
         double out_interception = 0;
