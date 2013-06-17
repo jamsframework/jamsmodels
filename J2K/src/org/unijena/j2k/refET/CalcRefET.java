@@ -136,15 +136,11 @@ import jams.model.*;
      *  Component run stages
      */
     
-    public void init() throws Attribute.Entity.NoSuchAttributeException, IOException {
-      
-    }
     
     public void run() throws Attribute.Entity.NoSuchAttributeException, IOException {
-            final double CP = 0.001031; //Specific heat of air [MJ kg-1 ï¿½C-1]
-            final double albedo = 0.23; //according to Allen et al.
+            final double CP = 0.001031; //Specific heat of air [MJ kg-1 ï¿½C-1]           
             final double rc = 70; //according to Allen et al.
-            final double clearSkyTrans = 0.75; //according to Donatelli
+            
             double extRad      = this.extRad.getValue();
             double solRad      = this.solRad.getValue();
             double tmin        = this.tmin.getValue();
@@ -173,7 +169,7 @@ import jams.model.*;
                 kt = 3600;
             
             
-            double pETP = (1/latHeat) * (slopSPC * (nRad-0) + kt * (vapPresDef * atmDens * CP) / ra) / (slopSPC + psyConst * (1 + rc/ra));
+            double pETP = (1./latHeat) * (slopSPC * (nRad-0) + kt * (vapPresDef * atmDens * CP) / ra) / (slopSPC + psyConst * (1 + rc/ra));
 
             //converting mm to litres
             pETP = pETP * area;
@@ -188,38 +184,5 @@ import jams.model.*;
         
     }
     
-    public void cleanup()  throws IOException {
-        
-    }
     
-    private double calc_groundHeatFlux(double netRad){
-        double g = 0.1 * netRad;
-        return g;
-    }
-    
-    private double calc_raAllen(double veg_height, double windspeed){
-        double w = Math.log((2 - 2. / 3. * veg_height)/(0.123 * veg_height));
-        double r = Math.log((2 - 2. / 3. * veg_height)/(0.1 * 0.123 * veg_height));
-        double v = Math.pow(0.41,2) * windspeed;
-        
-        double ra = (w*r) / v ;
-        return ra;
-    }
-    
-    private static double calc_raSchulla(double eff_height, double wind_speed){
-        double ra;
-        if(eff_height < 10){
-            ra = (4.72 * Math.pow(Math.log(2/(0.125 * eff_height)),2)) / (1 + 0.54 * wind_speed);
-        } else{
-            ra = 64 / (1 + 0.54 * wind_speed);
-        }
-        return ra;
-    }
-    
-    private double calc_rs(double LAI, double rsc, double rss){
-        double A = Math.pow(0.7, LAI);
-        double rs = 1. / (((1-A)/rsc)+((A / rss)));
-        
-        return rs;
-    }
 }
