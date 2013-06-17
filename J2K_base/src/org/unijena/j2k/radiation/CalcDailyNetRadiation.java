@@ -92,84 +92,29 @@ public class CalcDailyNetRadiation extends JAMSComponent {
     defaultValue = "0",
     unit = "MJ m^-2 d^-1")
     public Attribute.Double refETNetRad;
-
-    @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
-    description = "Caching configuration: 0 - write cache, 1 - use cache, 2 - caching off",
-    defaultValue = "0")
-    public Attribute.Integer dataCaching;
-
-    private File cacheFile_n,  cacheFile_refET;
-
-    transient private ObjectOutputStream writer_norm,  writer_refET;
-
-    transient private ObjectInputStream reader_norm,  reader_refET;
-
-    /*
-     *  Component run stages
-     */
-    public void init() throws Attribute.Entity.NoSuchAttributeException, IOException {
-        //first, check if cached data are available
-        cacheFile_n = new File(getModel().getWorkspace().getTempDirectory(), this.getInstanceName() + "_norm.cache");
-        cacheFile_refET = new File(getModel().getWorkspace().getTempDirectory(), this.getInstanceName() + "_refET.cache");
-
-        if (!cacheFile_n.exists() && (dataCaching.getValue() == 1)) {
-            //           getModel().getRuntime().sendHalt(this.getInstanceName() + ": dataCaching is true but no cache file available!");
-        }
-        if (!cacheFile_refET.exists() && (dataCaching.getValue() == 1)) {
-            getModel().getRuntime().sendHalt(this.getInstanceName() + ": dataCaching is true but no cache file available!");
-        }
-        if (dataCaching.getValue() == 1) {
-            reader_norm = new ObjectInputStream(new BufferedInputStream(new FileInputStream(cacheFile_n)));
-            reader_refET = new ObjectInputStream(new BufferedInputStream(new FileInputStream(cacheFile_refET)));
-        } else if (dataCaching.getValue() == 0) {
-            writer_norm = new ObjectOutputStream(new BufferedOutputStream(new FileOutputStream(cacheFile_n)));
-            writer_refET = new ObjectOutputStream(new BufferedOutputStream(new FileOutputStream(cacheFile_refET)));
-        }
-    }
-
+    
     public void run() throws Attribute.Entity.NoSuchAttributeException, IOException {
-        if (dataCaching.getValue() == 1) {
-            netRad.setValue(reader_norm.readDouble());
-            refETNetRad.setValue(reader_refET.readDouble());
-        } else {
-            double elev = elevation.getValue();
-            double temp = tmean.getValue();
-            double rh = rhum.getValue();
-            double sR = solRad.getValue();
-            double alb = albedo.getValue();
-            double extraTerrestialRad = extRad.getValue();
 
-            double sat_vapour_pressure = org.unijena.j2k.physicalCalculations.ClimatologicalVariables.calc_saturationVapourPressure(temp);
-            double act_vapour_pressure = org.unijena.j2k.physicalCalculations.ClimatologicalVariables.calc_vapourPressure(rh, sat_vapour_pressure);
+        double elev = elevation.getValue();
+        double temp = tmean.getValue();
+        double rh = rhum.getValue();
+        double sR = solRad.getValue();
+        double alb = albedo.getValue();
+        double extraTerrestialRad = extRad.getValue();
 
-            double clearSkyRad = org.unijena.j2k.physicalCalculations.SolarRadiationCalculationMethods.calc_ClearSkySolarRadiation(elev, extraTerrestialRad);
-            double netSWRadiation = org.unijena.j2k.physicalCalculations.SolarRadiationCalculationMethods.calc_NetShortwaveRadiation(alb, sR);
-            double netRefETSWRadiation = org.unijena.j2k.physicalCalculations.SolarRadiationCalculationMethods.calc_NetShortwaveRadiation(0.23, sR);
-            double netLWRadiation = org.unijena.j2k.physicalCalculations.DailySolarRadiationCalculationMethods.calc_DailyNetLongwaveRadiation(temp, act_vapour_pressure, sR, clearSkyRad, false);
+        double sat_vapour_pressure = org.unijena.j2k.physicalCalculations.ClimatologicalVariables.calc_saturationVapourPressure(temp);
+        double act_vapour_pressure = org.unijena.j2k.physicalCalculations.ClimatologicalVariables.calc_vapourPressure(rh, sat_vapour_pressure);
 
-            double nR_norm = org.unijena.j2k.physicalCalculations.SolarRadiationCalculationMethods.calc_NetRadiation(netSWRadiation, netLWRadiation);
-            double nR_refET = org.unijena.j2k.physicalCalculations.SolarRadiationCalculationMethods.calc_NetRadiation(netRefETSWRadiation, netLWRadiation);
-            netRad.setValue(nR_norm);
-            refETNetRad.setValue(nR_refET);
-            this.swRad.setValue(netSWRadiation);
-            this.lwRad.setValue(netLWRadiation);
+        double clearSkyRad = org.unijena.j2k.physicalCalculations.SolarRadiationCalculationMethods.calc_ClearSkySolarRadiation(elev, extraTerrestialRad);
+        double netSWRadiation = org.unijena.j2k.physicalCalculations.SolarRadiationCalculationMethods.calc_NetShortwaveRadiation(alb, sR);
+        double netRefETSWRadiation = org.unijena.j2k.physicalCalculations.SolarRadiationCalculationMethods.calc_NetShortwaveRadiation(0.23, sR);
+        double netLWRadiation = org.unijena.j2k.physicalCalculations.DailySolarRadiationCalculationMethods.calc_DailyNetLongwaveRadiation(temp, act_vapour_pressure, sR, clearSkyRad, false);
 
-            if (dataCaching.getValue() == 0) {
-                writer_norm.writeDouble(nR_norm);
-                writer_refET.writeDouble(nR_refET);
-            }
-        }
-    }
-
-    public void cleanup() throws IOException {
-        if (dataCaching.getValue() == 0) {
-            writer_norm.flush();
-            writer_norm.close();
-            writer_refET.flush();
-            writer_refET.close();
-        } else if (dataCaching.getValue() == 1) {
-            reader_norm.close();
-            reader_refET.close();
-        }
+        double nR_norm = org.unijena.j2k.physicalCalculations.SolarRadiationCalculationMethods.calc_NetRadiation(netSWRadiation, netLWRadiation);
+        double nR_refET = org.unijena.j2k.physicalCalculations.SolarRadiationCalculationMethods.calc_NetRadiation(netRefETSWRadiation, netLWRadiation);
+        netRad.setValue(nR_norm);
+        refETNetRad.setValue(nR_refET);
+        this.swRad.setValue(netSWRadiation);
+        this.lwRad.setValue(netLWRadiation);
     }
 }

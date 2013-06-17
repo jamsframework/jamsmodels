@@ -36,7 +36,7 @@ import jams.model.*;
         
         title="CalcExtraterrRadiation",
         author="Peter Krause",
-        description="Calculates the extraterrestial incoming radiation for "
+        description="Calculates the extraterrestial incoming radiation for a"
         + "a standard year (i.e. 366 days or 8784 hours). The calculation is done"
         + "for the geographical location defined by latitude and longitude."
         + "The module can be used in hourly, daily and monthly resolution.",
