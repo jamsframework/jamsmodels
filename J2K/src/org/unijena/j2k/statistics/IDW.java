@@ -20,217 +20,325 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
  *
  */
-
 package org.unijena.j2k.statistics;
+
+import jams.JAMS;
+import jams.data.ArrayPool;
+import java.io.Serializable;
+import java.util.Arrays;
 
 /**
  *
  * @author S. Kralisch
  */
-public class IDW {
+public class IDW implements Serializable {
+
     private final static int NODATA = -9999;
+
+    public enum Projection {
+
+        LATLON, ANY
+    };
     /**
-     * Calcs distances of specific climate stations from HRU
-     * for projected coordinates
+     * Calcs distances of specific climate stations from HRU for projected
+     * coordinates
+     *
      * @param hru Instance of HRU-Class
      * @param stat Instances of relevant Climate Stations
      * @param pidw Power of IDW function
      * @return array of distances
      */
-    public static double[] calcDistances(double entityX, double entityY, double[] statX, double[] statY, double pidw){
-        double[] dist = new double[statX.length];
+    ArrayPool<double[]> memPool = new ArrayPool<double[]>(double.class);
+    
+    double dist[] = null;
+    double weights[] = null;
+    int wArray[] = null;
+    int n = 0;
+    double statX[], statY[], statElevation[];
+    double pidw;
+    Projection proj;
+
+    public void init(double[] statX, double[] statY, double[] statElevation, int pidw, Projection proj) {
+        n = statX.length;
+        if (dist == null || dist.length != n) {
+            dist = new double[n];
+        }
+
+        if (weights == null || weights.length != n) {
+            weights = new double[n];
+        }
+
+        if (wArray == null || wArray.length != n) {
+            wArray = new int[n];
+        }
+        this.proj = proj;
+        this.statX = statX;
+        this.statY = statY;
+        this.pidw = pidw;
+        this.statElevation = statElevation;
+    }
+
+    public double getElevationCorrectedIDW(double x, double y, double elevation, double w, double data[], int p) {
+        if (this.proj == Projection.ANY){            
+            this.calcDistances(x, y, statX, statY, pidw);
+        }else{            
+            this.calcLatLongDistances(x, y, statX, statY, pidw);
+        }
+        if (data == null){
+            this.calcWeights();
+        }else{
+            this.calcWeights(data);
+        }
+        this.computeWeightArray();
+
+        if (data == null)
+            return 0;
+        
+        double[] idw_data = memPool.alloc(p);
+        double[] idw_weights = memPool.alloc(p);
+        double[] idw_elev = memPool.alloc(p);
+
+        //selecting the nidw closest temperature stations and avoiding no data values
+        int counter = 0;
+        int element = 0;
+        while (counter < p) {
+            int t = wArray[element];
+            //check if data is valid or no data
+            if (data[t] == NODATA) {
+                element++;
+                if (element >= wArray.length) {
+                    break;
+                }
+            } else {
+                idw_data[counter] = data[t];
+                idw_weights[counter] = weights[t];
+                if (statElevation != null) {
+                    idw_elev[counter] = statElevation[t];
+                }
+
+                counter++;
+                element++;
+            }
+        }
+
+        //normalising weights
+        double weightsum = 0;
+        for (int i = 0; i < counter; i++) {
+            weightsum += idw_weights[i];
+        }
+        for (int i = 0; i < counter; i++) {
+            idw_weights[i] = idw_weights[i] / weightsum;
+        }
+
+        double result = 0;
+        for (int t = 0; t < p; t++) {
+            double deltaElev = elevation - idw_elev[t];
+            result += ((deltaElev * w + idw_data[t]) * idw_weights[t]);
+        }
+
+        return result;
+    }
+
+    public double getIDW(double x, double y, double data[], int p) {
+        return getElevationCorrectedIDW(x, y, 0, 0, data, p);
+    }
+
+    public double[] getWeights() {       
+        return this.weights;//this.calcWeights();
+    }
+
+    public int[] getWeightOrder() {
+        return this.wArray;//this.computeWeightArray();
+    }
+
+    public void calcDistances(double entityX, double entityY, double[] statX, double[] statY, double pidw) {
+        //double[] dist = memPool.alloc(statX.length);
         //Calculating distances of each station to the entity
-        for(int s = 0; s < statX.length; s++){
+        for (int s = 0; s < statX.length; s++) {
             double x = entityX - statX[s];
             double y = entityY - statY[s];
             //Phytagoras
-            dist[s]  = Math.sqrt((Math.pow(x,2)+Math.pow(y,2)));
-            //Power pidw, abs for positive values
-            dist[s]  = Math.abs(Math.pow(dist[s],pidw));
+            dist[s] = x * x + y * y;//Math.sqrt(());
+            //calc the root and power to pidw/2, abs for positive values
+            if (pidw != 2) {
+                dist[s] = Math.pow(dist[s], pidw / 2.0);
+            }
         }
-        return dist;
     }
-    
+
     /**
-     * Calcs distances of specific climate stations from HRU
-     * for geographical coordinates
+     * Calcs distances of specific climate stations from HRU for geographical
+     * coordinates
+     *
      * @param hru Instance of HRU-Class
      * @param stat Instances of relevant Climate Stations
      * @param pidw Power of IDW function
      * @return array of distances
      */
-    public static double[] calcLatLongDistances(double entityX, double entityY, double[] statX, double[] statY, double pidw){
+    private double[] calcLatLongDistances(double entityX, double entityY, double[] statX, double[] statY, double pidw) {
         //radius at the equator in meter
         final double R = 6378137.0;
-        double[] dist = new double[statX.length];
-        
+        //double[] dist = new double[statX.length];
+
         //Calculating distances of each station to the entity
-        for(int s = 0; s < statX.length; s++){
-            dist[s]  = R * Math.acos(Math.sin(rad(entityY)) * Math.sin(rad(statY[s])) + 
-                                     Math.cos(rad(entityY)) * Math.cos(rad(statY[s])) *
-                                     Math.cos(rad(statX[s]) - rad(entityX)));
+        for (int s = 0; s < statX.length; s++) {
+            dist[s] = R * Math.acos(Math.sin(rad(entityY)) * Math.sin(rad(statY[s]))
+                    + Math.cos(rad(entityY)) * Math.cos(rad(statY[s]))
+                    * Math.cos(rad(statX[s]) - rad(entityX)));
             //Power pidw, abs for positive values
-            dist[s]  = Math.abs(Math.pow(dist[s],pidw));
+            dist[s] = Math.abs(Math.pow(dist[s], pidw));
         }
         return dist;
     }
-    
-    public static double[] equalWeights(int nStat){
-    	double[] weights = new double[nStat];
-    	for(int i = 0; i < nStat; i++)
-    		weights[i] = 1. / (double)nStat;
-    	return weights;
-    }
+
     /**
      * Calcs weight for each Climate Station
+     *
      * @param dist the distance array
      * @param nstat number of Climate Stations
      * @return the weight array
      */
-    public static double[] calcWeights(double[] dist){
-        int nstat = dist.length;
-        double[] weight = new double[nstat];
-        double[] temp = new double[nstat];
+    private double[] calcWeights(){
+        
+        //double[] weight = memPool.alloc(nstat);//new double[nstat];
+        double[] temp = memPool.alloc(n);
         double distsum = 0;
         double tempsum = 0;
         //CALCULATING THE WEIGHTS
-        for(int i = 0; i < nstat; i++)
+        for(int i = 0; i < n; i++) {
             distsum += dist[i];
-        for(int i = 0; i < nstat; i++){
+        }
+        for(int i = 0; i < n; i++){
             temp[i] = distsum / dist[i];
             tempsum += temp[i];
         }
-        for(int s = 0; s < nstat; s++){
+        for(int s = 0; s < n; s++){
             //if station is identical this station get a weight of 1.0
             //and all others are set to 0.0
             if(dist[s] == 0){
-                for(int j = 0; j < nstat; j++)
-                    weight[j] = 0.0;
-                weight[s] = 1.0;
-                return weight;
+                Arrays.fill(weights, 0.0);                
+                weights[s] = 1.0;
+                return weights;
             }
             else{
-                weight[s] = temp[s] / tempsum;
+                weights[s] = temp[s] / tempsum;
             }
         }
-        return weight;
+        memPool.free(temp);
+        return weights;
     }
-    
+
     /**
      * Calcs weight for each Climate Station
+     *
      * @param dist the distance array
      * @param nstat number of Climate Stations
      * @return the weight array
      */
-    public static double[] calcWeights(double[] dist, double[] data){
-        int nstat = dist.length;
-        double[] weight = new double[nstat];
-        double[] temp = new double[nstat];
+    private double[] calcWeights(double[] data) {
         double distsum = 0;
         double tempsum = 0;
-        //CALCULATING THE WEIGHTS
-        for(int i = 0; i < nstat; i++)
+
+        for (int i = 0; i < n; i++) {
             distsum += dist[i];
-        for(int i = 0; i < nstat; i++){
-            if(dist[i] > 0){
-                temp[i] = distsum / dist[i];
-                tempsum += temp[i];
-            }else{
-                temp[i] = 0;
+        }
+        for (int i = 0; i < n; i++) {
+            if (dist[i] > 0) {
+                tempsum += distsum / dist[i];
             }
         }
-        for(int s = 0; s < nstat; s++){
+        for (int s = 0; s < n; s++) {
             //if station is identical this station get a weight of 1.0
             //and all others are set to 0.0
-            if(dist[s] == 0 && data[s] != NODATA){
-                for(int j = 0; j < nstat; j++)
-                    weight[j] = 0.0;
-                weight[s] = 1.0;
-                return weight;
-            }
-            else if(dist[s] == 0 && data[s] == NODATA){
-                weight[s] = 0.0;
-            }
-            else{
-                weight[s] = temp[s] / tempsum;
+            if (dist[s] == 0 && data[s] != NODATA) {
+                Arrays.fill(weights, 0.0);
+                weights[s] = 1.0;
+                return weights;
+            } else if (dist[s] == 0 && data[s] == NODATA) {
+                weights[s] = 0.0;
+            } else {
+                weights[s] = (distsum / dist[s]) / tempsum; //temp[s] / tempsum;
             }
         }
-        return weight;
+        return weights;
     }
-    
+
     /**
      * Changes the weight array in such a way, that only the weights of
-     * "nidw"-stations are kept and the other weights are set to zero.
-     * The nidw-weights are recalculated to provide again a sum of 1.0.
+     * "nidw"-stations are kept and the other weights are set to zero. The
+     * nidw-weights are recalculated to provide again a sum of 1.0.
+     *
      * @param weight the weight array for all stations
      * @param nidw number of relevant stations
      * @return the changed weight array
      */
-    public static double[] calcNidwWeights(double entityX, double entityY, double[] statX, double[] statY, double pidw, int nidw){
-        
-        double[] distances = calcDistances(entityX, entityY, statX, statY, pidw);
-        double[] weights = calcWeights(distances);
-        int counter = 0;
-        int nstat = weights.length;
-        int[] temp = new int[nstat];
-        double weightsum = 0;
-        int[] indicator = new int[nstat];
-        for(int i = 0; i < nstat; i++){
-            counter = 0;
-            for(int k = 0; k < nstat; k++){
-                if(weights[i] > weights[k])
-                    counter++;
-            }
-            temp[i] = counter;
-        }
-        for(int i = 0; i < nstat; i++){
-            if(temp[i] < (nstat - nidw)){
-                weights[i] = 0;
-            }
-        }
-        for(int i = 0; i < nstat; i++)
-            weightsum += weights[i];
-        for(int i = 0; i < nstat; i++)
-            weights[i] = weights[i] / weightsum;
-        
-        return weights;
-    }
-    
+    /*public double[] calcNidwWeights(double entityX, double entityY, double[] statX, double[] statY, double pidw, int nidw) {
+     calcDistances(entityX, entityY, statX, statY, pidw);
+     calcWeights();
+
+     int counter = 0;
+     int nstat = weights.length;
+     int[] temp = new int[nstat];
+     double weightsum = 0;
+
+     for (int i = 0; i < nstat; i++) {
+     counter = 0;
+     for (int k = 0; k < nstat; k++) {
+     if (weights[i] > weights[k]) {
+     counter++;
+     }
+     }
+     temp[i] = counter;
+     }
+     for (int i = 0; i < nstat; i++) {
+     if (temp[i] < (nstat - nidw)) {
+     weights[i] = 0;
+     }
+     }
+     for (int i = 0; i < nstat; i++) {
+     weightsum += weights[i];
+     }
+     for (int i = 0; i < nstat; i++) {
+     weights[i] = weights[i] / weightsum;
+     }
+
+     return weights;
+     }*/
     /**
-     * Computes an integer array (wArray) of same lenght as the weight array
-     * in such a way that the first element of wArray contains the weight 
-     * array position with the highest weight value. The second element of
-     * wArray the second highest weight etc.
+     * Computes an integer array (wArray) of same lenght as the weight array in
+     * such a way that the first element of wArray contains the weight array
+     * position with the highest weight value. The second element of wArray the
+     * second highest weight etc.
+     *
      * @param weight the weight array for all stations
      * @return the index of weights
      */
-    public static int[] computeWeightArray(double[] weights){
-        int counter = 0;
+    //TODO improve the sorting algorithm
+    private int[] computeWeightArray() {
         int pos = 0;
-        int nstat = weights.length;
-        int[] wArray = new int[nstat];
-        double[] tempWeight = new double[nstat];
-        for(int i = 0; i < nstat; i++)
-            tempWeight[i] = weights[i];
-        
-        double maxWeight = -9;
-        
-        for(int j = 0; j < nstat; j++){
-            for(int i = 0; i < nstat; i++){
-                counter = 0;
-                if(tempWeight[i] > maxWeight){
+
+        double[] tempWeight = memPool.alloc(n);
+
+        System.arraycopy(weights, 0, tempWeight, 0, n);
+
+        for (int j = 0; j < n; j++) {
+            double maxWeight = Double.NEGATIVE_INFINITY;
+
+            for (int i = 0; i < n; i++) {
+                if (tempWeight[i] > maxWeight) {
                     maxWeight = weights[i];
                     pos = i;
                 }
             }
-            tempWeight[pos] = -9;
-            maxWeight = -9;
+            tempWeight[pos] = Double.NEGATIVE_INFINITY;
             wArray[j] = pos;
         }
+        tempWeight = memPool.free(tempWeight);
+
         return wArray;
     }
-    
-    private static double rad(double decDeg){
-        return(decDeg * Math.PI / 180.);
+
+    private static double rad(double decDeg) {
+        return (decDeg * Math.PI / 180.);
     }
 }

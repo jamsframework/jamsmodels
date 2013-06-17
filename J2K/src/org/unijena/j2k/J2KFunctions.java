@@ -32,9 +32,8 @@ import jams.model.Model;
  * @author S. Kralisch
  */
 public class J2KFunctions {
-
-    public static ArrayList<Attribute.Entity> readParas(String fileName, Model model) {
-
+        
+    public static ArrayList<Attribute.Entity> readParas(String fileName, Model model) {        
         BufferedReader reader;
         ArrayList<Attribute.Entity> entityList = new ArrayList<Attribute.Entity>();
         StringTokenizer tokenizer;
@@ -82,9 +81,13 @@ public class J2KFunctions {
                 e = DefaultDataFactory.getDataFactory().createEntity();
                 tokenizer = new StringTokenizer(s, "\t");
 
-                String token;
+                String token=null;
                 for (int i = 0; i < attributeNames.size(); i++) {
-                    token = tokenizer.nextToken();
+                    try{
+                        token = tokenizer.nextToken();
+                    }catch(NoSuchElementException nsee){
+                        System.out.println("Error while reading hru parameter file in line " + s);
+                    }
                     try {
                         //hopefully these are double values :-)
                         e.setDouble(attributeNames.get(i), Double.parseDouble(token));

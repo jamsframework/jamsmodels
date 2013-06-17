@@ -29,7 +29,7 @@ import jams.workspace.stores.InputDataStore;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
-import org.unijena.j2k.statistics.IDW_c;
+import org.unijena.j2k.statistics.IDW;
 
 /**
  *
@@ -76,7 +76,7 @@ public class IDWWeightCalculator extends JAMSComponent {
     private double[] statX;
     private double[] statY;
     InputDataStore store = null;
-    IDW_c idw = new IDW_c();
+    IDW idw = new IDW();
     /*
      *  Component run stages
      */
@@ -109,9 +109,9 @@ public class IDWWeightCalculator extends JAMSComponent {
 
         boolean isLatLon = latLong != null && latLong.getValue();
         if (isLatLon) {
-            idw.init(statX, statY, null, (int) pidw.getValue(), IDW_c.Projection.LATLON);
+            idw.init(statX, statY, null, (int) pidw.getValue(), IDW.Projection.LATLON);
         } else {
-            idw.init(statX, statY, null, (int) pidw.getValue(), IDW_c.Projection.ANY);
+            idw.init(statX, statY, null, (int) pidw.getValue(), IDW.Projection.ANY);
         }
     }
 

@@ -24,7 +24,7 @@ package org.unijena.j2k.inputData;
 
 import jams.data.*;
 import jams.model.*;
-import org.unijena.j2k.statistics.IDW_c;
+import org.unijena.j2k.statistics.IDW;
 
 /**
  *
@@ -143,8 +143,8 @@ public class RainCorrectionRichter_China extends JAMSComponent {
     
     private final int NODATA = -9999;
     ArrayPool<double[]> memPool = new ArrayPool<double[]>(double.class);
-    IDW_c idwTemp = new IDW_c();
-    IDW_c idwWind = new IDW_c();
+    IDW idwTemp = new IDW();
+    IDW idwWind = new IDW();
 
     @Override
     public void run() {
@@ -170,8 +170,8 @@ public class RainCorrectionRichter_China extends JAMSComponent {
         double rsqWind = this.tempRegCoeff.getValue()[2];
         double gradWind = this.tempRegCoeff.getValue()[1];
 
-        idwTemp.init(this.tempXCoord.getValue(), this.tempYCoord.getValue(), this.tempElevation.getValue(), (int) this.pIDW.getValue(), IDW_c.Projection.ANY);
-        idwWind.init(this.windXCoord.getValue(), this.windYCoord.getValue(), this.windElevation.getValue(), (int) this.pIDW.getValue(), IDW_c.Projection.ANY);
+        idwTemp.init(this.tempXCoord.getValue(), this.tempYCoord.getValue(), this.tempElevation.getValue(), (int) this.pIDW.getValue(), IDW.Projection.ANY);
+        idwWind.init(this.windXCoord.getValue(), this.windYCoord.getValue(), this.windElevation.getValue(), (int) this.pIDW.getValue(), IDW.Projection.ANY);
 
         //temperature for each rain station
         for (int r = 0; r < n; r++) {

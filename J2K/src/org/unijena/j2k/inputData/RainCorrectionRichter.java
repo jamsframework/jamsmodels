@@ -24,7 +24,7 @@ package org.unijena.j2k.inputData;
 
 import jams.data.*;
 import jams.model.*;
-import org.unijena.j2k.statistics.IDW_c;
+import org.unijena.j2k.statistics.IDW;
 
 /**
  *
@@ -118,7 +118,7 @@ public class RainCorrectionRichter extends JAMSComponent {
     
     private final int NODATA = -9999;
     
-    IDW_c idw = new IDW_c();
+    IDW idw = new IDW();
     
     @Override
     public void run() {
@@ -141,7 +141,7 @@ public class RainCorrectionRichter extends JAMSComponent {
         double rsq = this.tempRegCoeff.getValue()[2];
         double grad = this.tempRegCoeff.getValue()[1];
             
-        idw.init(this.tempXCoord.getValue(), this.tempYCoord.getValue(), this.tempElevation.getValue(), (int)this.pIDW.getValue(), IDW_c.Projection.ANY);
+        idw.init(this.tempXCoord.getValue(), this.tempYCoord.getValue(), this.tempElevation.getValue(), (int)this.pIDW.getValue(), IDW.Projection.ANY);
                 
         //temperature for each rain station
         for (int r = 0; r < n; r++) {

@@ -25,7 +25,7 @@ package org.unijena.j2k.regionalisation;
 
 import jams.data.*;
 import jams.model.*;
-import org.unijena.j2k.statistics.IDW_c;
+import org.unijena.j2k.statistics.IDW;
 
 /**
  *
@@ -96,7 +96,7 @@ import org.unijena.j2k.statistics.IDW_c;
             )
             public Attribute.Boolean latLong; 
         
-    IDW_c idw = new IDW_c();
+    IDW idw = new IDW();
     
     public void run() throws Attribute.Entity.NoSuchAttributeException{        
         double weights[] = statIDWeights.getValue();
@@ -113,10 +113,10 @@ import org.unijena.j2k.statistics.IDW_c;
         
         if(equalWeights == null || !equalWeights.getValue()){            
             if(latLong == null || !latLong.getValue()){
-                idw.init(statX.getValue(), statY.getValue(), null, (int)pidw.getValue(), IDW_c.Projection.ANY);                
+                idw.init(statX.getValue(), statY.getValue(), null, (int)pidw.getValue(), IDW.Projection.ANY);                
             }
             else{
-                idw.init(statX.getValue(), statY.getValue(), null, (int)pidw.getValue(), IDW_c.Projection.LATLON);                
+                idw.init(statX.getValue(), statY.getValue(), null, (int)pidw.getValue(), IDW.Projection.LATLON);                
             }
             idw.getIDW(entityX.getValue(), entityY.getValue(), null, 0);
             
