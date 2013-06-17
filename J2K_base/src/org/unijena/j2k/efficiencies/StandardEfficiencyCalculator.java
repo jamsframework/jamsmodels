@@ -235,11 +235,7 @@ title="StandardEfficiencyCalculator",
     private final int RMSE = 11;
     private final int PBIAS = 12;
     private final int APBIAS = 13;
-    
-    private final int TOTAL_PERIOD = 0;
-    private final int HYDROLOGICAL_YEAR = 1;
-    private final int CALENDAR_YEAR = 2;
-    
+   
     private double[] valData;
     private double[] preData;
     
@@ -266,9 +262,8 @@ title="StandardEfficiencyCalculator",
         this.monthCount = 0;
         Attribute.Calendar model_sd = this.modelTimeInterval.getStart().clone();
         Attribute.Calendar model_ed = this.modelTimeInterval.getEnd().clone();
-        int model_tres = this.modelTimeInterval.getTimeUnit();
         long sdMod = model_sd.getTimeInMillis();
-        long edMod = model_ed.getTimeInMillis();
+        
         long model_tsteps = 0;
         /*if(model_tres == model_sd.DAY_OF_YEAR){
             model_tsteps = (edMod - sdMod) / (1000 * 60 * 60 * 24);
@@ -278,10 +273,9 @@ title="StandardEfficiencyCalculator",
         
         Attribute.Calendar eff_sd = this.effTimeInterval.getStart().clone();
         Attribute.Calendar eff_ed = this.effTimeInterval.getEnd().clone();
-        //int eff_tres = this.effTimeInterval.getTimeUnit();
+        int eff_tres = this.effTimeInterval.getTimeUnit();
         long sdEff = eff_sd.getTimeInMillis();
-        long edEff = eff_ed.getTimeInMillis();
-        
+              
         //check if effTimeInterval is in the bounds of the model time interval
         //otherwise it will be set to the model interval bounds
         if(eff_sd.before(model_sd)){
@@ -301,9 +295,7 @@ title="StandardEfficiencyCalculator",
             this.effTsteps = this.effTsteps + 1;
         }*/
         effTsteps = (int) effTimeInterval.getNumberOfTimesteps();
-        
-        //int ts = (int)tsteps;
-        int ts = (int) this.getContext().getNumberOfIterations();
+                
         getModel().getRuntime().println("effStartdate:\t" + eff_sd.toString(), JAMS.VERBOSE);
         getModel().getRuntime().println("effEnddate:\t" + eff_ed.toString(), JAMS.VERBOSE);
         
@@ -315,13 +307,13 @@ title="StandardEfficiencyCalculator",
         
         //determine start and end array index for timeInterval
         
-        if(model_tres == GregorianCalendar.DAY_OF_YEAR){
+        if(eff_tres == GregorianCalendar.DAY_OF_YEAR){
             this.interValStart =(int)((sdEff - sdMod) / (1000 * 60 * 60 * 24));
             this.interValEnd = this.interValStart + this.effTsteps;
-        } else if(model_tres == GregorianCalendar.HOUR_OF_DAY){
+        } else if(eff_tres == GregorianCalendar.HOUR_OF_DAY){
             this.interValStart =(int)((sdEff - sdMod) / (1000 * 60 * 60));
             this.interValEnd = this.interValStart + this.effTsteps;
-        } else if(model_tres == GregorianCalendar.MONTH){
+        } else if(eff_tres == GregorianCalendar.MONTH){
             Attribute.Calendar modStart = modelTimeInterval.getStart().clone();
             Attribute.Calendar effStart = effTimeInterval.getStart().clone();
             int startStep = 0;
@@ -331,7 +323,7 @@ title="StandardEfficiencyCalculator",
             }
             this.interValStart = startStep;
             this.interValEnd = this.interValStart + this.effTsteps;
-        } else if(model_tres == GregorianCalendar.YEAR){
+        } else if(eff_tres == GregorianCalendar.YEAR){
             Attribute.Calendar modStart = modelTimeInterval.getStart().clone();
             Attribute.Calendar effStart = effTimeInterval.getStart().clone();
             int startStep = 0;
