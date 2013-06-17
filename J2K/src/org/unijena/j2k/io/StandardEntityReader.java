@@ -25,7 +25,6 @@ package org.unijena.j2k.io;
 //import org.unijena.j2k.*;
 import jams.JAMS;
 import jams.data.Attribute;
-import jams.data.DefaultDataFactory;
 import jams.model.JAMSComponent;
 import jams.model.JAMSComponentDescription;
 import jams.model.JAMSVarDescription;
@@ -88,29 +87,31 @@ public class StandardEntityReader extends JAMSComponent {
     public void init() {
 
         //read hru parameter
-        hrus.setEntities(J2KFunctions.readParas(FileTools.createAbsoluteFileName(getModel().getWorkspaceDirectory().getPath(), hruFileName.getValue()), getModel()));
-
+        ArrayList<Attribute.Entity> hruCollection = J2KFunctions.readParas(FileTools.createAbsoluteFileName(getModel().getWorkspaceDirectory().getPath(), hruFileName.getValue()), getModel());
+                        
         //assign IDs to all hru entities
-        for (Attribute.Entity e : hrus.getEntityArray()) {
+        for (Attribute.Entity e : hruCollection) {
             try {
                 e.setId((long) e.getDouble(hruIDAttribute.getValue()));
             } catch (Attribute.Entity.NoSuchAttributeException nsae) {
                 getModel().getRuntime().sendErrorMsg("Couldn't find attribute \"ID\" while reading J2K HRU parameter file (" + hruFileName.getValue() + ")!");
             }
         }
-
+        hrus.setEntities(hruCollection);
+        
         //read reach parameter
-        reaches.setEntities(J2KFunctions.readParas(FileTools.createAbsoluteFileName(getModel().getWorkspaceDirectory().getPath(), reachFileName.getValue()), getModel()));
-
+        ArrayList<Attribute.Entity> reachCollection = J2KFunctions.readParas(FileTools.createAbsoluteFileName(getModel().getWorkspaceDirectory().getPath(), reachFileName.getValue()), getModel());
+        
         //assign IDs to all reach entities
-        for (Attribute.Entity e : reaches.getEntityArray()) {
+        for (Attribute.Entity e : reachCollection) {
             try {
                 e.setId((long) e.getDouble(reachIDAttribute.getValue()));
             } catch (Attribute.Entity.NoSuchAttributeException nsae) {
                 getModel().getRuntime().sendErrorMsg("Couldn't find attribute \"ID\" while reading J2K HRU parameter file (" + hruFileName.getValue() + ")!");
             }
         }
-
+        reaches.setEntities(reachCollection);
+        
         //create object associations from id attributes for hrus and reaches
         createTopology();
 

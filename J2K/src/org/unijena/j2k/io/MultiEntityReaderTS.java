@@ -64,29 +64,32 @@ public class MultiEntityReaderTS extends JAMSComponent {
 
     public void init() throws Attribute.Entity.NoSuchAttributeException, FileNotFoundException, IOException {
 
-         //read hru parameter
-        hrus.setEntities(J2KFunctions.readParas(FileTools.createAbsoluteFileName(getModel().getWorkspaceDirectory().getPath(), hruFileName.getValue()), getModel()));
-
+         //read hru parameter        
+        ArrayList<Attribute.Entity> hruCollection = J2KFunctions.readParas(FileTools.createAbsoluteFileName(getModel().getWorkspaceDirectory().getPath(), hruFileName.getValue()), getModel());
+                
         //assign IDs to all hru entities
-        for (Attribute.Entity e : hrus.getEntityArray()) {
+        for (Attribute.Entity e : hruCollection) {
             try {
                 e.setId((long) e.getDouble(hruFileName.getValue()));
             } catch (Attribute.Entity.NoSuchAttributeException nsae) {
                 getModel().getRuntime().sendErrorMsg("Couldn't find attribute \"ID\" while reading J2K HRUu parameter file (" + hruFileName.getValue() + ")!");
             }
         }
-
+        hrus.setEntities(hruCollection);
+        
         //read reach parameter
-        reaches.setEntities(J2KFunctions.readParas(FileTools.createAbsoluteFileName(getModel().getWorkspaceDirectory().getPath(), reachFileName.getValue()), getModel()));
-
+        ArrayList<Attribute.Entity> reachCollection = J2KFunctions.readParas(FileTools.createAbsoluteFileName(getModel().getWorkspaceDirectory().getPath(), reachFileName.getValue()), getModel());
+        
         //assign IDs to all reach entities
-        for (Attribute.Entity e : reaches.getEntityArray()) {
+        for (Attribute.Entity e : reachCollection) {
             try {
                 e.setId((long) e.getDouble(reachFileName.getValue()));
             } catch (Attribute.Entity.NoSuchAttributeException nsae) {
                 getModel().getRuntime().sendErrorMsg("Couldn't find attribute \"ID\" while reading J2K Reach parameter file (" + reachFileName.getValue() + ")!");
             }
         }
+        
+        reaches.setEntities(reachCollection);
         //create object associations from id attributes for hrus and reaches
         createTopology();
 
@@ -167,9 +170,7 @@ public class MultiEntityReaderTS extends JAMSComponent {
 
                 //Die Tabellen topologie_to_hru und topologie_bfl muessen identisch sortiert sein
                 if (HRUsID != HRUsID2) {
-                    System.out.println("Tabellen sind nicht gleich sortiert.");
-                    JOptionPane.showMessageDialog(null, "Tabellen sind nicht gleich sortiert.");
-                    System.exit(-1);
+                    getModel().getRuntime().sendHalt("Tabellen sind nicht gleich sortiert.");
                 }
 
                 toHRUsArrayList = new ArrayList<Attribute.Entity>();
@@ -197,9 +198,7 @@ public class MultiEntityReaderTS extends JAMSComponent {
                     sumWeights = 0.0001 * Math.round((sumWeights - toHRUsWeight) * 10000);
 
                     if ((toHRUsID == 0 && toHRUsWeight != 0) || (toHRUsID != 0 && toHRUsWeight == 0)) {
-                        System.out.println("Fehler bei HRU " + HRUsID + ". Anzahl der Empfaenger-HRUs und der Wichtungen stimmen nicht ueberein.");
-                        JOptionPane.showMessageDialog(null, "Fehler bei HRU " + HRUsID + ". Anzahl der Empfaenger-HRUs und der Wichtungen stimmen nicht ueberein.");
-                        System.exit(-1);
+                        getModel().getRuntime().sendHalt("Fehler bei HRU " + HRUsID + ". Anzahl der Empfaenger-HRUs und der Wichtungen stimmen nicht ueberein.");
                     }
 
                     //for receiver HRUs
@@ -224,9 +223,7 @@ public class MultiEntityReaderTS extends JAMSComponent {
 
                 sumWeights = Math.abs(sumWeights);
                 if (sumWeights >= 0.001) {
-                    System.out.println("Fehler bei HRU " + HRUsID + ". Summe der einzelnen Gewichte ungleich 1");
-                    JOptionPane.showMessageDialog(null, "Fehler bei HRU " + HRUsID + ". Summe der einzelnen Gewichte ungleich 1");
-                    System.exit(-1);
+                    getModel().getRuntime().sendHalt("Fehler bei HRU " + HRUsID + ". Summe der einzelnen Gewichte ungleich 1");
                 }
 
                 //converting the ArrayLists into Arrays
