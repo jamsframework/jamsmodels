@@ -22,7 +22,6 @@
  */
 package org.unijena.j2k.io;
 
-import org.unijena.j2k.J2KFunctions;
 import org.unijena.j2k.*;
 import jams.JAMS;
 import jams.data.*;
