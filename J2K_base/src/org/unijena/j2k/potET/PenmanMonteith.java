@@ -101,10 +101,10 @@ public class PenmanMonteith extends JAMSComponent {
     unit="mm d^-1")
     public Attribute.Double potET;
 
-//    @JAMSVarDescription(access = JAMSVarDescription.AccessType.WRITE,
-//    description = "actual ET [mm/ timeUnit]",
-//    unit="mm d^-1")
-//    public Attribute.Double actET;
+    @JAMSVarDescription(access = JAMSVarDescription.AccessType.WRITE,
+    description = "actual ET [mm/ timeUnit]",
+    unit="mm d^-1")
+    public Attribute.Double actET;
 
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.WRITE,
     description = "rs",
@@ -116,41 +116,8 @@ public class PenmanMonteith extends JAMSComponent {
     unit="s m^-1")
     public Attribute.Double ra;
 
-    @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
-    description = "Caching configuration: 0 - write cache, 1 - use cache, 2 - caching off",
-    defaultValue = "0")
-    public Attribute.Integer dataCaching;
-
-    private File cacheFile;
-    //todo .. handle transient
-    transient private ObjectOutputStream writer;
-
-    transient private ObjectInputStream reader;
-
-    /*
-     *  Component run stages
-     */
-    public void init() throws Attribute.Entity.NoSuchAttributeException, IOException {
-        //first, check if cached data are available
-        //cacheFile = new File(dirName.getValue() + "/$" + this.getInstanceName() + ".cache");
-        cacheFile = new File(getModel().getWorkspace().getTempDirectory(), this.getInstanceName() + ".cache");
-        if (!cacheFile.exists() && (dataCaching.getValue() == 1)) {
-            getModel().getRuntime().sendHalt(this.getInstanceName() + ": dataCaching is true but no cache file available!");
-        }
-
-        if (dataCaching.getValue() == 1) {
-            reader = new ObjectInputStream(new BufferedInputStream(new FileInputStream(cacheFile)));//new FileInputStream(cacheFile));
-        } else if (dataCaching.getValue() == 0) {
-            writer = new ObjectOutputStream(new BufferedOutputStream(new FileOutputStream(cacheFile)));
-        }
-    }
-
     public void run() throws Attribute.Entity.NoSuchAttributeException, IOException {
-
-        if (dataCaching.getValue() == 1) {
-            this.potET.setValue(reader.readDouble());
-//            this.actET.setValue(0.0);
-        } else {
+      
             double netRad = this.netRad.getValue();
             double temperature = this.tmean.getValue();
             double rhum = this.rhum.getValue();
@@ -173,7 +140,6 @@ public class PenmanMonteith extends JAMSComponent {
             double rs = this.calcRs(LAI, rsc0, RSS);
             double ra = this.calcRa(effHeight, wind);
 
-
             double G = this.calc_groundHeatFlux(netRad);
             double vT = org.unijena.j2k.physicalCalculations.ClimatologicalVariables.calc_VirtualTemperature(abs_temp, pz, ea);
             double pa = org.unijena.j2k.physicalCalculations.ClimatologicalVariables.calc_AirDensityAtConstantPressure(vT, pz);
@@ -182,7 +148,6 @@ public class PenmanMonteith extends JAMSComponent {
             double pET = 0;
             double aET = 0;
 
-
             if (this.tempRes.getValue().equals("d")) {
                 tempFactor = 86400;
             } else if (this.tempRes.getValue().equals("h")) {
@@ -190,9 +155,8 @@ public class PenmanMonteith extends JAMSComponent {
             } else if (this.tempRes.getValue().equals("m")) {
                 tempFactor = 86400;
             }
-            double Letp = 0;
-            Letp = this.calcETAllen(delta_s, netRad, G, pa, CP, est, ea, ra, rs, psy, tempFactor);
-            
+            double Letp = this.calcETAllen(delta_s, netRad, G, pa, CP, est, ea, ra, rs, psy, tempFactor);
+                        
             pET = Letp / latH;
             aET = 0;
 
@@ -214,21 +178,9 @@ public class PenmanMonteith extends JAMSComponent {
             this.potET.setValue(pET);
             this.ra.setValue(ra);
             this.rs.setValue(rs);
-//            this.actET.setValue(aET);
+            this.actET.setValue(aET);
             
-            if (dataCaching.getValue() == 0) {
-                writer.writeDouble(pET);
-            }
-        }
-    }
-
-    public void cleanup() throws IOException {
-        if (dataCaching.getValue() == 0) {
-            writer.flush();
-            writer.close();
-        } else if (dataCaching.getValue() == 1) {
-            reader.close();
-        }
+            
     }
 
     private double calcETAllen(double ds, double netRad, double G, double pa, double CP, double est, double ea, double ra, double rs, double psy, double tempFactor) {
@@ -243,16 +195,6 @@ public class PenmanMonteith extends JAMSComponent {
         return g;
     }
 
-    /*
-    private double calc_raAllen(double veg_height, double windspeed){
-    double w = Math.log((2 - 2. / 3. * veg_height)/(0.123 * veg_height));
-    double r = Math.log((2 - 2. / 3. * veg_height)/(0.1 * 0.123 * veg_height));
-    double v = Math.pow(0.41,2) * windspeed;
-    
-    double ra = (w*r) / v ;
-    return ra;
-    }
-     */
     private static double calcRa(double eff_height, double wind_speed) {
         double ra;
 
