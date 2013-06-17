@@ -26,26 +26,12 @@ import java.io.*;
 import jams.data.*;
 import jams.io.BufferedFileReader;
 import jams.model.*;
+import java.util.Arrays;
 
 /**
  *
  * @author Peter Krause
  */
- @JAMSComponentDescription(
-        title="Regionalisation",
-        author="Peter Krause",
-        description="This component takes a number of values related to "
-         + "measurement stations (e.g. measured climate parameter) and "
-         + "according weight values to calculate a weighted average value. "
-         + "In addition, an elevation value can be provided to make an "
-         + "additional elevation correction of the calulated average.",
-        date = "2005-11-17",
-        version = "1.1_0"
-        )
-@VersionComments(entries = {
-    @VersionComments.Entry(version = "1.0_0", comment = "Initial version"),
-    @VersionComments.Entry(version = "1.1_0", comment = "Added new output weightedElevation")
-}) 
 public class Regionalisation extends JAMSComponent {
 
     @JAMSVarDescription (access = JAMSVarDescription.AccessType.READ,
@@ -71,10 +57,6 @@ public class Regionalisation extends JAMSComponent {
     @JAMSVarDescription (access = JAMSVarDescription.AccessType.WRITE,
                          description = "regionalised data value")
     public Attribute.Double dataValue;
-    
-    @JAMSVarDescription (access = JAMSVarDescription.AccessType.WRITE,
-                         description = "weighted elevation of stations used")
-    public Attribute.Double weightedElevation;    
 
     @JAMSVarDescription (access = JAMSVarDescription.AccessType.READ,
                          description = "Attribute name elevation")
@@ -97,176 +79,100 @@ public class Regionalisation extends JAMSComponent {
     public Attribute.Double fixedMinimum;
 
     @JAMSVarDescription (access = JAMSVarDescription.AccessType.READ,
-                         description = "Caching configuration: 0 - write cache, 1 - use cache, 2 - caching off",
-                         defaultValue = "0")
-    public Attribute.Integer dataCaching;
-
-    @JAMSVarDescription (access = JAMSVarDescription.AccessType.READ,
                          description = "Result value if no value is available",
                          defaultValue = "-9999.0")
     public Attribute.Double noData;
 
-    private File cacheFile;
-
-    transient private ObjectOutputStream writer;
-    transient private ObjectInputStream reader;
-
-    double[] data = null;
-    double[] weights = null;
-    double[] elev = null;
-
-    public void init() throws IOException {
-
-        //first, check if cached data are available
-        cacheFile = new File(getModel().getWorkspace().getTempDirectory(), this.getInstanceName() + ".cache");
-
-        if (!cacheFile.exists() && (dataCaching.getValue() == 1)) {
-            getModel().getRuntime().sendHalt(this.getInstanceName() + ": data caching is switched on but no cache file available!");
-        }
-        if (dataCaching.getValue() == 1) {
-            reader = new ObjectInputStream(new BufferedInputStream(new FileInputStream(cacheFile)));
-        } else if (dataCaching.getValue() == 0) {
-            writer = new ObjectOutputStream(new BufferedOutputStream(new FileOutputStream(cacheFile)));
-        }
-        int nIDW = this.nidw.getValue();
-        data = new double[nIDW];
-        weights = new double[nIDW];
-        elev = new double[nIDW];
-    }
-
     boolean invalidDatasetReported = false;
 
+    ArrayPool<double[]> memPool = new ArrayPool<double[]>(double.class);
+    
+    @Override
     public void run() throws IOException {
-        //data is read from cache file
-        if (dataCaching.getValue() == 1) {
-            dataValue.setValue(reader.readDouble());
+        //Retreiving data, elevations and weights
+        double[] regCoeff = this.regCoeff.getValue();
+        double gradient = regCoeff[1];
+        double rsq = regCoeff[2];
 
-        } else {
-            double[] regCoeff = this.regCoeff.getValue();
-            double gradient = regCoeff[1];
-            double rsq = regCoeff[2];
-
-            double[] sourceElevations = statElevation.getValue();
-            double[] sourceData = dataArray.getValue();
-
-            double[] sourceWeights = statWeights.getValue();
-            double targetElevation = entityElevation.getValue();
-
-            double value = 0;
-            double deltaElev = 0;
-            double wElev = 0;       
-            int nIDW = this.nidw.getValue();
-            
-            //make sure that the arrays are intialized with 0s
-            for (int i = 0; i < nIDW; i++) {
-                data[i] = 0;
-                weights[i] = 0;
-                elev[i] = 0;
-            }
+        double[] sourceElevations = statElevation.getValue();
+        double[] sourceData = dataArray.getValue();
+        double[] sourceWeights = statWeights.getValue();
+        double targetElevation = entityElevation.getValue();
+        int[] wA = this.statOrder.getValue();
+        
+        double value = 0;
+        double deltaElev = 0;
+        
+        int nIDW = this.nidw.getValue();
+        double[] data = memPool.alloc(nIDW);
+        double[] weights = memPool.alloc(nIDW);
+        double[] elev = memPool.alloc(nIDW);
+        
 
 //@TODO: Recheck this for correct calculation, the Doug Boyle Problem!!
+                
+        int counter = 0, element = 0;      
+        boolean valid = false;
 
-            //Retreiving data, elevations and weights
-            int[] wA = this.statOrder.getValue();
-            int counter = 0;
-            int element = counter;
-            boolean cont = true;
-            boolean valid = false;
-
-            while (counter < nIDW && cont) {
-                int t = wA[element];
-                //check if data is valid or no data
-//                if (sourceData[t] == noData.getValue() || Double.isNaN(sourceData[t])) {
-                if (sourceData[t] == noData.getValue()) {
-
-                    element++;
-                    if (element >= wA.length) {
-                        //getModel().getRuntime().println("BREAK1: too less data NIDW had been reduced!");
-                        cont = false;
-                    //value = NODATA;
-                    } else {
-                        t = wA[element];
-                    }
-                } else {
-                    valid = true;
-                    data[counter] = sourceData[t];
-                    weights[counter] = sourceWeights[t];
-                    elev[counter] = sourceElevations[t];
-
-                    counter++;
-                    element++;
-                if(element >= wA.length){
-                    //if(element <= nIDW)
-                        //System.out.println("NIDW has been reduced, because of too less valid data!");
-                    cont = false;
-                }
-
-                }
-
-            }
-            //normalising weights
-            double weightsum = 0;
-            for (int i = 0; i < counter; i++) {
-                weightsum += weights[i];
-            }
-            for (int i = 0; i < counter; i++) {
-                weights[i] = weights[i] / weightsum;
-            }
-            
-            if (valid) {
-                for (int i = 0; i < counter; i++) {
-
-                    wElev = wElev + elev[i] * weights[i];
-                    
-                    if ((rsq >= rsqThreshold.getValue()) && (elevationCorrection.getValue())) {  //Elevation correction is applied
-                        deltaElev = targetElevation - elev[i];  //Elevation difference between unit and Station
-                        double tVal = ((deltaElev * gradient + data[i]) * weights[i]);
-                        //checking for minimum
-                        if (tVal < this.fixedMinimum.getValue()) {
-                            tVal = this.fixedMinimum.getValue();
-                        }
-                        value = value + tVal;
-
-
-                    } else { //No elevation correction
-
-                        value = value + (data[i] * weights[i]);
-                    }
-
-                }
+        while (counter < nIDW) {
+            int t = wA[element];
+            //check if data is valid or no data
+            if (sourceData[t] == noData.getValue()) {
+                element++;
+                if (element >= wA.length) {
+                    //getModel().getRuntime().println("BREAK1: too less data NIDW had been reduced!");
+                    break;                    
+                } 
             } else {
-                if (!invalidDatasetReported){     //only report once
-                    getModel().getRuntime().println("Invalid dataset found while regionalizing data in component " + this.getInstanceName());
-                    invalidDatasetReported = true;
+                valid = true;
+                data[counter] = sourceData[t];
+                weights[counter] = sourceWeights[t];
+                elev[counter] = sourceElevations[t];
+
+                counter++;
+                element++;
+                if (element >= wA.length) {                    
+                    break;
                 }
-                value = noData.getValue();
-            }
-
-            dataValue.setValue(value);
-            weightedElevation.setValue(wElev);
-
-            //Write cache file
-            if (dataCaching.getValue() == 0) {
-                writer.writeDouble(value);
             }
         }
-    }
-
-    public void cleanup() throws IOException {
-        if (dataCaching.getValue() == 0) {
-            writer.flush();
-            writer.close();
-        } else if (dataCaching.getValue() == 1) {
-            reader.close();
+        //normalising weights
+        double weightsum = 0;
+        for (int i = 0; i < counter; i++) {
+            weightsum += weights[i];
         }
-    }
-
-     private void readObject(ObjectInputStream objIn) throws IOException, ClassNotFoundException {
-        objIn.defaultReadObject();
-        if (dataCaching.getValue() == 1) {
-            getModel().getRuntime().sendHalt(this.getInstanceName() + ": data caching not available in snapshot mode");
-        } else if (dataCaching.getValue() == 0) {
-            writer = new ObjectOutputStream(new BufferedOutputStream(new FileOutputStream(cacheFile,true)));
+        for (int i = 0; i < counter; i++) {
+            weights[i] = weights[i] / weightsum;
         }
+
+        if (valid) {
+            for (int i = 0; i < counter; i++) {
+                if ((rsq >= rsqThreshold.getValue()) && (elevationCorrection.getValue())) {  //Elevation correction is applied
+                    deltaElev = targetElevation - elev[i];  //Elevation difference between unit and Station
+                    double tVal = ((deltaElev * gradient + data[i]) * weights[i]);
+                    //checking for minimum
+                    if (tVal < this.fixedMinimum.getValue()) {
+                        tVal = this.fixedMinimum.getValue();
+                    }
+                    value = value + tVal;
+                } else { //No elevation correction
+                    value = value + (data[i] * weights[i]);
+                }
+
+            }
+        } else {
+            if (!invalidDatasetReported) {     //only report once
+                getModel().getRuntime().println("Invalid dataset found while regionalizing data in component " + this.getInstanceName());
+                invalidDatasetReported = true;
+            }
+            value = noData.getValue();
+        }
+
+        dataValue.setValue(value);
+        
+        //free data
+        data = memPool.free(data);
+        weights = memPool.free(weights);
+        elev = memPool.free(elev);
     }
 }
