@@ -22,7 +22,6 @@
  */
 package org.unijena.j2k.regionalisation;
 
-
 import jams.data.*;
 import jams.model.*;
 import java.util.Calendar;
@@ -35,7 +34,7 @@ import java.util.Calendar;
 author = "Santosh Nepal, Peter Krause",
 description = "Regionalisation of Temp through general adiabatic rate"
 + "depends upon given adaiabatic rate +++ included seasonal lapse rate")
-public class TemperatureLapseRate1 extends JAMSComponent {
+public class StaticElevationCorrection extends JAMSComponent {
 
     /*
      *  Component variables
@@ -52,26 +51,21 @@ public class TemperatureLapseRate1 extends JAMSComponent {
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.WRITE,
     description = "calculated output for the modelling entity")
     public Attribute.Double outputValue;
-
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
     description = "lapse rate per 100 m elevation difference")
     public Attribute.Double lapseRateSummer;
-
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
     description = "lapse rate per 100 m elevation difference")
     public Attribute.Double lapseRateWinter;
-//    @JAMSVarDescription(
-//   access = JAMSVarDescription.AccessType.READ,
-//            update = JAMSVarDescription.UpdateType.INIT,
-//            description = "lapse rate per 100 m elevation difference"
-//            )
-//            public Attribute.Double lapseRate;
-    @JAMSVarDescription(
-            access=JAMSVarDescription.AccessType.READ,
-            description="The current model time")
-    public Attribute.Calendar time;
-
+    @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
+    description = "lapse rate per 100 m elevation difference",
+    defaultValue = "0.0")
+    public Attribute.Double minimalValue;            
     
+    @JAMSVarDescription(
+            access = JAMSVarDescription.AccessType.READ,
+    description = "The current model time")
+    public Attribute.Calendar time;
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
     description = "position array to determine best weights")
     public Attribute.IntegerArray statOrder;
@@ -83,37 +77,29 @@ public class TemperatureLapseRate1 extends JAMSComponent {
     }
 
     public void run() {
-
-     
-        
-
         int closestStation = statOrder.getValue()[0];
         //elevation difference
         double elevationdiff = (statElev.getValue()[closestStation] - entityElev.getValue());
-        //temp calculation
-
-   // int nowmonth = (time.get(time.MONTH) + 1 );
-     int nowmonth = time.get(Calendar.MONTH);
-
-
-
+                
+        int nowmonth = time.get(Calendar.MONTH);
+        double lapseRate;
+        
         if ((nowmonth >= 5) && (nowmonth <= 8)) {
-            outputValue.setValue(elevationdiff * (lapseRateSummer.getValue() / 100.) + inputValue.getValue()[closestStation]);
+            lapseRate = lapseRateSummer.getValue() / 100.0;
         } else {
-            outputValue.setValue(elevationdiff * (lapseRateWinter.getValue() / 100.) + inputValue.getValue()[closestStation]);
+            lapseRate = lapseRateWinter.getValue() / 100.0;
         }
 
+        double newValue = elevationdiff * lapseRate + inputValue.getValue()[closestStation];
+        if (minimalValue.getValue() > newValue){
+            newValue = minimalValue.getValue();
+        }
+        outputValue.setValue(newValue);
     }
-
-
 
     public void cleanup() {
     }
 }
-
-
-
-
 //
 //
 //    public void init() {
@@ -143,9 +129,6 @@ public class TemperatureLapseRate1 extends JAMSComponent {
 //    public void cleanup() {
 //    }
 //}
-
-
-
 //
 //          double newTemp;
 //

@@ -100,10 +100,10 @@ import jams.model.*;
     public void run() throws Attribute.Entity.NoSuchAttributeException{
         Attribute.DoubleArray idwWeights = getModel().getRuntime().getDataFactory().createDoubleArray();
         if(equalWeights == null || !equalWeights.getValue()){
-        	idwWeights.setValue(org.unijena.j2k.statistics.IDW.calcNidwWeights(entityX.getValue(), entityY.getValue(), statX.getValue(), statY.getValue(), pidw.getValue(), nidw.getValue()));
+        	idwWeights.setValue(org.unijena.j2k.statistics.IDW2.calcNidwWeights(entityX.getValue(), entityY.getValue(), statX.getValue(), statY.getValue(), pidw.getValue(), nidw.getValue()));
         }
         else if(equalWeights.getValue()){
-        	idwWeights.setValue(org.unijena.j2k.statistics.IDW.equalWeights(nidw.getValue()));
+        	idwWeights.setValue(org.unijena.j2k.statistics.IDW2.equalWeights(nidw.getValue()));
         }
         	
         statWeights.setValue(idwWeights.getValue());

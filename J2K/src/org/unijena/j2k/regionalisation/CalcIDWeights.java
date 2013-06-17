@@ -25,6 +25,7 @@ package org.unijena.j2k.regionalisation;
 
 import jams.data.*;
 import jams.model.*;
+import org.unijena.j2k.statistics.IDW_c;
 
 /**
  *
@@ -94,41 +95,42 @@ import jams.model.*;
             description = "Calculation with geographical coordinates LL"
             )
             public Attribute.Boolean latLong; 
-    
-    /*
-     *  Component run stages
-     */
-    
-    public void init() throws Attribute.Entity.NoSuchAttributeException{
         
-    }
+    IDW_c idw = new IDW_c();
     
-    public void run() throws Attribute.Entity.NoSuchAttributeException{
-        Attribute.DoubleArray idwWeights = getModel().getRuntime().getDataFactory().createDoubleArray();
-        Attribute.IntegerArray wA = getModel().getRuntime().getDataFactory().createIntegerArray();
-        double[] dist = null;
-        if(equalWeights == null || !equalWeights.getValue()){
+    public void run() throws Attribute.Entity.NoSuchAttributeException{        
+        double weights[] = statIDWeights.getValue();
+        int wA[] = statOrder.getValue();
+        
+        int n = statX.getValue().length;
+        
+        if (weights == null || weights.length != n) {
+            weights = new double[n];
+        }
+        if (wA == null || wA.length != n) {
+            wA = new int[n];
+        }
+        
+        if(equalWeights == null || !equalWeights.getValue()){            
             if(latLong == null || !latLong.getValue()){
-                dist = org.unijena.j2k.statistics.IDW.calcDistances(entityX.getValue(), entityY.getValue(), statX.getValue(), statY.getValue(), pidw.getValue());
+                idw.init(statX.getValue(), statY.getValue(), null, (int)pidw.getValue(), IDW_c.Projection.ANY);                
             }
             else{
-                dist = org.unijena.j2k.statistics.IDW.calcLatLongDistances(entityX.getValue(), entityY.getValue(), statX.getValue(), statY.getValue(), pidw.getValue());
+                idw.init(statX.getValue(), statY.getValue(), null, (int)pidw.getValue(), IDW_c.Projection.LATLON);                
             }
-            idwWeights.setValue(org.unijena.j2k.statistics.IDW.calcWeights(dist));
-            wA.setValue(org.unijena.j2k.statistics.IDW.computeWeightArray(idwWeights.getValue()));
+            idw.getIDW(entityX.getValue(), entityY.getValue(), null, 0);
             
+            System.arraycopy(idw.getWeights(), 0, weights, 0, n);
+            System.arraycopy(idw.getWeightOrder(), 0, wA, 0, n);
         }
         else if(equalWeights.getValue()){
-            int nstat = this.statX.getValue().length;
-            idwWeights.setValue(org.unijena.j2k.statistics.IDW.equalWeights(nstat));
-            int[] tmp = new int[nstat];
-            for(int i = 0; i < nstat; i++)
-                tmp[i] = i;
-            wA.setValue(tmp);
+            for (int i=0;i<n;i++){
+                weights[i] = 1. / n;
+                wA[i] = i;
+            }
         }
-        	
-        statIDWeights.setValue(idwWeights.getValue());
-        statOrder.setValue(wA.getValue());
+        statIDWeights.setValue(weights);
+        statOrder.setValue(wA);
     }
     
     public void cleanup() throws Attribute.Entity.NoSuchAttributeException{
