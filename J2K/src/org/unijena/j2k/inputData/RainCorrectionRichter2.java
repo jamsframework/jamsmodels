@@ -25,6 +25,7 @@ package org.unijena.j2k.inputData;
 
 import jams.data.*;
 import jams.model.*;
+import org.unijena.j2k.statistics.IDW;
 
 /**
  *
@@ -155,6 +156,8 @@ import jams.model.*;
      *  Component run stages
      */
     
+    IDW idw = new IDW();
+    
     public void init() {
         
     }
@@ -191,7 +194,7 @@ import jams.model.*;
             
             for(int i = 0; i < rcorr.length; i++){
                 //Calculating weights for nidw stations
-                statWeights[i] = org.unijena.j2k.statistics.IDW.calcNidwWeights(rainX[i], rainY[i], this.tempXCoord.getValue(), this.tempYCoord.getValue(), this.pIDW.getValue(), this.tempNIDW.getValue());
+                statWeights[i] = idw.calcNidwWeights(rainX[i], rainY[i], this.tempXCoord.getValue(), this.tempYCoord.getValue(), this.pIDW.getValue(), this.tempNIDW.getValue());
             }
             double rsq = this.tempRegCoeff.getValue()[2];
             double grad = this.tempRegCoeff.getValue()[1];

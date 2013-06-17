@@ -63,16 +63,7 @@ import jams.model.*;
             unit = "%"
             )
             public Attribute.Double rhum;
-    
-    
-    /*
-     *  Component run stages
-     */
-    
-    public void init() {
-        
-    }
-    
+      
     public void run() {
         
         double maxHum = org.unijena.j2k.physicalCalculations.ClimatologicalVariables.calc_maxHum(tmean.getValue());
@@ -83,9 +74,5 @@ import jams.model.*;
             rh = 100;
         
         rhum.setValue(rh);
-    }
-    
-    public void cleanup() {
-        
-    }
+    }    
 }
