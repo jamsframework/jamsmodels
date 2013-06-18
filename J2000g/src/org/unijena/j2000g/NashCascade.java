@@ -84,6 +84,7 @@ title="NashCascade",
     }
     
     public void run() {
+        
         double[] tanks = this.storages.getValue();
         double[] outflow = new double[tanks.length];
         double rec = this.k.getValue();
@@ -101,7 +102,7 @@ title="NashCascade",
         //outflow of last tank in cascade
         this.output.setValue(outflow[this.nTanks.getValue()-1]);
         //saving storages
-        this.storages.setValue(tanks);
+        this.storages.setValue(tanks);        
     }
     
     public void cleanup() {

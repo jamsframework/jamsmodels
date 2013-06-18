@@ -7,9 +7,6 @@ package org.unijena.j2000g;
 
 import jams.data.Attribute;
 import jams.data.Attribute.Entity.NoSuchAttributeException;
-import jams.data.Attribute.DoubleArray;
-import jams.data.Attribute.EntityCollection;
-import jams.data.Attribute.Integer;
 import jams.model.JAMSComponent;
 import jams.model.JAMSVarDescription;
 import java.util.Iterator;
@@ -34,9 +31,17 @@ public class AssignClimateGridCell extends JAMSComponent{
 
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
-            description = "Column of first data value"
+            description = "Column of first data value",
+            defaultValue = "gridcellID"
             )
-            public Attribute.Integer gridCellColumn;
+            public Attribute.String gridCellColumnName;
+    
+    @JAMSVarDescription(
+            access = JAMSVarDescription.AccessType.WRITE,
+            description = "Column of first data value",
+            defaultValue = "gridcellID"
+            )
+            public Attribute.String gridCellAttributeName;
 
     public void init() {
        System.out.println("init in ACGC");
@@ -50,11 +55,11 @@ public class AssignClimateGridCell extends JAMSComponent{
             boolean notFound = true;
             int idx = 0;
             try{
-                double gc = e.getDouble("gridcellID");
+                double gc = e.getDouble(gridCellColumnName.getValue());
                 while(notFound){
                     if(gc == sid[idx]){
                         notFound = false;
-                        e.setInt("gridCellColumn", idx+1);
+                        e.setInt(gridCellAttributeName.getValue(), idx+1);
                     }
                     idx++;
                 }
