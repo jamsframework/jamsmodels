@@ -81,11 +81,11 @@ import jams.model.*;
      *  Component run stages
      */
     
-    public void init() throws Attribute.Entity.NoSuchAttributeException{
+    public void init() {
         this.lakeStorage.setValue(0);
     }
     
-    public void run() throws Attribute.Entity.NoSuchAttributeException{
+    public void run() {
         double ls = this.lakeStorage.getValue();
         double run_precip = precip.getValue() * this.area.getValue();
         

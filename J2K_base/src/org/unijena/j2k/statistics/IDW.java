@@ -22,7 +22,6 @@
  */
 package org.unijena.j2k.statistics;
 
-import jams.JAMS;
 import jams.data.ArrayPool;
 import java.io.Serializable;
 import java.util.Arrays;
