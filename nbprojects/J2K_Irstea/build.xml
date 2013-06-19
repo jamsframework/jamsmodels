@@ -7,14 +7,14 @@
 <!-- the Compile on Save feature is turned off for the project. -->
 <!-- You can turn off the Compile on Save (or Deploy on Save) setting -->
 <!-- in the project's Project Properties dialog box.-->
-<project name="J2K_Irstea" default="default" basedir=".">
-    <description>Builds, tests, and runs the project J2K_Irstea.</description>
+<project name="IrsteaContrib" default="default" basedir=".">
+    <description> Project created in the Irstea Laboratory.</description>
     <import file="nbproject/build-impl.xml"/>
-        
-    <target name="-post-jar">
-        <property name="deployDir" value="../../../jams/lib"/>
+    
+<!--    <target name="-post-jar">
+        <property name="deployDir" value="../../lib"/>
         <copy file="${dist.jar}" todir="${deployDir}"/>
-    </target>
+    </target>    -->
     
     <!--
 
@@ -65,7 +65,7 @@
 
     An example of overriding the target for project execution could look like this:
 
-        <target name="run" depends="J2K_Irstea-impl.jar">
+        <target name="run" depends="ExampleProject-impl.jar">
             <exec dir="bin" executable="launcher.exe">
                 <arg file="${dist.jar}"/>
             </exec>
