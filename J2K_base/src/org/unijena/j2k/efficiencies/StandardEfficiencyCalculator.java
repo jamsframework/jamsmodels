@@ -95,7 +95,7 @@ title="StandardEfficiencyCalculator",
     access = JAMSVarDescription.AccessType.WRITE,
             description = "Nash-Sutcliffe-efficiency with power 1.0",
             unit="n/a",
-            lowerBound = -9999,
+            lowerBound = Double.NEGATIVE_INFINITY,
             upperBound = 1
             )
             public Attribute.Double e1;
@@ -104,7 +104,7 @@ title="StandardEfficiencyCalculator",
     access = JAMSVarDescription.AccessType.WRITE,
             description = "Nash-Sutcliffe-efficiency with power 2.0",
             unit="n/a",
-            lowerBound = -9999,
+            lowerBound = -Double.NEGATIVE_INFINITY,
             upperBound = 1
             )
             public Attribute.Double e2;
@@ -113,7 +113,7 @@ title="StandardEfficiencyCalculator",
     access = JAMSVarDescription.AccessType.WRITE,
             description = "Nash-Sutcliffe-efficiency from logarithmic values with power 1.0",
             unit="n/a",
-            lowerBound = -9999,
+            lowerBound = Double.NEGATIVE_INFINITY,
             upperBound = 1
             )
             public Attribute.Double le1;
@@ -122,7 +122,7 @@ title="StandardEfficiencyCalculator",
     access = JAMSVarDescription.AccessType.WRITE,
             description = "Nash-Sutcliffe-efficiency  from logarithmic values with power 2.0",
             unit="n/a",
-            lowerBound = -9999,
+            lowerBound = Double.NEGATIVE_INFINITY,
             upperBound = 1
             )
             public Attribute.Double le2;
@@ -159,7 +159,7 @@ title="StandardEfficiencyCalculator",
             description = "gradient of linear regression",
             unit="n/a",
             lowerBound = 0,
-            upperBound = 9999
+            upperBound = Double.POSITIVE_INFINITY
             )
             public Attribute.Double grad;
     
@@ -176,7 +176,7 @@ title="StandardEfficiencyCalculator",
             description = "gradient of double sum regression",
             unit="n/a",
             lowerBound = 0,
-            upperBound = 9999
+            upperBound = Double.POSITIVE_INFINITY
             )
             public Attribute.Double dsGrad;
     
@@ -185,7 +185,7 @@ title="StandardEfficiencyCalculator",
             description = "absolute volume error",
             unit="same as values",
             lowerBound = 0,
-            upperBound = 9999
+            upperBound = Double.POSITIVE_INFINITY
             )
             public Attribute.Double absVolErr;
     
@@ -194,7 +194,7 @@ title="StandardEfficiencyCalculator",
             description = "root mean square error",
             unit="same as values",
             lowerBound = 0,
-            upperBound = 9999
+            upperBound = Double.POSITIVE_INFINITY
             )
             public Attribute.Double rmse;
     
@@ -202,8 +202,8 @@ title="StandardEfficiencyCalculator",
     access = JAMSVarDescription.AccessType.WRITE,
             description = "percent bias",
             unit="%",
-            lowerBound = 0,
-            upperBound = 9999
+            lowerBound = Double.NEGATIVE_INFINITY,
+            upperBound = Double.POSITIVE_INFINITY
             )
             public Attribute.Double pbias;
 
@@ -212,7 +212,7 @@ title="StandardEfficiencyCalculator",
             description = "absolute percent bias",
             unit="%",
             lowerBound = 0,
-            upperBound = 9999
+            upperBound = Double.POSITIVE_INFINITY
             )
             public Attribute.Double apbias;
     
@@ -372,7 +372,7 @@ title="StandardEfficiencyCalculator",
 
         for(int i = this.interValStart; i < this.interValEnd; i++){
             //consider valid values only
-            if(valData[i] > -9999 && preData[i] > -9999){
+            if(valData[i] != JAMS.getMissingDataValue() && preData[i] != JAMS.getMissingDataValue()){
                 valVector.add(valData[i]);
                 preVector.add(preData[i]);
             }

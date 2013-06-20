@@ -23,6 +23,7 @@
 
 package org.unijena.j2k.inputData;
 
+import jams.JAMS;
 import jams.data.*;
 import jams.model.*;
 
@@ -149,7 +150,7 @@ title="CalcAbsoluteHumidity",
                     t++;
                 }
                 rhumTemp = temperature[t - 1];
-                if (rhumTemp > -9999) {
+                if (rhumTemp != JAMS.getMissingDataValue()) {
                     //calculate saturation vapour pressure
                     double est = 6.11 * Math.exp((17.62 * rhumTemp) / (243.12 + rhumTemp));
 
@@ -159,10 +160,10 @@ title="CalcAbsoluteHumidity",
                     //compute absolute humidity
                     ahum[r] = maxHum * (rhum[r] / 100.);
                 } else {
-                    ahum[r] = -9999;
+                    ahum[r] = JAMS.getMissingDataValue();
                 }
             } else {
-                ahum[r] = -9999;
+                ahum[r] = JAMS.getMissingDataValue();
             }
         }
 

@@ -202,7 +202,7 @@
       auszuwerten.</para>
 
   <para>Während der Modelllaufzeit speichert die Komponente lediglich die einlaufenden Einzelwerte
-      und legt diese in entsprechenden Strukturen ab. Fehlende Werte werden als -9999 gespeichert.
+      und legt diese in entsprechenden Strukturen ab. Fehlende Werte werden als spezieller Fehlwert gespeichert.
       Während der „cleanUp“ Phase erfolgt dann die Berechnung der spezifischen Gütemaße, die weiter
       unten beschrieben werden. Diese können durch Angabe von Identifikationsnummern in der Variable
         „<emphasis role="italic">effMethod</emphasis>“ ausgewählt werden. Im Einzelnen sind dies: <itemizedlist>

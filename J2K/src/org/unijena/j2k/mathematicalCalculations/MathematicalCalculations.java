@@ -10,6 +10,8 @@
 
 package org.unijena.j2k.mathematicalCalculations;
 
+import jams.JAMS;
+
 /**
  *
  * @author c0krpe
@@ -39,7 +41,7 @@ public class MathematicalCalculations {
             return Double.parseDouble(output);
         }catch(NumberFormatException nof){
             System.err.println("Number Format Exception: " + nof + " because of " + val);
-            return Double.parseDouble("-99999");
+            return JAMS.getMissingDataValue();
         }
     }
     

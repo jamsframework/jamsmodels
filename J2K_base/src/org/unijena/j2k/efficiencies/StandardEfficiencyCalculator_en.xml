@@ -138,7 +138,7 @@
       for specific years. The variable "<emphasis role="italic">effMonthList</emphasis>" can also
       designate a list of months (1-12), so only single months are continuously analysed. During
       model runtime the component only saves the incoming single values and stores them in
-      corresponding structures. Missing values are saved as -9999. During the "cleanUp" phase the
+      corresponding structures. Missing values are saved as as special missing data value. During the "cleanUp" phase the
       specific quality measures are calculated which (detailed description of measures below). Those
       can be selected in the variable "<emphasis role="italic">effMethod</emphasis>" by indicating
       their identification numbers. In detail those are: <itemizedlist>

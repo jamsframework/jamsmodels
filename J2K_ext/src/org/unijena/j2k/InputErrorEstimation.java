@@ -23,6 +23,7 @@
 
 package org.unijena.j2k;
 
+import jams.JAMS;
 import java.util.Random;
 import jams.model.*;
 import jams.data.*;
@@ -72,8 +73,7 @@ public class InputErrorEstimation extends JAMSComponent {
 
     
     Random generator = new Random();
-    double missingDataVal = -9999;
-    
+        
     @Override
     public void run() {
         boolean pos = true;
@@ -93,7 +93,7 @@ public class InputErrorEstimation extends JAMSComponent {
             
             if(!pos)
                 error = error * -1;
-            if(inDat[i] != missingDataVal){
+            if(inDat[i] != JAMS.getMissingDataValue()){
                 outDat[i] = inDat[i] + (inDat[i] * error);
                 if (relativeOrAbsolute.getValue()){
                     outDat[i] = inDat[i] + (inDat[i] * error);

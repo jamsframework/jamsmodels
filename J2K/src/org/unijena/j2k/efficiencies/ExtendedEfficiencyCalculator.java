@@ -281,7 +281,7 @@ title="ExtendedEfficiencyCalculator",
         
         for(int i = this.interValStart; i < this.interValEnd; i++){
             //consider valid values only
-            if(valData[i] > -9999 && preData[i] > -9999){
+            if(valData[i] != JAMS.getMissingDataValue() && preData[i] != JAMS.getMissingDataValue()){
                 valVector.add(valData[i]);
                 preVector.add(preData[i]);
             }

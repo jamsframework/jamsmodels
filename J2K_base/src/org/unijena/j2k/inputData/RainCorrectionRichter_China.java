@@ -22,6 +22,7 @@
  */
 package org.unijena.j2k.inputData;
 
+import jams.JAMS;
 import jams.data.*;
 import jams.model.*;
 import org.unijena.j2k.statistics.IDW;
@@ -141,7 +142,6 @@ public class RainCorrectionRichter_China extends JAMSComponent {
     unit = "K")
     public Attribute.Double snow_trans;
     
-    private final int NODATA = -9999;
     ArrayPool<double[]> memPool = new ArrayPool<double[]>(double.class);
     IDW idwTemp = new IDW();
     IDW idwWind = new IDW();
@@ -255,8 +255,8 @@ public class RainCorrectionRichter_China extends JAMSComponent {
                 }
             }
             //Calculating corrected rain_value
-            if (precip[r] == NODATA) {
-                rcorr[r] = NODATA;
+            if (precip[r] == JAMS.getMissingDataValue()) {
+                rcorr[r] = JAMS.getMissingDataValue();
             } else {
                 rcorr[r] = rain + snow + wetErr;
             }

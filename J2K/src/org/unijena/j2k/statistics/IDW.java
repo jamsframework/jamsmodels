@@ -33,8 +33,6 @@ import java.util.Arrays;
  */
 public class IDW implements Serializable {
 
-    private final static int NODATA = -9999;
-
     public enum Projection {
 
         LATLON, ANY
@@ -104,7 +102,7 @@ public class IDW implements Serializable {
         while (counter < p) {
             int t = wArray[element];
             //check if data is valid or no data
-            if (data[t] == NODATA) {
+            if (data[t] == JAMS.getMissingDataValue()) {
                 element++;
                 if (element >= wArray.length) {
                     break;
@@ -250,11 +248,11 @@ public class IDW implements Serializable {
         for (int s = 0; s < n; s++) {
             //if station is identical this station get a weight of 1.0
             //and all others are set to 0.0
-            if (dist[s] == 0 && data[s] != NODATA) {
+            if (dist[s] == 0 && data[s] != JAMS.getMissingDataValue()) {
                 Arrays.fill(weights, 0.0);
                 weights[s] = 1.0;
                 return weights;
-            } else if (dist[s] == 0 && data[s] == NODATA) {
+            } else if (dist[s] == 0 && data[s] == JAMS.getMissingDataValue()) {
                 weights[s] = 0.0;
             } else {
                 weights[s] = (distsum / dist[s]) / tempsum; //temp[s] / tempsum;

@@ -40,6 +40,7 @@
 
 package org.unijena.j2k;
 
+import jams.JAMS;
 import jams.data.*;
 import jams.model.*;
 
@@ -158,12 +159,12 @@ import jams.model.*;
         int dayCount = time.get(Attribute.Calendar.DAY_OF_YEAR) - 1;
         int hourCount = time.get(Attribute.Calendar.HOUR_OF_DAY) + (24 * dayCount);
         
-        double in_LAI = -9999;
-        double in_effH = -9999;
-        double in_extRad = -9999;
-        double in_scf = -9999;
-        double in_rsc0 = -9999;
-        double in_haudeF = -9999;
+        double in_LAI = JAMS.getMissingDataValue();
+        double in_effH = JAMS.getMissingDataValue();
+        double in_extRad = JAMS.getMissingDataValue();
+        double in_scf = JAMS.getMissingDataValue();
+        double in_rsc0 = JAMS.getMissingDataValue();
+        double in_haudeF = JAMS.getMissingDataValue();
         
         if(this.rsc0Array != null)
             in_rsc0 = this.rsc0Array.getValue()[monthCount];

@@ -22,6 +22,7 @@
  */
 package org.unijena.j2k.inputData;
 
+import jams.JAMS;
 import jams.data.*;
 import jams.model.*;
 import org.unijena.j2k.statistics.IDW;
@@ -113,8 +114,6 @@ public class RainCorrectionRichter2 extends JAMSComponent {
     description = "Station shelter [1 - no protection; 2 - gentle protection; "
     + "3 - moderate protection; 4 - strong protection]")
     public Attribute.IntegerArray protection;
-
-    private final int NODATA = -9999;
     
     IDW idw = new IDW();
     
@@ -246,8 +245,8 @@ public class RainCorrectionRichter2 extends JAMSComponent {
                 }
             }
             //Calculating corrected rain_value
-            if (precip[r] == NODATA) {
-                rcorr[r] = NODATA;
+            if (precip[r] == JAMS.getMissingDataValue()) {
+                rcorr[r] = JAMS.getMissingDataValue();
             } else {
                 rcorr[r] = rain + snow + wetErr;
             }

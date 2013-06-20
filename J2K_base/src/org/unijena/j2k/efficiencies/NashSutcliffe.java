@@ -29,7 +29,7 @@ public class NashSutcliffe {
      * @param predicition the simulation data set
      * @param validation the validation (observed) data set
      * @param pow the power for the deviation terms
-     * @return the calculated efficiency or -9999 if an error occurs
+     * @return the calculated efficiency or Double.NEGATIVE_INFINITY if an error occurs
      */
     public static double efficiency(double[] prediction, double[] validation, double pow){
         double weight[] = new double[prediction.length];
@@ -48,7 +48,7 @@ public class NashSutcliffe {
         /** checking if both data arrays have the same number of elements*/
         if(pre_size != val_size){
             System.err.println("Prediction data and validation data are not consistent!");
-            return -9999;
+            return Double.NEGATIVE_INFINITY;
         }
         else{
             steps = pre_size;
@@ -87,7 +87,7 @@ public class NashSutcliffe {
      * @param predicition the simulation data set
      * @param validation the validation (observed) data set
      * @param pow the power for the deviation terms
-     * @return the calculated log_efficiency or -9999 if an error occurs
+     * @return the calculated log_efficiency or Double.NEGATIVE_INFINITY if an error occurs
      */
     public static double logEfficiency(double[] prediction, double[] validation, double pow){
         double weight[] = new double[prediction.length];
@@ -106,7 +106,7 @@ public class NashSutcliffe {
         /** checking if both data arrays have the same number of elements*/
         if(pre_size != val_size){
             System.err.println("Prediction data and validation data are not consistent!");
-            return -9999;
+            return Double.NEGATIVE_INFINITY;
         }
         else{
             steps = pre_size;

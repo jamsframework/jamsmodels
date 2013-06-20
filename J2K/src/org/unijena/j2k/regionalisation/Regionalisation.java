@@ -22,6 +22,7 @@
  */
 package org.unijena.j2k.regionalisation;
 
+import jams.JAMS;
 import java.io.*;
 import jams.data.*;
 import jams.io.BufferedFileReader;
@@ -77,12 +78,7 @@ public class Regionalisation extends JAMSComponent {
     @JAMSVarDescription (access = JAMSVarDescription.AccessType.READ,
                          description = "Absolute possible minimum value for data set")
     public Attribute.Double fixedMinimum;
-
-    @JAMSVarDescription (access = JAMSVarDescription.AccessType.READ,
-                         description = "Result value if no value is available",
-                         defaultValue = "-9999.0")
-    public Attribute.Double noData;
-
+    
     boolean invalidDatasetReported = false;
 
     ArrayPool<double[]> memPool = new ArrayPool<double[]>(double.class);
@@ -117,7 +113,7 @@ public class Regionalisation extends JAMSComponent {
         while (counter < nIDW) {
             int t = wA[element];
             //check if data is valid or no data
-            if (sourceData[t] == noData.getValue()) {
+            if (sourceData[t] == JAMS.getMissingDataValue()) {
                 element++;
                 if (element >= wA.length) {
                     //getModel().getRuntime().println("BREAK1: too less data NIDW had been reduced!");
@@ -165,7 +161,7 @@ public class Regionalisation extends JAMSComponent {
                 getModel().getRuntime().println("Invalid dataset found while regionalizing data in component " + this.getInstanceName());
                 invalidDatasetReported = true;
             }
-            value = noData.getValue();
+            value = JAMS.getMissingDataValue();
         }
 
         dataValue.setValue(value);

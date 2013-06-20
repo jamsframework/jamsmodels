@@ -111,26 +111,7 @@ import jams.model.*;
         
         actMPS += inMPS;
         gwStorage -= inMPS;
-          
-        /*if (gwStorage == 0 || Double.isNaN(gwStorage)){
-            System.out.println("gw: " + gwStorage);
-        }
-        if (actMPS == 0 || Double.isNaN(actMPS)){
-            System.out.println("actMPS: " + actMPS);
-        }
-        
-        if (maxMPS == 0 || Double.isNaN(maxMPS)){
-            System.out.println("actMPS: " + maxMPS);
-        }
-        
-        if (inMPS == 0 || Double.isNaN(inMPS)){
-            System.out.println("actMPS: " + inMPS);
-        }
-        
-        if (satMPS == 0 || Double.isNaN(satMPS)){
-            System.out.println("actMPS: " + satMPS);
-        }*/
-        
+                          
         this.gwStorage.setValue(gwStorage);
         this.actMPS.setValue(actMPS);
         this.satMPS.setValue(actMPS / maxMPS);

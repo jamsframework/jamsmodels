@@ -22,6 +22,7 @@
  */
 
 package org.unijena.j2k.regionalisation;
+import jams.JAMS;
 import java.io.*;
 //import jams.JAMS;
 //import jams.JAMSTools;
@@ -147,7 +148,6 @@ public class Regionalisation_old extends JAMSComponent {
     private boolean writeCache = false;
     transient private ObjectOutputStream writer;
     transient private ObjectInputStream reader;
-    double NODATA = -9999.0;
     
     public void init() throws Attribute.Entity.NoSuchAttributeException, IOException {
         
@@ -208,7 +208,7 @@ public class Regionalisation_old extends JAMSComponent {
             while (counter < nIDW && cont) {
                 int t = wA[element];
                 //check if data is valid or no data
-                if (sourceData[t] == NODATA) {
+                if (sourceData[t] == JAMS.getMissingDataValue()) {
 
                     element++;
                     if (element >= wA.length) {
@@ -263,8 +263,7 @@ public class Regionalisation_old extends JAMSComponent {
 
                 }
             } else {
-                //System.out.println("All data are no-data values!");
-                value = NODATA;
+                value = JAMS.getMissingDataValue();
             }
 
             dataValue.setValue(value);
