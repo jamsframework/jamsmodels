@@ -78,6 +78,13 @@ import jams.model.*;
             public Attribute.Double excStor;
     
     @JAMSVarDescription(
+            access = JAMSVarDescription.AccessType.READ,
+            description = "infiltration capacity",
+            defaultValue = "Infinity" 
+            )
+            public Attribute.Double maxInf;
+    
+    @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
             description = "direct runoff"
             )
@@ -167,7 +174,8 @@ import jams.model.*;
     public void run() {
         double k_factor = 1;
         double maxExcStor = 100000.0;
-
+        double infCap = this.maxInf.getValue() * this.area.getValue();
+        
         if(this.recConst != null){
             k_factor = this.recConst.getValue();
         }
@@ -181,14 +189,26 @@ import jams.model.*;
         
         //inflow goes into the soil
         double deltaMPS = maxMPS - actMPS;
-        
+                                        
         if(inflow <= deltaMPS){
-            actMPS = actMPS + inflow;
-            inflow = 0;
+            if (inflow <= infCap){
+                actMPS = actMPS + inflow;
+                infCap = 0;
+                inflow = 0;
+            }else{
+                actMPS = actMPS + infCap;
+                inflow -= infCap;
+            }
         }
-        else{
-            actMPS = maxMPS;
-            inflow = inflow - deltaMPS;
+        else{            
+            if (deltaMPS <= infCap){
+                inflow = inflow - deltaMPS;
+                actMPS = maxMPS;
+            }else{
+                inflow = inflow - infCap;
+                actMPS = actMPS + infCap;
+                infCap = 0;
+            }
         }
         
         //et out of the soil
@@ -232,12 +252,23 @@ import jams.model.*;
         //available water is put into soil
         deltaMPS = maxMPS - actMPS;
         if(inflow <= deltaMPS){
-            actMPS = actMPS + inflow;
-            inflow = 0;
+            if (inflow < infCap){
+                actMPS = actMPS + inflow;
+                inflow = 0;
+            }else{
+                actMPS = actMPS + infCap;
+                inflow -= infCap;
+                infCap = 0;
+            }
         }
         else{
-            actMPS = maxMPS;
-            inflow = inflow - deltaMPS;
+            if (inflow <= infCap){
+                actMPS = maxMPS;
+                inflow = inflow - deltaMPS;
+            }else{
+                actMPS+=infCap;
+                inflow = inflow - infCap;
+            }
         }
         
         double dirQ = 0;

@@ -61,6 +61,20 @@ import jams.model.*;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
+            description = "infiltration capacity adaptation",
+            defaultValue = "1.0"
+            )
+            public Attribute.Double maxInfAdaptation;
+    
+    @JAMSVarDescription(
+            access = JAMSVarDescription.AccessType.READWRITE,
+            description = "infiltration capacity adaptation",
+            defaultValue = "Infinity"
+            )
+            public Attribute.Double maxInf;
+    
+    @JAMSVarDescription(
+            access = JAMSVarDescription.AccessType.READ,
             description = "HRU statevar rooting depth"
             )
             public Attribute.Double rootDepth;
@@ -111,6 +125,7 @@ import jams.model.*;
         Attribute.Entity entity = entities.getCurrent();
         
         double rootDepth = this.rootDepth.getValue();
+        
         double mxMPS = 0;
         String aNameFC = "fc_";
         for(int d = 0; d < rootDepth; d++){
@@ -125,7 +140,7 @@ import jams.model.*;
         mxMPS = mxMPS * this.FCAdaptation.getValue();
         
         this.maxMPS.setValue(mxMPS);
-        
+        this.maxInf.setValue(this.maxInf.getValue()*this.maxInfAdaptation.getValue());
         this.actMPS.setValue(initMPS.getValue()*mxMPS);
         
         double mxPerc = entity.getDouble("mxPerc") * this.maxPercAdaptation.getValue() * this.area.getValue();
