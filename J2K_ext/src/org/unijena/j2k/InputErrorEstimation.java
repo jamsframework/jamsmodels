@@ -67,7 +67,8 @@ public class InputErrorEstimation extends JAMSComponent {
 
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            description = "sign (0 = +/-; 1 = +; -1 = -)"
+            description = "sign (0 = +/-; 1 = +; -1 = -)",
+            defaultValue = "0"
             )            
             public Attribute.Double sign;
 

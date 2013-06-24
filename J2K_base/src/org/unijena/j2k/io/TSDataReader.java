@@ -308,10 +308,17 @@ public class TSDataReader extends JAMSComponent {
     
     @Override
     public void run() {
-        dataArray.setValue(JAMSTableDataConverter.toDouble(store.getNext(), startColumn.getValue()));
+        double value[] = JAMSTableDataConverter.toDouble(store.getNext(), startColumn.getValue());
+        for (int i=0;i<value.length;i++){
+            if (value[i] == missDataValue.getValue()){
+                value[i] = JAMS.getMissingDataValue();
+            }
+        }
+        dataArray.setValue(value);
+        
          if (!skipRegression.getValue()) {
             regCoeff.setValue(Regression.calcLinReg(elevation.getValue(), dataArray.getValue()));
-        }
+        }                 
     }
     
     private Attribute.Calendar parseJ2KTime(String timeString) {
