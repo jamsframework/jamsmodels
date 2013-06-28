@@ -88,6 +88,12 @@ public class SewerOverflowDevice_1 extends JAMSComponent {
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READWRITE,
     description = "number of overflow events")
     public Attribute.Double overflowCount;
+    @JAMSVarDescription(access = JAMSVarDescription.AccessType.READWRITE,
+    description = "geometric water level in sewer at the beginning of the time step")
+    public Attribute.Double waterLevelAct;
+    @JAMSVarDescription(access = JAMSVarDescription.AccessType.READWRITE,
+    description = "geometric water level in sewer after the addition of inValues")
+    public Attribute.Double waterLevelAfterIn;
     
     private int seconds;
 
@@ -118,10 +124,11 @@ public class SewerOverflowDevice_1 extends JAMSComponent {
         }
 
         // calc active and inflow volumes
-        double volumeAct = 0, volumeIn = 0;
+        double volumeAct = 0, volumeIn = 0, levelAct = 0;
 
         for (int i = 0; i < actValues.length; i++) {
             volumeAct = volumeAct + actValues[i].getValue();
+            levelAct = volumeAct / (1000 * length.getValue() * width.getValue());
         }
         for (int i = 0; i < inValues.length; i++) {
             volumeIn = volumeIn + inValues[i].getValue();
@@ -129,6 +136,7 @@ public class SewerOverflowDevice_1 extends JAMSComponent {
 
         // calc overall volume
         double volumeAll = volumeAct + volumeIn;
+        double levelAfterIn = volumeAll / (1000 * length.getValue() * width.getValue());
 
         // calc fractions related to overall volume
         double[] frac = new double[inValues.length];
@@ -152,6 +160,7 @@ public class SewerOverflowDevice_1 extends JAMSComponent {
         double maxVolume = threshold.getValue() * length.getValue() * width.getValue() * 1000; //in L
         double diffVolume = 0, height = 0, q = 0;
         double g = 9.80665; //gravitationnal constant
+        
 
         // overflow is happening?
         if (volumeAll - maxVolume > 0) {
@@ -174,5 +183,7 @@ public class SewerOverflowDevice_1 extends JAMSComponent {
             }
             sewerOverflow.setValue(0);
         }
+        waterLevelAct.setValue(levelAct);
+        waterLevelAfterIn.setValue(levelAfterIn);
     }
 }

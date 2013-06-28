@@ -266,9 +266,15 @@ import jams.model.*;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
-            description = "Water level in reach"
+            description = "Geometric water level in reach before routing"
             )
-            public Attribute.Double waterLevel;        
+            public Attribute.Double waterLevelInit;  
+    
+    @JAMSVarDescription(
+            access = JAMSVarDescription.AccessType.WRITE,
+            description = "Geometric water level in reach after routing"
+            )
+            public Attribute.Double waterLevelEnd;        
     
     /*
      *  Component run stages
@@ -355,6 +361,7 @@ import jams.model.*;
         }
         
         double q_act_tot = RD1act + RD2act + RG1act + RG2act + addInAct;
+        double levelInit = q_act_tot / (1000 * width * length);
         
         //int ID = (int)entity.getDouble("ID");
         // System.out.getRuntime().println("Processing reach: " + ID);
@@ -422,7 +429,7 @@ import jams.model.*;
         addInAct = addInAct - q_act_out * addInPart;
         
         double channelStorage = RD1act + RD2act + RG1act + RG2act + addInAct;
-        double level = channelStorage / (1000 * width * length);
+        double levelEnd = channelStorage / (1000 * width * length);
         
         double cumOutflow = RD1out + RD2out + RG1out + RG2out + addInOut;
         /*if (reachID.getValue()==800)
@@ -454,7 +461,8 @@ import jams.model.*;
         outRG1.setValue(RG1out);
         outRG2.setValue(RG2out);
         
-        waterLevel.setValue(level);
+        waterLevelInit.setValue(levelInit);
+        waterLevelEnd.setValue(levelEnd);
         
         outAddIn.setValue(addInOut);
         double verzoegerung;

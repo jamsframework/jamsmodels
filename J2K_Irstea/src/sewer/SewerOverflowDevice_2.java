@@ -95,7 +95,7 @@ public class SewerOverflowDevice_2 extends JAMSComponent {
     public Attribute.TimeInterval ti;
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READWRITE,
             description = "water level in sewer")
-    public Attribute.Double waterLevel;
+    public Attribute.Double waterLevelEnd;
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.WRITE,
             description = "sewer overflow sum")
     public Attribute.Double sewerOverflow;
@@ -103,6 +103,12 @@ public class SewerOverflowDevice_2 extends JAMSComponent {
             description = "number of overflow events")
     public Attribute.Double overflowCount;
     private int seconds;
+    @JAMSVarDescription(access = JAMSVarDescription.AccessType.READWRITE,
+    description = "geometric water level in sewer at the beginning of the time step")
+    public Attribute.Double waterLevelAct;
+    @JAMSVarDescription(access = JAMSVarDescription.AccessType.READWRITE,
+    description = "geometric water level in sewer after the addition of inValues")
+    public Attribute.Double waterLevelAfterIn;
 
     public void init() {
 
@@ -134,10 +140,11 @@ public class SewerOverflowDevice_2 extends JAMSComponent {
         //getModel().getRuntime().println(time.toString());
        
         // calc active and inflow volumes
-        double volumeAct = 0, volumeIn = 0;
+        double volumeAct = 0, volumeIn = 0, levelAct = 0;
 
         for (int i = 0; i < actValues.length; i++) {
             volumeAct = volumeAct + actValues[i].getValue();
+            levelAct = volumeAct / (1000 * length.getValue() * width.getValue());
         }
         for (int i = 0; i < inValues.length; i++) {
             volumeIn = volumeIn + inValues[i].getValue();
@@ -145,6 +152,7 @@ public class SewerOverflowDevice_2 extends JAMSComponent {
 
         // calc overall volume
         double volumeAll = volumeAct + volumeIn;
+        double levelAfterIn = volumeAll / (1000 * length.getValue() * width.getValue());
 
         // calc fractions related to overall volume
         double[] frac = new double[inValues.length];
@@ -167,14 +175,14 @@ public class SewerOverflowDevice_2 extends JAMSComponent {
 
         double h;
 
-        if (waterLevel != null) { 
-            h = waterLevel.getValue()-threshold.getValue(); //waterLevel of the sewer reach after routing at the previous time step - threshold
+        if (waterLevelEnd != null) { 
+            h = waterLevelEnd.getValue()-threshold.getValue(); //waterLevel of the sewer reach after routing at the previous time step - threshold
         } else {
             h = 0;
         }
 
         // overflow is happening?
-        if (waterLevel.getValue() > threshold.getValue()) {
+        if (waterLevelEnd.getValue() > threshold.getValue()) {
             
             // let's use var names as defined in Faure (2007)
             double g = 9.80665; //gravitationnal constant
@@ -209,5 +217,7 @@ public class SewerOverflowDevice_2 extends JAMSComponent {
             }
             sewerOverflow.setValue(0);
         }
+        waterLevelAct.setValue(levelAct);
+        waterLevelAfterIn.setValue(levelAfterIn);
     }
 }
