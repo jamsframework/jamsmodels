@@ -175,9 +175,7 @@ public class SewerOverflowDevice extends JAMSComponent {
         }
 
         double slope = this.slope.getValue();
-        if (!slopeAsProportion.getValue()) {
-            slope = slope / 100;
-        }
+
 
         double[] initState = calcWaterLevel(volumeInit, width.getValue(), slope, roughness.getValue(), seconds);
         double[] maxState = calcWaterLevel(volumeMax, width.getValue(), slope, roughness.getValue(), seconds);

@@ -57,18 +57,6 @@ public class SewerOverflowDevice_1 extends JAMSComponent {
     unit = "m")
     public Attribute.Double threshold;
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
-    description = "Coefficient discharge",
-    unit = "-")
-    public Attribute.Double dischCoeff;
-    @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
-    description = "pipe width",
-    unit = "m")
-    public Attribute.Double pipeWidth;
-    @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
-    description = "pipe height",
-    unit = "m")
-    public Attribute.Double pipeHeight;
-    @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
     description = "Target river reach")
     public Attribute.Entity to_river;
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
@@ -170,19 +158,6 @@ public class SewerOverflowDevice_1 extends JAMSComponent {
             diffVolume = volumeAll - maxVolume; //in L
             height = (diffVolume / 1000) / (length.getValue() * width.getValue()); //in m
             q = diffVolume;
-            
-            // The overflow of the SOD is limited by its pipe diameter   
-            /*if (height <= pipeHeight.getValue()) {
-                q = dischCoeff.getValue() * pipeWidth.getValue() * height * Math.sqrt(2 * g * height) * seconds * 1000;
-//              getModel().getRuntime().println("");
-//                getModel().getRuntime().println("x");
-            } else {
-                q = dischCoeff.getValue() * pipeWidth.getValue() * pipeHeight.getValue() * Math.sqrt(2 * g * height) * seconds * 1000;
-//                getModel().getRuntime().println("y");
-            }
-            q = Math.min(q, diffVolume); 
-            */
-            
 
             for (int i = 0; i < inValues.length; i++) {
                 double overflowComp = frac[i] * q;

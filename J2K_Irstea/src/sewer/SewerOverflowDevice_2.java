@@ -131,7 +131,7 @@ public class SewerOverflowDevice_2 extends JAMSComponent {
             return;
         }
 
-        getModel().getRuntime().println(time.toString());
+        //getModel().getRuntime().println(time.toString());
        
         // calc active and inflow volumes
         double volumeAct = 0, volumeIn = 0;
