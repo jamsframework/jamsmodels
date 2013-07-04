@@ -110,6 +110,9 @@ public class SewerOverflowDevice_3 extends JAMSComponent {
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READWRITE,
             description = "number of overflow events")
     public Attribute.Double overflowCount;
+    @JAMSVarDescription(access = JAMSVarDescription.AccessType.READWRITE,
+    description = "normal water level in sewer calculated from the flowVelocity")
+    public Attribute.Double waterLevelInitSOD;
     private int seconds;
 
     public void init() {
@@ -214,6 +217,7 @@ public class SewerOverflowDevice_3 extends JAMSComponent {
             }
             sewerOverflow.setValue(0);
         }
+        waterLevelInitSOD.setValue(waterLevel);
     }
     
     /**
