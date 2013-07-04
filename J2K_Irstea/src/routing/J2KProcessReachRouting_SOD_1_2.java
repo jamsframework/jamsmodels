@@ -33,11 +33,13 @@ import jams.model.*;
 @JAMSComponentDescription(
         title="Title",
         author="Author",
-        description="Calculates flow processes in the river network by a simplified kinematic wave approach",
+        description="Calculates flow processes in the river network by a simplified kinematic wave approach. "
+        + "Calculate a water level in the reach based on the channel storage after routing, the width and the lenght of the reach."
+        + "This water level is then used for the calculation of the overflow in SODs.",
         version="1.0_0",
-        date="2011-05-30"
+        date="2013-03-15"
         )
-        public class J2KProcessReachRouting extends JAMSComponent {
+        public class J2KProcessReachRouting_SOD_1_2 extends JAMSComponent {
     
     /*
      *  Component variables
@@ -51,35 +53,28 @@ import jams.model.*;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            description = "reach length",
+            description = "attribute length",
             unit = "m"
             )
             public Attribute.Double length;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            description = "reach slope",
-            unit = "%"
+            description = "attribute slope",
+            unit = "deg"
             )
             public Attribute.Double slope;
-
-    @JAMSVarDescription(
-            access = JAMSVarDescription.AccessType.READ,
-            description = "Is slope provided as proportion of length and elevation difference [m/m]?",
-            defaultValue = "false"
-            )
-            public Attribute.Boolean slopeAsProportion;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            description = "reach width",
+            description = "attribute width",
             unit = "m"
             )
             public Attribute.Double width;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            description = "reach roughness"
+            description = "attribute roughness"
             )
             public Attribute.Double roughness;
     
@@ -263,17 +258,24 @@ import jams.model.*;
             )
             public Attribute.String tempRes;
     
-      @JAMSVarDescription(
+    @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
             description = "Reach ID"
             )
             public Attribute.Double reachID;   
-     
+    
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
-            description = "Water level in reach"
+            description = "Geometric water level in reach before routing"
             )
-            public Attribute.Double waterLevel;          
+            public Attribute.Double waterLevelInit;  
+    
+    @JAMSVarDescription(
+            access = JAMSVarDescription.AccessType.WRITE,
+            description = "Geometric water level in reach after routing"
+            )
+            public Attribute.Double waterLevelEnd;        
+    
     /*
      *  Component run stages
      */
@@ -282,7 +284,7 @@ import jams.model.*;
         
     }
     
-    public void run() {
+    public void run() throws Attribute.Entity.NoSuchAttributeException{
         
         Attribute.Entity entity = entities.getCurrent();
         
@@ -299,13 +301,9 @@ import jams.model.*;
         }        
              
         double width = this.width.getValue();
+        double slope = this.slope.getValue();
         double rough = this.roughness.getValue();
         double length = this.length.getValue();
-        
-        double slope = this.slope.getValue();
-        if (!slopeAsProportion.getValue()) {
-            slope = slope / 100;
-        }
         
         double RD1act = actRD1.getValue() + inRD1.getValue();
         double RD2act = actRD2.getValue() + inRD2.getValue();
@@ -363,6 +361,7 @@ import jams.model.*;
         }
         
         double q_act_tot = RD1act + RD2act + RG1act + RG2act + addInAct;
+        double levelInit = q_act_tot / (1000 * width * length);
         
         //int ID = (int)entity.getDouble("ID");
         // System.out.getRuntime().println("Processing reach: " + ID);
@@ -430,7 +429,7 @@ import jams.model.*;
         addInAct = addInAct - q_act_out * addInPart;
         
         double channelStorage = RD1act + RD2act + RG1act + RG2act + addInAct;
-        double level = channelStorage / (1000 * width * length);        
+        double levelEnd = channelStorage / (1000 * width * length);
         
         double cumOutflow = RD1out + RD2out + RG1out + RG2out + addInOut;
         /*if (reachID.getValue()==800)
@@ -462,7 +461,8 @@ import jams.model.*;
         outRG1.setValue(RG1out);
         outRG2.setValue(RG2out);
         
-        waterLevel.setValue(level);        
+        waterLevelInit.setValue(levelInit);
+        waterLevelEnd.setValue(levelEnd);
         
         outAddIn.setValue(addInOut);
         double verzoegerung;
@@ -548,6 +548,8 @@ import jams.model.*;
         double A = (q / v);
         
         double rh = A / (width + 2*(A / width));
+        
+        double level = A /width;
         
         return rh;
     }

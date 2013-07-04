@@ -1,5 +1,5 @@
 /*
- * J2KProcessReachRouting.java
+ * J2KProcessReachRouting_SOD_3_4.java
  * Created on 28. November 2005, 10:01
  *
  * This file is part of JAMS
@@ -25,6 +25,7 @@ package routing;
 
 import jams.data.*;
 import jams.model.*;
+import java.util.GregorianCalendar;
 
 /**
  *
@@ -33,13 +34,11 @@ import jams.model.*;
 @JAMSComponentDescription(
         title="Title",
         author="Author",
-        description="Calculates flow processes in the river network by a simplified kinematic wave approach. "
-        + "Calculate a water level in the reach based on the channel storage after routing, the width and the lenght of the reach."
-        + "This water level is then used for the calculation of the overflow in SODs.",
+        description="Calculates flow processes in the river network by a simplified kinematic wave approach",
         version="1.0_0",
-        date="2013-03-15"
+        date="2011-05-30"
         )
-        public class J2KProcessReachRouting_SOD2 extends JAMSComponent {
+        public class J2KProcessReachRouting_SOD_3_4 extends JAMSComponent {
     
     /*
      *  Component variables
@@ -53,28 +52,35 @@ import jams.model.*;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            description = "attribute length",
+            description = "reach length",
             unit = "m"
             )
             public Attribute.Double length;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            description = "attribute slope",
-            unit = "deg"
+            description = "reach slope",
+            unit = "%"
             )
             public Attribute.Double slope;
+
+    @JAMSVarDescription(
+            access = JAMSVarDescription.AccessType.READ,
+            description = "Is slope provided as proportion of length and elevation difference [m/m]?",
+            defaultValue = "false"
+            )
+            public Attribute.Boolean slopeAsProportion;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            description = "attribute width",
+            description = "reach width",
             unit = "m"
             )
             public Attribute.Double width;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            description = "attribute roughness"
+            description = "reach roughness"
             )
             public Attribute.Double roughness;
     
@@ -258,33 +264,43 @@ import jams.model.*;
             )
             public Attribute.String tempRes;
     
-    @JAMSVarDescription(
+        @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
+            description = "Current time step",
+            unit = "d")
+    public Attribute.Calendar time;
+    
+        @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
+            description = "time interval",
+            unit = "d")
+    public Attribute.TimeInterval ti;
+    
+      @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
             description = "Reach ID"
             )
             public Attribute.Double reachID;   
-    
+     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
-            description = "Geometric water level in reach before routing"
+            description = "Water level in reach after routing"
             )
-            public Attribute.Double waterLevelInit;  
-    
-    @JAMSVarDescription(
-            access = JAMSVarDescription.AccessType.WRITE,
-            description = "Geometric water level in reach after routing"
-            )
-            public Attribute.Double waterLevelEnd;        
-    
-    /*
-     *  Component run stages
-     */
-    
+            public Attribute.Double waterLevelAfterRouting;          
+    private int seconds;
+
     public void init() {
-        
+
+        if (ti.getTimeUnit() == GregorianCalendar.MINUTE) {
+            seconds = 60 * ti.getTimeUnitCount();
+        } else if (ti.getTimeUnit() == GregorianCalendar.HOUR_OF_DAY) {
+            seconds = 3600 * ti.getTimeUnitCount();
+        } else if (ti.getTimeUnit() == GregorianCalendar.DAY_OF_YEAR) {
+            seconds = 24 * 3600 * ti.getTimeUnitCount();
+        } else if (ti.getTimeUnit() == GregorianCalendar.MONTH) {
+            seconds = time.getActualMaximum(GregorianCalendar.DAY_OF_MONTH) * 24 * 3600 * ti.getTimeUnitCount();
+        }
     }
     
-    public void run() throws Attribute.Entity.NoSuchAttributeException{
+    public void run() {
         
         Attribute.Entity entity = entities.getCurrent();
         
@@ -301,9 +317,13 @@ import jams.model.*;
         }        
              
         double width = this.width.getValue();
-        double slope = this.slope.getValue();
         double rough = this.roughness.getValue();
         double length = this.length.getValue();
+        
+        double slope = this.slope.getValue();
+        if (!slopeAsProportion.getValue()) {
+            slope = slope / 100;
+        }
         
         double RD1act = actRD1.getValue() + inRD1.getValue();
         double RD2act = actRD2.getValue() + inRD2.getValue();
@@ -361,7 +381,6 @@ import jams.model.*;
         }
         
         double q_act_tot = RD1act + RD2act + RG1act + RG2act + addInAct;
-        double levelInit = q_act_tot / (1000 * width * length);
         
         //int ID = (int)entity.getDouble("ID");
         // System.out.getRuntime().println("Processing reach: " + ID);
@@ -392,6 +411,8 @@ import jams.model.*;
         else if(this.tempRes.getValue().equals("h"))
             sec_inTStep = 3600;
         double flow_veloc = this.calcFlowVelocity(q_act_tot, width, slope, rough, sec_inTStep);
+        double flowLength = flow_veloc * seconds;
+        double levelHydrau = q_act_tot / (flowLength * width * 1000);
         
         
         //recession coefficient
@@ -429,16 +450,9 @@ import jams.model.*;
         addInAct = addInAct - q_act_out * addInPart;
         
         double channelStorage = RD1act + RD2act + RG1act + RG2act + addInAct;
-        double levelEnd = channelStorage / (1000 * width * length);
+  
         
         double cumOutflow = RD1out + RD2out + RG1out + RG2out + addInOut;
-        /*if (reachID.getValue()==800)
-        {System.out.println(RD1out);
-        System.out.println(RD2out);
-        System.out.println(RG1out);
-        System.out.println(RG2out);
-        }
-        */
         
         simRunoff.setValue(cumOutflow);
         this.channelStorage.setValue(channelStorage);
@@ -460,9 +474,8 @@ import jams.model.*;
         outRD2.setValue(RD2out);
         outRG1.setValue(RG1out);
         outRG2.setValue(RG2out);
-        
-        waterLevelInit.setValue(levelInit);
-        waterLevelEnd.setValue(levelEnd);
+         
+        waterLevelAfterRouting.setValue(levelHydrau);
         
         outAddIn.setValue(addInOut);
         double verzoegerung;
@@ -548,8 +561,6 @@ import jams.model.*;
         double A = (q / v);
         
         double rh = A / (width + 2*(A / width));
-        
-        double level = A /width;
         
         return rh;
     }
