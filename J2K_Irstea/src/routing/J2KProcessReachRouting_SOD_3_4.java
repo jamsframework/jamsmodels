@@ -282,9 +282,15 @@ import java.util.GregorianCalendar;
      
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
+            description = "Water level in reach during routing"
+            )
+            public Attribute.Double waterLevelRouting; 
+    @JAMSVarDescription(
+            access = JAMSVarDescription.AccessType.WRITE,
             description = "Water level in reach after routing"
             )
-            public Attribute.Double waterLevelAfterRouting;          
+            public Attribute.Double waterLevelAfterRouting; 
+        
     private int seconds;
 
     public void init() {
@@ -450,6 +456,9 @@ import java.util.GregorianCalendar;
         addInAct = addInAct - q_act_out * addInPart;
         
         double channelStorage = RD1act + RD2act + RG1act + RG2act + addInAct;
+        double flow_veloc_after = this.calcFlowVelocity(channelStorage, width, slope, rough, sec_inTStep);
+        double flowLength_after = flow_veloc_after * seconds;
+        double levelHydrau_after = channelStorage / (flowLength_after * width * 1000);
   
         
         double cumOutflow = RD1out + RD2out + RG1out + RG2out + addInOut;
@@ -475,7 +484,8 @@ import java.util.GregorianCalendar;
         outRG1.setValue(RG1out);
         outRG2.setValue(RG2out);
          
-        waterLevelAfterRouting.setValue(levelHydrau);
+        waterLevelRouting.setValue(levelHydrau);
+        waterLevelAfterRouting.setValue(levelHydrau_after);
         
         outAddIn.setValue(addInOut);
         double verzoegerung;
