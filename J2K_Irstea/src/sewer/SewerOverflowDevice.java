@@ -111,7 +111,13 @@ public class SewerOverflowDevice extends JAMSComponent {
     public Attribute.Double ID;
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.WRITE,
             description = "resulting water level in the reach")
-    public Attribute.Double waterLevel;
+    public Attribute.Double waterLevelInit;
+    @JAMSVarDescription(access = JAMSVarDescription.AccessType.WRITE,
+            description = "resulting water level in the reach")
+    public Attribute.Double waterLevelMax;
+    @JAMSVarDescription(access = JAMSVarDescription.AccessType.WRITE,
+            description = "resulting water level in the reach")
+    public Attribute.Double waterLevelEnd;
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READWRITE,
             description = "number of overflow events")
     public Attribute.Double overflowCount;
@@ -175,17 +181,20 @@ public class SewerOverflowDevice extends JAMSComponent {
         }
 
         double slope = this.slope.getValue();
-
-
-        double[] initState = calcWaterLevel(volumeInit, width.getValue(), slope, roughness.getValue(), seconds);
-        double[] maxState = calcWaterLevel(volumeMax, width.getValue(), slope, roughness.getValue(), seconds);
-
-        double waterLevelInit = initState[0];
-        double waterLevelMax = maxState[0];
-        double flowLengthMax = maxState[1];
-
+        double[] initState = {0,0}, maxState = {0,0};
+        double run_waterLevelInit = 0, run_waterLevelMax = 0, flowLengthMax = 0;
+        if (volumeInit > 0) {
+            initState = calcWaterLevel(volumeInit, width.getValue(), slope, roughness.getValue(), seconds);
+            run_waterLevelInit = initState[0];
+        }
+        if (volumeMax > 0){
+            maxState = calcWaterLevel(volumeMax, width.getValue(), slope, roughness.getValue(), seconds);
+            run_waterLevelMax = maxState[0];
+            flowLengthMax = maxState[1];
+        }
+        
         // overflow is happening?
-        if (waterLevelMax > threshold.getValue() && to_river.getValue() != null) {
+        if (run_waterLevelMax > threshold.getValue() && to_river.getValue() != null) {
 
             double g = 9.80665; //gravitationnal constant
             double overflowedVolume;
@@ -193,17 +202,17 @@ public class SewerOverflowDevice extends JAMSComponent {
             double c = threshold.getValue();
             double L = pipeWidth.getValue();
             double T = c + pipeHeight.getValue();
-            double h = waterLevelMax - c;
+            double h = run_waterLevelMax - c;
             
             // Let's assume that h is a linear function : h(t) = coeffLinearInterp * t + constant
             double coeffLinearInterp;
 
-            coeffLinearInterp =  (waterLevelMax - waterLevelInit) / seconds;
+            coeffLinearInterp =  (run_waterLevelMax - run_waterLevelInit) / seconds;
 
             if (h <= T - c) {
-                overflowedVolume = dischCoeff.getValue() * L * Math.sqrt(2 * g) * coeffLinearInterp * 1000 * 2/5 * (Math.pow(h, 2.5));
+                overflowedVolume = dischCoeff.getValue() * L * Math.sqrt(2 * g) / coeffLinearInterp * 1000 * 2/5 * (Math.pow(h, 2.5));
             } else {
-                overflowedVolume = dischCoeff.getValue() * L * Math.sqrt(2 * g) * coeffLinearInterp * 1000 * (2/5 * Math.pow(T - c, 2.5) + (T - c) * 2/3 * (Math.pow(h, 1.5) - Math.pow(T - c, 1.5)));
+                overflowedVolume = dischCoeff.getValue() * L * Math.sqrt(2 * g) / coeffLinearInterp * 1000 * (2/5 * Math.pow(T - c, 2.5) + (T - c) * 2/3 * (Math.pow(h, 1.5) - Math.pow(T - c, 1.5)));
             }
 
             double diffVolume = h * flowLengthMax * width.getValue() * 1000;
@@ -211,7 +220,7 @@ public class SewerOverflowDevice extends JAMSComponent {
             overflowedVolume = Math.min(overflowedVolume, diffVolume);
 
             double[] finalState = calcWaterLevel(volumeMax - overflowedVolume, width.getValue(), slope, roughness.getValue(), seconds);
-            waterLevel.setValue(finalState[0]);
+            waterLevelEnd.setValue(finalState[0]);
 
             for (int i = 0; i < inValues.length; i++) {
                 // The overflow of the SOD is limited by its pipe diameter               
@@ -229,9 +238,11 @@ public class SewerOverflowDevice extends JAMSComponent {
             for (int i = 0; i < inValues.length; i++) {
                 outValues[i].setValue(0);
             }
+            waterLevelEnd.setValue(0);
             sewerOverflow.setValue(0);
-            waterLevel.setValue(waterLevelMax);
         }
+        waterLevelInit.setValue(run_waterLevelInit);
+        waterLevelMax.setValue(run_waterLevelMax);
     }
 
     private double[] calcWaterLevel(double volume, double width, double slope, double roughness, int seconds) {
