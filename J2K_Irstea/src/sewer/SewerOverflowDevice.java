@@ -56,12 +56,7 @@ public class SewerOverflowDevice extends JAMSComponent {
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
             description = "SOD slope",
             unit = "deg")
-    public Attribute.Double slope;
-    @JAMSVarDescription(
-            access = JAMSVarDescription.AccessType.READ,
-            description = "Is slope provided as proportion of length and elevation difference [m/m]?",
-            defaultValue = "false")
-    public Attribute.Boolean slopeAsProportion;    
+    public Attribute.Double slope;    
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
             description = "SOD roughness")
     public Attribute.Double roughness;
