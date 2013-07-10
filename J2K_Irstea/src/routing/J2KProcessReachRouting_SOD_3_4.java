@@ -66,6 +66,13 @@ import java.util.GregorianCalendar;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
+            description = "Is slope provided as proportion of length and elevation difference [m/m]?",
+            defaultValue = "false"
+            )
+            public Attribute.Boolean slopeAsProportion;
+    
+    @JAMSVarDescription(
+            access = JAMSVarDescription.AccessType.READ,
             description = "reach width",
             unit = "m"
             )
@@ -320,6 +327,10 @@ import java.util.GregorianCalendar;
         double length = this.length.getValue();
         
         double slope = this.slope.getValue();
+        if (!slopeAsProportion.getValue()) {
+            slope = slope / 100;
+        }
+        
         
         double RD1act = actRD1.getValue() + inRD1.getValue();
         double RD2act = actRD2.getValue() + inRD2.getValue();

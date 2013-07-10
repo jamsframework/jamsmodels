@@ -56,7 +56,13 @@ public class SewerOverflowDevice extends JAMSComponent {
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
             description = "SOD slope",
             unit = "deg")
-    public Attribute.Double slope;    
+    public Attribute.Double slope;
+    @JAMSVarDescription(
+            access = JAMSVarDescription.AccessType.READ,
+            description = "Is slope provided as proportion of length and elevation difference [m/m]?",
+            defaultValue = "false"
+            )
+            public Attribute.Boolean slopeAsProportion;
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
             description = "SOD roughness")
     public Attribute.Double roughness;
@@ -176,6 +182,10 @@ public class SewerOverflowDevice extends JAMSComponent {
         }
 
         double slope = this.slope.getValue();
+        if (!slopeAsProportion.getValue()) {
+            slope = slope / 100;
+        }
+        
         double[] initState = {0,0}, maxState = {0,0};
         double run_waterLevelInit = 0, run_waterLevelMax = 0, flowLengthMax = 0;
         if (volumeInit > 0) {
