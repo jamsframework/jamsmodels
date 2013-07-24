@@ -129,7 +129,7 @@ public class IDW implements Serializable {
         }
 
         double result = 0;
-        for (int t = 0; t < p; t++) {
+        for (int t = 0; t < counter; t++) {
             double deltaElev = elevation - idw_elev[t];
             result += ((deltaElev * w + idw_data[t]) * idw_weights[t]);
         }

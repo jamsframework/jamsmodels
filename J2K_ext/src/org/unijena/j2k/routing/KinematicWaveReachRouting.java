@@ -3,16 +3,10 @@
 package org.unijena.j2k.routing;
 
 
-import java.io.BufferedReader;
-import java.io.FileReader;
-import java.io.BufferedWriter;
-import java.io.FileWriter;
-import java.util.StringTokenizer;
 import jams.data.*;
 import jams.model.*;
 import java.util.ArrayList;
 import java.awt.Point;
-import javax.naming.directory.NoSuchAttributeException;
 /**
  *
  * @author sa63kul
