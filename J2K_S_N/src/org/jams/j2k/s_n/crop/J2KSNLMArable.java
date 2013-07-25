@@ -34,7 +34,7 @@ import jams.data.Attribute.Calendar;
  *
  * @author Ulrike Bende-Michl
  */
-public class J2KSNLMArable {
+public class J2KSNLMArable implements Serializable{
     
     public J2KSNTillage till;
     public J2KSNFertilizer fert;

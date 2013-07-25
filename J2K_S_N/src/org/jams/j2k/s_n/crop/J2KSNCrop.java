@@ -37,7 +37,7 @@ import org.jams.j2k.s_n.crop.J2KSNLMArable;
  *
  * @author c5ulbe
  */
-public class J2KSNCrop {
+public class J2KSNCrop implements Serializable{
     
     public int cid;
     public int idc;

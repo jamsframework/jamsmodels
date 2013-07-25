@@ -33,7 +33,7 @@ public class PF_KF_KA5 {
 
         String line;
         String lineka5;
-        String inputFileName1 = "C:/LUCCI/gisdata/Soil/KA5PF.txt";
+        String inputFileName1 = "D:/LUCCI/gisdata/Soil/KA5PF.txt";
         int f = 0;
         int ncolka = 0;
         StringTokenizer tokka5;
@@ -44,7 +44,7 @@ public class PF_KF_KA5 {
             reader = new BufferedReader(new FileReader(inputFileName));
             reader1 = new BufferedReader(new FileReader(inputFileName1));
             writer = new BufferedWriter(new FileWriter(outputFileName));
-            writer1 = new BufferedWriter(new FileWriter("C:/LUCCI/gisdata/Soil/soils.par"));
+            writer1 = new BufferedWriter(new FileWriter("D:/LUCCI/gisdata/Soil/soils.par"));
 
 
 
@@ -637,6 +637,7 @@ public class PF_KF_KA5 {
 
     public static void main(String[] args) {
         PF_KF_KA5 PF = new PF_KF_KA5();
-        PF.convert("C:/LUCCI/gisdata/Soil/soil_bearbeitet_neu.txt", "C:/LUCCI/gisdata/Soil/soil_bearbeitet_PF.TXT");
+        
+        PF.convert("D:/LUCCI/gisdata/Soil/soil_bearbeitet_neu.txt", "D:/LUCCI/gisdata/Soil/soil_bearbeitet_PF.TXT");
     }
 }

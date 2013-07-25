@@ -26,11 +26,13 @@
 
 package org.jams.j2k.s_n.crop;
 
+import java.io.Serializable;
+
 /**
  *
  * @author c5ulbe
  */
-public class J2KSNFertilizer {
+public class J2KSNFertilizer implements Serializable{
     
     public int fid;
     public String fertnm;
