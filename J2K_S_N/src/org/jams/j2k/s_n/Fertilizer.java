@@ -26,11 +26,13 @@
 
 package org.jams.j2k.s_n;
 
+import java.io.Serializable;
+
 /**
  *
  * @author c5ulbe
  */
-public class Fertilizer {
+public class Fertilizer implements Serializable {
     
     public int fid;
     public String fertnm;
