@@ -41,7 +41,7 @@ import jams.tools.FileTools;
  * @author S. Kralisch, f?r mehrdimensionale Topologie modifiziert von D.Varga und B.Pfennig
  * 09.10.2008
  */
-public class MultiEntityReaderTS_2 extends JAMSComponent {
+public class MultiEntityReader extends JAMSComponent {
 
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
     description = "HRU parameter file name")
@@ -77,14 +77,26 @@ public class MultiEntityReaderTS_2 extends JAMSComponent {
     defaultValue = "to_poly")
     public Attribute.String hru2hruAttribute;
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
+    description = "Name of the attribute describing the HRU to HRU relation in the input file",
+    defaultValue = "to_poly_weights")
+    public Attribute.String hru2hruWeightAttribute;
+    @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
     description = "Name of the attribute describing the HRU to reach relation in the input file",
     defaultValue = "to_reach")
     public Attribute.String hru2reachAttribute;
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
+    description = "Name of the attribute describing the HRU to HRU relation in the input file",
+    defaultValue = "to_reach_weights")
+    public Attribute.String hru2reachWeightAttribute;
+    @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
     description = "Name of the attribute describing the reach to reach relation in the input file",
     defaultValue = "to_reach")
     public Attribute.String reach2reachAttribute;
-
+    @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
+    description = "Name of the attribute describing the HRU to HRU relation in the input file",
+    defaultValue = "bfl")
+    public Attribute.String bflAttribute;
+    
     @Override
     public void init() {
  
@@ -140,7 +152,7 @@ public class MultiEntityReaderTS_2 extends JAMSComponent {
         ArrayList<Attribute.Entity> toHRUsArrayList, toReachesArrayList;
         ArrayList<Double> toHRUsWeightsArrayList, toReachesWeightsArrayList, toHRUsBFlArrayList;
 
-        Attribute.Entity e, toPoly, zielHRU, zielReach, toReach;
+        Attribute.Entity e, zielHRU, zielReach;
 
 
         //put all entities into a HashMap with their ID as key
@@ -164,51 +176,30 @@ public class MultiEntityReaderTS_2 extends JAMSComponent {
          //associate the hru entities with their downstream entity
         hruIterator = hrus.getEntities().iterator();
         while (hruIterator.hasNext()) {
-            e = hruIterator.next();
-            toPoly = hruMap.get(e.getDouble(hru2hruAttribute.getValue()));
-            toReach = reachMap.get(e.getDouble(hru2reachAttribute.getValue()));
-
-            if ((toPoly == null) ) {
-                getModel().getRuntime().sendErrorMsg("Topological hru neighbour for HRU with ID "
-                        + e.getId() + " could not be found. This may cause errors! The neighbour in question is " + e.getDouble(hru2hruAttribute.getValue()));
-            }
+            e = hruIterator.next();            
+            //empty list as default
+            e.setObject(hru2hruAttribute.getValue(), new Attribute.Entity[0]);
+            e.setObject(hru2hruWeightAttribute.getValue(), new Double[0]);
+            e.setObject(hru2reachWeightAttribute.getValue(), new Double[0]);
             
-            if ((toReach == null) ) {
-                getModel().getRuntime().sendErrorMsg("Topological reach neighbour for HRU with ID "
-                        + e.getId() + " could not be found. This may cause errors! The neighbour in question is " + e.getDouble(hru2reachAttribute.getValue()));
-            }
-
-            e.setObject(hru2hruAttribute.getValue(), toPoly);
-            e.setObject(hru2reachAttribute.getValue(), toReach);
-
+            e.setObject(hru2reachAttribute.getValue(), new Attribute.Entity[0]);
         }
 
-
-        //create empty entities, i.e. those that are linked to in case there is no linkage ;-)
-        nullEntity.setValue((HashMap<String, Object>) null);
-        reachMap.put(new Double(0), nullEntity);
-
         try {
-
             reader1 = new BufferedReader(new FileReader(getModel().getWorkspaceDirectory().getPath() + "/" + to_hru_FileName.getValue()));
             reader2 = new BufferedReader(new FileReader(getModel().getWorkspaceDirectory().getPath() + "/" + bfl_FileName.getValue()));
 
-            String toHRUsLine = "#";
-            while (toHRUsLine.startsWith("#")) {
-                toHRUsLine = reader1.readLine();
-            }
-
-            String toHRUsWeightsLine = "#";
-            while (toHRUsWeightsLine.startsWith("#")) {
+            String toHRUsLine = "#", toHRUsWeightsLine = "#";
+            while (toHRUsLine != null && toHRUsLine.startsWith("#")) {
+                toHRUsLine = reader1.readLine();                
+            }            
+            while (toHRUsWeightsLine != null && toHRUsWeightsLine.startsWith("#")) {
                 toHRUsWeightsLine = reader2.readLine();
             }
 
-            while ((toHRUsLine != null) && !toHRUsLine.startsWith("#")) {
-                //String zeichenkette = "\t";
-                String zeichenkette = ",-8888.000,";
-
-                String[] toHRUsSplitArray = toHRUsLine.split(zeichenkette);
-                String[] toHRUsWeightsSplitArray = toHRUsWeightsLine.split(zeichenkette);
+            while ((toHRUsLine != null) && !toHRUsLine.startsWith("#") && toHRUsWeightsLine != null) {
+                String[] toHRUsSplitArray = toHRUsLine.split("\t");
+                String[] toHRUsWeightsSplitArray = toHRUsWeightsLine.split("\t");
 
                 double HRUsID = Double.parseDouble(toHRUsSplitArray[0]);
                 double HRUsBFl = Double.parseDouble(toHRUsSplitArray[1]);
@@ -241,10 +232,9 @@ public class MultiEntityReaderTS_2 extends JAMSComponent {
                 StringTokenizer toHRUsToken = new StringTokenizer(toHRUsString, ","); //Tokenizer fuer Empfaenger-HRUs
                 StringTokenizer toHRUsWeightsToken = new StringTokenizer(toHRUsWeightsString, ","); //Tokenizer fuer die Wichtungen der Empfaenger-HRUs
 
-                boolean tschuessnull = false;
                 double sumWeights = 1;
 
-                while (toHRUsToken.hasMoreTokens() && tschuessnull == false) {
+                while (toHRUsToken.hasMoreTokens()) {
                     double toHRUsID = 0;
                     double toHRUsWeight = 0;
 
@@ -254,6 +244,7 @@ public class MultiEntityReaderTS_2 extends JAMSComponent {
                         nsee.printStackTrace();
                         System.out.println("Not enough tokens in line:" + toHRUsLine);
                     }
+                    
                     try{
                         toHRUsWeight = Double.parseDouble(toHRUsWeightsToken.nextToken());
                     }catch(NoSuchElementException nsee){
@@ -261,7 +252,7 @@ public class MultiEntityReaderTS_2 extends JAMSComponent {
                         System.out.println("Not enough tokens in line:" + toHRUsWeightsLine);
                     }
                     
-                    sumWeights = 0.0001 * Math.round((sumWeights - toHRUsWeight) * 10000);
+                    sumWeights -= toHRUsWeight;
 
                     if ((toHRUsID == 0 && toHRUsWeight != 0) || (toHRUsID != 0 && toHRUsWeight == 0)) {
                         getModel().getRuntime().sendHalt("Fehler bei HRU " + HRUsID + ". Anzahl der Empfaenger-HRUs und der Wichtungen stimmen nicht ueberein.");
@@ -283,19 +274,15 @@ public class MultiEntityReaderTS_2 extends JAMSComponent {
                     }
 
                     if (toHRUsID == 0) {
-                        tschuessnull = true;
+                        break;
                     }
                 }
-
-                sumWeights = Math.abs(sumWeights);
-                if (sumWeights > 0.01) {
+                
+                if (Math.abs(sumWeights) > 0.03) {
                     getModel().getRuntime().sendHalt("Fehler bei HRU " + HRUsID + ". Summe der einzelnen Gewichte ungleich 1");
                 }
 
                 //converting the ArrayLists into Arrays
-
-                //Attribute.Entity nullEntity = getModel().getRuntime().getDataFactory().createEntity();
-
                 Attribute.Entity[] toHRUsArray = toHRUsArrayList.toArray(new Attribute.Entity[toHRUsArrayList.size()]);
                 Attribute.Entity[] toReachesArray = toReachesArrayList.toArray(new Attribute.Entity[toReachesArrayList.size()]);
 
@@ -305,21 +292,18 @@ public class MultiEntityReaderTS_2 extends JAMSComponent {
                 Double[] toHRUsBflArray = toHRUsBFlArrayList.toArray(new Double[toHRUsWeightsArrayList.size()]);
 
                 //creating new Objects for each entity
-                e.setObject("to_poly", toHRUsArray);
-                e.setObject("to_reach", toReachesArray);
+                e.setObject(hru2hruAttribute.getValue(), toHRUsArray);
+                e.setObject(hru2reachAttribute.getValue(), toReachesArray);
 
-                e.setObject("to_poly_weights", toHRUsWeightsArray);
-                e.setObject("to_reach_weights", toReachesWeightsArray);
+                e.setObject(hru2hruWeightAttribute.getValue(), toHRUsWeightsArray);
+                e.setObject(hru2reachWeightAttribute.getValue(), toReachesWeightsArray);
 
-                e.setObject("bfl", toHRUsBflArray);
-
-                sumWeights = 1;
+                e.setObject(bflAttribute.getValue(), toHRUsBflArray);
 
                 //Auslesen der jeweils naechsten Zeile
                 toHRUsLine = reader1.readLine();
                 toHRUsWeightsLine = reader2.readLine();
             }
-
         } catch (IOException ioe) {
             getModel().getRuntime().handle(ioe);
         }
@@ -330,8 +314,7 @@ public class MultiEntityReaderTS_2 extends JAMSComponent {
         while (reachIterator.hasNext()) {
             e = reachIterator.next();
 
-            toReach = reachMap.get(e.getDouble(reach2reachAttribute.getValue()));
-
+            Attribute.Entity toReach = reachMap.get(e.getDouble(reach2reachAttribute.getValue()));            
             if (toReach == null) {
                 getModel().getRuntime().sendErrorMsg("Topological neighbour for reach with ID "
                         + e.getId() + " could not be found. This may cause errors!");
@@ -339,7 +322,7 @@ public class MultiEntityReaderTS_2 extends JAMSComponent {
 
             e.setObject(reach2reachAttribute.getValue(), toReach);
         }
-        //if (this.getModel().getRuntime().)
+
         cycleCheck();
     }
 
@@ -365,6 +348,9 @@ public class MultiEntityReaderTS_2 extends JAMSComponent {
         //now this node is visited
         visitedList.add((Attribute.Double)node.getObject("ID"));
         
+        if (node.getObject("to_poly") instanceof Attribute.Entity){
+            return false;
+        }
         child_node = (Attribute.Entity[])node.getObject("to_poly");
         
         boolean result = false;
