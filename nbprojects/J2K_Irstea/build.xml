@@ -11,10 +11,10 @@
     <description> Project created in the Irstea Laboratory.</description>
     <import file="nbproject/build-impl.xml"/>
     
-<!--    <target name="-post-jar">
+   <target name="-post-jar">
         <property name="deployDir" value="../../../jams/lib"/>
         <copy file="${dist.jar}" todir="${deployDir}"/>
-    </target>    -->
+    </target>    
     
     <!--
 
