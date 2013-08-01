@@ -108,6 +108,13 @@ import jams.model.*;
             unit="L"
             )
             public Attribute.Double actETintc;
+   
+   @JAMSVarDescription(
+            access = JAMSVarDescription.AccessType.WRITE,
+            description = "delta ETP (= potET - actET) in MPS Evaporation",
+            unit="L"
+            )
+            public Attribute.Double DeltaETP;
     
    
     @JAMSVarDescription(
@@ -438,7 +445,7 @@ import jams.model.*;
     //internal state variables
     double run_maxMPS, run_maxLPS, run_actMPS, run_actMPS2,run_actLPS, run_satMPS, run_actDPS, run_satLPS, run_satSoil, run_inRD1, run_inRD2, run_inRain, run_inSnow,
             run_snowMelt, run_infiltration,run_infiltration2 ,run_infiltration3, run_interflow, run_percolation, run_overlandflow, run_potETP, run_actETP, run_snowDepth, run_area, run_slope,
-            run_outRD1, run_outRD2, run_genRD1, run_genRD2,run_deltaMPS, run_MobileWater,run_actET2,run_actET3,run_reductionFactor; //run_soilDistMPSLPS2
+            run_outRD1, run_outRD2, run_genRD1, run_genRD2,run_deltaMPS, run_MobileWater,run_actET2,run_reductionFactor,run_deltaETP; //run_soilDistMPSLPS2
     
     /*
      *  Component run stages
@@ -576,6 +583,7 @@ import jams.model.*;
         MobileWater2.setValue(this.run_MobileWater);
         actETintc.setValue(this.run_actET2);
         ReductionFactor.setValue(this.run_reductionFactor);
+        DeltaETP.setValue(this.run_deltaETP);
     }
     
     public void cleanup() {
@@ -668,7 +676,7 @@ import jams.model.*;
         
         /** delta ETP */
         double deltaETP = this.run_potETP - this.run_actETP;
-        
+        run_deltaETP = deltaETP;
         /**linear reduction after MENZEL 1997 was chosen*/
         //if(this.etp_reduction == 0){
         if(this.soilLinRed.getValue() > 0){
