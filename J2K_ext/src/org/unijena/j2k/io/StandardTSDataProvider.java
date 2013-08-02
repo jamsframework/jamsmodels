@@ -51,17 +51,18 @@ import jams.model.*;
             access = JAMSVarDescription.AccessType.WRITE,
             description = "Spatial attribute to be set"
             )
-            public Attribute.Double attribute;
+            public Attribute.Double[] attribute;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
             description = "The column of the relevant data in the data file"
             )
-            public Attribute.Integer column;
+            public Attribute.Integer[] column;
 
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            description = "constant correction factor"
+            description = "constant correction factor",
+            defaultValue = "1.0"
             )
             public Attribute.Double corr_factor;
 
@@ -71,10 +72,12 @@ import jams.model.*;
      */
     
     public void run() {
-        if(corr_factor != null)
-            attribute.setValue(dataArray.getValue()[column.getValue() - 1] * corr_factor.getValue());
-        else
-            attribute.setValue(dataArray.getValue()[column.getValue() - 1]);
+        int j=0;
+        for (Attribute.Integer c : column){
+            int i = c.getValue();            
+            attribute[j].setValue(dataArray.getValue()[i - 1] * corr_factor.getValue());
+            j++;
+        }        
     }
     
 }

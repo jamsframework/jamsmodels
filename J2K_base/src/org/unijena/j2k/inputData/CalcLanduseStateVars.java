@@ -184,6 +184,10 @@ import jams.model.*;
         int d2 = (int)(d2_400 + 0.025 * (targetElevation - 400)); //start of summer
         int d3 = (int)(d3_400 - 0.025 * (targetElevation - 400)); //start of autumn
         int d4 = (int)(d4_400 - 0.025 * (targetElevation - 400)); //start of winter
+
+        if (lais[0] != lais[3]){
+            getModel().getRuntime().sendInfoMsg("Warning: LAI0 and LAI3 should be the same in landuse class");
+        }
         
         //t < d1 -> winter
         //t > d1 && t < d2 -> spring
@@ -198,11 +202,7 @@ import jams.model.*;
         double lai0 = lais[0];
         double lai1 = lais[1];
         double lai2 = lais[2];
-        double lai3 = lais[0];
-        
-        if (lai0 != lai3){
-            getModel().getRuntime().sendInfoMsg("Warning: LAI0 and LAI3 should be the same in landuse class");
-        }
+        double lai3 = lais[3];
         
         if (d1 > d3){ //this means spring&sommer never happen
             if (d1 > d4){ //always winter
@@ -223,8 +223,8 @@ import jams.model.*;
                 lai3 = lais[3];
             }
         }else if (d2 > d3){ //winter, spring, autumn only
-            if (d2 > d4){
-                d2 = d4;
+            if (d2 > d4){ //sommer starts later as winter
+                d2 = d3;
                 lai0 = lais[0];
                 lai1 = lais[2];
                 lai2 = lais[2];
