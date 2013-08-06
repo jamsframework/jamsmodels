@@ -72,7 +72,7 @@ import jams.model.*;
             public Attribute.Double satRG1;
     
     @JAMSVarDescription(
-            access = JAMSVarDescription.AccessType.READ,
+            access = JAMSVarDescription.AccessType.WRITE,
             description = "filling rate of RG2 storage",
             unit = "L"
             )
@@ -244,6 +244,8 @@ import jams.model.*;
         this.run_outRG2 = 0;
         this.run_genRG1 = 0;
         this.run_genRG2 = 0;
+        this.run_satRG1 = 0;
+        this.run_satRG2 = 0;
         
         this.run_k_RG1 = kRG1.getValue();
         this.run_k_RG2 = kRG2.getValue();
