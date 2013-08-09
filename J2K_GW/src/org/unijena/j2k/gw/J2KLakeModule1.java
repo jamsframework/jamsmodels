@@ -296,7 +296,7 @@ import jams.model.*;
     public void run() throws Attribute.Entity.NoSuchAttributeException {
         
         Attribute.Entity entity = entities.getCurrent();
-        getModel().getRuntime().println("Das ist ein See!");
+        // getModel().getRuntime().println("Das ist ein See!");
 
         //Reading Variables and Parameters
  
@@ -472,7 +472,7 @@ import jams.model.*;
             this.run_actRG1 = this.run_maxRG1;
         }
         if(delta_RG1 > 0){
-            //getModel().getRuntime().println("interflow surplus in gw: "+delta_RG1);
+            //// getModel().getRuntime().println("interflow surplus in gw: "+delta_RG1);
         }
         return true;
     }
@@ -534,12 +534,12 @@ import jams.model.*;
                     //[m³/s]   = [m²]       * [m/s]           * [m]          / [m]
                     if (rg2_out_m3 > potOutflow) {
                         rg2_out_m3 = potOutflow;
-                        getModel().getRuntime().println("Alles raus!");
+                        // getModel().getRuntime().println("Alles raus!");
                     }
             }
         } else {
            if (toPoly.getValue() != null) {
-               getModel().getRuntime().println("Groundwater-Table in Receiver-HRU is higher.");
+               // getModel().getRuntime().println("Groundwater-Table in Receiver-HRU is higher.");
 
             }
         }

@@ -71,7 +71,7 @@ public class J2KProcessGWRoutingPreparator extends JAMSComponent {
             if (e.getDouble("type") < 3) {
                 f = (Attribute.Entity) e.getObject("to_poly");
 
-                //getModel().getRuntime().println("Processing Entity: " + e.getDouble("ID"));
+                //// getModel().getRuntime().println("Processing Entity: " + e.getDouble("ID"));
 
                 if (!routingMap.containsKey(f)) {
                     routingMap.put(f, new ArrayList<Attribute.Entity>());
@@ -84,7 +84,7 @@ public class J2KProcessGWRoutingPreparator extends JAMSComponent {
         routingIterator = hrus.getEntities().iterator();
         while (routingIterator.hasNext()) {
             r = routingIterator.next();
-            //getModel().getRuntime().println("Processing Entity: " + r.getDouble("ID"));
+            //// getModel().getRuntime().println("Processing Entity: " + r.getDouble("ID"));
             senderPolys = routingMap.get(r);
             if (senderPolys != null) {
 
@@ -116,7 +116,7 @@ public class J2KProcessGWRoutingPreparator extends JAMSComponent {
         routingIterator = reaches.getEntities().iterator();
         while (routingIterator.hasNext()) {
             r = routingIterator.next();
-            //getModel().getRuntime().println("into Reach: " + r.getDouble("ID"));
+            //// getModel().getRuntime().println("into Reach: " + r.getDouble("ID"));
             senderPolys = routingMap.get(r);
             if (senderPolys != null) {
 

@@ -169,7 +169,7 @@ public class J2KProcessGWRouting extends JAMSComponent {
         run_elevation = this.elevation.getValue();
 
         if (run_Peff == 0){
-//            getModel().getRuntime().println("Current entity ID: " + (int) entity.getDouble("ID") + "Peff = 0");
+//            // getModel().getRuntime().println("Current entity ID: " + (int) entity.getDouble("ID") + "Peff = 0");
         }
         run_baseHeigth = baseHeigth.getValue();
 
@@ -208,7 +208,7 @@ public class J2KProcessGWRouting extends JAMSComponent {
                     //es wird der Gradient von Zeitschritt t-1 unverändert verwendet
                     gradientNew[i] = fP[i].getDouble("gwTable") - gwTable.getValue();   //fP("gwTable") = old_gwTable!
                     if (gradientNew[i] < 0) {
-                        //getModel().getRuntime().println("Negativer Gradient!");
+                        //// getModel().getRuntime().println("Negativer Gradient!");
                     }
                 }
             }
@@ -251,7 +251,7 @@ public class J2KProcessGWRouting extends JAMSComponent {
                 fP[i].setDouble("FlurAbstand", run_Flurabstand);
                 fP[i].setDouble("gwTable", run_gwTableUpper);
                 if (run_gwTableUpper < 0){
-                    //getModel().getRuntime().println("Negative Wasserspiegellage.");
+                    //// getModel().getRuntime().println("Negative Wasserspiegellage.");
                 }
             }
         }
@@ -263,7 +263,7 @@ public class J2KProcessGWRouting extends JAMSComponent {
         this.run_Flurabstand = this.run_elevation - this.run_gwTableLower;
 
         if (run_gwTableLower < 0){
-            //getModel().getRuntime().println("Negative Wasserspiegellage.");
+            //// getModel().getRuntime().println("Negative Wasserspiegellage.");
         }
 
         if (flag) {
@@ -284,7 +284,7 @@ public class J2KProcessGWRouting extends JAMSComponent {
             gradientPost = fP[i].getDouble("pot_gwTable") - pot_gwTable;
 
             if (gradientPost < 0) {
-                //getModel().getRuntime().println("Negative PostGradient.");
+                //// getModel().getRuntime().println("Negative PostGradient.");
                 gradientPost = 0;
             }
 
@@ -298,14 +298,14 @@ public class J2KProcessGWRouting extends JAMSComponent {
                     double c = m / a;
                     gradientNew[i] = a + (a - (a / c * Math.exp(c) - a / c));
                                 if (gradientNew[i] < 0) {
-                //getModel().getRuntime().println("Negative Gradient.");
+                //// getModel().getRuntime().println("Negative Gradient.");
                 gradientNew[i] = 0;
             }
                 } else if (m < 0){      // Fallender Grundwasserstand
                     double c = m / a;
                     gradientNew[i] = a / c * Math.exp(c) - a / c;
                 if (gradientNew[i] < 0) {
-                //getModel().getRuntime().println("Negative Gradient.");
+                //// getModel().getRuntime().println("Negative Gradient.");
                 gradientNew[i] = 0;
             }
                 } else {                // Grundwasserstand vorher und nachher ist gleich
@@ -333,7 +333,7 @@ public class J2KProcessGWRouting extends JAMSComponent {
                 }else{
                 GWout_new = (fP[i].getDouble("calcFactor") * gradientNew[i]) * 1000;
                 if (GWout_new < 0) {
-                    getModel().getRuntime().println("MIST.");
+                    // getModel().getRuntime().println("MIST.");
                     GWout_new = 0;
                 }
 
@@ -354,7 +354,7 @@ public class J2KProcessGWRouting extends JAMSComponent {
                 sumGWin_new = sumGWin_new + GWout_sum;
            }
         } else {
-            //getModel().getRuntime().println("Groundwater-Table in Receiver-HRU is higher.");
+            //// getModel().getRuntime().println("Groundwater-Table in Receiver-HRU is higher.");
         }
 
         GWact_new = old_GWact + sumGWin_new;

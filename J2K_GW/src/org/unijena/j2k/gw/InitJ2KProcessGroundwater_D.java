@@ -274,7 +274,7 @@ public class InitJ2KProcessGroundwater_D extends JAMSComponent {
 
         }
 	else {
-	    getModel().getRuntime().println("Current entity has no receiver.");
+	    // getModel().getRuntime().println("Current entity has no receiver.");
 	}
         
         /*Berechnung mit Koordinaten (alt):
@@ -328,7 +328,7 @@ public class InitJ2KProcessGroundwater_D extends JAMSComponent {
         run_actGW = run_maxGW * initGW.getValue();
 
         if (run_actGW <= 0) {
-	    //getModel().getRuntime().println("Act GW <= 0.");
+	    //// getModel().getRuntime().println("Act GW <= 0.");
 	}
 
         run_satGW = run_actGW / run_maxGW;

@@ -557,7 +557,7 @@ public class J2KProcessGroundwater_D extends JAMSComponent {
         // Wenn Unterlieger eine Reach ist (direkte Weitergabe der Berechneten Werte):
         if (entity.getDouble("type") == 3){
             if (toReach.getDouble("ID") == 1134){
-                getModel().getRuntime().println("Current entity ID: 1134.");
+                // getModel().getRuntime().println("Current entity ID: 1134.");
             }
 
         // wenn Unterlieger eine HRU ist
@@ -818,7 +818,7 @@ public class J2KProcessGroundwater_D extends JAMSComponent {
         //if (this.run_gwTableUpper >= this.run_gwTableLower) {
             if (toPoly.getValue() != null) {
                     if (gwDifference < 0) {
-                        //getModel().getRuntime().println("Negativer Gradient zur HRU! Entity:" + actualEntityID);
+                        //// getModel().getRuntime().println("Negativer Gradient zur HRU! Entity:" + actualEntityID);
                         gwDifference = 0;
 
                     }
@@ -839,7 +839,7 @@ public class J2KProcessGroundwater_D extends JAMSComponent {
 
                         if (GW_out_m3 > maxOutflow) {
                             GW_out_m3 = maxOutflow;
-                            //getModel().getRuntime().println("Alles raus!" + actualEntityID);
+                            //// getModel().getRuntime().println("Alles raus!" + actualEntityID);
                         
                 }
             } else {
@@ -850,7 +850,7 @@ public class J2KProcessGroundwater_D extends JAMSComponent {
 
                 double reachArea = toReach.getDouble("width") * toReach.getDouble("length");
                 if (gwDifference < 0) {
-                    //getModel().getRuntime().println("Negativer Gradient! Entity:" + actualEntityID);
+                    //// getModel().getRuntime().println("Negativer Gradient! Entity:" + actualEntityID);
                     gwDifference = 0;
                 }
                 double A1 = this.run_area * this.run_Peff;
@@ -878,7 +878,7 @@ public class J2KProcessGroundwater_D extends JAMSComponent {
 
                 //Methode nach MILES 1985
 /*              if (gwDifference < 0) {
-                getModel().getRuntime().println("Negativer Gradient! Entity:" + actualEntityID);
+                // getModel().getRuntime().println("Negativer Gradient! Entity:" + actualEntityID);
                 gwDifference = 0;
                 }
                 //Nahbereich: Zone I... etwa Gerinnebreite
@@ -886,7 +886,7 @@ public class J2KProcessGroundwater_D extends JAMSComponent {
                 double riverDepth = toReach.getDouble("waterTable_NN") - riverBase;
                 double aqUnderRiver = riverBase - this.run_baseHeigth;
                 if (aqUnderRiver < 1){
-                getModel().getRuntime().println("Aquiferbasis < 1 m! Reach:" + toReach.getDouble("ID"));
+                // getModel().getRuntime().println("Aquiferbasis < 1 m! Reach:" + toReach.getDouble("ID"));
                 }
                 double C = 5.0 *((0.5 * toReach.getDouble("width")) + riverDepth)/(aqUnderRiver + riverDepth);
 
@@ -895,19 +895,19 @@ public class J2KProcessGroundwater_D extends JAMSComponent {
 
                 if (GW_out_m3 > maxOutflow) {
                     GW_out_m3 = maxOutflow;
-                    //getModel().getRuntime().println("Alles raus in Reach!"  + actualEntityID);
+                    //// getModel().getRuntime().println("Alles raus in Reach!"  + actualEntityID);
                 }
                 if (GW_out_m3 < 0) {
                     GW_out_m3 = 0;
-                   //getModel().getRuntime().println("Negativer Ausfluss! Entity:" + actualEntityID);
+                   //// getModel().getRuntime().println("Negativer Ausfluss! Entity:" + actualEntityID);
                 
                }
             }
         /*} else {
            if (toPoly.getValue() != null) {
-               getModel().getRuntime().println("Groundwater-Table in Receiver-HRU is higher. " + toPoly.getDouble("ID"));
+               // getModel().getRuntime().println("Groundwater-Table in Receiver-HRU is higher. " + toPoly.getDouble("ID"));
            }else{
-               getModel().getRuntime().println("Water-Table in Reach is higher. " + toReach.getDouble("ID"));
+               // getModel().getRuntime().println("Water-Table in Reach is higher. " + toReach.getDouble("ID"));
            }
         }*/
 

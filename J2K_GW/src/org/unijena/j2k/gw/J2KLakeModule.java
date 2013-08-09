@@ -260,7 +260,7 @@ import jams.model.*;
     public void run() throws Attribute.Entity.NoSuchAttributeException {
         
         Attribute.Entity entity = entities.getCurrent();
-        getModel().getRuntime().println("Das ist ein See!");
+        // getModel().getRuntime().println("Das ist ein See!");
 
         //Reading Variables and Parameters
 
@@ -422,7 +422,7 @@ import jams.model.*;
             this.run_actRG1 = this.run_maxRG1;
         }
         if(delta_RG1 > 0){
-            //getModel().getRuntime().println("interflow surplus in gw: "+delta_RG1);
+            //// getModel().getRuntime().println("interflow surplus in gw: "+delta_RG1);
         }
         return true;
     }

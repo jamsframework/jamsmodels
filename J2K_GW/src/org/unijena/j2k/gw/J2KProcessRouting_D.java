@@ -254,7 +254,7 @@ import jams.model.*;
             toReservoir.setDouble("compRG2", resRG2);
         } 
         else{
-            getModel().getRuntime().println("Current entity ID: " + (int)entity.getDouble("ID") + " has no receiver.");
+            // getModel().getRuntime().println("Current entity ID: " + (int)entity.getDouble("ID") + " has no receiver.");
         }
         
     }

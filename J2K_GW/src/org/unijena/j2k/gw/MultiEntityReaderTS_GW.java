@@ -23,16 +23,15 @@
  */
 package org.unijena.j2k.gw;
 
-import java.io.BufferedReader;
-import java.io.FileReader;
-import java.io.IOException;
+import java.io.*;
 import org.unijena.j2k.*;
 import jams.data.*;
 import jams.model.*;
 import java.util.*;
 import jams.JAMS;
 import java.lang.Math.*;
-import jams.tools.JAMSTools;
+import jams.tools.FileTools;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -71,21 +70,41 @@ public class MultiEntityReaderTS_GW extends JAMSComponent {
 
     public void init() throws Attribute.Entity.NoSuchAttributeException {
 
-        //read hru parameter
-        hrus.setEntities(J2KFunctions.readParas(JAMSTools.CreateAbsoluteFileName(getModel().getWorkspaceDirectory().getPath(), hruFileName.getValue()), getModel()));
-
+        ArrayList<Attribute.Entity> hruCollection = J2KFunctions.readParas(FileTools.createAbsoluteFileName(getModel().getWorkspaceDirectory().getPath(), hruFileName.getValue()), getModel());
+                
+        //assign IDs to all hru entities
+        for (Attribute.Entity e : hruCollection) {
+            try {
+                e.setId((long) e.getDouble(hruFileName.getValue()));
+            } catch (Attribute.Entity.NoSuchAttributeException nsae) {
+                getModel().getRuntime().sendErrorMsg("Couldn't find attribute \"ID\" while reading J2K HRUu parameter file (" + hruFileName.getValue() + ")!");
+            }
+        }
+        hrus.setEntities(hruCollection);
+        
         //read reach parameter
-        reaches.setEntities(J2KFunctions.readParas(JAMSTools.CreateAbsoluteFileName(getModel().getWorkspaceDirectory().getPath(), reachFileName.getValue()), getModel()));
-
+        ArrayList<Attribute.Entity> reachCollection = J2KFunctions.readParas(FileTools.createAbsoluteFileName(getModel().getWorkspaceDirectory().getPath(), reachFileName.getValue()), getModel());
+        
+        //assign IDs to all reach entities
+        for (Attribute.Entity e : reachCollection) {
+            try {
+                e.setId((long) e.getDouble(reachFileName.getValue()));
+            } catch (Attribute.Entity.NoSuchAttributeException nsae) {
+                getModel().getRuntime().sendErrorMsg("Couldn't find attribute \"ID\" while reading J2K Reach parameter file (" + reachFileName.getValue() + ")!");
+            }
+        }
+        
+        reaches.setEntities(reachCollection);
+        //create object associations from id attributes for hrus and reaches
         //create object associations from id attributes for hrus and reaches
         createTopology();
 
         //create total order on hrus and reaches that allows processing them subsequently
-        getModel().getRuntime().println("Create ordered hru-list", JAMS.VERBOSE);
+        // getModel().getRuntime().println("Create ordered hru-list", JAMS.VERBOSE);
         createOrderedList(hrus, "to_poly");
-        getModel().getRuntime().println("Create ordered reach-list", JAMS.VERBOSE);
+        // getModel().getRuntime().println("Create ordered reach-list", JAMS.VERBOSE);
         createOrderedList(reaches, "to_reach");
-        getModel().getRuntime().println("Entities read successfull!", JAMS.VERBOSE);
+        // getModel().getRuntime().println("Entities read successfull!", JAMS.VERBOSE);
 
     }
 
