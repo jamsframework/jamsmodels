@@ -245,6 +245,14 @@ import jams.model.*;
             defaultValue="0.01"
             )
             public JAMSDouble ccf_factor;
+    
+        @JAMSVarDescription(
+            access = JAMSVarDescription.AccessType.WRITE,
+            update = JAMSVarDescription.UpdateType.INIT,
+            description = "presence of snow on the HRU (area if yes, else 0)",
+            unit = "mm"
+            )
+            public JAMSDouble snow_presence;
 
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
@@ -268,6 +276,7 @@ import jams.model.*;
     double run_snowAge;
     double run_coldContent;
     double run_snowMelt = 0;
+    double run_snowPresence = 0;
 
    
     /*
@@ -283,6 +292,7 @@ import jams.model.*;
 	        this.dryDens.setValue(0.0);
 	        this.snowAge.setValue(0);
 	        this.snowColdContent.setValue(0.0);
+                this.snow_presence.setValue(0.0);
 
     	}
     }
@@ -331,6 +341,7 @@ import jams.model.*;
 	        
 	        
 	        this.run_snowMelt = 0; 
+                this.run_snowPresence = 0;
 	        
 	        double accuTemp = (in_meanTemp + in_minTemp) / 2.0;
 	        double meltTemp = (in_meanTemp + in_maxTemp) / 2.0;
@@ -354,6 +365,12 @@ import jams.model.*;
 	            this.calcMetamorphosis(in_meanTemp, TRS, temp_fac, rain_fac, ground_fac, run_area, SAC, critDens);
 	        }
 	        
+                if (run_snowDepth !=0){
+                    this.run_snowPresence = this.run_area;
+                } else { this.run_snowPresence = 0;
+                
+                }
+                
 	        this.calcSnowDensities(run_area);
 	        
 	        this.netRain.setValue(this.in_rain);
@@ -363,6 +380,7 @@ import jams.model.*;
 	        this.totDens.setValue(this.run_totDens);
 	        this.dryDens.setValue(this.run_dryDens);
 	        this.snowDepth.setValue(this.run_snowDepth);
+                this.snow_presence.setValue(run_snowPresence);
            
       
                 
