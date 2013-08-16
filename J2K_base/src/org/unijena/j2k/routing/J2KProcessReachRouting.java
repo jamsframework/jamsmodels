@@ -31,12 +31,19 @@ import jams.model.*;
  * @author c0krpe
  */
 @JAMSComponentDescription(
-        title="Title",
-        author="Author",
+        title="ReachRouting_KinematicWave",
+        author="Peter Krause",
         description="Calculates flow processes in the river network by a simplified kinematic wave approach",
-        version="1.0_0",
+        version="1.0_1",
         date="2011-05-30"
         )
+@VersionComments(entries = {
+    @VersionComments.Entry(version = "1.0_0", comment = "Initial version"),
+    @VersionComments.Entry(version = "1.0_1", comment = "Added slopeAsProportion parameter to allow "
+        + "switching between reaches providiong slope either in % or in proportions "
+        + "(elevation difference / length). When using old models with this component, make sure to "
+        + "check if this value was set correctly. Otherwise you might experience a damped signal.")
+})
         public class J2KProcessReachRouting extends JAMSComponent {
     
     /*
