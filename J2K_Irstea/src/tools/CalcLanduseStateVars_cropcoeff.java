@@ -184,44 +184,98 @@ import jams.model.*;
         //---------------------------------------
         // Calculation of Julian date of the specific points of LAI and eff. Height change
         //---------------------------------------
-        int d1 = (int)(d1_400 + 0.025 * (targetElevation - 400));
-        int d2 = (int)(d2_400 + 0.025 * (targetElevation - 400));
-        int d3 = (int)(d3_400 - 0.025 * (targetElevation - 400));
-        int d4 = (int)(d4_400 - 0.025 * (targetElevation - 400));
+    int d1 = (int)(d1_400 + 0.025 * (targetElevation - 400)); //start of spring
+        int d2 = (int)(d2_400 + 0.025 * (targetElevation - 400)); //start of summer
+        int d3 = (int)(d3_400 - 0.025 * (targetElevation - 400)); //start of autumn
+        int d4 = (int)(d4_400 - 0.025 * (targetElevation - 400)); //start of winter
+
+        if (lais[0] != lais[3]){
+            getModel().getRuntime().sendInfoMsg("Warning: LAI0 and LAI3 should be the same in landuse class");
+        }
+        
+        //t < d1 -> winter
+        //t > d1 && t < d2 -> spring
+        //t > d2 && t < d3 -> summer
+        //t > d3 && t < d4 -> autumn
+        //t > d4  -> winter
+        
+        //lai[0] -> winter
+        //lai[1] -> summer
+        //lai[2] -> herbst
+        //lai[3] -> winter
+        double lai0 = lais[0];
+        double lai1 = lais[1];
+        double lai2 = lais[2];
+        double lai3 = lais[3];
+        
+        if (d1 > d3){ //this means spring&sommer never happen
+            if (d1 > d4){ //always winter
+                d1 = d4;
+                d2 = d4;
+                d3 = d4;
+                lai0 = lais[0];
+                lai1 = lais[0];
+                lai2 = lais[0];
+                lai3 = lais[3];
+            }else{ //autumn/winter only -> make a shorter spring & autumn
+                d1 = d3;
+                d2 = d3;
+                d3 = (d3+d4)/2;
+                lai0 = lais[0];
+                lai1 = lais[0];
+                lai2 = lais[2];
+                lai3 = lais[3];
+            }
+        }else if (d2 > d3){ //winter, spring, autumn only
+            if (d2 > d4){ //sommer starts later as winter
+                d2 = d3;
+                lai0 = lais[0];
+                lai1 = lais[2];
+                lai2 = lais[2];
+                lai3 = lais[3];
+            }else{
+                d2 = d3;
+                lai0 = lais[0];
+                lai1 = lais[2];
+                lai2 = lais[2];
+                lai3 = lais[3];
+            }
+        }
+        
         
         double LAI = 0;
-        
-        if(julDay <= d1){
-            LAI = lais[0];
+                
+        if(julDay <= d1){            
+            LAI = lai0;
+            
         } else if((julDay > d1) && (julDay <= d2)){
-            double LAI_1 = lais[0];
-            double LAI_2 = lais[1];
+            double LAI_1 = lai0;
+            double LAI_2 = lai1;
             dTime = d2 - d1;
             dLai  = LAI_2 - LAI_1;
             Lait1 = dLai / dTime;
             LAI  = (Lait1 * (julDay - d1) + LAI_1);
         } else if(julDay > d2 && julDay <= d3){
-            double LAI_2 = lais[1];
-            double LAI_3 = lais[2];
+            double LAI_2 = lai1;
+            double LAI_3 = lai2;
             dTime = d3 - d2;
             dLai  = LAI_3 - LAI_2;
             Lait1 = dLai / dTime;
             LAI  = (Lait1 * (julDay - d2) + LAI_2);
         } else if(julDay > d3 && julDay <= d4){
-            double LAI_3 = lais[2];
-            double LAI_4 = lais[3];
+            double LAI_3 = lai2;
+            double LAI_4 = lai3;
             dTime = d4 - d3;
             dLai  = LAI_4 - LAI_3;
             Lait1 = dLai / dTime;
             LAI  = (Lait1 * (julDay - d3) + LAI_3);
-        } else if(julDay > d4){
-            double LAI_4 = lais[3];
-            LAI  = LAI_4;
+        } else{
+            LAI = lai3;
         }
         
         return LAI;
     }
-    
+        
     /**
      * Calculates effective Height for the specific date
      * @param effHeight - the four effective height values at specific dates
