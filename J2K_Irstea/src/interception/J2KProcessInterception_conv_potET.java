@@ -297,9 +297,7 @@ public class J2KProcessInterception_conv_potET extends JAMSComponent {
                 out_InterceptionStorage = 0;
                 deltaETP = 0;
             }
-        } else{
-            out_actETP = deltaETP;
-        }
+        } 
         
      //   if (HRU_id.getValue() == 1.0){
      //      System.out.println(time.toString());
