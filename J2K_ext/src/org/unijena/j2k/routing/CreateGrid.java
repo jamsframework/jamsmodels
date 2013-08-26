@@ -31,7 +31,8 @@ public class CreateGrid extends JAMSComponent {
       
       @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
-            description = "spatial grid resolution"
+            description = "spatial grid resolution",
+            defaultValue = "25"
             )
             public Attribute.Double modelrastersize;
       
@@ -107,7 +108,7 @@ public double Rastersize(String path)
 	    String line;
 	    StringTokenizer st;
 	    
-	    while (datafound < 5) 
+	    while (datafound < 1) 
             {		
 		line = reader.readLine();	    
 		st = new StringTokenizer(line);

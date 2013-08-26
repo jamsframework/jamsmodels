@@ -163,7 +163,8 @@ import java.awt.Point;
     
       @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
-            description = "HRU statevar groundwater excess"
+            description = "HRU statevar groundwater excess",
+            defaultValue = "0"
             )
             public Attribute.Double inGWExcess;
       
