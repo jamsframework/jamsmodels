@@ -90,7 +90,7 @@ import jams.model.*;
         double actMPS = this.actMPS.getValue();
         double maxMPS = this.maxMPS.getValue();
         if (maxMPS == 0){
-            System.out.println("Olala there is a HRU with zero Field Capacity .. ");
+            getModel().getRuntime().println("Olala there is a HRU with zero Field Capacity .. ");
             return;
         }
         double satMPS = actMPS / maxMPS;
