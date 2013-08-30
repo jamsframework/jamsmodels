@@ -94,7 +94,7 @@ public class CalcDailyNetRadiation extends JAMSComponent {
     public Attribute.Double refETNetRad;
     
     public void run() throws Attribute.Entity.NoSuchAttributeException, IOException {
-
+        
         double elev = elevation.getValue();
         double temp = tmean.getValue();
         double rh = rhum.getValue();

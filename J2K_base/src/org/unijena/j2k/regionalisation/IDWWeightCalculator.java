@@ -141,7 +141,7 @@ public class IDWWeightCalculator extends JAMSComponent {
             }
         }
         statWeights.setValue(weights);
-        statOrder.setValue(wA);
+        statOrder.setValue(wA);        
     }
 
     public void cleanup() {

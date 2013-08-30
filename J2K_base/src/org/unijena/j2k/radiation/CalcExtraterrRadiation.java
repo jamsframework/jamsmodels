@@ -163,9 +163,17 @@ import jams.model.*;
                 }
             }
         }
+        
+        for (double r : extRadiation) {
+            if (Double.isNaN(r)) {
+                getModel().getRuntime().sendHalt("Found error in calculation of extraterrestric radiation, possibly due to wrong lat/long values.");
+                return;
+            }
+        }
+        
         this.extRadArray.setValue(extRadiation);
-    }
-    
+        }   
+
     public void cleanup() {
         
     }
