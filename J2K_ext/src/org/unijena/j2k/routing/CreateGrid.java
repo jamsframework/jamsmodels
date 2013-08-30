@@ -104,25 +104,18 @@ public double Rastersize(String path)
         {
 	    //search for ncols, nrows, x11corner, y11corner, cellsize, nodatevalue
 	    BufferedReader reader = new BufferedReader(new FileReader(path));		    	    	    
-	    int datafound = 0;
 	    String line;
 	    StringTokenizer st;
-	    
-	    while (datafound < 1) 
-            {		
-		line = reader.readLine();	    
-		st = new StringTokenizer(line);
-		while (st.hasMoreTokens())
-                {
-		    String tok = st.nextToken();
-		   
-		    if (tok.contains("cellsize"))
-                    {
-			cellsize = new Double(st.nextToken()).doubleValue();
-			datafound++;
-		    }		    
-		}	    
-	    }	    
+            
+            line = reader.readLine();
+            while (!line.startsWith("cellsize")) {
+                line = reader.readLine();
+            }
+	               
+            st = new StringTokenizer(line);
+    	    st.nextToken();           
+            cellsize = Double.parseDouble(st.nextToken());
+
         }
         catch (Exception e) {
 	    System.out.println(e.toString());
