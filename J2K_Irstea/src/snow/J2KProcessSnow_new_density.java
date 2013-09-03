@@ -249,10 +249,10 @@ import jams.model.*;
         @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
             update = JAMSVarDescription.UpdateType.INIT,
-            description = "presence of snow on the HRU (area if yes, else 0)",
-            unit = "mm"
+            description = "1 if the HRU is covered with snow, else 0",
+            unit = "-"
             )
-            public JAMSDouble snow_presence;
+            public JAMSDouble snowCover;
 
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
@@ -276,7 +276,7 @@ import jams.model.*;
     double run_snowAge;
     double run_coldContent;
     double run_snowMelt = 0;
-    double run_snowPresence = 0;
+    double run_snowCover = 0;
 
    
     /*
@@ -292,7 +292,7 @@ import jams.model.*;
 	        this.dryDens.setValue(0.0);
 	        this.snowAge.setValue(0);
 	        this.snowColdContent.setValue(0.0);
-                this.snow_presence.setValue(0.0);
+                this.snowCover.setValue(0.0);
 
     	}
     }
@@ -341,7 +341,7 @@ import jams.model.*;
 	        
 	        
 	        this.run_snowMelt = 0; 
-                this.run_snowPresence = 0;
+                this.run_snowCover = 0;
 	        
 	        double accuTemp = (in_meanTemp + in_minTemp) / 2.0;
 	        double meltTemp = (in_meanTemp + in_maxTemp) / 2.0;
@@ -366,8 +366,8 @@ import jams.model.*;
 	        }
 	        
                 if (run_snowDepth !=0){
-                    this.run_snowPresence = this.run_area;
-                } else { this.run_snowPresence = 0;
+                    this.run_snowCover = 1;
+                } else { this.run_snowCover = 0;
                 
                 }
                 
@@ -380,7 +380,7 @@ import jams.model.*;
 	        this.totDens.setValue(this.run_totDens);
 	        this.dryDens.setValue(this.run_dryDens);
 	        this.snowDepth.setValue(this.run_snowDepth);
-                this.snow_presence.setValue(run_snowPresence);
+                this.snowCover.setValue(this.run_snowCover);
            
       
                 
