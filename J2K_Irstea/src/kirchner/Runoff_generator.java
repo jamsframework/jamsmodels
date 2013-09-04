@@ -1,4 +1,4 @@
-/*
+﻿/*
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
@@ -76,8 +76,8 @@ public static void main(String[] argv)
     double bypass_fraction=0.0074;
     double qout
     // Computation by Euclid's method
-    // Initialize y
-    y = 0;
+    // Initialize q
+    qout=discharge.get.Value;
 
 for (i=1; i<date.length; i++)
     
