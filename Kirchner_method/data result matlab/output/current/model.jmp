@@ -1,0 +1,18 @@
+#JAMS model parameter file
+#User: nsk <Sven Kralisch>
+#Model: New_Model
+#Wed Sep 04 15:47:39 CEST 2013
+JAMSExecInfo.JAMSExecInfo=
+Runoff_generator.initialDischarge=-2.9857819427008229105870082185983
+Runoff_generator.Runoff_generator=
+Runoff_generator.c3=-0.16
+Runoff_generator.c2=1.64
+KirchnerReader.fileName=E\:\\jamsmodels\\Kirchner_method\\data result matlab\\result
+Runoff_generator.c1=-3.87
+New_Model.workspaceDirectory=
+Runoff_generator.cropCoefficient=0.74
+JAMSTemporalContext.timeInterval=1970-01-01 00\:00 1970-05-31 00\:00 11 1
+New_Model.New_Model=
+JAMSTemporalContext.JAMSTemporalContext=
+KirchnerReader.KirchnerReader=
+Runoff_generator.bypassFraction=0

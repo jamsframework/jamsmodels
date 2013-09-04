@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<model author="" date="1970-01-01 00:00" helpbaseurl="" name="New_Model" version="3.0">
+    <description/>
+    <var name="workspaceDirectory" value=""/>
+    <launcher/>
+    <datastores>
+        <outputdatastore context="JAMSTemporalContext" enabled="true" name="JAMSTemporalContext">
+            <trace>
+                <attribute id="actET"/>
+                <attribute id="obsQ"/>
+                <attribute id="precip"/>
+                <attribute id="simQ"/>
+                <attribute id="bypass"/>
+                <attribute id="discharge"/>
+            </trace>
+        </outputdatastore>
+    </datastores>
+    <preprocessors/>
+    <contextcomponent class="jams.model.JAMSTemporalContext" enabled="true" name="JAMSTemporalContext" version="1.0_0">
+        <var name="timeInterval" value="1970-01-01 00:00 1970-05-31 00:00 11 1"/>
+        <component class="jams.components.gui.JAMSExecInfo" enabled="true" name="JAMSExecInfo" version="1.0_0"/>
+        <component class="kirchner_methodology.KirchnerReader" enabled="true" name="KirchnerReader" version="1.0_0">
+            <var attribute="precip" context="JAMSTemporalContext" name="precip"/>
+            <var attribute="actET" context="JAMSTemporalContext" name="actET"/>
+            <var name="fileName" value="E:\jamsmodels\Kirchner_method\data result matlab\result"/>
+            <var attribute="obsQ" context="JAMSTemporalContext" name="obsQ"/>
+            <var attribute="simQ" context="JAMSTemporalContext" name="simQ"/>
+        </component>
+        <component class="kirchner_methodology.Runoff_generator" enabled="true" name="Runoff_generator" version="1.0_0">
+            <var name="c1" value="-3.87"/>
+            <var name="initialDischarge" value="-2.9857819427008229105870082185983"/>
+            <var name="c2" value="1.64"/>
+            <var attribute="precip" context="JAMSTemporalContext" name="precip"/>
+            <var attribute="actET" context="JAMSTemporalContext" name="actET"/>
+            <var attribute="bypass" context="JAMSTemporalContext" name="bypass"/>
+            <var name="cropCoefficient" value="0.74"/>
+            <var name="bypassFraction" value="0"/>
+            <var name="c3" value="-0.16"/>
+            <var attribute="discharge" context="JAMSTemporalContext" name="discharge"/>
+        </component>
+    </contextcomponent>
+</model>

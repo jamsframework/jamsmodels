@@ -24,6 +24,9 @@ package kirchner_methodology;
 
 import jams.data.*;
 import jams.model.*;
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
 
 /**
  *
@@ -47,29 +50,60 @@ public class KirchnerReader extends JAMSComponent {
      */
     
     @JAMSVarDescription(
-            access = JAMSVarDescription.AccessType.READ,       // type of access, i.e. READ, WRITE, READWRITE
-            description = "Description",                       // description of purpose
-            defaultValue = "0",                                // default value, defaults to "%NULL%"
-            unit = "mm",                                       // unit of this var if numeric, defaults to ""
-            lowerBound = 0,                                    // lowest allowed value of var if numeric, defaults to "0"
-            upperBound = 1000,                                 // highest allowed value of var if numeric, defaults to "0"
-            length = 0                                         // length of variable if string, defaults to "0"            
-            )
-            public Attribute.Double attribName;                // for a list of attribute types, see jams.data.Attribute  
+            access = JAMSVarDescription.AccessType.READ)
+            public Attribute.String fileName;
+    @JAMSVarDescription(
+            access = JAMSVarDescription.AccessType.WRITE)
+            public Attribute.Double simQ;
+    @JAMSVarDescription(
+            access = JAMSVarDescription.AccessType.WRITE)
+            public Attribute.Double obsQ;
+    @JAMSVarDescription(
+            access = JAMSVarDescription.AccessType.WRITE)
+            public Attribute.Double precip;
+    @JAMSVarDescription(
+            access = JAMSVarDescription.AccessType.WRITE)
+            public Attribute.Double actET;    
                 
+    
     /*
      *  Component run stages
      */
     
+    BufferedReader reader;
+    
     @Override
     public void init() {
+        try {
+            reader = new BufferedReader(new FileReader(fileName.getValue()));
+            reader.readLine();
+        } catch (IOException ex) {
+            getModel().getRuntime().println("Error while reading from " + fileName.getValue() + ": " + ex.getMessage());
+        }
     }
 
     @Override
     public void run() {
+        try {
+            String line = reader.readLine().trim();
+            String[] result = line.split("\\s+");
+            simQ.setValue(result[1]);
+            obsQ.setValue(result[2]);
+            precip.setValue(result[3]);
+            actET.setValue(result[4]);
+            
+        } catch (IOException ex) {
+            getModel().getRuntime().println("Error while reading from " + fileName.getValue() + ": " + ex.getMessage());
+        }
+    
     }
 
     @Override
     public void cleanup() {
+        try {
+            reader.close();
+        } catch (IOException ex) {
+            getModel().getRuntime().println("Error while reading from " + fileName.getValue() + ": " + ex.getMessage());
+        }
     }
 }

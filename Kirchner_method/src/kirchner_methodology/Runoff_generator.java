@@ -74,17 +74,7 @@ public class Runoff_generator extends JAMSComponent {
             access = JAMSVarDescription.AccessType.READWRITE,
             description = "Description")
     public Attribute.Double discharge;
-    
-    @JAMSVarDescription(
-            access = JAMSVarDescription.AccessType.READ, // type of access, i.e. READ, WRITE, READWRITE
-            description = "Description", // description of purpose
-            defaultValue = "0.0505", // default value, defaults to "%NULL%"
-            unit = "mm/h²", // unit of this var if numeric, defaults to ""
-            lowerBound = 0, // lowest allowed value of var if numeric, defaults to "0"
-            upperBound = 1000, // highest allowed value of var if numeric, defaults to "0"
-            length = 0 // length of variable if string, defaults to "0"            
-            )
-    public Attribute.Double initialValue;
+
     /*
      *  Component run stages
      */
@@ -124,5 +114,12 @@ public class Runoff_generator extends JAMSComponent {
         qNew = ((0.5 * (Math.exp(qOld) + Math.exp(s))) + (p * (bypassFraction.getValue())));
         
         discharge.setValue(qNew);
+    }
+    
+    public static void main(String[] args) {
+        
+        
+        
+        
     }
 }
