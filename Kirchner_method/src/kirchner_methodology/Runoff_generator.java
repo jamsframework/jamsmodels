@@ -74,7 +74,14 @@ public class Runoff_generator extends JAMSComponent {
             access = JAMSVarDescription.AccessType.READWRITE,
             description = "Description")
     public Attribute.Double discharge;
-
+    @JAMSVarDescription(
+            access = JAMSVarDescription.AccessType.WRITE,
+            description = "Description")
+    
+    public Attribute.Double discharge_real;
+    @JAMSVarDescription(
+            access = JAMSVarDescription.AccessType.WRITE,
+            description = "Description")
     /*
      *  Component run stages
      */
@@ -91,29 +98,30 @@ public class Runoff_generator extends JAMSComponent {
     public void run() {
 
         double s, s1, s2, s3, s4;
-        int dt = 1;
+        double dt = 1;
         double p = precip.getValue();
         double qOld = discharge.getValue();
         double qNew;
         
         
-        s1 = qOld + dt / 2 * Math.exp(c1.getValue() + (c2.getValue() - 2) * qOld + c3.getValue() * qOld * qOld) * 
-                 (((p * (1 - bypassFraction.getValue())) - (cropCoefficient.getValue() * actET.getValue())) - Math.exp(qOld));
+        s1 = qOld + dt/2 * (Math.exp(c1.getValue() + (c2.getValue() - 2) * qOld + c3.getValue() * qOld * qOld)) * 
+                 ((p * (1 - bypassFraction.getValue())) - (cropCoefficient.getValue() * actET.getValue()) - Math.exp(qOld));
 
-        s2 = qOld + dt / 2 * Math.exp(c1.getValue() + (c2.getValue() - 2) * s1 + c3.getValue() * s1 * s1) * 
+        s2 = qOld + dt/2 * (Math.exp(c1.getValue() + (c2.getValue() - 2) * s1 + c3.getValue() * s1 * s1)) * 
                  (((p * (1 - bypassFraction.getValue())) - (cropCoefficient.getValue() * actET.getValue())) - Math.exp(s1));
 
-        s3 = qOld + dt / 2 * Math.exp(c1.getValue() + (c2.getValue() - 2) * s2 + c3.getValue() * s2 * s2) * 
+        s3 = qOld + dt/2 * (Math.exp(c1.getValue() + (c2.getValue() - 2) * s2 + c3.getValue() * s2 * s2)) * 
                  (((p * (1 - bypassFraction.getValue())) - (cropCoefficient.getValue() * actET.getValue())) - Math.exp(s2));
 
-        s4 = qOld + dt / 2 * Math.exp(c1.getValue() + (c2.getValue() - 2) * s3 + c3.getValue() * s3 * s3) * 
+        s4 = qOld + dt/2 * (Math.exp(c1.getValue() + (c2.getValue() - 2) * s3 + c3.getValue() * s3 * s3)) * 
                  (((p * (1 - bypassFraction.getValue())) - (cropCoefficient.getValue() * actET.getValue())) - Math.exp(s3));
         
         s = (s1 / 3) + (s2 * 2 / 3) + (s3 / 3) + (s4 / 6) - qOld / 2;
 
         qNew = ((0.5 * (Math.exp(qOld) + Math.exp(s))) + (p * (bypassFraction.getValue())));
         
-        discharge.setValue(qNew);
+        discharge.setValue(s);
+        discharge_real.setValue(qNew);
     }
     
     public static void main(String[] args) {

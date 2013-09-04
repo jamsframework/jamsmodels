@@ -12,6 +12,7 @@
                 <attribute id="simQ"/>
                 <attribute id="bypass"/>
                 <attribute id="discharge"/>
+                <attribute id="discharge_real"/>
             </trace>
         </outputdatastore>
     </datastores>
@@ -22,13 +23,14 @@
         <component class="kirchner_methodology.KirchnerReader" enabled="true" name="KirchnerReader" version="1.0_0">
             <var attribute="precip" context="JAMSTemporalContext" name="precip"/>
             <var attribute="actET" context="JAMSTemporalContext" name="actET"/>
-            <var name="fileName" value="E:\jamsmodels\Kirchner_method\data result matlab\result"/>
+            <var name="fileName" value="C:\jams_models\Kirchner_method\data result matlab\result"/>
             <var attribute="obsQ" context="JAMSTemporalContext" name="obsQ"/>
             <var attribute="simQ" context="JAMSTemporalContext" name="simQ"/>
         </component>
         <component class="kirchner_methodology.Runoff_generator" enabled="true" name="Runoff_generator" version="1.0_0">
             <var name="c1" value="-3.87"/>
             <var name="initialDischarge" value="-2.9857819427008229105870082185983"/>
+            <var attribute="discharge_real" context="JAMSTemporalContext" name="discharge_real"/>
             <var name="c2" value="1.64"/>
             <var attribute="precip" context="JAMSTemporalContext" name="precip"/>
             <var attribute="actET" context="JAMSTemporalContext" name="actET"/>
