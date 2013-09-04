@@ -1,7 +1,7 @@
 #JAMS model parameter file
 #User: admin_adamovic
 #Model: New_Model
-#Wed Sep 04 18:59:48 CEST 2013
+#Wed Sep 04 19:06:12 CEST 2013
 JAMSExecInfo.JAMSExecInfo=
 Runoff_generator.initialDischarge=-2.9857819427008229105870082185983
 Runoff_generator.Runoff_generator=

@@ -86,7 +86,7 @@ public class Runoff_generator extends JAMSComponent {
      *  Component run stages
      */
     // The number of steps to use in the interval
-    public static final int STEPS = 1000;
+    
 
     @Override
     public void init() {
