@@ -93,6 +93,7 @@ import jams.model.*;
     int[] monthMean = {15,45,74,105,135,166,196,227,258,288,319,349};
     int oldmonth = 0;
     double crop = 0;
+    boolean errorReported = false;
     
     /*
      *  Component run stages
@@ -189,8 +190,9 @@ import jams.model.*;
         int d3 = (int)(d3_400 - 0.025 * (targetElevation - 400)); //start of autumn
         int d4 = (int)(d4_400 - 0.025 * (targetElevation - 400)); //start of winter
 
-        if (lais[0] != lais[3]){
+        if ((lais[0] != lais[3]) && !errorReported) {
             getModel().getRuntime().sendInfoMsg("Warning: LAI0 and LAI3 should be the same in landuse class");
+            errorReported = true;
         }
         
         //t < d1 -> winter
