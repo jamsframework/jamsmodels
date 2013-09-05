@@ -30,11 +30,25 @@ public class GeoReader extends JAMSComponent {
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,       // type of access, i.e. READ, WRITE, READWRITE
-            description = "Description"                       // description of purpose
+            description = "Parameters distribution according to the geology, 1-schists;, 2-granites; 3-limestones"                       // description of purpose
                                                     // length of variable if string, defaults to "0"            
             )
-            public Attribute.Double attribName;                // for a list of attribute types, see jams.data.Attribute  
+            public Attribute.Double geology;                // for a list of attribute types, see jams.data.Attribute  
 
+    
+    public Attribute.Integer schists;
+    @JAMSVarDescription(
+            access = JAMSVarDescription.AccessType.READ,
+            description = "Description")
+    public Attribute.Integer granites;
+    @JAMSVarDescription(
+            access = JAMSVarDescription.AccessType.READ,
+            description = "Description")
+    
+    public Attribute.Integer limestones;
+    @JAMSVarDescription(
+            access = JAMSVarDescription.AccessType.READ,
+            description = "Description")
     
     /*
      *  Component run stages
@@ -47,8 +61,9 @@ public class GeoReader extends JAMSComponent {
     @Override
     public void run() {
         
-        getModel().getRuntime().println(" schists, granite, limestones");
-        
+        schists.setValue(1);
+        granites.setValue(2);
+        limestones.setValue(3);
     }
 
     @Override
