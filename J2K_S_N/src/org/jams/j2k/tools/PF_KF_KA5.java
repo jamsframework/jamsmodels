@@ -13,7 +13,7 @@ import java.io.IOException;
 import java.util.StringTokenizer;
 
 /**
- * Program for implementation of the pedo transfer function for the pf values using bulk densitty, soil textur classes and organic carbon of the KA5
+ * Program for implementation of the pedo transfer function of the KA5 for the pf values using bulk densitty, soil textur classes and organic carbon 
  * 
  *
  * @author c8fima
