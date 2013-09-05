@@ -14,7 +14,7 @@ import jams.model.*;
  @JAMSComponentDescription(
     title="Title",
     author="Author",
-    description="Description",
+    description="Parameter distribution according to the geology",
     date = "YYYY-MM-DD",
     version = "1.0_0"
 )
@@ -28,18 +28,14 @@ public class GeoReader extends JAMSComponent {
      *  Component attributes
      */
     
-    @JAMSVarDescription(
-            access = JAMSVarDescription.AccessType.READ,       // type of access, i.e. READ, WRITE, READWRITE
-            description = "Parameters distribution according to the geology, 1-schists;, 2-granites; 3-limestones"                       // description of purpose
-                                                    // length of variable if string, defaults to "0"            
-            )
-            public Attribute.Double geology;                // for a list of attribute types, see jams.data.Attribute  
+             // for a list of attribute types, see jams.data.Attribute  
 
     
     public Attribute.Integer schists;
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
             description = "Description")
+    
     public Attribute.Integer granites;
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,

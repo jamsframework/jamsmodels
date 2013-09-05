@@ -35,8 +35,8 @@
             <var attribute="precip" context="JAMSTemporalContext" name="precip"/>
             <var attribute="actET" context="JAMSTemporalContext" name="actET"/>
             <var attribute="bypass" context="JAMSTemporalContext" name="bypass"/>
-            <var name="cropCoefficient" value="0.74"/>
-            <var name="bypassFraction" value="0"/>
+            <var name="cropCoefficient" value="0.62"/>
+            <var name="bypassFraction" value="0.074"/>
             <var name="c3" value="-0.16"/>
             <var attribute="discharge" context="JAMSTemporalContext" name="discharge"/>
         </component>
