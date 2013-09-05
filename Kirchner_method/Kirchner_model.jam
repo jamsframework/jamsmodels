@@ -1,0 +1,559 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<model author="" date="2012-04-01 00:00" helpbaseurl="http://jams.uni-jena.de/jamswiki" name="J2K" version="3.0">
+    <description><![CDATA[Ardeche model, hourly time step]]></description>
+    <var name="workspaceDirectory" value=""/>
+    <launcher>
+        <group name="Main">
+            <property attribute="workspaceDirectory" component="J2K" description="Directory that contains the input data" name="Workspace directory" range="0.0;0.0" type="DirName"/>
+            <property attribute="timeInterval" component="J2K" description="Start and end date of simulation" name="Time interval" range="0.0;0.0" type="TimeInterval"/>
+            <property attribute="data_caching" component="J2K" description="Caching configuration:&lt;br&gt;&amp;nbsp;0 - write cache&lt;br&gt;&amp;nbsp;1 - use cache&lt;br&gt;&amp;nbsp;2 - caching off&lt;br&gt;Option 1 needs the model to be run once in advance with option 0." name="Caching" range="0.0;2.0" type="Integer"/>
+        </group>
+        <group name="Plots &amp; Maps">
+            <subgroup name="Plots">
+                <property attribute="%enable%" component="Runoff Plot" description="Switches plot on or off" name="Runoff plot" range="0.0;0.0" type="Boolean"/>
+                <property attribute="%enable%" component="Soil moisture plot" description="Switches plot on or off" name="Soil moisture plot" range="0.0;0.0" type="Boolean"/>
+            </subgroup>
+            <subgroup name="Maps">
+                <property attribute="%enable%" component="GeometryReader" description="" name="GeometryReader enable" range="0.0;0.0" type="Boolean"/>
+                <property attribute="%enable%" component="Map" description="Switches map on or off" name="Map enable" range="0.0;0.0" type="Boolean"/>
+                <property attribute="showAttr" component="Map" description="Semicolon separated list of attributes to be shown" name="Map attributes" range="0.0;0.0" type="StringArray"/>
+                <property attribute="%enable%" component="Map3D" description="Switches 3D map on or off" name="Map3D Enable " range="0.0;0.0" type="Boolean"/>
+                <property attribute="showAttr" component="Map3D" description="Semicolon separated list of attributes to be shown" name="Map3D attributes" range="0.0;0.0" type="StringArray"/>
+            </subgroup>
+            <property attribute="%enable%" component="SpreadSheet" description="" name="Spreadseet enable" range="0.0;0.0" type="Boolean"/>
+        </group>
+        <group name="Initialising">
+            <property attribute="FCAdaptation" component="InitSoilWater" description="Multiplier for field capacity" name="Multiplier for field capacity" range="0.0;5.0" type="Double"/>
+            <property attribute="ACAdaptation" component="InitSoilWater" description="Multiplier for air capacity" name="Multiplier for air capacity" range="0.0;5.0" type="Double"/>
+            <property attribute="initRG1" component="InitGroundWater" description="Initial storage of RG1 relative to maximum storage" name="InitGroundWater.initRG1" range="0.0;1.0" type="Double"/>
+            <property attribute="initRG2" component="InitGroundWater" description="Initial storage of RG2 relative to maximum storage" name="InitGroundWater.initRG2" range="0.0;1.0" type="Double"/>
+        </group>
+        <group name="Regionalization">
+            <subgroup name="Precipitation">
+                <property attribute="nidw" component="PrecipRegionaliser" description="Number of closest stations for regionalization" name="Number of closest stations for regionalization" range="1.0;999.0" type="Integer"/>
+                <property attribute="pidw" component="precipWeights" description="Power of IDW function for regionalization" name="Power of IDW function for regionalization" range="1.0;999.0" type="Double"/>
+                <property attribute="rsqThreshold" component="PrecipRegionaliser" description="R² threshold for elevation correction" name="R² threshold for elevation correction" range="0.0;1.0" type="Double"/>
+                <property attribute="elevationCorrection" component="PrecipRegionaliser" description="Elevation correction on/off" name="Elevation correction on/off" range="0.0;0.0" type="Boolean"/>
+            </subgroup>
+        </group>
+        <group name="Interception">
+            <property attribute="alpha" component="J2KProcessSimpleIntc" description="Calibration parameter for maximum interception" name="alpha" range="0.0;10.0" type="Double"/>
+        </group>
+        <group name="SoilWater">
+            <property attribute="soilMaxDPS" component="J2KProcessLumpedSoilWater" description="Maximum depression storage capacity [mm]" name="soilMaxDPS" range="0.0;10.0" type="Double"/>
+            <property attribute="soilPolRed" component="J2KProcessLumpedSoilWater" description="Potential reduction coeffiecient for aET computation" name="soilPolRed" range="0.0;10.0" type="Double"/>
+            <property attribute="soilLinRed" component="J2KProcessLumpedSoilWater" description="Linear reduction coeffiecient for aET computation" name="soilLinRed" range="0.0;10.0" type="Double"/>
+            <property attribute="soilMaxInfSummer" component="J2KProcessLumpedSoilWater" description="Maximum infiltration in summer [mm]" name="soilMaxInfSummer" range="0.0;200.0" type="Double"/>
+            <property attribute="soilMaxInfWinter" component="J2KProcessLumpedSoilWater" description="Maximum infiltration in winter [mm]" name="soilMaxInfWinter" range="0.0;200.0" type="Double"/>
+            <property attribute="soilMaxInfSnow" component="J2KProcessLumpedSoilWater" description="Maximum infiltration for snow covered areas [mm]" name="soilMaxInfSnow" range="0.0;200.0" type="Double"/>
+            <property attribute="soilImpGT80" component="J2KProcessLumpedSoilWater" description="Relative infiltration for impervious areas greater 80% sealing " name="soilImpGT80" range="0.0;1.0" type="Double"/>
+            <property attribute="soilImpLT80" component="J2KProcessLumpedSoilWater" description="Relative infiltration for impervious areas less 80% sealing" name="soilImpLT80" range="0.0;1.0" type="Double"/>
+            <property attribute="soilDistMPSLPS" component="J2KProcessLumpedSoilWater" description="MPS/LPS distribution coefficient" name="soilDistMPSLPS" range="0.0;10.0" type="Double"/>
+            <property attribute="soilDiffMPSLPS" component="J2KProcessLumpedSoilWater" description="MPS/LPS diffusion coefficient" name="soilDiffMPSLPS" range="0.0;10.0" type="Double"/>
+            <property attribute="soilOutLPS" component="J2KProcessLumpedSoilWater" description="Outflow coefficient for LPS" name="soilOutLPS" range="0.0;100.0" type="Double"/>
+            <property attribute="soilLatVertLPS" component="J2KProcessLumpedSoilWater" description="Lateral-vertical distribution coefficient" name="soilLatVertLPS" range="0.0;10.0" type="Double"/>
+            <property attribute="soilMaxPerc" component="J2KProcessLumpedSoilWater" description="Maximum percolation rate [mm]" name="soilMaxPerc" range="0.0;20.0" type="Double"/>
+            <property attribute="soilConcRD1" component="J2KProcessLumpedSoilWater" description="Recession coefficient for overland flow" name="soilConcRD1" range="0.0;10.0" type="Double"/>
+            <property attribute="soilConcRD2" component="J2KProcessLumpedSoilWater" description="Recession coefficient for interflow" name="soilConcRD2" range="0.0;10.0" type="Double"/>
+        </group>
+        <group name="Groundwater">
+            <property attribute="gwRG1RG2dist" component="J2KProcessGroundwater" description="RG1-RG2 distribution coefficient" name="gwRG1RG2dist" range="0.0;1.0" type="Double"/>
+            <property attribute="gwRG1Fact" component="J2KProcessGroundwater" description="Adaptation of RG1 outflow" name="gwRG1Fact" range="0.0;10.0" type="Double"/>
+            <property attribute="gwRG2Fact" component="J2KProcessGroundwater" description="Adaptation of RG2 outflow" name="gwRG2Fact" range="0.0;10.0" type="Double"/>
+            <property attribute="gwCapRise" component="J2KProcessGroundwater" description="Capilary rise coefficient" name="gwCapRise" range="0.0;1.0" type="Double"/>
+        </group>
+        <group name="ReachRouting">
+            <property attribute="flowRouteTA" component="J2KProcessReachRouting" description="Flood routing coefficient" name="flowRouteTA" range="0.0;100.0" type="Double"/>
+        </group>
+    </launcher>
+    <datastores>
+        <outputdatastore context="TimeLoop" enabled="true" name="TimeLoop">
+            <trace>
+                <attribute id="catchmentSimRunoff_qm"/>
+                <attribute id="catchmentRD1_qm"/>
+                <attribute id="catchmentRD2_qm"/>
+                <attribute id="catchmentRG1_qm"/>
+            </trace>
+        </outputdatastore>
+    </datastores>
+    <preprocessors/>
+    <attribute class="jams.data.Attribute$TimeInterval" name="timeInterval" value="2000-01-01 00:00 2002-12-31 23:00 11 1"/>
+    <attribute class="jams.data.Attribute$Integer" name="data_caching" value="2"/>
+    <contextcomponent class="jams.model.JAMSContext" enabled="true" name="ParameterInput" version="1.0_0">
+        <component class="org.unijena.j2k.io.StandardEntityReader" enabled="true" name="EntityReader" version="1.1_0">
+            <var name="reachFileName" value="parameter/reach.par"/>
+            <var name="hruFileName" value="parameter/hrus.par"/>
+            <var attribute="hrus" context="J2K" name="hrus"/>
+            <var attribute="reaches" context="J2K" name="reaches"/>
+        </component>
+        <component class="org.unijena.j2k.io.StandardLUReader" enabled="false" name="LUReader" version="1.1_0">
+            <var name="luFileName" value="parameter/landuse.par"/>
+            <var attribute="hrus" context="J2K" name="hrus"/>
+        </component>
+        <component class="org.unijena.j2k.io.StandardSoilParaReader" enabled="false" name="STReader" version="1.0_0">
+            <var name="stFileName" value="parameter/soils.par"/>
+            <var attribute="hrus" context="J2K" name="hrus"/>
+        </component>
+        <component class="org.unijena.j2k.io.StandardGroundwaterParaReader" enabled="true" name="GWReader" version="1.1_0">
+            <var name="gwFileName" value="parameter/geology.par"/>
+            <var attribute="hrus" context="J2K" name="hrus"/>
+        </component>
+    </contextcomponent>
+    <contextcomponent class="jams.model.JAMSContext" enabled="true" name="Initialization" version="1.0_0">
+        <contextcomponent class="jams.model.JAMSSpatialContext" enabled="true" name="CatchmentInit" version="1.0_0">
+            <var attribute="hrus" context="J2K" name="entities"/>
+            <component class="org.unijena.j2k.aggregate.SumAggregator" enabled="true" name="AreaCalculator" version="1.0_0">
+                <var attribute="area" context="CatchmentInit" name="value"/>
+                <var attribute="area" context="J2K" name="sum"/>
+            </component>
+        </contextcomponent>
+        <contextcomponent class="jams.model.JAMSSpatialContext" enabled="true" name="HRUInit" version="1.0_0">
+            <var attribute="hrus" context="J2K" name="entities"/>
+            <component class="org.unijena.j2k.CalcAreaWeight" enabled="true" name="AreaWeight" version="1.0_0">
+                <var attribute="area" context="HRUInit" name="entityArea"/>
+                <var attribute="areaweight" context="HRUInit" name="areaWeight"/>
+                <var attribute="area" context="J2K" name="catchmentArea"/>
+            </component>
+            <component class="tools.CalcLanduseStateVars_cropcoeff" enabled="true" name="CalcLanduseStateVars_cropcoeff" version="1.0_0">
+                <var attribute="cropcoeffArray" context="HRUInit" name="cropcoeffArray"/>
+                <var attribute="elevation" context="HRUInit" name="elevation"/>
+                <var attribute="LAIArray" context="HRUInit" name="LAIArray"/>
+                <var attribute="hrus" context="J2K" name="entities"/>
+            </component>
+            <component class="org.unijena.j2k.soilWater.InitJ2KProcessLumpedSoilWaterStates" enabled="false" name="InitSoilWater" version="1.0_0">
+                <var name="ACAdaptation" value="1.0"/>
+                <var attribute="actLPS" context="HRUInit" name="actLPS"/>
+                <var name="FCAdaptation" value="1.0"/>
+                <var attribute="maxMPS" context="HRUInit" name="maxMPS"/>
+                <var attribute="hrus" context="J2K" name="entities"/>
+                <var attribute="rootDepth" context="HRUInit" name="rootDepth"/>
+                <var attribute="maxLPS" context="HRUInit" name="maxLPS"/>
+                <var attribute="area" context="HRUInit" name="area"/>
+                <var attribute="satSoil" context="HRUInit" name="satSoil"/>
+                <var attribute="actMPS" context="HRUInit" name="actMPS"/>
+                <var attribute="satMPS" context="HRUInit" name="satMPS"/>
+                <var attribute="satLPS" context="HRUInit" name="satLPS"/>
+            </component>
+            <component class="org.unijena.j2k.groundwater.InitJ2KProcessGroundwater" enabled="true" name="InitGroundWater" version="1.0_0">
+                <var attribute="actRG2" context="HRUInit" name="actRG2"/>
+                <var attribute="actRG1" context="HRUInit" name="actRG1"/>
+                <var attribute="maxRG2" context="HRUInit" name="maxRG2"/>
+                <var attribute="maxRG1" context="HRUInit" name="maxRG1"/>
+                <var name="initRG1" value="0.0"/>
+                <var name="initRG2" value="0.0"/>
+                <var attribute="hrus" context="J2K" name="entities"/>
+            </component>
+            <component class="org.unijena.j2k.regionalisation.IDWWeightCalculator" enabled="true" name="precipWeights" version="1.0_0">
+                <var name="pidw" value="2.0"/>
+                <var attribute="x" context="HRUInit" name="entityX"/>
+                <var attribute="precipOrder" context="HRUInit" name="statOrder"/>
+                <var attribute="y" context="HRUInit" name="entityY"/>
+                <var attribute="precipWeights" context="HRUInit" name="statWeights"/>
+                <var name="dataStoreID" value="rain"/>
+            </component>
+            <component class="org.unijena.j2k.regionalisation.IDWWeightCalculator" enabled="true" name="RefETWeights" version="1.0_0">
+                <var name="pidw" value="2.0"/>
+                <var attribute="x" context="HRUInit" name="entityX"/>
+                <var attribute="RefETOrder" context="HRUInit" name="statOrder"/>
+                <var attribute="y" context="HRUInit" name="entityY"/>
+                <var attribute="RefETWeights" context="HRUInit" name="statWeights"/>
+                <var name="dataStoreID" value="refet"/>
+            </component>
+        </contextcomponent>
+    </contextcomponent>
+    <contextcomponent class="jams.model.JAMSTemporalContext" enabled="true" name="TimeLoop" version="1.0_0">
+        <var attribute="timeInterval" context="J2K" name="timeInterval"/>
+        <var attribute="time" context="J2K" name="current"/>
+        <component class="jams.components.gui.JAMSExecInfo" enabled="true" name="ExecutionInfo" version="1.0_0"/>
+        <component class="org.unijena.j2k.DoubleSetter" enabled="true" name="CatchmentResetter" version="1.0_0">
+            <var name="value" value="0"/>
+            <var attribute="PET;actET;actLPS;actMPS;actRG1;actRG2;catchmentRD1_qm;catchmentRD2_qm;catchmentRG1_qm;channelStorage;intercStorage;interception;percolation;potET;precip;satLPS;satMPS;throughfall" context="TimeLoop" name="attributes"/>
+        </component>
+        <contextcomponent class="jams.model.JAMSContext" enabled="true" name="TSInput" version="1.0_0">
+            <component class="jams.components.io.TSDataStoreReader" enabled="true" name="PrecipDataReader" version="1.0_1">
+                <var name="id" value="rain"/>
+                <var attribute="xCoordPrecip" context="J2K" name="xCoord"/>
+                <var attribute="dataArrayPrecip" context="J2K" name="dataArray"/>
+                <var attribute="timeInterval" context="J2K" name="timeInterval"/>
+                <var attribute="regCoeffPrecip" context="J2K" name="regCoeff"/>
+                <var attribute="elevationPrecip" context="J2K" name="elevation"/>
+                <var attribute="dataSetNamePrecip" context="J2K" name="dataSetName"/>
+                <var attribute="yCoordPrecip" context="J2K" name="yCoord"/>
+            </component>
+            <component class="jams.components.io.TSDataStoreReader" enabled="true" name="RefETDataReader" version="1.0_1">
+                <var name="id" value="refet"/>
+                <var attribute="xCoordRefET" context="J2K" name="xCoord"/>
+                <var attribute="dataArrayRefET" context="J2K" name="dataArray"/>
+                <var attribute="timeInterval" context="J2K" name="timeInterval"/>
+                <var attribute="regCoeffRefET" context="J2K" name="regCoeff"/>
+                <var attribute="elevationRefET" context="J2K" name="elevation"/>
+                <var attribute="dataSetNameRefET" context="J2K" name="dataSetName"/>
+                <var attribute="yCoordRefET" context="J2K" name="yCoord"/>
+            </component>
+            <component class="jams.components.io.TSDataStoreReader" enabled="false" name="ObsRunoffDataReader" version="1.0_1">
+                <var name="id" value="orun"/>
+                <var attribute="xCoordObsRunoff" context="J2K" name="xCoord"/>
+                <var attribute="dataArrayObsRunoff" context="TimeLoop" name="dataArray"/>
+                <var attribute="timeInterval" context="J2K" name="timeInterval"/>
+                <var attribute="regCoeffObsRunoff" context="J2K" name="regCoeff"/>
+                <var attribute="elevationObsRunoff" context="J2K" name="elevation"/>
+                <var attribute="dataSetNameObsRunoff" context="J2K" name="dataSetName"/>
+                <var attribute="yCoordObsRunoff" context="J2K" name="yCoord"/>
+            </component>
+        </contextcomponent>
+        <contextcomponent class="jams.model.JAMSSpatialContext" enabled="true" name="HRULoop" version="1.0_0">
+            <var attribute="hrus" context="J2K" name="entities"/>
+            <contextcomponent class="jams.model.JAMSContext" enabled="true" name="Regionalization" version="1.0_0">
+                <component class="tools.J2KArrayGrabber_cropcoeff" enabled="true" name="J2KArrayGrabber_cropcoeff" version="1.0_0">
+                    <var attribute="actcropcoeff" context="HRULoop" name="actCropCoeff"/>
+                    <var attribute="time" context="J2K" name="time"/>
+                    <var attribute="cropcoeffArray" context="HRULoop" name="cropcoeffArray"/>
+                    <var attribute="actLAI" context="HRULoop" name="actLAI"/>
+                    <var attribute="LAIArray" context="HRULoop" name="LAIArray"/>
+                    <var name="tempRes" value="h"/>
+                </component>
+                <component class="org.unijena.j2k.regionalisation.Regionalisation" enabled="true" name="RefETRegionaliser" version="1.0_0">
+                    <var name="elevationCorrection" value="0"/>
+                    <var attribute="elevationRefET" context="J2K" name="statElevation"/>
+                    <var attribute="dataArrayRefET" context="J2K" name="dataArray"/>
+                    <var attribute="regCoeffRefET" context="J2K" name="regCoeff"/>
+                    <var name="nidw" value="1"/>
+                    <var name="rsqThreshold" value="0"/>
+                    <var attribute="elevation" context="HRULoop" name="entityElevation"/>
+                    <var name="fixedMinimum" value="0"/>
+                    <var attribute="RefETOrder" context="HRULoop" name="statOrder"/>
+                    <var attribute="refet" context="HRULoop" name="dataValue"/>
+                    <var attribute="RefETWeights" context="HRULoop" name="statWeights"/>
+                </component>
+                <component class="org.unijena.j2k.regionalisation.Regionalisation" enabled="true" name="PrecipRegionaliser" version="1.0_0">
+                    <var name="elevationCorrection" value="true"/>
+                    <var attribute="elevationPrecip" context="J2K" name="statElevation"/>
+                    <var attribute="dataArrayPrecip" context="J2K" name="dataArray"/>
+                    <var attribute="regCoeffPrecip" context="J2K" name="regCoeff"/>
+                    <var name="nidw" value="10"/>
+                    <var name="rsqThreshold" value="0.75"/>
+                    <var attribute="elevation" context="HRULoop" name="entityElevation"/>
+                    <var name="fixedMinimum" value="0"/>
+                    <var attribute="precipOrder" context="HRULoop" name="statOrder"/>
+                    <var attribute="precip" context="HRULoop" name="dataValue"/>
+                    <var attribute="precipWeights" context="HRULoop" name="statWeights"/>
+                </component>
+            </contextcomponent>
+            <component class="org.unijena.j2k.DoubleSetter" enabled="true" name="HRUResetter" version="1.0_0">
+                <var name="value" value="0"/>
+                <var attribute="actET" context="HRULoop" name="attributes"/>
+            </component>
+            <component class="crop.CropCoefficient" enabled="true" name="CropCoefficient" version="0.1_0">
+                <var attribute="potET" context="HRULoop" name="PotET"/>
+                <var attribute="refet" context="HRULoop" name="RefET"/>
+                <var attribute="actcropcoeff" context="HRULoop" name="CropCoeff"/>
+            </component>
+            <component class="interception.J2KProcessSimpleIntc" enabled="false" name="J2KProcessSimpleIntc" version="1.0_0">
+                <var attribute="area" context="HRULoop" name="area"/>
+                <var attribute="precip" context="HRULoop" name="precip"/>
+                <var attribute="actET" context="HRULoop" name="actET"/>
+                <var attribute="intercStorage" context="HRULoop" name="intercStorage"/>
+                <var name="alpha" value="1"/>
+                <var attribute="throughfall" context="HRULoop" name="throughfall"/>
+                <var attribute="actLAI" context="HRULoop" name="actLAI"/>
+                <var attribute="potET" context="HRULoop" name="potET"/>
+                <var attribute="interception" context="HRULoop" name="interception"/>
+            </component>
+            <component class="org.unijena.j2k.soilWater.J2KProcessLumpedSoilWater" enabled="false" name="J2KProcessLumpedSoilWater" version="1.0_0">
+                <var attribute="genRD1" context="HRULoop" name="genRD1"/>
+                <var name="soilDiffMPSLPS" value="5"/>
+                <var name="soilMaxInfWinter" value="50"/>
+                <var name="soilOutLPS" value="5"/>
+                <var attribute="inRD2" context="HRULoop" name="inRD2"/>
+                <var attribute="inRD1" context="HRULoop" name="inRD1"/>
+                <var attribute="actLPS" context="HRULoop" name="actLPS"/>
+                <var name="soilConcRD1" value="1"/>
+                <var name="soilConcRD2" value="1"/>
+                <var attribute="sealedGrade" context="HRULoop" name="sealedGrade"/>
+                <var attribute="throughfall" context="HRULoop" name="netRain"/>
+                <var name="soilPolRed" value="0.0"/>
+                <var attribute="outRD2" context="HRULoop" name="outRD2"/>
+                <var attribute="time" context="J2K" name="time"/>
+                <var name="soilImpLT80" value="0.668"/>
+                <var name="soilImpGT80" value="0.5"/>
+                <var attribute="area" context="HRULoop" name="area"/>
+                <var attribute="outRD1" context="HRULoop" name="outRD1"/>
+                <var attribute="satSoil" context="HRULoop" name="satSoil"/>
+                <var name="soilLinRed" value="0.1"/>
+                <var attribute="slope" context="HRULoop" name="slope"/>
+                <var attribute="satMPS" context="HRULoop" name="satMPS"/>
+                <var attribute="percolation" context="HRULoop" name="percolation"/>
+                <var name="snowDepth" value="0"/>
+                <var attribute="genRD2" context="HRULoop" name="genRD2"/>
+                <var attribute="satLPS" context="HRULoop" name="satLPS"/>
+                <var name="soilMaxDPS" value="0"/>
+                <var name="soilMaxPerc" value="1"/>
+                <var name="soilDistMPSLPS" value="0"/>
+                <var attribute="netSnow" context="HRULoop" name="netSnow"/>
+                <var attribute="interflow" context="HRULoop" name="interflow"/>
+                <var attribute="maxMPS" context="HRULoop" name="maxMPS"/>
+                <var name="soilMaxInfSummer" value="50"/>
+                <var attribute="maxLPS" context="HRULoop" name="maxLPS"/>
+                <var name="soilMaxInfSnow" value="40.0"/>
+                <var name="soilLatVertLPS" value="2"/>
+                <var attribute="actDPS" context="HRULoop" name="actDPS"/>
+                <var attribute="actET" context="HRULoop" name="actET"/>
+                <var attribute="infiltration" context="HRULoop" name="infiltration"/>
+                <var attribute="actMPS" context="HRULoop" name="actMPS"/>
+                <var attribute="potET" context="HRULoop" name="potET"/>
+                <var name="snowMelt" value="0"/>
+            </component>
+            <component class="org.unijena.j2k.groundwater.J2KProcessGroundwater" enabled="false" name="J2KProcessGroundwater" version="1.0_1">
+                <var attribute="maxMPS" context="HRULoop" name="maxSoilStorage"/>
+                <var attribute="actMPS" context="HRULoop" name="actSoilStorage"/>
+                <var attribute="outRD2" context="HRULoop" name="gwExcess"/>
+                <var name="gwRG2Fact" value="1.0"/>
+                <var attribute="outRG1" context="HRULoop" name="outRG1"/>
+                <var attribute="outRG2" context="HRULoop" name="outRG2"/>
+                <var attribute="maxRG2" context="HRULoop" name="maxRG2"/>
+                <var attribute="maxRG1" context="HRULoop" name="maxRG1"/>
+                <var name="gwRG1RG2dist" value="0"/>
+                <var attribute="inRG1" context="HRULoop" name="inRG1"/>
+                <var attribute="slope" context="HRULoop" name="slope"/>
+                <var attribute="actRG2" context="HRULoop" name="actRG2"/>
+                <var attribute="actRG1" context="HRULoop" name="actRG1"/>
+                <var attribute="percolation" context="HRULoop" name="percolation"/>
+                <var attribute="genRG1" context="HRULoop" name="genRG1"/>
+                <var name="gwCapRise" value="0.0"/>
+                <var name="gwRG1Fact" value="1.0"/>
+                <var attribute="genRG2" context="HRULoop" name="genRG2"/>
+                <var attribute="RG2_k" context="HRULoop" name="kRG2"/>
+                <var attribute="RG1_k" context="HRULoop" name="kRG1"/>
+                <var attribute="inRG2" context="HRULoop" name="inRG2"/>
+            </component>
+            <component class="jams.components.aggregate.TemporalSumAggregator" enabled="false" name="TemporalSumAggregator1" version="1.0_0">
+                <var attribute="time" context="J2K" name="time"/>
+                <var attribute="area" context="HRULoop" name="weight"/>
+                <var attribute="outRD1;outRD2;outRG1;outRG2" context="HRULoop" name="value"/>
+                <var attribute="outRD1_avg;outRD2_avg;outRG1_avg;outRG2_avg" context="HRULoop" name="sum"/>
+                <var attribute="timeInterval" context="J2K" name="aggregationTimeInterval"/>
+                <var name="average" value="true"/>
+            </component>
+            <component class="jams.components.datatransfer.DoubleTransfer" enabled="true" name="HRU2HRURouting" version="1.0_0">
+                <var attribute="outRG1;outRG2" context="HRULoop" name="values"/>
+                <var attribute="to_poly" context="HRULoop" name="target"/>
+                <var name="inNames" value="inRG1;inRG2"/>
+            </component>
+            <component class="jams.components.datatransfer.DoubleTransfer" enabled="true" name="HRU2ReachRouting" version="1.0_0">
+                <var attribute="outRG1;outRG2" context="HRULoop" name="values"/>
+                <var attribute="to_reach" context="HRULoop" name="target"/>
+                <var name="inNames" value="inRG1;inRG2"/>
+            </component>
+            <component class="org.unijena.j2k.routing.J2KProcessRouting" enabled="false" name="J2KProcessRouting" version="1.0_0">
+                <var attribute="to_poly" context="HRULoop" name="toPoly"/>
+                <var attribute="inRD2" context="HRULoop" name="inRD2"/>
+                <var attribute="inRD1" context="HRULoop" name="inRD1"/>
+                <var attribute="outRG1" context="HRULoop" name="outRG1"/>
+                <var attribute="outRG2" context="HRULoop" name="outRG2"/>
+                <var attribute="hrus" context="J2K" name="entities"/>
+                <var attribute="to_reach" context="HRULoop" name="toReach"/>
+                <var attribute="reaches" context="J2K" name="reaches"/>
+                <var attribute="outRD2" context="HRULoop" name="outRD2"/>
+                <var attribute="inRG1" context="HRULoop" name="inRG1"/>
+                <var attribute="outRD1" context="HRULoop" name="outRD1"/>
+                <var attribute="inRG2" context="HRULoop" name="inRG2"/>
+            </component>
+            <component class="org.unijena.j2k.aggregate.WeightedSumAggregator" enabled="true" name="SpatialWeightedSumAggregator1" version="1.0_0">
+                <var attribute="areaweight" context="HRULoop" name="weight"/>
+                <var attribute="precip;satMPS;satLPS" context="HRULoop" name="value"/>
+                <var attribute="precip;satMPS;satLPS" context="TimeLoop" name="sum"/>
+            </component>
+            <component class="org.unijena.j2k.aggregate.WeightedSumAggregator" enabled="true" name="SpatialWeightedSumAggregator2" version="1.0_0">
+                <var attribute="area" context="J2K" name="weight"/>
+                <var attribute="potET;actET;throughfall;interception;intercStorage;actMPS;actLPS;actDPS;percolation;actRG1;actRG2;outRD1;outRD2;outRG1;outRG2" context="HRULoop" name="value"/>
+                <var attribute="potET;actET;throughfall;interception;intercStorage;actMPS;actLPS;actDPS;percolation;actRG1;actRG2;outRD1;outRD2;outRG1;outRG2" context="TimeLoop" name="sum"/>
+            </component>
+        </contextcomponent>
+        <contextcomponent class="jams.model.JAMSSpatialContext" enabled="true" name="ReachLoop" version="1.0_0">
+            <var attribute="reaches" context="J2K" name="entities"/>
+            <component class="org.unijena.j2k.routing.J2KProcessReachRouting" enabled="true" name="J2KProcessReachRouting" version="1.0_1">
+                <var attribute="inRD2" context="ReachLoop" name="inRD2"/>
+                <var attribute="inRD1" context="ReachLoop" name="inRD1"/>
+                <var attribute="catchmentRD1" context="TimeLoop" name="catchmentRD1"/>
+                <var attribute="catchmentRD2" context="TimeLoop" name="catchmentRD2"/>
+                <var attribute="catchmentSimRunoff" context="TimeLoop" name="catchmentSimRunoff"/>
+                <var attribute="reachOutRD2" context="ReachLoop" name="outRD2"/>
+                <var attribute="reachOutRD1" context="ReachLoop" name="outRD1"/>
+                <var attribute="slope" context="ReachLoop" name="slope"/>
+                <var attribute="actRG2" context="ReachLoop" name="actRG2"/>
+                <var attribute="actRG1" context="ReachLoop" name="actRG1"/>
+                <var attribute="length" context="ReachLoop" name="length"/>
+                <var name="flowRouteTA" value="1.0"/>
+                <var name="slopeAsProportion" value="false"/>
+                <var attribute="simRunoff" context="ReachLoop" name="simRunoff"/>
+                <var attribute="reachOutRG1" context="ReachLoop" name="outRG1"/>
+                <var attribute="width" context="ReachLoop" name="width"/>
+                <var attribute="reachOutRG2" context="ReachLoop" name="outRG2"/>
+                <var attribute="catchmentRG2" context="TimeLoop" name="catchmentRG2"/>
+                <var attribute="rough" context="ReachLoop" name="roughness"/>
+                <var attribute="channelStorage" context="ReachLoop" name="channelStorage"/>
+                <var attribute="reaches" context="J2K" name="entities"/>
+                <var attribute="catchmentRG1" context="TimeLoop" name="catchmentRG1"/>
+                <var attribute="inRG1" context="ReachLoop" name="inRG1"/>
+                <var attribute="actRD2" context="ReachLoop" name="actRD2"/>
+                <var attribute="actRD1" context="ReachLoop" name="actRD1"/>
+                <var name="tempRes" value="h"/>
+                <var attribute="inRG2" context="ReachLoop" name="inRG2"/>
+            </component>
+            <component class="org.unijena.j2k.aggregate.SumAggregator" enabled="true" name="ChannelStorageAggregator" version="1.0_0">
+                <var attribute="channelStorage" context="ReachLoop" name="value"/>
+                <var attribute="channelStorage" context="TimeLoop" name="sum"/>
+            </component>
+        </contextcomponent>
+        <component class="jams.components.tools.JAMSUnitConverter" enabled="true" name="SimRD1Converter" version="1.0_0">
+            <var name="outUnit" value="m^3/s"/>
+            <var attribute="catchmentRD1_qm" context="TimeLoop" name="outValue"/>
+            <var name="inUnit" value="L/h"/>
+            <var attribute="catchmentRD1" context="TimeLoop" name="inValue"/>
+        </component>
+        <component class="jams.components.tools.JAMSUnitConverter" enabled="true" name="SimRD2Converter" version="1.0_0">
+            <var name="outUnit" value="m^3/s"/>
+            <var attribute="catchmentRD2_qm" context="TimeLoop" name="outValue"/>
+            <var name="inUnit" value="L/h"/>
+            <var attribute="catchmentRD2" context="TimeLoop" name="inValue"/>
+        </component>
+        <component class="jams.components.tools.JAMSUnitConverter" enabled="true" name="SimRG1Converter" version="1.0_0">
+            <var name="outUnit" value="m^3/s"/>
+            <var attribute="catchmentRG1_qm" context="TimeLoop" name="outValue"/>
+            <var name="inUnit" value="L/h"/>
+            <var attribute="catchmentRG1" context="TimeLoop" name="inValue"/>
+        </component>
+        <component class="jams.components.tools.JAMSUnitConverter" enabled="true" name="SimRunoffConverter" version="1.0_0">
+            <var name="outUnit" value="m^3/s"/>
+            <var attribute="catchmentSimRunoff_qm" context="TimeLoop" name="outValue"/>
+            <var name="inUnit" value="L/h"/>
+            <var attribute="catchmentSimRunoff" context="TimeLoop" name="inValue"/>
+        </component>
+        <component class="org.unijena.j2k.io.StandardTSDataProvider" enabled="false" name="ObsRunoff" version="1.0_0">
+            <var attribute="dataArrayObsRunoff" context="TimeLoop" name="dataArray"/>
+            <var name="column" value="1"/>
+            <var attribute="catchmentObsRunoff" context="TimeLoop" name="attribute"/>
+        </component>
+        <contextcomponent class="jams.model.JAMSContext" enabled="true" name="TSVisualization" version="1.0_0">
+            <component class="jams.components.gui.TSPlot" enabled="true" name="Interception" version="1.0_1">
+                <var name="typeLeft" value="0"/>
+                <var name="colorLeft" value="blue"/>
+                <var attribute="time" context="J2K" name="time"/>
+                <var name="xAxisTitle" value="Time"/>
+                <var attribute="intercStorage" context="TimeLoop" name="valueLeft"/>
+                <var name="titleLeft" value="Interception"/>
+                <var name="dateFormat" value="dd-MM-yyyy"/>
+                <var name="cacheSize" value="1"/>
+                <var name="leftAxisTitle" value="Interception [mm]"/>
+            </component>
+            <component class="jams.components.gui.TSPlot" enabled="true" name="Runoff Plot" version="1.0_1">
+                <var name="rightAxisInverted" value="1"/>
+                <var name="typeLeft" value="0"/>
+                <var name="colorRight" value="gray"/>
+                <var name="colorLeft" value="blue"/>
+                <var attribute="precip" context="TimeLoop" name="valueRight"/>
+                <var attribute="time" context="J2K" name="time"/>
+                <var name="xAxisTitle" value="Time"/>
+                <var name="rightAxisTitle" value="Precipitation [mm]"/>
+                <var attribute="catchmentSimRunoff_qm" context="TimeLoop" name="valueLeft"/>
+                <var name="typeRight" value="1"/>
+                <var name="titleLeft" value="Simulated Runoff"/>
+                <var name="titleRight" value="Precipitation"/>
+                <var name="dateFormat" value="dd-MM-yyyy"/>
+                <var name="cacheSize" value="1"/>
+                <var name="leftAxisTitle" value="Runoff [m³/s]"/>
+            </component>
+            <component class="jams.components.gui.TSPlot" enabled="true" name="Runoff contributions plot" version="1.0_1">
+                <var name="typeLeft" value="0"/>
+                <var name="colorLeft" value="red;blue;black;green"/>
+                <var attribute="time" context="J2K" name="time"/>
+                <var name="xAxisTitle" value="Time"/>
+                <var attribute="catchmentRD1_qm;catchmentRD2_qm;catchmentRG1_qm" context="TimeLoop" name="valueLeft"/>
+                <var name="titleLeft" value="RD1; RD2; RG1"/>
+                <var name="dateFormat" value="dd-MM-yyyy"/>
+                <var name="cacheSize" value="1"/>
+                <var name="leftAxisTitle" value="runoff [m3/s]"/>
+            </component>
+            <component class="jams.components.gui.TSPlot" enabled="true" name="Soil moisture plot" version="1.0_1">
+                <var name="typeLeft" value="0"/>
+                <var name="colorLeft" value="red;blue"/>
+                <var attribute="time" context="J2K" name="time"/>
+                <var name="xAxisTitle" value="Time"/>
+                <var attribute="satMPS;satLPS" context="TimeLoop" name="valueLeft"/>
+                <var name="titleLeft" value="satMPS;satLPS"/>
+                <var name="dateFormat" value="dd-MM-yyyy"/>
+                <var name="cacheSize" value="1"/>
+                <var name="leftAxisTitle" value="rel. saturation"/>
+            </component>
+            <component class="jams.components.gui.TSPlot" enabled="true" name="Evaporation plot" version="1.0_1">
+                <var name="typeLeft" value="0"/>
+                <var name="colorLeft" value="red;blue"/>
+                <var attribute="time" context="J2K" name="time"/>
+                <var name="xAxisTitle" value="Time"/>
+                <var attribute="potET;actET" context="TimeLoop" name="valueLeft"/>
+                <var name="titleLeft" value="Potential evapotranspiration; real evapotranspiration"/>
+                <var name="dateFormat" value="dd-MM-yyyy"/>
+                <var name="cacheSize" value="1"/>
+                <var name="leftAxisTitle" value="evapotransp. [mm]"/>
+            </component>
+            <component class="jams.components.gui.spreadsheet.JAMSSpreadSheet" enabled="false" name="SpreadSheet" version="1.0_0">
+                <var name="headers" value="catchmentSimRunoff_qm;catchmentObsRunoff;precip"/>
+                <var attribute="catchmentSimRunoff_qm;catchmentObsRunoff;precip;precip" context="TimeLoop" name="rowarray"/>
+                <var attribute="time" context="J2K" name="time"/>
+            </component>
+        </contextcomponent>
+        <component class="org.unijena.j2k.efficiencies.StandardEfficiencyCalculator" enabled="false" name="Efficiencies" version="1.0_0">
+            <var attribute="dsGrad" context="J2K" name="dsGrad"/>
+            <var name="effTimeInterval" value="2005-01-01 00:30 2010-12-31 23:30 11 1"/>
+            <var attribute="ioa1" context="J2K" name="ioa1"/>
+            <var attribute="grad" context="J2K" name="grad"/>
+            <var attribute="ioa2" context="J2K" name="ioa2"/>
+            <var attribute="rmse" context="J2K" name="rmse"/>
+            <var attribute="catchmentObsRunoff" context="TimeLoop" name="validation"/>
+            <var attribute="preValues" context="J2K" name="predictionValues"/>
+            <var attribute="catchmentSimRunoff_qm" context="TimeLoop" name="prediction"/>
+            <var attribute="e1" context="J2K" name="e1"/>
+            <var attribute="e2" context="J2K" name="e2"/>
+            <var attribute="absVolErr" context="J2K" name="absVolErr"/>
+            <var attribute="wrsq" context="J2K" name="wrsq"/>
+            <var attribute="timeInterval" context="J2K" name="modelTimeInterval"/>
+            <var name="effMethod" value="1,2,3,4,5,6,7,8,9,10,11,12,13"/>
+            <var attribute="pbias" context="J2K" name="pbias"/>
+            <var attribute="rsq" context="J2K" name="rsq"/>
+            <var attribute="le2" context="J2K" name="le2"/>
+        </component>
+    </contextcomponent>
+    <contextcomponent class="jams.model.JAMSContext" enabled="false" name="MapVisualization" version="1.0_0">
+        <component class="jams.components.io.GeomReader" enabled="true" name="GeometryReader" version="1.0_0">
+            <var attribute="baseShape" context="J2K" name="baseShape"/>
+            <var name="idName" value="ID"/>
+            <var attribute="hrus" context="J2K" name="hrus"/>
+            <var name="shapeFileName" value="input/local/gis/hrus/hrus.shp"/>
+        </component>
+        <component class="jams.components.gui.MapCreator" enabled="true" name="Map" version="1.0_0">
+            <var attribute="baseShape" context="J2K" name="baseShape"/>
+            <var name="showAttr" value="outRD1_avg;outRD2_avg;outRG1_avg"/>
+            <var name="styleID" value="0"/>
+            <var name="stylesFileName" value="input/local/gis/styles.sld"/>
+            <var name="rangeColor" value="green;red;blue"/>
+            <var name="numOfRanges" value="10;10;10"/>
+            <var name="shapeFileName1" value="input/local/gis/streams/streams.shp"/>
+            <var attribute="hrus" context="J2K" name="hrus"/>
+            <var name="shapeColors" value="0000FF"/>
+        </component>
+        <component class="jams.components.gui.MapCreator3D" enabled="true" name="Map3D" version="1.0_0">
+            <var name="styleID" value="0"/>
+            <var name="showAttr" value="outRD1_avg;outRD2_avg;outRG1_avg"/>
+            <var name="stylesFileName" value="input/local/gis/styles.sld"/>
+            <var name="shapeFileName1" value="input/local/gis/streams/streams.shp"/>
+            <var name="resolution" value="256"/>
+            <var name="shapeColors" value="0000FF"/>
+            <var attribute="baseShape" context="J2K" name="baseShape"/>
+            <var name="heightMap" value="input/local/gis/dgm_gera.asc"/>
+            <var name="numOfRanges" value="10;10;10"/>
+            <var name="rangeColor" value="green;red;blue"/>
+            <var attribute="hrus" context="J2K" name="hrus"/>
+            <var name="light" value="true"/>
+        </component>
+    </contextcomponent>
+</model>
