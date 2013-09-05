@@ -36,11 +36,11 @@ public class Runoff_generator extends JAMSComponent {
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
             description = "Description")
-    public Attribute.Double initialDischarge;
+    public Attribute.Double precip;
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
             description = "Description")
-    public Attribute.Double precip;
+    public Attribute.Double area;
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
             description = "Description")
@@ -85,14 +85,6 @@ public class Runoff_generator extends JAMSComponent {
     /*
      *  Component run stages
      */
-    // The number of steps to use in the interval
-    
-
-    @Override
-    public void init() {
-        discharge.setValue(initialDischarge.getValue());
-    }
-
 
     @Override
     public void run() {
@@ -121,13 +113,6 @@ public class Runoff_generator extends JAMSComponent {
         qNew = ((0.5 * (Math.exp(qOld) + Math.exp(s))) + (p * (bypassFraction.getValue())));
         
         discharge.setValue(s);
-        discharge_real.setValue(qNew);
-    }
-    
-    public static void main(String[] args) {
-        
-        
-        
-        
+        discharge_real.setValue(qNew * area.getValue());
     }
 }
