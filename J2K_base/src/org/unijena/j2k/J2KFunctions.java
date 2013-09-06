@@ -90,7 +90,9 @@ public class J2KFunctions {
                         e.setDouble(attributeNames.get(i), Double.parseDouble(token));
                     } catch (NumberFormatException nfe) {
                         //most probably this happens because of string values within J2K parameter files
-                        e.setObject(attributeNames.get(i), token);
+                        Attribute.String stringValue = DefaultDataFactory.getDataFactory().createString();
+                        stringValue.setValue(token);
+                        e.setObject(attributeNames.get(i), stringValue);
                     }
                 }
 
