@@ -275,16 +275,6 @@ public class K_factor_USLE {
         }
 
 
-
-
-
-
-
-
-
-
-
-
         return result;
 
 
