@@ -99,12 +99,6 @@ public class K_factor_USLE {
 
         String result, sid, A_K_factor, B_K_factor, C_K_factor, D_K_factor, E_K_factor, asand, bsand, csand, dsand, esand, asilt, bsilt, csilt, dsilt, esilt, aclay, bclay, cclay, dclay, eclay, acorg, bcorg, ccorg, dcorg, ecorg;
 
-
-
-
-
-
-
         double asandd = 0;
         double bsandd = 0;
         double csandd = 0;
@@ -244,39 +238,20 @@ public class K_factor_USLE {
                    Double Em = (esiltd + (esandd*ffsandprop))*(esiltd + esandd);                    
                    double E_K_Factord =  0.00000277 * Math.pow(Em, 1.14) * (12 - ecorgd); // add aggregate and conductivity information (* (AA - 2) * (4 - AKFclass)
                    E_K_factor = String.valueOf(E_K_Factord);
-                   
-                
-                
-                
-                
-                
+
                 }
-
-
 
             }
 
-            
-
-
-
-
-            
-
-
             result = sid + "\t" + A_K_factor + "\t" + B_K_factor + "\t" + C_K_factor + "\t" + D_K_factor + "\t" + E_K_factor;
 
-
-
-            
+         
             writer.write(result);
             writer.newLine();
             x++;
         }
 
-
         return result;
-
 
     }
 
