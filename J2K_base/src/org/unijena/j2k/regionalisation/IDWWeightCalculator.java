@@ -115,8 +115,9 @@ public class IDWWeightCalculator extends JAMSComponent {
         }
     }
 
+    int i=0;
     @Override
-    public void run() {
+    public void run() {        
         double weights[] = statWeights.getValue();
         int wA[] = statOrder.getValue();
 
