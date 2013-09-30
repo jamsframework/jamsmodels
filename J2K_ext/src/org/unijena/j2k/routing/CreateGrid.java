@@ -361,7 +361,7 @@ public class CreateGrid extends JAMSComponent {
         for (int k = -1; k < 2; k++) {
             for (int l = -1; l < 2; l++) {
                 if (k + l == 0 || k + l == 2 || k + l == -2) {
-                    //das hei�t??
+                    //das heißt??
                 } else {
                     if (fliess[1][i][j] == ID && fliess[1][i + k][j + l] == ID) {
                         if (k == 1 && l == 0) {
@@ -621,7 +621,7 @@ public class CreateGrid extends JAMSComponent {
         Point p = new Point();
         
         if (dgm[actx][acty] == -1){
-            //au�erhalb
+            //außerhalb
             p.x = startx;
             p.y = starty;
             routing[startx][starty] = p;
@@ -966,7 +966,7 @@ public class CreateGrid extends JAMSComponent {
                     //it would be better to use the last one in cascade
                     reachList.values().iterator().next().add(new Point(i,j));
                     
-                    //ich glaube das hei�t, dass alles zum pegel flie�t .. 
+                    //ich glaube das heißt, dass alles zum pegel fließt .. 
                     flgew1[i - 1][j - 1] = 2;
                     flgew1[i - 1][j] = 1;
                     flgew1[i - 1][j + 1] = 128;
@@ -1045,7 +1045,7 @@ public class CreateGrid extends JAMSComponent {
         slopeLength = calculateSlopeLength(hangneigung, RG2_Koeff, zeitschritt, rastersize);
         Point[][] RoutingRG2 = calculateFlowPath1(dgm, fliessrichtung, slopeLength, flgew,aufloesung);
 
-        //Ausgabe(RoutingRD1,"E:/ModelData/flgew1.txt");
+        Ausgabe(RoutingRD1,"E:/ModelData/flgew1.txt");
         //Anlegen der Raster, die sich die Wasserverteil?ng im Gebiet merken
         double[][] RD1_vraster = new double[hruraster.length][hruraster[0].length];
         double[][] RD2_vraster = new double[hruraster.length][hruraster[0].length];
