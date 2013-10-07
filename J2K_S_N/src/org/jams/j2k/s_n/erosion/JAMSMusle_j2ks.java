@@ -9,7 +9,6 @@ description = "JAMS native Version of MusleMay",
 author = "Holm + Manfred")
 public class JAMSMusle_j2ks extends JAMSComponent {
 
-    
 //Read access variables
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
     update = JAMSVarDescription.UpdateType.RUN,
@@ -88,24 +87,24 @@ public class JAMSMusle_j2ks extends JAMSComponent {
     public void run() throws JAMSEntity.NoSuchAttributeException {
 
         // passing reads into in's
-         Double area = this.area.getValue();
-         Double ID = this.ID.getValue();
-         Double slope = this.slope.getValue();
-         Double Cfac = this.Cfac.getValue();
-         Double ROK = this.ROK.getValue();
-         Double slopelength = this.flowlength.getValue();
-         Double Kfac = this.Kfac.getValue();
-         
-         Double outRD1 = this.outRD1.getValue();
-         Double snowDepth = this.snowDepth.getValue();
-         Double surfacetemp = this.surfacetemp.getValue();
-         Double precip = this.precip.getValue();
-         Double insed = this.insed.getValue();
-         Double sedpool = this.sedpool.getValue();
-         
+        Double area = this.area.getValue();
+        Double ID = this.ID.getValue();
+        Double slope = this.slope.getValue();
+        Double Cfac = this.Cfac.getValue();
+        Double ROK = this.ROK.getValue();
+        Double slopelength = this.flowlength.getValue();
+        Double Kfac = this.Kfac.getValue();
+
+        Double outRD1 = this.outRD1.getValue();
+        Double snowDepth = this.snowDepth.getValue();
+        Double surfacetemp = this.surfacetemp.getValue();
+        Double precip = this.precip.getValue();
+        Double insed = this.insed.getValue();
+        Double sedpool = this.sedpool.getValue();
+
 
         // calling the oms3 execute
-        
+
 
         Double gensed = 0.0;
 
@@ -132,7 +131,7 @@ public class JAMSMusle_j2ks extends JAMSComponent {
             double HLkrit = 170 * Math.pow(Math.E, -0.13 * slopeperc);
             double Pfac = slopelength < HLkrit ? Pvorl : 1;
             double ROKF = Math.pow(Math.E, -0.053 * ROK);
-            
+
             double peaktime = 0; // hours
             if (time.get(Calendar.MONTH) > 4 & time.get(Calendar.MONTH) < 10) {
                 peaktime = 4;               // Summer
@@ -140,26 +139,29 @@ public class JAMSMusle_j2ks extends JAMSComponent {
                 peaktime = 14;              // Winter
             }
 
-            if ((precip == 0.0) && (outRD1>0)){ // only snowmelting
-            //    //System.out.println(" outRD1:" + outRD1/area + " und NS:" + precip + " PeakTime old: "+ peaktime);
+            if ((precip == 0.0) && (outRD1 > 0)) { // only snowmelting
+                //    //System.out.println(" outRD1:" + outRD1/area + " und NS:" + precip + " PeakTime old: "+ peaktime);
                 peaktime = 24;
             }
 
             double area_ha = area / 10000; //m2 to ha
             double area_km2 = area / 1000000; //m2 to km2
-            double Qsurf_peak_m3 = ((outRD1 / area) * area) / 1000 ; // m?
-            double Qsurf_mm_ha = (outRD1 / area) * 10000;
+            double Qsurf_peak_m3 = ((outRD1 / area) * area) / 1000; // m?
+
+
+            // double Qsurf_mm_ha = (outRD1 / area) * 10000; Holm orginal
+            double Qsurf_mm_ha = (outRD1 / area); //manfred new checked with SWAT sources
 
             //System.out.println("ID: "+ ID + " Qsurf_peak_m3:" + Qsurf_peak_m3 + " Qsurf_mm_ha:" + Qsurf_mm_ha + " und NS:" + precip + " PeakTime: "+ peaktime);
 
             double Qpeak = (0.278 * Qsurf_peak_m3 * area_km2) / (3.6 * peaktime);//--> m3/s
-            double Lamb= 11.8 * Math.pow((Qsurf_mm_ha * Qpeak * area_ha), 0.56); // SWAT-MULSE Williams, 1995
+            double Lamb = 11.8 * Math.pow((Qsurf_mm_ha * Qpeak * area_ha), 0.56); // SWAT-MULSE Williams, 1995
             double sedperhainto = Lamb * Kfac * LSfac * Pfac * Cfac * ROKF; // SWAT-MULSE Williams, 1995
             //gensed = (sedperhainto / 10000) * area;     // t / HRU
             gensed = sedperhainto;
 
         }
-        
+
 
         double out = 0;
         double bal = gensed - insed;
@@ -172,7 +174,9 @@ public class JAMSMusle_j2ks extends JAMSComponent {
             if (bal < 0) {
                 double acc = (-1) * bal;
                 neuaccpool = sedpool + acc;
-                if (outRD1 > 0) out = 0.05 * acc;
+                if (outRD1 > 0) {
+                    out = 0.05 * acc;
+                }
             }
         }
 
@@ -181,12 +185,12 @@ public class JAMSMusle_j2ks extends JAMSComponent {
         //}
 
         sedpool = neuaccpool;
-        
-       
-         
-         
-         
-         // reading the outs
+
+
+
+
+
+        // reading the outs
         this.insed.setValue(0);
         this.sedpool.setValue(sedpool);
         this.outsed.setValue(out);
