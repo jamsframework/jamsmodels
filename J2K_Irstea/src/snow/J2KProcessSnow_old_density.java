@@ -56,14 +56,14 @@ import jams.model.*;
             update = JAMSVarDescription.UpdateType.RUN,
             description = "time"
             )
-            public JAMSCalendar time;
+            public Attribute.Calendar time;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
             update = JAMSVarDescription.UpdateType.RUN,
             description = "The current spatial modelling entity"
             )
-            public JAMSEntity entity;
+            public Attribute.Entity entity;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
@@ -71,14 +71,14 @@ import jams.model.*;
             description = "attribute area",
             unit = "m²"
             )
-            public JAMSDouble area;
+            public Attribute.Double area;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
             update = JAMSVarDescription.UpdateType.RUN,
             description = "state var slope-aspect-correction-factor"
             )
-            public JAMSDouble actSlAsCf;
+            public Attribute.Double actSlAsCf;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
@@ -86,7 +86,7 @@ import jams.model.*;
             description = "minimum temperature if available, else mean temp",
             unit = "°C"
             )
-            public JAMSDouble minTemp;
+            public Attribute.Double minTemp;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
@@ -94,7 +94,7 @@ import jams.model.*;
             description = "mean temperature",
             unit = "°C"
             )
-            public JAMSDouble meanTemp;
+            public Attribute.Double meanTemp;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
@@ -102,7 +102,7 @@ import jams.model.*;
             description = "maximum temperature if available, else mean temp",
             unit = "°C"
             )
-            public JAMSDouble maxTemp;
+            public Attribute.Double maxTemp;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
@@ -110,7 +110,7 @@ import jams.model.*;
             description = "state variable net rain",
             unit = "L"
             )
-            public JAMSDouble netRain;
+            public Attribute.Double netRain;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
@@ -118,7 +118,7 @@ import jams.model.*;
             description = "state variable net snow",
             unit = "L"
             )
-            public JAMSDouble netSnow;
+            public Attribute.Double netSnow;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
@@ -126,7 +126,7 @@ import jams.model.*;
             description = "total snow water equivalent",
             unit = "L"
             )
-            public JAMSDouble snowTotSWE;
+            public Attribute.Double snowTotSWE;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
@@ -134,7 +134,7 @@ import jams.model.*;
             description = "dry snow water equivalent",
             unit = "L"
             )
-            public JAMSDouble drySWE;
+            public Attribute.Double drySWE;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
@@ -142,7 +142,7 @@ import jams.model.*;
             description = "total snow density",
             unit = "g cm^-3"
             )
-            public JAMSDouble totDens;
+            public Attribute.Double totDens;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
@@ -150,7 +150,7 @@ import jams.model.*;
             description = "dry snow density",
             unit = "g cm^-3"
             )
-            public JAMSDouble dryDens;
+            public Attribute.Double dryDens;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
@@ -158,7 +158,7 @@ import jams.model.*;
             description = "snow depth",
             unit = "mm"
             )
-            public JAMSDouble snowDepth;
+            public Attribute.Double snowDepth;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
@@ -166,14 +166,14 @@ import jams.model.*;
             description = "snow age",
             unit = "d"
             )
-            public JAMSDouble snowAge;
+            public Attribute.Double snowAge;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
             update = JAMSVarDescription.UpdateType.RUN,
             description = "snow cold content"
             )
-            public JAMSDouble snowColdContent;
+            public Attribute.Double snowColdContent;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
@@ -181,16 +181,8 @@ import jams.model.*;
             description = "daily snow melt",
             unit = "L"
             )
-            public JAMSDouble snowMelt;
-    
-     @JAMSVarDescription(
-            access = JAMSVarDescription.AccessType.WRITE,
-            update = JAMSVarDescription.UpdateType.RUN,
-            description = "snow height",
-            unit = "mm"
-            )
-            public JAMSDouble Height;
-    
+            public Attribute.Double snowMelt;
+        
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
             update = JAMSVarDescription.UpdateType.INIT,
@@ -200,7 +192,7 @@ import jams.model.*;
             defaultValue="0",
             unit = "°C"
             )
-            public JAMSDouble baseTemp;
+            public Attribute.Double baseTemp;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
@@ -211,7 +203,7 @@ import jams.model.*;
             defaultValue="1",
             unit = "mm °C^-1"
             )
-            public JAMSDouble t_factor;
+            public Attribute.Double t_factor;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
@@ -222,7 +214,7 @@ import jams.model.*;
             defaultValue="1",
             unit = "°C^-1"
             )
-            public JAMSDouble r_factor;
+            public Attribute.Double r_factor;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
@@ -233,7 +225,7 @@ import jams.model.*;
             defaultValue="1",
             unit = "mm"
             )
-            public JAMSDouble g_factor;
+            public Attribute.Double g_factor;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
@@ -244,7 +236,7 @@ import jams.model.*;
             defaultValue="0.45",
             unit = "g cm^-3"
             )
-            public JAMSDouble snowCritDens;
+            public Attribute.Double snowCritDens;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
@@ -254,14 +246,14 @@ import jams.model.*;
             upperBound = 5.0,
             defaultValue="0.01"
             )
-            public JAMSDouble ccf_factor;
+            public Attribute.Double ccf_factor;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
             update = JAMSVarDescription.UpdateType.INIT,
             description = "module active"
             )
-            public JAMSBoolean active;
+            public Attribute.Boolean active;
     
  // Pour le debug, on fixe l'id des HRUs et un index de temps
     
@@ -296,7 +288,6 @@ import jams.model.*;
     double run_snowAge;
     double run_coldContent;
     double run_snowMelt = 0;
-    double out_height = 0;
    
     /*
      *  Component run stages
@@ -320,32 +311,19 @@ import jams.model.*;
       
         
     	if(this.active == null || this.active.getValue()){
-	        //if(time.get(time.DAY_OF_MONTH) == 7 && entity.getDouble("ID") == 3607)
-	        //    System.out.getRuntime().println("stop!");
 	        this.run_area = this.area.getValue();
 
 	        double SAC = this.actSlAsCf.getValue();
 	        
 	        this.in_snow = this.netSnow.getValue();
-	
-//               if (HRU_id.getValue() == 1.0){
-//           System.out.println(time2.toString());
-//       }
-                
-                
-                this.in_rain = this.netRain.getValue();
+	        this.in_rain = this.netRain.getValue();
 	        double balIn = this.in_snow + this.in_rain;
 	        
 	        double in_minTemp = this.minTemp.getValue();
 	        double in_meanTemp = this.meanTemp.getValue();
 	        double in_maxTemp = this.maxTemp.getValue();
-	        
-	//        this.run_snowDepth = snowDepth.getValue();
-                this.run_snowDepth = this.snowDepth.getValue();
-//        if (HRU_id.getValue() == 1.0){
-//           System.out.println(time2.toString());
-//       }                
-       
+                
+                this.run_snowDepth = snowDepth.getValue();
 	        this.run_totSWE    = snowTotSWE.getValue();
 	        double balStorStart = this.run_totSWE;
 	        this.run_drySWE    = drySWE.getValue();
@@ -378,8 +356,8 @@ import jams.model.*;
 	        }
 	        
 	        if(in_snow > 0){
-// Francois Tilmant (29.03.13) : give the new snow at each timestep
-	            out_height = this.calcSnowAccumulation(in_meanTemp, run_area, critDens);
+
+	            this.calcSnowAccumulation(accuTemp, run_area, critDens);
 	        }
 	        
 	        
@@ -397,15 +375,9 @@ import jams.model.*;
 	        this.dryDens.setValue(this.run_dryDens);
 	        this.snowDepth.setValue(this.run_snowDepth);
                 this.snow_density.setValue(this.calcNewSnowDensity(in_meanTemp));
-      
-                
-     
-   //             if (HRU_id.getValue() == 1.0){
-   //        System.out.println(time2.toString());
-   //    }  
-	        this.snowAge.setValue(this.run_snowAge);
+                this.snowAge.setValue(this.run_snowAge);
 	        this.snowColdContent.setValue(this.run_coldContent);
-                this.Height.setValue(out_height);
+
 	        if(this.run_snowMelt > 0){
 	            int i = 0;
 	        }
@@ -454,16 +426,16 @@ import jams.model.*;
      * are set to zero after accumulation
      * @return true if successfull, false otherwise
      */
-    private double calcSnowAccumulation(double temp, double area, double critDens){
+    private boolean calcSnowAccumulation(double temp, double area, double critDens){
         double deltaHeight = 0;
-        double out_height = 0;
+       
         //increase of snow pack because of snow fall
         if(this.in_snow > 0){
             
             double new_snow_density = this.calcNewSnowDensity(temp);
             deltaHeight = this.in_snow / (new_snow_density * area);
             this.run_snowDepth = this.run_snowDepth + deltaHeight;
-            out_height = out_height + deltaHeight;
+            
             
             //increase of dry and total snow water equivalent by snow precip amount
             //double old_SWE = this.tot_SWE;
@@ -487,8 +459,8 @@ import jams.model.*;
             this.in_rain = 0;
         }
         //if snow pack has vanished, nothing more to do
- //       if(this.run_snowDepth == 0)
- //           return true;
+        if(this.run_snowDepth == 0)
+            return true;
         
         //Calculation of new snow densities
         this.calcSnowDensities(area);
@@ -508,7 +480,7 @@ import jams.model.*;
         
         //Calculation of new snow densities
         this.calcSnowDensities(area);
-        return out_height;
+        return true;
     }
     
     /** calculates density of new fallen snow depending
@@ -524,9 +496,6 @@ import jams.model.*;
             new_snow_density = 0.13 + 0.0135 * temp + 0.00045 * Math.pow(temp, 2);
         } else
             new_snow_density = 0.02875;
-        
- // Francois Tilmant  (29.03.13) : we force new snow density = 0.3 to avoid enormous snowDepth 
- //        new_snow_density = 0.3;
         return new_snow_density;
     }
     
@@ -588,8 +557,8 @@ import jams.model.*;
     }
     
     private double calcPotRunoff(double crit_dens, double tot_dens, double liq_water){
-        if(Math.abs(liq_water) > 0.00001 && liq_water < 0)
-            getModel().getRuntime().println("liq_water is negative: "+liq_water);
+//        if(Math.abs(liq_water) > 0.00001 && liq_water < 0)
+//           getModel().getRuntime().println("liq_water is negative: "+liq_water);
         double potRunoff = (1 - Math.exp(-1 * Math.pow((crit_dens/tot_dens), 4))) * liq_water;
         if(potRunoff < 0)
             potRunoff = 0;
