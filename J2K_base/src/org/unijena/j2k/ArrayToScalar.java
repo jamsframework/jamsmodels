@@ -32,10 +32,14 @@ import jams.model.*;
  @JAMSComponentDescription(
         title="ArrayToScalar",
         author="Sven Kralisch",
-        description="Extracts a single value from an array of double values",
-        date = "2013-04-04",
-        version = "1.0_0"
+        description="Extracts single scalar doubles from an array of double values",
+        date = "2013-09-13",
+        version = "1.0_1"
         )
+@VersionComments(entries = {
+    @VersionComments.Entry(version = "1.0_0", comment = "Initial version"),
+    @VersionComments.Entry(version = "1.0_1", comment = "Extended to handle multiple values")
+}) 
 public class ArrayToScalar extends JAMSComponent {
 
     /*
@@ -52,7 +56,7 @@ public class ArrayToScalar extends JAMSComponent {
             access = JAMSVarDescription.AccessType.READ,  
             description = "the index of the value to be extracted" 
             )
-            public Attribute.Integer arrayIndex;      
+            public Attribute.Integer[] arrayIndex;      
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,  
@@ -65,11 +69,13 @@ public class ArrayToScalar extends JAMSComponent {
             access = JAMSVarDescription.AccessType.WRITE,  
             description = "extracted value" 
             )
-            public Attribute.Double dataValue;
+            public Attribute.Double[] dataValue;
 
     @Override
     public void run() {
-        dataValue.setValue(dataArray.getValue()[arrayIndex.getValue()] * factor.getValue());
+        for (int i = 0; i < arrayIndex.length; i++) {
+            dataValue[i].setValue(dataArray.getValue()[arrayIndex[i].getValue()] * factor.getValue());
+        }
     }
 
 }
