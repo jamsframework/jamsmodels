@@ -138,10 +138,5 @@ public class HruToRaster extends JAMSComponent {
         HRU_to_Raster(hruRasterMap, RG2out, RG2raster, RG2_vraster);
 
         totalToRaster.setValue(value);
-        
-        /*fuellstand.setObject("RD1_raster", RD1raster);
-        fuellstand.setObject("RD2_raster", RD2raster);
-        fuellstand.setObject("RG1_raster", RG1raster);
-        fuellstand.setObject("RG2_raster", RG2raster);*/
     }
 }

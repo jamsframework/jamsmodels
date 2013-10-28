@@ -374,7 +374,7 @@ import jams.model.*;
 
         double tot_q = q_ice + q_snow + q_rain;
 
-        this.glacStorage.setValue(allIn - q_snow - q_rain);
+        this.glacStorage.setValue(glacStorage.getValue()+allIn - q_ice - q_snow - q_rain); //why is q_ice missing in that calculation??
         
      //   this.glacStorage.setValue(snowMelt - q_snow);
        // this.glacStorage.setValue(allIn - q_snow - q_rain);

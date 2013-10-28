@@ -1045,7 +1045,10 @@ public class CreateGrid extends JAMSComponent {
         slopeLength = calculateSlopeLength(hangneigung, RG2_Koeff, zeitschritt, rastersize);
         Point[][] RoutingRG2 = calculateFlowPath1(dgm, fliessrichtung, slopeLength, flgew,aufloesung);
 
-        Ausgabe(RoutingRD1,"E:/ModelData/flgew1.txt");
+        Ausgabe(RoutingRD1,"E:/ModelData/flgewRD1.txt");
+        Ausgabe(RoutingRD2,"E:/ModelData/flgewRD2.txt");
+        Ausgabe(RoutingRG1,"E:/ModelData/flgewRG1.txt");
+        Ausgabe(RoutingRG2,"E:/ModelData/flgewRG2.txt");
         //Anlegen der Raster, die sich die Wasserverteil?ng im Gebiet merken
         double[][] RD1_vraster = new double[hruraster.length][hruraster[0].length];
         double[][] RD2_vraster = new double[hruraster.length][hruraster[0].length];

@@ -41,19 +41,19 @@ public class RasterRouting extends JAMSComponent {
     description = "Reach statevar simulated Runoff")
     public Attribute.Double simRunoff;
     @JAMSVarDescription(
-            access = JAMSVarDescription.AccessType.WRITE,
+            access = JAMSVarDescription.AccessType.READ,
     description = "Reach statevar simulated Runoff")
     public Attribute.Double RD1_RR_Koeff;
     @JAMSVarDescription(
-            access = JAMSVarDescription.AccessType.WRITE,
+            access = JAMSVarDescription.AccessType.READ,
     description = "Reach statevar simulated Runoff")
     public Attribute.Double RD2_RR_Koeff;
     @JAMSVarDescription(
-            access = JAMSVarDescription.AccessType.WRITE,
+            access = JAMSVarDescription.AccessType.READ,
     description = "Reach statevar simulated Runoff")
     public Attribute.Double RG1_RR_Koeff;
     @JAMSVarDescription(
-            access = JAMSVarDescription.AccessType.WRITE,
+            access = JAMSVarDescription.AccessType.READ,
     description = "Reach statevar simulated Runoff")
     public Attribute.Double RG2_RR_Koeff;
     @JAMSVarDescription(
