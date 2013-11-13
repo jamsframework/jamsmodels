@@ -38,7 +38,7 @@ import javax.swing.JOptionPane;
  * @author S. Kralisch, fuer mehrdimensionale Topologie modifiziert von D.Varga und B.Pfennig
  * 09.10.2008
  */
-public class MultiEntityReaderTS extends JAMSComponent {
+public class MultiEntityReaderTS22 extends JAMSComponent {
 
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
     description = "HRU parameter file name")
