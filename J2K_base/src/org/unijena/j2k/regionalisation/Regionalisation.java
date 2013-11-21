@@ -159,7 +159,8 @@ public class Regionalisation extends JAMSComponent {
         } else {
             if (!invalidDatasetReported) {     //only report once
                 //in this case simulation should end, because it affects model behaviour seriously!
-                getModel().getRuntime().sendHalt("Invalid dataset found while regionalizing data in component " + this.getInstanceName());
+                getModel().getRuntime().sendHalt("Invalid dataset found while regionalizing data in component " + this.getInstanceName() + "."
+                        + "\nThis might occur if all of the provided values are missing data values.");
                 invalidDatasetReported = true;
             }
             value = JAMS.getMissingDataValue();
