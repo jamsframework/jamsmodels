@@ -60,7 +60,7 @@ public class InputErrorEstimation extends JAMSComponent {
 
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            description = "false for relativ error and true for absolute error",
+            description = "true for relativ error and false for absolute error",
             defaultValue = "0"
             )
             public Attribute.Boolean relativeOrAbsolute;

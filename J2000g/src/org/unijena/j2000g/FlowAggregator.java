@@ -127,8 +127,6 @@ import jams.model.*;
         if(this.interflow != null)
             this.infQcbm.setValue((interflow.getValue() * cArea.getValue()) / (86400 * 1000 * days));
         this.basQcbm.setValue((basQ.getValue() * cArea.getValue()) / (86400 * 1000 * days));
-        
-        
     }
     
     public void cleanup() {

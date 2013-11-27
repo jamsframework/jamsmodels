@@ -76,8 +76,14 @@ public class Regionalisation extends JAMSComponent {
     public Attribute.Double rsqThreshold;
 
     @JAMSVarDescription (access = JAMSVarDescription.AccessType.READ,
-                         description = "Absolute possible minimum value for data set")
+                         description = "Absolute possible minimum value for data set",
+                         defaultValue = "-Infinity")
     public Attribute.Double fixedMinimum;
+    
+    @JAMSVarDescription (access = JAMSVarDescription.AccessType.READ,
+                         description = "Absolute possible maximum value for data set",
+                         defaultValue = "Infinity")
+    public Attribute.Double fixedMaximum;
 
     boolean invalidDatasetReported = false;
 
@@ -149,6 +155,9 @@ public class Regionalisation extends JAMSComponent {
                     //checking for minimum
                     if (tVal < this.fixedMinimum.getValue()) {
                         tVal = this.fixedMinimum.getValue();
+                    }
+                    if (tVal > this.fixedMaximum.getValue()) {
+                        tVal = this.fixedMaximum.getValue();
                     }
                     value = value + tVal;
                 } else { //No elevation correction

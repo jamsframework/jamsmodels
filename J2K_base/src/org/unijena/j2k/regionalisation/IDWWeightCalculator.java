@@ -98,6 +98,11 @@ public class IDWWeightCalculator extends JAMSComponent {
         ArrayList<Object> xList = dsDef.getAttributeValues("X");
         ArrayList<Object> yList = dsDef.getAttributeValues("Y");
 
+        if (xList == null || yList == null){
+            getModel().getRuntime().sendHalt("Error accessing datastore \""
+                    + dataStoreID + "\" from " + getInstanceName() + ": x or y coordinates are not set!");
+        }
+        
         if (xList.size() != yList.size()) {
             getModel().getRuntime().sendHalt("Error accessing datastore \""
                     + dataStoreID + "\" from " + getInstanceName() + ": Number of x and y coordinates differ!");
