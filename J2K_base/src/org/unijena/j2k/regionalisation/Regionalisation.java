@@ -25,9 +25,7 @@ package org.unijena.j2k.regionalisation;
 import jams.JAMS;
 import java.io.*;
 import jams.data.*;
-import jams.io.BufferedFileReader;
 import jams.model.*;
-import java.util.Arrays;
 
 /**
  *

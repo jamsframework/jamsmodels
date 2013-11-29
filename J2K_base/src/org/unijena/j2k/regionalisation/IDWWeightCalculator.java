@@ -36,42 +36,42 @@ import org.unijena.j2k.statistics.IDW;
  * @author Sven Kralisch <sven.kralisch at uni-jena.de>
  */
 @JAMSComponentDescription(title = "IDWWeightCalculator",
-author = "Peter Krause and Sven Kralisch",
-date = "2008-12-07",
-version = "1.0_0",
-description = "Get stations coordinates from DataStore and calculate "
-+ "inverse distance weights for the regionalisation procedure. Based on "
-+ "org.unijena.j2k.regionalization.CalcIDWeights.")
+        author = "Peter Krause and Sven Kralisch",
+        date = "2008-12-07",
+        version = "1.0_0",
+        description = "Get stations coordinates from DataStore and calculate "
+        + "inverse distance weights for the regionalisation procedure. Based on "
+        + "org.unijena.j2k.regionalization.CalcIDWeights.")
 public class IDWWeightCalculator extends JAMSComponent {
 
     /*
      *  Component variables
      */
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
-    description = "entity x-coordinate")
+            description = "entity x-coordinate")
     public Attribute.Double entityX;
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
-    description = "entity y-coordinate")
+            description = "entity y-coordinate")
     public Attribute.Double entityY;
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
-    description = "Power of IDW function")
+            description = "Power of IDW function")
     public Attribute.Double pidw;
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.WRITE,
-    description = "weights for IDW part of regionalisation")
+            description = "weights for IDW part of regionalisation")
     public Attribute.DoubleArray statWeights;
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.WRITE,
-    description = "position array to determine best weights")
+            description = "position array to determine best weights")
     public Attribute.IntegerArray statOrder;
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
-    description = "Weights for Thiessen polygons",
-    defaultValue = "false")
+            description = "Weights for Thiessen polygons",
+            defaultValue = "false")
     public Attribute.Boolean equalWeights;
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
-    description = "Calculation with geographical coordinates lat, long",
-    defaultValue = "false")
+            description = "Calculation with geographical coordinates lat, long",
+            defaultValue = "false")
     public Attribute.Boolean latLong;
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
-    description = "ID of the datastore to read station coordinates from")
+            description = "ID of the datastore to read station coordinates from")
     public Attribute.String dataStoreID;
     private double[] statX;
     private double[] statY;
@@ -98,11 +98,11 @@ public class IDWWeightCalculator extends JAMSComponent {
         ArrayList<Object> xList = dsDef.getAttributeValues("X");
         ArrayList<Object> yList = dsDef.getAttributeValues("Y");
 
-        if (xList == null || yList == null){
+        if (xList == null || yList == null) {
             getModel().getRuntime().sendHalt("Error accessing datastore \""
                     + dataStoreID + "\" from " + getInstanceName() + ": x or y coordinates are not set!");
         }
-        
+
         if (xList.size() != yList.size()) {
             getModel().getRuntime().sendHalt("Error accessing datastore \""
                     + dataStoreID + "\" from " + getInstanceName() + ": Number of x and y coordinates differ!");
@@ -120,9 +120,9 @@ public class IDWWeightCalculator extends JAMSComponent {
         }
     }
 
-    int i=0;
     @Override
-    public void run() {        
+    public void run() {
+        
         double weights[] = statWeights.getValue();
         int wA[] = statOrder.getValue();
 
@@ -147,7 +147,7 @@ public class IDWWeightCalculator extends JAMSComponent {
             }
         }
         statWeights.setValue(weights);
-        statOrder.setValue(wA);        
+        statOrder.setValue(wA);
     }
 
     public void cleanup() {
