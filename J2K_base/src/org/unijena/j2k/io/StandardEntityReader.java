@@ -260,7 +260,6 @@ public class StandardEntityReader extends JAMSComponent {
                 getModel().getRuntime().println("HRUs --> no cycle found");
             }
         }
-
     }
 
     protected void createOrderedList(Attribute.EntityCollection col, String asso) {

@@ -104,8 +104,7 @@ import jams.model.*;
      *  Component run stages
      */
     
-    public void init() {
-        
+    public void init() {       
     }
     
     public void run() {

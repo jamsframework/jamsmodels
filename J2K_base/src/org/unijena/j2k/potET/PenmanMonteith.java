@@ -107,6 +107,11 @@ public class PenmanMonteith extends JAMSComponent {
     public Attribute.Double actET;
 
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.WRITE,
+    description = "ea .. vapour pressure",
+    unit="hPa")
+    public Attribute.Double ea;
+    
+    @JAMSVarDescription(access = JAMSVarDescription.AccessType.WRITE,
     description = "rs",
     unit="s m^-1")
     public Attribute.Double rs;
@@ -133,6 +138,7 @@ public class PenmanMonteith extends JAMSComponent {
             double pz = org.unijena.j2k.physicalCalculations.ClimatologicalVariables.calc_atmosphericPressure(elevation, abs_temp);
             double est = org.unijena.j2k.physicalCalculations.ClimatologicalVariables.calc_saturationVapourPressure(temperature);
             double ea = org.unijena.j2k.physicalCalculations.ClimatologicalVariables.calc_vapourPressure(rhum, est);
+            this.ea.setValue(ea);
 
             double latH = org.unijena.j2k.physicalCalculations.ClimatologicalVariables.calc_latentHeatOfVaporization(temperature);
             double psy = org.unijena.j2k.physicalCalculations.ClimatologicalVariables.calc_psyConst(pz, latH);
