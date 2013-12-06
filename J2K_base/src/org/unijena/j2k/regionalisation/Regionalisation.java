@@ -149,19 +149,18 @@ public class Regionalisation extends JAMSComponent {
             for (int i = 0; i < counter; i++) {
                 if ((rsq >= rsqThreshold.getValue()) && (elevationCorrection.getValue())) {  //Elevation correction is applied
                     deltaElev = targetElevation - elev[i];  //Elevation difference between unit and Station
-                    double tVal = ((deltaElev * gradient + data[i]) * weights[i]);
-                    //checking for minimum
-                    if (tVal < this.fixedMinimum.getValue()) {
-                        tVal = this.fixedMinimum.getValue();
-                    }
-                    if (tVal > this.fixedMaximum.getValue()) {
-                        tVal = this.fixedMaximum.getValue();
-                    }
+                    double tVal = ((deltaElev * gradient + data[i]) * weights[i]);                    
                     value = value + tVal;
                 } else { //No elevation correction
                     value = value + (data[i] * weights[i]);
                 }
-
+            }
+            //checking for minimum
+            if (value < this.fixedMinimum.getValue()) {
+                value = this.fixedMinimum.getValue();
+            }
+            if (value > this.fixedMaximum.getValue()) {
+                value = this.fixedMaximum.getValue();
             }
         } else {
             if (!invalidDatasetReported) {     //only report once
