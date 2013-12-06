@@ -44,13 +44,13 @@ public class SelectiveEntityDataProvider extends JAMSComponent {
     public Attribute.EntityCollection entitySet;
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
     description = "Output file attribute name")
-    public Attribute.String attributeName;
+    public Attribute.String[] attributeName;
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
     description = "Output entities")
     public Attribute.Integer ID;
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.WRITE,
     description = "Output Variable")
-    public Attribute.Double output;
+    public Attribute.Double[] output;
 
     /*
      *  Component runstages
@@ -60,11 +60,15 @@ public class SelectiveEntityDataProvider extends JAMSComponent {
 
     public void run() {
 
-        int curID = (int) (int) entitySet.getCurrent().getDouble("ID");
-        if (this.ID.getValue() == curID) {
-                               
-                double doub = entitySet.getCurrent().getDouble(attributeName.getValue());
-                output.setValue(doub);
+        int curID = (int) (int) entitySet.getCurrent().getDouble("ID");        
+        if (this.ID.getValue() == curID) {            
+            int i=0;
+            for (Attribute.String a : attributeName){
+                double doub = entitySet.getCurrent().getDouble(a.getValue());
+                output[i++].setValue(doub);
+            }
+                
+                
 
             }else{
                 
