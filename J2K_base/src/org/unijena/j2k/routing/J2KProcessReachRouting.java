@@ -284,7 +284,7 @@ import jams.model.*;
         Attribute.Entity entity = entities.getCurrent();
         
         Attribute.Entity DestReach = (Attribute.Entity)entity.getObject("to_reach");
-        if (DestReach.getValue() == null) {
+        if (DestReach.isEmpty()) {
             DestReach = null;
         }
         Attribute.Entity DestReservoir = null;

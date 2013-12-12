@@ -77,21 +77,18 @@ public class J2KFunctions {
 
             while ((s != null) && !s.startsWith("#")) {
 
-                Attribute.Entity e;
+                Attribute.Entity e= DefaultDataFactory.getDataFactory().createEntity();
+                String string[] = s.split("\t");
+                //tokenizer = new StringTokenizer(s, "\t");
 
-                e = DefaultDataFactory.getDataFactory().createEntity();
-                tokenizer = new StringTokenizer(s, "\t");
-
-                String token;
                 for (int i = 0; i < attributeNames.size(); i++) {
-                    token = tokenizer.nextToken();
                     try {
                         //hopefully these are double values :-)
-                        e.setDouble(attributeNames.get(i), Double.parseDouble(token));
+                        e.setDouble(attributeNames.get(i), Double.parseDouble(string[i]));
                     } catch (NumberFormatException nfe) {
                         //most probably this happens because of string values within J2K parameter files
                         Attribute.String stringValue = DefaultDataFactory.getDataFactory().createString();
-                        stringValue.setValue(token);
+                        stringValue.setValue(string[i]);
                         e.setObject(attributeNames.get(i), stringValue);
                     }
                 }

@@ -168,7 +168,7 @@ import jams.model.*;
         double RG2out = outRG2.getValue();
         
         
-        if(toPoly.getValue() != null){
+        if(!toPoly.isEmpty()){
             double elev = toPoly.getDouble("slope");
             double RD1in = toPoly.getDouble("inRD1");
             double RD2in = toPoly.getDouble("inRD2");
@@ -199,7 +199,7 @@ import jams.model.*;
             toPoly.setDouble("inRD2", RD2in);
             toPoly.setDouble("inRG1", RG1in);
             toPoly.setDouble("inRG2", RG2in);
-        } else if(toReach.getValue() != null){
+        } else if(!toReach.isEmpty()){
             double RD1in = toReach.getDouble("inRD1");
             double RD2in = toReach.getDouble("inRD2");
             double RG1in = toReach.getDouble("inRG1");

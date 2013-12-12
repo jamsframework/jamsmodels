@@ -140,6 +140,9 @@ public class IDWWeightCalculator extends JAMSComponent {
 
             System.arraycopy(idw.getWeights(), 0, weights, 0, n);
             System.arraycopy(idw.getWeightOrder(), 0, wA, 0, n);
+            
+            
+            
         } else if (equalWeights.getValue()) {
             for (int i = 0; i < n; i++) {
                 weights[i] = 1. / (double) n;

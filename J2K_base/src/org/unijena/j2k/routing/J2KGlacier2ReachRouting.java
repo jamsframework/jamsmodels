@@ -86,13 +86,13 @@ import jams.model.*;
         //Attribute.Entity ent = entities.getCurrent();
         //long id = ent.getId();
         //System.out.println("ID: " + ent.getId());
-        if (toPoly.getValue() != null) {
+        if (!toPoly.isEmpty()) {
             double RD1inside = this.inRD1.getValue();
             double RD1in = toPoly.getDouble("inRD1");
             RD1in = RD1in + gm + RD1inside;
             inRD1.setValue(0);
             toPoly.setDouble("inRD1", RD1in);
-        } else if(toReach.getValue() != null){
+        } else if(!toReach.isEmpty()){
             double RD1inside = this.inRD1.getValue();
             double RD1in = toReach.getDouble("inRD1");
             RD1in = RD1in + gm + RD1inside;
