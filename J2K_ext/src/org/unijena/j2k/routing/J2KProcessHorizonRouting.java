@@ -132,7 +132,7 @@ import jams.model.*;
         double RD2inReach = 0;
         
         
-        if(toPoly.getValue() != null){
+        if(!toPoly.isEmpty()){
             int id = (int)((Attribute.Double)entity.getObject("ID")).getValue();
             //System.out.getRuntime().println("to poly ID: " + entity.getObject("ID"));
             //if(id == 36)
@@ -190,7 +190,7 @@ import jams.model.*;
             toPoly.setObject("inRD2_h", rdA);
             toPoly.setDouble("inRG1", RG1in);
             toPoly.setDouble("inRG2", RG2in);
-        } else if(toReach.getValue() != null){
+        } else if(!toReach.isEmpty()){
             double RD1in = toReach.getDouble("inRD1");
             RD2inReach = toReach.getDouble("inRD2");
             for(int h = 0; h < RD2out.length; h++){

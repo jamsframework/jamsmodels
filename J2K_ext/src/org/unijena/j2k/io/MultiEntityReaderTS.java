@@ -31,7 +31,6 @@ import java.util.*;
 import jams.JAMS;
 import java.lang.Math.*;
 import jams.tools.FileTools;
-import javax.swing.JOptionPane;
 
 /**
  *
@@ -133,7 +132,6 @@ public class MultiEntityReaderTS extends JAMSComponent {
         reachMap.put(new Integer(0), nullEntity);*/
         
         Attribute.Entity nullEntity = getModel().getRuntime().getDataFactory().createEntity();
-        nullEntity.setValue((HashMap<String, Object>) null);
         hruMap.put(new Double(0), nullEntity);
         reachMap.put(new Double(0), nullEntity);
         
@@ -495,7 +493,7 @@ public class MultiEntityReaderTS extends JAMSComponent {
                 if ((asso.toString()).equals("to_reach")) {
                     Attribute.Entity aktuelleHRU_toReaches = (Attribute.Entity) aktuelleHRU.getObject(asso);
 
-                    if (aktuelleHRU_toReaches.getValue() == null) {
+                    if (aktuelleHRU_toReaches.isEmpty()) {
                         aktuelleHRU_toReaches = null;
                     }
 

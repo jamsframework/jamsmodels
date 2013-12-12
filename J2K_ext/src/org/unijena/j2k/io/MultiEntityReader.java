@@ -169,7 +169,6 @@ public class MultiEntityReader extends JAMSComponent {
 
 
         Attribute.Entity nullEntity = getModel().getRuntime().getDataFactory().createEntity();
-        nullEntity.setValue((HashMap<String, Object>) null);
         hruMap.put(new Double(0), nullEntity);
         reachMap.put(new Double(0), nullEntity);
 
@@ -444,7 +443,7 @@ public class MultiEntityReader extends JAMSComponent {
 
                     Attribute.Entity eff;
                     eff = (Attribute.Entity) e.getObject(asso);
-                    if (eff.getValue() == null) {
+                    if (eff.isEmpty()) {
                         eff = null;
                     }
 

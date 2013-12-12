@@ -94,7 +94,7 @@ public class StandardEntityReaderRR extends JAMSComponent {
         visitedList.add((Attribute.Double) node.getObject("ID"));
 
         child_node = (Attribute.Entity) node.getObject("to_poly");
-        if (child_node.getValue() == null) {
+        if (child_node.isEmpty()) {
             child_node = null;
         }
 
@@ -162,7 +162,6 @@ public class StandardEntityReaderRR extends JAMSComponent {
 
         //create empty entities, i.e. those that are linked to in case there is no linkage ;-)
         Attribute.Entity nullEntity = getModel().getRuntime().getDataFactory().createEntity();
-        nullEntity.setValue((HashMap<String, Object>) null);
         hruMap.put(new Double(0), nullEntity);
         reachMap.put(new Double(0), nullEntity);
 
@@ -217,7 +216,7 @@ public class StandardEntityReaderRR extends JAMSComponent {
                 e = hruIterator.next();
 
                 f = (Attribute.Entity) e.getObject(asso);
-                if (f.getValue() == null) {
+                if (f.isEmpty()) {
                     f = null;
                 }
 

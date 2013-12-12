@@ -183,8 +183,7 @@ public class MultiEntityReaderTS_old extends JAMSComponent {
         }
 
 
-        Attribute.Entity nullEntity = getModel().getRuntime().getDataFactory().createEntity();
-        nullEntity.setValue((HashMap<String, Object>) null);
+        Attribute.Entity nullEntity = getModel().getRuntime().getDataFactory().createEntity();        
         hruMap.put(new Double(0), nullEntity);
         reachMap.put(new Double(0), nullEntity);
          //associate the hru entities with their downstream entity
@@ -206,7 +205,6 @@ public class MultiEntityReaderTS_old extends JAMSComponent {
 
 
         //create empty entities, i.e. those that are linked to in case there is no linkage ;-)
-        nullEntity.setValue((HashMap<String, Object>) null);
         reachMap.put(new Double(0), nullEntity);
 
         try {
@@ -538,7 +536,7 @@ public class MultiEntityReaderTS_old extends JAMSComponent {
 
                     Attribute.Entity eff;
                     eff = (Attribute.Entity) e.getObject(asso);
-                    if (eff.getValue() == null) {
+                    if (eff.isEmpty()) {
                         eff = null;
                     }
 

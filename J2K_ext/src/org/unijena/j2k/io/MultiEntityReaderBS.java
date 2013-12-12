@@ -117,7 +117,6 @@ public class MultiEntityReaderBS extends JAMSComponent {
 
         //create empty entities, i.e. those that are linked to in case there is no linkage ;-)
         Attribute.Entity nullEntity = getModel().getRuntime().getDataFactory().createEntity();
-        nullEntity.setValue((HashMap<String, Object>) null);
         reachMap.put(new Double(0), nullEntity);
 
         try {
@@ -606,7 +605,7 @@ public class MultiEntityReaderBS extends JAMSComponent {
 
                     Attribute.Entity eff;
                     eff = (Attribute.Entity) e.getObject(asso);
-                    if (eff.getValue() == null) {
+                    if (eff.isEmpty()) {
                         eff = null;
                     }
 
