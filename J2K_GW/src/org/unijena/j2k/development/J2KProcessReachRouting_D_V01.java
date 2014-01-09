@@ -21,7 +21,7 @@
  *
  */
 
-package org.unijena.j2k.gw;
+package org.unijena.j2k.development;
 
 import jams.data.*;
 import jams.model.*;
@@ -31,14 +31,11 @@ import jams.model.*;
  * @author c0krpe
  */
 @JAMSComponentDescription(
-        title = "J2KProcessReachRouting_D",
-        author = "Daniel Varga, derived from j2k.routing.J2KProcessReachRouting by Dr. Peter Krause",
-        description = "Routing of Water in Reach-Entities, separated in particular components. "
-                    + "Component necessary for Groundwater Routing with DARCY-Method.",
-        version="1.0_0",
-        date="2011-01-11"
+        title="Title",
+        author="Author",
+        description="Description"
         )
-        public class J2KProcessReachRouting_D extends JAMSComponent {
+        public class J2KProcessReachRouting_D_V01 extends JAMSComponent {
     
     /*
      *  Component variables
@@ -46,371 +43,263 @@ import jams.model.*;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
+            update = JAMSVarDescription.UpdateType.RUN,
             description = "The reach collection"
             )
             public JAMSEntityCollection entities;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            description = "attribute length",
-            unit = "m",
-            lowerBound = 0,
-            upperBound = Double.POSITIVE_INFINITY
+            update = JAMSVarDescription.UpdateType.RUN,
+            description = "attribute length"
             )
             public JAMSDouble length;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            description = "attribute slope",
-            unit = "deg",
-            lowerBound = 0,
-            upperBound =90
+            update = JAMSVarDescription.UpdateType.RUN,
+            description = "attribute slope"
             )
             public JAMSDouble slope;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            description = "attribute width",
-            unit = "m",
-            lowerBound = 0,
-            upperBound = Double.POSITIVE_INFINITY
+            update = JAMSVarDescription.UpdateType.RUN,
+            description = "attribute width"
             )
             public JAMSDouble width;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            description = "attribute roughness",
-            unit = "m^(1/3)/s",
-            lowerBound = 0,
-            upperBound = 100
-
+            update = JAMSVarDescription.UpdateType.RUN,
+            description = "attribute roughness"
             )
             public JAMSDouble roughness;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
-            description = "Reach statevar RD1 inflow",
-            unit = "l",
-            lowerBound = 0,
-            upperBound = Double.POSITIVE_INFINITY
+            update = JAMSVarDescription.UpdateType.RUN,
+            description = "Reach statevar RD1 inflow"
             )
             public JAMSDouble inRD1;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
-            description = "Reach statevar RD2 inflow",
-            unit = "l",
-            lowerBound = 0,
-            upperBound = Double.POSITIVE_INFINITY
+            update = JAMSVarDescription.UpdateType.RUN,
+            description = "Reach statevar RD2 inflow"
             )
             public JAMSDouble inRD2;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
-            description = "Reach statevar RG1 inflow",
-            unit = "l",
-            lowerBound = 0,
-            upperBound = Double.POSITIVE_INFINITY
+            update = JAMSVarDescription.UpdateType.RUN,
+            description = "Reach statevar RG1 inflow"
             )
             public JAMSDouble inRG1;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
-            description = "Reach statevar RG2 inflow",
-            unit = "l",
-            lowerBound = 0,
-            upperBound = Double.POSITIVE_INFINITY
+            update = JAMSVarDescription.UpdateType.RUN,
+            description = "Reach statevar RG2 inflow"
             )
             public JAMSDouble inRG2;
 
    @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
-            description = "Reach statevar RG2 inflow",
-            unit = "l",
-            lowerBound = 0,
-            upperBound = Double.POSITIVE_INFINITY
+            update = JAMSVarDescription.UpdateType.RUN,
+            description = "Reach statevar RG2 inflow"
             )
             public JAMSDouble inGW;
 
-   @JAMSVarDescription(
-            access = JAMSVarDescription.AccessType.READWRITE,
-            description = "Reach statevar RG2 inflow",
-            unit = "l",
-            lowerBound = 0,
-            upperBound = Double.POSITIVE_INFINITY
-            )
-            public JAMSDouble inTZ;
-
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
+            update = JAMSVarDescription.UpdateType.RUN,
             description = "Reach statevar additional inflow",
-            defaultValue= "0",
-            unit = "l",
-            lowerBound = 0,
-            upperBound = Double.POSITIVE_INFINITY
+            defaultValue= "0"
             )
             public JAMSDouble inAddIn;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
-            description = "Reach statevar RD1 outflow",
-            unit = "l",
-            lowerBound = 0,
-            upperBound = Double.POSITIVE_INFINITY
+            update = JAMSVarDescription.UpdateType.RUN,
+            description = "Reach statevar RD1 outflow"
             )
             public JAMSDouble outRD1;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
-            description = "Reach statevar RD2 outflow",
-            unit = "l",
-            lowerBound = 0,
-            upperBound = Double.POSITIVE_INFINITY
+            update = JAMSVarDescription.UpdateType.RUN,
+            description = "Reach statevar RD2 outflow"
             )
             public JAMSDouble outRD2;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
-            description = "Reach statevar RG1 outflow",
-            unit = "l",
-            lowerBound = 0,
-            upperBound = Double.POSITIVE_INFINITY
+            update = JAMSVarDescription.UpdateType.RUN,
+            description = "Reach statevar RG1 outflow"
             )
             public JAMSDouble outRG1;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
-            description = "Reach statevar RG2 outflow",
-            unit = "l",
-            lowerBound = 0,
-            upperBound = Double.POSITIVE_INFINITY
+            update = JAMSVarDescription.UpdateType.RUN,
+            description = "Reach statevar RG2 outflow"
             )
             public JAMSDouble outRG2;
 
         @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
-            description = "Reach statevar RG2 outflow",
-            unit = "l",
-            lowerBound = 0,
-            upperBound = Double.POSITIVE_INFINITY
+            update = JAMSVarDescription.UpdateType.RUN,
+            description = "Reach statevar RG2 outflow"
             )
             public JAMSDouble outGW;
 
-        @JAMSVarDescription(
-            access = JAMSVarDescription.AccessType.WRITE,
-            description = "Reach statevar RG2 outflow",
-            unit = "l",
-            lowerBound = 0,
-            upperBound = Double.POSITIVE_INFINITY
-            )
-            public JAMSDouble outTZ;
-
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
+            update = JAMSVarDescription.UpdateType.RUN,
             description = "Reach statevar additional outflow",
-            defaultValue= "0",
-            unit = "l",
-            lowerBound = 0,
-            upperBound = Double.POSITIVE_INFINITY
+            defaultValue= "0"
             )
             public JAMSDouble outAddIn;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
-            description = "Reach statevar simulated Runoff",
-            unit = "l",
-            lowerBound = 0,
-            upperBound = Double.POSITIVE_INFINITY
+            update = JAMSVarDescription.UpdateType.RUN,
+            description = "Reach statevar simulated Runoff"
             )
             public JAMSDouble simRunoff;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
-            description = "Reach statevar RD1 storage",
-            unit = "l",
-            lowerBound = 0,
-            upperBound = Double.POSITIVE_INFINITY
+            update = JAMSVarDescription.UpdateType.RUN,
+            description = "Reach statevar RD1 storage"
             )
             public JAMSDouble actRD1;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
-            description = "Reach statevar RD2 storage",
-            unit = "l",
-            lowerBound = 0,
-            upperBound = Double.POSITIVE_INFINITY
+            update = JAMSVarDescription.UpdateType.RUN,
+            description = "Reach statevar RD2 storage"
             )
             public JAMSDouble actRD2;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
-            description = "Reach statevar RG1 storage",
-            unit = "l",
-            lowerBound = 0,
-            upperBound = Double.POSITIVE_INFINITY
+            update = JAMSVarDescription.UpdateType.RUN,
+            description = "Reach statevar RG1 storage"
             )
             public JAMSDouble actRG1;
-
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
-            description = "Reach statevar RG2 storage",
-            unit = "l",
-            lowerBound = 0,
-            upperBound = Double.POSITIVE_INFINITY
+            update = JAMSVarDescription.UpdateType.RUN,
+            description = "Reach statevar RG2 storage"
             )
             public JAMSDouble actRG2;
-
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
-            description = "Reach statevar RG2 storage",
-            unit = "l",
-            lowerBound = 0,
-            upperBound = Double.POSITIVE_INFINITY
+            update = JAMSVarDescription.UpdateType.RUN,
+            description = "Reach statevar RG2 storage"
             )
             public JAMSDouble actGW;
-
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
-            description = "Reach statevar RG2 storage",
-            unit = "l",
-            lowerBound = 0,
-            upperBound = Double.POSITIVE_INFINITY
-            )
-            public JAMSDouble actTZ;
-
-    @JAMSVarDescription(
-            access = JAMSVarDescription.AccessType.READWRITE,
+            update = JAMSVarDescription.UpdateType.RUN,
             description = "Reach statevar additional inflow storage",
-            defaultValue= "0",
-            unit = "l",
-            lowerBound = 0,
-            upperBound = Double.POSITIVE_INFINITY
+            defaultValue= "0"
             )
             public JAMSDouble actAddIn;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
-            description = "Channel storage",
-            unit = "l",
-            lowerBound = 0,
-            upperBound = Double.POSITIVE_INFINITY
+            update = JAMSVarDescription.UpdateType.RUN,
+            description = "Channel storage"
             )
             public JAMSDouble channelStorage;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            description = "flow routing coefficient TA",
-            defaultValue= "1",
-            unit = "l",
-            lowerBound = 0,
-            upperBound = Double.POSITIVE_INFINITY
+            update = JAMSVarDescription.UpdateType.INIT,
+            description = "flow routing coefficient TA"
             )
             public JAMSDouble flowRouteTA;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
-            description = "Catchment outlet RD1 storage",
-            unit = "l",
-            lowerBound = 0,
-            upperBound = Double.POSITIVE_INFINITY
+            update = JAMSVarDescription.UpdateType.RUN,
+            description = "Catchment outlet RD1 storage"
             )
             public JAMSDouble catchmentRD1;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
-            description = "Catchment outlet RD2 storage",
-            unit = "l",
-            lowerBound = 0,
-            upperBound = Double.POSITIVE_INFINITY
+            update = JAMSVarDescription.UpdateType.RUN,
+            description = "Catchment outlet RD2 storage"
             )
             public JAMSDouble catchmentRD2;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
-            description = "Catchment outlet RG1 storage",
-            unit = "l",
-            lowerBound = 0,
-            upperBound = Double.POSITIVE_INFINITY
+            update = JAMSVarDescription.UpdateType.RUN,
+            description = "Catchment outlet RG1 storage"
             )
             public JAMSDouble catchmentRG1;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
-            description = "Catchment outlet RG2 storage",
-            unit = "l",
-            lowerBound = 0,
-            upperBound = Double.POSITIVE_INFINITY
+            update = JAMSVarDescription.UpdateType.RUN,
+            description = "Catchment outlet RG2 storage"
             )
             public JAMSDouble catchmentRG2;
 
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
-            description = "Catchment outlet RG1 storage",
-            unit = "l",
-            lowerBound = 0,
-            upperBound = Double.POSITIVE_INFINITY
+            update = JAMSVarDescription.UpdateType.RUN,
+            description = "Catchment outlet RG2 storage"
             )
             public JAMSDouble catchmentGW;
-
-    @JAMSVarDescription(
-            access = JAMSVarDescription.AccessType.WRITE,
-            description = "Catchment outlet RG2 storage",
-            unit = "l",
-            lowerBound = 0,
-            upperBound = Double.POSITIVE_INFINITY
-            )
-            public JAMSDouble catchmentTZ;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
+            update = JAMSVarDescription.UpdateType.RUN,
             description = "Catchment additional input outlet storage",
-            defaultValue= "0",
-            unit = "l",
-            lowerBound = 0,
-            upperBound = Double.POSITIVE_INFINITY
+            defaultValue= "0"
             )
             public JAMSDouble catchmentAddIn;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
-            description = "Catchment outlet RG2 storage",
-            unit = "l",
-            lowerBound = 0,
-            upperBound = Double.POSITIVE_INFINITY
+            update = JAMSVarDescription.UpdateType.RUN,
+            description = "Catchment outlet RG2 storage"
             )
             public JAMSDouble catchmentSimRunoff;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
+            update = JAMSVarDescription.UpdateType.INIT,
             description = "temporal resolution [d or h]"
             )
             public JAMSString tempRes;
 
+
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            description = "height above sea level",
-            unit = "m", //[m ü NN] / [a.s.l.]
-            lowerBound = 0,
-            upperBound = Double.POSITIVE_INFINITY
+            update = JAMSVarDescription.UpdateType.INIT,
+            description = "mm ü. NN"
             )
             public JAMSDouble baseHeigth;
 
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
-            description = "water Level",
-            unit = "m", //[m ü NN] / [a.s.l.]
-            lowerBound = 0,
-            upperBound = Double.POSITIVE_INFINITY
+            update = JAMSVarDescription.UpdateType.INIT,
+            description = "water Level in m ü. NN"
             )
             public JAMSDouble waterTable_NN;
 
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
-            description = "water depth in m",
-            unit = "m",
-            lowerBound = 0,
-            upperBound = Double.POSITIVE_INFINITY
+            update = JAMSVarDescription.UpdateType.INIT,
+            description = "water Level in m"
             )
             public JAMSDouble waterDepth;
     /*
@@ -421,9 +310,12 @@ import jams.model.*;
         
     }
     
+    @SuppressWarnings("static-access")
     public void run() throws JAMSEntity.NoSuchAttributeException {
         
         Attribute.Entity entity = entities.getCurrent();
+
+        double actualEntityID = entity.getDouble("ID");
 
         JAMSEntity DestReach = (JAMSEntity)entity.getObject("to_reach");
         if (DestReach.getValue() == null) {
@@ -446,8 +338,6 @@ import jams.model.*;
         double RD2act = actRD2.getValue() + inRD2.getValue();
         double RG1act = actRG1.getValue() + inRG1.getValue();
         double RG2act = actRG2.getValue() + inRG2.getValue();
-
-        double TZact = actTZ.getValue() + inTZ.getValue();
         double GWact = actGW.getValue() + inGW.getValue();
         
         double addInAct = actAddIn.getValue() + this.inAddIn.getValue();
@@ -456,8 +346,6 @@ import jams.model.*;
         inRD2.setValue(0);
         inRG1.setValue(0);
         inRG2.setValue(0);
-
-        inTZ.setValue(0);
         inGW.setValue(0);
         
         inAddIn.setValue(0);
@@ -466,8 +354,6 @@ import jams.model.*;
         actRD2.setValue(0);
         actRG1.setValue(0);
         actRG2.setValue(0);
-
-        actTZ.setValue(0);
         actGW.setValue(0);
         
         actAddIn.setValue(0);
@@ -476,8 +362,6 @@ import jams.model.*;
         double RD2DestIn = 0;
         double RG1DestIn = 0;
         double RG2DestIn = 0;
-
-        double TZDestIn = 0;
         double GWDestIn = 0;
         double addInDestIn = 0;
         
@@ -486,8 +370,6 @@ import jams.model.*;
             RD2DestIn = 0;//entity.getDouble(aNameCatchmentOutRD2.getValue());
             RG1DestIn = 0;//entity.getDouble(aNameCatchmentOutRG1.getValue());
             RG2DestIn = 0;//entity.getDouble(aNameCatchmentOutRG2.getValue());
-
-            TZDestIn = 0;
             GWDestIn = 0;
             addInDestIn = 0;
         } 
@@ -502,8 +384,6 @@ import jams.model.*;
             RD2DestIn = DestReach.getDouble("inRD2");
             RG1DestIn = DestReach.getDouble("inRG1");
             RG2DestIn = DestReach.getDouble("inRG2");
-
-            TZDestIn = DestReach.getDouble("inTZ");
             GWDestIn = DestReach.getDouble("inGW");
             try{
                 addInDestIn = DestReach.getDouble("inAddIn");
@@ -512,19 +392,20 @@ import jams.model.*;
             }
         }
         
-        double q_act_tot = RD1act + RD2act + RG1act + RG2act + GWact + TZact + addInAct;
+        double q_act_tot = RD1act + RD2act + RG1act + RG2act + GWact + addInAct;
         
+        //int ID = (int)entity.getDouble("ID");
+        // System.out.getRuntime().println("Processing reach: " + ID);
         if(q_act_tot == 0){
             outRD1.setValue(0);
             outRD2.setValue(0);
             outRG1.setValue(0);
             outRG2.setValue(0);
-
-            outTZ.setValue(0);
             outGW.setValue(0);
             
             this.outAddIn.setValue(0);
             
+            //nothing more to do here
             return;
         }
         
@@ -533,8 +414,6 @@ import jams.model.*;
         double RD2_part = RD2act / q_act_tot;
         double RG1_part = RG1act / q_act_tot;
         double RG2_part = RG2act / q_act_tot;
-
-        double TZ_part = TZact / q_act_tot;
         double GW_part = GWact / q_act_tot;
         double addInPart = addInAct / q_act_tot;
         
@@ -562,7 +441,6 @@ import jams.model.*;
         double RD2out = q_act_out * RD2_part;
         double RG1out = q_act_out * RG1_part;
         double RG2out = q_act_out * RG2_part;
-        double TZout = q_act_out * TZ_part;
         double GWout = q_act_out * GW_part;
         double addInOut = q_act_out * addInPart;
         
@@ -571,7 +449,6 @@ import jams.model.*;
         RD2DestIn = RD2DestIn + RD2out;
         RG1DestIn = RG1DestIn + RG1out;
         RG2DestIn = RG2DestIn + RG2out;
-        TZDestIn = TZDestIn + TZout;
         GWDestIn = GWDestIn + GWout;
         
         addInDestIn = addInDestIn + addInOut;
@@ -581,18 +458,17 @@ import jams.model.*;
         RD2act = RD2act - q_act_out * RD2_part;
         RG1act = RG1act - q_act_out * RG1_part;
         RG2act = RG2act - q_act_out * RG2_part;
-        TZact = TZact - q_act_out * TZ_part;
         GWact = GWact - q_act_out * GW_part;
         addInAct = addInAct - q_act_out * addInPart;
         
-        double run_channelStorage = RD1act + RD2act + RG1act + RG2act + GWact + TZact + addInAct;
+        double run_channelStorage = RD1act + RD2act + RG1act + RG2act + GWact + addInAct;
 
-        //Calculation of water level
+        //Berechnung der Wasserspiegellage
         double q_m = q_act_tot / (1000 * sec_inTStep);
         double run_waterDepth = (q_m / flow_veloc) / run_width;
         double run_waterTable_NN = baseHeigth.getValue() + run_waterDepth;
 
-        double cumOutflow = RD1out + RD2out + RG1out + RG2out + GWout + TZout + addInOut;
+        double cumOutflow = RD1out + RD2out + RG1out + RG2out + GWout + addInOut;
         
         simRunoff.setValue(cumOutflow);
         channelStorage.setValue(run_channelStorage);
@@ -601,7 +477,6 @@ import jams.model.*;
         inRD2.setValue(0);
         inRG1.setValue(0);
         inRG2.setValue(0);
-        inTZ.setValue(0);
         inGW.setValue(0);
 
         inAddIn.setValue(0);
@@ -610,7 +485,6 @@ import jams.model.*;
         actRD2.setValue(RD2act);
         actRG1.setValue(RG1act);
         actRG2.setValue(RG2act);
-        actTZ.setValue(TZact);
         actGW.setValue(GWact);
 
         actAddIn.setValue(addInAct);
@@ -619,7 +493,6 @@ import jams.model.*;
         outRD2.setValue(RD2out);
         outRG1.setValue(RG1out);
         outRG2.setValue(RG2out);
-        outTZ.setValue(TZout);
         outGW.setValue(GWout);
         outAddIn.setValue(addInOut);
 
@@ -632,7 +505,6 @@ import jams.model.*;
             DestReach.setDouble("inRD2",RD2DestIn);
             DestReach.setDouble("inRG1",RG1DestIn);
             DestReach.setDouble("inRG2",RG2DestIn);
-            DestReach.setDouble("inTZ",TZDestIn);
             DestReach.setDouble("inGW",GWDestIn);
             DestReach.setDouble("inAddIn", addInDestIn);
             
@@ -649,8 +521,8 @@ import jams.model.*;
             catchmentRD1.setValue(RD1out);
             catchmentRD2.setValue(RD2out);
             catchmentRG1.setValue(RG1out);
+            //RG2out = RG2out + GWout;
             catchmentRG2.setValue(RG2out);
-            catchmentTZ.setValue(TZout);
             catchmentGW.setValue(GWout);
             this.catchmentAddIn.setValue(addInOut);
             catchmentSimRunoff.setValue(cumOutflow);

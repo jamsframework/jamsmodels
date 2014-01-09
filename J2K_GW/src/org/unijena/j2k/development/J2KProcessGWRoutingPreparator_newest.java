@@ -20,38 +20,34 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
  *
  */
-package org.unijena.j2k.gw;
+package org.unijena.j2k.development;
 
 import jams.data.*;
 import jams.model.*;
 import java.util.*;
 import java.lang.Math.*;
 
-@JAMSComponentDescription(
-        title = "J2KGroundwaterRoutingPreparator",
-        author = "Daniel Varga",
-        description = "Essential Preprocessing Component for Groundwater Routing with DARCY-Method",
-        version="1.0_0",
-        date="2011-01-10"
-        )
-public class J2KProcessGWRoutingPreparator extends JAMSComponent {
+/**
+ *
+ * @author c0krpe
+ */
+@JAMSComponentDescription(title = "J2KGroundwater",
+author = "Peter Krause modifications Daniel Varga",
+description = "Description")
+public class J2KProcessGWRoutingPreparator_newest extends JAMSComponent {
 
     /*
      *  Component variables
      */
-    @JAMSVarDescription(
-        access = JAMSVarDescription.AccessType.READ,
-        update = JAMSVarDescription.UpdateType.RUN,
-        description = "The current hru entity"
-        )
-        public JAMSEntityCollection hrus;
+    @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
+    update = JAMSVarDescription.UpdateType.RUN,
+    description = "The current hru entity")
+    public JAMSEntityCollection hrus;
 
-    @JAMSVarDescription(
-        access = JAMSVarDescription.AccessType.READ,
-        update = JAMSVarDescription.UpdateType.RUN,
-        description = "The current reach entity"
-        )
-        public JAMSEntityCollection reaches;
+    @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
+    update = JAMSVarDescription.UpdateType.RUN,
+    description = "The current reach entity")
+    public JAMSEntityCollection reaches;
 
     /*
      *  Component run stages
@@ -106,6 +102,8 @@ public class J2KProcessGWRoutingPreparator extends JAMSComponent {
             e = hruIterator.next();
             if (e.getDouble("type") == 3) {
                 f = (JAMSEntity) e.getObject("to_reach");
+
+                //getModel().getRuntime().println("HRU: " + e.getDouble("ID"));
 
                 if (!routingMap.containsKey(f)) {
                     routingMap.put(f, new ArrayList<Attribute.Entity>());

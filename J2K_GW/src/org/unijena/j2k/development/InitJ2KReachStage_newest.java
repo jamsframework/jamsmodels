@@ -20,52 +20,39 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
  *
  */
-package org.unijena.j2k.gw;
+package org.unijena.j2k.development;
 
 import jams.data.*;
 import jams.model.*;
 import java.lang.Math.*;
 
-@JAMSComponentDescription(
-        title = "InitJ2KReachStage",
-        author = "Daniel Varga",
-        description = "Initialisation for River Bed and Water Depth in Reaches",
-        version="1.0_0",
-        date="2011-01-10"
-        )
-public class InitJ2KReachStage extends JAMSComponent {
+/**
+ *
+ * @author c0krpe
+ */
+@JAMSComponentDescription(title = "J2KGroundwater",
+author = "Peter Krause modifications Daniel Varga",
+description = "Description")
+public class InitJ2KReachStage_newest extends JAMSComponent {
 
     /*
      *  Component variables
      */
 
     @JAMSVarDescription(
-        access = JAMSVarDescription.AccessType.READWRITE,
-        description = "river bed height",
-        unit = "m", //[m ü NN] / [a.s.l.]
-        lowerBound = 0,
-        upperBound = Double.POSITIVE_INFINITY
-        )
-        public JAMSDouble reachBed;
+    access = JAMSVarDescription.AccessType.READWRITE,
+    description = "river bed height")
+    public JAMSDouble reachBed;
 
     @JAMSVarDescription(
-        access = JAMSVarDescription.AccessType.WRITE,
-        description = "Reach Water Level",
-        unit = "m", //[m ü NN] / [a.s.l.]
-        lowerBound = 0,
-        upperBound = Double.POSITIVE_INFINITY
-        )
-        public JAMSDouble waterTable_NN;
+    access = JAMSVarDescription.AccessType.WRITE,
+    description = "Reach Water Level")
+    public JAMSDouble waterTable_NN;
 
-    @JAMSVarDescription(
-        access = JAMSVarDescription.AccessType.READ,
-        description = "reachBed adaptation",
-        unit = "m",
-        defaultValue = "0",
-        lowerBound = 0,
-        upperBound = Double.POSITIVE_INFINITY
-        )
-        public JAMSDouble rB_adapt;
+    @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
+    update = JAMSVarDescription.UpdateType.RUN,
+    description = "reachBed adaptation")
+    public JAMSDouble rB_adapt;
 
     /*
      *  Component run stages
@@ -80,15 +67,14 @@ public class InitJ2KReachStage extends JAMSComponent {
 
     public void run() throws JAMSEntity.NoSuchAttributeException {
 
-        run_rB = reachBed.getValue();
-        run_rB_adapt = rB_adapt.getValue();
+        run_rB = reachBed.getValue();                     //[m]
+        run_rB_adapt = rB_adapt.getValue();               //[-]
         
-        run_rB = run_rB - run_rB_adapt;
+        run_rB = run_rB - run_rB_adapt;                   //[m ü NN]
 
         run_wT = run_rB + 0.1;
-        //no calibration needed, initial water depth for all reaches 10 cm
         
-        waterTable_NN.setValue(run_wT);
+        waterTable_NN.setValue(run_wT);                              //[m]
         reachBed.setValue(run_rB);
     }
 

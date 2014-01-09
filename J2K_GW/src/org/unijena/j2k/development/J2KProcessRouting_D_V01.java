@@ -21,7 +21,7 @@
  *
  */
 
-package org.unijena.j2k.gw;
+package org.unijena.j2k.development;
 
 import jams.data.*;
 import jams.model.*;
@@ -31,136 +31,121 @@ import jams.model.*;
  * @author Peter Krause
  */
 @JAMSComponentDescription(
-        title="J2KProcessRouting_D",
-        author="Peter Krause modified by Daniel Varga",
-        description="Passes the output of the entities as input to the respective reach or unit",
-        version="1.0_0",
-        date="2011-01-12"
+        title="J2KProcessRouting",
+        author="Peter Krause",
+        description="Passes the output of the entities as input to the respective reach or unit"
         )
-        public class J2KProcessRouting_D extends JAMSComponent {
+        public class J2KProcessRouting_D_V01 extends JAMSComponent {
     
     /*
      *  Component variables
      */
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
+            update = JAMSVarDescription.UpdateType.RUN,
             description = "The current hru entity"
             )
             public JAMSEntityCollection entities;
-
+    
     @JAMSVarDescription(
-            access = JAMSVarDescription.AccessType.READWRITE,
-            description = "Downstream hru entity"
+            access = JAMSVarDescription.AccessType.READ,
+            update = JAMSVarDescription.UpdateType.RUN,
+            description = "Collection of reach objects"
             )
-            public Attribute.Entity toPoly;
-
+            public JAMSEntityCollection reaches;
+    
+    @JAMSVarDescription(
+            access = JAMSVarDescription.AccessType.READ,
+            update = JAMSVarDescription.UpdateType.RUN,
+            description = "Collection of reservoir objects"
+            )
+            public JAMSEntityCollection reservoirs;
+    
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
             update = JAMSVarDescription.UpdateType.RUN,
-            description = "Downstream reach entity"
-            )
-            public Attribute.Entity toReach;
-
-    @JAMSVarDescription(
-            access = JAMSVarDescription.AccessType.READWRITE,
-            description = "HRU statevar RD1 inflow",
-            unit = "l",
-            lowerBound = 0,
-            upperBound = Double.POSITIVE_INFINITY
+            description = "HRU statevar RD1 inflow"
             )
             public JAMSDouble inRD1;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
-            description = "HRU statevar RD2 inflow",
-            unit = "l",
-            lowerBound = 0,
-            upperBound = Double.POSITIVE_INFINITY
+            update = JAMSVarDescription.UpdateType.RUN,
+            description = "HRU statevar RD2 inflow"
             )
             public JAMSDouble inRD2;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
-            description = "HRU statevar RG1 inflow",
-            unit = "l",
-            lowerBound = 0,
-            upperBound = Double.POSITIVE_INFINITY
+            update = JAMSVarDescription.UpdateType.RUN,
+            description = "HRU statevar RG1 inflow"
             )
             public JAMSDouble inRG1;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
-            description = "HRU statevar RG2 inflow",
-            unit = "l",
-            lowerBound = 0,
-            upperBound = Double.POSITIVE_INFINITY
+            update = JAMSVarDescription.UpdateType.RUN,
+            description = "HRU statevar RG2 inflow"
             )
             public JAMSDouble inRG2;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
+            update = JAMSVarDescription.UpdateType.RUN,
             description = "HRU statevar groundwater excess",
-            unit = "l",
-            lowerBound = 0,
-            upperBound = Double.POSITIVE_INFINITY
+            defaultValue= "0"
             )
             public JAMSDouble inGWExcess;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
-            description = "HRU statevar RD1 outflow",
-            unit = "l",
-            lowerBound = 0,
-            upperBound = Double.POSITIVE_INFINITY
+            update = JAMSVarDescription.UpdateType.RUN,
+            description = "HRU statevar RD1 outflow"
             )
             public JAMSDouble outRD1;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
-            description = "HRU statevar RD2 outflow",
-            unit = "l",
-            lowerBound = 0,
-            upperBound = Double.POSITIVE_INFINITY
+            update = JAMSVarDescription.UpdateType.RUN,
+            description = "HRU statevar RD2 outflow"
             )
             public JAMSDouble outRD2;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
-            description = "HRU statevar RG1 outflow",
-            unit = "l",
-            lowerBound = 0,
-            upperBound = Double.POSITIVE_INFINITY
+            update = JAMSVarDescription.UpdateType.RUN,
+            description = "HRU statevar RG1 outflow"
             )
             public JAMSDouble outRG1;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
-            description = "HRU statevar RG2 outflow",
-            unit = "l",
-            lowerBound = 0,
-            upperBound = Double.POSITIVE_INFINITY
+            update = JAMSVarDescription.UpdateType.RUN,
+            description = "HRU statevar RG2 outflow"
             )
             public JAMSDouble outRG2;
 
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
             update = JAMSVarDescription.UpdateType.RUN,
-            description = "HRU statevar RG2 outflow",
-            unit = "l",
-            lowerBound = 0,
-            upperBound = Double.POSITIVE_INFINITY
+            description = "HRU statevar RG2 outflow"
             )
             public JAMSDouble outGW;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
-            description = "HRU statevar RG2 outflow",
-            unit = "l",
-            lowerBound = 0,
-            upperBound = Double.POSITIVE_INFINITY
+            update = JAMSVarDescription.UpdateType.RUN,
+            description = "Downstream hru entity"
             )
-            public JAMSDouble outTZ;
- 
+            public Attribute.Entity toPoly;
+    
+    @JAMSVarDescription(
+            access = JAMSVarDescription.AccessType.READWRITE,
+            update = JAMSVarDescription.UpdateType.RUN,
+            description = "Downstream reach entity"
+            )
+            public Attribute.Entity toReach;
+    
     /*
      *  Component run stages
      */
@@ -185,69 +170,61 @@ import jams.model.*;
         }catch(Attribute.Entity.NoSuchAttributeException e){
             toReservoir = null;
         }
+
         double RD1out = outRD1.getValue();
         double RD2out = outRD2.getValue();
         double RG1out = outRG1.getValue();
         double RG2out = outRG2.getValue();
-        
-        double TZout = outTZ.getValue();
         double GWout = outGW.getValue();
 
         if(toPoly.getValue() != null){
 
-            double GWin = toPoly.getDouble("inGW");
-            GWin = GWin + GWout;
-            GWout = 0;
-            
-            toPoly.setDouble("inGW", GWin);
+                double RG2in = toPoly.getDouble("inRG2");
+                double GWin = toPoly.getDouble("inGW");
+                GWin = GWin + GWout;
+                GWout = 0;
+                outGW.setValue(0);
+                toPoly.setDouble("inGW", GWin);
 
 
             double RD1in = toPoly.getDouble("inRD1");
             double RD2in = toPoly.getDouble("inRD2");
             double RG1in = toPoly.getDouble("inRG1");
-            double RG2in = toPoly.getDouble("inRG2");
-            
+
             RD1in = RD1in + RD1out;
             RD2in = RD2in + RD2out;
             RG1in = RG1in + RG1out;
-            RG2in = RG2in + RG2out;
-            
+          
             RD2in += inGWExcess.getValue();
             
             RD1out = 0;
             RD2out = 0;
             RG1out = 0;
-            RG2out = 0;
             
             outRD1.setValue(0);
             outRD2.setValue(0);
             outRG1.setValue(0);
-            outRG2.setValue(0);
+
             inGWExcess.setValue(0);
-            
-            outTZ.setValue(0);
-            outGW.setValue(0);
-            
             
             toPoly.setDouble("inRD1", RD1in);
             toPoly.setDouble("inRD2", RD2in);
             toPoly.setDouble("inRG1", RG1in);
-            toPoly.setDouble("inRG2", RG2in);
+
         } else if(toReach.getValue() != null){
+            if (toReach.getDouble("ID") == 1124){
+                getModel().getRuntime().println("Current entity ID: 1124.");
+            }
             double RD1in = toReach.getDouble("inRD1");
             double RD2in = toReach.getDouble("inRD2");
             double RG1in = toReach.getDouble("inRG1");
             double RG2in = toReach.getDouble("inRG2");
-
-            double TZin = toReach.getDouble("inTZ");
             double GWin = toReach.getDouble("inGW");
             
             RD1in = RD1in + RD1out;
             RD2in = RD2in + RD2out;
             RG1in = RG1in + RG1out;
             RG2in = RG2in + RG2out;
-
-            TZin = TZin + TZout;
             GWin = GWin + GWout;
             RD2in += inGWExcess.getValue();
             
@@ -255,8 +232,6 @@ import jams.model.*;
             RD2out = 0;
             RG1out = 0;
             RG2out = 0;
-
-            TZout = 0;
             GWout = 0;
             
             outRD1.setValue(RD1out);
@@ -266,9 +241,6 @@ import jams.model.*;
             outRG1.setValue(RG1out);
             toReach.setDouble("inRG1", RG1in);
             outRG2.setValue(RG2out);
-
-            toReach.setDouble("inTZ", TZin);
-            outGW.setValue(TZout);
             toReach.setDouble("inGW", GWin);
             outGW.setValue(GWout);
 

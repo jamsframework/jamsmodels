@@ -20,7 +20,7 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
  *
  */
-package org.unijena.j2k.gw;
+package org.unijena.j2k.development;
 
 import jams.data.*;
 import jams.model.*;
@@ -29,128 +29,69 @@ import jams.model.*;
  *
  * @author Peter Krause
  */
-@JAMSComponentDescription(
-        title = "J2KProcessGWRouting",
-        author = "Daniel Varga",
-        description = "Component for Routing of Groundwater Flow with the DARCY-Method",
-        version="1.0_0",
-        date="2011-01-13"
-        )
-public class J2KProcessGWRouting extends JAMSComponent {
+@JAMSComponentDescription(title = "J2KProcessRouting",
+author = "Peter Krause",
+description = "Passes the output of the entities as input to the respective reach or unit")
+public class J2KProcessGWRouting_v01 extends JAMSComponent {
 
     /*
      *  Component variables
      */
-    
-    @JAMSVarDescription(
-            access = JAMSVarDescription.AccessType.READ,
-            description = "The current hru entity"
-            )
-            public JAMSEntityCollection entities;
-    
-    @JAMSVarDescription(
-            access = JAMSVarDescription.AccessType.READWRITE,
-            description = "sum attribute"
-            )
-            public JAMSEntity[] fP;
-
-    @JAMSVarDescription(
-            access = JAMSVarDescription.AccessType.READ,
-            description = "attribute area",
-            unit = "l",
-            lowerBound = 0,
-            upperBound = Double.POSITIVE_INFINITY
-            )
-            public JAMSDouble area;
-
-    @JAMSVarDescription(
-            access = JAMSVarDescription.AccessType.READ,
-            description = "elevation of HRU",
-            unit = "m", //[m ü NN] / [a.s.l.]
-            lowerBound= -422,
-            upperBound = 8848
-            )
-            public JAMSDouble elevation;
-
-    @JAMSVarDescription(
-            access = JAMSVarDescription.AccessType.READ,
-            description = "Heigth of the Aquifer Base in m + NN",
-            unit = "m", //[m ü NN] / [a.s.l.]
-            lowerBound = 0,
-            upperBound = Double.POSITIVE_INFINITY
-            )
-            public JAMSDouble baseHeigth;
-
-    @JAMSVarDescription(
-            access = JAMSVarDescription.AccessType.READ,
-            description = "Flurabstand",
-            unit = "m",
-            lowerBound= 0,
-            upperBound = 100
-            )
-            public JAMSDouble FlurAbstand;
-
-    @JAMSVarDescription(
-            access = JAMSVarDescription.AccessType.READWRITE,
-            description = "Groundwater Level",
-            unit = "m", //[m ü NN] / [a.s.l.]
-            lowerBound = 0,
-            upperBound = Double.POSITIVE_INFINITY
-            )
-            public JAMSDouble gwTable;
-
-    @JAMSVarDescription(
-            access = JAMSVarDescription.AccessType.READWRITE,
-            description = "HRU statevar GW inflow",
-            unit = "l",
-            lowerBound = 0,
-            upperBound = Double.POSITIVE_INFINITY
-            )
-            public JAMSDouble inGW;
-
-    @JAMSVarDescription(
-            access = JAMSVarDescription.AccessType.READWRITE,
-            description = "actual GW storage",
-            unit = "l",
-            lowerBound = 0,
-            upperBound = Double.POSITIVE_INFINITY
-            )
-            public JAMSDouble actGW;
-
-    @JAMSVarDescription(
-            access = JAMSVarDescription.AccessType.READ,
-            description = "estimated Porosity",
-            unit = "-",
-            lowerBound= 0.0,
-            upperBound = 1.0
-            )
-            public JAMSDouble Peff;
-    
-    @JAMSVarDescription(
-            access = JAMSVarDescription.AccessType.READWRITE,
-            description = "Calculation Factor for each HRU (static geographic variables) for use in GWRouting-module",
-            unit = "m^2/d",
-            lowerBound = 0,
-            upperBound = Double.POSITIVE_INFINITY
-            )
-            public JAMSDouble calcFactor;
-
-    @JAMSVarDescription(
-            access = JAMSVarDescription.AccessType.READ,
-            description = "Reduction of outflows, 0 = off, 1 = average, 2 = exponential",
-            defaultValue = "2",
-            unit = "-",
-            lowerBound = 0,
-            upperBound = 2
-            )
-            public JAMSInteger outflowReduction;
-
+    @JAMSVarDescription(access = JAMSVarDescription.AccessType.READWRITE,
+    update = JAMSVarDescription.UpdateType.RUN,
+    description = "HRU statevar GW inflow")
+    public JAMSDouble inGW;
+    @JAMSVarDescription(access = JAMSVarDescription.AccessType.READWRITE,
+    update = JAMSVarDescription.UpdateType.RUN,
+    description = "HRU statevar GW outflow")
+    public JAMSDouble outGW;                                                   //not used
+    @JAMSVarDescription(access = JAMSVarDescription.AccessType.READWRITE,
+    update = JAMSVarDescription.UpdateType.RUN,
+    description = "sum attribute")
+    public JAMSEntity[] fP;
+    @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
+    update = JAMSVarDescription.UpdateType.RUN,
+    description = "attribute area")
+    public JAMSDouble area;
+    @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
+    update = JAMSVarDescription.UpdateType.RUN,
+    description = "Heigth of the Aquifer Base in m + NN")
+    public JAMSDouble baseHeigth;
+    @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
+    update = JAMSVarDescription.UpdateType.RUN,
+    description = "estimated Porosity")
+    public JAMSDouble Peff;
+    @JAMSVarDescription(access = JAMSVarDescription.AccessType.READWRITE,
+    update = JAMSVarDescription.UpdateType.RUN,
+    description = "actual GW storage")
+    public JAMSDouble actGW;
+    @JAMSVarDescription(access = JAMSVarDescription.AccessType.READWRITE,
+    update = JAMSVarDescription.UpdateType.RUN,
+    description = "Groundwater Level")
+    public JAMSDouble gwTable;
+    @JAMSVarDescription(access = JAMSVarDescription.AccessType.READWRITE,
+    update = JAMSVarDescription.UpdateType.RUN,
+    description = "Groundwater Level")
+    public JAMSDouble calcFactor;
+    @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
+    update = JAMSVarDescription.UpdateType.RUN,
+    description = "Reduction of outflows, 0 = off, 1 = average, 2 = exponential")
+    public JAMSInteger outflowReduction;
+    @JAMSVarDescription(access = JAMSVarDescription.AccessType.READWRITE,
+    update = JAMSVarDescription.UpdateType.RUN,
+    description = "Number of sender-HRUs")
+    public JAMSDouble sender;
+    @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
+    update = JAMSVarDescription.UpdateType.RUN,
+    description = "The current hru entity")
+    public JAMSEntityCollection entities;
     /*
      *  Component run stages
      */
     double[] gradientNew;
     double gwVolume, run_area, run_Peff, run_gwTableUpper, run_gwTableLower, run_gwDepthUpper, run_gwDepthLower, run_baseHeigth,
-            pot_gwTable, sumGWin, sumGWin_new, run_GWact, run_outGW, old_GWact, run_Flurabstand, oR, run_elevation;
+            pot_gwTable, sumGWin, sumGWin_new, run_GWact, run_outGW, old_GWact;
+    int oR;
     //JAMSEntity[] fP;
 
     public void init() throws JAMSEntity.NoSuchAttributeException {
@@ -166,8 +107,6 @@ public class J2KProcessGWRouting extends JAMSComponent {
         run_GWact = this.actGW.getValue();
         run_area = this.area.getValue();
         run_Peff = Peff.getValue();
-        run_elevation = this.elevation.getValue();
-
         if (run_Peff == 0){
 //            getModel().getRuntime().println("Current entity ID: " + (int) entity.getDouble("ID") + "Peff = 0");
         }
@@ -236,7 +175,6 @@ public class J2KProcessGWRouting extends JAMSComponent {
             }*/
             actGW.setValue(run_GWact);
             inGW.setValue(sumGWin_new);
-            FlurAbstand.setValue(this.run_Flurabstand);
         }
     }
 
@@ -247,8 +185,6 @@ public class J2KProcessGWRouting extends JAMSComponent {
                 gwVolume = fP[i].getDouble("actGW") / 1000;
                 run_gwDepthUpper = gwVolume / fP[i].getDouble("area") / fP[i].getDouble("Peff");
                 run_gwTableUpper = run_gwDepthUpper + fP[i].getDouble("baseHeigth");
-                this.run_Flurabstand = fP[i].getDouble("elevation") - this.run_gwTableUpper;
-                fP[i].setDouble("FlurAbstand", run_Flurabstand);
                 fP[i].setDouble("gwTable", run_gwTableUpper);
                 if (run_gwTableUpper < 0){
                     //getModel().getRuntime().println("Negative Wasserspiegellage.");
@@ -260,7 +196,6 @@ public class J2KProcessGWRouting extends JAMSComponent {
 
         run_gwDepthLower = gwVolume / run_area / run_Peff;
         run_gwTableLower = run_gwDepthLower + run_baseHeigth;
-        this.run_Flurabstand = this.run_elevation - this.run_gwTableLower;
 
         if (run_gwTableLower < 0){
             //getModel().getRuntime().println("Negative Wasserspiegellage.");
@@ -271,7 +206,7 @@ public class J2KProcessGWRouting extends JAMSComponent {
         } else {
             pot_gwTable = run_gwTableLower;
         }
-        
+
         return true;
     }
 
@@ -339,7 +274,7 @@ public class J2KProcessGWRouting extends JAMSComponent {
 
                 //GWact_new = fP[i].getDouble("actGW") - GWout_new;
 
-                GWout_sum = fP[i].getDouble("pot_outGW") + GWout_new;
+                GWout_sum = fP[i].getDouble("preOutGW") + GWout_new;
                 }
 
                 if (GWout_new > fP[i].getDouble("actGW")){

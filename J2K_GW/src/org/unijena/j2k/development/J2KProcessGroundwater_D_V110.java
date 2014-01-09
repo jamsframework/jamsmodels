@@ -20,8 +20,9 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
  *
  */
-package org.unijena.j2k.gw;
+package org.unijena.j2k.development;
 
+import org.unijena.j2k.gw.*;
 import jams.data.*;
 import jams.model.*;
 
@@ -32,11 +33,14 @@ import jams.model.*;
 @JAMSComponentDescription(title = "J2KProcessGroundwater_D",
         author = "Daniel Varga",
         description = "Component for Calculation of Groundwater Flow with the DARCY-Method",
-        version="1.0_0",
+        version="1.1_0",
         date="2011-01-12"
         )
+        /*
+         * changes: modified calculation of unsaturated zone, with van-genuchten-equation
+         */
 
-public class J2KProcessGroundwater_D extends JAMSComponent {
+public class J2KProcessGroundwater_D_V110 extends JAMSComponent {
 
     /*
      *  Component variables
@@ -395,21 +399,12 @@ public class J2KProcessGroundwater_D extends JAMSComponent {
 
     @JAMSVarDescription(
         access = JAMSVarDescription.AccessType.READ,
-        description = "TZ lateral correction factor",
+        description = "van Genuchten parameter for unsaturated K-Value",
         unit = "-",
         lowerBound = 0,
         upperBound = 100
         )
-        public JAMSDouble gwTZLatFact;
-
-    @JAMSVarDescription(
-        access = JAMSVarDescription.AccessType.READ,
-        description = "TZ vertical correction factor",
-        unit = "-",
-        lowerBound = 0,
-        upperBound = 100
-        )
-        public JAMSDouble gwTZVertFact;
+        public JAMSDouble gwKfVG;
 
         double run_maxTZ, run_maxGW,
            run_actTZ, run_actGW,
@@ -598,9 +593,7 @@ public class J2KProcessGroundwater_D extends JAMSComponent {
 
         double TZThickness = this.run_upperBorder - this.run_gwTableUpper;
 
-
-
-        //Test: Grundwasserspiegellage im Boden?
+//Test: Grundwasserspiegellage im Boden?
         if (TZThickness <= 0){
             //ja? dann keine Transferzone vorhanden, TZ=0
 
@@ -630,7 +623,7 @@ public class J2KProcessGroundwater_D extends JAMSComponent {
             // Aufspaltung des gespeicherten Wassers der Transferzone nach lateralen und vetrtikal mobilem Wasser
             // Lateraler Ausflus durch Kalibrierungsfaktor gwLatVertTZ möglich, 0 perkolationswasser nur vertikal, >0 lateraler Fluss möglich
             double slope_weight = Math.tan(this.run_slope * (Math.PI / 180.));
-            double gradh = ((1 - slope_weight) * 1 * this.gwLatVertTZ.getValue());
+            double gradh = ((1 - slope_weight) * this.gwLatVertTZ.getValue());
 
             if(gradh < 0)
                 gradh = 0;
@@ -640,10 +633,16 @@ public class J2KProcessGroundwater_D extends JAMSComponent {
             this.run_potLatTZ = ((1 - gradh) * this.run_actTZ);
             this.run_potVertTZ = (gradh * this.run_actTZ);
 
+
+            //unsaturated K-value by van Genuchten (1980, 2005)
+            double m = 1-1/this.gwKfVG.getValue();
+            double Kf_unsat = this.run_Kf_geo * Math.pow(this.run_satTZ, 0.5)* Math.pow(1-Math.pow(1-Math.pow(this.run_satTZ, 1/m),m),2);
+
             // Vertikaler Ausfluss
             // Perkolationswiderstand durch Kf_geo, Fließlänge (Dicke der Transferzone) und Kalibrierfaktor: gwTZVertFact
             // Q = k * A * grad
-            run_pot_GW = this.run_Kf_geo * this.run_area * this.gwTZVertFact.getValue() / TZThickness * 1000 * this.run_satTZ;
+            
+            run_pot_GW = Kf_unsat * this.run_area * this.run_satTZ / TZThickness;
 
             if (run_pot_GW > this.run_potVertTZ){
                 run_pot_GW = run_potVertTZ;
@@ -674,7 +673,8 @@ public class J2KProcessGroundwater_D extends JAMSComponent {
             // Q = k * A * grad
 
             //double TZ_out = k_TZ * this.run_actTZ;
-            double TZ_out = this.run_Kf_geo * this.run_slope * this.gwTZLatFact.getValue() * TZThickness * this.run_gwFlowWidth * 1000 * this.run_satTZ;
+            //double TZ_out = this.run_Kf_geo * this.run_slope * this.gwTZLatFact.getValue() * TZThickness * this.run_gwFlowWidth * 1000 * this.run_satTZ;
+            double TZ_out = Kf_unsat * this.run_slope * TZThickness * this.run_gwFlowWidth * this.run_satTZ;
 
             if (TZ_out > this.run_potLatTZ){
                 TZ_out = run_potLatTZ;

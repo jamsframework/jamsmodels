@@ -21,7 +21,7 @@
  *
  */
 
-package org.unijena.j2k.gw;
+package org.unijena.j2k.development;
 
 import jams.data.*;
 import jams.model.*;
@@ -31,136 +31,128 @@ import jams.model.*;
  * @author Peter Krause
  */
 @JAMSComponentDescription(
-        title="J2KProcessRouting_D",
-        author="Peter Krause modified by Daniel Varga",
-        description="Passes the output of the entities as input to the respective reach or unit",
-        version="1.0_0",
-        date="2011-01-12"
+        title="J2KProcessRouting",
+        author="Peter Krause",
+        description="Passes the output of the entities as input to the respective reach or unit"
         )
-        public class J2KProcessRouting_D extends JAMSComponent {
+        public class J2KProcessRouting_D_newest extends JAMSComponent {
     
     /*
      *  Component variables
      */
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
+            update = JAMSVarDescription.UpdateType.RUN,
             description = "The current hru entity"
             )
             public JAMSEntityCollection entities;
-
+    
     @JAMSVarDescription(
-            access = JAMSVarDescription.AccessType.READWRITE,
-            description = "Downstream hru entity"
+            access = JAMSVarDescription.AccessType.READ,
+            update = JAMSVarDescription.UpdateType.RUN,
+            description = "Collection of reach objects"
             )
-            public Attribute.Entity toPoly;
-
+            public JAMSEntityCollection reaches;
+    
+    @JAMSVarDescription(
+            access = JAMSVarDescription.AccessType.READ,
+            update = JAMSVarDescription.UpdateType.RUN,
+            description = "Collection of reservoir objects"
+            )
+            public JAMSEntityCollection reservoirs;
+    
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
             update = JAMSVarDescription.UpdateType.RUN,
-            description = "Downstream reach entity"
-            )
-            public Attribute.Entity toReach;
-
-    @JAMSVarDescription(
-            access = JAMSVarDescription.AccessType.READWRITE,
-            description = "HRU statevar RD1 inflow",
-            unit = "l",
-            lowerBound = 0,
-            upperBound = Double.POSITIVE_INFINITY
+            description = "HRU statevar RD1 inflow"
             )
             public JAMSDouble inRD1;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
-            description = "HRU statevar RD2 inflow",
-            unit = "l",
-            lowerBound = 0,
-            upperBound = Double.POSITIVE_INFINITY
+            update = JAMSVarDescription.UpdateType.RUN,
+            description = "HRU statevar RD2 inflow"
             )
             public JAMSDouble inRD2;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
-            description = "HRU statevar RG1 inflow",
-            unit = "l",
-            lowerBound = 0,
-            upperBound = Double.POSITIVE_INFINITY
+            update = JAMSVarDescription.UpdateType.RUN,
+            description = "HRU statevar RG1 inflow"
             )
             public JAMSDouble inRG1;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
-            description = "HRU statevar RG2 inflow",
-            unit = "l",
-            lowerBound = 0,
-            upperBound = Double.POSITIVE_INFINITY
+            update = JAMSVarDescription.UpdateType.RUN,
+            description = "HRU statevar RG2 inflow"
             )
             public JAMSDouble inRG2;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
+            update = JAMSVarDescription.UpdateType.RUN,
             description = "HRU statevar groundwater excess",
-            unit = "l",
-            lowerBound = 0,
-            upperBound = Double.POSITIVE_INFINITY
+            defaultValue= "0"
             )
             public JAMSDouble inGWExcess;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
-            description = "HRU statevar RD1 outflow",
-            unit = "l",
-            lowerBound = 0,
-            upperBound = Double.POSITIVE_INFINITY
+            update = JAMSVarDescription.UpdateType.RUN,
+            description = "HRU statevar RD1 outflow"
             )
             public JAMSDouble outRD1;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
-            description = "HRU statevar RD2 outflow",
-            unit = "l",
-            lowerBound = 0,
-            upperBound = Double.POSITIVE_INFINITY
+            update = JAMSVarDescription.UpdateType.RUN,
+            description = "HRU statevar RD2 outflow"
             )
             public JAMSDouble outRD2;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
-            description = "HRU statevar RG1 outflow",
-            unit = "l",
-            lowerBound = 0,
-            upperBound = Double.POSITIVE_INFINITY
+            update = JAMSVarDescription.UpdateType.RUN,
+            description = "HRU statevar RG1 outflow"
             )
             public JAMSDouble outRG1;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
-            description = "HRU statevar RG2 outflow",
-            unit = "l",
-            lowerBound = 0,
-            upperBound = Double.POSITIVE_INFINITY
+            update = JAMSVarDescription.UpdateType.RUN,
+            description = "HRU statevar RG2 outflow"
             )
             public JAMSDouble outRG2;
 
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
             update = JAMSVarDescription.UpdateType.RUN,
-            description = "HRU statevar RG2 outflow",
-            unit = "l",
-            lowerBound = 0,
-            upperBound = Double.POSITIVE_INFINITY
+            description = "HRU statevar RG2 outflow"
             )
             public JAMSDouble outGW;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
-            description = "HRU statevar RG2 outflow",
-            unit = "l",
-            lowerBound = 0,
-            upperBound = Double.POSITIVE_INFINITY
+            update = JAMSVarDescription.UpdateType.RUN,
+            description = "HRU statevar RG2 outflow"
             )
             public JAMSDouble outTZ;
- 
+    
+    @JAMSVarDescription(
+            access = JAMSVarDescription.AccessType.READWRITE,
+            update = JAMSVarDescription.UpdateType.RUN,
+            description = "Downstream hru entity"
+            )
+            public Attribute.Entity toPoly;
+    
+    @JAMSVarDescription(
+            access = JAMSVarDescription.AccessType.READWRITE,
+            update = JAMSVarDescription.UpdateType.RUN,
+            description = "Downstream reach entity"
+            )
+            public Attribute.Entity toReach;
+    
     /*
      *  Component run stages
      */

@@ -20,7 +20,7 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
  *
  */
-package org.unijena.j2k.gw;
+package org.unijena.j2k.development;
 
 import jams.data.*;
 import jams.model.*;
@@ -29,387 +29,279 @@ import jams.model.*;
  *
  * @author c0krpe
  */
-@JAMSComponentDescription(title = "J2KProcessGroundwater_D",
-        author = "Daniel Varga",
-        description = "Component for Calculation of Groundwater Flow with the DARCY-Method",
-        version="1.0_0",
-        date="2011-01-12"
-        )
-
-public class J2KProcessGroundwater_D extends JAMSComponent {
+@JAMSComponentDescription(title = "J2KGroundwater",
+author = "Peter Krause modifications Daniel Varga",
+description = "Description")
+public class J2KProcessGroundwater_D_N_1_newest extends JAMSComponent {
 
     /*
      *  Component variables
      */
+    @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
+    update = JAMSVarDescription.UpdateType.RUN,
+    description = "attribute area")
+    public JAMSDouble area;
 
+    @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
+    update = JAMSVarDescription.UpdateType.RUN,
+    description = "attribute slope")
+    public JAMSDouble slope;
 
-    @JAMSVarDescription(
-        access = JAMSVarDescription.AccessType.READ,
-        description = "The current hru entity"
-        )
-        public JAMSEntityCollection entities;
+    @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
+    update = JAMSVarDescription.UpdateType.RUN,
+    description = "maximum TZ storage")
+    public JAMSDouble maxTZ;
 
-    @JAMSVarDescription(
-        access = JAMSVarDescription.AccessType.READ,
-        description = "Downstream hru entity"
-        )
-        public JAMSEntity toPoly;
+    @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
+    update = JAMSVarDescription.UpdateType.RUN,
+    description = "maximum GW storage")
+    public JAMSDouble maxGW;
 
-    @JAMSVarDescription(
-        access = JAMSVarDescription.AccessType.READ,
-        description = "Downstream reach entity"
-        )
-        public JAMSEntity toReach;
+    @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
+    update = JAMSVarDescription.UpdateType.RUN,
+    description = "recision coefficient k TZ")
+    public JAMSDouble kTZ;
 
-    @JAMSVarDescription(
-        access = JAMSVarDescription.AccessType.READ,
-        description = "attribute area",
-        unit = "m^2",
-        lowerBound = 0,
-        upperBound = Double.POSITIVE_INFINITY
-        )
-        public JAMSDouble area;
-
-    @JAMSVarDescription(
-        access = JAMSVarDescription.AccessType.READ,
-        description = "attribute slope",
-        unit = "deg",
-        lowerBound = 0,
-        upperBound =90
-        )
-        public JAMSDouble slope;
-
-    @JAMSVarDescription(
-        access = JAMSVarDescription.AccessType.READ,
-        description = "maximum GW storage",
-        unit = "l",
-        lowerBound = 0,
-        upperBound = Double.POSITIVE_INFINITY
-        )
-        public JAMSDouble maxGW;
-
-    @JAMSVarDescription(
-        access = JAMSVarDescription.AccessType.READWRITE,
-        description = "actual TZ storage",
-        unit = "l",
-        lowerBound = 0,
-        upperBound = Double.POSITIVE_INFINITY
-        )
-        public JAMSDouble actTZ;
-
-    @JAMSVarDescription(
-        access = JAMSVarDescription.AccessType.READWRITE,
-        description = "actual GW storage",
-        unit = "l",
-        lowerBound = 0,
-        upperBound = Double.POSITIVE_INFINITY
-        )
-        public JAMSDouble actGW;
-
-    @JAMSVarDescription(
-        access = JAMSVarDescription.AccessType.READWRITE,
-        description = "TZ inflow",
-        unit = "l",
-        lowerBound = 0,
-        upperBound = Double.POSITIVE_INFINITY
-        )
-        public JAMSDouble inTZ;
-
-    @JAMSVarDescription(
-        access = JAMSVarDescription.AccessType.READWRITE,
-        description = "GW inflow",
-        unit = "l",
-        lowerBound = 0,
-        upperBound = Double.POSITIVE_INFINITY
-        )
-        public JAMSDouble inGW;
-
-    @JAMSVarDescription(
-        access = JAMSVarDescription.AccessType.WRITE,
-        description = "TZ outflow",
-        unit = "l",
-        lowerBound = 0,
-        upperBound = Double.POSITIVE_INFINITY
-        )
-        public JAMSDouble outTZ;
-
-    @JAMSVarDescription(
-        access = JAMSVarDescription.AccessType.WRITE,
-        description = "GW outflow",
-        unit = "l",
-        lowerBound = 0,
-        upperBound = Double.POSITIVE_INFINITY
-        )
-        public JAMSDouble outGW;
-
-    @JAMSVarDescription(
-        access = JAMSVarDescription.AccessType.WRITE,
-        description = "TZ generation",
-        unit = "l",
-        lowerBound = 0,
-        upperBound = Double.POSITIVE_INFINITY)
-        public JAMSDouble genTZ;
-
-    @JAMSVarDescription(
-        access = JAMSVarDescription.AccessType.WRITE,
-        description = "GW generation",
-        unit = "l",
-        lowerBound = 0,
-        upperBound = Double.POSITIVE_INFINITY
-        )
-        public JAMSDouble genGW;
-
-    @JAMSVarDescription(
-        access = JAMSVarDescription.AccessType.WRITE,
-        description = "GW saturation",
-        unit = "l",
-        lowerBound = 0,
-        upperBound = Double.POSITIVE_INFINITY
-        )
-        public JAMSDouble satGW;
-
-    @JAMSVarDescription(
-        access = JAMSVarDescription.AccessType.WRITE,
-        description = "TZ saturation",
-        unit = "l",
-        lowerBound = 0,
-        upperBound = Double.POSITIVE_INFINITY
-        )
-        public JAMSDouble satTZ;
-
-    @JAMSVarDescription(
-        access = JAMSVarDescription.AccessType.READWRITE,
-        description = "potential GW storage",
-        unit = "l",
-        lowerBound = 0,
-        upperBound = Double.POSITIVE_INFINITY
-        )
-        public JAMSDouble pot_actGW;
-
-    @JAMSVarDescription(
-        access = JAMSVarDescription.AccessType.WRITE,
-        description = "potential GW outflow",
-        unit = "l",
-        lowerBound = 0,
-        upperBound = Double.POSITIVE_INFINITY
-        )
-        public JAMSDouble pot_outGW;
-
-    @JAMSVarDescription(
-        access = JAMSVarDescription.AccessType.WRITE,
-        description = "potential GW generation",
-        unit = "l",
-        lowerBound = 0,
-        upperBound = Double.POSITIVE_INFINITY
-        )
-        public JAMSDouble pot_genGW;
-
-    @JAMSVarDescription(
-        access = JAMSVarDescription.AccessType.READ,
-        description = "percolation",
-        unit = "l",
-        lowerBound = 0,
-        upperBound = Double.POSITIVE_INFINITY
-        )
-        public JAMSDouble percolation;
-
-    @JAMSVarDescription(
-        access = JAMSVarDescription.AccessType.READWRITE,
-        description = "gwExcess",
-        unit = "l",
-        lowerBound = 0,
-        upperBound = Double.POSITIVE_INFINITY
-        )
-        public JAMSDouble gwExcess;
-
-    @JAMSVarDescription(
-        access = JAMSVarDescription.AccessType.READ,
-        description = "maximum soil storage",
-        unit = "l",
-        lowerBound = 0,
-        upperBound = Double.POSITIVE_INFINITY
-        )
-        public JAMSDouble maxSoilStorage;
-
-    @JAMSVarDescription(
-        access = JAMSVarDescription.AccessType.READ,
-        description = "actual soil storage",
-        unit = "l",
-        lowerBound = 0,
-        upperBound = Double.POSITIVE_INFINITY
-        )
-        public JAMSDouble actSoilStorage;
-
-    @JAMSVarDescription(
-        access = JAMSVarDescription.AccessType.READ,
-        description = "capilary rise factor",
-        unit = "-",
-        lowerBound = 0,
-        upperBound = 1
-        )
-        public JAMSDouble gwCapRise;
-
-    @JAMSVarDescription(
-        access = JAMSVarDescription.AccessType.READ,
-        description = "Flow width between adjacent entities (Fließbreite)",
-        unit = "m",
-        lowerBound = 0,
-        upperBound = Double.POSITIVE_INFINITY
-        )
-        public JAMSDouble gwFlowWidth;
-
-    @JAMSVarDescription(
-        access = JAMSVarDescription.AccessType.READ,
-        description = "Distance between adjacent entities",
-        unit = "l",
-        lowerBound = 0,
-        upperBound = Double.POSITIVE_INFINITY
-        )
-        public JAMSDouble gwFlowLength;
-
-    @JAMSVarDescription(
-        access = JAMSVarDescription.AccessType.READ,
-        description = "estimated hydraulic conductivity in m/d",
-        unit = "m/d",
-        lowerBound= 0.0,
-        upperBound = 8640
-        )
-        public JAMSDouble Kf_geo;
-
-    @JAMSVarDescription(
-        access = JAMSVarDescription.AccessType.READ,
-        description = "estimated Porosity",
-        unit = "-",
-        lowerBound= 0.0,
-        upperBound = 1.0
-        )
-        public JAMSDouble Peff;
-
-    @JAMSVarDescription(
-        access = JAMSVarDescription.AccessType.READ,
-        description = "Thickness of the Aquifer",
-        unit = "m",
-        lowerBound= 0,
-        upperBound = 100
-        )
-        public JAMSDouble aqThickness;
-
-    @JAMSVarDescription(
-        access = JAMSVarDescription.AccessType.READ,
-        description = "Heigth of the aquifer base in m a.s.l.",
-        unit = "m", //[m ü NN] / [a.s.l.]
-        lowerBound= -422,
-        upperBound = 8848
-        )
-        public JAMSDouble baseHeigth;
+    @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
+    update = JAMSVarDescription.UpdateType.RUN,
+    description = "recision coefficient k GW")
+    public JAMSDouble kGW;
 
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READWRITE,
-        description = "Groundwater Table",
-        unit = "m", //[m ü NN] / [a.s.l.]
-        lowerBound = 0,
-        upperBound = Double.POSITIVE_INFINITY
-        )
-        public JAMSDouble gwTable;
+    update = JAMSVarDescription.UpdateType.RUN,
+    description = "actual TZ storage")
+    public JAMSDouble actTZ;
 
-    @JAMSVarDescription(
-        access = JAMSVarDescription.AccessType.WRITE,
-        description = "potential GW-Level, real GW-Level would be calculated in the GWRouting-module",
-        unit = "m", //[m ü NN] / [a.s.l.]
-        lowerBound = 0,
-        upperBound = Double.POSITIVE_INFINITY
-        )
-        public JAMSDouble pot_gwTable;
+    @JAMSVarDescription(access = JAMSVarDescription.AccessType.READWRITE,
+    update = JAMSVarDescription.UpdateType.RUN,
+    description = "actual GW storage")
+    public JAMSDouble actGW;
 
-    @JAMSVarDescription(
-        access = JAMSVarDescription.AccessType.READ,
-        description = "Reach Colmation Factor [0;1] = [0% ; 100%]",
-        unit = "-",
-        lowerBound = 0,
-        upperBound = 1
-        )
+    @JAMSVarDescription(access = JAMSVarDescription.AccessType.READWRITE,
+    update = JAMSVarDescription.UpdateType.RUN,
+    description = "TZ inflow")
+    public JAMSDouble inTZ;
+
+    @JAMSVarDescription(access = JAMSVarDescription.AccessType.READWRITE,
+    update = JAMSVarDescription.UpdateType.RUN,
+    description = "GW inflow")
+    public JAMSDouble inGW;
+
+    @JAMSVarDescription(access = JAMSVarDescription.AccessType.WRITE,
+    update = JAMSVarDescription.UpdateType.RUN,
+    description = "TZ outflow")
+    public JAMSDouble outTZ;
+
+    @JAMSVarDescription(access = JAMSVarDescription.AccessType.WRITE,
+    update = JAMSVarDescription.UpdateType.RUN,
+    description = "GW outflow")
+    public JAMSDouble outGW;
+
+    @JAMSVarDescription(access = JAMSVarDescription.AccessType.WRITE,
+    update = JAMSVarDescription.UpdateType.RUN,
+    description = "TZ generation")
+    public JAMSDouble genTZ;
+
+    @JAMSVarDescription(access = JAMSVarDescription.AccessType.WRITE,
+    update = JAMSVarDescription.UpdateType.RUN,
+    description = "GW generation")
+    public JAMSDouble genGW;
+
+    @JAMSVarDescription(access = JAMSVarDescription.AccessType.WRITE,
+    update = JAMSVarDescription.UpdateType.RUN,
+    description = "GW saturation")
+    public JAMSDouble satGW;
+
+    @JAMSVarDescription(access = JAMSVarDescription.AccessType.WRITE,
+    update = JAMSVarDescription.UpdateType.RUN,
+    description = "GW saturation")
+    public JAMSDouble satTZ;
+
+    @JAMSVarDescription(access = JAMSVarDescription.AccessType.READWRITE,
+    update = JAMSVarDescription.UpdateType.RUN,
+    description = "actual GW storage")
+    public JAMSDouble pot_actGW;
+
+    @JAMSVarDescription(access = JAMSVarDescription.AccessType.WRITE,
+    update = JAMSVarDescription.UpdateType.RUN,
+    description = "GW outflow")
+    public JAMSDouble pot_outGW;
+
+    @JAMSVarDescription(access = JAMSVarDescription.AccessType.WRITE,
+    update = JAMSVarDescription.UpdateType.RUN,
+    description = "GW generation")
+    public JAMSDouble pot_genGW;
+
+    @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
+    update = JAMSVarDescription.UpdateType.RUN,
+    description = "percolation")
+    public JAMSDouble percolation;
+
+    @JAMSVarDescription(access = JAMSVarDescription.AccessType.READWRITE,
+    update = JAMSVarDescription.UpdateType.RUN,
+    description = "gwExcess")
+    public JAMSDouble gwExcess;
+
+    @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
+    update = JAMSVarDescription.UpdateType.RUN,
+    description = "maximum soil storage")
+    public JAMSDouble maxSoilStorage;
+
+    @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
+    update = JAMSVarDescription.UpdateType.RUN,
+    description = "actual soil storage")
+    public JAMSDouble actSoilStorage;
+
+    @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
+    update = JAMSVarDescription.UpdateType.INIT,
+    description = "TZ correction factor")
+    public JAMSDouble gwTZFact;
+
+    @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
+    update = JAMSVarDescription.UpdateType.INIT,
+    description = "GW correction factor")
+    public JAMSDouble gwGWFact;
+
+    @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
+    update = JAMSVarDescription.UpdateType.INIT,
+    description = "TZ GW distribution factor")
+    public JAMSDouble gwTZGWdist;
+
+    @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
+    update = JAMSVarDescription.UpdateType.INIT,
+    description = "capilary rise factor")
+    public JAMSDouble gwCapRise;
+
+    @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
+    update = JAMSVarDescription.UpdateType.INIT,
+    description = "Flow width between adjacent entities (Flie?breite)")
+    public JAMSDouble gwFlowWidth;
+
+    @JAMSVarDescription(access = JAMSVarDescription.AccessType.WRITE,
+    update = JAMSVarDescription.UpdateType.RUN,
+    description = "Distance between adjacent entities")
+    public JAMSDouble gwFlowLength;
+
+    @JAMSVarDescription(access = JAMSVarDescription.AccessType.READWRITE,
+    update = JAMSVarDescription.UpdateType.RUN,
+    description = "Downstream hru entity")
+    public JAMSEntity toPoly;
+
+    @JAMSVarDescription(access = JAMSVarDescription.AccessType.READWRITE,
+    update = JAMSVarDescription.UpdateType.RUN,
+    description = "Downstream reach entity")
+    public JAMSEntity toReach;
+
+    @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
+    update = JAMSVarDescription.UpdateType.RUN,
+    description = "estimated hydraulic conductivity in m/d")
+    public JAMSDouble Kf_geo;
+
+    @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
+    update = JAMSVarDescription.UpdateType.RUN,
+    description = "estimated Porosity")
+    public JAMSDouble Peff;
+
+    @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
+    update = JAMSVarDescription.UpdateType.RUN,
+    description = "Thickness of the Aquifer")
+    public JAMSDouble aqThickness;
+
+    @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
+    update = JAMSVarDescription.UpdateType.RUN,
+    description = "Heigth of the Aquifer Base in m + NN")
+    public JAMSDouble baseHeigth;
+
+    @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
+    update = JAMSVarDescription.UpdateType.RUN,
+    description = "Groundwater Table")
+    public JAMSDouble gwTable;
+
+    @JAMSVarDescription(access = JAMSVarDescription.AccessType.WRITE,
+    update = JAMSVarDescription.UpdateType.RUN,
+    description = "potential GW-Level, real GW-Level would be calculated in the GWRouting-module")
+    public JAMSDouble pot_gwTable;
+
+    @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
+    update = JAMSVarDescription.UpdateType.RUN,
+    description = "The current hru entity")
+    public JAMSEntityCollection entities;
+
+    @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
+    update = JAMSVarDescription.UpdateType.RUN,
+    description = "Reach Colmation Factor [0;1] = [0% ; 100%]")
     public JAMSDouble alphaC;
 
-    @JAMSVarDescription(
-        access = JAMSVarDescription.AccessType.WRITE,
-        description = "Calculation Factor for each HRU (static geographic variables) for use in GWRouting-module",
-        unit = "m^2/d",
-        lowerBound = 0,
-        upperBound = Double.POSITIVE_INFINITY
-        )
-        public JAMSDouble calcFactor;
+    @JAMSVarDescription(access = JAMSVarDescription.AccessType.WRITE,
+    update = JAMSVarDescription.UpdateType.RUN,
+    description = "Calculation Factor for each HRU (static geographic variables) for use in GWRouting-module")
+    public JAMSDouble calcFactor;
+
+    /*@JAMSVarDescription(
+            access = JAMSVarDescription.AccessType.READ,
+            update = JAMSVarDescription.UpdateType.RUN,
+            description = "switch whether deep sink is allowed or not"
+            )
+            public JAMSBoolean deepSink;*/
 
     @JAMSVarDescription(
-        access = JAMSVarDescription.AccessType.WRITE,
-        description = "amount of water lost by deep sink in l/d",
-        unit = "l",
-        lowerBound = 0,
-        upperBound = Double.POSITIVE_INFINITY
-        )
-        public JAMSDouble deepSinkW;
+            access = JAMSVarDescription.AccessType.WRITE,
+            update = JAMSVarDescription.UpdateType.RUN,
+            description = "amount of water lost by deep sink in l/d"
+            )
+            public JAMSDouble deepSinkW;
 
-    @JAMSVarDescription(
-        access = JAMSVarDescription.AccessType.READ,
-        description = "K-Value for the deepsink in cm/d",
-        unit = "cm/d",
-        lowerBound= 0.0,
-        upperBound = 864000
-        )
-        public JAMSDouble kSink;
+        @JAMSVarDescription(
+            access = JAMSVarDescription.AccessType.READ,
+            update = JAMSVarDescription.UpdateType.INIT,
+            description = "K-Value for the deepsink in cm/d"
+            )
+            public JAMSDouble kSink;
     
-    @JAMSVarDescription(
-        access = JAMSVarDescription.AccessType.READ,
-        description = "Calibration Factor for K-Value for deepsink",
-        defaultValue = "0",
-        unit = "-",
-        lowerBound= 0.0,
-        upperBound = 1000
-        )
-        public JAMSDouble deepSinkFactor;
+    @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
+    update = JAMSVarDescription.UpdateType.RUN,
+    description = "Calculation Factor for each HRU (static geographic variables) for use in GWRouting-module")
+    public JAMSDouble deepSinkFactor;
 
-    @JAMSVarDescription(
-        access = JAMSVarDescription.AccessType.READ,
-        description = "elevation of HRU",
-        unit = "m", //[m ü NN] / [a.s.l.]
-        lowerBound= -422,
-        upperBound = 8848
-        )
-        public JAMSDouble elevation;
+    @JAMSVarDescription(access = JAMSVarDescription.AccessType.WRITE,
+    update = JAMSVarDescription.UpdateType.RUN,
+    description = "Inflow + Percolation - StorageDifference")
+    public JAMSDouble preOutGW;
 
-   @JAMSVarDescription(
-        access = JAMSVarDescription.AccessType.WRITE,
-        description = "Flurabstand",
-        unit = "m",
-        lowerBound= 0,
-        upperBound = 100
-        )
-        public JAMSDouble FlurAbstand;
+    @JAMSVarDescription(access = JAMSVarDescription.AccessType.WRITE,
+    update = JAMSVarDescription.UpdateType.RUN,
+    description = "Inflow + Percolation - StorageDifference")
+    public JAMSDouble preActGW;
 
-   @JAMSVarDescription(
-        access = JAMSVarDescription.AccessType.READ,
-        description = "Distribution Factor for Lateral and Vertical flow in the Transfer Zone",
-        unit = "-",
-        lowerBound = 0,
-        upperBound = 10
-        )
-        public JAMSDouble gwLatVertTZ;
+                @JAMSVarDescription(
+            access = JAMSVarDescription.AccessType.READ,
+            update = JAMSVarDescription.UpdateType.INIT,
+            description = "elevation of HRU"
+            )
+            public JAMSDouble elevation;
+            @JAMSVarDescription(
+            access = JAMSVarDescription.AccessType.WRITE,
+            update = JAMSVarDescription.UpdateType.INIT,
+            description = "Flurabstand"
+            )
+            public JAMSDouble FlurAbstand;
 
-    @JAMSVarDescription(
-        access = JAMSVarDescription.AccessType.READ,
-        description = "TZ lateral correction factor",
-        unit = "-",
-        lowerBound = 0,
-        upperBound = 100
-        )
-        public JAMSDouble gwTZLatFact;
+            @JAMSVarDescription(
+            access = JAMSVarDescription.AccessType.READ,
+            update = JAMSVarDescription.UpdateType.INIT,
+            description = "Disrtibution Factor for Lateral and Vertical flow in the Transfer Zone"
+            )
+            public JAMSDouble gwLatVertTZ;
 
-    @JAMSVarDescription(
-        access = JAMSVarDescription.AccessType.READ,
-        description = "TZ vertical correction factor",
-        unit = "-",
-        lowerBound = 0,
-        upperBound = 100
-        )
-        public JAMSDouble gwTZVertFact;
+    @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
+    update = JAMSVarDescription.UpdateType.INIT,
+    description = "TZ lateral correction factor")
+    public JAMSDouble gwTZLatFact;
+
+    @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
+    update = JAMSVarDescription.UpdateType.INIT,
+    description = "TZ vertical correction factor")
+    public JAMSDouble gwTZVertFact;
 
         double run_maxTZ, run_maxGW,
            run_actTZ, run_actGW,
@@ -420,7 +312,7 @@ public class J2KProcessGroundwater_D extends JAMSComponent {
            run_satTZ, run_satGW,
            run_pot_TZ, run_pot_GW,
            run_pre_outGW, run_pre_actGW,
-           run_k_TZ,
+           run_k_TZ, run_k_GW,
            run_TZ_rec,
            run_TZlat_rec, run_TZvert_rec,
            run_GW_rec,
@@ -456,7 +348,7 @@ public class J2KProcessGroundwater_D extends JAMSComponent {
 
     public void run() throws JAMSEntity.NoSuchAttributeException {
 
-        entity = entities.getCurrent();
+        Attribute.Entity entity = entities.getCurrent();
 
         // Percolation wird gelesen (geht spaeter direkt in GW)
         this.run_percolation = percolation.getValue();
@@ -464,7 +356,7 @@ public class J2KProcessGroundwater_D extends JAMSComponent {
         // diverse Parameter fuer TZ (wird noch eingebaut)
         this.run_slope = slope.getValue();
         this.run_inTZ = inTZ.getValue();                  //[l]
-        this.run_gwExcess = gwExcess.getValue();          //[l]
+        this.run_gwExcess = gwExcess.getValue();            //[l]
         this.run_maxSoilStor = maxSoilStorage.getValue();
         this.run_actSoilStor = actSoilStorage.getValue();
 
@@ -472,8 +364,9 @@ public class J2KProcessGroundwater_D extends JAMSComponent {
         this.run_maxGW = maxGW.getValue();                //[l]
         this.run_actGW = actGW.getValue();                //[l]       
         this.run_inGW = inGW.getValue();                  //[l]
-        this.run_Peff = Peff.getValue();                  //[-]
-        this.run_Kf_geo = Kf_geo.getValue();              //[m/d]
+        this.run_k_GW = kGW.getValue();
+        this.run_Peff = Peff.getValue();                    //[-]
+        this.run_Kf_geo = Kf_geo.getValue();                //[m/d]
 
         // deepsink
         this.run_deepSinkFactor = deepSinkFactor.getValue();
@@ -556,7 +449,7 @@ public class J2KProcessGroundwater_D extends JAMSComponent {
 
         // Wenn Unterlieger eine Reach ist (direkte Weitergabe der Berechneten Werte):
         if (entity.getDouble("type") == 3){
-            if (toReach.getDouble("ID") == 1134){
+            if (toReach.getDouble("ID") == 1124){
                 getModel().getRuntime().println("Current entity ID: 1134.");
             }
 
