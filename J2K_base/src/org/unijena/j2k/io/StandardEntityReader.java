@@ -28,11 +28,14 @@ import jams.data.Attribute;
 import jams.model.JAMSComponent;
 import jams.model.JAMSComponentDescription;
 import jams.model.JAMSVarDescription;
+import jams.model.VersionComments;
 import jams.tools.FileTools;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.List;
+import java.util.Set;
 import java.util.Stack;
 import org.unijena.j2k.J2KFunctions;
 
@@ -41,87 +44,116 @@ import org.unijena.j2k.J2KFunctions;
  * @author S. Kralisch
  */
 @JAMSComponentDescription(title = "StandardEntityReader",
-author = "Sven Kralisch & Christian Fischer",
-description = "This component reads two ASCII files containing data of hru and "
-+ "reach entities and creates two collections of entities accordingly. "
-+ "1:n topologies between different entities are created based on provided "
-+ "attribute names. Additionally, the topologies are checked for cycles.",
-date = "2010-01-29",
-version = "1.1_0")
+        author = "Sven Kralisch & Christian Fischer",
+        description = "This component reads two ASCII files containing data of hru and "
+        + "reach entities and creates two collections of entities accordingly. "
+        + "1:n topologies between different entities are created based on provided "
+        + "attribute names. Additionally, the topologies are checked for cycles.",
+        date = "2010-01-29",
+        version = "1.2")
+@VersionComments(entries
+        = @VersionComments.Entry(
+                version = "1.2", comment = "Added function to use only a subset "
+                + "of all entities. This is defined by a reach ID "
+                + "(subcatchmentReachID) which represents the outlet of "
+                + "the catchment.")
+)
 public class StandardEntityReader extends JAMSComponent {
 
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
-    description = "HRU parameter file name")
+            description = "HRU parameter file name")
     public Attribute.String hruFileName;
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
-    description = "Reach parameter file name")
+            description = "Reach parameter file name")
     public Attribute.String reachFileName;
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.WRITE,
-    description = "Collection of hru objects")
+            description = "Collection of hru objects")
     public Attribute.EntityCollection hrus;
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.WRITE,
-    description = "Collection of reach objects")
+            description = "Collection of reach objects")
     public Attribute.EntityCollection reaches;
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
-    description = "Name of the attribute containing the HRU identifiers",
-    defaultValue = "ID")
+            description = "Name of the attribute containing the HRU identifiers",
+            defaultValue = "ID")
     public Attribute.String hruIDAttribute;
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
-    description = "Name of the attribute containing the reach identifiers",
-    defaultValue = "ID")
+            description = "Name of the attribute containing the reach identifiers",
+            defaultValue = "ID")
     public Attribute.String reachIDAttribute;
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
-    description = "Name of the attribute describing the HRU to HRU relation in the input file",
-    defaultValue = "to_poly")
+            description = "Name of the attribute describing the HRU to HRU relation in the input file",
+            defaultValue = "to_poly")
     public Attribute.String hru2hruAttribute;
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
-    description = "Name of the attribute describing the HRU to reach relation in the input file",
-    defaultValue = "to_reach")
+            description = "Name of the attribute describing the HRU to reach relation in the input file",
+            defaultValue = "to_reach")
     public Attribute.String hru2reachAttribute;
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
-    description = "Name of the attribute describing the reach to reach relation in the input file",
-    defaultValue = "to_reach")
+            description = "Name of the attribute describing the reach to reach relation in the input file",
+            defaultValue = "to_reach")
     public Attribute.String reach2reachAttribute;
+    @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
+            description = "ID of a reach defining a sub-catchment. Only hrus/reaches draining to this reach "
+            + "will be used on the resulting entity collections",
+            defaultValue = "-1")
+    public Attribute.Double subcatchmentReachID;
+
+    ArrayList<Attribute.Entity> hruList, reachList;
+    HashMap<Double, Attribute.Entity> hruMap, reachMap;
+    Attribute.Entity nullEntity, defaultRootReach;
+    HashMap<Attribute.Entity, List<Attribute.Entity>> children;
 
     @Override
     public void init() {
+        
+        getModel().getRuntime().println("Reading spatial model entities...", JAMS.VERBOSE);
+
 
         //read hru parameter
-        ArrayList<Attribute.Entity> hruCollection = J2KFunctions.readParas(FileTools.createAbsoluteFileName(getModel().getWorkspaceDirectory().getPath(), hruFileName.getValue()), getModel());
-                        
+        hruList = J2KFunctions.readParas(FileTools.createAbsoluteFileName(getModel().getWorkspaceDirectory().getPath(), hruFileName.getValue()), getModel());
+
         //assign IDs to all hru entities
-        for (Attribute.Entity e : hruCollection) {
+        for (Attribute.Entity e : hruList) {
             try {
                 e.setId((long) e.getDouble(hruIDAttribute.getValue()));
             } catch (Attribute.Entity.NoSuchAttributeException nsae) {
                 getModel().getRuntime().sendErrorMsg("Couldn't find attribute \"ID\" while reading J2K HRU parameter file (" + hruFileName.getValue() + ")!");
             }
         }
-        hrus.setEntities(hruCollection);
-        
+
         //read reach parameter
-        ArrayList<Attribute.Entity> reachCollection = J2KFunctions.readParas(FileTools.createAbsoluteFileName(getModel().getWorkspaceDirectory().getPath(), reachFileName.getValue()), getModel());
-        
+        reachList = J2KFunctions.readParas(FileTools.createAbsoluteFileName(getModel().getWorkspaceDirectory().getPath(), reachFileName.getValue()), getModel());
+
         //assign IDs to all reach entities
-        for (Attribute.Entity e : reachCollection) {
+        for (Attribute.Entity e : reachList) {
             try {
                 e.setId((long) e.getDouble(reachIDAttribute.getValue()));
             } catch (Attribute.Entity.NoSuchAttributeException nsae) {
                 getModel().getRuntime().sendErrorMsg("Couldn't find attribute \"ID\" while reading J2K HRU parameter file (" + hruFileName.getValue() + ")!");
             }
         }
-        reaches.setEntities(reachCollection);
-        
+
+        //create enttiy maps
+        createEntityMaps();
+
         //create object associations from id attributes for hrus and reaches
         createTopology();
 
+        // create a map containing enties and lists of source entites
+        createChildrenMap();
+
+        getModel().getRuntime().println("Model entities read successfully resulting in " + 
+                hruList.size() + " HRUs / " + reachList.size() + " reaches", JAMS.STANDARD);        
+        
+        //create ordered lists and subsets if needed
+        createEntityCollections();
+
+        getModel().getRuntime().println("Model entities ordered and subsetted successfully resulting in " + 
+                hrus.getEntities().size() + " HRUs / " + reaches.getEntities().size() + " reaches", JAMS.STANDARD);
+        
         //create total order on hrus and reaches that allows processing them subsequently
-        getModel().getRuntime().println("Create ordered hru-list", JAMS.VERBOSE);
-        createOrderedList(hrus, hru2hruAttribute.getValue());
-        getModel().getRuntime().println("HRU entities read successfully", JAMS.STANDARD);
-        getModel().getRuntime().println("Create ordered reach-list", JAMS.VERBOSE);
-        createOrderedList(reaches, reach2reachAttribute.getValue());
-        getModel().getRuntime().println("Reach entities read successfully", JAMS.STANDARD);
+//        createOrderedList(hrus, hru2hruAttribute.getValue());
+//        createOrderedList(reaches, reach2reachAttribute.getValue());
     }
 
     //do depth first search to find cycles
@@ -175,7 +207,7 @@ public class StandardEntityReader extends JAMSComponent {
 
         getModel().getRuntime().println("Cycle checking...");
 
-        hruIterator = hrus.getEntities().iterator();
+        hruIterator = hruList.iterator();
 
         boolean result = false;
 
@@ -194,33 +226,152 @@ public class StandardEntityReader extends JAMSComponent {
         return result;
     }
 
-    protected void createTopology() {
+    private void createChildrenMap() {
 
-        HashMap<Double, Attribute.Entity> hruMap = new HashMap<Double, Attribute.Entity>();
-        HashMap<Double, Attribute.Entity> reachMap = new HashMap<Double, Attribute.Entity>();
-        Iterator<Attribute.Entity> hruIterator;
-        Iterator<Attribute.Entity> reachIterator;
-        Attribute.Entity e, toPoly, toReach;
+        children = new HashMap();
+        Attribute.Entity node, parentNode;
+        List<Attribute.Entity> l;
+
+        // create an upstream mapping        
+        Iterator<Attribute.Entity> hruIterator = hruList.iterator();
+        while (hruIterator.hasNext()) {
+            node = hruIterator.next();
+
+            // hru -> hru 
+            parentNode = (Attribute.Entity) node.getObject(hru2hruAttribute.getValue());
+            if (parentNode != nullEntity) {
+                // put node into parentNode's list
+                l = children.get(parentNode);
+                if (l == null) {
+                    l = new ArrayList();
+                    children.put(parentNode, l);
+                }
+                l.add(node);
+            }
+
+            // hru -> reach
+            parentNode = (Attribute.Entity) node.getObject(hru2reachAttribute.getValue());
+            if (parentNode != nullEntity) {
+                // put node into parentNode's list
+                l = children.get(parentNode);
+                if (l == null) {
+                    l = new ArrayList();
+                    children.put(parentNode, l);
+                }
+                l.add(node);
+            }
+        }
+
+        Iterator<Attribute.Entity> reachIterator = reachList.iterator();
+        while (reachIterator.hasNext()) {
+            node = reachIterator.next();
+
+            // reach -> reach
+            parentNode = (Attribute.Entity) node.getObject(reach2reachAttribute.getValue());
+            if (parentNode != nullEntity) {
+                // put node into parentNode's list
+                l = children.get(parentNode);
+                if (l == null) {
+                    l = new ArrayList();
+                    children.put(parentNode, l);
+                }
+                l.add(node);
+            }
+        }
+    }
+
+    public static void main(String[] args) {
+
+        Set<Double> s = new HashSet();
+        s.add(new Double(12));
+        long x = 12;
+        System.out.println(s.contains((double) x));
+
+    }
+
+    private void createEntityCollections() {
+
+        // create a node list of the graph starting at the root reach (breath first)
+        Attribute.Entity root;
+        if (subcatchmentReachID.getValue() != -1) {
+            root = reachMap.get(subcatchmentReachID.getValue());
+            root.setObject(reach2reachAttribute.getValue(), nullEntity);
+        } else {
+            root = defaultRootReach;
+        }
+        List<Attribute.Entity> catchmentList = getSubtreeList(root, children);
+
+        // create two new lists for hrus and reaches 
+        List<Attribute.Entity> hl = new ArrayList();
+        List<Attribute.Entity> rl = new ArrayList();
+
+        // put reaches into hash set for faster search
+        Set<Attribute.Entity> reachSet = new HashSet();
+        for (Attribute.Entity e : reachMap.values()) {
+            reachSet.add(e);
+        }
+
+        for (int i = catchmentList.size() - 1; i >= 0; i--) {
+            Attribute.Entity e = catchmentList.get(i);
+            if (reachSet.contains(e)) {
+                rl.add(e);
+            } else {
+                hl.add(e);
+            }
+        }
+
+        hrus.setEntities(hl);
+        reaches.setEntities(rl);
+    }
+
+    private List getSubtreeList(Attribute.Entity node, HashMap<Attribute.Entity, List<Attribute.Entity>> children) {
+
+        List<Attribute.Entity> treeList = new ArrayList();
+
+        treeList.add(node);
+
+        List<Attribute.Entity> l = children.get(node);
+        if (l != null) {
+            for (Attribute.Entity e : l) {
+                treeList.addAll(getSubtreeList(e, children));
+            }
+        }
+
+        return treeList;
+    }
+
+    private void createEntityMaps() {
 
         //put all entities into a HashMap with their ID as key
-        hruIterator = hrus.getEntities().iterator();
+        hruMap = new HashMap();
+        reachMap = new HashMap();
+        Attribute.Entity e;
+
+        Iterator<Attribute.Entity> hruIterator = hruList.iterator();
         while (hruIterator.hasNext()) {
             e = hruIterator.next();
             hruMap.put(e.getDouble(hruIDAttribute.getValue()), e);
         }
-        reachIterator = reaches.getEntities().iterator();
+        Iterator<Attribute.Entity> reachIterator = reachList.iterator();
         while (reachIterator.hasNext()) {
             e = reachIterator.next();
             reachMap.put(e.getDouble(reachIDAttribute.getValue()), e);
         }
 
-        //create empty entities, i.e. those that are linked to in case there is no linkage ;-)
-        Attribute.Entity nullEntity = getModel().getRuntime().getDataFactory().createEntity();
+        //create an empty entity, i.e. the one that is linked to in case there is no linkage ;-)
+        nullEntity = getModel().getRuntime().getDataFactory().createEntity();
         hruMap.put(new Double(0), nullEntity);
         reachMap.put(new Double(0), nullEntity);
+    }
+
+    protected void createTopology() {
+
+        Iterator<Attribute.Entity> hruIterator;
+        Iterator<Attribute.Entity> reachIterator;
+        Attribute.Entity e, toPoly, toReach;
 
         //associate the hru entities with their downstream entity
-        hruIterator = hrus.getEntities().iterator();
+        hruIterator = hruList.iterator();
         while (hruIterator.hasNext()) {
             e = hruIterator.next();
             toPoly = hruMap.get(e.getDouble(hru2hruAttribute.getValue()));
@@ -237,7 +388,7 @@ public class StandardEntityReader extends JAMSComponent {
         }
 
         //associate the reach entities with their downstream entity
-        reachIterator = reaches.getEntities().iterator();
+        reachIterator = reachList.iterator();
         while (reachIterator.hasNext()) {
             e = reachIterator.next();
 
@@ -246,9 +397,14 @@ public class StandardEntityReader extends JAMSComponent {
             if (toReach == null) {
                 getModel().getRuntime().sendErrorMsg("Topological neighbour for reach with ID "
                         + e.getId() + " could not be found. This may cause errors!");
+            } else {
+                if (toReach == nullEntity) {
+                    defaultRootReach = e;
+                }
             }
 
             e.setObject(reach2reachAttribute.getValue(), toReach);
+
         }
 
         //check for cycles
@@ -284,7 +440,7 @@ public class StandardEntityReader extends JAMSComponent {
                 e = hruIterator.next();
 
                 f = (Attribute.Entity) e.getObject(asso);
-                if (f==null){
+                if (f == null) {
                     this.getModel().getRuntime().println("warning hru with id:" + e.getId() + " has no receiver");
                 }
                 if ((f != null) && (f.isEmpty())) {
