@@ -83,13 +83,26 @@ public class J2KFunctions {
 
                 for (int i = 0; i < attributeNames.size(); i++) {
                     try {
-                        //hopefully these are double values :-)
+                        //hopefully these are double values :-)                        
                         e.setDouble(attributeNames.get(i), Double.parseDouble(string[i]));
                     } catch (NumberFormatException nfe) {
-                        //most probably this happens because of string values within J2K parameter files
-                        Attribute.String stringValue = DefaultDataFactory.getDataFactory().createString();
-                        stringValue.setValue(string[i]);
-                        e.setObject(attributeNames.get(i), stringValue);
+                        if (string[i].startsWith("[") && string[i].endsWith("]")){
+                            string[i] = string[i].substring(1, string[i].length()-1);
+                            int j=0;
+                            String subStrings[] = string[i].split(",");
+                            Attribute.DoubleArray array = DefaultDataFactory.getDataFactory().createDoubleArray();
+                            double doubles[] = new double[subStrings.length];                            
+                            for (String subString : subStrings){                                
+                                doubles[j++] = Double.parseDouble(subString);
+                            }
+                            array.setValue(doubles);
+                            e.setObject(attributeNames.get(i), array);
+                        }else{
+                            //most probably this happens because of string values within J2K parameter files
+                            Attribute.String stringValue = DefaultDataFactory.getDataFactory().createString();
+                            stringValue.setValue(string[i]);
+                            e.setObject(attributeNames.get(i), stringValue);
+                        }
                     }
                 }
 
