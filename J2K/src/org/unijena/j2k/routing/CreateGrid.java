@@ -117,7 +117,7 @@ public double Rastersize(String path)
 		   
 		    if (tok.contains("cellsize"))
                     {
-			cellsize = new Double(st.nextToken()).doubleValue();
+			cellsize = Double.parseDouble(st.nextToken());
 			datafound++;
 		    }		    
 		}	    
