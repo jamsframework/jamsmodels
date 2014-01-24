@@ -402,7 +402,7 @@ import jams.model.*;
         ActRG2_NaCl.setValue(0);
         
         double RD1DestIn, RD2DestIn, RG1DestIn, RG2DestIn, RD1DestIn_N, RD2DestIn_N, RG1DestIn_N, RG2DestIn_N;
-        if(DestReach.getValue() == null){
+        if(DestReach.isEmpty()){
             RD1DestIn = 0;//entity.getDouble(aNameCatchmentOutRD1.getValue());
             RD2DestIn = 0;//entity.getDouble(aNameCatchmentOutRD2.getValue());
             RG1DestIn = 0;//entity.getDouble(aNameCatchmentOutRG1.getValue());
@@ -625,7 +625,7 @@ import jams.model.*;
         System.out.println(RD1out + " RD1out " + RD2out + " RD2out "+ RG1out +" RG1out " + RG2out +" RG2out ");
  
         }*/
-        if(DestReach.getValue() != null){
+        if(!DestReach.isEmpty()){
             DestReach.setDouble("inRD1",RD1DestIn);
             DestReach.setDouble("inRD2",RD2DestIn);
             DestReach.setDouble("inRG1",RG1DestIn);

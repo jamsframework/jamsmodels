@@ -101,7 +101,7 @@ public class ReachRoutingEP extends JAMSComponent {
         Attribute.Entity entity = entities.getCurrent();
 
         JAMSEntity DestReach = (JAMSEntity) entity.getObject("to_reach");
-        if (DestReach.getValue() == null) {
+        if (DestReach.isEmpty()) {
             DestReach = null;
         }
         JAMSEntity DestReservoir = null;

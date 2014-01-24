@@ -609,7 +609,7 @@ import jams.model.*;
 
         
         double RD1DestIn, SedDestIn, RD2DestIn, RG1DestIn, RG2DestIn, RD1DestIn_N, RD2DestIn_N, RG1DestIn_N, RG2DestIn_N,NH4DestIn_N,residueDestIn_N,activDestIn_N,stableDestIn_N;
-        if(DestReach.getValue() == null){
+        if(DestReach.isEmpty()){
             RD1DestIn = 0;//entity.getDouble(aNameCatchmentOutRD1.getValue());
             SedDestIn = 0;
             RD2DestIn = 0;//entity.getDouble(aNameCatchmentOutRD2.getValue());
@@ -921,7 +921,7 @@ import jams.model.*;
         System.out.println(RD1out + " RD1out " + RD2out + " RD2out "+ RG1out +" RG1out " + RG2out +" RG2out ");
  
         }*/
-        if(DestReach.getValue() != null){
+        if(!DestReach.isEmpty()){
             DestReach.setDouble("inRD1",RD1DestIn);
             DestReach.setDouble("insed",SedDestIn);
             DestReach.setDouble("inRD2",RD2DestIn);

@@ -77,7 +77,7 @@ import jams.model.*;
         double sedout = outsed.getValue();
                 
         
-        if(toPoly.getValue() != null){
+        if(!toPoly.isEmpty()){
             
             
             sedout = 0;
@@ -88,7 +88,7 @@ import jams.model.*;
            
             toPoly.setDouble("insed", sedin);
             
-        } else if(toReach.getValue() != null){
+        } else if(!toReach.isEmpty()){
            
             
             double sedin = toReach.getDouble("insed");

@@ -141,7 +141,7 @@ import jams.model.*;
         double reachNRD2in = 0;
 //        System.out.println("NRD2out: " + NRD2out);
         
-       if(toPoly.getValue() != null){
+       if(!toPoly.isEmpty()){
             double[] srcDepth = ((Attribute.DoubleArray)entity.getObject("depth_h")).getValue();
             double[] recDepth = ((Attribute.DoubleArray)toPoly.getObject("depth_h")).getValue();
             int srcHors = srcDepth.length;
@@ -205,7 +205,7 @@ import jams.model.*;
             toPoly.setObject("InterflowN_in", rdAN);
             toPoly.setDouble("N_RG1_in", NRG1in);
             toPoly.setDouble("N_RG2_in", NRG2in);
-        } else if(toReach.getValue() != null){
+        } else if(!toReach.isEmpty()){
             
             double NRD1in = toReach.getDouble("SurfaceN_in");
 /*            
