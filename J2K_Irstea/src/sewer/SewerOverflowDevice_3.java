@@ -134,7 +134,7 @@ public class SewerOverflowDevice_3 extends JAMSComponent {
 
     public void run() {
 
-        if (to_river.getValue() == null) {
+        if (to_river.isEmpty()) {
             return;
         }
 

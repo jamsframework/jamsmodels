@@ -133,7 +133,7 @@ public class SewerOverflowDevice_2 extends JAMSComponent {
 //            System.out.println("");
         }
 
-        if (to_river.getValue() == null) {
+        if (to_river.isEmpty()) {
             return;
         }
 

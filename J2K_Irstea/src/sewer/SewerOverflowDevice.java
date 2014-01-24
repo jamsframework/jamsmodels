@@ -145,7 +145,7 @@ public class SewerOverflowDevice extends JAMSComponent {
 
     public void run() {
 
-        if (to_river.getValue() == null) {
+        if (to_river.isEmpty()) {
 //            return;
         }
 
@@ -199,7 +199,7 @@ public class SewerOverflowDevice extends JAMSComponent {
         }
         
         // overflow is happening?
-        if (run_waterLevelMax > threshold.getValue() && to_river.getValue() != null) {
+        if (run_waterLevelMax > threshold.getValue() && !to_river.isEmpty()) {
 
             double g = 9.80665; //gravitationnal constant
             double overflowedVolume;

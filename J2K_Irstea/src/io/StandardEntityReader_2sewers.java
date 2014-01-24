@@ -238,7 +238,7 @@ public class StandardEntityReader_2sewers extends JAMSComponent {
         visitedList.add(node.getId());
 
         child_node = (Attribute.Entity) node.getObject(hruTohruAttribute.getValue());
-        if ((child_node != null) && (child_node.getValue() == null)) {
+        if ((child_node != null) && (child_node.isEmpty())) {
             child_node = null;
         }
 
@@ -320,7 +320,6 @@ public class StandardEntityReader_2sewers extends JAMSComponent {
 
         //create empty entities, i.e. those that are linked to in case there is no linkage ;-)
         Attribute.Entity nullEntity = getModel().getRuntime().getDataFactory().createEntity();
-        nullEntity.setValue((HashMap<String, Object>) null);
         hruMap.put(new Double(0), nullEntity);
         reachMap.put(new Double(0), nullEntity);
         sewer1Map.put(new Double(0), nullEntity);
@@ -439,7 +438,7 @@ public class StandardEntityReader_2sewers extends JAMSComponent {
                 if (f==null){
                     this.getModel().getRuntime().println("warning hru with id:" + e.getId() + " has no receiver");
                 }
-                if ((f != null) && (f.getValue() == null)) {
+                if ((f != null) && (f.isEmpty())) {
                     f = null;
                 }
 
