@@ -89,7 +89,7 @@ import jams.model.*;
             description = "reach roughness"
             )
             public Attribute.Double roughness;
-    
+     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
             description = "RD1 inflow to reach",
