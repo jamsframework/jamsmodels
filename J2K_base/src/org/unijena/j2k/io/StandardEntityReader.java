@@ -105,9 +105,8 @@ public class StandardEntityReader extends JAMSComponent {
 
     @Override
     public void init() {
-        
-        getModel().getRuntime().println("Reading spatial model entities...", JAMS.VERBOSE);
 
+        getModel().getRuntime().println("Reading spatial model entities...", JAMS.VERBOSE);
 
         //read hru parameter
         hruList = J2KFunctions.readParas(FileTools.createAbsoluteFileName(getModel().getWorkspaceDirectory().getPath(), hruFileName.getValue()), getModel());
@@ -142,15 +141,15 @@ public class StandardEntityReader extends JAMSComponent {
         // create a map containing enties and lists of source entites
         createChildrenMap();
 
-        getModel().getRuntime().println("Model entities read successfully resulting in " + 
-                hruList.size() + " HRUs / " + reachList.size() + " reaches", JAMS.STANDARD);        
-        
+        getModel().getRuntime().println("Model entities read successfully resulting in "
+                + hruList.size() + " HRUs / " + reachList.size() + " reaches", JAMS.STANDARD);
+
         //create ordered lists and subsets if needed
         createEntityCollections();
 
-        getModel().getRuntime().println("Model entities ordered and subsetted successfully resulting in " + 
-                hrus.getEntities().size() + " HRUs / " + reaches.getEntities().size() + " reaches", JAMS.STANDARD);
-        
+        getModel().getRuntime().println("Model entities ordered and subsetted successfully resulting in "
+                + hrus.getEntities().size() + " HRUs / " + reaches.getEntities().size() + " reaches", JAMS.STANDARD);
+
         //create total order on hrus and reaches that allows processing them subsequently
 //        createOrderedList(hrus, hru2hruAttribute.getValue());
 //        createOrderedList(reaches, reach2reachAttribute.getValue());
@@ -161,7 +160,7 @@ public class StandardEntityReader extends JAMSComponent {
         Attribute.Entity child_node;
 
         //current node allready in search stack -> circle found
-        if (searchStack.indexOf(node) != -1) {
+        if (searchStack.contains(node)) {
             int index = searchStack.indexOf(node);
 
             String cyc_output = new String();
@@ -295,7 +294,12 @@ public class StandardEntityReader extends JAMSComponent {
         Attribute.Entity root;
         if (subcatchmentReachID.getValue() != -1) {
             root = reachMap.get(subcatchmentReachID.getValue());
-            root.setObject(reach2reachAttribute.getValue(), nullEntity);
+            if (root != null) {
+                root.setObject(reach2reachAttribute.getValue(), nullEntity);
+            } else {
+                root = defaultRootReach;
+                getModel().getRuntime().println("Subbasin with id " + subcatchmentReachID.getValue() + " does not exist! Using default outlet." );
+            }
         } else {
             root = defaultRootReach;
         }
