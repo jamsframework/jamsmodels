@@ -40,8 +40,8 @@ public class Runoff_generator extends JAMSComponent {
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
             description = "Description")
-    public Attribute.Double area;
-    @JAMSVarDescription(
+   public Attribute.Double area;
+   @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
             description = "Description")
     public Attribute.Double actET;
@@ -102,17 +102,18 @@ public class Runoff_generator extends JAMSComponent {
         s2 = qOld + dt/2 * (Math.exp(c1.getValue() + (c2.getValue() - 2) * s1 + c3.getValue() * s1 * s1)) * 
                  (((p * (1 - bypassFraction.getValue())) - (cropCoefficient.getValue() * actET.getValue())) - Math.exp(s1));
 
-        s3 = qOld + dt/2 * (Math.exp(c1.getValue() + (c2.getValue() - 2) * s2 + c3.getValue() * s2 * s2)) * 
+        s3 = qOld + dt* (Math.exp(c1.getValue() + (c2.getValue() - 2) * s2 + c3.getValue() * s2 * s2)) * 
                  (((p * (1 - bypassFraction.getValue())) - (cropCoefficient.getValue() * actET.getValue())) - Math.exp(s2));
-
-        s4 = qOld + dt/2 * (Math.exp(c1.getValue() + (c2.getValue() - 2) * s3 + c3.getValue() * s3 * s3)) * 
+ 
+        s4 = qOld + dt* (Math.exp(c1.getValue() + (c2.getValue() - 2) * s3 + c3.getValue() * s3 * s3)) * 
                  (((p * (1 - bypassFraction.getValue())) - (cropCoefficient.getValue() * actET.getValue())) - Math.exp(s3));
         
-        s = (s1 / 3) + (s2 * 2 / 3) + (s3 / 3) + (s4 / 6) - qOld / 2;
+        s = (s1 / 3) + (s2 * 2 / 3) + (s3 / 3) + (s4 / 6) - qOld / 2; 
 
         qNew = ((0.5 * (Math.exp(qOld) + Math.exp(s))) + (p * (bypassFraction.getValue())));
         
         discharge.setValue(s);
         discharge_real.setValue(qNew * area.getValue());
+              
     }
 }
