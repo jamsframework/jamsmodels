@@ -1,5 +1,5 @@
 /*
- * J2KProcessLumpedSoilWater.java
+ * J2KProcessLumpedSoilWater_distInfiltCoeff.java
  * Created on 25. November 2005, 13:21
  *
  * This file is part of JAMS
@@ -32,13 +32,13 @@ import jams.model.*;
  * @author Peter Krause+Meriem Labbas
  */
 @JAMSComponentDescription(
-        title="J2KProcessLumpedSoilWater",
-        author="Peter Krause",
+        title="J2KProcessLumpedSoilWater_distInfiltCoeff",
+        author="Peter Krause + Mériem Labbas",
         description="Calculates soil water balance for each spatial modelling unit. Instead of the sealed grade, "
-        + "soilImpLT80 and soiImpGT80 lumped parameters, addition of a distributed parameter InfiltrationCoeff. ",
+        + "soilImpLT80 and soilImpGT80 lumped parameters, addition of a distributed parameter InfiltrationCoeff. ",
         version="1.0_0",
         date="2013-04-22")
-        public class J2KProcessLumpedSoilWater extends JAMSComponent {
+        public class J2KProcessLumpedSoilWater_distInfiltCoeff extends JAMSComponent {
     
     /*
      *  Component variables
