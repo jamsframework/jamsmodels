@@ -21,7 +21,7 @@
  *
  */
 
-package org.unijena.j2k_Himalaya.inputData;
+package j2k_Himalaya.inputData;
 
 //import org.unijena.j2k.regionalisation.*;
 import jams.data.*;

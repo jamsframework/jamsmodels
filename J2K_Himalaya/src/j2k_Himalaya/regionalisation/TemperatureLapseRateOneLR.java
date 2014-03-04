@@ -21,7 +21,7 @@
  *
  */
 
-package org.unijena.j2k_Himalaya.regionalisation;
+package j2k_Himalaya.regionalisation;
 
 import jams.data.*;
 import jams.model.*;

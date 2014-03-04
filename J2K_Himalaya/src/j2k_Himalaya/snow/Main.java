@@ -3,7 +3,7 @@
  * and open the template in the editor.
  */
 
-package org.unijena.j2k_Himalaya.snow;
+package j2k_Himalaya.snow;
 
 /**
  *

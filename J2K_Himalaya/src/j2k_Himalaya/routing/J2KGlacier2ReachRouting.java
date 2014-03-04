@@ -21,7 +21,7 @@
  *
  */
 
-package org.unijena.j2k_Himalaya.routing;
+package j2k_Himalaya.routing;
 
 import jams.data.*;
 import jams.model.*;

@@ -46,7 +46,7 @@
 <jamsvar name="ccf_factor" value="0.001"/>
 </component>
  */
-package org.unijena.j2k_Himalaya.snow;
+package j2k_Himalaya.snow;
 
 //import org.unijena.j2k.snow.*;
 //import org.unijena.j2k.snow.*;

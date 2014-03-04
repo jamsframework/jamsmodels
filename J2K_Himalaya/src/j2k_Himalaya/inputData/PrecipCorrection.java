@@ -20,7 +20,7 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
  *
  */
-package org.unijena.j2k_Himalaya.inputData;
+package j2k_Himalaya.inputData;
 
 import jams.data.*;
 import jams.model.*;

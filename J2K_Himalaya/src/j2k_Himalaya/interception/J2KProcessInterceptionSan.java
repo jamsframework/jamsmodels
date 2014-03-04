@@ -40,7 +40,7 @@
     <jamsvar name="intercStorage" provider="HRUContext" providervar="currentEntity.intercStorage"/>
 </component>
  */
-package org.unijena.j2k_Himalaya.interception;
+package j2k_Himalaya.interception;
 
 import jams.data.*;
 import jams.model.*;
