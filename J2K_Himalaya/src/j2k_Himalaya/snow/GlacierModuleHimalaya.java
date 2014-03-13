@@ -337,12 +337,12 @@ import jams.model.*;
 
             if (this.meltFormula.getValue() == 2) {
 
-                iceMelt = (1 / n) * this.meltFactorIce.getValue() + this.alphaIce.getValue() * this.radiation.getValue() * (meltTemp - this.tbase.getValue());
+                iceMelt = (1 / n) * (this.meltFactorIce.getValue() + this.alphaIce.getValue() * this.radiation.getValue()) * (meltTemp - this.tbase.getValue());
                 iceMelt = iceMelt * this.area.getValue();
             }
         } else {
             iceMelt = 0;
-        }//debris cover 
+        }
         if (this.slope.getValue() < 30) {
             iceMelt = iceMelt - (iceMelt * this.debrisFactor.getValue()/10) ;
         }
