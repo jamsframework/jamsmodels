@@ -92,6 +92,8 @@ public class CalcDailySolarRadiation extends JAMSComponent {
      *  Component run stages
      */
 
+    double lastLati = Double.NEGATIVE_INFINITY, lastJulDay = Double.NEGATIVE_INFINITY, lastMaximumSunshine;
+    
     public void run() throws Attribute.Entity.NoSuchAttributeException, IOException {
         int julDay = time.get(Attribute.Calendar.DAY_OF_YEAR);
         int month = time.get(Attribute.Calendar.MONTH);
@@ -100,21 +102,28 @@ public class CalcDailySolarRadiation extends JAMSComponent {
         double sunsh = sunh.getValue();
         double extraterrRadiation = this.actExtRad.getValue();
         double declination = 0;
-        if (this.tempRes == null) {
-            declination = org.unijena.j2k.physicalCalculations.SolarRadiationCalculationMethods.calc_SunDeclination(julDay);
-        } else if (this.tempRes.getValue().equals("d")) {
-            declination = org.unijena.j2k.physicalCalculations.SolarRadiationCalculationMethods.calc_SunDeclination(julDay);
-        } else if (this.tempRes.getValue().equals("m")) {
-            declination = org.unijena.j2k.physicalCalculations.SolarRadiationCalculationMethods.calc_SunDeclination(this.monthMean[month]);
+        
+        double maximumSunshine = 0;
+        if (lati == lastLati && lastJulDay == julDay){
+            maximumSunshine = lastMaximumSunshine;            
+        } else {
+            if (this.tempRes == null) {
+                declination = org.unijena.j2k.physicalCalculations.SolarRadiationCalculationMethods.calc_SunDeclination(julDay);
+            } else if (this.tempRes.getValue().equals("d")) {
+                declination = org.unijena.j2k.physicalCalculations.SolarRadiationCalculationMethods.calc_SunDeclination(julDay);
+            } else if (this.tempRes.getValue().equals("m")) {
+                declination = org.unijena.j2k.physicalCalculations.SolarRadiationCalculationMethods.calc_SunDeclination(this.monthMean[month]);
+            }
+            double latRad = org.unijena.j2k.mathematicalCalculations.MathematicalCalculations.deg2rad(lati);
+            double sunsetHourAngle = org.unijena.j2k.physicalCalculations.DailySolarRadiationCalculationMethods.calc_SunsetHourAngle(latRad, declination);
+            maximumSunshine = org.unijena.j2k.physicalCalculations.DailySolarRadiationCalculationMethods.calc_maximumSunshineHours(sunsetHourAngle);
+            lastLati = lati;
+            lastJulDay = julDay;
         }
-        double latRad = org.unijena.j2k.mathematicalCalculations.MathematicalCalculations.deg2rad(lati);
-        double sunsetHourAngle = org.unijena.j2k.physicalCalculations.DailySolarRadiationCalculationMethods.calc_SunsetHourAngle(latRad, declination);
-        double maximumSunshine = org.unijena.j2k.physicalCalculations.DailySolarRadiationCalculationMethods.calc_maximumSunshineHours(sunsetHourAngle);
         sunhmax.setValue(maximumSunshine);
         double solarRadiation = org.unijena.j2k.physicalCalculations.SolarRadiationCalculationMethods.calc_SolarRadiation(sunsh, maximumSunshine, extraterrRadiation, angstrom_a.getValue(), angstrom_b.getValue());
         //considering slope and aspect
         solarRadiation = solarRadiation * SAC;
-
         solRad.setValue(solarRadiation);
     }   
 }
