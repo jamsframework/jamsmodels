@@ -198,12 +198,14 @@ import jams.model.*;
             }else{
                 actMPS = actMPS + infCap;
                 inflow -= infCap;
+                infCap = 0;
             }
         }
         else{            
             if (deltaMPS <= infCap){
                 inflow = inflow - deltaMPS;
                 actMPS = maxMPS;
+                infCap -= deltaMPS;
             }else{
                 inflow = inflow - infCap;
                 actMPS = actMPS + infCap;
