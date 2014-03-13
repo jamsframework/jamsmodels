@@ -79,6 +79,11 @@ public class StandardLUReader extends JAMSComponent {
             lu = luMap.get(e.getDouble("landuseID"));
             e.setObject("landuse", lu);
             
+            if (lu == null){
+                getModel().getRuntime().sendHalt("Error landuse id " + e.getDouble("landuseID") + " of entity " + e.getId() + " not found!");
+                return;
+            }
+            
             attrs = lu.getKeys();
             
             for (int i = 0; i < attrs.length; i++) {
