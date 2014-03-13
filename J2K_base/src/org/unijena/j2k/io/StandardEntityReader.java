@@ -403,6 +403,9 @@ public class StandardEntityReader extends JAMSComponent {
                         + e.getId() + " could not be found. This may cause errors!");
             } else {
                 if (toReach == nullEntity) {
+                    if (defaultRootReach!=null){
+                        getModel().getRuntime().sendInfoMsg("The river network has more than one outlet! This may cause errors! ID of first outlet is: " + defaultRootReach.getId() + " and the second outlet is: " + toReach.getId());
+                    }
                     defaultRootReach = e;
                 }
             }
