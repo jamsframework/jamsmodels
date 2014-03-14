@@ -344,6 +344,15 @@ title="Title",
             }
         }
         
+        runEnumerator.reset();
+        while(runEnumerator.hasNext() && doRun) {
+            Component comp = runEnumerator.next();
+            try {
+                comp.initAll();
+            } catch (Exception e) {
+                
+            }
+        }
         
         runEnumerator.reset();
         while(runEnumerator.hasNext() && doRun) {

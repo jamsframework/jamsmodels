@@ -109,6 +109,16 @@ title="InErrorContext",
         runEnumerator.reset();
         while(runEnumerator.hasNext() && doRun) {
             Component comp = runEnumerator.next();
+            try {
+                comp.initAll();
+            } catch (Exception e) {
+                
+            }
+        }
+        
+        runEnumerator.reset();
+        while(runEnumerator.hasNext() && doRun) {
+            Component comp = runEnumerator.next();
             //comp.updateRun();
             try {
                 comp.run();
