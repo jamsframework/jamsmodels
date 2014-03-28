@@ -1,4 +1,4 @@
-/*
+    /*
  * RainCorrectionRichter.java
  * Created on 24. November 2005, 09:48
  *

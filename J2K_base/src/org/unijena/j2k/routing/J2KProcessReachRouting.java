@@ -23,6 +23,7 @@
 
 package org.unijena.j2k.routing;
 
+import jams.JAMS;
 import jams.data.*;
 import jams.model.*;
 
@@ -302,6 +303,10 @@ import jams.model.*;
         double slope = this.slope.getValue();
         if (!slopeAsProportion.getValue()) {
             slope = slope / 100;
+        }
+        
+        if (slope == 0) {
+            getModel().getRuntime().println("WARNING: Found zero slope in reach entity which will prevent water routing!", JAMS.VERBOSE);
         }
         
         double RD1act = actRD1.getValue() + inRD1.getValue();
