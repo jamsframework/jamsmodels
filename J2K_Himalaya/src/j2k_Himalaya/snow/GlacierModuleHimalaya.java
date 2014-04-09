@@ -322,6 +322,7 @@ import jams.model.*;
 //        if (this.snow.getValue() > 0) {
 //            snowStor = snowStor + this.snow.getValue();
 
+     //   double iceStorage = 9999;
         
         //calc potential melt
 //        double snowMelt = 0;
@@ -369,12 +370,20 @@ import jams.model.*;
         //ice routing
         double q_ice = this.iceRunofftm1.getValue() * Math.exp(-1/this.kIce.getValue()) + iceMelt * (1-Math.exp(-1/this.kIce.getValue()));
 
+        //double iceStorage = 9999 -double q_ice
+        
         //calc total glacier runoff
         //double tot_q = q_ice + snowMelt_G.getValue();
 
         double tot_q = q_ice + q_snow + q_rain;
-
-        this.glacStorage.setValue(glacStorage.getValue()+allIn - q_ice - q_snow - q_rain); //why is q_ice missing in that calculation??
+//q_ice should not be included in the balance, since it is not provided as input. otherwise, waterbalnce is wrong
+        
+        //this.glacStorage.setValue(glacStorage.getValue()+ allIn - q_ice - q_snow - q_rain); //why is q_ice missing in that calculation??//water balance is wrong
+        
+        
+        //water balance is right
+        this.glacStorage.setValue(allIn - q_snow - q_rain); //q_ice is not considered as input
+        
         
      //   this.glacStorage.setValue(snowMelt - q_snow);
        // this.glacStorage.setValue(allIn - q_snow - q_rain);
