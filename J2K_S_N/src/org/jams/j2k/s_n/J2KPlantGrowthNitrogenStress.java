@@ -78,12 +78,16 @@ import jams.model.*;
         double phi_nit = 0; // scaling factor for nitrogen stress [-]
         
         
+        if ((run_actbioN + 0.01) / (run_optibioN + 0.01) < 0.5){
+            nstrs.setValue(1.0);
+        }else{
+        
         phi_nit = 200 * (((run_actbioN + 0.01) / (run_optibioN + 0.01)) - 0.5);
         
         run_nstrs = 1 - (phi_nit / (phi_nit + Math.exp(3.535 - (0.02597 * phi_nit))));
         //actbioN.setValue(run_actbioN);
         nstrs.setValue(run_nstrs);
-       
+        }
     
     }
     
