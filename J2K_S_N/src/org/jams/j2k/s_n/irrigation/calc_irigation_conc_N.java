@@ -92,7 +92,7 @@ public class calc_irigation_conc_N extends JAMSComponent {
         
         irripart = irrigationsum.getValue()/irrstorage;
 
-        irrigationN_conc.setValue( storageInputN.getValue()/storageInput.getValue()*1000);
+        irrigationN_conc.setValue( storageInputN.getValue()/(storageInput.getValue()*1000));
 
         if (irripart > 1) {
             irripart = 1;
