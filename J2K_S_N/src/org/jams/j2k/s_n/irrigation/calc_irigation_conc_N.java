@@ -17,7 +17,7 @@ description = "Calculation of irrigation water N-concentration")
 public class calc_irigation_conc_N extends JAMSComponent {
 
     @JAMSVarDescription(
-            access = JAMSVarDescription.AccessType.READ,
+            access = JAMSVarDescription.AccessType.READWRITE,
             description = "HRU crop class"
             )
             public Attribute.Double storageInput;
@@ -70,6 +70,7 @@ public class calc_irigation_conc_N extends JAMSComponent {
 //Berechnung
     public void init(){
         irrigationpart.setValue(0.0);
+        storageInput.setValue(0);
     }
     public void run (){
 

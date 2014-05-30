@@ -34,10 +34,10 @@ public class IrrigationStorage_lumped extends JAMSComponent {
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
     description = "HRU attribute maximum LPS")
     public Attribute.Double maxLPS;
-    @JAMSVarDescription(access = JAMSVarDescription.AccessType.READWRITE,
+    @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
     description = "HRU state var saturation of MPS")
     public Attribute.Double satMPS;
-    @JAMSVarDescription(access = JAMSVarDescription.AccessType.READWRITE,
+    @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
     description = "HRU state var saturation of LPS")
     public Attribute.Double satLPS;
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.WRITE,
