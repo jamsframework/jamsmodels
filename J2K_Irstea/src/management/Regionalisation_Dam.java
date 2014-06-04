@@ -33,10 +33,10 @@ import jams.model.*;
  * @author Sven Kralisch & Mériem Labbas & Christian Fischer
  */
 @JAMSComponentDescription(title = "Regionalisation_Dam",
-        author = "Francois Tilmant & Flora Branger",
-        description = "Component used extract the objective function ",
-        version = "3.0_0",
-        date = "2014-04-17")
+        author = "Francois Tilmant",
+        description = "Component used extract the objective function at one reach",
+        version = "1.0_0",
+        date = "2014-06-04")
 public class Regionalisation_Dam extends JAMSComponent {
 
     /*
@@ -52,7 +52,7 @@ public class Regionalisation_Dam extends JAMSComponent {
     public Attribute.Double dataValue;
     
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
-            description = "Array of station elevations")
+            description = "Array of station names")
     public Attribute.DoubleArray names;
 
     @JAMSVarDescription(
@@ -63,14 +63,22 @@ public class Regionalisation_Dam extends JAMSComponent {
     
         @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            description = "reach slope",
+            description = "Initial volume in the reservoir",
+            unit = "%"
+            )
+            public Attribute.Double V0;
+        
+                @JAMSVarDescription(
+            access = JAMSVarDescription.AccessType.READ,
+            description = "Maximum storage of the reservoir",
             unit = "%"
             )
             public Attribute.Double Smax;
   
+  
                 @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            description = "reach slope",
+            description = "reach ID",
             unit = "%"
             )
             public Attribute.Double ID;

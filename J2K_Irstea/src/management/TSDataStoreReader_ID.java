@@ -34,13 +34,13 @@ import java.util.ArrayList;
 
 /**
  *
- * @author Sven Kralisch & Mériem Labbas & Christian Fischer
+ * @author Francois Tilmant
  */
 @JAMSComponentDescription(title = "TSDataStoreReader_ID",
-        author = "Francois Tilmant & Flora Branger",
+        author = "Francois Tilmant",
         description = "TSDataStoreReader with name of the stations in an Array",
-        version = "3.0_0",
-        date = "2014-04-17")
+        version = "1.0_0",
+        date = "2014-06-03")
 public class TSDataStoreReader_ID extends JAMSComponent {
 
     /*
