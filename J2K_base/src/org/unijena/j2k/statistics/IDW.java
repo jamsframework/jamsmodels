@@ -99,15 +99,10 @@ public class IDW implements Serializable {
         //selecting the nidw closest temperature stations and avoiding no data values
         int counter = 0;
         int element = 0;
-        while (counter < p) {
+        while (counter < p && element < wArray.length) {
             int t = wArray[element];
             //check if data is valid or no data
-            if (data[t] == JAMS.getMissingDataValue()) {
-                element++;
-                if (element >= wArray.length) {
-                    break;
-                }
-            } else {
+            if (data[t] != JAMS.getMissingDataValue()) {
                 idw_data[counter] = data[t];
                 idw_weights[counter] = weights[t];
                 if (statElevation != null) {
@@ -115,8 +110,8 @@ public class IDW implements Serializable {
                 }
 
                 counter++;
-                element++;
-            }
+            } 
+            element++;
         }
 
         //normalising weights
