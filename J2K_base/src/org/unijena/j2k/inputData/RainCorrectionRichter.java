@@ -33,128 +33,128 @@ import org.unijena.j2k.statistics.IDW;
  */
 @JAMSComponentDescription(
         title = "RainCorrection_Richter",
-author = "Peter Krause",
-description = "Applies correction according to RICHTER 1985 for measured daily precip sums",
-version = "1.0_0",
-date = "2011-05-30")
+        author = "Peter Krause",
+        description = "Applies correction according to RICHTER 1985 for measured daily precip sums",
+        version = "1.0_0",
+        date = "2011-05-30")
 public class RainCorrectionRichter extends JAMSComponent {
 
     /*
      *  Component variables
      */
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
-    description = "time")
+            description = "time")
     public Attribute.Calendar time;
-    
+
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
-                        description = "the precip values",
-                        unit = "mm")
+            description = "the precip values",
+            unit = "mm")
     public Attribute.DoubleArray precip;
 
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
-                        description = "temperature for the correction function",
-                        unit = "°C")
+            description = "temperature for the correction function",
+            unit = "°C")
     public Attribute.DoubleArray temperature;
 
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.WRITE,
-                        description = "corrected precip values",
-                        unit = "mm")
+            description = "corrected precip values",
+            unit = "mm")
     public Attribute.DoubleArray rcorr;
-    
+
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
-    description = "array of temperature station elevations",
-    unit = "m")
+            description = "array of temperature station elevations",
+            unit = "m")
     public Attribute.DoubleArray tempElevation;
-    
+
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
-    description = "array of temperature station's x coordinate")
+            description = "array of temperature station's x coordinate")
     public Attribute.DoubleArray tempXCoord;
-    
+
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
-    description = "array of temperature station's y coordinate")
+            description = "array of temperature station's y coordinate")
     public Attribute.DoubleArray tempYCoord;
-    
+
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
-    description = "Regression coefficients for temperature")
+            description = "Regression coefficients for temperature")
     public Attribute.DoubleArray tempRegCoeff;
-    
+
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
-    description = "array of precip station elevations",
-    unit = "m")
+            description = "array of precip station elevations",
+            unit = "m")
     public Attribute.DoubleArray rainElevation;
-    
+
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
-    description = "array of precip station's x coordinate")
+            description = "array of precip station's x coordinate")
     public Attribute.DoubleArray rainXCoord;
-    
+
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
-    description = "array of precip station's y coordinate")
+            description = "array of precip station's y coordinate")
     public Attribute.DoubleArray rainYCoord;
-    
+
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
-    description = "number of temperature station for IDW")
+            description = "number of temperature station for IDW")
     public Attribute.Integer tempNIDW;
-    
+
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
-    description = "power for IDW function")
+            description = "power for IDW function")
     public Attribute.Double pIDW;
-    
+
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
-    description = "regression threshold")
+            description = "regression threshold")
     public Attribute.Double regThres;
-    
+
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
-    description = "snow_trs",
-    upperBound = 5.0,
-    lowerBound = -5.0,
-    unit = "°C")    
+            description = "snow_trs",
+            upperBound = 5.0,
+            lowerBound = -5.0,
+            unit = "°C")
     public Attribute.Double snow_trs;
-    
+
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
-    description = "snow_trans",
-    upperBound = 10,
-    lowerBound = 0,
-    unit = "K")
+            description = "snow_trans",
+            upperBound = 10,
+            lowerBound = 0,
+            unit = "K")
     public Attribute.Double snow_trans;
-        
+
     IDW idw = new IDW();
-    
+
     @Override
     public void run() {
-        
+
         double[] precip = this.precip.getValue();
         double[] temperature = this.temperature.getValue();
-        
-        int n = precip.length;                
-        
+
+        int n = precip.length;
+
         double[] rcorr = this.rcorr.getValue();
         //allocate only when it is really needed
-        if (rcorr == null || rcorr.length != n){
+        if (rcorr == null || rcorr.length != n) {
             rcorr = new double[n];
         }
         //parameterization of rain stations        
         double[] rainElev = rainElevation.getValue();
         double[] rainX = rainXCoord.getValue();
         double[] rainY = rainYCoord.getValue();
-                               
+
         double rsq = this.tempRegCoeff.getValue()[2];
         double grad = this.tempRegCoeff.getValue()[1];
-            
-        idw.init(this.tempXCoord.getValue(), this.tempYCoord.getValue(), this.tempElevation.getValue(), (int)this.pIDW.getValue(), IDW.Projection.ANY);
-                
+
+        idw.init(this.tempXCoord.getValue(), this.tempYCoord.getValue(), this.tempElevation.getValue(), (int) this.pIDW.getValue(), IDW.Projection.ANY);
+
         //temperature for each rain station
         for (int r = 0; r < n; r++) {
             //use IDW to calc rainTemp
             double rainTemp = 0;
-            if (rsq>this.regThres.getValue()){
-                rainTemp = idw.getElevationCorrectedIDW(rainX[r], rainY[r], rainElev[r], grad, temperature, tempNIDW.getValue());                                                                    
-            }else{
-                rainTemp = idw.getIDW(rainX[r], rainY[r], temperature, tempNIDW.getValue()); 
+            if (rsq > this.regThres.getValue()) {
+                rainTemp = idw.getElevationCorrectedIDW(rainX[r], rainY[r], rainElev[r], grad, temperature, tempNIDW.getValue());
+            } else {
+                rainTemp = idw.getIDW(rainX[r], rainY[r], temperature, tempNIDW.getValue());
             }
             //determine rain and snow amount of precip
             double pSnow = (snow_trs.getValue() + snow_trans.getValue() - rainTemp)
                     / (2 * snow_trans.getValue());
-                                    
+
             //fixing upper and lower bound for pSnow (has to be between 0 and 1
             if (pSnow > 1.0) {
                 pSnow = 1.0;
@@ -163,7 +163,6 @@ public class RainCorrectionRichter extends JAMSComponent {
             }
             double rain = (1 - pSnow) * precip[r];
             double snow = pSnow * precip[r];
-
 
             //Calculating relative Winderror acc to RICHTER 1995            
             if (snow > 0) {//if(pSnow >= 1.0){      //set to all snow (5/11/01), rechanged 1.03.02
@@ -174,7 +173,7 @@ public class RainCorrectionRichter extends JAMSComponent {
                     snow = snow + (snow * relSnow);
                 }
             }
-            if (rain > 0) { 
+            if (rain > 0) {
                 if (rain < 0.1) {
                     rain += (rain * 0.492);
                 } else {
@@ -206,8 +205,8 @@ public class RainCorrectionRichter extends JAMSComponent {
                 rcorr[r] = JAMS.getMissingDataValue();
             } else {
                 rcorr[r] = rain + snow + wetErr;
-            }            
-        }        
+            }
+        }
         this.rcorr.setValue(rcorr);
     }
 }

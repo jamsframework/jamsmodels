@@ -26,6 +26,8 @@ import java.util.*;
 import java.io.*;
 import jams.data.*;
 import jams.model.Model;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -77,33 +79,36 @@ public class J2KFunctions {
 
             while ((s != null) && !s.startsWith("#")) {
 
-                Attribute.Entity e= DefaultDataFactory.getDataFactory().createEntity();
+                Attribute.Entity e = DefaultDataFactory.getDataFactory().createEntity();
                 String string[] = s.split("\t");
                 //tokenizer = new StringTokenizer(s, "\t");
 
                 for (int i = 0; i < attributeNames.size(); i++) {
                     try {
-                        //hopefully these are double values :-)                        
+                        //hopefully these are double values :-)                                                
                         e.setDouble(attributeNames.get(i), Double.parseDouble(string[i]));
                     } catch (NumberFormatException nfe) {
-                        if (string[i].startsWith("[") && string[i].endsWith("]")){
-                            string[i] = string[i].substring(1, string[i].length()-1);
-                            int j=0;
+                        if (string[i].startsWith("[") && string[i].endsWith("]")) {
+                            string[i] = string[i].substring(1, string[i].length() - 1);
+                            int j = 0;
                             String subStrings[] = string[i].split(",");
                             Attribute.DoubleArray array = DefaultDataFactory.getDataFactory().createDoubleArray();
-                            double doubles[] = new double[subStrings.length];                            
-                            for (String subString : subStrings){                                
+                            double doubles[] = new double[subStrings.length];
+                            for (String subString : subStrings) {
                                 doubles[j++] = Double.parseDouble(subString);
                             }
                             array.setValue(doubles);
                             e.setObject(attributeNames.get(i), array);
-                        }else{
+                        } else {
                             //most probably this happens because of string values within J2K parameter files
                             Attribute.String stringValue = DefaultDataFactory.getDataFactory().createString();
                             stringValue.setValue(string[i]);
                             e.setObject(attributeNames.get(i), stringValue);
                         }
+                    } catch (ArrayIndexOutOfBoundsException ex) {
+                        Logger.getLogger(J2KFunctions.class.getName()).log(Level.SEVERE, "Too few columns in row \"" + s + "\"!", ex);
                     }
+
                 }
 
                 entityList.add(e);
@@ -133,7 +138,6 @@ public class J2KFunctions {
         double[] statx = null;
         double[] staty = null;
         double[] statelev = null;
-
 
         String line = "#";
         try {
@@ -227,7 +231,6 @@ public class J2KFunctions {
                     }
                 }
             }
-
 
         } catch (IOException ioe) {
             model.getRuntime().handle(ioe);

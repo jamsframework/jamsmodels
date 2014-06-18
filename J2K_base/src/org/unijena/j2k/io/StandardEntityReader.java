@@ -128,7 +128,7 @@ public class StandardEntityReader extends JAMSComponent {
             try {
                 e.setId((long) e.getDouble(reachIDAttribute.getValue()));
             } catch (Attribute.Entity.NoSuchAttributeException nsae) {
-                getModel().getRuntime().sendErrorMsg("Couldn't find attribute \"ID\" while reading J2K HRU parameter file (" + hruFileName.getValue() + ")!");
+                getModel().getRuntime().sendErrorMsg("Couldn't find attribute \"ID\" while reading J2K reach parameter file (" + reachFileName.getValue() + ")!");
             }
         }
 
@@ -141,14 +141,14 @@ public class StandardEntityReader extends JAMSComponent {
         // create a map containing enties and lists of source entites
         createChildrenMap();
 
-        getModel().getRuntime().println("Model entities read successfully resulting in "
-                + hruList.size() + " HRUs / " + reachList.size() + " reaches", JAMS.STANDARD);
+        getModel().getRuntime().println("Model entities read successfully. This resulted in "
+                + hruList.size() + " HRUs / " + reachList.size() + " reaches overall.", JAMS.STANDARD);
 
         //create ordered lists and subsets if needed
         createEntityCollections();
 
-        getModel().getRuntime().println("Model entities ordered and subsetted successfully resulting in "
-                + hrus.getEntities().size() + " HRUs / " + reaches.getEntities().size() + " reaches", JAMS.STANDARD);
+        getModel().getRuntime().println("Model entities ordered and subsetted successfully. This resulted in "
+                + hrus.getEntities().size() + " HRUs / " + reaches.getEntities().size() + " reaches.", JAMS.STANDARD);
 
         //create total order on hrus and reaches that allows processing them subsequently
 //        createOrderedList(hrus, hru2hruAttribute.getValue());
@@ -290,7 +290,7 @@ public class StandardEntityReader extends JAMSComponent {
 
     private void createEntityCollections() {
 
-        // create a node list of the graph starting at the root reach (breath first)
+        // create a node list of the graph starting at the root reach (breath first enumeration)
         Attribute.Entity root;
         if (subcatchmentReachID.getValue() != -1) {
             root = reachMap.get(subcatchmentReachID.getValue());
@@ -298,7 +298,7 @@ public class StandardEntityReader extends JAMSComponent {
                 root.setObject(reach2reachAttribute.getValue(), nullEntity);
             } else {
                 root = defaultRootReach;
-                getModel().getRuntime().println("Subbasin with id " + subcatchmentReachID.getValue() + " does not exist! Using default outlet." );
+                getModel().getRuntime().println("Subbasin with id " + subcatchmentReachID.getValue() + " does not exist! Using default outlet.");
             }
         } else {
             root = defaultRootReach;
@@ -354,18 +354,28 @@ public class StandardEntityReader extends JAMSComponent {
         Iterator<Attribute.Entity> hruIterator = hruList.iterator();
         while (hruIterator.hasNext()) {
             e = hruIterator.next();
-            hruMap.put(e.getDouble(hruIDAttribute.getValue()), e);
+            double id = (double) e.getId();
+            if (!hruMap.containsKey(id)) {
+                hruMap.put(id, e);
+            } else {
+                getModel().getRuntime().sendErrorMsg("Found duplicate HRU-ID (" + e.getId() + "). This may cause errors!");
+            }
         }
         Iterator<Attribute.Entity> reachIterator = reachList.iterator();
         while (reachIterator.hasNext()) {
             e = reachIterator.next();
-            reachMap.put(e.getDouble(reachIDAttribute.getValue()), e);
+            double id = (double) e.getId();
+            if (!reachMap.containsKey(id)) {
+                reachMap.put(id, e);
+            } else {
+                getModel().getRuntime().sendErrorMsg("Found duplicate reach-ID (" + e.getId() + "). This may cause errors!");
+            }
         }
 
         //create an empty entity, i.e. the one that is linked to in case there is no linkage ;-)
         nullEntity = getModel().getRuntime().getDataFactory().createEntity();
-        hruMap.put(new Double(0), nullEntity);
-        reachMap.put(new Double(0), nullEntity);
+        hruMap.put(0d, nullEntity);
+        reachMap.put(0d, nullEntity);
     }
 
     protected void createTopology() {
@@ -384,6 +394,10 @@ public class StandardEntityReader extends JAMSComponent {
             if ((toPoly == null) || (toReach == null)) {
                 getModel().getRuntime().sendErrorMsg("Topological neighbour for HRU with ID "
                         + e.getId() + " could not be found. This may cause errors!");
+            } else {
+                if (toPoly == nullEntity && toReach == nullEntity) {
+                    getModel().getRuntime().sendInfoMsg("The HRU with ID " + e.getId() + " drains nowhere. This may cause errors!");
+                }
             }
 
             e.setObject(hru2hruAttribute.getValue(), toPoly);
@@ -395,7 +409,6 @@ public class StandardEntityReader extends JAMSComponent {
         reachIterator = reachList.iterator();
         while (reachIterator.hasNext()) {
             e = reachIterator.next();
-
             toReach = reachMap.get(e.getDouble(reach2reachAttribute.getValue()));
 
             if (toReach == null) {
@@ -403,7 +416,7 @@ public class StandardEntityReader extends JAMSComponent {
                         + e.getId() + " could not be found. This may cause errors!");
             } else {
                 if (toReach == nullEntity) {
-                    if (defaultRootReach!=null){
+                    if (defaultRootReach != null) {
                         getModel().getRuntime().sendInfoMsg("The river network has more than one outlet! This may cause errors! ID of first outlet is: " + defaultRootReach.getId() + " and the second outlet is: " + toReach.getId());
                     }
                     defaultRootReach = e;
