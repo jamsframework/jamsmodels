@@ -95,6 +95,14 @@ public class DamDevice extends JAMSComponent {
     
         @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
+            description = "FO corrected if there isn't enough water in the river",
+            unit = "L"
+            )
+            public Attribute.Double FO_fin;
+        
+        
+        @JAMSVarDescription(
+            access = JAMSVarDescription.AccessType.READWRITE,
             description = "state variable - Storage in the reservoir",
             unit = "L"
             )
@@ -128,7 +136,6 @@ public class DamDevice extends JAMSComponent {
        if (this.Smax.getValue() > 0) {
            
         String Date = time.toString();
-        System.out.println(Date.equals(Date2) );
         if ( (Date.equals(Date2) )) {
             this.Storage.setValue(Math.pow(10,9)*this.V0.getValue());
         }
@@ -139,7 +146,8 @@ public class DamDevice extends JAMSComponent {
         test = test + this.inRG2.getValue();
         double runOutflow = 0;
         double newS = 0;
-               
+        double FO_act = 0;
+        
        calcRelComponents(); 
         
         this.runComp[0] = this.inRD1.getValue();
@@ -148,23 +156,24 @@ public class DamDevice extends JAMSComponent {
         this.runComp[3] = this.inRG2.getValue();
         
         calcRelComponents();
-        
-           
-    if(this.FO.getValue() >= 0){
+    FO_act = 3600*24*this.FO.getValue();
+    if(FO_act >= 0){
         //Cas de restitution
-        newS = Math.max(this.Storage.getValue() - 3600*24*this.FO.getValue(),0);
+        newS = Math.max(this.Storage.getValue() - FO_act,0);
 }    else  {
         //Cas de stockage
         // in case test < FO, we put FO = test
-        if( (test+this.FO.getValue()) <0) { this.FO.setValue(test);}
         
-        newS = Math.min(this.Storage.getValue() - 3600*24*this.FO.getValue(),Math.pow(10,9)*this.Smax.getValue());        
+        if( (test+ FO_act) <0) { FO_act = -test;} 
+        
+        newS = Math.min(this.Storage.getValue() - FO_act,Math.pow(10,9)*this.Smax.getValue());        
+        
 }
   
     // Calcul de la restitution réelle
     runOutflow = Math.max(0,test -(newS- this.Storage.getValue()));
     this.Storage.setValue(newS);   
-      
+    this.FO_fin.setValue(FO_act) ; 
        for(int i = 0; i < runComp.length; i++){
                 outComp[i] = runOutflow * relComp[i];
                 runComp[i] = runComp[i] - outComp[i];
@@ -175,7 +184,8 @@ public class DamDevice extends JAMSComponent {
     this.inRG2.setValue(outComp[3]);  
        
        }    else {
-              this.Storage.setValue(0.0); 
+              this.Storage.setValue(0.0);
+              this.FO_fin.setValue(0.0) ; 
        }
    }
     
