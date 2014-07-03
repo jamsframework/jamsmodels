@@ -32,6 +32,30 @@ import jams.model.*;
             )
             public Attribute.Double catchmentSimRunoff;
  
+@JAMSVarDescription(
+            access = JAMSVarDescription.AccessType.READWRITE,
+            description = "catchment RD1 in l"
+            )
+            public Attribute.Double catchmentRD1;
+
+@JAMSVarDescription(
+            access = JAMSVarDescription.AccessType.READWRITE,
+            description = "catchment RD2 in l"
+            )
+            public Attribute.Double catchmentRD2;
+
+@JAMSVarDescription(
+            access = JAMSVarDescription.AccessType.READWRITE,
+            description = "catchment RG1 in l"
+            )
+            public Attribute.Double catchmentRG1;
+
+@JAMSVarDescription(
+            access = JAMSVarDescription.AccessType.READWRITE,
+            description = "catchment RG2 in l"
+            )
+            public Attribute.Double catchmentRG2;
+ 
  @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
             description = "Irrigationamount in l"
@@ -46,20 +70,29 @@ import jams.model.*;
         
         Double simrunoff = catchmentSimRunoff.getValue();
         
+        
+        double ratio = (simrunoff - irrigationsum.getValue()) /  simrunoff; 
+        
         if (simrunoff > irrigationsum.getValue()){
         
         simrunoff = simrunoff - irrigationsum.getValue();
+       
         
         }else{
         
             
             simrunoff = 0.0;
+            ratio = 0.0;
         
         }
         
         catchmentSimRunoff.setValue((Storage.getValue()) +  simrunoff);
         Storage.setValue(0.0);
         irrigationsum.setValue(0.0);
+        catchmentRD1.setValue(catchmentRD1.getValue()*ratio);
+        catchmentRD2.setValue(catchmentRD2.getValue()*ratio);
+        catchmentRG1.setValue(catchmentRG1.getValue()*ratio);
+        catchmentRG2.setValue(catchmentRG2.getValue()*ratio);
        
         
         
