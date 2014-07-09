@@ -88,12 +88,12 @@ public class SewerOverflowDevice_1 extends JAMSComponent {
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READWRITE,
     description = "number of overflow events")
     public Attribute.Double overflowCount;
-    @JAMSVarDescription(access = JAMSVarDescription.AccessType.READWRITE,
-    description = "geometric water level in sewer at the beginning of the time step")
-    public Attribute.Double waterLevelAct;
-    @JAMSVarDescription(access = JAMSVarDescription.AccessType.READWRITE,
-    description = "geometric water level in sewer after the addition of inValues")
-    public Attribute.Double waterLevelAfterIn;
+    //@JAMSVarDescription(access = JAMSVarDescription.AccessType.READWRITE,
+   // description = "geometric water level in sewer at the beginning of the time step")
+    //public Attribute.Double waterLevelAct;
+    //@JAMSVarDescription(access = JAMSVarDescription.AccessType.READWRITE,
+    //description = "geometric water level in sewer after the addition of inValues")
+    //public Attribute.Double waterLevelAfterIn;
     
     private int seconds;
 
@@ -183,7 +183,7 @@ public class SewerOverflowDevice_1 extends JAMSComponent {
             }
             sewerOverflow.setValue(0);
         }
-        waterLevelAct.setValue(levelAct);
-        waterLevelAfterIn.setValue(levelAfterIn);
+        //waterLevelAct.setValue(levelAct);
+        //waterLevelAfterIn.setValue(levelAfterIn);
     }
 }
