@@ -31,45 +31,60 @@ import jams.model.*;
  * @author Peter Krause
  */
 @JAMSComponentDescription(
-        title="J2KMultiplication",
+        title="J2KDivision",
         author="Manfred Fink",
-        description="Calculates product of two variables",
+        description="Calculates quotient of two variables",
         version="1.0_0",
-        date="2012-03-19"
+        date="2014-05-30"
         )
-        public class J2KMultiplication extends JAMSComponent {
+        public class J2KDivision extends JAMSComponent {
     
     /*
      *  Component variables
      */
    @JAMSVarDescription(
-            access = JAMSVarDescription.AccessType.READ,
-            description = "multiplier 1",
+            access = JAMSVarDescription.AccessType.READWRITE,
+            description = "dividend",
             unit="-"
             )
-            public Attribute.Double mult1;
+            public Attribute.Double div1;
     
     
    @JAMSVarDescription(
-            access = JAMSVarDescription.AccessType.READ,
-            description = "multiplier 2",
+            access = JAMSVarDescription.AccessType.READWRITE,
+            description = "divisor",
             unit="-"
             )
-            public Attribute.Double mult2;
+            public Attribute.Double div2;
 
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
-            description = "Product",
+            description = "quotient",
             unit="-"
             )
-            public Attribute.Double Product;
+            public Attribute.Double quotient;
     
     /*
      *  Component run stages
      */
 
+    public void init() {
+        div1.setValue(0.0);
+        div2.setValue(0.0);
+    }
+    
     public void run() {
-        Product.setValue(mult1.getValue() * mult2.getValue());
+        
+        
+            
+        if (div2.getValue()==0){
+      //   getModel().getRuntime().sendErrorMsg(getModel().getComponent("J2KDivision") + " Do not divide with zero, dividend: " + div1.getValue() + ", divisor: " + div2.getValue());
+     //    getModel().getRuntime().sendHalt(getModel().getComponent("J2KDivision") + " Do not divide with zero, dividend: " + div1.getValue() + ", divisor: " + div2.getValue());
+            quotient.setValue(0.0); // neccessary option for calculation of substance concentrations
+      //      quotient.setValue(null); 
+        }else{
+            quotient.setValue(div1.getValue() / div2.getValue());
+        }
     }
 
 }
