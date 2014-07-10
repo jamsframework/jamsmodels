@@ -340,7 +340,7 @@ public class MultiEntityReaderTS_2 extends JAMSComponent {
 
     //do depth first search to find cycles
     protected boolean cycleCheck(Attribute.Entity node,Stack<Attribute.Entity> searchStack,HashSet<Attribute.Double> closedList,HashSet<Attribute.Double> visitedList) {
-        Attribute.Entity child_node[];
+        Attribute.Entity child_node[] = null;
         
         //current node allready in search stack -> circle found
         if ( searchStack.indexOf(node) != -1) {
@@ -359,8 +359,11 @@ public class MultiEntityReaderTS_2 extends JAMSComponent {
             return false;
         //now this node is visited
         visitedList.add((Attribute.Double)node.getObject("ID"));
-        
+        try{
         child_node = (Attribute.Entity[])node.getObject("to_poly");
+        } catch (java.lang.ClassCastException klass) {
+                getModel().getRuntime().sendHalt("routing for HRU " + node.getDouble(hruIDAttribute.getValue()) + " does not exist");
+            }
         
         boolean result = false;
         searchStack.push(node);
