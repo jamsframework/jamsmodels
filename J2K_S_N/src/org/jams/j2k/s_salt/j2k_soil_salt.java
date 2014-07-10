@@ -793,7 +793,7 @@ import java.io.*;
         double  mobilewater = 0;
         double  soilstorage = 0;
         
-        soilstorage = sto_LPS + sto_MPS + sto_FPS;
+        soilstorage = act_LPS  + act_MPS + sto_FPS;
         if (i == 0) {
             mobilewater = RD1_out_mm + RD2_out_mm + h_perco_mm + hor_by_infilt[i] + diffout[i] + 1.e-10;
         }
@@ -804,8 +804,10 @@ import java.io.*;
         if (i == (layer -1)){
             mobilewater = RD2_out_mm + d_perco_mm  + diffout[i] + 1.e-10;
         }
-        concSALT_temp = (runNaCl_Pool * (1 - Math.exp(- mobilewater / ((1 - theta_nit) * soilstorage))));
-        concSALT_mobile = concSALT_temp / mobilewater;
+//        concSALT_temp = (runNaCl_Pool * (1 - Math.exp(- mobilewater / ((1 - theta_nit) * soilstorage)))); //SWAT Version
+//        concSALT_mobile = concSALT_temp / mobilewater;
+        
+        concSALT_mobile = runNaCl_Pool / (soilstorage + mobilewater); //linear Version simple mixing
         
         if (concSALT_mobile < 0){
             concSALT_mobile = 0;

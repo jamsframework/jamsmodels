@@ -165,84 +165,84 @@ import jams.model.*;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
-            description = "SurfaceNaCl outflow in kgNaCl"
+            description = "SurfaceNaClaCl outflow in kgNaCl"
             )
             public Attribute.Double SurfaceNaClabs;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
-            description = "(fast) InterflowN outflow in kgN"
+            description = "(fast) InterflowNaCl outflow in kgNaCl"
             )
             public Attribute.Double InterflowNaClabs;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
-            description = "(slow) InterflowN outflow in kgN"
+            description = "(slow) InterflowNaCl outflow in kgNaCl"
             )
             public Attribute.Double NaCl_RG1_out;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
-            description = "GoundwaterN outflow in kgN"
+            description = "GoundwaterNaCl outflow in kgNaCl"
             )
             public Attribute.Double NaCl_RG2_out;
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
-            description = "Reach statevar RD1_N (SurfaceN) storage in kgN"
+            description = "Reach statevar RD1_NaCl (SurfaceNaCl) storage in kgNaCl"
             )
             public Attribute.Double ActRD1_NaCl;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
-            description = "Reach statevar RD2_N ((fast) InterflowN) storage in kgN"
+            description = "Reach statevar RD2_NaCl ((fast) InterflowNaCl) storage in kgNaCl"
             )
             public Attribute.Double ActRD2_NaCl;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
-            description = "Reach statevar RG1_N ((slow) InterflowN) storage in kgN"
+            description = "Reach statevar RG1_NaCl ((slow) InterflowNaCl) storage in kgNaCl"
             )
             public Attribute.Double ActRG1_NaCl;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
-            description = "Reach statevar RG2_N (GoundwaterN) storage in kgN"
+            description = "Reach statevar RG2_NaCl (GoundwaterN) storage in kgN"
             )
             public Attribute.Double ActRG2_NaCl;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
-            description = "Reach Channel storage N in kgN"
+            description = "Reach Channel storage NaCl in kgNaCl"
             )
             public Attribute.Double ChannelStorage_NaCl;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
-            description = "Simulated N Runoff in kgN"
+            description = "Simulated NaCl Runoff in kgNaCl"
             )
             public Attribute.Double SimRunoff_NaCl;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
-            description = "SurfaceN inflow in kgN"
+            description = "SurfaceNaCl inflow in kgNaCl"
             )
             public Attribute.Double SurfaceNaCl_in;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
-            description = "(fast) InterflowN inflow in kgN"
+            description = "(fast) InterflowNaCl inflow in kgNaCl"
             )
             public Attribute.Double InterflowNaCl_sum;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
-            description = "(slow) InterflowN inflow in kgN"
+            description = "(slow) InterflowNaCl inflow in kgNaCl"
             )
             public Attribute.Double NaCl_RG1_in;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
-            description = "GoundwaterN inflow in kgN"
+            description = "GoundwaterNaCl inflow in kgNaCl"
             )
             public Attribute.Double NaCl_RG2_in;
     
@@ -286,37 +286,45 @@ import jams.model.*;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
-            description = "Catchment outlet NRD1 storage"
+            description = "Catchment outlet NaClRD1 storage"
             )
             public Attribute.Double catchmentNaClRD1;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
-            description = "Catchment outlet NRD2 storage"
+            description = "Catchment outlet NaClRD2 storage"
             )
             public Attribute.Double catchmentNaClRD2;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
-            description = "Catchment outlet NRG1 storage"
+            description = "Catchment outlet NaClRG1 storage"
             )
             public Attribute.Double catchmentNaClRG1;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
-            description = "Catchment outlet NRG2 storage"
+            description = "Catchment outlet NaClRG2 storage"
             )
             public Attribute.Double catchmentNaClRG2;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
-            description = "Catchment outlet sim Nitrogen runoff"
+            description = "Catchment outlet sim Salt runoff [kg]"
             )
             public Attribute.Double catchmentSimRunoffNaCl;
     
+    
+        
+    @JAMSVarDescription(
+            access = JAMSVarDescription.AccessType.WRITE,
+            description = "Catchment outlet sim Salt concentration [mg/l]"
+            )
+            public Attribute.Double catchmentSimNaClconc;
+    
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            description = "switch whether deep sink is allowed or not"
+            description = "switch whether deep sink is allowed or not "
             )
             public Attribute.Double deepsink;
     
@@ -618,7 +626,8 @@ import jams.model.*;
         System.out.println(RD1out + " RD1out " + RD2out + " RD2out "+ RG1out +" RG1out " + RG2out +" RG2out ");
  
         }*/
-        if((DestReach != null) && (DestReach.getId() != -1)){
+        //if((DestReach != null) && (DestReach.getId() != -1)){
+        if(!DestReach.isEmpty()){
             DestReach.setDouble("inRD1",RD1DestIn);
             DestReach.setDouble("inRD2",RD2DestIn);
             DestReach.setDouble("inRG1",RG1DestIn);
@@ -642,6 +651,7 @@ import jams.model.*;
             catchmentNaClRG1.setValue(RG1out_NaCl);
             catchmentNaClRG2.setValue(RG2out_NaCl);
             catchmentSimRunoffNaCl.setValue(cumOutflow_NaCl);
+            catchmentSimNaClconc.setValue((cumOutflow_NaCl * 1000000)/cumOutflow);
         }
         
     }
