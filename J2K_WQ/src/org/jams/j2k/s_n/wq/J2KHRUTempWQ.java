@@ -58,7 +58,7 @@ import jams.model.*;
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
             description = "soil temperature in different layerdepths",
-            unit = "°C",
+            unit = "Â°C",
             lowerBound= Double.NEGATIVE_INFINITY,
             upperBound = Double.POSITIVE_INFINITY
             )
@@ -67,7 +67,7 @@ import jams.model.*;
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
             description = "soil surface temperature",
-            unit = "°C",
+            unit = "Â°C",
             lowerBound= Double.NEGATIVE_INFINITY,
             upperBound = Double.POSITIVE_INFINITY
             )
@@ -76,7 +76,7 @@ import jams.model.*;
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
             description = "mean temperature of the simulation period",
-            unit = "°C",
+            unit = "Â°C",
             lowerBound= Double.NEGATIVE_INFINITY,
             upperBound = Double.POSITIVE_INFINITY
             )

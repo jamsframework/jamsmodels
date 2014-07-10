@@ -79,7 +79,7 @@ public class init_heatflux extends JAMSComponent {
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
             description = "init bottom sediment layer temperature",
-            unit = "°C",
+            unit = "Â°C",
             lowerBound= 0,
             upperBound = Double.POSITIVE_INFINITY
             )

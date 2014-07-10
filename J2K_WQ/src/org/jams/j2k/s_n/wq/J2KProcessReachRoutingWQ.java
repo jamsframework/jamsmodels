@@ -545,7 +545,7 @@ import jams.model.*;
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
             description = "sim Catchment outlet temperature",
-            unit = "°C",
+            unit = "Â°C",
             lowerBound= 0,
             upperBound = Double.POSITIVE_INFINITY
             )
@@ -655,7 +655,7 @@ import jams.model.*;
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
             description = "average water temperature for specific reach",
-            unit = "°C",
+            unit = "Â°C",
             lowerBound= 0,
             upperBound = Double.POSITIVE_INFINITY
             )
@@ -846,7 +846,7 @@ import jams.model.*;
             
         double RD1DestIn, RD2DestIn, RG1DestIn, RG2DestIn, RD1DestInEnergy, RD2DestInEnergy, RG1DestInEnergy, RG2DestInEnergy,
                RD1DestIn_N, RD2DestIn_N, RG1DestIn_N, RG2DestIn_N;
-        if(DestReach.getValue() == null){
+        if(DestReach.isEmpty()){
             RD1DestIn = 0;//entity.getDouble(aNameCatchmentOutRD1.getValue());
             RD2DestIn = 0;//entity.getDouble(aNameCatchmentOutRD2.getValue());
             RG1DestIn = 0;//entity.getDouble(aNameCatchmentOutRG1.getValue());
@@ -963,7 +963,7 @@ import jams.model.*;
             
         }
 
-        //calculation of Reach Total Temperature in °C with q_act_tot and q_act_tot_Temp
+        //calculation of Reach Total Temperature in Â°C with q_act_tot and q_act_tot_Temp
         double Temp_tot = q_act_tot_Energy / q_act_tot;
         
 
@@ -1201,7 +1201,7 @@ import jams.model.*;
         System.out.println(RD1out + " RD1out " + RD2out + " RD2out "+ RG1out +" RG1out " + RG2out +" RG2out ");
  
         }*/
-        if(DestReach.getValue() != null){
+        if(!DestReach.isEmpty()){
             DestReach.setDouble("inRD1",RD1DestIn);
             DestReach.setDouble("inRD2",RD2DestIn);
             DestReach.setDouble("inRG1",RG1DestIn);

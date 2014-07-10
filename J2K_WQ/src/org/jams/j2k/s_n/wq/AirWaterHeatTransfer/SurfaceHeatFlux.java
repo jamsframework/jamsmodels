@@ -23,7 +23,7 @@ public class SurfaceHeatFlux extends JAMSComponent {
 
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
             description = "state variable mean temperature",
-            unit = "°C",
+            unit = "Â°C",
             lowerBound= -70,
             upperBound = 70
             )
@@ -87,7 +87,7 @@ public class SurfaceHeatFlux extends JAMSComponent {
 
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
             description = "average water temperature for specific reach",
-            unit = "°C",
+            unit = "Â°C",
             lowerBound= 0,
             upperBound = 100
             )
@@ -178,7 +178,7 @@ public class SurfaceHeatFlux extends JAMSComponent {
 
          // calculation of potET energy amount
             // PET the potET of specific reach [liter]
-            // T the water temperature of specific reach [°C]
+            // T the water temperature of specific reach [Â°C]
             // m   the molar mass of water [g/mol]
             // Hv  the molar evaporation enthalpy [KJ/mol]
             // sHv the specific evaporation enthalpy [KJ/g]
@@ -238,7 +238,7 @@ public class SurfaceHeatFlux extends JAMSComponent {
          // calculation of back radiation from the water surface in cal/(cm^2*d)
             // boltzmann (1.17e-7)
             // e the emissivity of water (0.97)
-            // T the absolute water temperature [°K]
+            // T the absolute water temperature [K]
             double br = 0;
             double e = 0.97;
             br = e * boltzmann * Math.pow(T + 273, 4);
