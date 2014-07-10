@@ -136,8 +136,13 @@ public class J2KProcessMultiRouting_h_cb extends JAMSComponent {
             for (int a = 0; a < toPolyArray.length; a++) {
 
                 if (toPolyArray[a] != null) {
+                    
+                    
 
                     toPoly = toPolyArray[a];
+                    
+    
+                    
                     polyWeight = polyWeightsArray[a];
 
                     double RD1in = toPoly.getDouble("inRD1");
