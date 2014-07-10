@@ -153,17 +153,17 @@ public class InitJ2KProcessLayeredSoilWaterN2008 extends JAMSComponent {
             remRD = remRD - depth[h];
             }*/
 
-            acMPS[h] = 0;
+           
             mxMPS[h] = entity.getDouble(aNameFC + h) * area.getValue();
             mxFPS[h] = entity.getDouble(aNameDC + h) * area.getValue();
             mxLPS[h] = entity.getDouble(aNameAC + h) * area.getValue();
             corg[h] = entity.getDouble(corgName + h);
             root[h] = entity.getDouble(rootname + h);
-
+            acMPS[h] = mxMPS[h];
             bulk_density[h] = entity.getDouble(bulkdensityName + h);
             Kf_val[h] = entity.getDouble(KfName + h);
             acLPS[h] = 0;
-            stMPS[h] = 0;
+            stMPS[h] = 1;
             stLPS[h] = 0;
 
             inRD2[h] = 0;
