@@ -25,11 +25,11 @@ public class SedimentWaterHeatFlux extends JAMSComponent {
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
             description = "average water temperature for specific reach",
-            unit = "째C",
+            unit = "캜",
             lowerBound= 0,
             upperBound = 100
             )
-            public Attribute.Double watertempavg;
+            public JAMSDouble watertempavg;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
@@ -38,16 +38,16 @@ public class SedimentWaterHeatFlux extends JAMSComponent {
             lowerBound= 0,
             upperBound = 100
             )
-            public Attribute.Double waterdepth;
+            public JAMSDouble waterdepth;
 
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
             description = "temperature of the bottom sediment for specific reach",
-            unit = "째C",
+            unit = "캜",
             lowerBound= 0,
             upperBound = 100
             )
-            public Attribute.Double bottomsedtemp;
+            public JAMSDouble bottomsedtemp;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
@@ -56,7 +56,7 @@ public class SedimentWaterHeatFlux extends JAMSComponent {
             lowerBound= 0,
             upperBound = Double.POSITIVE_INFINITY
             )
-            public Attribute.Double sedheat1;
+            public JAMSDouble sedheat1;
 
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
@@ -65,16 +65,16 @@ public class SedimentWaterHeatFlux extends JAMSComponent {
             lowerBound= 0,
             upperBound = Double.POSITIVE_INFINITY
             )
-            public Attribute.Double sedheat2;
+            public JAMSDouble sedheat2;
 
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
             description = "temperature of the bottom sediment for specific reach",
-            unit = "째C",
+            unit = "캜",
             lowerBound= 0,
             upperBound = 100
             )
-            public Attribute.Double sedtemp;
+            public JAMSDouble sedtemp;
   
   
     /*
@@ -82,10 +82,10 @@ public class SedimentWaterHeatFlux extends JAMSComponent {
      */
 
 
-    public void init() throws Attribute.Entity.NoSuchAttributeException {
+    public void init() throws JAMSEntity.NoSuchAttributeException {
 
     }
-    public void run() throws Attribute.Entity.NoSuchAttributeException, IOException {
+    public void run() throws JAMSEntity.NoSuchAttributeException, IOException {
 
             // Hwater the water level in specific reach in mm
             double Hwater = waterdepth.getValue() * 100;    
@@ -113,11 +113,11 @@ public class SedimentWaterHeatFlux extends JAMSComponent {
             
          // calculation of the heat flux from the sediment to the water
             // p the density of the sediment (g/cm^3)
-            // Cps  the specific heat of the sediment (cal/(g째C))
+            // Cps  the specific heat of the sediment (cal/(g캜))
             // Hsed the effective thickness of the sediment layer (cm)
             // a the sediment thermal diffusivity (cm^2/s)
-            // Tsed the temperature of the bottom sediment (째C)
-            // T the water temperature of specific reach (째C)
+            // Tsed the temperature of the bottom sediment (캜)
+            // T the water temperature of specific reach (캜)
            
             // Jsed1 the flux from the sediment to the water in cal/ (cm^2*d)
             
@@ -137,10 +137,10 @@ public class SedimentWaterHeatFlux extends JAMSComponent {
 
             // calculation of a heat balance for bottom sediment underlying a specific reach
             // p the density of the sediment (g/cm^3)
-            // Cps  the specific heat of the sediment (cal/(g째C))
+            // Cps  the specific heat of the sediment (cal/(g캜))
             // Hsed the effective thickness of the sediment layer (cm)
             // sh the sediment water heat flux in cal/(cm^2 * d)
-            // deltaSedT the timestep change (delta) of the sediment temperature in 째C
+            // deltaSedT the timestep change (delta) of the sediment temperature in 캜
             deltaSedT = (-1) * (Jsed1 / (p * Cps * Hsed));
             SedT = bottomsedtemp.getValue() + deltaSedT;
             bottomsedtemp.setValue(SedT);

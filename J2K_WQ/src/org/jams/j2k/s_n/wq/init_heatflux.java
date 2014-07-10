@@ -29,7 +29,7 @@ public class init_heatflux extends JAMSComponent {
             lowerBound= 0,
             upperBound = Double.POSITIVE_INFINITY
             )
-            public Attribute.Double potETenergy;
+            public JAMSDouble potETenergy;
 
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
@@ -38,7 +38,7 @@ public class init_heatflux extends JAMSComponent {
             lowerBound= 0,
             upperBound = Double.POSITIVE_INFINITY
             )
-            public Attribute.Double atloRadEnergy;
+            public JAMSDouble atloRadEnergy;
 
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
@@ -47,7 +47,7 @@ public class init_heatflux extends JAMSComponent {
             lowerBound= 0,
             upperBound = Double.POSITIVE_INFINITY
             )
-            public Attribute.Double Rns;
+            public JAMSDouble Rns;
 
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
@@ -56,7 +56,7 @@ public class init_heatflux extends JAMSComponent {
             lowerBound= 0,
             upperBound = Double.POSITIVE_INFINITY
             )
-            public Attribute.Double waterbr;
+            public JAMSDouble waterbr;
 
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
@@ -65,7 +65,7 @@ public class init_heatflux extends JAMSComponent {
             lowerBound= 0,
             upperBound = Double.POSITIVE_INFINITY
             )
-            public Attribute.Double coco;
+            public JAMSDouble coco;
 
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
@@ -74,16 +74,16 @@ public class init_heatflux extends JAMSComponent {
             lowerBound= 0,
             upperBound = Double.POSITIVE_INFINITY
             )
-            public Attribute.Double sedheat2;
+            public JAMSDouble sedheat2;
 
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
             description = "init bottom sediment layer temperature",
-            unit = "Â°C",
+            unit = "°C",
             lowerBound= 0,
             upperBound = Double.POSITIVE_INFINITY
             )
-            public Attribute.Double bottomsedtemp;
+            public JAMSDouble bottomsedtemp;
 
     
     /*
@@ -91,7 +91,7 @@ public class init_heatflux extends JAMSComponent {
      */
 
 
-    public void init() throws Attribute.Entity.NoSuchAttributeException {
+    public void init() throws JAMSEntity.NoSuchAttributeException {
 
     }
     public void run() throws Attribute.Entity.NoSuchAttributeException {

@@ -22,7 +22,14 @@ public class init_dissolvedOxygen extends JAMSComponent {
      *  Component variables
      */
 
-
+    @JAMSVarDescription(access = JAMSVarDescription.AccessType.WRITE,
+            description = "dissolved oxygen",
+            unit = "mg/l",
+            lowerBound= 0,
+            upperBound = Double.POSITIVE_INFINITY
+            )
+            public JAMSDouble S_O2;
+    
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
             description = "init dissolved oxygen in water body",
@@ -30,7 +37,7 @@ public class init_dissolvedOxygen extends JAMSComponent {
             lowerBound= 0,
             upperBound =20
             )
-            public Attribute.Double disOxy;
+            public JAMSDouble disOxy;
 
     
     /*
@@ -38,13 +45,13 @@ public class init_dissolvedOxygen extends JAMSComponent {
      */
 
 
-    public void init() throws Attribute.Entity.NoSuchAttributeException {
+    public void init() throws JAMSEntity.NoSuchAttributeException {
 
     }
     public void run() throws Attribute.Entity.NoSuchAttributeException {
             
          double initvalue = 8;
-         disOxy.setValue(initvalue);
+         S_O2.setValue(initvalue);
          
     }
 

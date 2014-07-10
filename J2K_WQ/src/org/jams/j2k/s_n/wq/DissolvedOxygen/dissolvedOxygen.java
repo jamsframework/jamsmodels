@@ -22,17 +22,22 @@ public class dissolvedOxygen extends JAMSComponent {
      *  Component variables
      */
 
-    /*
-     @JAMSVarDescription(
+    @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
+            description = "dissolved oxygen",
+            unit = "mg/l",
+            lowerBound= 0,
+            upperBound = Double.POSITIVE_INFINITY
+            )
+            public JAMSDouble S_O2;
+    
+    @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
             description = "the oxygen saturation concentration",
             unit = "mg/l",
             lowerBound= 0,
             upperBound = 30
             )
-            public Attribute.Double DOsat;
-     *
-     */
+            public JAMSDouble DOsat;
 
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
@@ -41,7 +46,7 @@ public class dissolvedOxygen extends JAMSComponent {
             lowerBound= 0,
             upperBound = 30
             )
-            public Attribute.Double disOxy;
+            public JAMSDouble disOxy;
 
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
@@ -50,7 +55,7 @@ public class dissolvedOxygen extends JAMSComponent {
             lowerBound= 0,
             upperBound = 30
             )
-            public Attribute.Double Oxydis;
+            public JAMSDouble Oxydis;
 
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
@@ -59,17 +64,17 @@ public class dissolvedOxygen extends JAMSComponent {
             lowerBound= 0,
             upperBound = Double.POSITIVE_INFINITY
             )
-            public Attribute.Double RateReaer;
+            public JAMSDouble RateReaer;
   
     /*
      *  Component run stages
      */
 
 
-    public void init() throws Attribute.Entity.NoSuchAttributeException {
+    public void init() throws JAMSEntity.NoSuchAttributeException {
 
     }
-    public void run() throws Attribute.Entity.NoSuchAttributeException, IOException {
+    public void run() throws JAMSEntity.NoSuchAttributeException, IOException {
 
         // calculation of dissolved oxygen amount in water body
             // DO the mean dissolved oxygen amount in water body (mg/l)
@@ -77,7 +82,7 @@ public class dissolvedOxygen extends JAMSComponent {
 
         double DO = 0;
         double Reaer = RateReaer.getValue();
-        
+        disOxy.setValue(S_O2.getValue());
         DO = disOxy.getValue() + Reaer;
         disOxy.setValue(DO);
         Oxydis.setValue(DO);

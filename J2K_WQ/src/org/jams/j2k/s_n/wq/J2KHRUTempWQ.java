@@ -9,7 +9,7 @@ import jams.model.*;
 @JAMSComponentDescription(
         title="J2KHRUTempWQ",
         author="Marcel Wetzel",
-        description="Modul for the calculation of the energy amount of the HRU runoff components",
+        description="Modul for the calculation of HRU runoff components water temperatures",
         version="1.0_0",
         date="2010-12-12"
         )
@@ -26,7 +26,7 @@ import jams.model.*;
             lowerBound= 0,
             upperBound = Double.POSITIVE_INFINITY
             )
-            public Attribute.Double outRD1;
+            public JAMSDouble outRD1;
 
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
@@ -35,7 +35,7 @@ import jams.model.*;
             lowerBound= 0,
             upperBound = Double.POSITIVE_INFINITY
             )
-            public Attribute.DoubleArray outRD2;
+            public JAMSDoubleArray outRD2;
 
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
@@ -44,7 +44,7 @@ import jams.model.*;
             lowerBound= 0,
             upperBound = Double.POSITIVE_INFINITY
             )
-            public Attribute.Double outRG1;
+            public JAMSDouble outRG1;
 
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
@@ -53,34 +53,34 @@ import jams.model.*;
             lowerBound= 0,
             upperBound = Double.POSITIVE_INFINITY
             )
-            public Attribute.Double outRG2;
+            public JAMSDouble outRG2;
 
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
             description = "soil temperature in different layerdepths",
-            unit = "Â°C",
+            unit = "°C",
             lowerBound= Double.NEGATIVE_INFINITY,
             upperBound = Double.POSITIVE_INFINITY
             )
-            public Attribute.DoubleArray Soil_Temp_Layer;
+            public JAMSDoubleArray Soil_Temp_Layer;
 
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
             description = "soil surface temperature",
-            unit = "Â°C",
+            unit = "°C",
             lowerBound= Double.NEGATIVE_INFINITY,
             upperBound = Double.POSITIVE_INFINITY
             )
-            public Attribute.Double Surfacetemp;
+            public JAMSDouble Surfacetemp;
 
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
             description = "mean temperature of the simulation period",
-            unit = "Â°C",
+            unit = "°C",
             lowerBound= Double.NEGATIVE_INFINITY,
             upperBound = Double.POSITIVE_INFINITY
             )
-            public Attribute.Double tmeanavg;
+            public JAMSDouble tmeanavg;
 
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
@@ -89,7 +89,7 @@ import jams.model.*;
             lowerBound= 0,
             upperBound = Double.POSITIVE_INFINITY
             )
-            public Attribute.Double cal_soil_rd1;
+            public JAMSDouble cal_soil_rd1;
 
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
@@ -98,7 +98,7 @@ import jams.model.*;
             lowerBound= 0,
             upperBound = Double.POSITIVE_INFINITY
             )
-            public Attribute.Double cal_soil_rd2;
+            public JAMSDouble cal_soil_rd2;
 
      @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
@@ -107,7 +107,7 @@ import jams.model.*;
             lowerBound= 0,
             upperBound = Double.POSITIVE_INFINITY
             )
-            public Attribute.Double cal_gw_rg1;
+            public JAMSDouble cal_gw_rg1;
 
      @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
@@ -116,7 +116,7 @@ import jams.model.*;
             lowerBound= 0,
             upperBound = Double.POSITIVE_INFINITY
             )
-            public Attribute.Double cal_gw_rg2;
+            public JAMSDouble cal_gw_rg2;
 
     /*
      *  Component run stages
