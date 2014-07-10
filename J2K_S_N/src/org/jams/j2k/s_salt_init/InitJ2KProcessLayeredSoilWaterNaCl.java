@@ -54,13 +54,19 @@ import jams.model.*;
             public Attribute.Double area;
     
     @JAMSVarDescription(
-            access = JAMSVarDescription.AccessType.WRITE,
+            access = JAMSVarDescription.AccessType.READ,
+            description = "whilting point adaptation factor"
+            )
+            public Attribute.Double DCAdaptation;
+    
+    @JAMSVarDescription(
+            access = JAMSVarDescription.AccessType.READ,
             description = "field capacity adaptation factor"
             )
             public Attribute.Double FCAdaptation;
     
     @JAMSVarDescription(
-            access = JAMSVarDescription.AccessType.WRITE,
+            access = JAMSVarDescription.AccessType.READ,
             description = "air capacity adaptation factor"
             )
             public Attribute.Double ACAdaptation;
@@ -161,6 +167,13 @@ import jams.model.*;
             description = "ID of soil layer"
             )
             public Attribute.DoubleArray SID; 
+     
+     @JAMSVarDescription(
+            access = JAMSVarDescription.AccessType.WRITE,
+            description = "Indicates whether roots can penetrate or not the soil layer [-]"
+            )
+            public Attribute.DoubleArray root_h;
+
       
     /*
      *  Component run stages
@@ -187,6 +200,7 @@ import jams.model.*;
         double[] inRD2 = new double[horizons];
         double[] depth = new double[horizons];
         double[] bulk_density = new double[horizons];
+        double[] root = new double[horizons];
         double[] corg = new double[horizons];
         double[] Kf_val = new double[horizons];
        
@@ -198,6 +212,7 @@ import jams.model.*;
         String depthName = "depth_h";
         String bulkdensityName = "bulk_density_h";
         String corgName = "corg_h";
+        String rootname = "root_h";
        
         
         for(int h = 0; h < horizons; h++){
@@ -214,15 +229,17 @@ import jams.model.*;
                 remRD = remRD - depth[h];
             }*/
            
-            acMPS[h] = 0;
-            mxMPS[h] = entity.getDouble(aNameFC+h) * area.getValue();
-            mxFPS[h] = entity.getDouble(aNameDC+h) * area.getValue();
-            mxLPS[h] = entity.getDouble(aNameAC+h) * area.getValue();
+           
+            mxMPS[h] = entity.getDouble(aNameFC+h) * area.getValue() * FCAdaptation.getValue();
+            mxFPS[h] = entity.getDouble(aNameDC+h) * area.getValue() * DCAdaptation.getValue();
+            mxLPS[h] = entity.getDouble(aNameAC+h) * area.getValue() * ACAdaptation.getValue();
+            acMPS[h] = mxMPS[h];
             corg[h] = entity.getDouble(corgName+h);
+            root[h] = entity.getDouble(rootname + h);
             bulk_density[h] = entity.getDouble(bulkdensityName+h);
             Kf_val[h] = entity.getDouble(KfName+h);
             acLPS[h] = 0;
-            stMPS[h] = 0;
+            stMPS[h] = 1;
             stLPS[h] = 0;
             
             inRD2[h] = 0;
@@ -241,6 +258,7 @@ import jams.model.*;
         this.depth_h.setValue(depth);
         this.satSoil_h.setValue(0);
         this.kf_h.setValue(Kf_val);
+        this.root_h.setValue(root);
         
        
         if (Kf_val.length == horizons){
