@@ -168,7 +168,7 @@ public class J2KContourBNaCl_layerinterface_out extends JAMSComponent {
 
         double watersum = sumRD2 + RD1_out_old.getValue() + CB_storage.getValue() + inRD2_CB.getValue() + 1.e-10;
         double NaClsum =  sumRD2_NaCl + SurfaceNaCl.getValue() + NaCl_CB.getValue();
-
+        
         double CB_conc = NaClsum / watersum;
 
         double NaClrunoff_CB = CB_outflow.getValue() * CB_conc;
