@@ -34,11 +34,14 @@ import jams.model.*;
 @JAMSComponentDescription(
         title="J2KProcessLumpedSoilWater_distInfiltCoeff",
         author="Peter Krause + Mériem Labbas",
-        description="Calculates soil water balance for each spatial modelling unit. Instead of the sealed grade, "
-        + "soilImpLT80 and soilImpGT80 lumped parameters, addition of a distributed parameter InfiltrationCoeff. ",
+        description="Calculates soil water balance for each spatial "
+                + "modelling unit. Instead of the sealed grade, "
+        + "soilImpLT80 and soilImpGT80 lumped parameters, "
+                + "addition of a distributed parameter InfiltrationCoeff. ",
         version="1.0_0",
         date="2013-04-22")
-        public class J2KProcessLumpedSoilWater_distInfiltCoeff_test extends JAMSComponent {
+        public class J2KProcessLumpedSoilWater_distInfiltCoeff_test 
+extends JAMSComponent {
     
     /*
      *  Component variables
@@ -217,7 +220,8 @@ import jams.model.*;
         
         @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
-            description = "delta MPS (max - act) before comparison with infiltration",
+            description = "delta MPS (max - act) before comparison with "
+                    + "infiltration",
             unit="L"
             )
             public Attribute.Double deltaMPS2;
@@ -421,14 +425,16 @@ import jams.model.*;
     
         @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
-            description = "statevar direct surface Runoff from impervious surfaces",
+            description = "statevar direct surface Runoff from impervious "
+                    + "surfaces",
             unit="L"
             )
             public Attribute.Double directRD1;
         
         @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
-            description = "statevar surface Runoff from excess infiltration (hortonian runoff)",
+            description = "statevar surface Runoff from excess infiltration "
+                    + "(hortonian runoff)",
             unit="L"
             )
             public Attribute.Double infRD1; 
@@ -443,9 +449,15 @@ import jams.model.*;
     
     
     //internal state variables
-    double run_maxMPS, run_maxLPS, run_actMPS, run_actMPS2,run_actLPS, run_satMPS, run_actDPS, run_satLPS, run_satSoil, run_inRD1, run_inRD2, run_inRain, run_inSnow,
-            run_snowMelt, run_infiltration, run_infiltration2 ,run_infiltration3,run_interflow, run_percolation, run_overlandflow, run_potETP, run_actETP, run_snowDepth, run_area, run_slope,
-            run_outRD1, run_outRD2, run_genRD1, run_genRD2,run_deltaMPS, run_MobileWater,run_actET2,run_reductionFactor,run_deltaETP,run_overlandflow1,
+    double run_maxMPS, run_maxLPS, run_actMPS, run_actMPS2,run_actLPS, 
+            run_satMPS, run_actDPS, run_satLPS, run_satSoil, run_inRD1, 
+            run_inRD2, run_inRain, run_inSnow,
+            run_snowMelt, run_infiltration, run_infiltration2 ,
+            run_infiltration3,run_interflow, run_percolation, run_overlandflow, 
+            run_potETP, run_actETP, run_snowDepth, run_area, run_slope,
+            run_outRD1, run_outRD2, run_genRD1, run_genRD2,run_deltaMPS, 
+            run_MobileWater,run_actET2,run_reductionFactor,run_deltaETP,
+            run_overlandflow1,
             run_deltaInf,run_satRD1;
     
     /*
