@@ -162,7 +162,8 @@ public class DamDevice extends JAMSComponent {
         newS = Math.max(this.Storage.getValue() - FO_act,0);
 }    else  {
         //Cas de stockage
-        // in case test < FO, we put FO = test
+        // in case test < FO, we put FO = test 
+        // because we can't keep more water than there is in the river
         
         if( (test+ FO_act) <0) { FO_act = -test;} 
         

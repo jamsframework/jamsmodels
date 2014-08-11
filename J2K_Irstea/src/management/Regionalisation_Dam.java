@@ -60,13 +60,7 @@ public class Regionalisation_Dam extends JAMSComponent {
             description = "The reach collection"
             )
     public Attribute.EntityCollection entities;
-    
-        @JAMSVarDescription(
-            access = JAMSVarDescription.AccessType.READ,
-            description = "Initial volume in the reservoir",
-            unit = "%"
-            )
-            public Attribute.Double V0;
+
         
                 @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
