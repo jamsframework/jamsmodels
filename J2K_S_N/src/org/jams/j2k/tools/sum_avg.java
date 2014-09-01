@@ -34,9 +34,9 @@ import jams.model.*;
 @JAMSComponentDescription(
         title="Sum up values",
         author="Manfred Fink",
-        description="Sum up values (cleanup stage)"
+        description="Sum up values or calculate average"
         )
-public class eff_sum extends JAMSComponent {
+public class sum_avg extends JAMSComponent {
 
     /*
      *  Component variables
@@ -44,13 +44,13 @@ public class eff_sum extends JAMSComponent {
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
-            description = "average or sum of objective function"
+            description = "sum or average of values"
             )
             public Attribute.Double obj_sum;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            description = "values objective function"
+            description = "Array of values"
             )
             public Attribute.Double[] obj_values;
     
@@ -65,15 +65,10 @@ public class eff_sum extends JAMSComponent {
      *  Component run stages
      */
     
-    public void init() {
-        
-    }
+    
+
 
     public void run() {
-      
-    }
-
-    public void cleanup() {
         double sum;
         int i;
       
