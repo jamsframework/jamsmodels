@@ -328,7 +328,8 @@ import jams.model.*;
 	        double balStorEnd = this.run_totSWE;
 	        double balOut = this.run_snowMelt + this.in_rain + this.in_snow;
 	        double balance = balIn  + (balStorStart - balStorEnd) - balOut;
-	        if(Math.abs(balance) > 0.0001){
+                //calculate balance but be careful about round errors
+	        if (Math.abs(balance) > 0.0000001 * (balIn + balOut + balStorStart + balStorEnd) * 0.25) {
 	            getModel().getRuntime().println("balance error in snow module: "+balance);
 	            getModel().getRuntime().println("balIn: " + balIn);
 	            getModel().getRuntime().println("balStorStart: " + balStorStart);

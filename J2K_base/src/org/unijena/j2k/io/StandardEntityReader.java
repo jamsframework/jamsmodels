@@ -106,6 +106,7 @@ public class StandardEntityReader extends JAMSComponent {
     @Override
     public void init() {
 
+        defaultRootReach = null;
         getModel().getRuntime().println("Reading spatial model entities...", JAMS.VERBOSE);
 
         //read hru parameter
