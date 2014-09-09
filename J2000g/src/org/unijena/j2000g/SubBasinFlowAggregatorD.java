@@ -35,7 +35,7 @@ import jams.model.*;
         author="Author",
         description="Description"
         )
-        public class SubBasinFlowAggregator extends JAMSComponent {
+        public class SubBasinFlowAggregatorD extends JAMSComponent {
     
     /*
      *  Component variables
@@ -50,7 +50,7 @@ import jams.model.*;
             access = JAMSVarDescription.AccessType.READ,
             description = "ids of subbasins"
             )
-            public Attribute.Double[] subbasinIDs;
+            public Attribute.DoubleArray subbasinIDs;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
@@ -72,9 +72,8 @@ import jams.model.*;
     public void run() {
         for (int i = 0; i < sum.length; i++) {
             double sum = 0;
-            for (Attribute.Double id : subbasinIDs) {
-                int iid = (int) id.getValue();
-                Attribute.Entity entity = subBasins.getEntity(iid);
+            for (double id : subbasinIDs.getValue()) {                
+                Attribute.Entity entity = subBasins.getEntity((long)id);
                 sum += entity.getDouble(attributeName[i].getValue());
             }
             this.sum[i].setValue(sum);
