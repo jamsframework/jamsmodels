@@ -159,6 +159,7 @@ public class DamDevice extends JAMSComponent {
     FO_act = 3600*24*this.FO.getValue();
     if(FO_act >= 0){
         //Cas de restitution
+        if (this.Storage.getValue() < FO_act) {FO_act = this.Storage.getValue();}
         newS = Math.max(this.Storage.getValue() - FO_act,0);
 }    else  {
         //Cas de stockage
