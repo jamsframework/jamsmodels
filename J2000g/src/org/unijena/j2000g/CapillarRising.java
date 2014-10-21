@@ -46,7 +46,7 @@ import jams.model.*;
             unit = "L"
             )
             public Attribute.Double gwStorage;
-    
+        
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
             description = "maxMPS",
@@ -71,6 +71,7 @@ import jams.model.*;
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
             description = "gwCapRise",
+            defaultValue="1.0",
             unit = "-"
             )
             public Attribute.Double gwCapRise;
@@ -86,9 +87,11 @@ import jams.model.*;
      *  Component run stages
      */
         
+    @Override
     public void run() {
         double actMPS = this.actMPS.getValue();
         double maxMPS = this.maxMPS.getValue();
+        
         if (maxMPS == 0){
             getModel().getRuntime().println("Olala there is a HRU with zero Field Capacity .. ");
             return;
@@ -97,14 +100,14 @@ import jams.model.*;
         double gwStorage = this.gwStorage.getValue();
                 
         double deltaMPS = maxMPS - actMPS;
-        double alpha = this.gwCapRiseAdaptation.getValue();
+        double alpha = gwCapRise.getValue()*this.gwCapRiseAdaptation.getValue();
         double inMPS = 0;
         if (satMPS != 0){
             inMPS = deltaMPS * (1.0-satMPS) * alpha;
         }else{
             inMPS = deltaMPS * alpha;
         }
-         
+                                
         if (gwStorage < inMPS){
             inMPS = gwStorage;
         }

@@ -35,7 +35,7 @@ import jams.model.*;
         author="Author",
         description="Description"
         )
-        public class FlowConverter extends JAMSComponent {
+        public class Millimeter2cbmConverter extends JAMSComponent {
     
     /*
      *  Component variables
@@ -50,63 +50,34 @@ import jams.model.*;
             access = JAMSVarDescription.AccessType.READ,
             description = "input"
             )
-            public Attribute.Double inQ;
+            public Attribute.Double[] in;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
             description = "output in cms"
             )
-            public Attribute.Double outQcbm;
-    
+            public Attribute.Double[] out;
+            
     @JAMSVarDescription(
-            access = JAMSVarDescription.AccessType.WRITE,
-            description = "output in mm"
-            )
-            public Attribute.Double outQmm;
-    
-    @JAMSVarDescription(
-            access = JAMSVarDescription.AccessType.WRITE,
-            description = "output in litres"
-            )
-            public Attribute.Double outQl;
-    
-    @JAMSVarDescription(
-            access = JAMSVarDescription.AccessType.WRITE,
+            access = JAMSVarDescription.AccessType.READ,
             description = "temporal resolution [h;d;m]"
             )
             public Attribute.String tempRes;
     
-    
-    
-    /*
-     *  Component run stages
-     */
-    
-    public void init() {
         
-    }
-    
+    @Override
     public void run() {
         //conversion from liters to m^3/time
-        if(tempRes.getValue().equalsIgnoreCase("h")){
-            this.outQcbm.setValue((inQ.getValue()) / (3600. * 1000));
-            this.outQl.setValue((inQ.getValue()) / (3600.));
-            this.outQmm.setValue(inQ.getValue() / cArea.getValue());
-        }
-        else if(tempRes.getValue().equalsIgnoreCase("d")){
-            this.outQcbm.setValue((inQ.getValue()) / (86400. * 1000));
-            this.outQl.setValue((inQ.getValue()) / (86400.));
-            this.outQmm.setValue(inQ.getValue() / cArea.getValue());
-        }else if(tempRes.getValue().equalsIgnoreCase("m")){
-            this.outQcbm.setValue((inQ.getValue()) / (30.*86400 * 1000));
-            this.outQl.setValue((inQ.getValue()) / (30.*86400));
-            this.outQmm.setValue(inQ.getValue() / cArea.getValue());
-        }
-    }
-    
-    public void cleanup() {
-        
-    }
-    
-    
+        for (int i=0;i<in.length;i++){
+            if(tempRes.getValue().equalsIgnoreCase("h")){
+                this.out[i].setValue(in[i].getValue() * cArea.getValue() / (3600. * 1000));
+            }                
+            if(tempRes.getValue().equalsIgnoreCase("d")){
+                this.out[i].setValue(in[i].getValue() * cArea.getValue() / (86400. * 1000));
+            }                
+            if(tempRes.getValue().equalsIgnoreCase("m")){
+                this.out[i].setValue(in[i].getValue() * cArea.getValue() / (30. * 86400. * 1000));
+            }                
+        }        
+    }   
 }

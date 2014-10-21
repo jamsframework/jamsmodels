@@ -60,7 +60,7 @@ import jams.model.*;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            description = "base flow"
+            description = "base flow in mm"
             )
             public Attribute.Double basQ;
     

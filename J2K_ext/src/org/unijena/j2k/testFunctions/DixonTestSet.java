@@ -598,6 +598,21 @@ public class DixonTestSet extends JAMSComponent {
                 r = s1 + p2s2 + p2s2*p2s2;
                 break;
             }
+            //simple linear test function
+            case 29:{                
+                r = x[0]+2*x[1];
+                break;
+            }
+            //sobols g-function
+            case 30:{                
+                r = 1;
+                for (int i=0;i<n;i++){
+                    double ai = ((i+1)-2.) / 2.0;
+                    double s = (Math.abs(4*x[i]-2)+ai) / (1+ai);
+                    r*=s;
+                }
+                break;
+            }
         }        
         yVal.setValue(r);
     }
