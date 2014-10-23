@@ -146,7 +146,7 @@ public class Reach2ReachTransfer extends JAMSComponent {
         for (int i = 0; i < values.length; i++) {
 
             // calculate volume to be removed from each component
-            double x = values[i] * componentFractions[i] * fractionSum;
+            double x = values[i] * fractionSum;
 
             // add this volume to the corresponding target component
             target.setDouble(targetNames[i].getValue(), target.getDouble(targetNames[i].getValue()) + x);
