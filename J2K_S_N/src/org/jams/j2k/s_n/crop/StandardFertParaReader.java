@@ -77,9 +77,7 @@ public class StandardFertParaReader extends JAMSComponent {
             for (int i = 0; i < attrs.length; i++) {
                 e.setDouble((String) attrs[i], ft.getDouble((String) attrs[i]));
             }
-            
         }
     }
-      
 }
 
