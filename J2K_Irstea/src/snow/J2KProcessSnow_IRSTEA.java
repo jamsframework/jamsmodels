@@ -352,6 +352,7 @@ import jams.model.*;
                 
                 }
                 
+                
 	        this.calcSnowDensities(run_area);
 	        
 	        this.netRain.setValue(this.in_rain);
@@ -361,10 +362,10 @@ import jams.model.*;
 	        this.totDens.setValue(this.run_totDens);
 	        this.dryDens.setValue(this.run_dryDens);
 	        this.snowDepth.setValue(this.run_snowDepth);
-                this.snowCover.setValue(this.run_snowCover);
+                this.snowCover.setValue(this.run_snowCover * this.area.getValue());
            
       
-                
+            
     
 	        this.snowAge.setValue(this.run_snowAge);
 	        this.snowColdContent.setValue(this.run_coldContent);
