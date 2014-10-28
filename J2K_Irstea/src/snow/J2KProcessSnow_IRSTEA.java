@@ -362,7 +362,7 @@ import jams.model.*;
 	        this.totDens.setValue(this.run_totDens);
 	        this.dryDens.setValue(this.run_dryDens);
 	        this.snowDepth.setValue(this.run_snowDepth);
-                this.snowCover.setValue(this.run_snowCover * this.area.getValue());
+                this.snowCover.setValue(this.run_snowCover);
            
       
             
