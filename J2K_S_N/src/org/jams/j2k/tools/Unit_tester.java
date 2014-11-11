@@ -5,7 +5,7 @@
 
 package org.jams.j2k.tools;
 
-import javax.measure.unit.Unit;
+import javax.units.Unit;
 /**
  *
  * @author c8fima
