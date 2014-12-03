@@ -119,6 +119,10 @@ public class Reach2ReachTransfer extends JAMSComponent {
             values[i] = source.getDouble(sourceNames[i].getValue());
             sum += values[i];
         }
+        
+        if (sum == 0) {
+            return;
+        }
 
         // calculate component fractions
         double[] componentFractions = new double[values.length];
