@@ -66,9 +66,6 @@ public class WeightedSumAggregator extends JAMSComponent {
     }
 
     public void run() { 
-        if (this.getContext().getInstanceName().compareTo("WatershedAreaCalculator_233")==0){
-            System.out.println("here we go .. ");
-        }
         for (int i = 0; i < value.length; i++) {
             sum[i].setValue(sum[i].getValue()+ (value[i].getValue() / weight.getValue()));
         }    
