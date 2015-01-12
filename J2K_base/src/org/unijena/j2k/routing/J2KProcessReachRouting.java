@@ -270,6 +270,12 @@ import jams.model.*;
             description = "temporal resolution [d or h]"
             )
             public Attribute.String tempRes;
+    
+    @JAMSVarDescription(
+            access = JAMSVarDescription.AccessType.WRITE,
+            description = "water level in reach"
+            )
+            public Attribute.Double waterLevel;    
      
     
     /*
@@ -496,6 +502,8 @@ import jams.model.*;
             
             catchmentSimRunoff.setValue(cumOutflow);
         }
+        
+        waterLevel.setValue(channelStorage / (1000 * width * length));
         
     }
     
