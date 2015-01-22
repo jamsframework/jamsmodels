@@ -170,7 +170,7 @@ import jams.model.*;
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
             update = JAMSVarDescription.UpdateType.INIT,
-            description = "base temperature",
+            description = "base temperature - trigger the snow melt",
             lowerBound = -10.0,
             upperBound = 10.0,
             defaultValue="0",
@@ -343,7 +343,7 @@ import jams.model.*;
 	        
 	        
 	        if((in_meanTemp >= TRS) && (this.run_snowDepth > 0)){
-	            this.calcMetamorphosis(in_meanTemp, TRS, temp_fac, rain_fac, ground_fac, run_area, SAC, critDens);
+	            this.calcMetamorphosis(in_meanTemp, temp_fac, rain_fac, ground_fac, run_area, SAC, critDens);
 	        }
 	        
                 if (run_snowDepth !=0){
@@ -554,11 +554,11 @@ import jams.model.*;
         return potRunoff;
     }
     
-    private boolean calcMetamorphosis(double temp, double TRS, double temp_fac, double rain_fac, double ground_fac, double area, double SAC, double critDens){
+    private boolean calcMetamorphosis(double temp, double temp_fac, double rain_fac, double ground_fac, double area, double SAC, double critDens){
         /**calculation of snowmelt - complex formula*/
         //@todo integration of canopy shadow by LAI
         double potMeltrate = 0;
-        potMeltrate = this.calcPotMR_semiComp(temp, TRS, temp_fac, rain_fac, ground_fac, area);
+        potMeltrate = this.calcPotMR_semiComp(temp, temp_fac, rain_fac, ground_fac, area);
         
         if(Math.abs(this.run_coldContent) >= potMeltrate){
             this.run_coldContent = this.run_coldContent + potMeltrate;
@@ -653,8 +653,8 @@ import jams.model.*;
         return true;
     }
     
-    private double calcPotMR_semiComp(double temp, double TRS, double temp_fac, double rain_fac, double ground_fac, double area){
-        double meltTemp = temp; //- TRS;
+    private double calcPotMR_semiComp(double temp, double temp_fac, double rain_fac, double ground_fac, double area){
+        double meltTemp = temp;
         double potMR = (temp_fac * meltTemp + ground_fac + rain_fac * (this.in_rain / area) * meltTemp);
         //avoid negative melt rates
         if(potMR < 0)
