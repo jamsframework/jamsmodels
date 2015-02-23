@@ -10,12 +10,12 @@
 <project name="Kirchner_method" default="default" basedir=".">
     <description>Builds, tests, and runs the project Kirchner_method.</description>
     <import file="nbproject/build-impl.xml"/>
-    
+	    
    <target name="-post-jar">
         <property name="deployDir" value="../../../jams/lib"/>
         <copy file="${dist.jar}" todir="${deployDir}"/>
     </target>    
-    
+   
     <!--
 
     There exist several targets which are by default empty and which can be 
@@ -57,7 +57,8 @@
       -init-macrodef-junit:     defines macro for junit execution
       -init-macrodef-debug:     defines macro for class debugging
       -init-macrodef-java:      defines macro for class execution
-      -do-jar:                  JAR building
+      -do-jar-with-manifest:    JAR building (if you are using a manifest)
+      -do-jar-without-manifest: JAR building (if you are not using a manifest)
       run:                      execution of project 
       -javadoc-build:           Javadoc generation
       test-report:              JUnit report generation
