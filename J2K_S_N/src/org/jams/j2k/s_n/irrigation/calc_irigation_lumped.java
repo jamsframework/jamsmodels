@@ -52,7 +52,7 @@ public class calc_irigation_lumped extends JAMSComponent {
 
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
-            description = "HRU crop class"
+            description = "available water for irrigation"
             )
             public Attribute.Double irrigationpart;
     
@@ -66,8 +66,8 @@ public class calc_irigation_lumped extends JAMSComponent {
 
 //Berechnung
     public void init(){
-        irrigationpart.setValue(0.0);
-        storageInput.setValue(0);
+    //    irrigationpart.setValue(0.0);
+    //    storageInput.setValue(0);
     }
     public void run (){
 
@@ -87,7 +87,9 @@ public class calc_irigation_lumped extends JAMSComponent {
         irrstorage = irrstorage * (1 - runBypassfactor);
         
         Bypasswater.setValue(irrstorage * runBypassfactor);
-        
+        if( irrstorage == 0) {
+            irrstorage = 0.00000001;
+        }
         irripart = irrigationsum.getValue()/irrstorage;
 
         
