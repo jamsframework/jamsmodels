@@ -133,7 +133,7 @@ public class DamDevice extends JAMSComponent {
 
    public void run() {
        
-       if (this.Smax.getValue() > 0) {
+       if (this.V0.getValue() > 0) {
            
         String Date = time.toString();
         if ( (Date.equals(Date2) )) {
