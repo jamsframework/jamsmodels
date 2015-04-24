@@ -156,7 +156,7 @@ public class DamDevice extends JAMSComponent {
         this.runComp[3] = this.inRG2.getValue();
         
         calcRelComponents();
-    FO_act = 3600*24*this.FO.getValue();
+    FO_act = this.FO.getValue();
     if(FO_act >= 0){
         //Cas de restitution
         if (this.Storage.getValue() < FO_act) {FO_act = this.Storage.getValue();}
