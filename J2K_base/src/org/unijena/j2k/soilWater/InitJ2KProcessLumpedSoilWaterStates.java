@@ -191,8 +191,17 @@ import jams.model.*;
         for(int d = 0; d < rootDepth; d++){
             int count = d + 1;
             String mpsDesc = aNameFC + count;
-            double mpsVal = entity.getDouble(mpsDesc);
-            mxMPS = mxMPS + mpsVal;
+            try {
+                double mpsVal = entity.getDouble(mpsDesc);
+                mxMPS = mxMPS + mpsVal;
+            } catch (Attribute.Entity.NoSuchAttributeException nsae) {
+                getModel().getRuntime().sendErrorMsg(nsae.getMessage() + "\n"
+                        + "This problem typically occurs if the root depht of "
+                        + "current land-use is higer than the soil depht.\n"
+                        + "Please provide additional field capacity (fc_*) "
+                        + "columns in your soil parameter file or reduce the "
+                        + "root depht!");
+            }
         }
         mxMPS = mxMPS * this.area.getValue();
         mxMPS = mxMPS * this.FCAdaptation.getValue();
