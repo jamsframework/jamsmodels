@@ -151,6 +151,9 @@ public class J2KProcessLayeredSoilWater2008 extends JAMSComponent {
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.WRITE,
     description = "HRU statevar RD2 generation")
     public Attribute.DoubleArray genRD2;
+    @JAMSVarDescription(access = JAMSVarDescription.AccessType.WRITE,
+    description = "Sum of RD2 outflow of all layers")
+    public Attribute.Double outRD2sum;
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
     description = "maximum depression storage [mm]")
     public Attribute.Double soilMaxDPS;
@@ -175,6 +178,9 @@ public class J2KProcessLayeredSoilWater2008 extends JAMSComponent {
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
     description = "maximum infiltration part on sealed areas (lt 80%)")
     public Attribute.Double soilImpLT80;
+    @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
+    description = "maximum infiltration part on sealed areas (direct sealedgrade)")
+    public Attribute.Double soilImp;
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
     description = "MPS/LPS distribution coefficient for inflow")
     public Attribute.Double soilDistMPSLPS;
@@ -252,7 +258,7 @@ public class J2KProcessLayeredSoilWater2008 extends JAMSComponent {
     //internal state variables
     double run_actDPS, run_satSoil1, run_inRain, run_inSnow,
             run_snowMelt, run_infiltration, run_latComp, run_vertComp, run_overlandflow, run_potETP, run_actETP, run_snowDepth, run_area, run_slope,
-            run_inRD1, soilSatMps, soilSatLps, soilActMps, soilActLps, soilMaxMps, soilMaxLps, run_outRD1, run_genRD1, lowpart, top_satsoil;
+            run_inRD1, soilSatMps, soilSatLps, soilActMps, soilActLps, soilMaxMps, soilMaxLps, run_outRD1, run_genRD1, lowpart, top_satsoil, run_RD2_sum;
     double[] run_maxMPS, run_maxLPS, run_actMPS, run_actLPS, run_satMPS, run_satLPS, run_inRD2, run_satHor, run_outRD2, run_genRD2;
     double[] runlayerdepth, horETP, runkf_h, flux_h_h1;
     int nhor;
@@ -322,6 +328,7 @@ public class J2KProcessLayeredSoilWater2008 extends JAMSComponent {
         this.runlayerdepth = new double[nhor];
         this.run_genRD2 = new double[nhor];
         this.run_outRD2 = new double[nhor];
+        this.run_RD2_sum = 0;
         this.run_latComp = 0;
         this.run_vertComp = 0;
         this.run_genRD1 = 0;
@@ -469,6 +476,8 @@ public class J2KProcessLayeredSoilWater2008 extends JAMSComponent {
 
             /** determining internal area routing **/
             this.calcRD2_out(h);
+            
+            this.run_RD2_sum = this.run_RD2_sum + this.run_genRD2[h];
 
             /** determining diffusion from LPS to MPS */
             this.calcDiffusion(h);
@@ -520,6 +529,7 @@ public class J2KProcessLayeredSoilWater2008 extends JAMSComponent {
         outRD2.setValue(this.run_outRD2);
         genRD1.setValue(this.run_genRD1);
         genRD2.setValue(this.run_genRD2);
+        outRD2sum.setValue(this.run_RD2_sum);
         percolation.setValue(this.run_vertComp);
         interflow.setValue(this.run_latComp);
 
@@ -716,15 +726,22 @@ public class J2KProcessLayeredSoilWater2008 extends JAMSComponent {
     }
 
     private boolean calcInfImperv(double sealedGrade) {
-        if (sealedGrade > 0.8) {
+       /* if (sealedGrade > 0.8) {
             this.run_overlandflow = this.run_overlandflow + (1 - soilImpGT80.getValue()) * this.run_infiltration;
             this.run_infiltration = this.run_infiltration * soilImpGT80.getValue();
         } else if (sealedGrade > 0 && sealedGrade <= 0.8) {
             this.run_overlandflow = this.run_overlandflow + (1 - soilImpLT80.getValue()) * this.run_infiltration;
             this.run_infiltration = this.run_infiltration * soilImpLT80.getValue();
-        }
+        }*/
+        //sealedGrade direct for AGH
+        if (sealedGrade > 0) {
+        this.run_overlandflow = this.run_overlandflow + this.run_infiltration * (soilImp.getValue() * sealedGrade);
+        this.run_infiltration =  (1 - (soilImp.getValue() *sealedGrade)) * this.run_infiltration;
+        
+        
         if (this.run_overlandflow < 0) {
             System.out.println("overlandflow gets negative because of sealing! " + soilImpGT80.getValue() + ", " + soilImpLT80.getValue() + ", " + this.run_infiltration);
+        }
         }
         return true;
     }
