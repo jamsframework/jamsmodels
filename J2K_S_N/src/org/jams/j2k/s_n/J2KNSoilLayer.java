@@ -62,7 +62,6 @@ import jams.model.*;
             )
             public Attribute.Double Layer;
 
-
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
             description = "depth of soil layer",
@@ -1627,6 +1626,7 @@ import jams.model.*;
         double eta_volz = 0;
         double eta_nitri = 0;
         double eta_volati = 0;
+        double layerdepthmm = runlayerdepth[i] * 10;
 
         eta_temp = 0.41 * ((runSoil_Temp_Layer - 5) / 10);
 
@@ -1636,7 +1636,7 @@ import jams.model.*;
             eta_water = 1;
         }
 
-        eta_volz = 1 -(runlayerdepth[i] / (runlayerdepth[i] + Math.exp(4.706 - (0.305 * runlayerdepth[i]/20))));
+        eta_volz = 1 - (layerdepthmm / (layerdepthmm + Math.exp(4.706 - (0.0305 * layerdepthmm))));
 
         eta_nitri = eta_water * eta_temp;
 
