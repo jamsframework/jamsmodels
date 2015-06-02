@@ -43,19 +43,25 @@ import jams.model.*;
     
    
     @JAMSVarDescription(
-            access = JAMSVarDescription.AccessType.WRITE,
+            access = JAMSVarDescription.AccessType.READ,
             description = "in [-] plant growth nitrogen stress factor"
             )
             public Attribute.Double nstrs;
     
     @JAMSVarDescription(
-            access = JAMSVarDescription.AccessType.WRITE,
+            access = JAMSVarDescription.AccessType.READ,
+            description = "in [-] plant growth phosphorous stress factor"
+            )
+            public Attribute.Double pstrs;
+    
+    @JAMSVarDescription(
+            access = JAMSVarDescription.AccessType.READ,
             description = "in [-] plant growth temperature stress factor"
             )
             public Attribute.Double tstrs;
     
      @JAMSVarDescription(
-            access = JAMSVarDescription.AccessType.WRITE,
+            access = JAMSVarDescription.AccessType.READ,
             description = "in [-] plant growth water stress factor"
             )
             public Attribute.Double wstrs;
@@ -85,7 +91,7 @@ import jams.model.*;
     public void run() {
         
         
-        double stressfactor = 1 - Math.max(wstrs.getValue(),(Math.max(tstrs.getValue(),nstrs.getValue())));
+        double stressfactor = 1 - Math.max(wstrs.getValue(),(Math.max(tstrs.getValue(),Math.max(nstrs.getValue(),pstrs.getValue()))));
        // stressfactor = 1 - Math.max(wstrs.getValue(),tstrs.getValue());
        // stressfactor = 1 - nstrs.getValue();
         if (stressfactor > 1){

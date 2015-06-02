@@ -89,6 +89,7 @@ public class J2KSNCrop implements Serializable{
     public double bion04;
     public double bion06;
     public double bion08;
+    public double usle_C;
     
     
     public ArrayList<J2KSNLMArable> managementList;
@@ -148,6 +149,8 @@ public class J2KSNCrop implements Serializable{
         bion04 = Double.parseDouble(vals[47]);
         bion06 = Double.parseDouble(vals[48]);
         bion08 = Double.parseDouble(vals[49]);
+        usle_C = Double.parseDouble(vals[50]);
+        
         
         this.managementList = mList;
     }

@@ -33,7 +33,7 @@ import java.io.*;
 import java.util.ArrayList;
 
 @JAMSComponentDescription(
-title="j2kCropGrowth",
+title="j2kCropGrowth_N_P",
         author="Ulrike Bende-Michl & Manfred Fink",
         description="Module for calculation of crop growth according to the algorithms of SWAT"
         )
@@ -189,6 +189,14 @@ title="j2kCropGrowth",
             public Attribute.Double frRootAct;
     
     @JAMSVarDescription(
+    access = JAMSVarDescription.AccessType.READWRITE,
+            description = "actual C-factor for the USLE [-]"
+            )
+            public Attribute.Double C_factor_act;
+
+    
+    
+    @JAMSVarDescription(
     access = JAMSVarDescription.AccessType.WRITE,
             description = "Actual yield [kg/ha]"
             )
@@ -338,6 +346,13 @@ title="j2kCropGrowth",
             description = "Type of harvest to distiguish between crops with undersown plants and normal harvesting"
             )
             public Attribute.Integer harvesttype;
+        
+    @JAMSVarDescription(
+            access = JAMSVarDescription.AccessType.READ,
+            description = " Residue in Layer in kgN/ha"
+            )
+            public Attribute.DoubleArray Residue_pool;
+    
     
     
      /*
@@ -365,7 +380,7 @@ title="j2kCropGrowth",
     private double fphu_act;
     private double phu_daily;
     
-
+    private double c_factor_min; 
     
 
     private double mlai1;
@@ -516,6 +531,7 @@ title="j2kCropGrowth",
         this.mlai = crop.mlai;
         this.mlai1 = crop.laimx1;
         this.mlai2 = crop.laimx2;
+        this.c_factor_min = crop.usle_C;
         /*this.dlai = crop.dlai;*/
         this.chtmx = crop.chtmx;
         this.rdmx = crop.rdmx;
@@ -529,6 +545,7 @@ title="j2kCropGrowth",
         this.bp1 = crop.bp1; //Normal fraction of P in the plant biomass at the emergence
         this.bp2 = crop.bp2; //Normal fraction of P in the plant biomass at 50% of plant growth
         this.bp3 = crop.bp3; //Normal fraction of P in the plant biomass near harvest
+        
         
         cropid.setValue(cid);
         
@@ -578,6 +595,7 @@ title="j2kCropGrowth",
             calc_root();
             calc_nuptake();
             calc_puptake();
+            C_factor_act.setValue(calc_c_factor_simple());
            
             // time
             this.addresidue_pool = 0;
@@ -624,6 +642,7 @@ title="j2kCropGrowth",
             this.addresidue_pooln = 0;
             this.addresidue_poolp = 0;
             plantStateReset.setValue(false);
+            C_factor_act.setValue(calc_c_factor_simple());
             
             
             
@@ -1191,6 +1210,33 @@ title="j2kCropGrowth",
         this.yldP_ha = this.yldP * area_ha / 10000;
 
         return yldP_ha;
+
+    }
+    
+    private double calc_c_factor_simple()  { //original method after SWAT
+        double act_C_factor = 0;
+        
+        act_C_factor = Math.exp(-0.2231 - this.c_factor_min) *  Math.exp(-0.00115 * Residue_pool.getValue()[0] + this.c_factor_min); 
+         
+        return act_C_factor;
+    }
+    
+    
+    private double calc_c_factor()  {  //method C_factor goverend by LAI developement
+        double act_C_factor = 0;
+        double fracLAI = 0;
+        double c_factor_intervall = 0;
+        
+        fracLAI = 1.0 - ((this.mlai - this.lai_act) / (this.mlai - this.lai_min));
+        
+        c_factor_intervall  =  1.0 - this.c_factor_min;
+                
+        act_C_factor = 1 - (c_factor_intervall * fracLAI);
+        
+        act_C_factor = Math.min(act_C_factor, act_C_factor * Math.exp(-0.00115 *  Residue_pool.getValue()[0] + this.c_factor_min)); 
+        
+                
+        return act_C_factor;
 
     }
     
