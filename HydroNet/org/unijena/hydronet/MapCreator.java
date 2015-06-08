@@ -45,7 +45,7 @@ public class MapCreator extends jams.components.gui.MapCreator {
 	
     @SuppressWarnings("unchecked")
     @Override
-    public void run() throws Exception {       
+    public void run() {       
         super.run();
         
         this.addSelectionChangeListener(new SelectionChangeListener(){
