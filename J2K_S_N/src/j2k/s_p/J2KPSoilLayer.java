@@ -22,9 +22,10 @@
  */
 package j2k.s_p;
 
-import org.jams.j2k.s_n.*;
 import jams.data.*;
 import jams.model.*;
+import java.util.ArrayList;
+import org.jams.j2k.s_n.crop.J2KSNCrop;
 
 /**
  *
@@ -42,6 +43,12 @@ public class J2KPSoilLayer extends JAMSComponent {
     /*
      *  Component variables
      */
+    @JAMSVarDescription(
+            access = JAMSVarDescription.AccessType.READ,
+            description = "in cm depth of soil layer"
+    )
+    public Attribute.EntityCollection entities;
+
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
             description = "attribute area",
@@ -150,7 +157,6 @@ public class J2KPSoilLayer extends JAMSComponent {
     )
     public Attribute.DoubleArray Soil_Temp_Layer;
 
-
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
             description = "P-Pool, ative mineral, P content in layer",
@@ -252,6 +258,15 @@ public class J2KPSoilLayer extends JAMSComponent {
 
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
+            description = "sum of P in the soil solution, P content in layer in the entire soil profile",
+            unit = "kg*ha^-1",
+            lowerBound = 0,
+            upperBound = 1000000
+    )
+    public Attribute.Double sPsolution;
+
+    @JAMSVarDescription(
+            access = JAMSVarDescription.AccessType.READ,
             description = "Residue biomass in layer",
             unit = "kg*ha^-1",
             lowerBound = 0,
@@ -278,15 +293,6 @@ public class J2KPSoilLayer extends JAMSComponent {
     public Attribute.DoubleArray RD2_out;
 
     @JAMSVarDescription(
-            access = JAMSVarDescription.AccessType.READ,
-            description = "percolation leaving the HRU",
-            unit = "L",
-            lowerBound = 0,
-            upperBound = 1000000000
-    )
-    public Attribute.Double D_perco;
-
-    @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
             description = "mineral P  fertilizer rate in P",
             unit = "kg*ha^-1",
@@ -306,13 +312,22 @@ public class J2KPSoilLayer extends JAMSComponent {
 
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
-            description = "Phosphorous in surface runoff added to HRU layer in P",
+            description = "Phosphorous in surface runoff added to HRU toplayer in P",
             unit = "kg",
             lowerBound = 0,
             upperBound = 1000000000
     )
     public Attribute.Double SurfaceSolubleP_in;
 
+    @JAMSVarDescription(
+            access = JAMSVarDescription.AccessType.WRITE,
+            description = "Phosphorous in surface runoff leaving the HRU toplayer in P",
+            unit = "kg",
+            lowerBound = 0,
+            upperBound = 1000000000
+    )
+    public Attribute.Double SurfaceSolubleP_out;
+    
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
             description = "potential nitrogen content of plants in N",
@@ -363,7 +378,7 @@ public class J2KPSoilLayer extends JAMSComponent {
             description = "organic Phosphorous input due to Fertilisation in P added to active org pool",
             unit = "kg*ha^-1",
             lowerBound = 0,
-            upperBound = 10000
+            upperBound = 10000000
     )
     public Attribute.Double fertP_activeorg;
 
@@ -372,10 +387,19 @@ public class J2KPSoilLayer extends JAMSComponent {
             description = "Current organic P fertilizer amount added to residue pool",
             unit = "kg*ha^-1",
             lowerBound = 0,
-            upperBound = 100000
+            upperBound = 100000000
     )
     public Attribute.Double fertorgPfresh;
-    
+
+    @JAMSVarDescription(
+            access = JAMSVarDescription.AccessType.READWRITE,
+            description = "Phosphorous added residue pool after harvesting [kg N/ha]",
+            unit = "kg*ha^-1",
+            lowerBound = 0,
+            upperBound = 10000000
+    )
+    public Attribute.Double Addresidue_poolp;
+
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
             description = "Current organic P fertilizer amount added to solute pool",
@@ -383,9 +407,9 @@ public class J2KPSoilLayer extends JAMSComponent {
             lowerBound = 0,
             upperBound = 100000
     )
-    
+
     public Attribute.Double fertPmin;
-    
+
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
             description = "Phosphorous input of plant residues in P",
@@ -460,7 +484,7 @@ public class J2KPSoilLayer extends JAMSComponent {
             upperBound = 1000000000
     )
     public Attribute.Double org_in_P;
-        
+
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
             description = "Residue-P in surface runoff added to HRU in P",
@@ -469,7 +493,7 @@ public class J2KPSoilLayer extends JAMSComponent {
             upperBound = 1000000000
     )
     public Attribute.Double residue_in_P;
-    
+
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
             description = "Activ-P in surface runoff added to HRU in P",
@@ -477,7 +501,7 @@ public class J2KPSoilLayer extends JAMSComponent {
             lowerBound = 0,
             upperBound = 1000000000
     )
-    public Attribute.Double activ_in;
+    public Attribute.Double activP_in;
 
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
@@ -486,7 +510,7 @@ public class J2KPSoilLayer extends JAMSComponent {
             lowerBound = 0,
             upperBound = 1000000000
     )
-    public Attribute.Double stable_in;
+    public Attribute.Double stableP_in;
 
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
@@ -506,14 +530,14 @@ public class J2KPSoilLayer extends JAMSComponent {
     )
     public Attribute.Double residue_out_P;
 
-     @JAMSVarDescription(
+    @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
             description = "Activ-P in surface runoff leaving the HRU in P",
             unit = "kg",
             lowerBound = 0,
             upperBound = 1000000000
     )
-    public Attribute.Double activ_out;
+    public Attribute.Double activP_out;
 
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
@@ -522,19 +546,9 @@ public class J2KPSoilLayer extends JAMSComponent {
             lowerBound = 0,
             upperBound = 1000000000
     )
-    public Attribute.Double stable_out;
+    public Attribute.Double stableP_out;
 
     // constants and calibration parameter
-    @JAMSVarDescription(
-            access = JAMSVarDescription.AccessType.READ,
-            description = "rate constant between N_activ_pool and N_stable_pool = 0.00001",
-            unit = "-",
-            lowerBound = 0.00001,
-            upperBound = 0.00001,
-            defaultValue = "0.00001"
-    )
-    public Attribute.Double Beta_trans;
-
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
             description = "rate factor between N_activ_pool and NO3_Pool to be calibrated",
@@ -544,16 +558,6 @@ public class J2KPSoilLayer extends JAMSComponent {
             defaultValue = "0.002"
     )
     public Attribute.Double Beta_min;
-
-    @JAMSVarDescription(
-            access = JAMSVarDescription.AccessType.READ,
-            description = "rate factor between Residue_pool and NO3_Pool to be calibrated",
-            unit = "-",
-            lowerBound = 0.1,
-            upperBound = 0.02,
-            defaultValue = "0.03"
-    )
-    public Attribute.Double Beta_rsd;
 
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
@@ -612,6 +616,32 @@ public class J2KPSoilLayer extends JAMSComponent {
     )
     public Attribute.DoubleArray gamma_ntr;
 
+    @JAMSVarDescription(
+            access = JAMSVarDescription.AccessType.READ,
+            description = "P concentration in soil for agricultural land",
+            unit = "mg*kg^1",
+            lowerBound = 0,
+            upperBound = 1000000,
+            defaultValue = "25"
+    )
+    public Attribute.Double Pconc_arable;
+
+    @JAMSVarDescription(
+            access = JAMSVarDescription.AccessType.READ,
+            description = "P concentration in soil for other land",
+            unit = "mg*kg^1",
+            lowerBound = 0,
+            upperBound = 1000000,
+            defaultValue = "5"
+    )
+    public Attribute.Double Pconc_other;
+
+    @JAMSVarDescription(
+            access = JAMSVarDescription.AccessType.READ,
+            description = " in % organic Carbon in soil"
+    )
+    public Attribute.DoubleArray C_org;
+
     /*
      *  Component run stages
      */
@@ -640,7 +670,6 @@ public class J2KPSoilLayer extends JAMSComponent {
     private double runsurfacesolubleP_in;
     private double runN_stable_pool;
     private double runN_activ_pool;
-    private double runN_residue_pool_fresh;
     private double runResidue_pool;
     private double RD1_out_mm;
     private double h_infilt_mm;
@@ -650,9 +679,23 @@ public class J2KPSoilLayer extends JAMSComponent {
 
     private double sumlayer;
 
-    private double runBeta_trans;
     private double runBeta_min;
-    private double runBeta_rsd;
+    
+    //balance Variables
+    private double bP_Poolvals;
+    private double sbP_Poolvals;
+    private double bP_org_pool;
+    private double sbP_org_pool;
+    private double bMin_Act_P;
+    private double sbMin_Act_P;
+    private double bMin_Sta_P;
+    private double sbMin_Sta_P;
+    private double bPResiduePool;
+    private double sbPResiduePool;
+    private double bplant_up;
+    //
+     
+            
 
     private double theta_nit = 0.05; /*fraction of anion excluded soil water. depended from clay content min. 0.01  max. 1*/
 
@@ -693,7 +736,91 @@ public class J2KPSoilLayer extends JAMSComponent {
     double[] partnmin;
     double[] diffout;
 
-    public void init() throws Attribute.Entity.NoSuchAttributeException {
+    public void initAll() throws Attribute.Entity.NoSuchAttributeException {
+        int i = 0;
+        double orgNhum = 0; /*concentration of humic organic nitrogen in the layer (mg/kg)*/
+
+        int layer = (int) Layer.getValue() + 1;
+        double runlayerdepth;
+
+        double runsoil_bulk_density;
+
+        double runC_org;
+
+        double runPsolution;
+        double[] Psolutionvals = new double[layer];
+
+        double runMin_Act_P;
+        double[] Min_Act_Pvals = new double[layer];
+
+        double runMin_Sta_P;
+        double[] Min_Sta_Pvals = new double[layer];
+
+        double runP_org_pool;
+        double[] P_org_poolvals = new double[layer];
+
+        double runPResiduePool;
+        double[] PResiduePoolvals = new double[layer];
+
+        double runResidue_pool;
+
+        double Psolconc = 0;
+
+        Attribute.Entity entity = entities.getCurrent();
+
+        Double LandID = entity.getDouble("LID");
+
+        if (LandID == 3 || LandID == 8) {
+            Psolconc = Pconc_arable.getValue();
+        } else {
+            Psolconc = Pconc_other.getValue();
+        }
+
+        double runMinActconc = (Psolconc * 1 - pai.getValue()) / pai.getValue();
+        double runMinStaconc = runMinActconc * 4;
+
+        while (i < layer) {
+
+            if (i == 0) {
+                runC_org = C_org.getValue()[i] / 1.72;
+                runsoil_bulk_density = soil_bulk_density.getValue()[i];
+                runlayerdepth = 10; //first  cm layer virtual according to the SWAT concept
+            } else if (i == 1) {
+                runC_org = C_org.getValue()[i - 1] / 1.72;
+                runsoil_bulk_density = soil_bulk_density.getValue()[i - 1];
+                runlayerdepth = (layerdepth.getValue()[i - 1] * 10) - 10; //from cm to mm
+            } else {
+                runC_org = C_org.getValue()[i - 1] / 1.72;
+                runsoil_bulk_density = soil_bulk_density.getValue()[i - 1];
+                runlayerdepth = (layerdepth.getValue()[i - 1] * 10); //from cm to mm
+            }
+            runResidue_pool = Residue_pool.getValue()[i];
+
+            runPsolution = (Psolconc * runsoil_bulk_density * runlayerdepth) / 100; //kgP * ha^1
+            runMin_Act_P = (runMinActconc * runsoil_bulk_density * runlayerdepth) / 100; //kgP * ha^1
+            runMin_Sta_P = (runMinStaconc * runsoil_bulk_density * runlayerdepth) / 100; //kgP * ha^1
+            orgNhum = 10000 * runC_org / 14;
+            runP_org_pool = (orgNhum * 0.125 * runsoil_bulk_density * runlayerdepth) / 100; //kgP * ha^1
+            runPResiduePool = 0.0003 * runResidue_pool; //kgP * ha^1
+
+            Psolutionvals[i] = runPsolution;
+            Min_Act_Pvals[i] = runMin_Act_P;
+            Min_Sta_Pvals[i] = runMin_Sta_P;
+            P_org_poolvals[i] = runP_org_pool;
+            PResiduePoolvals[i] = runPResiduePool;
+
+            i++;
+        }
+
+        Min_Act_P.setValue(Min_Act_Pvals);
+        Min_Sta_P.setValue(Min_Sta_Pvals);
+        P_org_pool.setValue(P_org_poolvals);
+        PResiduePool.setValue(PResiduePoolvals);
+        Psolution.setValue(Psolutionvals);
+
+        fertP_activeorg.setValue(0);
+        fertorgPfresh.setValue(0);
+        fertPmin.setValue(0);
 
     }
 
@@ -710,27 +837,35 @@ public class J2KPSoilLayer extends JAMSComponent {
         this.gamma_water = 0;
         this.runarea = area.getValue();
         this.layer = (int) Layer.getValue();
-        this.surlayer =  layer + 1;
+        this.surlayer = layer + 1;
         sumlayer = 0;
 
-
-
-
         double sumh_infilt_mm = 0;
-
+        
+        double bfertP_activeorg = 0;
+        double bfertorgPfresh = 0;
+        double bAddresidue_poolp = 0;
+        double ifertPmin = 0;
+        double HorPBal = 0; 
+        double PBal = 0;
         runPResiduePool = 0;
         double PrecoP = 0;
         double runnmin = 0;
         double delta_P = 0;
+        
 //        double[] NO3_Poolvals = new double[layer];
         runlayerdepth = new double[surlayer];
-        
-        
 
         double[] P_org_poolvals = new double[surlayer];
         double[] P_activ_poolvals = new double[surlayer];
         double[] P_stable_poolvals = new double[surlayer];
-        double[] P_residue_pool_freshvals = new double[surlayer];
+        double[] P_residue_pool_vals = new double[surlayer];
+
+        sPsolution.setValue(0.0);
+        sP_org_pool.setValue(0.0);
+        sMin_Act_P.setValue(0.0);
+        sMin_Sta_P.setValue(0.0);
+        sPResiduePool.setValue(0.0);
 
         hor_by_infilt = new double[surlayer];
         diffout = new double[surlayer];
@@ -766,26 +901,46 @@ public class J2KPSoilLayer extends JAMSComponent {
                 this.act_LPS = sat_LPS.getValue()[i] * sto_LPS;
                 this.act_MPS = sat_MPS.getValue()[i] * sto_MPS;
                 this.runN_activ_pool = N_activ_pool.getValue()[i];
+                
+                this.runN_stable_pool = N_stable_pool.getValue()[i];
+                
                 this.run_gamma_ntr = gamma_ntr.getValue()[i];
-                this.runP_Pool = P_Poolvals[i] + fertPmin.getValue();
-                
-                this.runMin_Act_P = Min_Act_P.getValue()[i] + ((activ_in.getValue() * 10000) / runarea);
-                
-                this.runMin_Sta_P = Min_Sta_P.getValue()[i] + ((stable_in.getValue() * 10000) / runarea);
-                
-                this.runP_org_pool = P_org_pool.getValue()[i] + ((org_in_P.getValue() * 10000) / runarea) + fertP_activeorg.getValue();
-                org_in_P.setValue(0);
-                this.runPResiduePool = PResiduePool.getValue()[i] + ((residue_in_P.getValue() * 10000) / runarea) + fertorgPfresh.getValue();
-                residue_in_P.setValue(0);
                 this.runsurfacesolubleP_in = SurfaceSolubleP_in.getValue() * 10000 / runarea;
                 SurfaceSolubleP_in.setValue(0);
+                this.runP_Pool = P_Poolvals[i] + fertPmin.getValue() + runsurfacesolubleP_in;
+                ifertPmin = fertPmin.getValue();                
+                fertPmin.setValue(0);
+                         
+                this.runMin_Act_P = Min_Act_P.getValue()[i] + ((activP_in.getValue() * 10000) / runarea);
+                this.bMin_Act_P = Min_Act_P.getValue()[i];
+                activP_in.setValue(0);
+                this.runMin_Sta_P = Min_Sta_P.getValue()[i] + ((stableP_in.getValue() * 10000) / runarea);
+                this.bMin_Sta_P = Min_Sta_P.getValue()[i];
+                stableP_in.setValue(0);
+                this.runP_org_pool = P_org_pool.getValue()[i] + ((org_in_P.getValue() * 10000) / runarea) + fertP_activeorg.getValue();
+                this.bP_org_pool = P_org_pool.getValue()[i];
+                bfertP_activeorg = fertP_activeorg.getValue();
+                fertP_activeorg.setValue(0);
+                org_in_P.setValue(0);
+                this.runPResiduePool = PResiduePool.getValue()[i] + ((residue_in_P.getValue() * 10000) / runarea) + fertorgPfresh.getValue() + Addresidue_poolp.getValue();
+                this.bPResiduePool = PResiduePool.getValue()[i]; 
+                bAddresidue_poolp =  Addresidue_poolp.getValue();
+                bfertorgPfresh =  fertorgPfresh.getValue();
+                
+                fertorgPfresh.setValue(0);
+                residue_in_P.setValue(0);
+                Addresidue_poolp.setValue(0);
+                
+                
                 this.runResidue_pool = Residue_pool.getValue()[i];
-              
+
                 this.RD1_out_mm = RD1_out.getValue() / runarea;
                 this.runsoil_bulk_density = soil_bulk_density.getValue()[i];
 
             } else {
 
+                
+               
                 this.runSoil_Temp_Layer = Soil_Temp_Layer.getValue()[i - 1];
                 this.sto_MPS = stohru_MPS.getValue()[i - 1] / runarea;
                 this.sto_LPS = stohru_LPS.getValue()[i - 1] / runarea;
@@ -794,23 +949,22 @@ public class J2KPSoilLayer extends JAMSComponent {
                 this.act_LPS = sat_LPS.getValue()[i - 1] * sto_LPS;
                 this.act_MPS = sat_MPS.getValue()[i - 1] * sto_MPS;
 
-                
                 this.runP_Pool = P_Poolvals[i];
                 this.runMin_Act_P = Min_Act_P.getValue()[i];
+                this.bMin_Act_P = Min_Act_P.getValue()[i];                
                 this.runMin_Sta_P = Min_Sta_P.getValue()[i];
+                this.bMin_Sta_P = Min_Sta_P.getValue()[i];
+                this.runP_org_pool = P_org_pool.getValue()[i];
+                this.bP_org_pool = P_org_pool.getValue()[i];
                 this.runPResiduePool = PResiduePool.getValue()[i];
-                        
+                this.bPResiduePool = PResiduePool.getValue()[i];
+
                 this.RD1_out_mm = RD1_out.getValue() / runarea;
 
             }
 
-            
-
-            
-
-            this.runBeta_trans = Beta_trans.getValue();
             this.runBeta_min = Beta_min.getValue();
-            this.runBeta_rsd = Beta_rsd.getValue();
+           
 
 
             /*          calculation of amount of nitrogen uptake with epaporation from soil */
@@ -822,93 +976,97 @@ public class J2KPSoilLayer extends JAMSComponent {
                 gamma_water = 0;
             }
 
-           /*Calculations of PPools   Check Order of calculations !!!!!!!!!!!!!!*/
+            /*Calculations of PPools   Check Order of calculations !!!!!!!!!!!!!!*/
             runN_stable_pool = runN_stable_pool + Hum_trans;
 
             Hum_act_min_P = calc_Hum_act_min();
 
             runP_org_pool = runP_org_pool - Hum_act_min_P;
-            
+
             runP_Pool = runP_Pool + Hum_act_min_P;
-            
-            
+
             if (runP_org_pool < 0) {
                 runP_org_pool = 0;
             }
-            
+
             if (runP_Pool < 0) {
                 runP_Pool = 0;
             }
 
-            
             calc_trans_P_act_sta();
             calc_trans_P_sol_P_act();
-            
-            delta_P = this.calc_Res_P_trans();             
+
+            delta_P = this.calc_Res_P_trans();
+
+            delta_P = delta_P * runPResiduePool;
 
             runPResiduePool = runPResiduePool - delta_P + inpP_biomass.getValue();
-                
+
             runP_Pool = runP_Pool + (0.8 * delta_P);
-                
+
             runP_org_pool = runP_org_pool + (0.2 * delta_P);
-            
-            
-            
+
             if (i < 1) {
 
                 PrecoP = calc_P_leaching(i);
-                
+
                 runP_Pool = runP_Pool - PrecoP;
-                
+
                 P_Poolvals[i + 1] = P_Poolvals[i + 1] + PrecoP;
-                
-                
+
                 /*Calculations of PFluxes (out)*/
-                org_out_P.setValue(calc_surfacePpool(runP_org_pool));
-                residue_out_P.setValue(calc_surfacePpool(runPResiduePool));
-                stable_out.setValue(calc_surfacePpool(runMin_Sta_P));
-                activ_out.setValue(calc_surfacePpool(runMin_Act_P));
-            
                 
-                runPResiduePool = runPResiduePool - residue_out_P.getValue();
-                runMin_Sta_P = runMin_Sta_P - stable_out.getValue();
-                runMin_Act_P = runMin_Act_P - activ_out.getValue();
+                SurfaceSolubleP_out.setValue(calc_surfacePpool(runP_Pool) / (10000 / area.getValue()));
+                org_out_P.setValue(calc_surfacePpool(runP_org_pool) / (10000 / area.getValue())) ;
+                residue_out_P.setValue(calc_surfacePpool(runPResiduePool) / (10000 / area.getValue()));
+                stableP_out.setValue(calc_surfacePpool(runMin_Sta_P)/ (10000 / area.getValue()));
+                activP_out.setValue(calc_surfacePpool(runMin_Act_P)/ (10000 / area.getValue()));
+
+                runP_Pool = runP_Pool - SurfaceSolubleP_out.getValue();
                 runP_org_pool = runP_org_pool - org_out_P.getValue();
-
-            } 
-                        
-                                
-
+                runPResiduePool = runPResiduePool - residue_out_P.getValue();
+                runMin_Sta_P = runMin_Sta_P - stableP_out.getValue();
+                runMin_Act_P = runMin_Act_P - activP_out.getValue();
                 
+                
+
+            }
+
+            this.P_Poolvals[i] = runP_Pool;
+
+            P_org_poolvals[i] = runP_org_pool;
+
+            P_activ_poolvals[i] = runMin_Act_P;
+
+            P_stable_poolvals[i] = runMin_Sta_P;
+
+            P_residue_pool_vals[i] = runPResiduePool;
+            sPsolution.setValue(sPsolution.getValue() + runP_Pool);
+            sP_org_pool.setValue(sP_org_pool.getValue() + runP_org_pool);
+            sMin_Act_P.setValue(sMin_Act_P.getValue() + runMin_Act_P);
+            sMin_Sta_P.setValue(sMin_Sta_P.getValue() + runMin_Sta_P);
+            sPResiduePool.setValue(sPResiduePool.getValue() + runPResiduePool);
             
-            
-             this.P_Poolvals[i] = runP_Pool;
-             P_org_poolvals[i] = runP_org_pool;
-             P_activ_poolvals[i] = runMin_Act_P;
-             P_stable_poolvals[i] = runMin_Sta_P;
-             P_residue_pool_freshvals[i] = runPResiduePool;
-     
-
-
-
-
-
-
+            HorPBal = HorPBal + bMin_Act_P + bMin_Sta_P + bP_org_pool + bPResiduePool;
 
             i++;
         }
         i = 0;
+/*
+       PBal =  (HorPBal + this.sbP_Poolvals) - (sPsolution.getValue() + sP_org_pool.getValue() + sMin_Act_P.getValue() + sMin_Sta_P.getValue() + sPResiduePool.getValue());
+       PBal = PBal - (actPup.getValue() +  residue_out_P.getValue() + stableP_out.getValue() + activP_out.getValue() + org_out_P.getValue())+ bfertP_activeorg + bfertorgPfresh + bAddresidue_poolp + ifertPmin;
+       
+       if ((PBal > 0.0000001) || (PBal < -0.0000001)){                
+                getModel().getRuntime().println("Balance calculation problem in P balance, derivation: " +  PBal);
+            } 
+ */    
 
-        // writing of pools
-        
-
-        
-         Min_Act_P.setValue(P_activ_poolvals);                
-         Min_Sta_P.setValue(P_stable_poolvals); 
-         P_org_pool.setValue(P_org_poolvals);
-         PResiduePool.setValue(P_residue_pool_freshvals);
-         Psolution.setValue(this.P_Poolvals);
-        
+       // writing of pools
+        Min_Act_P.setValue(P_activ_poolvals);
+        Min_Sta_P.setValue(P_stable_poolvals);
+        P_org_pool.setValue(P_org_poolvals);
+        PResiduePool.setValue(P_residue_pool_vals);
+        Psolution.setValue(this.P_Poolvals);
 
 //        System.out.println("percoN = " + percoN +" percoNabs =  "+ percoNabs);
     }
@@ -917,6 +1075,7 @@ public class J2KPSoilLayer extends JAMSComponent {
         double upP_Pool = 0;
         double runrootdepth = (rootdepth.getValue() * 100);
         double[] partroot = new double[surlayer];
+        this.sbP_Poolvals = 0;
 
         if (BioPoptAct.getValue() == 0) {
             BioPAct.setValue(0);
@@ -949,14 +1108,15 @@ public class J2KPSoilLayer extends JAMSComponent {
 
         // plant uptake loop 1: calculating layer poritions within rootdepth
         while (i < surlayer) {
+            
+            this.sbP_Poolvals = sbP_Poolvals + P_Poolvals1[i];
 
-            if (i == 0){
-               sumlayer = 1; 
-            }else{
-               sumlayer = sumlayer + layerdepth.getValue()[i] - 1;    
+            if (i == 0) {
+                sumlayer = 1;
+            } else {
+                sumlayer = sumlayer + layerdepth.getValue()[i - 1] - 1;
             }
-            
-            
+
             this.runlayerdepth[i] = sumlayer;
             if (runrootdepth > runlayerdepth[0]) {
                 if (runrootdepth > runlayerdepth[i]) {
@@ -998,6 +1158,7 @@ public class J2KPSoilLayer extends JAMSComponent {
         // plant uptake loop 2: calculating P demand by plants and rest soluble PO4_Pools
         while (j <= rootlayer) {
             upP_Pool = Psolution.getValue()[j];
+            
 
             if (j == 0) {
                 potP_up_z[j] = (runpotP_up / (1 - Math.exp(-runBeta_Pdist))) * (1 - Math.exp(-runBeta_Pdist * (runlayerdepth[j] / runrootdepth)));
@@ -1046,7 +1207,11 @@ public class J2KPSoilLayer extends JAMSComponent {
             }
 
             P_Poolvals1[j] = upP_Pool;
-
+            
+            // Balance calculation
+            
+            
+            //
             j++;
         }
 
@@ -1122,7 +1287,7 @@ public class J2KPSoilLayer extends JAMSComponent {
         double delta_P = 0;
         /*calculation of the c/n ratio */
 
-        delta_P = runBeta_rsd * run_gamma_ntr * Math.sqrt(gamma_temp * gamma_water);
+        delta_P = run_gamma_ntr * Math.sqrt(gamma_temp * gamma_water);
 
         /*Res_N_trans = delta_ntr * N_residue_pool_fresh;
          /*splitting in decomposition 20% and Minteralisation 80%  in run method*/
@@ -1134,10 +1299,10 @@ public class J2KPSoilLayer extends JAMSComponent {
         double P_trans = 0; //amount of phosphorus transferred between the soluble and active mineral pool (kg P/ha)
         double temppai = this.runMin_Act_P * (pai.getValue() / (1 - pai.getValue()));
 
-        if (this.runP_Pool < (temppai)) {
-            P_trans = runMin_Act_P - temppai;
+        if (this.runP_Pool > (temppai)) {
+            P_trans = runP_Pool - temppai;
         } else {
-            P_trans = 0.1 * (runMin_Act_P - temppai);
+            P_trans = 0.1 * (runP_Pool - temppai);
         }
 
         this.runP_Pool = Math.max(this.runP_Pool - P_trans, 0);
@@ -1165,14 +1330,13 @@ public class J2KPSoilLayer extends JAMSComponent {
 
     }
 
-
     private double calc_surfacePpool(double pool) {
         double surfacePpool = 0;
 
         //P concentration for diffrent P-pools in kg/kg,
         double concP_pool = pool / (runsoil_bulk_density * layerdepth.getValue()[0] * 100000);
 
-        surfacePpool = sedi_out.getValue() * concP_pool * enrichmentP.getValue();
+        surfacePpool = sedi_out.getValue() * (10000 / area.getValue())  * concP_pool * enrichmentP.getValue();
 
         surfacePpool = Math.min(surfacePpool, pool);
 
@@ -1186,8 +1350,7 @@ public class J2KPSoilLayer extends JAMSComponent {
         percoW = (hor_by_infilt[i] - (hor_by_infilt[i] / this.sumlayer)) / area.getValue();
 
         percoP = (this.runP_Pool * percoW) / (10 * runsoil_bulk_density * 10 * P_prec_coef.getValue());
-        
-        
+
         percoP = Math.min(percoP, this.runP_Pool);
         return percoP;
     }
@@ -1196,6 +1359,3 @@ public class J2KPSoilLayer extends JAMSComponent {
 
     }
 }
-
-
-

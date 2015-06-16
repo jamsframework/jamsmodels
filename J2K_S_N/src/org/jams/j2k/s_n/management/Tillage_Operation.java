@@ -28,7 +28,7 @@ import jams.data.*;
 public class Tillage_Operation extends JAMSComponent {
 
     @JAMSVarDescription(
-            access = JAMSVarDescription.AccessType.WRITE,
+            access = JAMSVarDescription.AccessType.READ,
             description = "Mixing efficiency",
             unit = "-",
             lowerBound = 0,
@@ -37,7 +37,7 @@ public class Tillage_Operation extends JAMSComponent {
     public Attribute.Double Mixeff;
 
     @JAMSVarDescription(
-            access = JAMSVarDescription.AccessType.WRITE,
+            access = JAMSVarDescription.AccessType.READ,
             description = "Mixing depth",
             unit = "cm",
             lowerBound = 0,
@@ -55,7 +55,7 @@ public class Tillage_Operation extends JAMSComponent {
     public Attribute.DoubleArray soillayerdepth;
 
     @JAMSVarDescription(
-            access = JAMSVarDescription.AccessType.READ,
+            access = JAMSVarDescription.AccessType.READWRITE,
             description = "List of pools to mix"
     )
     public Attribute.DoubleArray[] Pool;
@@ -75,14 +75,14 @@ public class Tillage_Operation extends JAMSComponent {
             unit = "-",
             lowerBound = 0.00005,
             upperBound = 0.001,
-            defaultValue = "0.0005 (derived from the default value of SWAT)"
+            defaultValue = "0.0005"
     )
     public Attribute.Double BioMix;
 
    
 
     public void run() {
-        double biomixdepth = 30.0; // depth of the bioturbation in cm (after SWAT)  
+        double biomixdepth = 40.0; // depth of the bioturbation in cm (after SWAT 30 cm)  
         int layernum = (int) Layer.getValue() + 1;
         double[] depth = new double[layernum];
         double[] depthsum = new double[layernum];
@@ -114,14 +114,17 @@ public class Tillage_Operation extends JAMSComponent {
             } else if (i == 1) {
                 depth[i] = this.soillayerdepth.getValue()[i - 1] - 1.0;
                 depthsum[i] = depthsum[i - 1] + depth[i];
+                
             } else {
                 depth[i] = this.soillayerdepth.getValue()[i - 1];
                 depthsum[i] = depthsum[i - 1] + depth[i];
             }
+            
             i++;
         }
         i = 0;
-        while (v > varnum) {
+        
+        while (v < varnum) {
             double tillrest = runMixdepth;
             
             i = 0;
@@ -129,24 +132,29 @@ public class Tillage_Operation extends JAMSComponent {
             double testoutsum = 0;
             
             while (i < layernum) {
-                mixpool[i] = Pool[v].getValue()[i] * runMixeff;
-                restpool[i] = Pool[v].getValue()[i] * (1 - runMixeff);
+                
+                
                 testinsum = testinsum + Pool[v].getValue()[i];
                 tillrest = tillrest - depth[i];
-                if (tillrest < 0) {
+                
+                if (tillrest >= 0) {
+                    mixpool[i] = Pool[v].getValue()[i] * runMixeff;
                     //calculation for completely mixed horizons
                     mixpoolsum = mixpoolsum + mixpool[i];
-                    partpool[i] = depth[i] / runMixdepth;                    
+                    partpool[i] = depth[i] / runMixdepth; 
+                    restpool[i] = Pool[v].getValue()[i] - mixpool[i];
                 }else if (depthsum[i - 1] < runMixdepth){
+                    mixpool[i] = Pool[v].getValue()[i] * runMixeff;                    
                     //calculation for partly mixed horizons
-                    double parthor = (depth[i] + tillrest)/depth[i];
+                    double parthor = (depthsum[i] + tillrest - depthsum[i - 1])  / depth[i];
                     double partsub = mixpool[i] * parthor;
                     mixpoolsum = mixpoolsum + partsub;
-                    restpool[i] = restpool[i] + (mixpool[i] - partsub);
-                    partpool[i] = (depth[i] + tillrest) / runMixdepth;
+                    restpool[i] = (Pool[v].getValue()[i] - partsub);
+                    partpool[i] = (depthsum[i] + tillrest - depthsum[i - 1]) / runMixdepth;
                 }else{
                     //calculation for unmixed horizons
-                    restpool[i] = mixpool[i];
+                    mixpool[i] = 0;
+                    restpool[i] = Pool[v].getValue()[i];
                     partpool[i] = 0;                    
                 }
 
@@ -161,13 +169,15 @@ public class Tillage_Operation extends JAMSComponent {
                 
                 testoutsum = testoutsum +  newpool[i];
                 
+                i++;
+                
             }
             
-            if (testoutsum != testinsum){
+            if (testoutsum > testinsum + 1 || testoutsum < testinsum - 1){
                 double deriva = testoutsum - testinsum;
                 getModel().getRuntime().println("Tillage calculation problem in pool balance, derivation: " +  deriva);
             } 
-                        
+            mixpoolsum = 0;          
             Pool[v].setValue(newpool);
             
             v++;

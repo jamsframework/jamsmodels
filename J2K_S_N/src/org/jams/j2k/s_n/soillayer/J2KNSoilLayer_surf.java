@@ -20,7 +20,7 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
  *
  */
-package org.jams.j2k.s_n;
+package org.jams.j2k.s_n.soillayer;
 
 import jams.data.*;
 import jams.model.*;
@@ -33,8 +33,8 @@ import jams.model.*;
         title = "J2KNSoilLayer_surf",
         author = "Manfred Fink",
         description = "Calculates Nitrogen transformation Processes in Soil. Method after SWAT2000 with adaptions Including Nitrogen transported due to Erosion",
-        version = "1.0",
-        date = "2010-11-22"
+        version = "1.2",
+        date = "2010-06-02"
 )
 public class J2KNSoilLayer_surf extends JAMSComponent {
 
@@ -118,7 +118,7 @@ public class J2KNSoilLayer_surf extends JAMSComponent {
             description = "maximum MPS (Middle Pore Storage) soil water content",
             unit = "L",
             lowerBound = 0,
-            upperBound = 2000
+            upperBound = 2000000
     )
     public Attribute.DoubleArray stohru_MPS;
 
@@ -127,7 +127,7 @@ public class J2KNSoilLayer_surf extends JAMSComponent {
             description = "maximum LPS (Large Pore Storage) soil water content",
             unit = "L",
             lowerBound = 0,
-            upperBound = 2000
+            upperBound = 2000000
     )
     public Attribute.DoubleArray stohru_LPS;
 
@@ -136,7 +136,7 @@ public class J2KNSoilLayer_surf extends JAMSComponent {
             description = "maximum FPS (Fine Pore Storage) soil water content",
             unit = "L",
             lowerBound = 0,
-            upperBound = 2000
+            upperBound = 2000000
     )
     public Attribute.DoubleArray stohru_FPS;
 
@@ -150,7 +150,7 @@ public class J2KNSoilLayer_surf extends JAMSComponent {
     public Attribute.DoubleArray Soil_Temp_Layer;
 
     @JAMSVarDescription(
-            access = JAMSVarDescription.AccessType.READ,
+            access = JAMSVarDescription.AccessType.READWRITE,
             description = "portion of organic Carbon in soil",
             unit = "%",
             lowerBound = 0,
@@ -238,6 +238,15 @@ public class J2KNSoilLayer_surf extends JAMSComponent {
             upperBound = 100000
     )
     public Attribute.Double sNResiduePool;
+    
+    @JAMSVarDescription(
+            access = JAMSVarDescription.AccessType.WRITE,
+            description = "sum of ResiduePool, residue content in the entire soil profile",
+            unit = "kg*ha^-1",
+            lowerBound = 0,
+            upperBound = 100000
+    )
+    public Attribute.Double sResiduePool;
 
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
@@ -631,12 +640,21 @@ public class J2KNSoilLayer_surf extends JAMSComponent {
 
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            description = "Residue-N in surface runoff added to HRU in N",
+            description = "Residue in surface runoff added to HRU ",
             unit = "kg",
             lowerBound = 0,
             upperBound = 1000000000
     )
     public Attribute.Double residue_in;
+    
+     @JAMSVarDescription(
+            access = JAMSVarDescription.AccessType.WRITE,
+            description = "Residue-N in surface runoff added to HRU in N",
+            unit = "kg",
+            lowerBound = 0,
+            upperBound = 1000000000
+    )
+    public Attribute.Double residueN_in;
 
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
@@ -645,7 +663,7 @@ public class J2KNSoilLayer_surf extends JAMSComponent {
             lowerBound = 0,
             upperBound = 1000000000
     )
-    public Attribute.Double activ_in;
+    public Attribute.Double activN_in;
 
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
@@ -654,7 +672,7 @@ public class J2KNSoilLayer_surf extends JAMSComponent {
             lowerBound = 0,
             upperBound = 1000000000
     )
-    public Attribute.Double stable_in;
+    public Attribute.Double stableN_in;
 
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
@@ -667,12 +685,21 @@ public class J2KNSoilLayer_surf extends JAMSComponent {
 
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
-            description = "Residue-N in surface runoff leaving the HRU in N",
+            description = "Residue in surface runoff leaving the HRU",
             unit = "kg",
             lowerBound = 0,
             upperBound = 1000000000
     )
     public Attribute.Double residue_out;
+    
+    @JAMSVarDescription(
+            access = JAMSVarDescription.AccessType.WRITE,
+            description = "Residue-N in surface runoff leaving the HRU in N",
+            unit = "kg",
+            lowerBound = 0,
+            upperBound = 1000000000
+    )
+    public Attribute.Double residueN_out;
 
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
@@ -681,7 +708,7 @@ public class J2KNSoilLayer_surf extends JAMSComponent {
             lowerBound = 0,
             upperBound = 1000000000
     )
-    public Attribute.Double activ_out;
+    public Attribute.Double activN_out;
 
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
@@ -690,7 +717,7 @@ public class J2KNSoilLayer_surf extends JAMSComponent {
             lowerBound = 0,
             upperBound = 1000000000
     )
-    public Attribute.Double stable_out;
+    public Attribute.Double stableN_out;
 
     // constants and calibration parameter
     @JAMSVarDescription(
@@ -823,6 +850,19 @@ public class J2KNSoilLayer_surf extends JAMSComponent {
     )
     public Attribute.DoubleArray P_Pool;
 
+    @JAMSVarDescription(
+            access = JAMSVarDescription.AccessType.WRITE,
+            description = "flag plant existing yes or no " // attention its a boolean!
+    )
+    public Attribute.Boolean plantExisting;
+
+
+    @JAMSVarDescription(
+            access = JAMSVarDescription.AccessType.WRITE,
+            description = "actual LAI"
+    )
+    public Attribute.Double LAI;
+
     /*
      *  Component run stages
      */
@@ -915,7 +955,106 @@ public class J2KNSoilLayer_surf extends JAMSComponent {
     double[] partnmin;
     double[] diffout;
 
-    public void init() throws Attribute.Entity.NoSuchAttributeException {
+    public void initAll() {
+
+        int i = 0;
+        double orgNhum = 0; /*concentration of humic organic nitrogen in the layer (mg/kg)*/
+
+        int layer = (int) Layer.getValue() + 1;
+        double runlayerdepth;
+        plantExisting.setValue(true);
+        double runsoil_bulk_density;
+
+        double runC_org;
+
+        double hor_dept = 0;
+
+        double runNO3_Pool;
+        double[] NO3_Poolvals = new double[layer - 1];
+
+        double runNH4_Pool;
+        double[] NH4_Poolvals = new double[layer];
+
+        double runN_activ_pool;
+        double[] N_activ_poolvals = new double[layer];
+
+        double runN_stabel_pool;
+        double[] N_stabel_poolvals = new double[layer];
+
+        double runN_residue_pool_fresh;
+        double[] N_residue_pool_freshvals = new double[layer];
+
+        double runResidue_pool;
+        double[] Residue_poolvals = new double[layer];
+
+        double[] InterflowN_invals = new double[layer];
+
+        double fr_actN = 0.02;
+        /**
+         * nitrogen active pool fraction. The fraction of organic nitrogen in
+         * the active pool.
+         */
+
+        while (i < layer) {
+
+            if (i == 0) {
+                runlayerdepth = 10;
+                runC_org = C_org.getValue()[i] / 1.72;
+                runsoil_bulk_density = soil_bulk_density.getValue()[i];
+            } else if (i == 1) {
+                runC_org = C_org.getValue()[i-1] / 1.72;
+                runsoil_bulk_density = soil_bulk_density.getValue()[i-1];
+                runlayerdepth = (layerdepth.getValue()[i-1] * 10) - 10; //from cm to mm
+            } else {
+                runC_org = C_org.getValue()[i-1] / 1.72;
+                runsoil_bulk_density = soil_bulk_density.getValue()[i-1];
+                runlayerdepth = (layerdepth.getValue()[i-1] * 10);
+            }
+            
+            
+            hor_dept = hor_dept + runlayerdepth;
+            runResidue_pool = 10;
+            runNO3_Pool = ((7 * Math.exp(-hor_dept / 1000)) * runsoil_bulk_density * runlayerdepth) / 1000;
+            runNH4_Pool = 0.1 * runNO3_Pool;
+            orgNhum = 10000 * runC_org / 14;
+            runN_activ_pool = ((orgNhum * fr_actN) * runsoil_bulk_density * runlayerdepth) / 100;
+            runN_stabel_pool = ((orgNhum * (1 - fr_actN)) * runsoil_bulk_density * runlayerdepth) / 100;
+            runN_residue_pool_fresh = 0.0015 * runResidue_pool;
+            
+            
+            if (i == 0) {
+               NO3_Poolvals[i] = runNO3_Pool;
+            } else if (i == 1) {
+               NO3_Poolvals[i-1] = runNO3_Pool + NO3_Poolvals[0]; 
+            } else {
+               NO3_Poolvals[i-1] = runNO3_Pool;  
+            }
+                     
+            NH4_Poolvals[i] = runNH4_Pool;
+            N_activ_poolvals[i] = runN_activ_pool;
+            N_stabel_poolvals[i] = runN_stabel_pool;
+            Residue_poolvals[i] = runResidue_pool;
+            N_residue_pool_freshvals[i] = runN_residue_pool_fresh;
+            InterflowN_invals[i] = 0;
+
+            i++;
+        }
+
+        NO3_Pool.setValue(NO3_Poolvals);
+        NH4_Pool.setValue(NH4_Poolvals);
+        N_activ_pool.setValue(N_activ_poolvals);
+        N_stable_pool.setValue(N_stabel_poolvals);
+        Residue_pool.setValue(Residue_poolvals);
+        N_residue_pool_fresh.setValue(N_residue_pool_freshvals);
+        InterflowN_in.setValue(InterflowN_invals);
+        fertNO3.setValue(0);
+        fertNH4.setValue(0);
+        fertstableorg.setValue(0);
+        fertactivorg.setValue(0);
+        //inp_biomass.setValue(0);
+        //inpN_biomass.setValue(0);
+        rootdepth.setValue(0);
+        LAI.setValue(0);
 
     }
 
@@ -944,6 +1083,7 @@ public class J2KNSoilLayer_surf extends JAMSComponent {
         double suminterflowNabs = 0;
         double suminterflowN = 0;
         double sumN_residue_pool = 0;
+        double sum_residue_pool = 0;
         double sumN_activ_pool = 0;
         double sumN_stable_pool = 0;
         double h_infilt_mm_sum = 0;
@@ -1069,10 +1209,19 @@ public class J2KNSoilLayer_surf extends JAMSComponent {
                 this.act_LPS = sat_LPS.getValue()[i - 1] * sto_LPS;
                 this.act_MPS = sat_MPS.getValue()[i - 1] * sto_MPS;
             }
+            
+            
+            if (i == 0) {                
+                runC_org = C_org.getValue()[i] / 1.72;
+            } else if (i == 1) {
+                runC_org = C_org.getValue()[i-1] / 1.72;              
+            } else {
+                runC_org = C_org.getValue()[i-1] / 1.72;
+            }
+            
 
-            this.runC_org = C_org.getValue()[i] / 1.72;
 
-            this.runP_Pool = P_Poolvals[i];
+            this.runP_Pool = P_Pool.getValue()[i];
             this.runNH4_Pool = NH4_Pool.getValue()[i];
             this.runN_activ_pool = N_activ_pool.getValue()[i];
             this.runN_stable_pool = N_stable_pool.getValue()[i];
@@ -1191,18 +1340,20 @@ public class J2KNSoilLayer_surf extends JAMSComponent {
 
                 runResidue_pool = runResidue_pool - (delta_ntr * runResidue_pool) + ((residue_in.getValue() * 10000) / runarea);
                 runNH4_Pool = runNH4_Pool + ((NH4_in.getValue() * 10000) / runarea);
-                runN_stable_pool = runN_stable_pool + ((stable_in.getValue() * 10000) / runarea);
-                runN_activ_pool = runN_activ_pool + ((activ_in.getValue() * 10000) / runarea);
-
+                runN_stable_pool = runN_stable_pool + ((stableN_in.getValue() * 10000) / runarea);
+                runN_activ_pool = runN_activ_pool + ((activN_in.getValue() * 10000) / runarea);
+                
+                residueN_out.setValue(calc_surfaceNpool(runN_residue_pool_fresh));
                 residue_out.setValue(calc_surfaceNpool(runResidue_pool));
                 NH4_out.setValue(calc_surfaceNpool(runNH4_Pool));
-                stable_out.setValue(calc_surfaceNpool(runN_stable_pool));
-                activ_out.setValue(calc_surfaceNpool(runN_activ_pool));
+                stableN_out.setValue(calc_surfaceNpool(runN_stable_pool));
+                activN_out.setValue(calc_surfaceNpool(runN_activ_pool));
 
+                runN_residue_pool_fresh = runN_residue_pool_fresh - residueN_out.getValue();
                 runResidue_pool = runResidue_pool - residue_out.getValue();
                 runNH4_Pool = runNH4_Pool - NH4_out.getValue();
-                runN_stable_pool = runN_stable_pool - stable_out.getValue();
-                runN_activ_pool = runN_activ_pool - activ_out.getValue();
+                runN_stable_pool = runN_stable_pool - stableN_out.getValue();
+                runN_activ_pool = runN_activ_pool - activN_out.getValue();
 
                 runsum_Ninput = fertactivorg.getValue() + fertNH4.getValue() + fertNO3.getValue() + fertorgNfresh.getValue() + a_deposition;
 
@@ -1212,7 +1363,8 @@ public class J2KNSoilLayer_surf extends JAMSComponent {
                 Nactiverespool = 0.2 * (delta_ntr * runN_residue_pool_fresh);
                 runN_activ_pool = runN_activ_pool + fertactivorg.getValue() + Nactiverespool;
                 NO3respool = 0.8 * (delta_ntr * runN_residue_pool_fresh);
-
+                runN_residue_pool_fresh = runN_residue_pool_fresh - (delta_ntr * runN_residue_pool_fresh);
+                           
                 this.runNO3_Pool = NO3_Poolvals[i];
 
                 runNO3_Pool = runNO3_Pool + sum_Nupmove + fertNO3.getValue() + a_deposition + runnitri_trans + Hum_act_min + runsurfaceN_in + NO3respool;
@@ -1229,18 +1381,15 @@ public class J2KNSoilLayer_surf extends JAMSComponent {
                     runNO3_Pool = 0;
                 }
 
-                           
                 runN_residue_pool_fresh = runN_residue_pool_fresh - (delta_ntr * runN_residue_pool_fresh);
                 runResidue_pool = runResidue_pool - (delta_ntr * runResidue_pool);
                 run_res_n_trans = (delta_ntr * runN_residue_pool_fresh);
-                
+
                 Nactiverespool = 0.2 * run_res_n_trans;
                 NO3respool = 0.8 * run_res_n_trans;
-                
-                
-                
+
                 //runsum_Ninput = runsum_Ninput + runinterflowN_in;
-                runNO3_Pool = runNO3_Pool + runnitri_trans + runinterflowN_in + percoNvals[ii - 1] + Hum_act_min + NO3respool;
+                runNO3_Pool = runNO3_Pool + runnitri_trans + runinterflowN_in + percoNvals[ii] + Hum_act_min + NO3respool;
                 /*                if (runNO3_Pool > runplantupN){
 
                  runNO3_Pool = runNO3_Pool - runplantupN;
@@ -1306,6 +1455,7 @@ public class J2KNSoilLayer_surf extends JAMSComponent {
             sumN_activ_pool = runN_activ_pool + sumN_activ_pool;
             sumNH4_Pool = runNH4_Pool + sumNH4_Pool;
             sumN_residue_pool = sumN_residue_pool + runN_residue_pool_fresh;
+            sum_residue_pool = sum_residue_pool + runResidue_pool;
 
             if (ii < 5) {
                 sumNO3_Pool = runNO3_Pool + sumNO3_Pool;
@@ -1439,6 +1589,8 @@ public class J2KNSoilLayer_surf extends JAMSComponent {
         sNO3_Pool.setValue(sumNO3_Pool);
 
         sNResiduePool.setValue(sumN_residue_pool);
+        
+        sResiduePool.setValue(sum_residue_pool);
 
         App_time.setValue(app_time);
 
@@ -1639,14 +1791,13 @@ public class J2KNSoilLayer_surf extends JAMSComponent {
         double eta_nitri = 0;
         double eta_volati = 0;
         double layerdepthmm = 0;
-        
-        if (i == 0){
-        layerdepthmm = 10;
-        }else{
+
+        if (i == 0) {
+            layerdepthmm = 10;
+        } else {
             layerdepthmm = runlayerdepth[i - 1] * 10;
         }
-         
-            
+
         eta_temp = 0.41 * ((runSoil_Temp_Layer - 5) / 10);
 
         if (act_LPS + act_MPS < 0.25 * (sto_LPS + sto_MPS)) {
@@ -1697,7 +1848,7 @@ public class J2KNSoilLayer_surf extends JAMSComponent {
 
         double epsilon_C_N = 0;
         double epsilon_C_P = 0;
-        run_gamma_ntr = 0;
+        run_gamma_ntr = 1;
         /*double Res_N_trans = 0;
          /*calculation of the c/n and c/p ratio */
         epsilon_C_N = (runResidue_pool * 0.58) / (runN_residue_pool_fresh + runNO3_Pool);
@@ -1707,10 +1858,10 @@ public class J2KNSoilLayer_surf extends JAMSComponent {
             run_gamma_ntr = Math.exp(-0.693 * ((epsilon_C_P - 200) / 200));
         } else {
             run_gamma_ntr = 1.0;
-        }
+        } 
 
         /*calculation of nutrient cycling residue composition factor*/
-        run_gamma_ntr = Math.min(run_gamma_ntr, 1.0);
+        //run_gamma_ntr = Math.min(run_gamma_ntr, 1.0);
         run_gamma_ntr = Math.min(run_gamma_ntr, Math.exp(-0.693 * ((epsilon_C_N - 25) / 25)));
 
         /*calculation of the decay rate constant*/
@@ -1719,6 +1870,8 @@ public class J2KNSoilLayer_surf extends JAMSComponent {
         /*Res_N_trans = delta_ntr * N_residue_pool_fresh;
          /*splitting in decomposition 20% and Minteralisation 80%  in run method*/
         this.delta_ntr = Math.min(delta_ntr, 1.0);
+        
+       
         
         return delta_ntr;
     }

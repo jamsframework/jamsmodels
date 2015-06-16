@@ -186,7 +186,13 @@ import jams.model.*;
      *  Component run stages
      */
     
-    public void init()  {
+    public void initAll()  {
+            
+            double iNActRG1 = (maxRG1.getValue() * N_concRG1.getValue() / 1000000) * N_delay_RG1.getValue();
+            double iNActRG2 = (maxRG2.getValue() * N_concRG2.getValue() / 1000000) * N_delay_RG2.getValue();
+            
+            NActRG1.setValue(iNActRG1);
+            NActRG2.setValue(iNActRG2);
         
     }
     
