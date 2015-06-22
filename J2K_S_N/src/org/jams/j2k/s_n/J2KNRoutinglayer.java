@@ -114,6 +114,139 @@ import jams.model.*;
             )
             public Attribute.Double NExcess;
     
+    @JAMSVarDescription(
+            access = JAMSVarDescription.AccessType.READWRITE,
+            description = ""
+            )
+            public Attribute.Double NH4_in;
+    
+    @JAMSVarDescription(
+            access = JAMSVarDescription.AccessType.READWRITE,
+            description = ""
+            )
+            public Attribute.Double SurfaceSolubleP_in;
+    
+    @JAMSVarDescription(
+            access = JAMSVarDescription.AccessType.READWRITE,
+            description = ""
+            )
+            public Attribute.Double activN_in;
+    
+    @JAMSVarDescription(
+            access = JAMSVarDescription.AccessType.READWRITE,
+            description = ""
+            )
+            public Attribute.Double activP_in;    
+    
+    @JAMSVarDescription(
+            access = JAMSVarDescription.AccessType.READWRITE,
+            description = ""
+            )
+            public Attribute.Double org_in_P;
+    
+    @JAMSVarDescription(
+            access = JAMSVarDescription.AccessType.READWRITE,
+            description = ""
+            )
+            public Attribute.Double insed;
+    
+    @JAMSVarDescription(
+            access = JAMSVarDescription.AccessType.READWRITE,
+            description = ""
+            )
+            public Attribute.Double residueN_in;
+    
+    @JAMSVarDescription(
+            access = JAMSVarDescription.AccessType.READWRITE,
+            description = ""
+            )
+            public Attribute.Double residue_in;
+    
+    @JAMSVarDescription(
+            access = JAMSVarDescription.AccessType.READWRITE,
+            description = ""
+            )
+            public Attribute.Double residue_in_P;    
+    
+    @JAMSVarDescription(
+            access = JAMSVarDescription.AccessType.READWRITE,
+            description = ""
+            )
+            public Attribute.Double stableN_in; 
+
+    @JAMSVarDescription(
+            access = JAMSVarDescription.AccessType.READWRITE,
+            description = ""
+            )
+            public Attribute.Double stableP_in;
+    
+    @JAMSVarDescription(
+            access = JAMSVarDescription.AccessType.READWRITE,
+            description = ""
+            )
+            public Attribute.Double NH4_out;
+    
+    @JAMSVarDescription(
+            access = JAMSVarDescription.AccessType.READWRITE,
+            description = ""
+            )
+            public Attribute.Double SurfaceSolubleP_out;
+    
+    @JAMSVarDescription(
+            access = JAMSVarDescription.AccessType.READWRITE,
+            description = ""
+            )
+            public Attribute.Double activN_out;
+    
+    @JAMSVarDescription(
+            access = JAMSVarDescription.AccessType.READWRITE,
+            description = ""
+            )
+            public Attribute.Double activP_out;    
+    
+    @JAMSVarDescription(
+            access = JAMSVarDescription.AccessType.READWRITE,
+            description = ""
+            )
+            public Attribute.Double org_out_P;
+    
+    @JAMSVarDescription(
+            access = JAMSVarDescription.AccessType.READWRITE,
+            description = ""
+            )
+            public Attribute.Double outsed;
+    
+    @JAMSVarDescription(
+            access = JAMSVarDescription.AccessType.READWRITE,
+            description = ""
+            )
+            public Attribute.Double residueN_out;
+    
+    @JAMSVarDescription(
+            access = JAMSVarDescription.AccessType.READWRITE,
+            description = ""
+            )
+            public Attribute.Double residue_out;
+    
+    @JAMSVarDescription(
+            access = JAMSVarDescription.AccessType.READWRITE,
+            description = ""
+            )
+            public Attribute.Double residue_out_P;    
+    
+    @JAMSVarDescription(
+            access = JAMSVarDescription.AccessType.READWRITE,
+            description = ""
+            )
+            public Attribute.Double stableN_out; 
+
+    @JAMSVarDescription(
+            access = JAMSVarDescription.AccessType.READWRITE,
+            description = ""
+            )
+            public Attribute.Double stableP_out;     
+        
+    
     double[][] fracOut;
     double[] percNOut;
     /*
@@ -137,6 +270,19 @@ import jams.model.*;
         double[] NRD2out_h = InterflowNabs.getValue();
         double NRG1out = N_RG1_out.getValue();
         double NRG2out = N_RG2_out.getValue();
+        
+        double NH4out = NH4_out.getValue();
+        double SurfaceSolublePout = SurfaceSolubleP_out.getValue();
+        double activNout = activN_out.getValue();
+        double activPout = activP_out.getValue();
+        double orgPout = org_out_P.getValue();
+        double outsediment = outsed.getValue();
+        double residueNout = residueN_out.getValue();
+        double residueout = residue_out.getValue();
+        double residuePout = residue_out_P.getValue();
+        double stableNout = stableN_out.getValue();
+        double stablePout = stableP_out.getValue();
+        
         
         double reachNRD2in = 0;
 //        System.out.println("NRD2out: " + NRD2out);
@@ -162,7 +308,7 @@ import jams.model.*;
                 System.out.println("MIST");
             }*/
             double NRG1in = toPoly.getDouble("N_RG1_in");
-            double NRG2in = toPoly.getDouble("N_RG2_in");
+            double NRG2in = toPoly.getDouble("N_RG2_in");          
 //            double NRG1in = 0;
 //            double NRG2in = 0;
             for(int j = 0; j < recHors; j++){
@@ -222,6 +368,18 @@ import jams.model.*;
             double NRG1in = toReach.getDouble("N_RG1_in");
             double NRG2in = toReach.getDouble("N_RG2_in");
             
+            double NH4in = toReach.getDouble("NH4_in");
+            double SurfaceSolublePin = toReach.getDouble("SurfaceSolubleP_in");
+            double activNin = toReach.getDouble("activN_in");
+            double activPin = toReach.getDouble("activP_in");
+            double orgPin = toReach.getDouble("org_in_P");
+            double insediment = toReach.getDouble("insed");
+            double residueNin = toReach.getDouble("residueN_in");
+            double residuein = toReach.getDouble("residue_in");
+            double residuePin = toReach.getDouble("residue_in_P");
+            double stableNin = toReach.getDouble("stableN_in");
+            double stablePin = toReach.getDouble("stableP_in"); 
+            
             for(int h = 0; h < NRD2out_h.length; h++){
                 reachNRD2in = reachNRD2in + NRD2out_h[h];
                 NRD2out_h[h] = 0;
@@ -246,6 +404,29 @@ import jams.model.*;
             toReach.setDouble("N_RG1_in", NRG1in);
             N_RG2_out.setValue(NRG2out);
             toReach.setDouble("N_RG2_in", NRG2in);
+            
+            NH4_out.setValue(NH4out);
+            toReach.setDouble("NH4_in", NH4in);
+            SurfaceSolubleP_out.setValue(SurfaceSolublePout);
+            toReach.setDouble("SurfaceSolubleP_in", SurfaceSolublePin);
+            activN_out.setValue(activNout);
+            toReach.setDouble("activN_in", activNin);
+            activP_out.setValue(activPout);
+            toReach.setDouble("activP_in", activPin);
+            org_out_P.setValue(orgPout);
+            toReach.setDouble("org_in_P", orgPin);
+            outsed.setValue(outsediment);
+            toReach.setDouble("insed", insediment);
+            residueN_out.setValue(residueNout);
+            toReach.setDouble("residueN_in", residueNin);
+            residue_out.setValue(residueout);
+            toReach.setDouble("residue_in", residuein);
+            residue_out_P.setValue(residuePout);
+            toReach.setDouble("residue_in_P", residuePin);
+            stableN_out.setValue(stableNout);
+            toReach.setDouble("stableN_in", stableNin);
+            stableP_out.setValue(stablePout);
+            toReach.setDouble("stableP_in", stablePin);            
             
         } else{
             System.out.println("Current entity ID: " + entity.getDouble("ID") + " has no receiver.");
