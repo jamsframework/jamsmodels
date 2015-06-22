@@ -409,6 +409,15 @@ public class J2KPSoilLayer extends JAMSComponent {
     )
 
     public Attribute.Double fertPmin;
+    
+    @JAMSVarDescription(
+            access = JAMSVarDescription.AccessType.WRITE,
+            description = "Sum of N input due fertilisation in P",
+            unit = "kg*ha^-1",
+            lowerBound = 0,
+            upperBound = 100000
+    )
+    public Attribute.Double sum_Pinput;
 
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
@@ -511,6 +520,8 @@ public class J2KPSoilLayer extends JAMSComponent {
             upperBound = 1000000000
     )
     public Attribute.Double stableP_in;
+    
+
 
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
@@ -693,6 +704,7 @@ public class J2KPSoilLayer extends JAMSComponent {
     private double bPResiduePool;
     private double sbPResiduePool;
     private double bplant_up;
+    private double runsum_Pinput;
     //
      
             
@@ -902,6 +914,9 @@ public class J2KPSoilLayer extends JAMSComponent {
                 this.act_MPS = sat_MPS.getValue()[i] * sto_MPS;
                 this.runN_activ_pool = N_activ_pool.getValue()[i];
                 
+                this.runsum_Pinput = fertPmin.getValue() + fertP_activeorg.getValue() + fertP_activeorg.getValue();
+                
+                
                 this.runN_stable_pool = N_stable_pool.getValue()[i];
                 
                 this.run_gamma_ntr = gamma_ntr.getValue()[i];
@@ -1062,6 +1077,7 @@ public class J2KPSoilLayer extends JAMSComponent {
  */    
 
        // writing of pools
+        sum_Pinput.setValue(runsum_Pinput);
         Min_Act_P.setValue(P_activ_poolvals);
         Min_Sta_P.setValue(P_stable_poolvals);
         P_org_pool.setValue(P_org_poolvals);
