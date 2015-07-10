@@ -19,7 +19,6 @@
  * along with JAMS. If not, see <http://www.gnu.org/licenses/>.
  *
  */
-
 package org.unijena.j2k;
 
 import jams.data.*;
@@ -29,52 +28,53 @@ import jams.model.*;
  *
  * @author Sven Kralisch <sven.kralisch at uni-jena.de>
  */
- @JAMSComponentDescription(
-        title="ArrayToScalar",
-        author="Sven Kralisch",
-        description="Extracts single scalar doubles from an array of double values",
+@JAMSComponentDescription(
+        title = "ArrayToScalar",
+        author = "Sven Kralisch",
+        description = "Extracts single scalar doubles from an array of double values",
         date = "2013-09-13",
         version = "1.0_1"
-        )
+)
 @VersionComments(entries = {
     @VersionComments.Entry(version = "1.0_0", comment = "Initial version"),
     @VersionComments.Entry(version = "1.0_1", comment = "Extended to handle multiple values")
-}) 
+})
 public class ArrayToScalar extends JAMSComponent {
 
     /*
      *  Component attributes
      */
-    
     @JAMSVarDescription(
-            access = JAMSVarDescription.AccessType.READ,  
-            description = "array of values to extract from" 
-            )
-            public Attribute.DoubleArray dataArray;
-    
+            access = JAMSVarDescription.AccessType.READ,
+            description = "array of values to extract from"
+    )
+    public Attribute.DoubleArray dataArray;
+
     @JAMSVarDescription(
-            access = JAMSVarDescription.AccessType.READ,  
-            description = "the index of the value to be extracted" 
-            )
-            public Attribute.Integer[] arrayIndex;      
-    
+            access = JAMSVarDescription.AccessType.READ,
+            description = "the index of the value to be extracted"
+    )
+    public Attribute.Integer[] arrayIndex;
+
     @JAMSVarDescription(
-            access = JAMSVarDescription.AccessType.READ,  
+            access = JAMSVarDescription.AccessType.READ,
             description = "optional correction factor",
             defaultValue = "1"
-            )
-            public Attribute.Double factor;    
-    
+    )
+    public Attribute.Double factor;
+
     @JAMSVarDescription(
-            access = JAMSVarDescription.AccessType.WRITE,  
-            description = "extracted value" 
-            )
-            public Attribute.Double[] dataValue;
+            access = JAMSVarDescription.AccessType.WRITE,
+            description = "extracted value"
+    )
+    public Attribute.Double[] dataValue;
 
     @Override
     public void run() {
         for (int i = 0; i < arrayIndex.length; i++) {
-            dataValue[i].setValue(dataArray.getValue()[arrayIndex[i].getValue()] * factor.getValue());
+            if (arrayIndex[i].getValue() != -1) {
+                dataValue[i].setValue(dataArray.getValue()[arrayIndex[i].getValue()] * factor.getValue());
+            }
         }
     }
 
