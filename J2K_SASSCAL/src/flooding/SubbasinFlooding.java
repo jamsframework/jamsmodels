@@ -24,7 +24,6 @@ package flooding;
 import jams.data.*;
 import jams.model.*;
 import java.util.Collections;
-import java.util.Comparator;
 
 /**
  *
