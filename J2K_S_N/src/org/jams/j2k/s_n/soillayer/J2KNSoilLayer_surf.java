@@ -1337,12 +1337,20 @@ public class J2KNSoilLayer_surf extends JAMSComponent {
                 runNH4_Pool = runNH4_Pool + fertNH4.getValue();
 
                 a_deposition = deposition_factor.getValue() * runprecip;
-
+                 
                 runResidue_pool = runResidue_pool - (delta_ntr * runResidue_pool) + ((residue_in.getValue() * 10000) / runarea);
                 runNH4_Pool = runNH4_Pool + ((NH4_in.getValue() * 10000) / runarea);
                 runN_stable_pool = runN_stable_pool + ((stableN_in.getValue() * 10000) / runarea);
                 runN_activ_pool = runN_activ_pool + ((activN_in.getValue() * 10000) / runarea);
                 
+                residue_in.setValue(0.0);
+                NH4_in.setValue(0.0);
+                stableN_in.setValue(0.0);
+                activN_in.setValue(0.0);
+                       
+                
+                
+                                    
                 residueN_out.setValue(calc_surfaceNpool(runN_residue_pool_fresh));
                 residue_out.setValue(calc_surfaceNpool(runResidue_pool));
                 NH4_out.setValue(calc_surfaceNpool(runNH4_Pool));
@@ -1355,6 +1363,14 @@ public class J2KNSoilLayer_surf extends JAMSComponent {
                 runN_stable_pool = runN_stable_pool - stableN_out.getValue();
                 runN_activ_pool = runN_activ_pool - activN_out.getValue();
 
+                residueN_out.setValue(residueN_out.getValue()*(area.getValue()/10000));
+                residue_out.setValue(residue_out.getValue()*(area.getValue()/10000));
+                NH4_out.setValue(NH4_out.getValue()*(area.getValue()/10000));
+                stableN_out.setValue(stableN_out.getValue()*(area.getValue()/10000));
+                activN_out.setValue(activN_out.getValue()*(area.getValue()/10000));
+                
+                
+                
                 runsum_Ninput = fertactivorg.getValue() + fertNH4.getValue() + fertNO3.getValue() + fertorgNfresh.getValue() + a_deposition;
 
                 //runsum_Ninput =   runinterflowN_in ;
@@ -1363,7 +1379,9 @@ public class J2KNSoilLayer_surf extends JAMSComponent {
                 Nactiverespool = 0.2 * (delta_ntr * runN_residue_pool_fresh);
                 runN_activ_pool = runN_activ_pool + fertactivorg.getValue() + Nactiverespool;
                 NO3respool = 0.8 * (delta_ntr * runN_residue_pool_fresh);
-                runN_residue_pool_fresh = runN_residue_pool_fresh - (delta_ntr * runN_residue_pool_fresh);
+                runN_residue_pool_fresh = runN_residue_pool_fresh - (delta_ntr * runN_residue_pool_fresh) + residueN_in.getValue();
+                
+                residueN_in.setValue(0.0);
                            
                 this.runNO3_Pool = NO3_Poolvals[i];
 
@@ -1982,7 +2000,7 @@ public class J2KNSoilLayer_surf extends JAMSComponent {
         //N concentration for diffrent P-pools in kg/kg,
         double concN_pool = pool / (runsoil_bulk_density * 1 * 100000); //1 stands for the first 1cm of the soil
 
-        surfaceNpool = sedi_out.getValue() * concN_pool * enrichmentN.getValue();
+        surfaceNpool = sedi_out.getValue() * 1000 * concN_pool * enrichmentN.getValue();
 
         surfaceNpool = Math.min(surfaceNpool, pool);
 

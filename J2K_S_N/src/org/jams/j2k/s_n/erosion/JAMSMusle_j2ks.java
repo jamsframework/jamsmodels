@@ -66,6 +66,10 @@ public class JAMSMusle_j2ks extends JAMSComponent {
     update = JAMSVarDescription.UpdateType.RUN,
     description = "ID")
     public JAMSDouble ID;
+    @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
+    update = JAMSVarDescription.UpdateType.RUN,
+    description = "Bypass factor for surface runoff sediment from upstream")
+    public JAMSDouble Surrun_bypass;
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READWRITE,
     update = JAMSVarDescription.UpdateType.RUN,
     description = "HRU statevar sediment inflow")
@@ -87,6 +91,7 @@ public class JAMSMusle_j2ks extends JAMSComponent {
     public void run() throws JAMSEntity.NoSuchAttributeException {
 
         // passing reads into in's
+        Double bysed = 0.0;
         Double area = this.area.getValue();
         Double ID = this.ID.getValue();
         Double slope = this.slope.getValue();
@@ -103,13 +108,16 @@ public class JAMSMusle_j2ks extends JAMSComponent {
         Double sedpool = this.sedpool.getValue();
 
 
+        bysed = insed * (Surrun_bypass.getValue());
+        insed = insed * (1 - Surrun_bypass.getValue());
+        
         // calling the oms3 execute
 
 
         Double gensed = 0.0;
 
 
-        if ((slope > 2) && (surfacetemp > 0.1) && (snowDepth == 0) && (outRD1 > 0)) {
+        if ((slope > 0) && (surfacetemp > 0.1) && (snowDepth == 0) && (outRD1 > 0)) {
 
             // slope-Umrechung von � in %
             double slopeperc = Math.tan(Math.toRadians(slope)) * 100;
@@ -186,7 +194,7 @@ public class JAMSMusle_j2ks extends JAMSComponent {
 
         sedpool = neuaccpool;
 
-
+        out = out + bysed;
 
 
 

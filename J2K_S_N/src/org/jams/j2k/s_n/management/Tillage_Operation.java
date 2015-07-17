@@ -39,7 +39,7 @@ public class Tillage_Operation extends JAMSComponent {
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
             description = "Mixing depth",
-            unit = "cm",
+            unit = "mm",
             lowerBound = 0,
             upperBound = 1
     )
@@ -78,6 +78,13 @@ public class Tillage_Operation extends JAMSComponent {
             defaultValue = "0.0005"
     )
     public Attribute.Double BioMix;
+    
+/*    @JAMSVarDescription(
+            access = JAMSVarDescription.AccessType.READWRITE,
+            description = " sum of derivation",
+            unit = "kg*ha^-1"
+           )
+    public Attribute.Double cum_testout;*/
 
    
 
@@ -89,11 +96,11 @@ public class Tillage_Operation extends JAMSComponent {
         int v = 0;
         int varnum = Pool.length;
         double[] restpool = new double[layernum];
-        double[] newpool = new double[layernum];
+        double[] newpool;
         double[] partpool = new double[layernum];
         double[] mixpool = new double[layernum];
         double mixpoolsum = 0;
-        double runMixdepth = Mixdepth.getValue();
+        double runMixdepth = Mixdepth.getValue() / 10; // mixdepth in cm
         double runMixeff = Mixeff.getValue();
         
         
@@ -163,6 +170,8 @@ public class Tillage_Operation extends JAMSComponent {
             
             i = 0;
             
+            newpool = Pool[v].getValue();//new double[layernum];
+            
             while (i < layernum) {
                 
                 newpool[i] = (mixpoolsum * partpool[i]) + restpool[i];
@@ -173,12 +182,16 @@ public class Tillage_Operation extends JAMSComponent {
                 
             }
             
-            if (testoutsum > testinsum + 1 || testoutsum < testinsum - 1){
-                double deriva = testoutsum - testinsum;
+            
+            /* double deriva = testoutsum - testinsum;
+            cum_testout.setValue(cum_testout.getValue() + deriva);
+            
+            if (testoutsum > testinsum + 0.0000001 || testoutsum < testinsum - 0.000001){
+                
                 getModel().getRuntime().println("Tillage calculation problem in pool balance, derivation: " +  deriva);
-            } 
+            } */
             mixpoolsum = 0;          
-            Pool[v].setValue(newpool);
+//            Pool[v].setValue(newpool);
             
             v++;
         }

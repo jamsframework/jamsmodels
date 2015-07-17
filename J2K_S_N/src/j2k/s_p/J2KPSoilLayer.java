@@ -1031,17 +1031,23 @@ public class J2KPSoilLayer extends JAMSComponent {
 
                 /*Calculations of PFluxes (out)*/
                 
-                SurfaceSolubleP_out.setValue(calc_surfacePpool(runP_Pool) / (10000 / area.getValue()));
-                org_out_P.setValue(calc_surfacePpool(runP_org_pool) / (10000 / area.getValue())) ;
-                residue_out_P.setValue(calc_surfacePpool(runPResiduePool) / (10000 / area.getValue()));
-                stableP_out.setValue(calc_surfacePpool(runMin_Sta_P)/ (10000 / area.getValue()));
-                activP_out.setValue(calc_surfacePpool(runMin_Act_P)/ (10000 / area.getValue()));
+                SurfaceSolubleP_out.setValue(calc_surfacePpool(runP_Pool));
+                org_out_P.setValue(calc_surfacePpool(runP_org_pool)) ;
+                residue_out_P.setValue(calc_surfacePpool(runPResiduePool));
+                stableP_out.setValue(calc_surfacePpool(runMin_Sta_P));
+                activP_out.setValue(calc_surfacePpool(runMin_Act_P));
 
                 runP_Pool = runP_Pool - SurfaceSolubleP_out.getValue();
                 runP_org_pool = runP_org_pool - org_out_P.getValue();
                 runPResiduePool = runPResiduePool - residue_out_P.getValue();
                 runMin_Sta_P = runMin_Sta_P - stableP_out.getValue();
                 runMin_Act_P = runMin_Act_P - activP_out.getValue();
+                
+                SurfaceSolubleP_out.setValue(SurfaceSolubleP_out.getValue()*(area.getValue()/10000));
+                org_out_P.setValue(org_out_P.getValue()*(area.getValue()/10000)) ;
+                residue_out_P.setValue(residue_out_P.getValue()*(area.getValue()/10000));
+                stableP_out.setValue(stableP_out.getValue()*(area.getValue()/10000));
+                activP_out.setValue(activP_out.getValue()*(area.getValue()/10000));
                 
                 
 
@@ -1352,7 +1358,7 @@ public class J2KPSoilLayer extends JAMSComponent {
         //P concentration for diffrent P-pools in kg/kg,
         double concP_pool = pool / (runsoil_bulk_density * layerdepth.getValue()[0] * 100000);
 
-        surfacePpool = sedi_out.getValue() * (10000 / area.getValue())  * concP_pool * enrichmentP.getValue();
+        surfacePpool = sedi_out.getValue() * 1000  * concP_pool * enrichmentP.getValue();
 
         surfacePpool = Math.min(surfacePpool, pool);
 

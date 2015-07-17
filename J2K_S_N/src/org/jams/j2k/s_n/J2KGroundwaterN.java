@@ -121,6 +121,19 @@ import jams.model.*;
             public Attribute.Double PercoNabs;
     
     @JAMSVarDescription(
+            access = JAMSVarDescription.AccessType.READ,
+            description = "Initial HRU Concentration in mgN/l for RG1"
+            )
+            public Attribute.Double Init_N_concRG1;
+    
+    @JAMSVarDescription(
+            access = JAMSVarDescription.AccessType.READ,
+            description = "Initial HRU Concentration in mgN/l for RG2"
+            )
+            public Attribute.Double Init_N_concRG2;
+    
+    
+    @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
             description = "HRU Concentration in mgN/l for RG1"
             )
@@ -188,6 +201,10 @@ import jams.model.*;
     
     public void initAll()  {
             
+            
+            N_concRG1.setValue(Init_N_concRG1.getValue());
+            N_concRG2.setValue(Init_N_concRG2.getValue());
+        
             double iNActRG1 = (maxRG1.getValue() * N_concRG1.getValue() / 1000000) * N_delay_RG1.getValue();
             double iNActRG2 = (maxRG2.getValue() * N_concRG2.getValue() / 1000000) * N_delay_RG2.getValue();
             
