@@ -59,7 +59,7 @@ import jams.model.*;
             )
             public Attribute.Double inflow;
         
-    @JAMSVarDescription(
+/*    @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
             description = "additional inflow to the specific reach"
             )
@@ -69,7 +69,7 @@ import jams.model.*;
             access = JAMSVarDescription.AccessType.READWRITE,
             description = "outflow of the additional inflow from the specific reach"
             )
-            public Attribute.Double outAddIn;
+            public Attribute.Double outAddIn;*/
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
@@ -77,11 +77,11 @@ import jams.model.*;
             )
             public Attribute.Double actAddIn;
     
-    @JAMSVarDescription(
+    /*@JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
             description = "Catchment additional input outlet storage"
             )
-            public Attribute.Double catchmentAddIn;
+            public Attribute.Double catchmentAddIn;*/
     
       
     /*
