@@ -109,7 +109,7 @@ title="SnowModule",
         if(this.active == null || this.active.getValue()){
             //System.out.println("RUN ABCModel");
             double snowStorage = this.snowStorage.getValue();
-            double precip = this.precip.getValue() * this.area.getValue();
+            double precip = this.precip.getValue() * this.area.getValue(); //umrechnung in liter
             this.precip.setValue(precip);
             double tmin, tmax = 0;
             double tmean = this.tmean.getValue();

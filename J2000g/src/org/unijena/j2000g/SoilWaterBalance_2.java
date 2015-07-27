@@ -252,8 +252,10 @@ import jams.model.*;
         }
         
         //available water is put into soil
+        //das dürfte nicht auftreten, da der MPS vorher schon gefüllt wurde und 
+        //wenn Wasser aus dem MPS verdunstet, dann ist hier nichts mehr übrig.
         deltaMPS = maxMPS - actMPS;
-        if(inflow <= deltaMPS){
+        if(inflow <= deltaMPS){  
             if (inflow < infCap){
                 actMPS = actMPS + inflow;
                 inflow = 0;
