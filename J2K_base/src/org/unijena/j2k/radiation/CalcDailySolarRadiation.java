@@ -119,6 +119,7 @@ public class CalcDailySolarRadiation extends JAMSComponent {
             maximumSunshine = org.unijena.j2k.physicalCalculations.DailySolarRadiationCalculationMethods.calc_maximumSunshineHours(sunsetHourAngle);
             lastLati = lati;
             lastJulDay = julDay;
+            lastMaximumSunshine = maximumSunshine;
         }
         sunhmax.setValue(maximumSunshine);
         double solarRadiation = org.unijena.j2k.physicalCalculations.SolarRadiationCalculationMethods.calc_SolarRadiation(sunsh, maximumSunshine, extraterrRadiation, angstrom_a.getValue(), angstrom_b.getValue());

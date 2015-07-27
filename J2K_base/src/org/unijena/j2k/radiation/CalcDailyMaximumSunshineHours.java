@@ -57,10 +57,6 @@ public class CalcDailyMaximumSunshineHours extends JAMSComponent {
     public Attribute.Double latitude;
 
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
-    description = "daily extraterrestic radiation [MJ/m²d]")
-    public Attribute.Double actExtRad;
-
-    @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
     description = "temporal resolution [d | m]")
     public Attribute.String tempRes;
 
@@ -69,18 +65,12 @@ public class CalcDailyMaximumSunshineHours extends JAMSComponent {
     /*
      *  Component run stages
      */
-
-    public void init() throws Attribute.Entity.NoSuchAttributeException, IOException {
-        
-    }
-
     public void run() throws Attribute.Entity.NoSuchAttributeException, IOException {
 
         
             int julDay = time.get(Attribute.Calendar.DAY_OF_YEAR);
             int month = time.get(Attribute.Calendar.MONTH);
             double lati = latitude.getValue();
-            double extraterrRadiation = this.actExtRad.getValue();
             double declination = 0;
             if (this.tempRes == null) {
                 declination = org.unijena.j2k.physicalCalculations.SolarRadiationCalculationMethods.calc_SunDeclination(julDay);
@@ -96,10 +86,6 @@ public class CalcDailyMaximumSunshineHours extends JAMSComponent {
             
 
             
-        
-    }
-
-    public void cleanup() throws IOException {
         
     }
 }
