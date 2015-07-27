@@ -67,10 +67,17 @@ public class WeightedDistributedSumAggregator extends JAMSComponent {
         int id = (int)entityID.getValue();
         Attribute.Entity entity = entities.getEntity(id);
         
-        if (srcAttribute.length != dstAttributeName.length){
-            getModel().getRuntime().sendHalt("length of srcAttribute is not equal to lenght of dstAttribute");
+        //check preconditions
+        if (entity == null){
+            getModel().getRuntime().sendHalt("Entity " + id + " is not existing!");
+            return;
         }
         
+        if (srcAttribute.length != dstAttributeName.length){
+            getModel().getRuntime().sendHalt("Lengths of srcAttribute and dstAttribute differs!");
+            return;
+        }
+                        
         for (int i=0;i<srcAttribute.length;i++){
             double value1 = entity.getDouble(dstAttributeName[i].getValue());
             double value2 = srcAttribute[i].getValue() / weight.getValue();
