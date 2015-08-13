@@ -76,7 +76,7 @@ public class StandardGroundwaterParaReader extends JAMSComponent {
             e.setObject("hgeoType", gw);
 
             if (gw == null) {
-                getModel().getRuntime().println("Groundwater unit defined in entity no. " + e.getDouble("ID") + " is not defined in geo parameter table", JAMS.VERBOSE);
+                getModel().getRuntime().sendHalt("Groundwater unit defined in entity no. " + e.getDouble("ID") + " is not defined in geo parameter table");
             }
             attrs = gw.getKeys();
 
