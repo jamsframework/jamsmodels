@@ -44,6 +44,14 @@ public class AreaFraction_evaluator extends JAMSComponent {
      */
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
+            description = "Switch for area weight (0 - off; 1 - on) for the Value",
+            unit = "-"
+    )
+    public Attribute.Boolean areaweight;   
+    
+        
+    @JAMSVarDescription(
+            access = JAMSVarDescription.AccessType.READ,
             description = "Entity parameter area",
             unit = "m^2"
     )
@@ -71,7 +79,7 @@ public class AreaFraction_evaluator extends JAMSComponent {
     public Attribute.Integer CType;
 
     @JAMSVarDescription(
-            access = JAMSVarDescription.AccessType.WRITE,
+            access = JAMSVarDescription.AccessType.READWRITE,
             description = "Sumarized area which meet the condidion",
             unit = "m^2"
     )
@@ -80,51 +88,55 @@ public class AreaFraction_evaluator extends JAMSComponent {
     /*
      *  Component run stages
      */
-    public void init() {
-
+    public void initall() {
+        AreaSum.setValue(0.0);
     }
 
     public void run() {
-
-        Double run_areasum = 0.0;
-
-        switch (CType.getValue()) {
-
-            case 1: {
-
-                if (Value.getValue() > Theshhold.getValue()) {
-                    run_areasum = run_areasum + area.getValue();
-                }
-            }
-            case 2:{
-
-                if (Value.getValue() >= Theshhold.getValue()) {
-                    run_areasum = run_areasum + area.getValue();
-                }
-            }
-
-            case 3:{
-
-                if (Value.getValue() < Theshhold.getValue()) {
-                    run_areasum = run_areasum + area.getValue();
-                }
-            }
-
-            case 4:{
-
-                if (Value.getValue() <= Theshhold.getValue()) {
-                    run_areasum = run_areasum + area.getValue();
-                }
-            }
-
-            case 5:{
-
-                if (Value.getValue() == Theshhold.getValue()) {
-                    run_areasum = run_areasum + area.getValue();
-                }
-            }
-
+        
+        
+        Double runvalue = 0.0;
+        Double run_areasum = AreaSum.getValue();
+        
+        
+        
+        if (areaweight.getValue()){
+            runvalue = Value.getValue()/area.getValue();
+        }else{
+            runvalue = Value.getValue();
         }
+        
+
+        if (CType.getValue() == 1) {       
+
+                if (runvalue > Theshhold.getValue()) {
+                    run_areasum = run_areasum + area.getValue();
+                }
+            }else if (CType.getValue() == 2){
+           
+                
+
+                if (runvalue >= Theshhold.getValue()) {
+                    run_areasum = run_areasum + area.getValue();
+                }
+            }else if (CType.getValue() == 3){
+
+                if (runvalue < Theshhold.getValue()) {
+                    run_areasum = run_areasum + area.getValue();
+                }
+            }else if (CType.getValue() == 4){
+
+                if (runvalue <= Theshhold.getValue()) {
+                    run_areasum = run_areasum + area.getValue();
+                }
+            }else if (CType.getValue() == 5){
+
+                if (runvalue == Theshhold.getValue()) {
+                    run_areasum = run_areasum + area.getValue();
+                }
+            }
+
+        
         
         AreaSum.setValue(run_areasum);
 
