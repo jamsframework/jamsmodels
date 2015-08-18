@@ -896,7 +896,7 @@ public class j2kpotCropGrowthsalt_new extends JAMSComponent {
         if (this.idc == 3 || this.idc == 6 || this.idc == 7 || (this.idc == 8)) {
 
             double u1 = 100 * this.fphu_act;
-            hi_act = this.hvsti * (u1) / (u1 + Math.exp(11.1 - 10.0 * this.fphu_act));
+            hi_act = this.hvsti * (u1) / (u1 + Math.exp(11.1 - 10.0 * this.fphu_act));           
             hi_act = Math.max(hi_act, this.hvsti * 0.75);
             hi_act = Math.min(hi_act, hvsti);
             // crop yield (kg/ha)is calculated as
@@ -1017,13 +1017,17 @@ public class j2kpotCropGrowthsalt_new extends JAMSComponent {
             }*/
             // Amounts of nitrogen [kg N/ha](and who wants P) to be removed from the field
             // whereas cnyld is the fraction of N being removed by the field crop
-            this.yldNaCl = bioNaCl_act * (this.yield/bio_opt);
+            if (bio_opt == 0.0){
+              this.yldNaCl = 0.0;  
+            }else{
+              this.yldNaCl = bioNaCl_act * (this.yield/bio_opt);  
+            }
             this.yldN = this.cnyld * this.yield;
 
             if (this.yldN > bioN_act * (yldN / (this.yldN + ((bio_opt - yield) * (this.bn3 / 2.0))))) {
                 yldN = bioN_act * (yldN / (this.yldN + ((bio_opt - yield) * (this.bn3 / 2.0))));
             }
-            //System.out.println (" Julianischer Tag "+ Attribute.Calendar.DAY_OF_YEAR + " hi_act: " + hi_act +  " hvsti: " + hvsti +  " fphu: " + fphu_act + " yldN " + yldN + " yield " + yield);
+            //    System.out.println (" Julianischer Tag "+ Attribute.Calendar.DAY_OF_YEAR + " hi_act: " + hi_act +  " hvsti: " + hvsti +  " fphu: " + fphu_act + " yldN " + yldN + " yield " + yield);
             //double yldP = this.cpyld * yield;
 
             fracharvest = 1 - (yield / bio_opt);
