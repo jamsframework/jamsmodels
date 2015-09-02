@@ -46,23 +46,18 @@ public class IrrigationApplicationDrip extends JAMSComponent {
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
             description = "Water available for irrigation",
-            unit = "l"
+            unit = "L"
     )
     public Attribute.Double irrigationWater;
 
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
-            description = "HRU precipitation",
-            unit = "mm"
+            description = "HRU net Rain",
+            unit = "L"
     )
-    public Attribute.Double precip;
+    public Attribute.Double netRain;
 
-    @JAMSVarDescription(
-            access = JAMSVarDescription.AccessType.READ,
-            description = "HRU area",
-            unit = "m²"
-    )
-    public Attribute.Double area;
+
 
     /*
      *  Component run stages
@@ -71,8 +66,8 @@ public class IrrigationApplicationDrip extends JAMSComponent {
     @Override
     public void run() {
         
-        double irrigationInMM = irrigationWater.getValue() / area.getValue();
-        precip.setValue(precip.getValue() + irrigationInMM);
+        double irrigationInMM = irrigationWater.getValue();
+        netRain.setValue(netRain.getValue() + irrigationInMM);
         irrigationWater.setValue(0);
         
     }
