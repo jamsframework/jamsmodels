@@ -82,10 +82,10 @@ public class J2KProcessLayeredSoilWater2015 extends JAMSComponent {
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
             description = "in m actual depth of roots")
     public Attribute.Double rootdepth;
-    @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
+    @JAMSVarDescription(access = JAMSVarDescription.AccessType.READWRITE,
             description = "HRU attribute maximum MPS")
     public Attribute.DoubleArray maxMPS;
-    @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
+    @JAMSVarDescription(access = JAMSVarDescription.AccessType.READWRITE,
             description = "HRU attribute maximum LPS")
     public Attribute.DoubleArray maxLPS;
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READWRITE,
@@ -232,7 +232,7 @@ public class J2KProcessLayeredSoilWater2015 extends JAMSComponent {
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
             description = "estimated hydraulicconductivity in cm/d")
     public Attribute.Double Kf_geo;
-    @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
+    @JAMSVarDescription(access = JAMSVarDescription.AccessType.READWRITE,
             description = "in cm/d soil hydraulic conductivity")
     public Attribute.DoubleArray kf_h;
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.WRITE,
@@ -356,11 +356,7 @@ public class J2KProcessLayeredSoilWater2015 extends JAMSComponent {
         this.kf_h.setValue(Kf_val);
         this.root_h.setValue(root);
 
-        if (Kf_val.length == horizons) {
-            horizons = horizons;
-        } else {
-            horizons = horizons;
-        }
+
 
     }
 

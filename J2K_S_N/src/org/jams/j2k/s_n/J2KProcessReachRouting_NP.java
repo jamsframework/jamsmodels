@@ -587,7 +587,30 @@ import jams.model.*;
             access = JAMSVarDescription.AccessType.READWRITE,
             description = ""
             )
-            public Attribute.Double Act_stableP;    
+            public Attribute.Double Act_stableP;
+    
+        @JAMSVarDescription(
+            access = JAMSVarDescription.AccessType.READWRITE,
+            description = "reach statevar sediment inflow")
+            public Attribute.Double insed;
+    
+    @JAMSVarDescription(
+            access = JAMSVarDescription.AccessType.WRITE,
+            description = "reach statevar sediment outflow")
+            public Attribute.Double outsed;
+    
+    @JAMSVarDescription(
+            access = JAMSVarDescription.AccessType.WRITE,
+            description = "Catchment outlet sediment storage",
+            defaultValue= "0"
+            )
+            public Attribute.Double catchmentSed;
+    
+    @JAMSVarDescription(
+            access = JAMSVarDescription.AccessType.READWRITE,
+            description = "Reach statevar sed storage"
+            )
+            public Attribute.Double actsed;
     
     
     private double depth; 

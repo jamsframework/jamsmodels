@@ -78,7 +78,7 @@ public class J2KNSoilLayer_surf extends JAMSComponent {
     public Attribute.Double totaldepth;
 
     @JAMSVarDescription(
-            access = JAMSVarDescription.AccessType.READ,
+            access = JAMSVarDescription.AccessType.READWRITE,
             description = "in m actual depth of roots",
             unit = "m",
             lowerBound = 0,
@@ -429,7 +429,7 @@ public class J2KNSoilLayer_surf extends JAMSComponent {
     public Attribute.Double SurfaceN_in;
 
     @JAMSVarDescription(
-            access = JAMSVarDescription.AccessType.READ,
+            access = JAMSVarDescription.AccessType.READWRITE,
             description = "Nitrate in interflow in added to HRU layer in N",
             unit = "kg",
             lowerBound = 0,
@@ -492,7 +492,7 @@ public class J2KNSoilLayer_surf extends JAMSComponent {
     public Attribute.DoubleArray actETP_h;
 
     @JAMSVarDescription(
-            access = JAMSVarDescription.AccessType.READ,
+            access = JAMSVarDescription.AccessType.READWRITE,
             description = " Nitrate input due to Fertilisation in N",
             unit = "kg*ha^-1",
             lowerBound = 0,
@@ -501,7 +501,7 @@ public class J2KNSoilLayer_surf extends JAMSComponent {
     public Attribute.Double fertNO3;
 
     @JAMSVarDescription(
-            access = JAMSVarDescription.AccessType.READ,
+            access = JAMSVarDescription.AccessType.READWRITE,
             description = " Ammonium input due to Fertilisation in N",
             unit = "kg*ha^-1",
             lowerBound = 0,
@@ -510,7 +510,7 @@ public class J2KNSoilLayer_surf extends JAMSComponent {
     public Attribute.Double fertNH4;
 
     @JAMSVarDescription(
-            access = JAMSVarDescription.AccessType.READ,
+            access = JAMSVarDescription.AccessType.READWRITE,
             description = " Stable organig N input due to Fertilisation in N",
             unit = "kg*ha^-1",
             lowerBound = 0,
@@ -519,7 +519,7 @@ public class J2KNSoilLayer_surf extends JAMSComponent {
     public Attribute.Double fertstableorg;
 
     @JAMSVarDescription(
-            access = JAMSVarDescription.AccessType.READ,
+            access = JAMSVarDescription.AccessType.READWRITE,
             description = " Activ organig N input due to Fertilisation in N",
             unit = "kg*ha^-1",
             lowerBound = 0,
@@ -537,7 +537,7 @@ public class J2KNSoilLayer_surf extends JAMSComponent {
     public Attribute.Double sum_Ninput;
 
     @JAMSVarDescription(
-            access = JAMSVarDescription.AccessType.READ,
+            access = JAMSVarDescription.AccessType.READWRITE,
             description = "Current organic fertilizer amount added to residue pool",
             unit = "kg*ha^-1",
             lowerBound = 0,
@@ -858,7 +858,7 @@ public class J2KNSoilLayer_surf extends JAMSComponent {
 
 
     @JAMSVarDescription(
-            access = JAMSVarDescription.AccessType.WRITE,
+            access = JAMSVarDescription.AccessType.READWRITE,
             description = "actual LAI"
     )
     public Attribute.Double LAI;

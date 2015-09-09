@@ -61,13 +61,13 @@ import jams.model.*;
             public Attribute.Double slope;
     
     @JAMSVarDescription(
-            access = JAMSVarDescription.AccessType.READ,
+            access = JAMSVarDescription.AccessType.READWRITE,
             description = "maximum RG1 storage"
             )
             public Attribute.Double maxRG1;
     
     @JAMSVarDescription(
-            access = JAMSVarDescription.AccessType.READ,
+            access = JAMSVarDescription.AccessType.READWRITE,
             description = "maximum RG2 storage"
             )
             public Attribute.Double maxRG2;

@@ -374,7 +374,7 @@ public class J2KPSoilLayer extends JAMSComponent {
     public Attribute.DoubleArray actETP_h;
 
     @JAMSVarDescription(
-            access = JAMSVarDescription.AccessType.READ,
+            access = JAMSVarDescription.AccessType.READWRITE,
             description = "organic Phosphorous input due to Fertilisation in P added to active org pool",
             unit = "kg*ha^-1",
             lowerBound = 0,
@@ -383,7 +383,7 @@ public class J2KPSoilLayer extends JAMSComponent {
     public Attribute.Double fertP_activeorg;
 
     @JAMSVarDescription(
-            access = JAMSVarDescription.AccessType.READ,
+            access = JAMSVarDescription.AccessType.READWRITE,
             description = "Current organic P fertilizer amount added to residue pool",
             unit = "kg*ha^-1",
             lowerBound = 0,
@@ -401,7 +401,7 @@ public class J2KPSoilLayer extends JAMSComponent {
     public Attribute.Double Addresidue_poolp;
 
     @JAMSVarDescription(
-            access = JAMSVarDescription.AccessType.READ,
+            access = JAMSVarDescription.AccessType.READWRITE,
             description = "Current organic P fertilizer amount added to solute pool",
             unit = "kg*ha^-1",
             lowerBound = 0,
