@@ -52,6 +52,13 @@ public class IrrigationApplicationDrip extends JAMSComponent {
 
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
+            description = "Added water for irrigation",
+            unit = "l"
+    )
+    public Attribute.Double irrigationTotal;
+
+    @JAMSVarDescription(
+            access = JAMSVarDescription.AccessType.READWRITE,
             description = "HRU net Rain",
             unit = "L"
     )
@@ -66,8 +73,10 @@ public class IrrigationApplicationDrip extends JAMSComponent {
     @Override
     public void run() {
         
+        irrigationTotal.setValue(0);
         double irrigationInMM = irrigationWater.getValue();
         netRain.setValue(netRain.getValue() + irrigationInMM);
+        irrigationTotal.setValue(irrigationWater.getValue());
         irrigationWater.setValue(0);
         
     }

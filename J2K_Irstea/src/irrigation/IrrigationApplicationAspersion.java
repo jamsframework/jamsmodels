@@ -49,6 +49,13 @@ public class IrrigationApplicationAspersion extends JAMSComponent {
             unit = "l"
     )
     public Attribute.Double irrigationWater;
+    
+        @JAMSVarDescription(
+            access = JAMSVarDescription.AccessType.READWRITE,
+            description = "Added water for irrigation",
+            unit = "l"
+    )
+    public Attribute.Double irrigationTotal;
 
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
@@ -71,8 +78,10 @@ public class IrrigationApplicationAspersion extends JAMSComponent {
     @Override
     public void run() {
         
+        irrigationTotal.setValue(0);
         double irrigationInMM = irrigationWater.getValue() / area.getValue();
         precip.setValue(precip.getValue() + irrigationInMM);
+        irrigationTotal.setValue(irrigationWater.getValue());
         irrigationWater.setValue(0);
         
     }
