@@ -630,7 +630,7 @@ public class J2KNSoilLayer_surf extends JAMSComponent {
     public Attribute.Double sedi_out;
 
     @JAMSVarDescription(
-            access = JAMSVarDescription.AccessType.READ,
+            access = JAMSVarDescription.AccessType.READWRITE,
             description = "NH4 in surface runoff added to HRU in N",
             unit = "kg",
             lowerBound = 0,
@@ -639,7 +639,7 @@ public class J2KNSoilLayer_surf extends JAMSComponent {
     public Attribute.Double NH4_in;
 
     @JAMSVarDescription(
-            access = JAMSVarDescription.AccessType.READ,
+            access = JAMSVarDescription.AccessType.READWRITE,
             description = "Residue in surface runoff added to HRU ",
             unit = "kg",
             lowerBound = 0,
@@ -648,7 +648,7 @@ public class J2KNSoilLayer_surf extends JAMSComponent {
     public Attribute.Double residue_in;
     
      @JAMSVarDescription(
-            access = JAMSVarDescription.AccessType.WRITE,
+            access = JAMSVarDescription.AccessType.READWRITE,
             description = "Residue-N in surface runoff added to HRU in N",
             unit = "kg",
             lowerBound = 0,
@@ -657,7 +657,7 @@ public class J2KNSoilLayer_surf extends JAMSComponent {
     public Attribute.Double residueN_in;
 
     @JAMSVarDescription(
-            access = JAMSVarDescription.AccessType.READ,
+            access = JAMSVarDescription.AccessType.READWRITE,
             description = "Activ-N in surface runoff added to HRU in N",
             unit = "kg",
             lowerBound = 0,
@@ -666,7 +666,7 @@ public class J2KNSoilLayer_surf extends JAMSComponent {
     public Attribute.Double activN_in;
 
     @JAMSVarDescription(
-            access = JAMSVarDescription.AccessType.READ,
+            access = JAMSVarDescription.AccessType.READWRITE,
             description = "Stable-N in surface runoff added to HRU in N",
             unit = "kg",
             lowerBound = 0,
@@ -833,7 +833,7 @@ public class J2KNSoilLayer_surf extends JAMSComponent {
     public Attribute.DoubleArray gamma_ntr;
 
     @JAMSVarDescription(
-            access = JAMSVarDescription.AccessType.READ,
+            access = JAMSVarDescription.AccessType.READWRITE,
             description = "P-Organic fresh Pool from Residue, P content in layer",
             unit = "kg*ha^-1",
             lowerBound = 0,
@@ -1055,6 +1055,15 @@ public class J2KNSoilLayer_surf extends JAMSComponent {
         //inpN_biomass.setValue(0);
         rootdepth.setValue(0);
         LAI.setValue(0);
+        NH4_in.setValue(0);
+        residue_in.setValue(0);
+        stableN_in.setValue(0);
+        P_residue_pool_fresh.setValue(InterflowN_invals);
+        activN_in.setValue(0);
+        
+        
+        
+        
 
     }
 

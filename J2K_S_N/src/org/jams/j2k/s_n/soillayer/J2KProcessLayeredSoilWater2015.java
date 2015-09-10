@@ -76,10 +76,10 @@ public class J2KProcessLayeredSoilWater2015 extends JAMSComponent {
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
             description = "horizons")
     public Attribute.Double horizons;
-    @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
+    @JAMSVarDescription(access = JAMSVarDescription.AccessType.READWRITE,
             description = "in cm depth of soil layer")
     public Attribute.DoubleArray layerdepth;
-    @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
+    @JAMSVarDescription(access = JAMSVarDescription.AccessType.READWRITE,
             description = "in m actual depth of roots")
     public Attribute.Double rootdepth;
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READWRITE,
@@ -252,7 +252,7 @@ public class J2KProcessLayeredSoilWater2015 extends JAMSComponent {
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
             description = "Layer MPS diffusion factor > 1 [-]  default = 10")
     public Attribute.Double kdiff_layer;
-    @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
+    @JAMSVarDescription(access = JAMSVarDescription.AccessType.READWRITE,
             description = "Indicates whether roots can penetrate or not the soil layer [-]")
     public Attribute.DoubleArray root_h;
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.WRITE,
@@ -262,7 +262,7 @@ public class J2KProcessLayeredSoilWater2015 extends JAMSComponent {
             description = "preferential flow factor [-] 0 - 1 default = 1")
     public Attribute.Double preffac;
         @JAMSVarDescription(
-            access = JAMSVarDescription.AccessType.READ,
+            access = JAMSVarDescription.AccessType.READWRITE,
             description = "maximum FPS (Fine Pore Storage) soil water content",
             unit = "L",
             lowerBound = 0,
@@ -352,6 +352,7 @@ public class J2KProcessLayeredSoilWater2015 extends JAMSComponent {
         this.satLPS.setValue(stLPS);
         this.inRD2.setValue(inRD2);
         this.layerdepth.setValue(depth);
+        this.rootdepth.setValue(0);
         this.satSoil.setValue(0);
         this.kf_h.setValue(Kf_val);
         this.root_h.setValue(root);

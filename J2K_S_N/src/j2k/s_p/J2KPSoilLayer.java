@@ -420,7 +420,7 @@ public class J2KPSoilLayer extends JAMSComponent {
     public Attribute.Double sum_Pinput;
 
     @JAMSVarDescription(
-            access = JAMSVarDescription.AccessType.READ,
+            access = JAMSVarDescription.AccessType.READWRITE,
             description = "Phosphorous input of plant residues in P",
             unit = "kg*ha^-1",
             lowerBound = 0,
@@ -486,7 +486,7 @@ public class J2KPSoilLayer extends JAMSComponent {
     public Attribute.Double sedi_out;
 
     @JAMSVarDescription(
-            access = JAMSVarDescription.AccessType.READ,
+            access = JAMSVarDescription.AccessType.READWRITE,
             description = "Organic-P in surface runoff added to HRU in P",
             unit = "kg",
             lowerBound = 0,
@@ -495,7 +495,7 @@ public class J2KPSoilLayer extends JAMSComponent {
     public Attribute.Double org_in_P;
 
     @JAMSVarDescription(
-            access = JAMSVarDescription.AccessType.READ,
+            access = JAMSVarDescription.AccessType.READWRITE,
             description = "Residue-P in surface runoff added to HRU in P",
             unit = "kg",
             lowerBound = 0,
@@ -524,7 +524,7 @@ public class J2KPSoilLayer extends JAMSComponent {
 
 
     @JAMSVarDescription(
-            access = JAMSVarDescription.AccessType.READ,
+            access = JAMSVarDescription.AccessType.READWRITE,
             description = "Organic-P in surface runoff leaving the HRU in P",
             unit = "kg",
             lowerBound = 0,
@@ -833,6 +833,9 @@ public class J2KPSoilLayer extends JAMSComponent {
         fertP_activeorg.setValue(0);
         fertorgPfresh.setValue(0);
         fertPmin.setValue(0);
+        org_in_P.setValue(0);
+        inpP_biomass.setValue(0);
+   
 
     }
 

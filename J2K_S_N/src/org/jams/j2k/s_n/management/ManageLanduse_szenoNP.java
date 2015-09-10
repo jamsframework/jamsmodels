@@ -60,7 +60,7 @@ public class ManageLanduse_szenoNP extends JAMSComponent {
             description = "Current organic fertilizer amount N added to residue pool")
     public Attribute.Double fertorgNfresh;
     @JAMSVarDescription(
-            access = JAMSVarDescription.AccessType.READ,
+            access = JAMSVarDescription.AccessType.READWRITE,
             description = "Reduction Factor for Fertilisation 0 - 10 [-]")
     public Attribute.Double ReductionFactor;
     @JAMSVarDescription(

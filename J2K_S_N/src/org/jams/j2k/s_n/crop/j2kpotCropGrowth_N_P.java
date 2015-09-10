@@ -348,7 +348,7 @@ title="j2kCropGrowth_N_P",
             public Attribute.Integer harvesttype;
         
     @JAMSVarDescription(
-            access = JAMSVarDescription.AccessType.READ,
+            access = JAMSVarDescription.AccessType.READWRITE,
             description = " Residue in Layer in kgN/ha"
             )
             public Attribute.DoubleArray Residue_pool;
@@ -454,8 +454,8 @@ title="j2kCropGrowth_N_P",
     int PS = 0;     //Plant status for optimal growth*/
     
     
-    public void init()  {
-        
+    public void initAll()  {
+        //Residue_pool.setValue(doubles);
     }
     
     public void run() throws Attribute.Entity.NoSuchAttributeException{
