@@ -57,12 +57,19 @@ public class IrrigationApplicationDrip extends JAMSComponent {
     )
     public Attribute.Double irrigationTotal;
 
+        @JAMSVarDescription(
+            access = JAMSVarDescription.AccessType.READ,
+            description = "maximum MPS",
+            unit="L"
+            )
+            public Attribute.Double maxMPS;
+        
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
-            description = "HRU net Rain",
-            unit = "L"
-    )
-    public Attribute.Double netRain;
+            description = "state var actual MPS",
+            unit="L"
+            )
+            public Attribute.Double actMPS;
 
 
 
@@ -75,7 +82,12 @@ public class IrrigationApplicationDrip extends JAMSComponent {
         
         irrigationTotal.setValue(0);
         double irrigationInMM = irrigationWater.getValue();
-        netRain.setValue(netRain.getValue() + irrigationInMM);
+        if ((actMPS.getValue() + irrigationInMM) <= maxMPS.getValue()){
+        actMPS.setValue(actMPS.getValue() + irrigationInMM);
+        } else {
+        actMPS.setValue(maxMPS.getValue());    
+        }
+        
         irrigationTotal.setValue(irrigationWater.getValue());
         irrigationWater.setValue(0);
         

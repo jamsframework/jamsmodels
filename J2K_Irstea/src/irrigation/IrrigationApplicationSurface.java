@@ -58,19 +58,13 @@ public class IrrigationApplicationSurface extends JAMSComponent {
     public Attribute.Double irrigationTotal;
 
 
-    @JAMSVarDescription(
-            access = JAMSVarDescription.AccessType.READWRITE,
-            description = "HRU precipitation",
-            unit = "mm"
-    )
-    public Attribute.Double precip;
 
     @JAMSVarDescription(
-            access = JAMSVarDescription.AccessType.READ,
-            description = "HRU area",
-            unit = "m²"
+            access = JAMSVarDescription.AccessType.READWRITE,
+            description = "HRU net Rain",
+            unit = "L"
     )
-    public Attribute.Double area;
+    public Attribute.Double netRain;
 
     /*
      *  Component run stages
@@ -80,8 +74,8 @@ public class IrrigationApplicationSurface extends JAMSComponent {
     public void run() {
         
         irrigationTotal.setValue(0);
-        double irrigationInMM = irrigationWater.getValue() / area.getValue();
-        precip.setValue(precip.getValue() + irrigationInMM);
+        double irrigationInMM = irrigationWater.getValue();
+        netRain.setValue(netRain.getValue() + irrigationInMM);
         irrigationTotal.setValue(irrigationWater.getValue());
         irrigationWater.setValue(0);
         
