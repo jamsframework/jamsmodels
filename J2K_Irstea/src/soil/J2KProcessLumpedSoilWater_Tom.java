@@ -613,7 +613,7 @@ import jams.model.*;
         
         
         /** determining outflow from LPS */
-        double MobileWater = 0
+        double MobileWater = 0;
         if(this.run_actLPS > 0){
             MobileWater = this.calcLPSoutflow();
         } else
