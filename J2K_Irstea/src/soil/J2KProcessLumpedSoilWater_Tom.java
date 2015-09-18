@@ -613,7 +613,7 @@ import jams.model.*;
         
         
         /** determining outflow from LPS */
-        double MobileWater = 0;
+        double MobileWater = 0
         if(this.run_actLPS > 0){
             MobileWater = this.calcLPSoutflow();
         } else
@@ -638,7 +638,7 @@ import jams.model.*;
         satSoil.setValue(this.run_satSoil);
         satMPS.setValue(this.run_satMPS);
         satLPS.setValue(this.run_satLPS);
-        actMPS.setValue(this.run_actMPS);calcMPSInflow
+        actMPS.setValue(this.run_actMPS);
         actLPS.setValue(this.run_actLPS);
         actDPS.setValue(this.run_actDPS);
         actET.setValue(this.run_actETP);
