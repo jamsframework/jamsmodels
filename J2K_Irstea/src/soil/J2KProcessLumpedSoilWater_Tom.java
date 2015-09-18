@@ -567,7 +567,7 @@ import jams.model.*;
         /** redistributing RD1 and RD2 inflow of antecedent unit */
         this.redistRD1_RD2_in();
         
-        /** calculation of ETP from dep. Storage and open water bodies */
+        /** calculation of ETP from depression Storage and open water bodies */
         this.calcPreInfEvaporation();
         
         /** determining available water for infiltration */
@@ -638,7 +638,7 @@ import jams.model.*;
         satSoil.setValue(this.run_satSoil);
         satMPS.setValue(this.run_satMPS);
         satLPS.setValue(this.run_satLPS);
-        actMPS.setValue(this.run_actMPS);
+        actMPS.setValue(this.run_actMPS);calcMPSInflow
         actLPS.setValue(this.run_actLPS);
         actDPS.setValue(this.run_actDPS);
         actET.setValue(this.run_actETP);
