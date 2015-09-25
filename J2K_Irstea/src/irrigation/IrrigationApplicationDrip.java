@@ -57,39 +57,38 @@ public class IrrigationApplicationDrip extends JAMSComponent {
     )
     public Attribute.Double irrigationTotal;
 
-        @JAMSVarDescription(
+    @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
             description = "maximum MPS",
-            unit="L"
-            )
-            public Attribute.Double maxMPS;
-        
+            unit = "L"
+    )
+    public Attribute.Double maxMPS;
+
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
             description = "state var actual MPS",
-            unit="L"
-            )
-            public Attribute.Double actMPS;
-
-
+            unit = "L"
+    )
+    public Attribute.Double actMPS;
 
     /*
      *  Component run stages
      */
-
     @Override
     public void run() {
+
+        // actual irrigation is the minimum of available storage capacity and 
+        // availabe irrigation water
+        double actIrrigation = Math.min(maxMPS.getValue() - actMPS.getValue(), irrigationWater.getValue());
         
-        irrigationTotal.setValue(0);
-        double irrigationInMM = irrigationWater.getValue();
-        if ((actMPS.getValue() + irrigationInMM) <= maxMPS.getValue()){
-        actMPS.setValue(actMPS.getValue() + irrigationInMM);
-        } else {
-        actMPS.setValue(maxMPS.getValue());    
-        }
-        
-        irrigationTotal.setValue(irrigationWater.getValue());
-        irrigationWater.setValue(0);
+        // increase actMPS by the irrigation volume
+        actMPS.setValue(actMPS.getValue() + actIrrigation);
+
+        // decrease irrigationWater by the irrigation volume
+        irrigationWater.setValue(irrigationWater.getValue() - actIrrigation);
+
+        // set irrigationTotal to the irrigation volume
+        irrigationTotal.setValue(actIrrigation);
         
     }
 
