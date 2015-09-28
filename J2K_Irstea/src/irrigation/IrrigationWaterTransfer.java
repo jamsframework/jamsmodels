@@ -107,6 +107,12 @@ public class IrrigationWaterTransfer extends JAMSComponent {
             description = "Total irrigation transfer"
     )
     public Attribute.Double totalTransfer;
+    
+        @JAMSVarDescription(
+            access = JAMSVarDescription.AccessType.WRITE,
+            description = "Total input in the reach"
+    )
+    public Attribute.Double totalInput;
 
     /*
      *  Component run stages
@@ -119,10 +125,13 @@ public class IrrigationWaterTransfer extends JAMSComponent {
 
         //check if this reach even has irrigated HRUs in its catchment
         if (!currentReach.existsAttribute(irrigationEntitiesListName.getValue())) {
-            return;
+                    double totalIn = inRD1.getValue() + inRD2.getValue() + inRG1.getValue() + inRG2.getValue();
+                    this.totalInput.setValue(totalIn);
+        return;
         }
 
         double totalIn = inRD1.getValue() + inRD2.getValue() + inRG1.getValue() + inRG2.getValue();
+        this.totalInput.setValue(totalIn);
         double totalDemand = 0;
 
         List<Attribute.Entity> l = (List) currentReach.getObject(irrigationEntitiesListName.getValue());
