@@ -162,7 +162,8 @@ public class IrrigationDemand extends JAMSComponent {
 
             //need to irrigate, now check water deficit
             double deficiteVolume = (1 - satLPS.getValue()) * maxLPS.getValue() * irrigationDemandCorrectionLPS.getValue() +
-                                    (1 - satMPS.getValue()) * maxMPS.getValue() * irrigationDemandCorrectionMPS.getValue();
+                                  (1 - satMPS.getValue()) * maxMPS.getValue() * irrigationDemandCorrectionMPS.getValue();
+            //  double deficiteVolume = potET.getValue() - actET.getValue();
 
             //set the demand
             irrigationDemand.setValue(deficiteVolume);
