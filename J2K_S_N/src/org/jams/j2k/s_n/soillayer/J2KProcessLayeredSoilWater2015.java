@@ -250,6 +250,12 @@ public class J2KProcessLayeredSoilWater2015 extends JAMSComponent {
      )
      public Attribute.Double epco; */
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
+    description = "field capacity adaptation factor, 0.5 - 2")
+    public Attribute.Double FCAdaptation;
+    @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
+    description = "air capacity adaptation factor, 0.5 - 2")
+    public Attribute.Double ACAdaptation;
+    @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
             description = "Layer MPS diffusion factor > 1 [-]  default = 10")
     public Attribute.Double kdiff_layer;
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READWRITE,
@@ -261,13 +267,12 @@ public class J2KProcessLayeredSoilWater2015 extends JAMSComponent {
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
             description = "preferential flow factor [-] 0 - 1 default = 1")
     public Attribute.Double preffac;
-        @JAMSVarDescription(
+    @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
             description = "maximum FPS (Fine Pore Storage) soil water content",
             unit = "L",
             lowerBound = 0,
-            upperBound = 2000000000
-    )
+            upperBound = 2000000000)
     public Attribute.DoubleArray stohru_FPS;
   
     
@@ -287,7 +292,17 @@ public class J2KProcessLayeredSoilWater2015 extends JAMSComponent {
         Attribute.Entity entity = entities.getCurrent();
         //System.out.println("Entity: " + entity.getId());
         int horizons = (int) this.horizons.getValue();
-
+        double mpsmult = FCAdaptation.getValue();
+        double lpsmult = ACAdaptation.getValue();
+        
+        if (Double.isNaN(mpsmult)){
+          mpsmult = 1;   
+        }
+        
+         if (Double.isNaN(lpsmult)){
+          lpsmult = 1;   
+        }
+        
         double[] mxMPS = new double[horizons];
         double[] mxLPS = new double[horizons];
         double[] mxFPS = new double[horizons];
@@ -313,7 +328,11 @@ public class J2KProcessLayeredSoilWater2015 extends JAMSComponent {
         String corgName = "corg_h";
 
         for (int h = 0; h < horizons; h++) {
+/*            try {
             depth[h] = entity.getDouble(depthName + h);
+            } catch (Attribute.Entity.NoSuchAttributeException nsae) {
+                System.out.println("");
+            }*/
             /*     if(remRD >= depth[h] && remRD > 0){
              mxMPS[h] = entity.getDouble(aNameFC+h);
              mxMPS[h] = mxMPS[h] * this.area.getValue();
@@ -325,10 +344,12 @@ public class J2KProcessLayeredSoilWater2015 extends JAMSComponent {
              mxMPS[h] = mxMPS[h] * this.area.getValue();
              remRD = remRD - depth[h];
              }*/
-
-            mxMPS[h] = entity.getDouble(aNameFC + h) * area.getValue();
-            mxFPS[h] = entity.getDouble(aNameDC + h) * area.getValue();
-            mxLPS[h] = entity.getDouble(aNameAC + h) * area.getValue();
+            
+            
+            
+            mxMPS[h] = entity.getDouble(aNameFC + h) * area.getValue() * mpsmult;
+            mxFPS[h] = entity.getDouble(aNameDC + h) * area.getValue() ;
+            mxLPS[h] = entity.getDouble(aNameAC + h) * area.getValue()* lpsmult;
             corg[h] = entity.getDouble(corgName + h);
             root[h] = entity.getDouble(rootname + h);
             acMPS[h] = mxMPS[h];
