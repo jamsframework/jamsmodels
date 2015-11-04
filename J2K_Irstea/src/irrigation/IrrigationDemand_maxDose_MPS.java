@@ -138,8 +138,8 @@ public class IrrigationDemand_maxDose_MPS extends JAMSComponent {
 
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            description = "maximal dosis for irrigation"
-            
+            description = "maximal dosis for irrigation",
+            unit = "mm"
     )
     public Attribute.Double maxDosis; 
     
@@ -193,9 +193,11 @@ public class IrrigationDemand_maxDose_MPS extends JAMSComponent {
             //                      (1 - satMPS.getValue()) * maxMPS.getValue() * irrigationDemandCorrectionMPS.getValue();
              //  double deficiteVolume = Math.max(0,(0.2 - satLPS.getValue())) * maxLPS.getValue() * irrigationDemandCorrectionLPS.getValue() +
             //                      Math.max(0,(0.2 - satMPS.getValue())) * maxMPS.getValue() * irrigationDemandCorrectionMPS.getValue();
-         
-            double deficiteVolume = Math.min(Math.max(0,(satLPSexp.getValue() - satLPS.getValue())) * maxLPS.getValue() * irrigationDemandCorrectionLPS.getValue() +
-                                    Math.max(0,(satMPSexp.getValue() - satMPS.getValue())) * maxMPS.getValue() * irrigationDemandCorrectionMPS.getValue(), maxDosis.getValue() * area.getValue());
+          double deficiteVolume = Math.max(0,(satLPSexp.getValue() - satLPS.getValue())) * maxLPS.getValue() * irrigationDemandCorrectionLPS.getValue() +
+                                    Math.max(0,(satMPSexp.getValue() - satMPS.getValue())) * maxMPS.getValue() * irrigationDemandCorrectionMPS.getValue();
+            if (maxDosis.getValue() > 0) {
+            deficiteVolume = Math.min(deficiteVolume, maxDosis.getValue() * area.getValue());
+            }
          
             //set the demand
             irrigationDemand.setValue(deficiteVolume);
