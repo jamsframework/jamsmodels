@@ -121,7 +121,7 @@ public class IrrigationWaterTransfer_act extends JAMSComponent {
     public Attribute.String irrigationWaterName;
 
             @JAMSVarDescription(
-            access = JAMSVarDescription.AccessType.WRITE,
+            access = JAMSVarDescription.AccessType.READ,
             description = "Ratio of water available for irrigation in the reach (actR..)"
     )
     public Attribute.Double actPrel;
@@ -214,7 +214,7 @@ public class IrrigationWaterTransfer_act extends JAMSComponent {
             inRG1.setValue(0);
             inRG2.setValue(0);
             // reduce the act... to (1 - actPrel)*act...
-            actRD1.setValue(actRD1.getValue() - (1 - actPrel.getValue()));
+            actRD1.setValue(actRD1.getValue() * (1 - actPrel.getValue()));
             actRD2.setValue(actRD2.getValue() * (1 - actPrel.getValue()));
             actRG1.setValue(actRG1.getValue() * (1 - actPrel.getValue()));
             actRG2.setValue(actRG2.getValue() * (1 - actPrel.getValue()));

@@ -100,7 +100,8 @@ public class IrrigationDemand_potET extends JAMSComponent {
         
         @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            description = "maximal dosis for irrigation"
+            description = "maximal dosis for irrigation",
+            unit = "mm"
             
     )
     public Attribute.Double maxDosis; 
@@ -147,8 +148,10 @@ public class IrrigationDemand_potET extends JAMSComponent {
         if ((actET.getValue() / potET.getValue()) < etDeficit.getValue()) {
 
             //need to irrigate, now check water deficit
-
-            double deficiteVolume = Math.min(maxDosis.getValue() * area.getValue(),(potET.getValue() - actET.getValue()) * irrigationDemandCorrectionET.getValue());
+            double deficiteVolume = (potET.getValue() - actET.getValue()) * irrigationDemandCorrectionET.getValue();
+              if (maxDosis.getValue() > 0) {
+                  deficiteVolume = Math.min(maxDosis.getValue() * area.getValue(),(potET.getValue() - actET.getValue()) * irrigationDemandCorrectionET.getValue());
+              }
 
             //set the demand
             irrigationDemand.setValue(deficiteVolume);
