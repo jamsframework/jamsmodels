@@ -101,7 +101,8 @@ public class IrrigationDemand_potET extends JAMSComponent {
         @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
             description = "maximal dosis for irrigation",
-            unit = "mm"
+            unit = "mm",
+            defaultValue = "0"
             
     )
     public Attribute.Double maxDosis; 
