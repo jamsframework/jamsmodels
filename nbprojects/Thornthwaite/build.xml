@@ -9,12 +9,13 @@
 <!-- in the project's Project Properties dialog box.-->
 <project name="Thornthwaite" default="default" basedir=".">
     <description>Builds, tests, and runs the project Thornthwaite.</description>
+    <import file="../build-common.xml"/>
     <import file="nbproject/build-impl.xml"/>
 
-    <target name="-post-jar">
-        <property name="deployDir" value="../../../jams/lib"/>
+<!--    <target name="-post-jar">
+        <property name="deployDir" value="../../../jams/components"/>
         <copy file="${dist.jar}" todir="${deployDir}"/>
-    </target>
+    </target>-->
     
     <!--
 
