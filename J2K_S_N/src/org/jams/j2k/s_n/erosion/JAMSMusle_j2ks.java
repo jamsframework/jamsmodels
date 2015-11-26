@@ -153,8 +153,8 @@ public class JAMSMusle_j2ks extends JAMSComponent {
             }
 
             double area_ha = area / 10000; //m2 to ha
-            double area_km2 = area / 1000000; //m2 to km2
-            double Qsurf_peak_m3 = ((outRD1 / area) * area) / 1000; // m?
+            //double area_km2 = area / 1000000; //m2 to km2
+            double Qsurf_peak_m3 = outRD1 / 1000; // m?
 
 
             // double Qsurf_mm_ha = (outRD1 / area) * 10000; Holm orginal
@@ -162,7 +162,8 @@ public class JAMSMusle_j2ks extends JAMSComponent {
 
             //System.out.println("ID: "+ ID + " Qsurf_peak_m3:" + Qsurf_peak_m3 + " Qsurf_mm_ha:" + Qsurf_mm_ha + " und NS:" + precip + " PeakTime: "+ peaktime);
 
-            double Qpeak = (0.278 * Qsurf_peak_m3 * area_km2) / (3.6 * peaktime);//--> m3/s
+            double Qpeak = (0.278 * Qsurf_peak_m3) / (3.6 * peaktime);//--> m3/s
+            //double Qpeak_m3_s = (0.278 * Qsurf_peak_m3) / (3.6 * peaktime) / area_ha;//--> (m3/s)/ha
             double Lamb = 11.8 * Math.pow((Qsurf_mm_ha * Qpeak * area_ha), 0.56); // SWAT-MULSE Williams, 1995
             double sedperhainto = Lamb * Kfac * LSfac * Pfac * Cfac * ROKF; // SWAT-MULSE Williams, 1995
             //gensed = (sedperhainto / 10000) * area;     // t / HRU
