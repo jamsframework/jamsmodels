@@ -354,7 +354,6 @@ public class j2kpotCropGrowthsalt_new extends JAMSComponent {
         this.mlai = crop.mlai;
         this.mlai1 = crop.laimx1;
         this.mlai2 = crop.laimx2;
-        this.lai_min = crop.lai_min;
         this.chtmx = crop.chtmx;
         this.rdmx = crop.rdmx;
         this.Topt = crop.topt; //Optimal growth temperature
@@ -436,7 +435,7 @@ public class j2kpotCropGrowthsalt_new extends JAMSComponent {
             Topt = 0;
             frLAImx_act = 0; /*actual fraction of max LAI for a given day */
             LAI_delta = 0;
-            lai_act = 1;
+            lai_act = lai_min;
             // bio_opt = 0;
             // BioOpt.setValue(bio_opt * area_ha); /*Plants optimal biomass */
             hc_act = 0; /*Actual canopy height */
