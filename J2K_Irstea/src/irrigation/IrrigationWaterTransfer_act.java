@@ -176,7 +176,9 @@ public class IrrigationWaterTransfer_act extends JAMSComponent {
         this.totalDemand.setValue(totalDemand);
 
         //calcualte proportion of total water that is needed
-        double frac = totalDemand / (totalIn);
+    if (totalIn != 0){
+                double frac = totalDemand /totalIn;
+  
 
         if (frac <= 1) {
 
@@ -221,14 +223,19 @@ public class IrrigationWaterTransfer_act extends JAMSComponent {
             totalTransfer.setValue(totalIn+totalAct);
         }
         }
-
+        //in case frac = 0 (meaning Demand = 0), just to avoid problem with 1/frac
+        if (frac == 0){frac=1;}
         //distribute total transfer over all HRUs
         double providedFraction = Math.min(1, 1 / frac);
         for (Attribute.Entity hru : l) {
             double demand = hru.getDouble(irrigationDemandName.getValue());
             hru.setDouble(irrigationWaterName.getValue(), demand * providedFraction);
         }
-
+    } else {
+       for (Attribute.Entity hru : l) {
+            hru.setDouble(irrigationWaterName.getValue(), 0);  
+    }
+    }
         //remove all HRUs from demand list
         l.removeAll(l);
     }
