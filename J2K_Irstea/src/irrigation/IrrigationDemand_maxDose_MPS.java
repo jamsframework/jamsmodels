@@ -160,10 +160,29 @@ public class IrrigationDemand_maxDose_MPS extends JAMSComponent {
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
-            description = "Irrigation demand"
+            description = "Water requirements"
+    )
+    
+        public Attribute.Double efficiency; 
+    
+                @JAMSVarDescription(
+            access = JAMSVarDescription.AccessType.READ,
+            description = "efficiency of the irrigation system",            
+            defaultValue = "1"
+            
+    )
+    
+    public Attribute.Double waterRequirements;
+    
+        @JAMSVarDescription(
+            access = JAMSVarDescription.AccessType.WRITE,
+            description = "Irrigation demand (= waterRequirements/efficiency)"
     )
     public Attribute.Double irrigationDemand;
 
+
+                
+                
     private Map<Long, Attribute.Entity> reachMap = new HashMap();
 
     /*
@@ -201,7 +220,8 @@ public class IrrigationDemand_maxDose_MPS extends JAMSComponent {
             }
          
             //set the demand
-            irrigationDemand.setValue(deficiteVolume);
+            waterRequirements.setValue(deficiteVolume);
+            irrigationDemand.setValue(deficiteVolume/efficiency.getValue());
 
             //get the matching reach for the current HRU
             Attribute.Entity hru = hrus.getCurrent();

@@ -76,7 +76,7 @@ public class IrrigationApplicationDrip extends JAMSComponent {
      */
     @Override
     public void run() {
-
+        irrigationTotal.setValue(0);
         // actual irrigation is the minimum of available storage capacity and 
         // availabe irrigation water
         double actIrrigation = Math.min(maxMPS.getValue() - actMPS.getValue(), irrigationWater.getValue());
