@@ -159,19 +159,16 @@ public class IrrigationDemand_maxDose_MPS extends JAMSComponent {
     public Attribute.Double satLPSexp; 
     
     @JAMSVarDescription(
-            access = JAMSVarDescription.AccessType.WRITE,
+            access = JAMSVarDescription.AccessType.READ,
             description = "Water requirements"
     )
-    
         public Attribute.Double efficiency; 
     
-                @JAMSVarDescription(
-            access = JAMSVarDescription.AccessType.READ,
+    @JAMSVarDescription(
+            access = JAMSVarDescription.AccessType.WRITE,
             description = "efficiency of the irrigation system",            
             defaultValue = "1"
-            
     )
-    
     public Attribute.Double waterRequirements;
     
         @JAMSVarDescription(

@@ -112,14 +112,13 @@ public class IrrigationWaterTransfer_act extends JAMSComponent {
             defaultValue = "irrigationDemand"
     )
     public Attribute.String irrigationDemandName;
-
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            description = "efficiency of the irrigation system of an HRU",
-            defaultValue = "efficiency"
+            description = "Name of attribute that stores water requirements of an HRU",
+            defaultValue = "waterRequirements"
     )
-    public Attribute.String irrigationEfficiency;
+    public Attribute.String waterRequirementsName;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
@@ -236,9 +235,8 @@ public class IrrigationWaterTransfer_act extends JAMSComponent {
         //distribute total transfer over all HRUs
         double providedFraction = Math.min(1, 1 / frac);
         for (Attribute.Entity hru : l) {
-            double demand = hru.getDouble(irrigationDemandName.getValue());
-            double efficiency = hru.getDouble(irrigationEfficiency.getValue());
-            hru.setDouble(irrigationWaterName.getValue(), demand * providedFraction * efficiency);
+            double waterRequirements = hru.getDouble(waterRequirementsName.getValue());
+            hru.setDouble(irrigationWaterName.getValue(), waterRequirements * providedFraction);
         }
     } else {
        for (Attribute.Entity hru : l) {
