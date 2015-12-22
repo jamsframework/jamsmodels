@@ -9,8 +9,9 @@
 <!-- in the project's Project Properties dialog box.-->
 <project name="J2K_SASSCAL" default="default" basedir=".">
     <description>Builds, tests, and runs the project J2K_SASSCAL.</description>
-    <import file="../build-common.xml"/>
+    <import file="../jams-common.xml"/>
     <import file="nbproject/build-impl.xml"/>
+    
     <!--
 
     There exist several targets which are by default empty and which can be 

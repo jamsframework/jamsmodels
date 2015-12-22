@@ -9,7 +9,7 @@
 <!-- in the project's Project Properties dialog box.-->
 <project name="Kirchner_method" default="default" basedir=".">
     <description>Builds, tests, and runs the project Kirchner_method.</description>
-    <import file="../build-common.xml"/>
+    <import file="../jams-common.xml"/>
     <import file="nbproject/build-impl.xml"/>
 	    
 <!--   <target name="-post-jar">

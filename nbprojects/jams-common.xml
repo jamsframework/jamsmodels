@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="jams-common-tasks" default="default" basedir=".">
+    <description>Common tasks for the JAMS projects builds.</description>
+    
+    <property name="comp.dir" value="../components"/>
+    
+    <target name="-post-jar">
+        
+        <copy file="${dist.jar}" todir="${comp.dir}"/>
+        <copy todir="${comp.dir}/lib">
+            <fileset dir="dist/lib">
+                <exclude name="**/*jams-*.jar"/>
+            </fileset>
+        </copy>
+    </target>    
+
+    <target name="-post-clean">
+        <echo>cleaning ${application.title}</echo>
+        <delete>
+            <fileset dir="${comp.dir}" includes="**/${application.title}*"/>
+        </delete>
+    </target>
+</project>
