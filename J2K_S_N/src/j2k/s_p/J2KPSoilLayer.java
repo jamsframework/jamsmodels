@@ -705,6 +705,7 @@ public class J2KPSoilLayer extends JAMSComponent {
     private double sbPResiduePool;
     private double bplant_up;
     private double runsum_Pinput;
+    private double total_sum_Pinput;
     //
      
             
@@ -854,7 +855,7 @@ public class J2KPSoilLayer extends JAMSComponent {
         this.layer = (int) Layer.getValue();
         this.surlayer = layer + 1;
         sumlayer = 0;
-
+        runsum_Pinput = 0;
         double sumh_infilt_mm = 0;
         
         double bfertP_activeorg = 0;
@@ -918,7 +919,7 @@ public class J2KPSoilLayer extends JAMSComponent {
                 this.runN_activ_pool = N_activ_pool.getValue()[i];
                 
                 this.runsum_Pinput = fertPmin.getValue() + fertP_activeorg.getValue() + fertP_activeorg.getValue();
-                
+                total_sum_Pinput = runsum_Pinput + total_sum_Pinput;
                 
                 this.runN_stable_pool = N_stable_pool.getValue()[i];
                 

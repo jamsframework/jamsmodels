@@ -87,6 +87,10 @@ public class JAMSMusle_j2ks extends JAMSComponent {
     update = JAMSVarDescription.UpdateType.RUN,
     description = "soil loss")
     public JAMSDouble gensed;
+    @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
+    update = JAMSVarDescription.UpdateType.RUN,
+    description = "additional P-Factor, for scenario building")
+    public JAMSDouble p_managm;
 
     public void run() throws JAMSEntity.NoSuchAttributeException {
 
@@ -139,6 +143,12 @@ public class JAMSMusle_j2ks extends JAMSComponent {
             double HLkrit = 170 * Math.pow(Math.E, -0.13 * slopeperc);
             double Pfac = slopelength < HLkrit ? Pvorl : 1;
             double ROKF = Math.pow(Math.E, -0.053 * ROK);
+            double p_mgt = 1;
+            if (!p_managm.equals(null)){
+                p_mgt = p_managm.getValue();
+            }
+            
+            
 
             double peaktime = 0; // hours
             if (time.get(Calendar.MONTH) > 4 & time.get(Calendar.MONTH) < 10) {
@@ -165,7 +175,7 @@ public class JAMSMusle_j2ks extends JAMSComponent {
             double Qpeak = (0.278 * Qsurf_peak_m3) / (3.6 * peaktime);//--> m3/s
             //double Qpeak_m3_s = (0.278 * Qsurf_peak_m3) / (3.6 * peaktime) / area_ha;//--> (m3/s)/ha
             double Lamb = 11.8 * Math.pow((Qsurf_mm_ha * Qpeak * area_ha), 0.56); // SWAT-MULSE Williams, 1995
-            double sedperhainto = Lamb * Kfac * LSfac * Pfac * Cfac * ROKF; // SWAT-MULSE Williams, 1995
+            double sedperhainto = Lamb * Kfac * LSfac * Pfac * Cfac * ROKF * p_mgt; // SWAT-MULSE Williams, 1995
             //gensed = (sedperhainto / 10000) * area;     // t / HRU
             gensed = sedperhainto;
 
