@@ -114,7 +114,7 @@ public class PhosphorousFlowReader extends JAMSComponent {
 	    for (int i=0;i<N;i++) {
 	        interflow += field_fd[i].getDouble("sum_SurfaceSolubleP") + field_fd[i].getDouble("sum_activP") + field_fd[i].getDouble("sum_org_P") 
                          + field_fd[i].getDouble("sum_residue_P") + field_fd[i].getDouble("sum_stableP"); 
-	        percolation += 0;
+	        percolation += 0.0000001;
 	    }
 		
 	    interflow /= N;
@@ -126,7 +126,7 @@ public class PhosphorousFlowReader extends JAMSComponent {
 	    for (int j=0;j<N;j++) {
 	        M.element[j][0] = field_fd[j].getDouble("sum_sum_Pinput");
 	        M.element[j][1] = field_fd[j].getDouble("sum_SurfaceSolubleP") + field_fd[j].getDouble("sum_activP") + field_fd[j].getDouble("sum_org_P") 
-                         + field_fd[j].getDouble("sum_residue_P") + field_fd[j].getDouble("sum_stableP");	
+                         + field_fd[j].getDouble("sum_residue_P") + field_fd[j].getDouble("sum_stableP") +  0.0000001;	
 		}
 		
             
@@ -140,8 +140,8 @@ public class PhosphorousFlowReader extends JAMSComponent {
 	    e.setDouble("new_input",-1.0);
 	    e.setDouble("interflow_weight",ratio_interflow);
 	    e.setDouble("percolation_weight",ratio_percolation);
-	    e.setDouble("ist_input",field_fd[N].getDouble("sum_Ninput_2000"));
-	    e.setDouble("min_input",field_fd[0].getDouble("sum_Ninput_2000"));
+	    e.setDouble("ist_input",field_fd[N].getDouble("sum_sum_Pinput"));
+	    e.setDouble("min_input",field_fd[0].getDouble("sum_sum_Pinput"));
         }
         
         getModel().getRuntime().println("NitrogenFlow parameter file processed ...", JAMS.STANDARD);        

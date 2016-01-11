@@ -235,7 +235,7 @@ public class HydroNETControl extends JAMSContext {
 		if (d.getInitalExternInput() != 0)
 		    e.setDouble("reduction",d.getInput() / d.getInitalExternInput());
 		else
-		    e.setDouble("reduction",0.0);
+		    e.setDouble("reduction",1.0);
 		
 		e.setDouble("new_input",((DistNeuron)e.getObject("DIST_NEURON")).getInput());
 	    }	    	    

@@ -81,7 +81,7 @@ public class MapCreator extends jams.components.gui.MapCreator {
 		plot.setRenderer(0, new DefaultXYItemRenderer());
 	           
 		JFrame frame = new JFrame("Activation - Function");
-		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		frame.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
         
 		frame.getContentPane().setLayout(new BorderLayout());
 		frame.getContentPane().add(new ChartPanel(chart), BorderLayout.CENTER);
