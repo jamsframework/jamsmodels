@@ -160,15 +160,16 @@ public class IrrigationDemand_maxDose_MPS extends JAMSComponent {
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            description = "Water requirements"
+            description = "efficiency of the irrigation system",
+ 	    defaultValue = "1"
+
     )
         public Attribute.Double efficiency; 
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
-            description = "efficiency of the irrigation system",            
-            defaultValue = "1"
-    )
+            description = "Real plant irrigation water requirement"            
+              )
     public Attribute.Double waterRequirements;
     
         @JAMSVarDescription(
@@ -197,7 +198,7 @@ public class IrrigationDemand_maxDose_MPS extends JAMSComponent {
     public void run() {
 
         irrigationDemand.setValue(0);
-        
+        waterRequirements.setValue(0); 
         if (potET.getValue() == 0) {
             return;
         }

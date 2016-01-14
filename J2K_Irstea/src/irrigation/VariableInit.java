@@ -13,7 +13,7 @@ import java.util.Calendar;
 @JAMSComponentDescription(
     title="VariableInit",
     author="Francois TILMANT",
-    description="Initiate values if you are not in the irrigation period",
+    description="Initiate values if you are not in the irrigation period // mod 1 by IG on 12-01-2016 : initialize waterRequirements also.",
     date = "2015-11-05",
     version = "1.0_0"
 )
@@ -41,6 +41,11 @@ public class VariableInit extends JAMSComponent {
     )
     public Attribute.Double irrigationDemand;
             
+           @JAMSVarDescription(
+            access = JAMSVarDescription.AccessType.READWRITE,
+            description = "Real plant irrigation water requirement"
+    )
+    public Attribute.Double waterRequirements;
             
             
              public void init() {
@@ -52,6 +57,8 @@ public class VariableInit extends JAMSComponent {
 
         this.irrigationDemand.setValue(0);
         this.irrigationTotal.setValue(0);
+	this.waterRequirements.setValue(0);
+	
        
         }
 

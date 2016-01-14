@@ -108,40 +108,40 @@ public class IrrigationWaterTransfer_act extends JAMSComponent {
 
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            description = "Name of attribute that stores irrigation demand of an HRU",
+            description = "Name of attribute that stores irrigation demand of an HRU - plant water requirement / efficiency",
             defaultValue = "irrigationDemand"
     )
     public Attribute.String irrigationDemandName;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            description = "Name of attribute that stores water requirements of an HRU",
+            description = "Name of attribute that stores water requirements of an HRU - the real plant requirements",
             defaultValue = "waterRequirements"
     )
     public Attribute.String waterRequirementsName;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            description = "Name of attribute that stores volume of irrigation water of an HRU",
+            description = "Name of attribute that stores the irrigation water delivered HRU (totalTransfer minus losses due to efficiency)",
             defaultValue = "irrigationWater"
     )
     public Attribute.String irrigationWaterName;
 
             @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            description = "Ratio of water available for irrigation in the reach (actR..)"
+            description = "Ratio of water available for irrigation / water present in the reach (actR..)"
     )
     public Attribute.Double actPrel;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
-            description = "Total irrigation demand"
+            description = "Total demand of water for irrigation, including the enhancement by poor efficiency"
     )
     public Attribute.Double totalDemand;
 
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
-            description = "Total irrigation transfer"
+            description = "Total irrigation transfer (= prelemenents, enhanced by poor efficiency)"
     )
     public Attribute.Double totalTransfer;
     
@@ -169,8 +169,8 @@ public class IrrigationWaterTransfer_act extends JAMSComponent {
         }
 
         double totalIn = inRD1.getValue() + inRD2.getValue() + inRG1.getValue() + inRG2.getValue();
-        double totalAct = this.actPrel.getValue() * (actRD1.getValue() + actRD2.getValue() + actRG1.getValue() + actRG2.getValue());
-        this.totalInput.setValue(totalIn + totalAct);
+        double totalAct = this.actPrel.getValue() * (actRD1.getValue() + actRD2.getValue() + actRG1.getValue() + actRG2.getValue()); // eau du reach dispo pour l'irrigation.
+        this.totalInput.setValue(totalIn + totalAct); // eau disponible pour l'irrigation à ce pas de temps
         //this.totalInput.setValue(totalIn);
         double totalDemand = 0;
 
@@ -234,10 +234,14 @@ public class IrrigationWaterTransfer_act extends JAMSComponent {
         if (frac == 0){frac=1;}
         //distribute total transfer over all HRUs
         double providedFraction = Math.min(1, 1 / frac);
+	double providedWater_tmp=0.;
         for (Attribute.Entity hru : l) {
             double waterRequirements = hru.getDouble(waterRequirementsName.getValue());
             hru.setDouble(irrigationWaterName.getValue(), waterRequirements * providedFraction);
+	    providedWater_tmp= providedWater_tmp +waterRequirements * providedFraction;
         }
+	// restitute lost water to RD2 (when efficiency of the irrigation network <1) :
+	 inRD2.setValue(inRD2.getValue()+totalTransfer.getValue()-providedWater_tmp );
     } else {
        for (Attribute.Entity hru : l) {
             hru.setDouble(irrigationWaterName.getValue(), 0);  
