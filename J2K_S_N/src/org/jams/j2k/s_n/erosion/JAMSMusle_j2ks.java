@@ -119,7 +119,7 @@ public class JAMSMusle_j2ks extends JAMSComponent {
 
 
         Double gensed = 0.0;
-
+        double area_ha = area / 10000; //m2 to ha
 
         if ((slope > 0) && (surfacetemp > 0.1) && (snowDepth == 0) && (outRD1 > 0)) {
 
@@ -144,7 +144,7 @@ public class JAMSMusle_j2ks extends JAMSComponent {
             double Pfac = slopelength < HLkrit ? Pvorl : 1;
             double ROKF = Math.pow(Math.E, -0.053 * ROK);
             double p_mgt = 1;
-            if (!p_managm.equals(null)){
+            if (p_managm != null){
                 p_mgt = p_managm.getValue();
             }
             
@@ -162,9 +162,11 @@ public class JAMSMusle_j2ks extends JAMSComponent {
                 peaktime = 24;
             }
 
-            double area_ha = area / 10000; //m2 to ha
+            
             //double area_km2 = area / 1000000; //m2 to km2
-            double Qsurf_peak_m3 = outRD1 / 1000; // m?
+            double Qsurf_peak_m3 = outRD1 / (1000 * area_ha); // m?
+            
+            
 
 
             // double Qsurf_mm_ha = (outRD1 / area) * 10000; Holm orginal
@@ -174,16 +176,16 @@ public class JAMSMusle_j2ks extends JAMSComponent {
 
             double Qpeak = (0.278 * Qsurf_peak_m3) / (3.6 * peaktime);//--> m3/s
             //double Qpeak_m3_s = (0.278 * Qsurf_peak_m3) / (3.6 * peaktime) / area_ha;//--> (m3/s)/ha
-            double Lamb = 11.8 * Math.pow((Qsurf_mm_ha * Qpeak * area_ha), 0.56); // SWAT-MULSE Williams, 1995
+            double Lamb = 11.8 * Math.pow((Qsurf_mm_ha * Qpeak * 1), 0.56); // SWAT-MULSE Williams, 1995
             double sedperhainto = Lamb * Kfac * LSfac * Pfac * Cfac * ROKF * p_mgt; // SWAT-MULSE Williams, 1995
             //gensed = (sedperhainto / 10000) * area;     // t / HRU
-            gensed = sedperhainto;
+            gensed = sedperhainto * area_ha; // t / hru
 
         }
 
 
         double out = 0;
-        double bal = gensed - insed;
+        double bal = (gensed ) - insed;
         double neuaccpool = sedpool - bal;
 
         if (neuaccpool < 0) {
@@ -195,6 +197,8 @@ public class JAMSMusle_j2ks extends JAMSComponent {
                 neuaccpool = sedpool + acc;
                 if (outRD1 > 0) {
                     out = 0.05 * acc;
+                    neuaccpool = neuaccpool - out;
+                    
                 }
             }
         }
