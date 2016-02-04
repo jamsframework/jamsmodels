@@ -328,9 +328,9 @@ public class J2KProcessLayeredSoilWater2015 extends JAMSComponent {
         String corgName = "corg_h";
 
         for (int h = 0; h < horizons; h++) {
-/*            try {
+//            try {
             depth[h] = entity.getDouble(depthName + h);
-            } catch (Attribute.Entity.NoSuchAttributeException nsae) {
+/*            } catch (Attribute.Entity.NoSuchAttributeException nsae) {
                 System.out.println("");
             }*/
             /*     if(remRD >= depth[h] && remRD > 0){
