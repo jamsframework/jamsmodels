@@ -842,7 +842,7 @@ public class J2KNSoilLayer_surf extends JAMSComponent {
     public Attribute.DoubleArray P_residue_pool_fresh;
 
     @JAMSVarDescription(
-            access = JAMSVarDescription.AccessType.READ,
+            access = JAMSVarDescription.AccessType.READWRITE,
             description = "P-Pool soluted in the soilwater, P content in layer",
             unit = "kg*ha^-1",
             lowerBound = 0,
