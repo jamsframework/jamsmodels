@@ -30,6 +30,7 @@ import jams.model.JAMSComponentDescription;
 import jams.model.JAMSVarDescription;
 import jams.model.VersionComments;
 import jams.tools.FileTools;
+import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -50,14 +51,17 @@ import org.unijena.j2k.J2KFunctions;
         + "1:n topologies between different entities are created based on provided "
         + "attribute names. Additionally, the topologies are checked for cycles.",
         date = "2010-01-29",
-        version = "1.2")
-@VersionComments(entries
-        = @VersionComments.Entry(
-                version = "1.2", comment = "Added function to use only a subset "
-                + "of all entities. This is defined by a reach ID "
-                + "(subcatchmentReachID) which represents the outlet of "
-                + "the catchment.")
-)
+        version = "1.3")
+@VersionComments(entries = {
+    @VersionComments.Entry(
+            version = "1.2", comment = "Added function to use only a subset "
+            + "of all entities. This is defined by a reach ID "
+            + "(subcatchmentReachID) which represents the outlet of "
+            + "the catchment."),
+    @VersionComments.Entry(
+            version = "1.3", comment = "Added checks for validity of hru/reach "
+                    + "parameter files.")
+})
 public class StandardEntityReader extends JAMSComponent {
 
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
@@ -110,7 +114,17 @@ public class StandardEntityReader extends JAMSComponent {
         getModel().getRuntime().println("Reading spatial model entities...", JAMS.VERBOSE);
 
         //read hru parameter
-        hruList = J2KFunctions.readParas(FileTools.createAbsoluteFileName(getModel().getWorkspaceDirectory().getPath(), hruFileName.getValue()), getModel());
+        String fileName = hruFileName.getValue();
+        if (new File(fileName).exists()) {
+            fileName = hruFileName.getValue();
+        } else if (getModel().getWorkspaceDirectory() != null) {
+            fileName = FileTools.createAbsoluteFileName(getModel().getWorkspaceDirectory().getPath(), hruFileName.getValue());
+        }
+        if (!new File(fileName).exists()) {
+            getModel().getRuntime().sendErrorMsg("Couldn't load HRU file name " + fileName + "!\nIf you are not using an absolute path, "
+                    + "please ensure you have defined a workspace directory!");
+        }
+        hruList = J2KFunctions.readParas(fileName, getModel());
 
         //assign IDs to all hru entities
         for (Attribute.Entity e : hruList) {
@@ -122,7 +136,17 @@ public class StandardEntityReader extends JAMSComponent {
         }
 
         //read reach parameter
-        reachList = J2KFunctions.readParas(FileTools.createAbsoluteFileName(getModel().getWorkspaceDirectory().getPath(), reachFileName.getValue()), getModel());
+        fileName = reachFileName.getValue();
+        if (new File(fileName).exists()) {
+            fileName = reachFileName.getValue();
+        } else if (getModel().getWorkspaceDirectory() != null) {
+            fileName = FileTools.createAbsoluteFileName(getModel().getWorkspaceDirectory().getPath(), reachFileName.getValue());
+        }
+        if (!new File(fileName).exists()) {
+            getModel().getRuntime().sendErrorMsg("Couldn't load reach file name " + fileName + "!\nIf you are not using an absolute path, "
+                    + "please ensure you have defined a workspace directory!");
+        }
+        reachList = J2KFunctions.readParas(fileName, getModel());
 
         //assign IDs to all reach entities
         for (Attribute.Entity e : reachList) {
@@ -395,10 +419,8 @@ public class StandardEntityReader extends JAMSComponent {
             if ((toPoly == null) || (toReach == null)) {
                 getModel().getRuntime().sendErrorMsg("Topological neighbour for HRU with ID "
                         + e.getId() + " could not be found. This may cause errors!");
-            } else {
-                if (toPoly == nullEntity && toReach == nullEntity) {
-                    getModel().getRuntime().sendInfoMsg("The HRU with ID " + e.getId() + " drains nowhere. This may cause errors!");
-                }
+            } else if (toPoly == nullEntity && toReach == nullEntity) {
+                getModel().getRuntime().sendInfoMsg("The HRU with ID " + e.getId() + " drains nowhere. This may cause errors!");
             }
 
             e.setObject(hru2hruAttribute.getValue(), toPoly);
@@ -415,13 +437,11 @@ public class StandardEntityReader extends JAMSComponent {
             if (toReach == null) {
                 getModel().getRuntime().sendErrorMsg("Topological neighbour for reach with ID "
                         + e.getId() + " could not be found. This may cause errors!");
-            } else {
-                if (toReach == nullEntity) {
-                    if (defaultRootReach != null) {
-                        getModel().getRuntime().sendInfoMsg("The river network has more than one outlet! This may cause errors! ID of first outlet is: " + defaultRootReach.getId() + " and the second outlet is: " + toReach.getId());
-                    }
-                    defaultRootReach = e;
+            } else if (toReach == nullEntity) {
+                if (defaultRootReach != null) {
+                    getModel().getRuntime().sendInfoMsg("The river network has more than one outlet! This may cause errors! ID of first outlet is: " + defaultRootReach.getId() + " and the second outlet is: " + toReach.getId());
                 }
+                defaultRootReach = e;
             }
 
             e.setObject(reach2reachAttribute.getValue(), toReach);

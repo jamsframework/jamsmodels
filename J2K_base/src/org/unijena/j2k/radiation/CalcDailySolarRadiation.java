@@ -21,7 +21,7 @@
  *
  */
 
-/*
+ /*
 
  */
 package org.unijena.j2k.radiation;
@@ -36,56 +36,56 @@ import jams.model.*;
  * @author c0krpe
  */
 @JAMSComponentDescription(title = "CalcDailySolarRadiation",
-author = "Peter Krause",
-description = "Calculates solar radiation for daily or monthly timesteps",
-version = "1.0_0",
-date = "2011-05-30")
+        author = "Peter Krause",
+        description = "Calculates solar radiation for daily or monthly timesteps",
+        version = "1.0_0",
+        date = "2011-05-30")
 public class CalcDailySolarRadiation extends JAMSComponent {
 
     /*
      *  Component variables
      */
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
-    description = "time")
+            description = "time")
     public Attribute.Calendar time;
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
-    description = "state variable sunshine hours",
-    unit = "h/d")
+            description = "state variable sunshine hours",
+            unit = "h/d")
     public Attribute.Double sunh;
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.WRITE,
-    description = "Maximum sunshine duration in h",
-    unit = "h/d",
-    defaultValue = "0")
+            description = "Maximum sunshine duration in h",
+            unit = "h/d",
+            defaultValue = "0")
     public Attribute.Double sunhmax;
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
-    description = "state variable slope aspect correction factor")
+            description = "state variable slope aspect correction factor")
     public Attribute.Double actSlAsCf;
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
-    description = "attribute latitude",
-    unit = "deg")
+            description = "attribute latitude",
+            unit = "deg")
     public Attribute.Double latitude;
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
-    description = "daily extraterrestic radiation",
-    unit = "MJ / m² d")
+            description = "daily extraterrestic radiation",
+            unit = "MJ / m² d")
     public Attribute.Double actExtRad;
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.WRITE,
-    description = "daily solar radiation",
-    unit = "MJ / m² d")
+            description = "daily solar radiation",
+            unit = "MJ / m² d")
     public Attribute.Double solRad;
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
-    description = "Angstrom factor a",
-    lowerBound = 0,
-    upperBound = 1,
-    defaultValue = "0.25")
+            description = "Angstrom factor a",
+            lowerBound = 0,
+            upperBound = 1,
+            defaultValue = "0.25")
     public Attribute.Double angstrom_a;
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
-    description = "Angstrom factor b",
-    lowerBound = 0,
-    upperBound = 1,
-    defaultValue = "0.5")
+            description = "Angstrom factor b",
+            lowerBound = 0,
+            upperBound = 1,
+            defaultValue = "0.5")
     public Attribute.Double angstrom_b;
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
-    description = "temporal resolution [d | m]")
+            description = "temporal resolution [d | m]")
     public Attribute.String tempRes;
     int[] monthMean = {15, 45, 74, 105, 135, 166, 196, 227, 258, 288, 319, 349};
     /*
@@ -93,7 +93,7 @@ public class CalcDailySolarRadiation extends JAMSComponent {
      */
 
     double lastLati = Double.NEGATIVE_INFINITY, lastJulDay = Double.NEGATIVE_INFINITY, lastMaximumSunshine;
-    
+
     public void run() throws Attribute.Entity.NoSuchAttributeException, IOException {
         int julDay = time.get(Attribute.Calendar.DAY_OF_YEAR);
         int month = time.get(Attribute.Calendar.MONTH);
@@ -102,10 +102,10 @@ public class CalcDailySolarRadiation extends JAMSComponent {
         double sunsh = sunh.getValue();
         double extraterrRadiation = this.actExtRad.getValue();
         double declination = 0;
-        
+
         double maximumSunshine = 0;
-        if (lati == lastLati && lastJulDay == julDay){
-            maximumSunshine = lastMaximumSunshine;            
+        if (lati == lastLati && lastJulDay == julDay) {
+            maximumSunshine = lastMaximumSunshine;
         } else {
             if (this.tempRes == null) {
                 declination = org.unijena.j2k.physicalCalculations.SolarRadiationCalculationMethods.calc_SunDeclination(julDay);
@@ -126,5 +126,5 @@ public class CalcDailySolarRadiation extends JAMSComponent {
         //considering slope and aspect
         solarRadiation = solarRadiation * SAC;
         solRad.setValue(solarRadiation);
-    }   
+    }
 }
