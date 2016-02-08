@@ -139,14 +139,7 @@
       </variablelist>
       
       <para>
-      <inlinemediaobject>
-        <imageobject>
-          <imagedata fileref="lake_small.jpeg"/>
-        </imageobject>
-        <textobject>
-          <para>example image</para>
-        </textobject>
-      </inlinemediaobject>The parameter α has a certain value dependent on the type of intercepted
+      The parameter α has a certain value dependent on the type of intercepted
       precipitation (rain or snow) since the maximum interception capacity of snow is significantly
       higher than that of liquid precipitation. The leaf area index for the individual vegetation
       types in the seasonal cycle is calculated according to the above-mentioned method for each day
