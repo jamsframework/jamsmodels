@@ -21,7 +21,7 @@
  *
  */
 
-package org.unijena.j2k.routing;
+package org.jams.j2k.s_n;
 
 import jams.data.*;
 import jams.model.*;
