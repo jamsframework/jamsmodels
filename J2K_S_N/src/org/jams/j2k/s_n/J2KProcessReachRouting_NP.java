@@ -221,6 +221,12 @@ import jams.model.*;
             public Attribute.Double ChannelStorage_P;    
     
     @JAMSVarDescription(
+            access = JAMSVarDescription.AccessType.READWRITE,
+            description = "Reach Channel storage P"
+            )
+            public Attribute.Double ChannelStorage_Sed; 
+    
+    @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
             description = "Simulated N Runoff in kgN"
             )
@@ -230,7 +236,14 @@ import jams.model.*;
             access = JAMSVarDescription.AccessType.WRITE,
             description = "Simulated P Runoff"
             )
-            public Attribute.Double SimRunoff_P;    
+            public Attribute.Double SimRunoff_P;  
+    
+    @JAMSVarDescription(
+            access = JAMSVarDescription.AccessType.WRITE,
+            description = "Simulated P Runoff"
+            )
+            public Attribute.Double SimRunoff_Sed;
+    
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
@@ -470,61 +483,61 @@ import jams.model.*;
             public Attribute.Double stableP_in;
     
     @JAMSVarDescription(
-            access = JAMSVarDescription.AccessType.READWRITE,
+            access = JAMSVarDescription.AccessType.WRITE,
             description = ""
             )
             public Attribute.Double NH4_out;
     
     @JAMSVarDescription(
-            access = JAMSVarDescription.AccessType.READWRITE,
+            access = JAMSVarDescription.AccessType.WRITE,
             description = ""
             )
             public Attribute.Double SurfaceSolubleP_out;
     
     @JAMSVarDescription(
-            access = JAMSVarDescription.AccessType.READWRITE,
+            access = JAMSVarDescription.AccessType.WRITE,
             description = ""
             )
             public Attribute.Double activN_out;
     
     @JAMSVarDescription(
-            access = JAMSVarDescription.AccessType.READWRITE,
+            access = JAMSVarDescription.AccessType.WRITE,
             description = ""
             )
             public Attribute.Double activP_out;    
     
     @JAMSVarDescription(
-            access = JAMSVarDescription.AccessType.READWRITE,
+            access = JAMSVarDescription.AccessType.WRITE,
             description = ""
             )
             public Attribute.Double org_out_P;
     
     @JAMSVarDescription(
-            access = JAMSVarDescription.AccessType.READWRITE,
+            access = JAMSVarDescription.AccessType.WRITE,
             description = ""
             )
             public Attribute.Double residueN_out;
     
     @JAMSVarDescription(
-            access = JAMSVarDescription.AccessType.READWRITE,
+            access = JAMSVarDescription.AccessType.WRITE,
             description = ""
             )
             public Attribute.Double residue_out;
     
     @JAMSVarDescription(
-            access = JAMSVarDescription.AccessType.READWRITE,
+            access = JAMSVarDescription.AccessType.WRITE,
             description = ""
             )
             public Attribute.Double residue_out_P;    
     
     @JAMSVarDescription(
-            access = JAMSVarDescription.AccessType.READWRITE,
+            access = JAMSVarDescription.AccessType.WRITE,
             description = ""
             )
             public Attribute.Double stableN_out; 
 
     @JAMSVarDescription(
-            access = JAMSVarDescription.AccessType.READWRITE,
+            access = JAMSVarDescription.AccessType.WRITE,
             description = ""
             )
             public Attribute.Double stableP_out;
@@ -657,6 +670,7 @@ import jams.model.*;
         double residueP_act = this.Act_residueP.getValue() + this.residue_in_P.getValue();
         double stableN_act = this.Act_stableN.getValue() + this.stableN_in.getValue();
         double stableP_act = this.Act_stableP.getValue() + this.stableP_in.getValue();
+        double runsed_act = this.actsed.getValue() + this.insed.getValue();
         
         inRD1.setValue(0);
         inRD2.setValue(0);
@@ -682,7 +696,8 @@ import jams.model.*;
         residue_in.setValue(0);
         residue_in_P.setValue(0);
         stableN_in.setValue(0);
-        stableP_in.setValue(0);        
+        stableP_in.setValue(0); 
+        insed.setValue(0);
         
         
         ActRD1_N.setValue(0);
@@ -713,6 +728,7 @@ import jams.model.*;
             residuePDestIn = 0;
             stableNDestIn = 0;
             stablePDestIn = 0;            
+            insedDestIn = 0;
             
         } else{
             RD1DestIn = DestReach.getDouble("inRD1");
@@ -735,11 +751,13 @@ import jams.model.*;
             residuePDestIn = DestReach.getDouble("residue_in_P");
             stableNDestIn = DestReach.getDouble("stableN_in");
             stablePDestIn = DestReach.getDouble("stableP_in");
+            insedDestIn = DestReach.getDouble("insed");
         }
         
         double q_act_tot = RD1act + RD2act + RG1act + RG2act;
         double q_act_tot_N = RD1act_N + RD2act_N + RG1act_N + RG2act_N + NH4_act + activN_act + residueN_act + stableN_act;
         double q_act_tot_P = SurfaceSolubleP_act + activP_act + orgP_act + residueP_act + stableP_act;
+        double sed_tot = runsed_act;
         
         
         //int ID = (int)entity.getDouble("ID");
@@ -766,7 +784,7 @@ import jams.model.*;
             residue_out_P.setValue(0);
             stableN_out.setValue(0);
             stableP_out.setValue(0);            
-            
+            outsed.setValue(0);
             //nothing more to do here
             return;
         }
@@ -791,6 +809,7 @@ import jams.model.*;
         double orgP_part_P = 0;
         double residueP_part_P = 0;
         double stableP_part_P = 0;
+        double sed_part = 0;
         
         if(q_act_tot_N == 0){          
 
@@ -815,10 +834,16 @@ import jams.model.*;
             orgP_part_P = orgP_act / q_act_tot_P;
             residueP_part_P = residueP_act / q_act_tot_P;
             stableP_part_P = stableP_act / q_act_tot_P;
+            if (sed_tot == 0){
+                sed_part = 1;
+            }else{                                                              
+                sed_part = runsed_act / sed_tot;
+            }
         }        
         
         double N_conc_tot = q_act_tot_N / q_act_tot;
         double P_conc_tot = q_act_tot_P / q_act_tot;
+        double sed_conc_tot = sed_tot / q_act_tot;
         //calculation of flow velocity
         double flow_veloc = this.calcFlowVelocity(q_act_tot, width, slope, rough, 86400);
         
@@ -840,6 +865,7 @@ import jams.model.*;
         
         double q_act_out_N = q_act_out * N_conc_tot;
         double q_act_out_P = q_act_out * P_conc_tot;
+        double q_act_out_sed = q_act_out * sed_conc_tot;
         
         
         
@@ -901,6 +927,8 @@ import jams.model.*;
         double residuePout_P = q_act_out_P * residueP_part_P;
         double stablePout_P = q_act_out_P * stableP_part_P;
         
+        double runoutsed = q_act_out_sed * sed_part;
+        
         //transferring runoff from this reach to the next one
         RD1DestIn = RD1DestIn + RD1out;
         RD2DestIn = RD2DestIn + RD2out;
@@ -911,6 +939,19 @@ import jams.model.*;
         RD2DestIn_N = RD2DestIn_N + RD2out_N;
         RG1DestIn_N = RG1DestIn_N + RG1out_N;
         RG2DestIn_N = RG2DestIn_N + RG2out_N;
+        
+        
+        NH4DestIn = NH4DestIn + NH4out_N;
+        SurfaceSolublePDestIn = SurfaceSolublePDestIn + SurfaceSolublePout_P;
+        activNDestIn = activNDestIn + activNout_N;
+        activPDestIn = activPDestIn + activPout_P;
+        orgPDestIn =  orgPDestIn + orgPout_P;
+        residueNDestIn = residueNDestIn + residueNout_N;
+        residueDestIn = residueDestIn + 0;
+        residuePDestIn = residuePDestIn + residuePout_P;
+        stableNDestIn = stableNDestIn + stableNout_N;
+        stablePDestIn = stablePDestIn + stablePout_P;            
+        insedDestIn = insedDestIn + runoutsed;
         
         
         //reducing the actual storages
@@ -950,22 +991,27 @@ import jams.model.*;
         residueP_act = residueP_act - residuePout_P;
         if (residueP_act < 0) residueP_act = 0;
         stableP_act = stableP_act - stablePout_P;
-        if (stableP_act < 0) stableP_act = 0;        
+        if (stableP_act < 0) stableP_act = 0;  
+        runsed_act = runsed_act - runoutsed;
+        if (runsed_act < 0) runsed_act = 0;
 
         double channelStorage = RD1act + RD2act + RG1act + RG2act;
         double channelStorage_N = RD1act_N + RD2act_N + RG1act_N + RG2act_N + NH4_act + activN_act + residueN_act + stableN_act;
         double channelStorage_P = SurfaceSolubleP_act + activP_act + orgP_act + residueP_act + stableP_act;
+        double channelStorage_sed = runsed_act;
         
         double cumOutflow = RD1out + RD2out + RG1out + RG2out;
         double cumOutflow_N = RD1out_N + RD2out_N + RG1out_N + RG2out_N + NH4out_N + activNout_N + residueNout_N + stableNout_N;
         double cumOutflow_P = SurfaceSolublePout_P + activPout_P + orgPout_P + residuePout_P + stablePout_P;
-        
+        double cumOutflow_sed = runoutsed;
         simRunoff.setValue(cumOutflow);
         SimRunoff_N.setValue(cumOutflow_N);
         SimRunoff_P.setValue(cumOutflow_P);
+        SimRunoff_Sed.setValue(cumOutflow_sed);
         this.channelStorage.setValue(channelStorage);
         ChannelStorage_N.setValue(channelStorage_N);
         ChannelStorage_P.setValue(channelStorage_P);
+        ChannelStorage_Sed.setValue(channelStorage_sed);
         
         inRD1.setValue(0);
         inRD2.setValue(0);
@@ -981,12 +1027,12 @@ import jams.model.*;
         SurfaceSolubleP_in.setValue(0);
         activN_in.setValue(0);
         activP_in.setValue(0);
-        activP_in.setValue(0);
         residueN_in.setValue(0);
         residue_in.setValue(0);
         residue_in_P.setValue(0);
         stableN_in.setValue(0);
-        stableP_in.setValue(0);         
+        stableP_in.setValue(0);
+        insed.setValue(0);
         
         actRD1.setValue(RD1act);
         actRD2.setValue(RD2act);
@@ -1015,9 +1061,10 @@ import jams.model.*;
         
         SurfaceSolubleP_out.setValue(SurfaceSolublePout_P);
         activP_out.setValue(activPout_P);
-        activP_out.setValue(orgPout_P);
+        org_out_P.setValue(orgPout_P);
         residue_out_P.setValue(residuePout_P);
         stableP_out.setValue(stablePout_P);
+        outsed.setValue(runoutsed);
      
         
 /*        if(entity.getObject("to_reach") == null){
@@ -1046,6 +1093,7 @@ import jams.model.*;
             DestReach.setDouble("residue_in_P", residuePDestIn);
             DestReach.setDouble("stableN_in", stableNDestIn);
             DestReach.setDouble("stableP_in", stablePDestIn);
+            DestReach.setDouble("insed", insedDestIn);
         }else{
             
             catchmentRD1.setValue(RD1out);
@@ -1070,7 +1118,9 @@ import jams.model.*;
             catchmentActivP.setValue(activPout_P);
             catchmentOrgP.setValue(orgPout_P);
             catchmentResidueP.setValue(residuePout_P);
-            catchmentStableP.setValue(stablePout_P);            
+            catchmentStableP.setValue(stablePout_P);
+            catchmentSed.setValue(runoutsed);
+            
         }
     }
     
