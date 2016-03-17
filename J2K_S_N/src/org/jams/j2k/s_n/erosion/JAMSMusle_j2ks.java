@@ -91,6 +91,10 @@ public class JAMSMusle_j2ks extends JAMSComponent {
     update = JAMSVarDescription.UpdateType.RUN,
     description = "additional P-Factor, for scenario building")
     public JAMSDouble p_managm;
+    @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
+    update = JAMSVarDescription.UpdateType.RUN,
+    description = "HRU irrigation Waterinput  [l], Default = 0 ")
+    public JAMSDouble irrigation_act;
 
     public void run() throws JAMSEntity.NoSuchAttributeException {
 
@@ -114,6 +118,7 @@ public class JAMSMusle_j2ks extends JAMSComponent {
 
         bysed = insed * (Surrun_bypass.getValue());
         insed = insed * (1 - Surrun_bypass.getValue());
+        Double irri_act = irrigation_act.getValue();
         
         // calling the oms3 execute
 
@@ -146,6 +151,10 @@ public class JAMSMusle_j2ks extends JAMSComponent {
             double p_mgt = 1;
             if (p_managm != null){
                 p_mgt = p_managm.getValue();
+            }
+            //method used for paddy rice fields (ponded water protects from erosion)
+            if (irri_act > 0){
+                p_mgt = 0;
             }
             
             
