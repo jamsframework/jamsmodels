@@ -31,10 +31,11 @@ import java.util.List;
  */
 @JAMSComponentDescription(
         title = "",
-        author = "Sven Kralisch",
+        author = "Isabelle Gouttevin based on Sven Kralisch",
         description = "Transfer water from reaches to HRUs depending on water"
-        + " availability and irrigation demand",
-        date = "2015-08-13",
+        + " availability and irrigation demand"
+	+ "only incoming water to the reach is available for irrigation",
+        date = "2016-01-10",
         version = "1.0_0"
 )
 @VersionComments(entries = {
