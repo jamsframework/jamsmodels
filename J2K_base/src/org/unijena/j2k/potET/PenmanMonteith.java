@@ -98,12 +98,12 @@ public class PenmanMonteith extends JAMSComponent {
 
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.WRITE,
     description = "potential ET [mm/ timeUnit]",
-    unit="mm d^-1")
+    unit="L")
     public Attribute.Double potET;
 
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.WRITE,
     description = "actual ET [mm/ timeUnit]",
-    unit="mm d^-1")
+    unit="L")
     public Attribute.Double actET;
 
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.WRITE,
