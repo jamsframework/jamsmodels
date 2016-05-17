@@ -82,7 +82,13 @@ import jams.model.*;
             unit = "-"
             )
             public Attribute.Double gwCapRiseAdaptation;
-            
+    
+    @JAMSVarDescription(
+            access = JAMSVarDescription.AccessType.WRITE,
+            description = "current CapRise",
+            unit = "-"
+            )
+            public Attribute.Double actCapRise;            
     /*
      *  Component run stages
      */
@@ -118,5 +124,6 @@ import jams.model.*;
         this.gwStorage.setValue(gwStorage);
         this.actMPS.setValue(actMPS);
         this.satMPS.setValue(actMPS / maxMPS);
+        this.actCapRise.setValue(inMPS);
     }       
 }
