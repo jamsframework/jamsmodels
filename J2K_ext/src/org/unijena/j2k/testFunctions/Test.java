@@ -10,16 +10,8 @@
 package org.unijena.j2k.testFunctions;
 
 
-import java.io.IOException;
-import java.util.Arrays;
-import java.util.Random;
-import java.util.*;
-
-import java.util.StringTokenizer;
 import jams.data.*;
-import jams.io.GenericDataWriter;
 import jams.model.*;
-import java.util.Arrays.*;
 
 /**
  *
