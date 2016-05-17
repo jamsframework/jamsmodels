@@ -190,9 +190,7 @@ public class PenmanMonteith extends JAMSComponent {
     }
 
     private double calcETAllen(double ds, double netRad, double G, double pa, double CP, double est, double ea, double ra, double rs, double psy, double tempFactor) {
-
         double Letp = (ds * (netRad - G) + ((pa * CP * (est - ea) / ra) * tempFactor)) / (ds + psy * (1 + rs / ra));
-
         return Letp;
     }
 
