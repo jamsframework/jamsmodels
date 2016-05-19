@@ -23,6 +23,7 @@
 
 package org.jams.j2k.s_salt;
 
+import jams.JAMS;
 import jams.data.*;
 import jams.model.*;
 
@@ -33,8 +34,16 @@ import jams.model.*;
 @JAMSComponentDescription(
         title="J2KProcessReachRouting_NaCl",
         author="c0krpe & Manfred Fink",
-        description="Reach Routing of Water and Salt to replace J2KProcessReachRouting"
+        description="Reach Routing of Water and Salt to replace J2KProcessReachRouting",
+        version="1.0_1"
         )
+@VersionComments(entries = {
+    @VersionComments.Entry(version = "1.0_0", comment = "Initial version"),
+    @VersionComments.Entry(version = "1.0_1", comment = "Added slopeAsProportion parameter to allow "
+        + "switching between reaches providiong slope either in % or in proportions "
+        + "(elevation difference / length). When using old models with this component, make sure to "
+        + "check if this value was set correctly. Otherwise you might experience a damped signal.")
+})
         public class J2KProcessReachRouting_NaCl extends JAMSComponent {
     
     /*
@@ -57,9 +66,18 @@ import jams.model.*;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            description = "attribute slope"
+            description = "attribute slope",
+            unit = "%"
             )
             public Attribute.Double slope;
+
+    @JAMSVarDescription(
+            access = JAMSVarDescription.AccessType.READ,
+            description = "Is slope provided as proportion of length and elevation difference [m/m]?",
+            defaultValue = "false"
+            )
+            public Attribute.Boolean slopeAsProportion;
+    
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
@@ -366,9 +384,16 @@ import jams.model.*;
         double deepsinkNaCl = 0;
         double Larea = 0;
         double width = this.width.getValue();
-        double slope = this.slope.getValue();
         double rough = this.roughness.getValue();
         double length = this.length.getValue();
+        double slope = this.slope.getValue();
+        if (!slopeAsProportion.getValue()) {
+            slope = slope / 100;
+        }
+        
+        if (slope == 0) {
+            getModel().getRuntime().println("WARNING: Found zero slope in reach entity which will prevent water routing!", JAMS.VERBOSE);
+        }
         
         double RD1act = this.actRD1.getValue() + this.inRD1.getValue();
         double RD2act = this.actRD2.getValue() + this.inRD2.getValue();
