@@ -318,6 +318,13 @@ public class j2k_soil_salt extends JAMSComponent {
             description = " actual evaporation in mm"
     )
     public Attribute.DoubleArray aTP_h;
+    
+    
+    @JAMSVarDescription(
+            access = JAMSVarDescription.AccessType.READ,
+            description = " Active part of NaCl pool to calibrate = 0.2"
+    )
+    public Attribute.Double activeNaClpart;
 
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
@@ -399,6 +406,7 @@ public class j2k_soil_salt extends JAMSComponent {
          }*/
 
         int i = 0;
+        int j = 0;
 
         this.gamma_temp = 0;
         this.gamma_water = 0;
@@ -515,7 +523,7 @@ public class j2k_soil_salt extends JAMSComponent {
 
             runResidue_pool = Residue_pool.getValue()[i];
 
-            this.runNaCl_Pool = NaCl_Pool.getValue()[i];
+            this.runNaCl_Pool = NaCl_Poolvals[i];
             /*if (runNaCl_Pool < 0){
              System.out.println(runNaCl_Pool +" = runNaCl_Pool");
              }*/
@@ -534,15 +542,7 @@ public class j2k_soil_salt extends JAMSComponent {
             SurfaceNaCl_in.setValue(0);
 
             /*          calculation of amount of nitrogen uptake with epaporation from soil */
-            int j = 1;
-
-            while (j < layer) {
-
-                Salt_upmove_h = calc_saltupmove(j);
-                sum_Saltupmove = sum_Saltupmove + Salt_upmove_h;
-
-                j++;
-            }
+            
 
             if (runSoil_Temp_Layer == 0) {
                 runSoil_Temp_Layer = 0.00001;
@@ -557,15 +557,30 @@ public class j2k_soil_salt extends JAMSComponent {
             }
 
             /*Calculations of NPools   Check Order of calculations !!!!!!!!!!!!!!*/
-            a_deposition = deposition_factor.getValue() * runprecip;
+            
+            if (i == 0) {
 
-            double delta_res = this.calc_Res_Salt_trans();
+                j = 1;
 
-            NaClrespool = (delta_res * runNaCl_residue_pool_fresh);
-            runNaCl_Pool = runNaCl_Pool + sum_Saltupmove + a_deposition + NaClrespool;
+                while (j < layer) {
 
-            runNaCl_residue_pool_fresh = runNaCl_residue_pool_fresh - (delta_res * runNaCl_residue_pool_fresh);
+                    Salt_upmove_h = calc_saltupmove(j);
+                    sum_Saltupmove = sum_Saltupmove + Salt_upmove_h;
 
+                    j++;
+                }
+
+                a_deposition = deposition_factor.getValue() * runprecip;
+
+                double delta_res = this.calc_Res_Salt_trans();
+
+                NaClrespool = (delta_res * runNaCl_residue_pool_fresh);
+                runNaCl_Pool = runNaCl_Pool + sum_Saltupmove + a_deposition + NaClrespool;
+
+                runNaCl_residue_pool_fresh = runNaCl_residue_pool_fresh - (delta_res * runNaCl_residue_pool_fresh);
+
+            }
+            
             if (i > 0) {
 
                 runNaCl_Pool = runNaCl_Pool + runinterflowNaCl_in + percoNaClvals[i - 1];
@@ -669,6 +684,8 @@ public class j2k_soil_salt extends JAMSComponent {
         double plantuptake = 0;
 
         plantuptake = ConcSALT_mobile[i] * aTP_h.getValue()[i];
+        
+        NaCl_Poolvals[i] = NaCl_Poolvals[i] - plantuptake;
 
         return plantuptake;
     }
@@ -704,10 +721,16 @@ public class j2k_soil_salt extends JAMSComponent {
         if (i == (layer - 1)) {
             mobilewater = RD2_out_mm + d_perco_mm + diffout[i] + 1.e-10;
         }
-//        concSALT_temp = (runNaCl_Pool * (1 - Math.exp(- mobilewater / ((1 - theta_nit) * soilstorage)))); //SWAT Version
-//        concSALT_mobile = concSALT_temp / mobilewater;
+        
+        runNaCl_Pool = runNaCl_Pool * activeNaClpart.getValue();
+        
+        concSALT_temp = (runNaCl_Pool * (1 - Math.exp(- mobilewater / ((1 - theta_nit) * soilstorage)))); //SWAT Version
+        concSALT_mobile = concSALT_temp / mobilewater;
 
-        concSALT_mobile = runNaCl_Pool / (soilstorage + mobilewater); //linear Version simple mixing
+        
+        
+        
+//        concSALT_mobile = runNaCl_Pool / (soilstorage + mobilewater); //linear Version simple mixing
 
         if (concSALT_mobile < 0) {
             concSALT_mobile = 0;
