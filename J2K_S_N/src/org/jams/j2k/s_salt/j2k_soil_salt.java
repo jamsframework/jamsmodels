@@ -722,9 +722,9 @@ public class j2k_soil_salt extends JAMSComponent {
             mobilewater = RD2_out_mm + d_perco_mm + diffout[i] + 1.e-10;
         }
         
-        runNaCl_Pool = runNaCl_Pool * activeNaClpart.getValue();
+        double runNaCl_Pool_act = runNaCl_Pool * activeNaClpart.getValue();
         
-        concSALT_temp = (runNaCl_Pool * (1 - Math.exp(- mobilewater / ((1 - theta_nit) * soilstorage)))); //SWAT Version
+        concSALT_temp = (runNaCl_Pool_act * (1 - Math.exp(- mobilewater / ((1 - theta_nit) * soilstorage)))); //SWAT Version
         concSALT_mobile = concSALT_temp / mobilewater;
 
         
