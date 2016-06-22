@@ -25,7 +25,6 @@ package org.unijena.j2000g.lowmem;
 import jams.JAMS;
 import jams.data.*;
 import jams.model.*;
-import java.util.ArrayList;
 import java.util.Arrays;
 
 
