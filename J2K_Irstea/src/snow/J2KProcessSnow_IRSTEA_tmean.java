@@ -43,7 +43,7 @@ import jams.model.*;
         description="Calculates snow accumulation, metamorphosis and melt",
         version="1.0_0",
         date="2013-03-29")
-        public class J2KProcessSnow_IRSTEA_MT extends JAMSComponent {
+        public class J2KProcessSnow_IRSTEA_tmean extends JAMSComponent {
     
     /*
      *  Component variables
@@ -87,14 +87,6 @@ import jams.model.*;
             public JAMSDouble meanTemp;
     
     
-    @JAMSVarDescription(
-            access = JAMSVarDescription.AccessType.READ,
-            update = JAMSVarDescription.UpdateType.RUN,
-            description = "max temperature",
-            unit = "°C"
-            )
-            public JAMSDouble maxTemp;
-
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
@@ -310,7 +302,6 @@ import jams.model.*;
 	        double balIn = this.in_snow + this.in_rain;
 	        
 	        double in_meanTemp = this.meanTemp.getValue();
-			double in_maxTemp = this.maxTemp.getValue();
 	        
 
                 this.run_snowDepth = this.snowDepth.getValue();
@@ -353,7 +344,7 @@ import jams.model.*;
 	        
 	        
 	        if((in_meanTemp >= TRS) && (this.run_snowDepth > 0)){
-	            this.calcMetamorphosis(in_maxTemp, temp_fac, rain_fac, ground_fac, run_area, SAC, critDens);
+	            this.calcMetamorphosis(in_meanTemp, temp_fac, rain_fac, ground_fac, run_area, SAC, critDens);
 	        }
 	        
                 if (run_snowDepth !=0){

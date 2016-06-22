@@ -37,7 +37,7 @@ import jams.model.*;
         description="Calculates soil water balance for each spatial modelling unit + changes in the module to add many variables as output",
         version="1.1_0",
         date="2011-05-30")
-        public class J2KProcessLumpedSoilWater_Tom extends JAMSComponent {
+        public class J2KProcessLumpedSoilWater_Tom_12h extends JAMSComponent {
     
     /*
      *  Component variables
@@ -919,6 +919,7 @@ import jams.model.*;
             
             /** checking if percolation rate is limited by parameter */
             double maxPerc = this.soilMaxPerc.getValue() * this.run_area;
+            maxPerc = maxPerc / 2;
             if(this.run_percolation > maxPerc){
                 double rest = this.run_percolation - maxPerc;
                 this.run_percolation = maxPerc;
@@ -956,7 +957,7 @@ import jams.model.*;
         /** DIRECT OVERLANDFLOW */
         //switched off 15-03-2004
         //double RD1_output_factor = this.conc_index / this.parameter.getDouble("conc_recRD1");
-        double RD1_output_factor = 1. / this.soilConcRD1.getValue();
+        double RD1_output_factor = (1. / this.soilConcRD1.getValue());
         if(RD1_output_factor > 1)
             RD1_output_factor = 1;
         else if(RD1_output_factor < 0)
@@ -972,7 +973,7 @@ import jams.model.*;
         /** lateral interflow */
         //switched of 15-03-2004
         //double RD2_output_factor = this.conc_index / this.parameter.getDouble("conc_recRD2");
-        double RD2_output_factor = 1. / this.soilConcRD2.getValue();
+        double RD2_output_factor = (1. / this.soilConcRD2.getValue());
         if(RD2_output_factor > 1)
             RD2_output_factor = 1;
         else if(RD2_output_factor < 0)
