@@ -36,6 +36,11 @@ import jams.model.*;
         description = "Regionalisation of Temp through general adiabatic rate"
         + "depends upon given adaiabatic rate"
 )
+@VersionComments(entries = {
+    @VersionComments.Entry(version = "1.1", comment = "Added functionality to "
+            + "handle the case that the closest station does not provide a "
+            + "valid value", date = "2016-08-30")
+})
 public class TemperatureLapseRate extends JAMSComponent {
 
     /*
