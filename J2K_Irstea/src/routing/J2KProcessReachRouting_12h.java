@@ -43,7 +43,7 @@ import jams.model.*;
             + "switching between reaches providiong slope either in % or in proportions "
             + "(elevation difference / length). When using old models with this component, make sure to "
             + "check if this value was set correctly. Otherwise you might experience a damped signal."),
-    @VersionComments.Entry(version = "1.0_2", date = "2016-05-24", comment = "Added checking of reach "
+    @VersionComments.Entry(version = "1.0_2", comment = "Added checking of reach - 2016-05-24 "
             + "slopes to avoid misconfiguration of slope parameters. Use \"checkSlopes\" switch to "
             + "turn this off!")
 })
