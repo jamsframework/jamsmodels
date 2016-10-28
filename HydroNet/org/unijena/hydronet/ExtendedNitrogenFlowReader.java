@@ -124,7 +124,7 @@ public class ExtendedNitrogenFlowReader extends JAMSComponent {
 	    double ratio_percolation = 1 - ratio_interflow;
 		
 	    for (int j=0;j<N;j++) {
-	        M.element[j][0] = field_fd[j].getDouble("sum_Ninput_2000");
+	        M.element[j][0] = field_fd[j].getDouble("inputN_sum");
 	        M.element[j][1] = field_fd[j].getDouble("sinterflowN_2000") + field_fd[j].getDouble("SurfaceN_2000") +
                         field_fd[j].getDouble("sum_NH4")+  field_fd[j].getDouble("sum_activN") + field_fd[j].getDouble("sum_residueN") +
 				  field_fd[j].getDouble("PercoN_2000");	
@@ -139,8 +139,8 @@ public class ExtendedNitrogenFlowReader extends JAMSComponent {
 	    e.setDouble("new_input",-1.0);
 	    e.setDouble("interflow_weight",ratio_interflow);
 	    e.setDouble("percolation_weight",ratio_percolation);
-	    e.setDouble("ist_input",field_fd[N].getDouble("sum_Ninput_2000"));
-	    e.setDouble("min_input",field_fd[0].getDouble("sum_Ninput_2000"));
+	    e.setDouble("ist_input",field_fd[N].getDouble("inputN_sum"));
+	    e.setDouble("min_input",field_fd[0].getDouble("inputN_sum"));
         }
         
         getModel().getRuntime().println("NitrogenFlow parameter file processed ...", JAMS.STANDARD);        
