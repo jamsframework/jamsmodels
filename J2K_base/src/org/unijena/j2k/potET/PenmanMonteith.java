@@ -31,10 +31,14 @@ import jams.model.*;
  * @author Peter Krause
  */
 @JAMSComponentDescription(title = "CalcDailyETP_PenmanMonteith",
-author = "Peter Krause",
-description = "Calculates potential ETP according Penman-Monteith",
-version="1.0_0",
-date="2011-05-30")
+        author = "Peter Krause",
+        description = "Calculates potential ETP according Penman-Monteith",
+        version = "1.0_1",
+        date = "2016-09-07")
+@VersionComments(entries = {
+    @VersionComments.Entry(version = "1.0_0", comment = "Initial version", date = "2011-05-30"),
+    @VersionComments.Entry(version = "1.0_1", comment = "Fixed unit of surface resistance", date = "2016-09-07")
+})
 public class PenmanMonteith extends JAMSComponent {
 
     public final double CP = 1.031E-3;
@@ -45,148 +49,147 @@ public class PenmanMonteith extends JAMSComponent {
      *  Component variables
      */
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
-    description = "Current time")
+            description = "Current time")
     public Attribute.Calendar time;
 
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
-    description = "temporal resolution [d | h | m]")
+            description = "temporal resolution [d | h | m]")
     public Attribute.String tempRes;
 
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
-    description = "state variable wind",
-            unit="m/s")
+            description = "state variable wind",
+            unit = "m/s")
     public Attribute.Double wind;
 
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
-    description = "state variable mean temperature",
-    unit="°C")
+            description = "state variable mean temperature",
+            unit = "°C")
     public Attribute.Double tmean;
 
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
-    description = "state variable relative humidity",
-    unit="%")
+            description = "state variable relative humidity",
+            unit = "%")
     public Attribute.Double rhum;
 
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
-    description = "state variable net radiation",
-    unit="MJ m^-2 d^-1")
+            description = "state variable net radiation",
+            unit = "MJ m^-2 d^-1")
     public Attribute.Double netRad;
 
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
-    description = "state variable rsc0",
-    unit="m s^-1")
+            description = "state variable rsc0",
+            unit = "s m^-1")
     public Attribute.Double actRsc0;
 
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
-    description = "attribute elevation",
-    unit="m")
+            description = "attribute elevation",
+            unit = "m")
     public Attribute.Double elevation;
 
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
-    description = "attribute area",
-    unit="m²")
+            description = "attribute area",
+            unit = "m²")
     public Attribute.Double area;
 
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
-    description = "state variable LAI")
+            description = "state variable LAI")
     public Attribute.Double actLAI;
 
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
-    description = "state variable effective height",
-    unit="m")
+            description = "state variable effective height",
+            unit = "m")
     public Attribute.Double actEffH;
 
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.WRITE,
-    description = "potential ET [mm/ timeUnit]",
-    unit="L")
+            description = "potential ET [mm/ timeUnit]",
+            unit = "L")
     public Attribute.Double potET;
 
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.WRITE,
-    description = "actual ET [mm/ timeUnit]",
-    unit="L")
+            description = "actual ET [mm/ timeUnit]",
+            unit = "L")
     public Attribute.Double actET;
 
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.WRITE,
-    description = "ea .. vapour pressure",
-    unit="hPa")
+            description = "ea .. vapour pressure",
+            unit = "hPa")
     public Attribute.Double ea;
-    
+
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.WRITE,
-    description = "rs",
-    unit="s m^-1")
+            description = "rs",
+            unit = "s m^-1")
     public Attribute.Double rs;
 
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.WRITE,
-    description = "ra",
-    unit="s m^-1")
+            description = "ra",
+            unit = "s m^-1")
     public Attribute.Double ra;
 
-    public void run() throws Attribute.Entity.NoSuchAttributeException, IOException {
-      
-            double netRad = this.netRad.getValue();
-            double temperature = this.tmean.getValue();
-            double rhum = this.rhum.getValue();
-            double wind = this.wind.getValue();
-            double rsc0 = this.actRsc0.getValue();
-            double LAI = this.actLAI.getValue();
-            double effHeight = this.actEffH.getValue();
-            double elevation = this.elevation.getValue();
-            double area = this.area.getValue();
+    public void run() throws IOException {
 
-            double abs_temp = org.unijena.j2k.physicalCalculations.ClimatologicalVariables.calc_absTemp(temperature, "degC");
-            double delta_s = org.unijena.j2k.physicalCalculations.ClimatologicalVariables.calc_slopeOfSaturationPressureCurve(temperature);
-            double pz = org.unijena.j2k.physicalCalculations.ClimatologicalVariables.calc_atmosphericPressure(elevation, abs_temp);
-            double est = org.unijena.j2k.physicalCalculations.ClimatologicalVariables.calc_saturationVapourPressure(temperature);
-            double ea = org.unijena.j2k.physicalCalculations.ClimatologicalVariables.calc_vapourPressure(rhum, est);
-            this.ea.setValue(ea);
+        double netRad = this.netRad.getValue();
+        double temperature = this.tmean.getValue();
+        double rhum = this.rhum.getValue();
+        double wind = this.wind.getValue();
+        double rsc0 = this.actRsc0.getValue();
+        double LAI = this.actLAI.getValue();
+        double effHeight = this.actEffH.getValue();
+        double elevation = this.elevation.getValue();
+        double area = this.area.getValue();
 
-            double latH = org.unijena.j2k.physicalCalculations.ClimatologicalVariables.calc_latentHeatOfVaporization(temperature);
-            double psy = org.unijena.j2k.physicalCalculations.ClimatologicalVariables.calc_psyConst(pz, latH);
+        double abs_temp = org.unijena.j2k.physicalCalculations.ClimatologicalVariables.calc_absTemp(temperature, "degC");
+        double delta_s = org.unijena.j2k.physicalCalculations.ClimatologicalVariables.calc_slopeOfSaturationPressureCurve(temperature);
+        double pz = org.unijena.j2k.physicalCalculations.ClimatologicalVariables.calc_atmosphericPressure(elevation, abs_temp);
+        double est = org.unijena.j2k.physicalCalculations.ClimatologicalVariables.calc_saturationVapourPressure(temperature);
+        double ea = org.unijena.j2k.physicalCalculations.ClimatologicalVariables.calc_vapourPressure(rhum, est);
+        this.ea.setValue(ea);
 
-            double rs = this.calcRs(LAI, rsc0, RSS);
-            double ra = this.calcRa(effHeight, wind);
+        double latH = org.unijena.j2k.physicalCalculations.ClimatologicalVariables.calc_latentHeatOfVaporization(temperature);
+        double psy = org.unijena.j2k.physicalCalculations.ClimatologicalVariables.calc_psyConst(pz, latH);
 
-            double G = this.calc_groundHeatFlux(netRad);
-            double vT = org.unijena.j2k.physicalCalculations.ClimatologicalVariables.calc_VirtualTemperature(abs_temp, pz, ea);
-            double pa = org.unijena.j2k.physicalCalculations.ClimatologicalVariables.calc_AirDensityAtConstantPressure(vT, pz);
+        double rs = this.calcRs(LAI, rsc0, RSS);
+        double ra = this.calcRa(effHeight, wind);
 
-            double tempFactor = 0;
-            double pET = 0;
-            double aET = 0;
+        double G = this.calc_groundHeatFlux(netRad);
+        double vT = org.unijena.j2k.physicalCalculations.ClimatologicalVariables.calc_VirtualTemperature(abs_temp, pz, ea);
+        double pa = org.unijena.j2k.physicalCalculations.ClimatologicalVariables.calc_AirDensityAtConstantPressure(vT, pz);
 
-            if (this.tempRes.getValue().equals("d")) {
-                tempFactor = 86400;
-            } else if (this.tempRes.getValue().equals("h")) {
-                tempFactor = 3600;
-            } else if (this.tempRes.getValue().equals("m")) {
-                tempFactor = 86400;
+        double tempFactor = 0;
+        double pET = 0;
+        double aET = 0;
+
+        if (this.tempRes.getValue().equals("d")) {
+            tempFactor = 86400;
+        } else if (this.tempRes.getValue().equals("h")) {
+            tempFactor = 3600;
+        } else if (this.tempRes.getValue().equals("m")) {
+            tempFactor = 86400;
+        }
+        double Letp = this.calcETAllen(delta_s, netRad, G, pa, CP, est, ea, ra, rs, psy, tempFactor);
+
+        pET = Letp / latH;
+        aET = 0;
+
+        //converting mm to litres
+        pET = pET * area;
+
+        //aggregation to monthly values
+        if (this.time != null) {
+            if (this.tempRes.getValue().equals("m")) {
+                int daysInMonth = this.time.getActualMaximum(Attribute.Calendar.DATE);
+                pET = pET * daysInMonth;
             }
-            double Letp = this.calcETAllen(delta_s, netRad, G, pa, CP, est, ea, ra, rs, psy, tempFactor);
-                        
-            pET = Letp / latH;
-            aET = 0;
+        }
+        //avoiding negative potETPs
+        if (pET < 0) {
+            pET = 0;
+        }
 
-            //converting mm to litres
-            pET = pET * area;
+        this.potET.setValue(pET);
+        this.ra.setValue(ra);
+        this.rs.setValue(rs);
+        this.actET.setValue(aET);
 
-            //aggregation to monthly values
-            if (this.time != null) {
-                if (this.tempRes.getValue().equals("m")) {
-                    int daysInMonth = this.time.getActualMaximum(Attribute.Calendar.DATE);
-                    pET = pET * daysInMonth;
-                }
-            }
-            //avoiding negative potETPs
-            if (pET < 0) {
-                pET = 0;
-            }
-
-            this.potET.setValue(pET);
-            this.ra.setValue(ra);
-            this.rs.setValue(rs);
-            this.actET.setValue(aET);
-            
-            
     }
 
     private double calcETAllen(double ds, double netRad, double G, double pa, double CP, double est, double ea, double ra, double rs, double psy, double tempFactor) {
@@ -222,8 +225,8 @@ public class PenmanMonteith extends JAMSComponent {
     }
 
     private double calcRs(double LAI, double rsc, double rss) {
-       double A = Math.pow(0.7, LAI);
-       double rs = 1. / (((1 - A) / rsc) + ((A / rss)));
-       return rs;
+        double A = Math.pow(0.7, LAI);
+        double rs = 1. / (((1 - A) / rsc) + ((A / rss)));
+        return rs;
     }
 }
