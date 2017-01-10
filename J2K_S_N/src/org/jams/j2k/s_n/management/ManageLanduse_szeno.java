@@ -97,6 +97,10 @@ public class ManageLanduse_szeno extends JAMSComponent {
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.WRITE,
     description = "Type of harvest to distiguish between crops with undersown plants and normal harvesting")
     public Attribute.Integer harvesttype;
+    @JAMSVarDescription(access = JAMSVarDescription.AccessType.WRITE,
+    description = "Salt content of fertilizer in kg/ha")
+    public Attribute.Double fert_salt;
+    
     private Attribute.TimeInterval ti;
     double endbioN;
     double bion02;
@@ -120,6 +124,7 @@ public class ManageLanduse_szeno extends JAMSComponent {
         this.fertNH4N.setValue(0);
         this.fertorgNactive.setValue(0);
         this.fertorgNfresh.setValue(0);
+        this.fert_salt.setValue(0);
         boolean runplantex = false;
         this.runNredu = 0;
         runplantex = plantExisting.getValue();
@@ -210,6 +215,7 @@ public class ManageLanduse_szeno extends JAMSComponent {
     protected void processFertilization(J2KSNLMArable currentManagement) {
         double run_gift = gift.getValue();
         double fertN_total = 0;
+        double run_fert_salt = 0;
 
 
         J2KSNFertilizer fert = currentManagement.fert;
@@ -265,10 +271,17 @@ public class ManageLanduse_szeno extends JAMSComponent {
         }
         run_gift = run_gift + 1;
         gift.setValue(run_gift);
+       
+        
         double fertNH4N = famount * fert.fminn * fert.fnh4n;
         double fertNO3N = famount * fert.fminn * (1 - fert.fnh4n);
         double fertorgNfresh = 0.5 * fert.forgn * famount; // amount of nitrogen in the fresh organic pool added to the soil
         double fertorgNactive = 0.5 * famount * fert.forgn; //orgNact is the amount of nitrogen in the active organic pool added to the soil
+         if (fert.forgn == 0){
+            run_fert_salt = famount;
+        }else{
+            run_fert_salt = fert.fminn;
+        }
 
 
 
@@ -289,6 +302,7 @@ public class ManageLanduse_szeno extends JAMSComponent {
         this.fertNH4N.setValue(fertNH4N);
         this.fertorgNfresh.setValue(fertorgNfresh);
         this.fertorgNactive.setValue(fertorgNactive);
+        this.fert_salt.setValue(run_fert_salt);
     }
 
     protected void processFertilizationopti(J2KSNLMArable currentManagement) {

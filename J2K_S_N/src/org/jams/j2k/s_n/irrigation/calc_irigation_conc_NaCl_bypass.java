@@ -11,10 +11,10 @@ import jams.model.*;
  *
  * @author c6gohe2
  */
-@JAMSComponentDescription(title = "Calculation of irrigation water N-concentration",
+@JAMSComponentDescription(title = "calc_irigation_conc_NaCl_bypass, Calculation of irrigation water Salt-concentration",
 author = "c8fima",
-description = "Calculation of irrigation water N-concentration")
-public class calc_irigation_conc_N_bypass extends JAMSComponent {
+description = "Calculation of irrigation water Salt-concentration")
+public class calc_irigation_conc_NaCl_bypass extends JAMSComponent {
 
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
@@ -33,7 +33,12 @@ public class calc_irigation_conc_N_bypass extends JAMSComponent {
             description = "HRU crop class"
             )
             public Attribute.Double bypass_N; 
-    
+
+    @JAMSVarDescription(
+            access = JAMSVarDescription.AccessType.WRITE,
+            description = "HRU crop class"
+            )
+            public Attribute.Double bypass_NaCl; 
 
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
@@ -41,6 +46,12 @@ public class calc_irigation_conc_N_bypass extends JAMSComponent {
             )
             public Attribute.Double storageInputN;
 
+    @JAMSVarDescription(
+            access = JAMSVarDescription.AccessType.READ,
+            description = "HRU crop class"
+            )
+            public Attribute.Double storageInputNaCl;    
+    
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
             description = "HRU crop class"
@@ -66,6 +77,12 @@ public class calc_irigation_conc_N_bypass extends JAMSComponent {
             description = "N-concentration of the irrigation water kgN/l"
             )
             public Attribute.Double irrigationN_conc;
+    
+    @JAMSVarDescription(
+            access = JAMSVarDescription.AccessType.WRITE,
+            description = "N-concentration of the irrigation water kg alt/l"
+            )
+            public Attribute.Double irrigationNaCl_conc;    
 
 
 //Berechnung
@@ -80,6 +97,7 @@ public class calc_irigation_conc_N_bypass extends JAMSComponent {
         double runstorage = (storageInput.getValue()*1000); // from m³/day to l/day  
         
         irrigationN_conc.setValue( storageInputN.getValue()/runstorage);
+        irrigationNaCl_conc.setValue( storageInputNaCl.getValue()/runstorage);
         
         runstorage = runstorage - (bypass_water.getValue() * 86400000); //reduction of irrigation storage due to the bypasswater 
         
@@ -87,7 +105,10 @@ public class calc_irigation_conc_N_bypass extends JAMSComponent {
         
         double run_bypass_N =bypass_water.getValue() * 86400000 * irrigationN_conc.getValue();
         run_bypass_N = Math.min(run_bypass_N,storageInputN.getValue());        
-        bypass_N.setValue(run_bypass_N);      
+        bypass_N.setValue(run_bypass_N);
+        double run_bypass_NaCl =bypass_water.getValue() * 86400000 * irrigationNaCl_conc.getValue();
+        run_bypass_NaCl = Math.min(run_bypass_NaCl,storageInputNaCl.getValue());
+        bypass_NaCl.setValue(run_bypass_NaCl);
        
         irripart = runstorage / irrigationsum.getValue();
         

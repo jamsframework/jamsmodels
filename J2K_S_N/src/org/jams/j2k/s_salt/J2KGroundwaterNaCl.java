@@ -181,6 +181,13 @@ import jams.model.*;
             )
             public Attribute.Double NaCl_delay_RG2;
     
+    @JAMSVarDescription(
+            access = JAMSVarDescription.AccessType.READ,
+            description = "Variation coeficinet of the RG2 salt concentration, depending on the RG1 saturation, 0 - 1 []",
+            defaultValue = "0.0"    
+            )
+            public Attribute.Double vari_Salt_conc_RG2;
+    
     
     /*
      *  Component run stages
@@ -217,6 +224,7 @@ import jams.model.*;
         double partNaCl_RG1 = 0;
         double partNaCl_RG2 = 0;
         double percwatersum = runpot_RG1 + runpot_RG2 + rungwExcess;
+        double variationinter = vari_Salt_conc_RG2.getValue();
         if (percwatersum > 0){
             partNaCl_RG1 = (runpot_RG1 / percwatersum) * percoNaCl;
             partNaCl_RG2 = (runpot_RG2 / percwatersum) * percoNaCl;
@@ -238,6 +246,8 @@ import jams.model.*;
         
         if (watersum_RG2 > 0){
             runNaCl_concRG2 = runNaClActRG2 * 1000000 / watersum_RG2;
+            runNaCl_concRG2 = runNaCl_concRG2 * (1 -  (variationinter * ((ActRG1/MaxRG1) -0.5)));  
+            
         } else {
             runNaCl_concRG2 = 0;
         }

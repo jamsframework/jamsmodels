@@ -204,6 +204,20 @@ import jams.model.*;
             if (i==4){
             runNaCl_Pool =  actHRU.getDouble("HOR_5") * 1000;
             }
+            if (i==5){
+            runNaCl_Pool =  actHRU.getDouble("HOR_6") * 1000;
+            }
+            if (i==6){
+            runNaCl_Pool =  actHRU.getDouble("HOR_7") * 1000;
+            }
+            if (i==7){
+            runNaCl_Pool =  actHRU.getDouble("HOR_8") * 1000;
+            }            
+            if (i==8){
+            runNaCl_Pool =  actHRU.getDouble("HOR_9") * 1000;
+            }            
+            
+            
             
             runNaCl_residue_pool_fresh = 0.0015 * runResidue_pool;
             NaCl_Poolvals[i] = runNaCl_Pool;           

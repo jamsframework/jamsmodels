@@ -337,6 +337,12 @@ public class j2k_soil_salt extends JAMSComponent {
             description = " percolation coefitient to calibrate = 0.2"
     )
     public Attribute.Double Beta_rsd;
+    
+    @JAMSVarDescription(
+            access = JAMSVarDescription.AccessType.READ,
+            description = "Salt content of fertilizer in kg/ha",
+            defaultValue = "0.0")
+    public Attribute.Double fert_salt;
 
     /*
      *  Component run stages
@@ -575,7 +581,7 @@ public class j2k_soil_salt extends JAMSComponent {
                 double delta_res = this.calc_Res_Salt_trans();
 
                 NaClrespool = (delta_res * runNaCl_residue_pool_fresh);
-                runNaCl_Pool = runNaCl_Pool + sum_Saltupmove + a_deposition + NaClrespool;
+                runNaCl_Pool = runNaCl_Pool + sum_Saltupmove + a_deposition + NaClrespool + fert_salt.getValue();
 
                 runNaCl_residue_pool_fresh = runNaCl_residue_pool_fresh - (delta_res * runNaCl_residue_pool_fresh);
 
@@ -590,7 +596,7 @@ public class j2k_soil_salt extends JAMSComponent {
 
             concSALT_mobile = calc_concSALT_mobile(i);
             ConcSALT_mobile[i] = concSALT_mobile;
-            plantuptake_NaCl = calc_plantuptake(i);
+            //plantuptake_NaCl = calc_plantuptake(i);
             /*if (runNaCl_Pool < 0){
              System.out.println(runNaCl_Pool +" = runNaCl_Pool");
              }*/
