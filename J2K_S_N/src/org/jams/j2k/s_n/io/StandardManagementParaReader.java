@@ -367,6 +367,9 @@ public class StandardManagementParaReader extends JAMSComponent {
                 
                 rotation = rotations.get(rid);
                 hru = hruMap.get(hid);
+                if (hid == 8295){
+                    System.out.println("hid " + hid + " rid " + rid );
+                }
                 
                 hru.setDouble("ReductionFactor",  redu_fac);
                 hru.setObject("landuseRotation",  rotation);
