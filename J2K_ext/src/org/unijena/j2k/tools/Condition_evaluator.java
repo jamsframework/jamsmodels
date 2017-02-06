@@ -33,9 +33,14 @@ import jams.model.*;
         title = "Condition Evaluator",
         author = "Manfred Fink",
         description = "evaluates diffrent Boolean comparisions of two Double values",
-        version = "1.0",
-        date = "2014-07-04"
+        version = "1.1",
+        date = "2017-02-06"
 )
+@VersionComments(entries = {@VersionComments.Entry(
+        version = "1.1",
+        date = "2017-02-06",
+        comment = "Fixed case break problem."
+)})
 
 public class Condition_evaluator extends JAMSComponent {
 
@@ -88,34 +93,35 @@ public class Condition_evaluator extends JAMSComponent {
                 if (Fvalue.getValue() > Svalue.getValue()) {
                     run_result = 1.0;
                 }
-            }
+               
+            } break;
             case 2:{
 
                 if (Fvalue.getValue() >= Svalue.getValue()) {
                     run_result = 1.0;
                 }
-            }
+            } break;
 
             case 3:{
 
                 if (Fvalue.getValue() < Svalue.getValue()) {
                     run_result = 1.0;
                 }
-            }
+            } break;
 
             case 4:{
 
                 if (Fvalue.getValue() <= Svalue.getValue()) {
                     run_result = 1.0;
                 }
-            }
+            } break;
 
             case 5:{
 
                 if (Fvalue.getValue() == Svalue.getValue()) {
                     run_result = 1.0;
                 }
-            }
+            } break;
 
         }
         
