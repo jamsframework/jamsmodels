@@ -15,8 +15,9 @@ import org.jams.j2k.s_n.crop.J2KSNCrop;
  * @author c6gohe2
  */
 @JAMSComponentDescription(title = "IrrigationStorage",
-author = "c6gohe2",
-description = "IrrigationStorage calculation of irrigation demand")
+author = "c6gohe2, c8fima",
+description = "IrrigationStorage calculation of irrigation demand",
+version = "1.1")
 public class IrrigationStorage extends JAMSComponent {
 
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
@@ -79,6 +80,18 @@ public class IrrigationStorage extends JAMSComponent {
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.WRITE,
     description = "Test value for water use efficiency function (-)")
     public Attribute.Double Eff_test;
+    @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
+    description = "Bypass factor (average portion of bypass water from the irrigation water) (0 - 1) (-)",
+    defaultValue = "0")
+    public Attribute.Double Bypass_factor;
+    @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
+    description = "dynamic bypass range (for the calulation portion of bypass water from the irrigation water) (0 - 1) (-)",
+    defaultValue = "0")
+    public Attribute.Double Bypass_range;    
+    @JAMSVarDescription(access = JAMSVarDescription.AccessType.WRITE,
+    description = "dynamic bypass value (-)")
+    public Attribute.Double Bypass_dyn;    
+    
 
     //Berechnung
     public void run() {
@@ -101,13 +114,18 @@ public class IrrigationStorage extends JAMSComponent {
         double irr_center = irr_intervall / 2 + Irr_Start.getValue();
         double exp = Eff_exp.getValue();
         double act_irr = act - Irr_Start.getValue();
+        double run_by_fac = Bypass_factor.getValue();
+        double by_range = Bypass_range.getValue();
 
         double a_irr = 0;
         double b_irr = 0;
         double half_exp = Math.pow(irr_intervall / 2, exp);
+        
+        double run_by_dyn = 0;
 
         if (act < Irr_Start.getValue()) {
             wstthr = wst_thr_out.getValue();
+            run_by_dyn = (run_by_fac + (by_range/2));
         } else if (act < irr_center) {
 
             a_irr = (irr_intervall / 2) - act_irr;
@@ -115,6 +133,8 @@ public class IrrigationStorage extends JAMSComponent {
             b_irr = (half_exp - Math.pow(a_irr, exp)) / half_exp;
 
             wstthr = ((wst_thr.getValue() - wst_thr_out.getValue()) * b_irr) + wst_thr_out.getValue();
+            
+            run_by_dyn = (run_by_fac + (by_range/2)) - (by_range * b_irr);
 
         } else if (act <= Irr_End.getValue()) {
 
@@ -123,11 +143,18 @@ public class IrrigationStorage extends JAMSComponent {
             b_irr = (half_exp - Math.pow(a_irr, exp)) / half_exp;
 
             wstthr = ((wst_thr.getValue() - wst_thr_out.getValue()) * b_irr) + wst_thr_out.getValue();
+            
+            run_by_dyn = (run_by_fac + (by_range/2)) - (by_range * b_irr);
 
         } else if (act > Irr_End.getValue()) {
             wstthr = wst_thr_out.getValue();
+            run_by_dyn = (run_by_fac + (by_range/2));
         }
 
+        run_by_dyn = Math.max(run_by_dyn, 0);
+        run_by_dyn = Math.min(run_by_dyn, 1);
+        
+        Bypass_dyn.setValue(run_by_dyn);
 
         double Irr_mul = Irr_mult.getValue();
         double irrsum = irrigationsum.getValue();
