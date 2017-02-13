@@ -45,8 +45,8 @@ import jams.model.*;
             public Attribute.Double catchmentSimRunoffNaCl;
 
   @JAMSVarDescription(
-            access = JAMSVarDescription.AccessType.READWRITE,
-            description = "HRU crop class"
+            access = JAMSVarDescription.AccessType.READ,
+            description = "Amount of bypass water [l]"
             )
             public Attribute.Double Irrigation_Bypass_water;
 
@@ -84,8 +84,8 @@ import jams.model.*;
                 
         
         catchmentSimRunoff_qm.setValue(((runstorage + Irrigation_Bypass_water.getValue()) / 86400000) + catchmentSimRunoff_qm.getValue());
-        catchmentSimRunoffN.setValue((((runstorage + Irrigation_Bypass_water.getValue())/ 86400000) * irrigationN_conc.getValue())  + catchmentSimRunoffN.getValue());
-        catchmentSimRunoffNaCl.setValue((((runstorage + Irrigation_Bypass_water.getValue())/ 86400000) * irrigationNaCl_conc.getValue())  + catchmentSimRunoffNaCl.getValue());
+        catchmentSimRunoffN.setValue((((runstorage + Irrigation_Bypass_water.getValue())) * irrigationN_conc.getValue())  + catchmentSimRunoffN.getValue());
+        catchmentSimRunoffNaCl.setValue((((runstorage + Irrigation_Bypass_water.getValue())) * irrigationNaCl_conc.getValue())  + catchmentSimRunoffNaCl.getValue());
         
         
         Storage.setValue(Storage.getValue() - runstorage);
