@@ -9,11 +9,11 @@ import jams.model.*;
 
 /**
  *
- * @author c6gohe2
+ * @author c8fima
  */
 @JAMSComponentDescription(
         title="SumQsim_NaCl_N",
-        author="c6gohe2",
+        author="c8fima",
         description=""
         )
         public class SumQsim_NaCl_N extends JAMSComponent {
