@@ -35,8 +35,9 @@ public class calc_irigation_conc_NaCl extends JAMSComponent {
             public Attribute.Double storageInputNaCl;   
     
     @JAMSVarDescription(
-            access = JAMSVarDescription.AccessType.READ,
-            description = "Fixed minimal bypass factor 0 - 1 [-], default 0"
+            access = JAMSVarDescription.AccessType.READWRITE,
+            description = "Fixed minimal bypass factor 0 - 1 [-]",
+            defaultValue = "0"
             )
             public Attribute.Double Bypassfactor;
         
@@ -83,6 +84,8 @@ public class calc_irigation_conc_NaCl extends JAMSComponent {
     public void init(){
         irrigationpart.setValue(0.0);
         storageInput.setValue(0);
+        Bypassfactor.setValue(0.0);
+        
     }
     public void run (){
 
@@ -90,20 +93,23 @@ public class calc_irigation_conc_NaCl extends JAMSComponent {
 
         double run_storage = storage.getValue();
 
-        double irrstorage = (storageInput.getValue()*1000); // from m³/day to l/day
+        double irrstorage_inp = (storageInput.getValue()*1000); // from m³/day to l/day
 
-        double irrifactor = irrigationsum.getValue()/irrstorage;
+        double irrifactor = irrigationsum.getValue()/irrstorage_inp;
         
         irrifactor = Math.min(irrifactor, 1);
         
         double runBypassfactor = Bypassfactor.getValue(); //*(1-irrifactor);
         
         
-        irrstorage = irrstorage * (1 - runBypassfactor);
         
-        Bypasswater.setValue(irrstorage * runBypassfactor);
+        double irrstorage = (irrstorage_inp * (1 - runBypassfactor)) + run_storage;
         
-        irripart = irrigationsum.getValue()/irrstorage;
+        
+        
+        Bypasswater.setValue(irrstorage_inp * runBypassfactor);
+        
+        irripart = irrstorage/irrigationsum.getValue();
 
         irrigationN_conc.setValue( storageInputN.getValue()/(storageInput.getValue()*1000));
         irrigationNaCl_conc.setValue( storageInputNaCl.getValue()/(storageInput.getValue()*1000));
@@ -118,7 +124,7 @@ public class calc_irigation_conc_NaCl extends JAMSComponent {
 
         irrigationsum.setValue(0.0);
         
-        storage.setValue(irrstorage + run_storage);
+        storage.setValue(irrstorage);
 
 
     }
