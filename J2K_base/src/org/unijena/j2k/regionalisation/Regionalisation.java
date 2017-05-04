@@ -31,62 +31,79 @@ import jams.model.*;
  *
  * @author Peter Krause
  */
+@JAMSComponentDescription(title = "Regionalisation",
+        author = "Peter Krause",
+        version = "1.1_0",
+        description = "Calculate local (regionalised) input values based on the "
+        + "inverse distance weighting procedure.")
+@VersionComments(entries = {
+    @VersionComments.Entry(version = "1.0_0", comment = "Initial version"),
+    @VersionComments.Entry(version = "1.1_0", comment = "Added option to output "
+            + "actual weights for individual stations in order to find out "
+            + "which stations were used in each time step and for each "
+            + "modelling unit.")
+})
 public class Regionalisation extends JAMSComponent {
 
-    @JAMSVarDescription (access = JAMSVarDescription.AccessType.READ,
-                         description = "Array of data values for current time step")
+    @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
+            description = "Array of data values for current time step")
     public Attribute.DoubleArray dataArray;
 
-    @JAMSVarDescription (access = JAMSVarDescription.AccessType.READ,
-                         description = "Regression coefficients")
+    @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
+            description = "Regression coefficients")
     public Attribute.DoubleArray regCoeff;
 
-    @JAMSVarDescription (access = JAMSVarDescription.AccessType.READ,
-                         description = "Array of station elevations")
+    @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
+            description = "Array of station elevations")
     public Attribute.DoubleArray statElevation;
 
-    @JAMSVarDescription (access = JAMSVarDescription.AccessType.READ,
-                         description = "Array of station's weights")
+    @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
+            description = "Array of station's weights")
     public Attribute.DoubleArray statWeights;
 
-    @JAMSVarDescription (access = JAMSVarDescription.AccessType.READ,
-                         description = "Array position of weights")
+    @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
+            description = "Array position of weights")
     public Attribute.IntegerArray statOrder;
 
-    @JAMSVarDescription (access = JAMSVarDescription.AccessType.WRITE,
-                         description = "regionalised data value")
+    @JAMSVarDescription(access = JAMSVarDescription.AccessType.WRITE,
+            description = "regionalised data value")
     public Attribute.Double dataValue;
 
-    @JAMSVarDescription (access = JAMSVarDescription.AccessType.READ,
-                         description = "Attribute name elevation")
+    @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
+            description = "Attribute name elevation")
     public Attribute.Double entityElevation;
 
-    @JAMSVarDescription (access = JAMSVarDescription.AccessType.READ,
-                         description = "Number of IDW stations")
+    @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
+            description = "Number of IDW stations")
     public Attribute.Integer nidw;
 
-    @JAMSVarDescription (access = JAMSVarDescription.AccessType.READ,
-                         description = "Apply elevation correction to measured data")
+    @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
+            description = "Apply elevation correction to measured data")
     public Attribute.Boolean elevationCorrection;
 
-    @JAMSVarDescription (access = JAMSVarDescription.AccessType.READ,
-                         description = "Minimum r² value for elevation correction application")
+    @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
+            description = "Minimum r² value for elevation correction application")
     public Attribute.Double rsqThreshold;
 
-    @JAMSVarDescription (access = JAMSVarDescription.AccessType.READ,
-                         description = "Absolute possible minimum value for data set",
-                         defaultValue = "-Infinity")
+    @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
+            description = "Absolute possible minimum value for data set",
+            defaultValue = "-Infinity")
     public Attribute.Double fixedMinimum;
-    
-    @JAMSVarDescription (access = JAMSVarDescription.AccessType.READ,
-                         description = "Absolute possible maximum value for data set",
-                         defaultValue = "Infinity")
+
+    @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
+            description = "Absolute possible maximum value for data set",
+            defaultValue = "Infinity")
     public Attribute.Double fixedMaximum;
+
+    @JAMSVarDescription(access = JAMSVarDescription.AccessType.WRITE,
+            description = "Weights of individual stations (first element equals first station in list)")
+    public Attribute.Double[] actualWeights;
 
     boolean invalidDatasetReported = false;
 
     ArrayPool<double[]> memPool = new ArrayPool<double[]>(double.class);
-    
+    ArrayPool<int[]> imemPool = new ArrayPool<int[]>(int.class);
+
     @Override
     public void run() throws IOException {
         //Retreiving data, elevations and weights
@@ -99,19 +116,24 @@ public class Regionalisation extends JAMSComponent {
         double[] sourceWeights = statWeights.getValue();
         double targetElevation = entityElevation.getValue();
         int[] wA = this.statOrder.getValue();
-        
+
         double value = 0;
         double deltaElev = 0;
-        
+
         int nIDW = this.nidw.getValue();
         double[] data = memPool.alloc(nIDW);
         double[] weights = memPool.alloc(nIDW);
         double[] elev = memPool.alloc(nIDW);
-        
+        int[] station = imemPool.alloc(nIDW);
+
+        if (actualWeights != null) {
+            for (Attribute.Double w : actualWeights) {
+                w.setValue(0);
+            }
+        }
 
 //@TODO: Recheck this for correct calculation, the Doug Boyle Problem!!
-                
-        int counter = 0, element = 0;      
+        int counter = 0, element = 0;
         boolean valid = false;
 
         while (counter < nIDW) {
@@ -121,17 +143,18 @@ public class Regionalisation extends JAMSComponent {
                 element++;
                 if (element >= wA.length) {
                     //getModel().getRuntime().println("BREAK1: too less data NIDW had been reduced!");
-                    break;                    
-                } 
+                    break;
+                }
             } else {
                 valid = true;
+                station[counter] = t;
                 data[counter] = sourceData[t];
                 weights[counter] = sourceWeights[t];
                 elev[counter] = sourceElevations[t];
 
                 counter++;
                 element++;
-                if (element >= wA.length) {                    
+                if (element >= wA.length) {
                     break;
                 }
             }
@@ -147,9 +170,12 @@ public class Regionalisation extends JAMSComponent {
 
         if (valid) {
             for (int i = 0; i < counter; i++) {
+                if (actualWeights != null) {
+                    actualWeights[station[i]].setValue(weights[i]);
+                }
                 if ((rsq >= rsqThreshold.getValue()) && (elevationCorrection.getValue())) {  //Elevation correction is applied
                     deltaElev = targetElevation - elev[i];  //Elevation difference between unit and Station
-                    double tVal = ((deltaElev * gradient + data[i]) * weights[i]);                    
+                    double tVal = ((deltaElev * gradient + data[i]) * weights[i]);
                     value = value + tVal;
                 } else { //No elevation correction
                     value = value + (data[i] * weights[i]);
@@ -173,7 +199,7 @@ public class Regionalisation extends JAMSComponent {
         }
 
         dataValue.setValue(value);
-        
+
         //free data
         data = memPool.free(data);
         weights = memPool.free(weights);
