@@ -23,7 +23,9 @@ package flooding;
 
 import jams.data.*;
 import jams.model.*;
+import java.util.ArrayList;
 import java.util.Collections;
+import java.util.List;
 
 /**
  *
@@ -31,9 +33,9 @@ import java.util.Collections;
  */
 @JAMSComponentDescription(
         title = "SubbasinInnundation",
-        author = "Sven Kralisch",
-        description = "Distribute reach water to neighbouring HRUs",
-        date = "2015-07-10",
+        author = "Sven Kralisch & Markus Meinhardt",
+        description = "iterate over (elevation-sorted) HRUs and distribute reach water; needs: Array list from StandardEntityReaderUpstreamTopo",
+        date = "2015-12-11",
         version = "1.0_0"
 )
 @VersionComments(entries = {
@@ -53,47 +55,69 @@ public class SubbasinFlooding extends JAMSComponent {
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
             description = "The name of the HRU's elevation attribute",
-            defaultValue = "elevation"
+            defaultValue = "elevation",
+            unit = "m"
     )
     public Attribute.String elevationAttributeName;
-    
+
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
             description = "The name of the HRU's elevation attribute",
-            defaultValue = "elevation"
+            defaultValue = "area",
+            unit = "sq m"
     )
-    public Attribute.String RD1AttributeName;   
-    
+    public Attribute.String areaAttributeName;
+
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            description = "The name of the HRU's elevation attribute",
-            defaultValue = "elevation"
+            description = "The name of the HRU's flood volume attribute that should be used for flooding",
+            defaultValue = "floodVolume",
+            unit = "liter"
     )
-    public Attribute.String areaAttributeName;    
+    public Attribute.String floodVolumeAttributeName;
 
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
-            description = "Runoff components of the reach that should be used for flooding"
+            description = "Runoff components of the reach that should be used for flooding",
+            unit = "liter"
     )
     public Attribute.Double[] runoffComponents;
 
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            description = "reach width"
+            description = "reach width attribute",
+            unit = "m"
     )
     public Attribute.Double reachWidth;
 
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            description = "reach length"
+            description = "reach length attribute",
+            unit = "m"
     )
     public Attribute.Double reachLength;
-    
+
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            description = "reach height"
+            description = "reach height attribute",
+            unit = "m"
     )
     public Attribute.Double reachHeight;
+
+    @JAMSVarDescription(
+            access = JAMSVarDescription.AccessType.READ,
+            description = "reach deepening attribute",
+            unit = "m"
+    )
+    public Attribute.Double deepening;
+
+    @JAMSVarDescription(
+            access = JAMSVarDescription.AccessType.READWRITE,
+            description = "The name of the HRU's flood height attribute that was used for flooding",
+            unit = "cubic m"
+    )
+    public Attribute.Double floodHeight;
+
 
     /*
      *  Component run stages
@@ -122,17 +146,51 @@ public class SubbasinFlooding extends JAMSComponent {
             proportion[i++] = d.getValue() / sum;
         }
 
-        // calc initial water height in reach
-        double waterHeight = sum / 1000 / reachLength.getValue() / reachWidth.getValue() + reachHeight.getValue();
-        
+        // calc initial water height above sea level in reach
+        double floodLevel = sum / 1000 / reachLength.getValue() / reachWidth.getValue() - deepening.getValue();
+
+        if (floodLevel <= 0) {
+            for (Attribute.Entity e : subbasinHRUs.getEntities()) {
+                e.setDouble(floodVolumeAttributeName.getValue(), 0);
+            }
+            this.floodHeight.setValue(0);
+            return;
+        }
+
+        double floodArea = reachLength.getValue() * reachWidth.getValue();
+        double floodVolume = floodLevel * floodArea;
+
+        this.floodHeight.setValue(floodLevel);
+        List<Attribute.Entity> floodedHRUs = new ArrayList();
+
         // iterate over (elevation-sorted) HRUs and distribute water...
         for (Attribute.Entity e : subbasinHRUs.getEntities()) {
+
             double hruHeight = e.getDouble(elevationAttributeName.getValue());
-            if (waterHeight > hruHeight) {
-                // flood hru, taking areas into account
-                double heightDiff = waterHeight - hruHeight;
-                //...
+            if ((floodLevel + reachHeight.getValue()) > hruHeight) {
+
+//                if (e.getId()==16127) {
+//                    int h = 0;
+//                }
+                // calc new floodheight in m
+                floodArea += e.getDouble(areaAttributeName.getValue());
+                floodLevel = floodVolume / floodArea;
+                floodedHRUs.add(e);
             }
+        }
+
+        double floodVolumeHRUSum = 0;
+        for (Attribute.Entity e : floodedHRUs) {
+            double HRUArea = e.getDouble(areaAttributeName.getValue());
+            double floodVolumeHRU = HRUArea * floodLevel;
+            floodVolumeHRUSum += floodVolumeHRU;
+            e.setDouble(floodVolumeAttributeName.getValue(), floodVolumeHRU * 1000);
+        }
+
+        i = 0;
+        for (Attribute.Double d : runoffComponents) {
+            runoffComponents[i].setValue(runoffComponents[i].getValue() - proportion[i] * floodVolumeHRUSum * 1000);
+            i++;
         }
 
     }
