@@ -35,9 +35,16 @@ import jams.model.*;
 title="CalcAbsoluteHumidity",
         author="Peter Krause",
         description="Calculates absolute humidity of relative humidity and temperature" +
-        "at climate station location. If either rhum or temp is missing ahum will no be calculated."
+        "at climate station location. If either rhum or temp is missing ahum will no be calculated.",
+        version = "1.1_0"
         )
-        public class CalcAbsoluteHumidity extends JAMSComponent {
+@VersionComments(entries = {
+    @VersionComments.Entry(version = "1.0_0", comment = "Initial version"),
+    @VersionComments.Entry(version = "1.1_0", comment = "Changed selection procedure for temperature station. "
+            + "Now, the closest station will be used. If its distance to the rhum station is > 0, an info "
+            + "message will be issued.")
+})
+public class CalcAbsoluteHumidity extends JAMSComponent {
     
     /*
      *  Component variables
@@ -145,10 +152,24 @@ title="CalcAbsoluteHumidity",
                 rhumTemp = 0;
                 double absDist = -1;
                 int t = 0;
+                
+                int minT = 0;
+                double minDist = Double.MAX_VALUE;
+                
                 while (absDist != 0 && t < temperature.length) {
                     absDist = (tempX[t] - rhumX[r]) - (tempY[t] - rhumY[r]) - (tempElev[t] - rhumElev[r]);
+                    if (absDist < minDist) {
+                        minDist = absDist;
+                        minT = t;
+                    }
                     t++;
                 }
+                
+                if (absDist != 0) {
+                    t = minT + 1;
+                    getModel().getRuntime().println("Attention: using remote temperature station for ahum calculation! Distance: " + minDist + "m");
+                }
+                
                 rhumTemp = temperature[t - 1];
                 if (rhumTemp != JAMS.getMissingDataValue()) {
                     //calculate saturation vapour pressure
