@@ -157,7 +157,7 @@ public class CalcAbsoluteHumidity extends JAMSComponent {
                 double minDist = Double.MAX_VALUE;
                 
                 while (absDist != 0 && t < temperature.length) {
-                    absDist = (tempX[t] - rhumX[r]) - (tempY[t] - rhumY[r]) - (tempElev[t] - rhumElev[r]);
+                    absDist = Math.sqrt(Math.pow(tempX[t] - rhumX[r], 2) + Math.pow(tempY[t] - rhumY[r], 2));
                     if (absDist < minDist) {
                         minDist = absDist;
                         minT = t;
@@ -167,7 +167,7 @@ public class CalcAbsoluteHumidity extends JAMSComponent {
                 
                 if (absDist != 0) {
                     t = minT + 1;
-                    getModel().getRuntime().println("Attention: using remote temperature station for ahum calculation! Distance: " + minDist + "m");
+                    getModel().getRuntime().println("Attention: using remote temperature station for ahum calculation! Distance: " + minDist + "m", JAMS.VERBOSE);
                 }
                 
                 rhumTemp = temperature[t - 1];
