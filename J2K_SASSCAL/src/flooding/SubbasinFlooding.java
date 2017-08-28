@@ -112,9 +112,9 @@ public class SubbasinFlooding extends JAMSComponent {
     public Attribute.Double deepening;
 
     @JAMSVarDescription(
-            access = JAMSVarDescription.AccessType.READWRITE,
-            description = "The name of the HRU's flood height attribute that was used for flooding",
-            unit = "cubic m"
+            access = JAMSVarDescription.AccessType.WRITE,
+            description = "Flood height above reach",
+            unit = "m"
     )
     public Attribute.Double floodHeight;
 
