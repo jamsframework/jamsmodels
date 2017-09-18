@@ -30,48 +30,48 @@ import jams.model.*;
  * @author c8fima
  */
 @JAMSComponentDescription(title = "Array_cracker1ß",
-author = "Manfred Fink",
-description = "split the frist 10 values of a Attribute.DoubleArray into 10 Attribute.Double values")
+        author = "Manfred Fink",
+        description = "split the frist 10 values of a Attribute.DoubleArray into 10 Attribute.Double values")
 public class Array_cracker10 extends JAMSComponent {
 
     /*
      * Component variables
      */
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
-    description = "Array to be splited")
+            description = "Array to be splited")
     public Attribute.DoubleArray Array;
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.WRITE,
-    description = "value 0")
+            description = "value 0")
     public Attribute.Double value0;
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.WRITE,
-    description = "value 1")
+            description = "value 1")
     public Attribute.Double value1;
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.WRITE,
-    description = "value 2")
+            description = "value 2")
     public Attribute.Double value2;
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.WRITE,
-    description = "value 3")
+            description = "value 3")
     public Attribute.Double value3;
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.WRITE,
-    description = "value 4")
+            description = "value 4")
     public Attribute.Double value4;
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.WRITE,
-    description = "value 5")
+            description = "value 5")
     public Attribute.Double value5;
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.WRITE,
-    description = "value 6")
+            description = "value 6")
     public Attribute.Double value6;
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.WRITE,
-    description = "value 7")
+            description = "value 7")
     public Attribute.Double value7;
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.WRITE,
-    description = "value 8")
+            description = "value 8")
     public Attribute.Double value8;
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.WRITE,
-    description = "value 9")
+            description = "value 9")
     public Attribute.Double value9;
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.WRITE,
-    description = "value 10")
+            description = "value 10")
     public Attribute.Double value10;
 
     /*
@@ -87,36 +87,44 @@ public class Array_cracker10 extends JAMSComponent {
         double[] runarray = Array.getValue();
         int length = runarray.length;
 
-
-
         while (i < length) {
             switch (i) {
                 case 0:
                     value0.setValue(Array.getValue()[i]);
+                    break;
                 case 1:
                     value1.setValue(Array.getValue()[i]);
+                    break;
                 case 2:
                     value2.setValue(Array.getValue()[i]);
+                    break;
                 case 3:
                     value3.setValue(Array.getValue()[i]);
+                    break;
                 case 4:
                     value4.setValue(Array.getValue()[i]);
+                    break;
                 case 5:
                     value5.setValue(Array.getValue()[i]);
+                    break;
                 case 6:
                     value6.setValue(Array.getValue()[i]);
+                    break;
                 case 7:
                     value7.setValue(Array.getValue()[i]);
+                    break;
                 case 8:
                     value8.setValue(Array.getValue()[i]);
+                    break;
                 case 9:
                     value9.setValue(Array.getValue()[i]);
+                    break;
                 case 10:
                     value10.setValue(Array.getValue()[i]);
+                    break;
             }
             i++;
         }
-
 
     }
 
