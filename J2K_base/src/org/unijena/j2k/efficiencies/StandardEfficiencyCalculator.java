@@ -330,7 +330,7 @@ public class StandardEfficiencyCalculator extends JAMSComponent {
             this.interValEnd = this.interValStart + this.effTsteps;
         }
 
-        if (this.effMonthList != null) {
+        if (this.effMonthList != null && this.effMonthList.getValue().length > 0) {
             this.monthly = true;
         }
     }
