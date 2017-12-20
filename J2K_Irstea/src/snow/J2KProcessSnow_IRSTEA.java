@@ -1,13 +1,11 @@
 /*
- * J2KProcessSnow_new_density.java
+ * J2KProcessSnow_IRSTEA.java
  * This is a slightly modified version of the original J2KProcessSnow component by P. Krause
- * Only change: deactivation of aspect correction factor for snow melt
- * F. Branger, Irstea, October 26, 2012
- * Created on 25. November 2005, 10:19
- *
- * Change of new snow density function (forced to 0.3)
- * F. Tilmant, Irstea, March 29, 2013
- * 
+ * Changes w/r to original J2KProcessSnow :
+ * - desactivation of aspect correction for snow melt by F. Branger, Oct 26, 2012
+ * - new snow density is forced at 300 kg/m3 (0.3 g/cm3 in the code) by  F. Tilmant, Irstea, March 29, 2013
+ * - the mean daily temperature is used for snow accumulation (instead of Taccu=0.5*(Tmin+Tean)) by I. Gouttevin, 2016
+ * - the mean daily temperature is also used for snow melt (instead of meltTemp=0.5*(Tmean+Tmax)) by I. Gouttevin, 2016
  * 
  * This file is part of JAMS
  * Copyright (C) 2005 FSU Jena, c0krpe
@@ -317,7 +315,6 @@ import jams.model.*;
 	        double critDens = snowCritDens.getValue();
 	        double coldContentFactor = ccf_factor.getValue();
 	        double TRS = baseTemp.getValue();
-	        //double TRANS = snow_trans.getValue();
 	        double temp_fac = t_factor.getValue();
 	        double rain_fac = r_factor.getValue();
 	        double ground_fac = g_factor.getValue();
@@ -343,7 +340,7 @@ import jams.model.*;
 	        
 	        
 	        if((in_meanTemp >= TRS) && (this.run_snowDepth > 0)){
-	            this.calcMetamorphosis(in_meanTemp, temp_fac, rain_fac, ground_fac, run_area, SAC, critDens);
+	            this.calcMetamorphosis(in_meanTemp, temp_fac, rain_fac, ground_fac, run_area, SAC, critDens); // RQ IG : s'il a plu ET neigé, la pluie a été mise à 0 dans SnowAccumulation donc le melt lié à la pluie n'est pas calculé.
 	        }
 	        
                 if (run_snowDepth !=0){
@@ -425,7 +422,7 @@ import jams.model.*;
             
             double new_snow_density = this.calcNewSnowDensity(temp);
             deltaHeight = this.in_snow / (new_snow_density * area);
-            this.run_snowDepth = this.run_snowDepth + deltaHeight;
+            this.run_snowDepth = this.run_snowDepth + deltaHeight; // mm; unit checked.
             
             
             //increase of dry and total snow water equivalent by snow precip amount
@@ -467,10 +464,12 @@ import jams.model.*;
             this.run_totSWE = this.run_totSWE - pRO;
             //if(this.run_snowMelt < 0)
             //System.out.getRuntime().println("negative SM b because of: " + pRO);
-        }
-        
         //Calculation of new snow densities
-        this.calcSnowDensities(area);
+        this.calcSnowDensities(area); // IG 5-07-2016: displacement because calcSnowDensities(area) is included in calcSnowMeltRunoff
+        }
+
+        
+
         return true;
     }
     
@@ -558,7 +557,7 @@ import jams.model.*;
         /**calculation of snowmelt - complex formula*/
         //@todo integration of canopy shadow by LAI
         double potMeltrate = 0;
-        potMeltrate = this.calcPotMR_semiComp(temp, temp_fac, rain_fac, ground_fac, area);
+        potMeltrate = this.calcPotMR_semiComp(temp, temp_fac, rain_fac, ground_fac, area);// kg d'eau fondue/jour/m2.
         
         if(Math.abs(this.run_coldContent) >= potMeltrate){
             this.run_coldContent = this.run_coldContent + potMeltrate;
@@ -593,7 +592,7 @@ import jams.model.*;
             //if(this.run_snowMelt < 0)
             //System.out.getRuntime().println("negative SM 1.5");
             //nothing more to do -- no snow left
-            return true;
+            return true; // est-ce que cela signifie qu'on sort de la routine ?
         }
         //if(this.run_snowMelt < 0)
         //    System.out.getRuntime().println("negative SM 2");
@@ -626,7 +625,9 @@ import jams.model.*;
         this.calcSnowDensities(area);
         
         /** settlement of snow-pack by rain and/or snowmelt */
-        this.calcRainSnowSettlement(this.in_rain + potMeltrate);
+        this.calcRainSnowSettlement(this.in_rain + potMeltrate); 
+//IG : if snowfall + rainfall, rainfall has already been accounted for in Accumulation; in this case only melt is dealt with here. However, necessary if only rainfall and / or melt.
+//IG - to be checked. potMeltrate has been set to 0 before, so only rain compaction
         this.in_rain = 0;
         
         //if snow pack has vanished, nothing more to do
