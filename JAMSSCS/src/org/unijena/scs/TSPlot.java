@@ -23,6 +23,9 @@
 
 package org.unijena.scs;
 
+import jams.data.Attribute;
+import jams.model.JAMSGUIComponent;
+import jams.model.JAMSVarDescription;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.event.ActionEvent;
@@ -33,7 +36,6 @@ import java.awt.event.MouseEvent;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
-
 import javax.swing.AbstractButton;
 import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
@@ -45,7 +47,6 @@ import javax.swing.JPanel;
 import javax.swing.JPopupMenu;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
-
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartPanel;
 import org.jfree.chart.JFreeChart;
@@ -65,14 +66,8 @@ import org.jfree.chart.renderer.xy.XYStepRenderer;
 import org.jfree.data.time.Second;
 import org.jfree.data.time.TimeSeries;
 import org.jfree.data.time.TimeSeriesCollection;
-import org.unijena.jams.data.Attribute.Boolean;
-import org.unijena.jams.data.Attribute.Calendar;
-import org.unijena.jams.data.Attribute.Double;
-import org.unijena.jams.data.Attribute.Integer;
-import org.unijena.jams.data.Attribute.String;
-import org.unijena.jams.data.Attribute.StringArray;
-import org.unijena.jams.model.JAMSGUIComponent;
-import org.unijena.jams.model.JAMSVarDescription;
+
+
 
 /**
  * plotting component reworked for JAMSSCS

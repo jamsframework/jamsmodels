@@ -60,7 +60,7 @@ import org.unijena.j2k.J2KFunctions;
             + "the catchment."),
     @VersionComments.Entry(
             version = "1.3", comment = "Added checks for validity of hru/reach "
-                    + "parameter files.")
+            + "parameter files.")
 })
 public class StandardEntityReader extends JAMSComponent {
 

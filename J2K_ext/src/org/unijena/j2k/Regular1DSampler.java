@@ -322,7 +322,9 @@ import jams.model.*;
     }
     
     
-    
+    public void initAll() {
+        
+    }
     
     public void cleanup() {
         if (enable.getValue()) {
