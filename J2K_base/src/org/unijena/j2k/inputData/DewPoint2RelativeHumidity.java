@@ -33,11 +33,12 @@ import jams.model.*;
         author = "Sven Kralisch",
         description = "Approximation of relative humidity from dew point, taken "
                 + "from https://en.wikipedia.org/wiki/Dew_point",
-        date = "2017-07-26",
-        version = "1.0_0"
+        date = "2018-01-25",
+        version = "1.0_1"
 )
 @VersionComments(entries = {
-    @VersionComments.Entry(version = "1.0_0", comment = "Initial version")
+    @VersionComments.Entry(version = "1.0_0", comment = "Initial version"),
+    @VersionComments.Entry(version = "1.0_1", comment = "Muliplied rhum value by 100 to get \"%\"")
 })
 public class DewPoint2RelativeHumidity extends JAMSComponent {
 
@@ -93,7 +94,7 @@ public class DewPoint2RelativeHumidity extends JAMSComponent {
 
                 double h = Math.exp((d * b) / (c + d) - (b * T) / (c + T));
 
-                rhum.setValue(h);
+                rhum.setValue(h * 100);
 
                 break;
 
