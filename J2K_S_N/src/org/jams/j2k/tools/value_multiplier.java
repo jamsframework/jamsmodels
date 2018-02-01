@@ -80,12 +80,12 @@ public class value_multiplier extends JAMSComponent {
                     prod = factor1.getValue() / factor2.getValue();
                 } else {
                     prod = 0;
-                }
-            
+                }         
 
-            product.setValue(prod);
+           
 
         }
+             product.setValue(prod);
     }
 
     

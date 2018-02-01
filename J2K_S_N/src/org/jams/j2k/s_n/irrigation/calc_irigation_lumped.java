@@ -11,9 +11,9 @@ import jams.model.*;
  *
  * @author c6gohe2
  */
-@JAMSComponentDescription(title = "Calculation of irrigation water N-concentration",
+@JAMSComponentDescription(title = "calc_irigation_lumped",
 author = "c8fima",
-description = "Calculation of irrigation water N-concentration")
+description = "Calculation of irrigation water ")
 public class calc_irigation_lumped extends JAMSComponent {
 
     @JAMSVarDescription(
@@ -49,6 +49,15 @@ public class calc_irigation_lumped extends JAMSComponent {
             description = "HRU crop class"
             )
             public Attribute.Double irrigationsum;
+    
+    @JAMSVarDescription(
+            access = JAMSVarDescription.AccessType.WRITE,
+            description = "Actual irrigation from the last time step"
+            )
+            public Attribute.Double irrigationactsum;
+    
+    
+    
 
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
@@ -87,10 +96,15 @@ public class calc_irigation_lumped extends JAMSComponent {
         irrstorage = irrstorage * (1 - runBypassfactor);
         
         Bypasswater.setValue(irrstorage * runBypassfactor);
-        if( irrstorage == 0) {
+        if( irrstorage <= 0) {
             irrstorage = 0.00000001;
         }
-        irripart = irrigationsum.getValue()/irrstorage;
+
+        if (irrigationsum.getValue() > 0){
+          irripart = irrstorage/irrigationsum.getValue();
+        }else{
+          irripart = 0;  
+        }
 
         
 
@@ -103,6 +117,8 @@ public class calc_irigation_lumped extends JAMSComponent {
 
 
         irrigationsum.setValue(0.0);
+        irrigationactsum.setValue(0.0);
+        storageInput.setValue(0.0);
         
         storage.setValue(irrstorage + run_storage);
 

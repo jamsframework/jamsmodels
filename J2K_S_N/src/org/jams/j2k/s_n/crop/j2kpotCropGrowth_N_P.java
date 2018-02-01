@@ -806,6 +806,8 @@ title="j2kCropGrowth_N_P",
             LAI_delta = 0;
             lai_act = lai_min;
             frLAImx_Xi = 0;
+            fphu_act  = 0;
+            
             
         }
         

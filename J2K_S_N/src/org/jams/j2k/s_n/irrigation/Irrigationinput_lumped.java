@@ -71,7 +71,7 @@ public class Irrigationinput_lumped extends JAMSComponent {
         double IrrigationActsum = irrigationActsum.getValue();
 
         double irract = 0;
-        double x = 0;
+        double irr_ist= 0;
 
 
 
@@ -85,21 +85,21 @@ public class Irrigationinput_lumped extends JAMSComponent {
         //Irrsoll kommt bereits in litern
 
 
-        x = (Irrsoll * part);
+        irr_ist= (Irrsoll * part);
         
         /* //consideration of the precip in the irrigation amount
         
-        x = x - rain;*/
+        irr_ist= irr_ist- rain;*/
 
-        if (x <= 0) {
-            x = 0;
+        if (irr_ist<= 0) {
+            irr_ist= 0;
         }
 
 
         //Storage = (Storage);   // Umrechnng in liter
 
-        if (Storage >= x) {
-            irract = x;
+        if (Storage >= irr_ist) {
+            irract = irr_ist;
 
         } else {
             irract = Storage;
