@@ -35,8 +35,8 @@ import jams.model.*;
         description = "Calculates landuse state variables for a modelling unit"
         + "The calculation is done for a standard year (i.e. 366 days or 8784 hours)."
         + "The module can be used in hourly, daily and monthly resolution.",
-        version = "1.0_0",
-        date = "2011-05-30"
+        version = "1.0_1",
+        date = "2016-05-13"
 )
 @VersionComments(entries = {
     @VersionComments.Entry(version = "1.0_0", date = "2011-05-30", comment = "Initial version"),

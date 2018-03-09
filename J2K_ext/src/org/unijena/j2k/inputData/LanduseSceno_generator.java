@@ -109,7 +109,7 @@ public class LanduseSceno_generator extends JAMSComponent {
     public Attribute.Double class6prop;
 
     @JAMSVarDescription(
-            access = JAMSVarDescription.AccessType.WRITE,
+            access = JAMSVarDescription.AccessType.READ,
             description = "List of Landuse IDs (ordered)",
             defaultValue = "1,3,9,5,6,2"
     )
