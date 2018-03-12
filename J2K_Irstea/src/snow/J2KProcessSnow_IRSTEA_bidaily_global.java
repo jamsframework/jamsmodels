@@ -1,13 +1,15 @@
 /*
  * J2KProcessSnow_IRSTEA_bidaily_global.java
- * Changes are:
+ * Changes with respect to the original J2KProcessSnow component by P. Krause are: 
  * 1. deactivation of aspect correction factor for snow melt
  * by F. Branger, Irstea, October 26, 2012
  * 2. Change of new snow density function (forced to 300 kg/m3)
  * by F. Tilmant, Irstea, March 29, 2013
  * 3. Simplification of temperature used for accumulation and melt. Here Tmean is used everywhere.
  * by I. Gouttevin, Irstea, 2016
- * 4. 'bidaily' means that day-time and night-time malt are calculated based on day-time/night-time temperature proxies.
+ * 4. 'bidaily' means that day-time and night-time melt are calculated based on day-time/night-time temperature proxies 
+ * (rq: melt is here calculated twice, with Tday and then Tnight. It is therefore devided by 2 in "calcMetamorphosis").
+ * (rq-bis: this version requires Tmin and Tmax as meteo input).
  * 5. the 'global' model includes the effect of aspect and altitude on the melt. Latitude was discarded as leading to no major effect.
  * by I. Gouttevin, IRSTEA, 2017.
 
