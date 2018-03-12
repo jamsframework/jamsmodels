@@ -1,14 +1,16 @@
 /*
- * J2KProcessSnow_new_density.java
- * This is a slightly modified version of the original J2KProcessSnow component by P. Krause
- * Only change: deactivation of aspect correction factor for snow melt
- * F. Branger, Irstea, October 26, 2012
- * Created on 25. November 2005, 10:19
- *
- * Change of new snow density function (forced to 0.3)
- * F. Tilmant, Irstea, March 29, 2013
- * 
- * 
+ * J2KProcessSnow_bidaily.java
+ * Changes with respect to the original J2KProcessSnow component by P. Krause are:
+ * 1. deactivation of aspect correction factor for snow melt
+ * by F. Branger, Irstea, October 26, 2012
+ * 2. Change of new snow density function (forced to 300 kg/m3)
+ * by F. Tilmant, Irstea, March 29, 2013
+ * 3. Simplification of temperature used for accumulation and melt. Here Tmean is used everywhere.
+ * by I. Gouttevin, Irstea, 2016
+ * 4. 'bidaily' means that day-time and night-time melt are calculated based on day-time/night-time temperature proxies 
+ * (rq: melt is here calculated twice, with Tday and then Tnight. It is therefore devided by 2 in "calcMetamorphosis").
+ * (rq-bis: this version requires Tmin and Tmax as meteo input).
+
  * This file is part of JAMS
  * Copyright (C) 2005 FSU Jena, c0krpe
  *
@@ -43,7 +45,7 @@ import jams.model.*;
         description="Calculates snow accumulation, metamorphosis and melt",
         version="1.0_0",
         date="2013-03-29")
-        public class J2KProcessSnow_IRSTEA_tmin_tmax extends JAMSComponent {
+        public class J2KProcessSnow_IRSTEA_bidaily extends JAMSComponent {
     
     /*
      *  Component variables
