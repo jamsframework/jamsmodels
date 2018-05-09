@@ -39,7 +39,7 @@ import jams.tools.FileTools;
  * @author S. Kralisch, f?r mehrdimensionale Topologie modifiziert von D.Varga und B.Pfennig
  * 09.10.2008
  */
-public class MultiEntityReaderTS_old extends JAMSComponent {
+public class MultiEntityReaderTS_old_obsolete extends JAMSComponent {
 
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
     description = "HRU parameter file name")
