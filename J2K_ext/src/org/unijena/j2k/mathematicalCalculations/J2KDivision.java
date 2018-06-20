@@ -33,7 +33,7 @@ import jams.model.*;
 @JAMSComponentDescription(
         title="J2KDivision",
         author="Manfred Fink",
-        description="Calculates quotient of two variables",
+        description="Calculates quotient of two variables; quotient = dividend/divisor",
         version="1.0_0",
         date="2014-05-30"
         )
