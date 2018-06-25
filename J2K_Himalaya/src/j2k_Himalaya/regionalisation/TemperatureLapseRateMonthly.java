@@ -1,28 +1,28 @@
 /*
- * InitSoilWaterStates.java
- * Created on 25. November 2005, 13:21
+ * TemperatureLapseRateMonthly.java
+ * Created on 25.06.2018, 14:05:28
  *
  * This file is part of JAMS
- * Copyright (C) 2005 FSU Jena, c0krpe
+ * Copyright (C) FSU Jena
  *
- * This program is free software; you can redistribute it and/or
- * modify it under the terms of the GNU General Public License
- * as published by the Free Software Foundation; either version 2
+ * JAMS is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU Lesser General Public License
+ * as published by the Free Software Foundation; either version 3
  * of the License, or (at your option) any later version.
  *
- * This program is distributed in the hope that it will be useful,
+ * JAMS is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
+ * GNU Lesser General Public License for more details.
  *
- * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with JAMS. If not, see <http://www.gnu.org/licenses/>.
  *
  */
+
 package j2k_Himalaya.regionalisation;
 
-
+import jams.JAMS;
 import jams.data.*;
 import jams.model.*;
 import java.util.Calendar;
@@ -31,202 +31,81 @@ import java.util.Calendar;
  *
  * @author Peter Krause
  */
-@JAMSComponentDescription(title = "TemperatureLapseRate Monthly",
-author = "Santosh Nepal, Peter Krause, Manfred Fink",
-description = "Regionalisation of Temp through general adiabatic rate"
-+ "depends upon given adaiabatic rate +++ included monthly lapse rate. Twelve different Lapse for each month are proposed" )
-
+@JAMSComponentDescription(title = "TemperatureLapseRateMonthly",
+        author = "Santosh Nepal, Peter Krause, Manfred Fink",
+        version = "1.0_1",
+        description = "Regionalisation of Temp through general adiabatic rate"
+        + "depends upon given adaiabatic rate +++ included monthly lapse rate. Twelve different Lapse for each month are proposed"
+        + "now accept if station has data gaps, another nearest station is considered for lapse rate")
+@VersionComments(entries = {
+    @VersionComments.Entry(version = "1.0_0", comment = "Initial version"),
+    @VersionComments.Entry(version = "1.0_1", comment = "Fixed station selection, taking missing values into account")
+})
 public class TemperatureLapseRateMonthly extends JAMSComponent {
 
     /*
      *  Component variables
      */
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
-    description = "station elevation")
-    public Attribute.DoubleArray statElev;
-    @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
-    description = "entity elevation")
+            description = "entity elevation")
     public Attribute.Double entityElev;
-    @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
-    description = "the measured input from a base station")
-    public Attribute.DoubleArray inputValue;
-    @JAMSVarDescription(access = JAMSVarDescription.AccessType.WRITE,
-    description = "calculated output for the modelling entity")
-    public Attribute.Double outputValue;
 
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
-    description = "lapse rate per 100 m elevation difference")
-    public Attribute.Double lapseRateJan;
+            description = "the measured input from base station(s)")
+    public Attribute.DoubleArray statValue;
 
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
-    description = "lapse rate per 100 m elevation difference")
-    public Attribute.Double lapseRateFeb;
-    
+            description = "station elevation(s)")
+    public Attribute.DoubleArray statElev;
+
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
-    description = "lapse rate per 100 m elevation difference")
-    public Attribute.Double lapseRateMar;
-        
+            description = "stations ordered by distance to the HRU")
+    public Attribute.IntegerArray statOrder;
+
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
-    description = "lapse rate per 100 m elevation difference")
-    public Attribute.Double lapseRateApr;
-            
+            description = "lapse rate per 100 m elevation difference. This should be 12 values, one for each month")
+    public Attribute.Double[] lapseRates;
+
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
-    description = "lapse rate per 100 m elevation difference")
-    public Attribute.Double lapseRateMay;
-    
-    @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
-    description = "lapse rate per 100 m elevation difference")
-    public Attribute.Double lapseRateJun;
-    
-    @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
-    description = "lapse rate per 100 m elevation difference")
-    public Attribute.Double lapseRateJul;
-    
-    @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
-    description = "lapse rate per 100 m elevation difference")
-    public Attribute.Double lapseRateAug;
-    
-    @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
-    description = "lapse rate per 100 m elevation difference")
-    public Attribute.Double lapseRateSep;
-    
-    @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
-    description = "lapse rate per 100 m elevation difference")
-    public Attribute.Double lapseRateOct;
-    
-    @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
-    description = "lapse rate per 100 m elevation difference")
-    public Attribute.Double lapseRateNov;
-    
-    
-    @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
-    description = "lapse rate per 100 m elevation difference")
-    public Attribute.Double lapseRateDec;
-    
-    
-//    @JAMSVarDescription(
-//   access = JAMSVarDescription.AccessType.READ,
-//            update = JAMSVarDescription.UpdateType.INIT,
-//            description = "lapse rate per 100 m elevation difference"
-//            )
-//            public Attribute.Double lapseRate;
-    @JAMSVarDescription(
-            access=JAMSVarDescription.AccessType.READ,
-            description="The current model time")
+            description = "the current model time")
     public Attribute.Calendar time;
 
-    
-    @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
-    description = "position array to determine best weights")
-    public Attribute.IntegerArray statOrder;
+    @JAMSVarDescription(access = JAMSVarDescription.AccessType.WRITE,
+            description = "calculated output for the modelling entity")
+    public Attribute.Double outputValue;
+
     /*
      *  Component run stages
      */
-
     public void init() throws Attribute.Entity.NoSuchAttributeException {
     }
 
     public void run() throws Attribute.Entity.NoSuchAttributeException {
 
-     
-        
+        // find the closest station that has valid data
+        int stationIndex = -1;
+        for (int i = 0; i < statValue.getValue().length; i++) {
+            if (statValue.getValue()[i] != JAMS.getMissingDataValue()) {
+                stationIndex = i;
+                break;
+            }
+        }
 
-        int closestStation = statOrder.getValue()[0];
-        //elevation difference
-        double elevationdiff = (statElev.getValue()[closestStation] - entityElev.getValue());
-        //temp calculation
+        // check if there is valid data
+        if (stationIndex < 0) {
 
-   // int nowmonth = (time.get(time.MONTH) + 1 );
-     int nowmonth = time.get(Calendar.MONTH);
-      
+            getModel().getRuntime().sendHalt("No station with valid value found. Please check your inputs!");
 
+        } else {
 
-     if (nowmonth == 0) {
-          outputValue.setValue(elevationdiff * (lapseRateJan.getValue() / 100.) + inputValue.getValue()[closestStation]);
-     } else if (nowmonth == 1) {
-         outputValue.setValue(elevationdiff * (lapseRateFeb.getValue() / 100.) + inputValue.getValue()[closestStation]);
-     } else if (nowmonth == 2) {
-         outputValue.setValue(elevationdiff * (lapseRateMar.getValue() / 100.) + inputValue.getValue()[closestStation]);
-     } else if (nowmonth == 3) {
-         outputValue.setValue(elevationdiff * (lapseRateApr.getValue() / 100.) + inputValue.getValue()[closestStation]);
-     } else if (nowmonth == 4) {
-         outputValue.setValue(elevationdiff * (lapseRateMay.getValue() / 100.) + inputValue.getValue()[closestStation]);
-     } else if (nowmonth == 5) {
-         outputValue.setValue(elevationdiff * (lapseRateJun.getValue() / 100.) + inputValue.getValue()[closestStation]);
-     } else if (nowmonth == 6) {
-         outputValue.setValue(elevationdiff * (lapseRateJul.getValue() / 100.) + inputValue.getValue()[closestStation]);
-     } else if (nowmonth == 7) {
-         outputValue.setValue(elevationdiff * (lapseRateAug.getValue() / 100.) + inputValue.getValue()[closestStation]);
-     } else if (nowmonth == 8) {
-         outputValue.setValue(elevationdiff * (lapseRateSep.getValue() / 100.) + inputValue.getValue()[closestStation]);
-     } else if (nowmonth == 9) {
-         outputValue.setValue(elevationdiff * (lapseRateOct.getValue() / 100.) + inputValue.getValue()[closestStation]);
-     } else if (nowmonth == 10) {
-         outputValue.setValue(elevationdiff * (lapseRateNov.getValue() / 100.) + inputValue.getValue()[closestStation]);
-     } else if (nowmonth == 11) {
-         outputValue.setValue(elevationdiff * (lapseRateDec.getValue() / 100.) + inputValue.getValue()[closestStation]);
-     } 
-     
-     
-     
-     
+            double input = statValue.getValue()[stationIndex];
+            double elevationdiff = (statElev.getValue()[stationIndex] - entityElev.getValue());
+            int nowmonth = time.get(Calendar.MONTH);
 
+            outputValue.setValue(elevationdiff * (lapseRates[nowmonth].getValue() / 100.) + input);
+        }
     }
-
-
 
     public void cleanup() {
     }
 }
-
-
-
-
-//
-//
-//    public void init() throws Attribute.Entity.NoSuchAttributeException {
-//    }
-//
-//    public void run() throws Attribute.Entity.NoSuchAttributeException {
-//
-//
-//
-//
-//        int closestStation = statOrder.getValue()[0];
-//        //elevation difference
-//        double elevationdiff = (statElev.getValue()[closestStation] - entityElev.getValue());
-//        //temp calculation
-//
-//   // int nowmonth = (time.get(time.MONTH) + 1 );
-//     int nowmonth = time.get(Calendar.MONTH + 1);
-//
-//        if ((nowmonth >= 6) & (nowmonth <= 9)) {
-//            outputValue.setValue(elevationdiff * (lapseRateSummer.getValue() / 100.) + inputValue.getValue()[closestStation]);
-//        } else {
-//            outputValue.setValue(elevationdiff * (lapseRateWinter.getValue() / 100.) + inputValue.getValue()[closestStation]);
-//        }
-//
-//    }
-//
-//    public void cleanup() {
-//    }
-//}
-
-
-
-//
-//          double newTemp;
-//
-//        if ((nowmonth >= 6) & (nowmonth <= 9)) {
-//           newTemp = (elevationdiff * (lapseRateSummer.getValue() / 100.) + inputValue.getValue()[closestStation]);
-//        } else {
-//           newTemp = (elevationdiff * (lapseRateWinter.getValue() / 100.) + inputValue.getValue()[closestStation]);
-//        }
-//return newTemp;
-//    }
-//
-//this.outputValue.setValue(newTemp);
-//
-//    public void cleanup() {
-//    }
-//}
