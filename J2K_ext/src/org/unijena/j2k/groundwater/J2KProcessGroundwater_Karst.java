@@ -178,6 +178,21 @@ public class J2KProcessGroundwater_Karst extends JAMSComponent {
     public Attribute.Double genRG2;
 
     @JAMSVarDescription(
+            access = JAMSVarDescription.AccessType.WRITE,
+            description = "RG1 saturation",
+            unit = "-"
+    )
+    public Attribute.Double satRG1;
+
+    @JAMSVarDescription(
+            access = JAMSVarDescription.AccessType.WRITE,
+            description = "RG2 saturation",
+            unit = "-"
+    )
+    public Attribute.Double satRG2;
+    
+    
+    @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
             description = "percolation for one time step",
             unit = "L"
@@ -479,6 +494,10 @@ public class J2KProcessGroundwater_Karst extends JAMSComponent {
         //double k_rg1 = this.conc_index / this.RG1_k;
         double satRG1 = this.run_actRG1 / this.run_maxRG1;
         double satRG2 = this.run_actRG2 / this.run_maxRG2;
+        
+        this.satRG1.setValue(satRG1);
+        this.satRG2.setValue(satRG2);
+        
 
         double k_rg1 = 1 / this.run_RG1_rec;
         if (k_rg1 > 1) {
@@ -493,7 +512,7 @@ public class J2KProcessGroundwater_Karst extends JAMSComponent {
          
         
         
-        if (shape_karst_RG1 <= 1) {
+        if (shape_karst_RG1 >= 1) {
              
             double run_karst_prop_RG1 =  Math.min(karst_prop_RG1.getValue(),1.0); 
             
@@ -540,7 +559,7 @@ public class J2KProcessGroundwater_Karst extends JAMSComponent {
         double satRG2_tres =  RG2sat_tres.getValue(); 
         
         
-        if (shape_karst_RG2 <= 1) {
+        if (shape_karst_RG2 >= 1) {
              
             double run_karst_prop_RG2 =  Math.min(karst_prop_RG2.getValue(),1.0); 
             
