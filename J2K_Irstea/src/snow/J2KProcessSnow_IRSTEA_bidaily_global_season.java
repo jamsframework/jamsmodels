@@ -49,7 +49,7 @@ import jams.model.*;
         description="Calculates snow accumulation, metamorphosis and melt",
         version="1.0_0",
         date="2013-03-29")
-        public class J2KProcessSnow_IRSTEA_tmin_tmax_global_season extends JAMSComponent {
+        public class J2KProcessSnow_IRSTEA_bidaily_global_season extends JAMSComponent {
     
     /*
      *  Component variables
