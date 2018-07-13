@@ -98,7 +98,7 @@ public class CalcHourlyNetRadiation extends JAMSComponent {
     /*
      *  Component run stages
      */
-    public void run() throws Attribute.Entity.NoSuchAttributeException, IOException {
+    public void run() {
         double extraterrRadiation = extRad.getValue();
         double elev = elevation.getValue();
         double alb;

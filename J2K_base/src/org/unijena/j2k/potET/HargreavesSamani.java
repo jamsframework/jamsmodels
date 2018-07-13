@@ -20,7 +20,6 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
  *
  */
-
 package org.unijena.j2k.potET;
 
 import java.io.*;
@@ -32,58 +31,62 @@ import jams.model.*;
  * @author Peter Krause
  */
 @JAMSComponentDescription(title = "CalcPotentialETSamani",
-author = "Peter Krause",
-description = "Calculates potential ET according to Hargreaves Samani")
-public class HargreavesSamani extends JAMSComponent {
+        author = "Peter Krause",
+        version = "1.0_1",
+        description = "Calculates potential ET according to Hargreaves Samani")
+@VersionComments(entries = {
+    @VersionComments.Entry(version = "1.0_0", comment = "Initial version", date = "2011-05-30"),
+    @VersionComments.Entry(version = "1.0_1", comment = "Corrected description of units of potET/actET", date = "2018-07-04")
+})public class HargreavesSamani extends JAMSComponent {
 
     /*
      *  Component variables
      */
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
-    description = "Current time")
+            description = "Current time")
     public Attribute.Calendar time;
 
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
-    description = "temporal resolution [d | m]")
+            description = "temporal resolution [d | m]")
     public Attribute.String tempRes;
 
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
-    description = "state variable minimum air temperature",
+            description = "state variable minimum air temperature",
             unit = "degC")
     public Attribute.Double tmin;
 
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
-    description = "state variable mean temperature",
+            description = "state variable mean temperature",
             unit = "degC")
     public Attribute.Double tmean;
 
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
-    description = "state variable maximum air temperature",
+            description = "state variable maximum air temperature",
             unit = "degC")
     public Attribute.Double tmax;
 
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
-    description = "state variable extraterrestrial radiation",
+            description = "state variable extraterrestrial radiation",
             unit = "MJ m^-2 day^-1")
     public Attribute.Double extRad;
 
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
-    description = "attribute area")
+            description = "attribute area")
     public Attribute.Double area;
 
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.WRITE,
-    description = "potential ET",
-            unit = "mm day^-1")
+            description = "potential ET",
+            unit = "L")
     public Attribute.Double potET;
 
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.WRITE,
-    description = "actual ET",
-            unit = "mm day^-1")
+            description = "actual ET",
+            unit = "L")
     public Attribute.Double actET;
 
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
-    description = "Caching configuration: 0 - write cache, 1 - use cache, 2 - caching off",
-    defaultValue = "0")
+            description = "Caching configuration: 0 - write cache, 1 - use cache, 2 - caching off",
+            defaultValue = "0")
     public Attribute.Integer dataCaching;
 
     private File cacheFile;
@@ -122,10 +125,10 @@ public class HargreavesSamani extends JAMSComponent {
             double area = this.area.getValue();
 
             double latH = org.unijena.j2k.physicalCalculations.ClimatologicalVariables.calc_latentHeatOfVaporization(tavg);
-            
+
             double pET = 0;
             double aET = 0;
-            
+
             pET = (0.0023 * extRad * Math.sqrt(tmax - tmin) * (tavg + 17.8)) / latH;
 
             //converting mm to litres
@@ -162,5 +165,4 @@ public class HargreavesSamani extends JAMSComponent {
         }
     }
 
-    
 }
