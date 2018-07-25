@@ -1314,7 +1314,9 @@ public class J2KPSoilLayer extends JAMSComponent {
         /*calculation of the c/n ratio */
 
         delta_P = run_gamma_ntr * Math.sqrt(gamma_temp * gamma_water);
-
+        
+        
+        delta_P = Math.min(delta_P, 1);
         /*Res_N_trans = delta_ntr * N_residue_pool_fresh;
          /*splitting in decomposition 20% and Minteralisation 80%  in run method*/
         return delta_P;
