@@ -443,7 +443,7 @@ public class J2KProcessLayeredSoilWater2008 extends JAMSComponent {
                 //we put it back where it came from, the horizon above!
                 this.run_vertComp = this.calcMPSInflow(this.run_vertComp, h - 1);
                 this.run_vertComp = this.calcLPSInflow(this.run_vertComp, h - 1);
-                if (this.run_vertComp > 0) {
+                if (this.run_vertComp > 0.000000001) {
                     System.out.println("VertIn is still not zero! In entity: " + entities.getCurrent().getId() + ", amount: " + this.run_vertComp);
                 }
 
