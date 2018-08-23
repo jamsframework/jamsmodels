@@ -305,7 +305,12 @@ public class ReachRouting_deepsink extends JAMSComponent {
             description = "K-Value for the riverbed in cm/d"
             )
             public Attribute.Double Ksink;
-
+    
+    @JAMSVarDescription(
+            access = JAMSVarDescription.AccessType.READ,
+            description = "Calibration mulitplier for Ksink"
+            )
+            public Attribute.Double sink_alpha;
     /*
      *  Component run stages
      */
@@ -459,13 +464,13 @@ public class ReachRouting_deepsink extends JAMSComponent {
             q_act_out = 0;
         }
 
-                if (deepsink.getValue()==1.0){
+        if (deepsink.getValue()==1.0){
             //calculation of deep sink
             //calculation of leckage area
             double Larea = Math.pow(rh,2.0) * length;
             
             //calculation of deep sinks amount
-            deepsinkW = Larea * Ksink.getValue() * 10;
+            deepsinkW = Larea * Ksink.getValue() * 10 * sink_alpha.getValue() ;
             
             
             deepsinkW = Math.min(deepsinkW,q_act_out);
