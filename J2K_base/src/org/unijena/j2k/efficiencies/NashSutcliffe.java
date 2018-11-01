@@ -145,7 +145,7 @@ public class NashSutcliffe {
         
         /**summing up both data sets */
         for(int i = 0; i < steps; i++){
-            if(log_preData[i] >= 0){
+            if(prediction[i] >= 0){
                 sum_log_pd = sum_log_pd + log_preData[i];
                 sum_log_vd = sum_log_vd + log_valData[i];
             }
@@ -159,7 +159,7 @@ public class NashSutcliffe {
         double pd_log_vd = 0;
         double vd_log_mean = 0;
         for(int i = 0; i < steps; i++){
-            if(log_preData[i] >= 0){
+            if(prediction[i] >= 0){
                 pd_log_vd = pd_log_vd + weight[i]*(Math.pow(Math.abs(log_valData[i] - log_preData[i]),pow));
                 vd_log_mean = vd_log_mean + weight[i]*(Math.pow(Math.abs(log_valData[i] - mean_log_vd),pow));
             }
@@ -167,7 +167,7 @@ public class NashSutcliffe {
         
         /** calculating efficiency after Nash & Sutcliffe (1970) */
         double log_efficiency = 1 - (pd_log_vd / vd_log_mean);
-        
+
         return log_efficiency;
          
     }

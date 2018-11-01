@@ -39,9 +39,13 @@ import java.util.GregorianCalendar;
         title = "StandardEfficiencyCalculator",
         author = "Peter Krause",
         description = "Calculates various efficiency measures",
-        version = "1.0_0",
-        date = "2010-10-29"
+        version = "1.0_1",
+        date = "2018-11-01"
 )
+@VersionComments(entries = {
+    @VersionComments.Entry(version = "1.0_0", date = "2010-10-29", comment = "Initial version"),
+    @VersionComments.Entry(version = "1.0_1", date = "2018-11-01", comment = "Fixed bug with in calculation of log-based efficiencies")
+})
 public class StandardEfficiencyCalculator extends JAMSComponent {
 
     /*
