@@ -24,8 +24,7 @@ public class WaskaFrame extends javax.swing.JFrame {
     Boolean slideraction = false;
     Boolean Res_activ = false;
     Boolean water_in = true;
-    String mwork = "\\\\JAMS-Wipfra_CCC";
-    ;
+    String mwork = "\\JAMS-Wipfra_CCC";
     String workspace;
     String sceno = "_RCP85";
     int irriprop;
@@ -54,7 +53,7 @@ public class WaskaFrame extends javax.swing.JFrame {
 
     private void setDefaults() {
         Currentbase = model.getCurrentbase();
-        this.mwork = Currentbase + "\\\\JAMS-Wipfra_CCC";
+        this.mwork = Currentbase + "\\JAMS-Wipfra_CCC";
 
         Map<String, Parameter> parameters = model.getParameters();
         jRadioButton1.setEnabled(false);
@@ -991,7 +990,7 @@ public class WaskaFrame extends javax.swing.JFrame {
             Timestring = "1961-11-01 07:30 1990-10-31 07:30 6 1";
         }
 
-        model.getParameters().get("workspace").setValue(mwork + sceno);
+        model.getParameters().get("workspace").setValue((mwork + sceno).replace("\\", "/"));
         model.getParameters().get("time").setValue(Timestring);
         model.getParameters().get("Land").setValue(landf.toString());
         model.getParameters().get("Stadt").setValue(stadtf.toString());
@@ -1379,31 +1378,31 @@ public class WaskaFrame extends javax.swing.JFrame {
 
         switch (modeli) {
             case 0:
-                this.mwork = Currentbase + "\\\\JAMS-Wipfra_CCC";
+                this.mwork = Currentbase + "\\JAMS-Wipfra_CCC";
                 jRadioButton1.setEnabled(false);
                 jRadioButton2.setSelected(true);
                 sceno = "_RCP85";
                 break;
             case 1:
-                this.mwork = Currentbase + "\\\\JAMS-Wipfra_CNRM";
+                this.mwork = Currentbase + "\\JAMS-Wipfra_CNRM";
                 jRadioButton1.setEnabled(true);
                 break;
             case 2:
-                this.mwork = Currentbase + "\\\\JAMS-Wipfra_ICHEC";
+                this.mwork = Currentbase + "\\JAMS-Wipfra_ICHEC";
                 jRadioButton1.setEnabled(true);
                 break;
             case 3:
-                this.mwork = Currentbase + "\\\\JAMS-Wipfra_MIROC";
+                this.mwork = Currentbase + "\\JAMS-Wipfra_MIROC";
                 jRadioButton1.setEnabled(false);
                 jRadioButton2.setSelected(true);
                 sceno = "_RCP85";
                 break;
             case 4:
-                this.mwork = Currentbase + "\\\\JAMS-Wipfra_MOHC";
+                this.mwork = Currentbase + "\\JAMS-Wipfra_MOHC";
                 jRadioButton1.setEnabled(true);
                 break;
             case 5:
-                this.mwork = Currentbase + "\\\\JAMS-Wipfra_MPI";
+                this.mwork = Currentbase + "\\JAMS-Wipfra_MPI";
                 jRadioButton1.setEnabled(true);
                 break;
         }
