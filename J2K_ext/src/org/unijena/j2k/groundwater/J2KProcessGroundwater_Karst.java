@@ -292,7 +292,7 @@ public class J2KProcessGroundwater_Karst extends JAMSComponent {
             lowerBound = 1.00,
             upperBound = 2.75,
             unit = "n/a",
-            defaultValue = "0.0"
+            defaultValue = "2.0"
     )
     public Attribute.Double RG2_shape_karst;
     
