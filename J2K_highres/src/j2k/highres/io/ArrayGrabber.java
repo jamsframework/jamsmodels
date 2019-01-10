@@ -177,7 +177,7 @@ public class ArrayGrabber extends JAMSComponent {
 
         if (this.extRadArray != null) {
             in_extRad = this.extRadArray.getValue()[hourCount];
-        }
+        } 
 
         if (this.slAsCfArray != null) {
             in_scf = this.slAsCfArray.getValue()[dayCount];
