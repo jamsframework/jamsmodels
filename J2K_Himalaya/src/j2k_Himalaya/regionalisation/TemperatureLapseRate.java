@@ -34,7 +34,9 @@ import java.util.Calendar;
 @JAMSComponentDescription(title = "TemperatureLapseRate",
         author = "Santosh Nepal, Peter Krause",
         description = "Regionalisation of Temp through general adiabatic rate"
-        + "depends upon given adaiabatic rate +++ included seasonal lapse rate. Two different Lapse rate for Summer and Winter season is proposed")
+        + "depends upon given adaiabatic rate +++ included seasonal lapse rate. Two different Lapse rate for Summer and Winter season is proposed"
+        + "now accept if station has data gaps, another nearest station is considered for lapse rate")
+
 public class TemperatureLapseRate extends JAMSComponent {
 
     /*
@@ -69,6 +71,16 @@ public class TemperatureLapseRate extends JAMSComponent {
             description = "The current model time")
     public Attribute.Calendar time;
 
+      @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
+            description = "Start month for summer lapse rate")
+    public Attribute.Double SummerMonthStart;
+    
+         @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
+            description = "End month for summer lapse rate")
+    public Attribute.Double SummerMonthEnd;
+    
+    
+
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
             description = "position array to determine best weights")
     public Attribute.IntegerArray statOrder;
@@ -93,9 +105,9 @@ public class TemperatureLapseRate extends JAMSComponent {
                 //temp calculation
 
                 // int nowmonth = (time.get(time.MONTH) + 1 );
-                int nowmonth = time.get(Calendar.MONTH);
+                int nowmonth = (time.get(Calendar.MONTH)+1);
 
-                if ((nowmonth >= 5) && (nowmonth <= 8)) {
+                  if ((nowmonth >= this.SummerMonthStart.getValue()) && (nowmonth <= this.SummerMonthEnd.getValue())) {
                     outputValue.setValue(elevationdiff * (lapseRateSummer.getValue() / 100.) + input);
                     return;
                 } else {
