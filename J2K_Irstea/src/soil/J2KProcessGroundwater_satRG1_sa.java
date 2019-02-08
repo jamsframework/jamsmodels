@@ -192,6 +192,15 @@ import jams.model.*;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
+            description = "RG1 recession rate 'additive' adaptation factor",
+            lowerBound = 0.0,
+            upperBound = 10.0,
+            defaultValue = "0.0"
+            )
+            public Attribute.Double kRG1_aAF;
+    
+    @JAMSVarDescription(
+            access = JAMSVarDescription.AccessType.READ,
             description = "RG2 correction factor",
             lowerBound = 0.0,
             upperBound = 10.0,
@@ -251,7 +260,11 @@ import jams.model.*;
         this.run_k_RG1 = kRG1.getValue();
         this.run_k_RG2 = kRG2.getValue();
         
-        this.run_RG1_rec = this.run_k_RG1 * this.gwRG1Fact.getValue();
+        this.run_k_RG1 = this.run_k_RG1 * this.gwRG1Fact.getValue() + this.kRG1_aAF.getValue();
+        if (this.run_k_RG1 < 1) {
+            this.run_k_RG1 = 1; // minimum recession coefficient is set to 1 day
+        }
+        this.run_RG1_rec = this.run_k_RG1;
         this.run_RG2_rec = this.run_k_RG2 * this.gwRG2Fact.getValue();
         
         this.run_slope = slope.getValue();

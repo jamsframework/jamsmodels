@@ -87,26 +87,9 @@ import jams.model.*;
             )
             public Attribute.Double rootDepth;    
             
-    @JAMSVarDescription(
-            access = JAMSVarDescription.AccessType.READ,
-            description = "HRU statevar rooting depth adaptation factor",
-            defaultValue = "1.0"
-            )
-            public Attribute.Double rootDepth_AF;
-                
-    @JAMSVarDescription(
-            access = JAMSVarDescription.AccessType.READ,
-            description = "Field capacity adaptation factor",
-            defaultValue = "1.0"
-            )
-            public Attribute.Double fieldCapacity_AF;           
+    
             
-    @JAMSVarDescription(
-            access = JAMSVarDescription.AccessType.READ,
-            description = "Air capacity adaptation factor",
-            defaultValue = "1.0"
-            )
-            public Attribute.Double aircap_AF;
+
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
@@ -118,6 +101,16 @@ import jams.model.*;
             public Attribute.Double maxMPS;
     
     @JAMSVarDescription(
+            access = JAMSVarDescription.AccessType.READ,
+            description = "HRU attribute maximum MPS 'additive' adaptation factor",
+            unit="L",
+            lowerBound = 0,
+            defaultValue = "0.0"
+            //upperBound = 1000000
+            )
+            public Attribute.Double maxMPS_aAF;
+    
+    @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
             description = "HRU attribute maximum LPS",
             unit="L",
@@ -125,6 +118,16 @@ import jams.model.*;
             //upperBound = 1000000
             )
             public Attribute.Double maxLPS;
+    
+    @JAMSVarDescription(
+            access = JAMSVarDescription.AccessType.READ,
+            description = "HRU attribute maximum LPS 'additive' adaptation factor",
+            unit="L",
+            lowerBound = 0,
+            defaultValue = "0.0"
+            //upperBound = 1000000
+            )
+            public Attribute.Double maxLPS_aAF;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
@@ -207,7 +210,7 @@ import jams.model.*;
         
         Attribute.Entity entity = entities.getCurrent();
         
-        double rootDepth = this.rootDepth.getValue() * this.rootDepth_AF.getValue();
+        double rootDepth = this.rootDepth.getValue();
         double mxMPS = 0;
         String aNameFC = "fc_";
         for(int d = 0; d < rootDepth; d++){
@@ -215,7 +218,6 @@ import jams.model.*;
             String mpsDesc = aNameFC + count;
             try {
                 double mpsVal = entity.getDouble(mpsDesc);
-                mpsVal = mpsVal * this.fieldCapacity_AF.getValue();
                 mxMPS = mxMPS + mpsVal;
             } catch (Attribute.Entity.NoSuchAttributeException nsae) {
                 getModel().getRuntime().sendErrorMsg(nsae.getMessage() + "\n"
@@ -226,18 +228,18 @@ import jams.model.*;
                         + "root depht!");
             }
         }
+        mxMPS = mxMPS + this.maxMPS_aAF.getValue();
         mxMPS = mxMPS * this.area.getValue();
         mxMPS = mxMPS * this.FCAdaptation.getValue();
-        if (mxMPS == 0){
+        if (mxMPS < 1){
             mxMPS = 1;
         }
         
-        double mxLPS = entity.getDouble("aircap") * this.aircap_AF.getValue() * area.getValue();
-        mxLPS = mxLPS * this.ACAdaptation.getValue();    
-        if (mxLPS == 0){
+        double mxLPS = entity.getDouble("aircap") + this.maxLPS_aAF.getValue();
+        mxLPS = mxLPS * this.ACAdaptation.getValue() * area.getValue();
+        if (mxLPS < 1){
             mxLPS = 1;
         }
-
 
 
         if(satStartLPS != null){

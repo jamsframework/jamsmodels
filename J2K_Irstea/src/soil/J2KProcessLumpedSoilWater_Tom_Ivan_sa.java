@@ -39,7 +39,7 @@ import jams.model.*;
         + "Modified by Ivan horner to add 'adaptation factors' to distributed parameters.",
         version="1.1_0",
         date="2011-05-30")
-        public class J2KProcessLumpedSoilWater_Tom_sa extends JAMSComponent {
+        public class J2KProcessLumpedSoilWater_Tom_Ivan_sa extends JAMSComponent {
     
     /*
      *  Component variables
@@ -408,99 +408,7 @@ import jams.model.*;
             unit="-"
             )
             public Attribute.Double soilMaxInfSnow_aAF;
-    
-        @JAMSVarDescription(
-            access = JAMSVarDescription.AccessType.READ,
-            description = "maximum infiltration part on sealed areas (gt 90%)",
-            lowerBound = 0.0,
-            upperBound = 1.0,
-            defaultValue = "0.25"
-            )
-            public Attribute.Double soilImpGT90;
-    
-    
-    @JAMSVarDescription(
-            access = JAMSVarDescription.AccessType.READ,
-            description = "maximum infiltration part on sealed areas (gt 80%)",
-            lowerBound = 0.0,
-            upperBound = 1.0,
-            defaultValue = "0.25"
-            )
-            public Attribute.Double soilImpGT80;
-    
-    @JAMSVarDescription(
-            access = JAMSVarDescription.AccessType.READ,
-            description = "maximum infiltration part on sealed areas (gt 70%)",
-            lowerBound = 0.0,
-            upperBound = 1.0,
-            defaultValue = "0.25"
-            )
-            public Attribute.Double soilImpGT70;    
-
-
-    @JAMSVarDescription(
-            access = JAMSVarDescription.AccessType.READ,
-            description = "maximum infiltration part on sealed areas (gt 60%)",
-            lowerBound = 0.0,
-            upperBound = 1.0,
-            defaultValue = "0.25"
-            )
-            public Attribute.Double soilImpGT60;
-    
-    @JAMSVarDescription(
-            access = JAMSVarDescription.AccessType.READ,
-            description = "maximum infiltration part on sealed areas (gt 50%)",
-            lowerBound = 0.0,
-            upperBound = 1.0,
-            defaultValue = "0.25"
-            )
-            public Attribute.Double soilImpGT50;    
-
-    @JAMSVarDescription(
-            access = JAMSVarDescription.AccessType.READ,
-            description = "maximum infiltration part on sealed areas (gt 40%)",
-            lowerBound = 0.0,
-            upperBound = 1.0,
-            defaultValue = "0.25"
-            )
-            public Attribute.Double soilImpGT40;    
-    
-    @JAMSVarDescription(
-            access = JAMSVarDescription.AccessType.READ,
-            description = "maximum infiltration part on sealed areas (gt 30%)",
-            lowerBound = 0.0,
-            upperBound = 1.0,
-            defaultValue = "0.25"
-            )
-            public Attribute.Double soilImpGT30;    
-    
-    @JAMSVarDescription(
-            access = JAMSVarDescription.AccessType.READ,
-            description = "maximum infiltration part on sealed areas (gt 20%)",
-            lowerBound = 0.0,
-            upperBound = 1.0,
-            defaultValue = "0.25"
-            )
-            public Attribute.Double soilImpGT20;    
-    
-    @JAMSVarDescription(
-            access = JAMSVarDescription.AccessType.READ,
-            description = "maximum infiltration part on sealed areas (gt 10%)",
-            lowerBound = 0.0,
-            upperBound = 1.0,
-            defaultValue = "0.25"
-            )
-            public Attribute.Double soilImpGT10;    
-    
-    @JAMSVarDescription(
-            access = JAMSVarDescription.AccessType.READ,
-            description = "maximum infiltration part on sealed areas (gt 0%)",
-            lowerBound = 0.0,
-            upperBound = 1.0,
-            defaultValue = "0.25"
-            )
-            public Attribute.Double soilImpGT0;    
-    
+     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
             description = "MPS/LPS distribution coefficient for inflow",
@@ -648,7 +556,13 @@ import jams.model.*;
         /** infiltration on impervious areas and water bodies
          *  is directly routed as DirectRunoff to the next polygon
          *  a better implementation would be the next river reach */
-        this.calcInfImperv(sealedGrade.getValue() * sealedGrade_mAF.getValue() + sealedGrade_aAF.getValue());
+        double SG = sealedGrade.getValue() * sealedGrade_mAF.getValue() + sealedGrade_aAF.getValue();
+        if (SG < 0) {
+            SG = 0;
+        } else if (SG >1 ) {
+            SG = 1;
+        }
+        this.calcInfImperv(SG);
         
         run_infiltration2 = this.run_infiltration;
         /** determining maximal infiltration rate */
@@ -784,37 +698,8 @@ import jams.model.*;
     }
     
     private boolean calcInfImperv(double sealedGrade){
-        if(sealedGrade > 0.9){
-            this.run_overlandflow = this.run_overlandflow + (1 - soilImpGT90.getValue()) * this.run_infiltration;
-            this.run_infiltration = this.run_infiltration * soilImpGT90.getValue();
-        } else if(sealedGrade > 0.8 && sealedGrade <= 0.9){
-            this.run_overlandflow = this.run_overlandflow + (1 - soilImpGT80.getValue()) * this.run_infiltration;
-            this.run_infiltration = this.run_infiltration * soilImpGT80.getValue();
-        } else if(sealedGrade > 0.7 && sealedGrade <= 0.8){
-            this.run_overlandflow = this.run_overlandflow + (1 - soilImpGT70.getValue()) * this.run_infiltration;
-            this.run_infiltration = this.run_infiltration * soilImpGT70.getValue();
-        } else if(sealedGrade > 0.6 && sealedGrade <= 0.7){
-            this.run_overlandflow = this.run_overlandflow + (1 - soilImpGT60.getValue()) * this.run_infiltration;
-            this.run_infiltration = this.run_infiltration * soilImpGT60.getValue();
-        } else if(sealedGrade > 0.5 && sealedGrade <= 0.6){
-            this.run_overlandflow = this.run_overlandflow + (1 - soilImpGT50.getValue()) * this.run_infiltration;
-            this.run_infiltration = this.run_infiltration * soilImpGT50.getValue();            
-        } else if(sealedGrade > 0.4 && sealedGrade <= 0.5){
-            this.run_overlandflow = this.run_overlandflow + (1 - soilImpGT40.getValue()) * this.run_infiltration;
-            this.run_infiltration = this.run_infiltration * soilImpGT40.getValue(); 
-        } else if(sealedGrade > 0.3 && sealedGrade <= 0.4){
-            this.run_overlandflow = this.run_overlandflow + (1 - soilImpGT30.getValue()) * this.run_infiltration;
-            this.run_infiltration = this.run_infiltration * soilImpGT30.getValue();
-        } else if(sealedGrade > 0.2 && sealedGrade <= 0.3){
-            this.run_overlandflow = this.run_overlandflow + (1 - soilImpGT20.getValue()) * this.run_infiltration;
-            this.run_infiltration = this.run_infiltration * soilImpGT20.getValue();     
-        } else if(sealedGrade > 0.1 && sealedGrade <= 0.2){
-            this.run_overlandflow = this.run_overlandflow + (1 - soilImpGT10.getValue()) * this.run_infiltration;
-            this.run_infiltration = this.run_infiltration * soilImpGT10.getValue();            
-        } else if(sealedGrade > 0 && sealedGrade <= 0.1){
-            this.run_overlandflow = this.run_overlandflow +  (1 - soilImpGT0.getValue()) * this.run_infiltration;
-            this.run_infiltration = this.run_infiltration * soilImpGT0.getValue();
-        }
+        this.run_overlandflow = this.run_overlandflow + sealedGrade * this.run_infiltration;
+        this.run_infiltration = this.run_infiltration * (1 - sealedGrade);
         return true;
     }
     
@@ -831,11 +716,12 @@ import jams.model.*;
             maxInf = this.soilMaxInfWinter.getValue() * this.soilMaxInfWinter_mAF.getValue() + this.soilMaxInfWinter_aAF.getValue();
             maxInf = (1 - this.run_satSoil) * maxInf * this.run_area;
         }
+        if (maxInf < 0) {
+            maxInf = 0;
+        }
         return maxInf;
     }
-    
-    
-    
+
     private boolean calcMPSTranspiration(boolean debug){
         double maxTrans = 0;
         /** updating saturations */
@@ -895,42 +781,18 @@ import jams.model.*;
     }
     
     private double calcMPSInflow(double infiltration){
-        double inflow = infiltration;
-        
-        /** updating saturations */
         this.calcSoilSaturations(false);
-        this.run_deltaMPS = 0;
         this.run_deltaMPS = this.run_maxMPS - this.run_actMPS;
-        /**checking if MPS can take all the water */
-        if(inflow < (this.run_maxMPS - this.run_actMPS)){ //christian: this seams wrong to me, because if this test fails mps gets all the water even if it wouldn't because of alpha .. 
-            /** if MPS is empty it takes all the water */
-            if(this.run_actMPS == 0){
-                this.run_actMPS = this.run_actMPS + inflow;
-                inflow = 0;
-            }
-            /** MPS is partly filled and gets part of the water */
-            else{
-                double alpha = this.soilDistMPSLPS.getValue();
-                //if sat_MPS is 0 the next equation would produce an error,
-                //therefore it is set to MPS_sat is set to 0.0000001 in that case
-                if(this.run_satMPS == 0)
-                    this.run_satMPS = 0.0000001;
-                double inMPS = (inflow) * (1. - Math.exp(-1*alpha / this.run_satMPS));
-                this.run_actMPS = this.run_actMPS + inMPS;
-         //       this.run_soilDistMPSLPS2 = alpha;
-                inflow = inflow - inMPS;
-            }
-        }
-        /** infiltration exceeds storage capacity of MPS */
-        else{
-            double deltaMPS = this.run_maxMPS - this.run_actMPS;
-            this.run_actMPS = this.run_maxMPS;
-            inflow = inflow - deltaMPS;
-        }
-        
-        return inflow;
+        if(this.run_satMPS == 0) 
+            this.run_satMPS = 0.0000001;
+        double inMPS = (infiltration) * (1. - Math.exp(-1 * this.soilDistMPSLPS.getValue() / this.run_satMPS));
+        if (inMPS > this.run_deltaMPS)
+            inMPS = this.run_deltaMPS;
+        this.run_actMPS = this.run_actMPS + inMPS;
+        infiltration = infiltration - inMPS;
+        return infiltration;
     }
-    
+  
     private double calcLPSInflow(double infiltration){
         this.run_actLPS = this.run_actLPS + infiltration;
         infiltration = 0;
@@ -948,8 +810,8 @@ import jams.model.*;
         //for this (unlikely) case soilSat is set to 0.999999
         
         //testing if LPSsat might give a better behaviour
-        if(this.run_satLPS == 1.0)
-            this.run_satLPS = 0.999999;
+        //if(this.run_satLPS == 1.0)
+        //    this.run_satLPS = 0.999999;
         //original function
         //double potLPSoutflow = this.act_LPS * (1. - Math.exp(-1*alpha/(1-this.sat_LPS)));
         double potLPSoutflow = Math.pow(this.run_satSoil, alpha) * this.run_actLPS;
@@ -1062,6 +924,22 @@ import jams.model.*;
     }
     
     private boolean calcDiffusion(){
+        double diffusion;
+        this.calcSoilSaturations(false);
+        double deltaMPS = this.run_maxMPS - this.run_actMPS;
+        if(this.run_satMPS == 0.0)
+            this.run_satMPS = 0.000001;
+        diffusion = this.run_actLPS * (1. - Math.exp((-1. * this.soilDiffMPSLPS.getValue()) / this.run_satMPS)); 
+        if(diffusion > this.run_actLPS)
+            diffusion = this.run_actLPS;
+        if(diffusion > deltaMPS)
+            diffusion = deltaMPS;
+        this.run_actMPS = this.run_actMPS + diffusion;
+        this.run_actLPS = this.run_actLPS - diffusion;
+        return true;
+    }
+    
+    private boolean calcDiffusion_OBSOLETE(){
         double diffusion = 0;
         /** updating saturations */
         this.calcSoilSaturations(false);

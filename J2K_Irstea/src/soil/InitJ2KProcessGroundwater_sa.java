@@ -65,11 +65,19 @@ import jams.model.*;
             
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            description = "adaptation factor for maximum RG1 storage as specified in parameter file",
+            description = "maximum RG1 storage 'multiplicative' adaptation factor",
             defaultValue = "1.0",
             unit="-"
             )
-            public Attribute.Double RG1_max_AF;
+            public Attribute.Double RG1_max_mAF;
+    
+    @JAMSVarDescription(
+            access = JAMSVarDescription.AccessType.READ,
+            description = "maximum RG1 storage 'additive' adaptation factor",
+            defaultValue = "0.0",
+            unit="-"
+            )
+            public Attribute.Double RG1_max_aAF;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
@@ -130,7 +138,12 @@ import jams.model.*;
         
         Attribute.Entity entity = entities.getCurrent();
         double area = entity.getDouble("area");
-        maxRG1.setValue(entity.getDouble("RG1_max") * this.RG1_max_AF.getValue() * area);
+        double RG1max = entity.getDouble("RG1_max");
+        RG1max = RG1max * this.RG1_max_mAF.getValue()+ this.RG1_max_aAF.getValue();
+        if (RG1max < 1) {
+            RG1max = 1;
+        }
+        maxRG1.setValue(RG1max * area);
         maxRG2.setValue(entity.getDouble("RG2_max") * area);
         
         actRG1.setValue(maxRG1.getValue() * initRG1.getValue());

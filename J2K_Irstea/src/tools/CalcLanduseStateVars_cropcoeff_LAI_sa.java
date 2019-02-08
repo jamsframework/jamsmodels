@@ -84,17 +84,31 @@ import jams.model.*;
             
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            description = "Crop coefficient adaptation factor",
+            description = "Crop coefficient 'multiplicative' adaptation factor",
             defaultValue = "1"
             )
-            public Attribute.Double CropCoef_AF;
+            public Attribute.Double CropCoef_mAF;
+    
+    @JAMSVarDescription(
+            access = JAMSVarDescription.AccessType.READ,
+            description = "Crop coefficient 'additive' adaptation factor",
+            defaultValue = "0.0"
+            )
+            public Attribute.Double CropCoef_aAF;
             
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            description = "Leaf Area Index adaptation factor",
+            description = "Leaf Area Index 'multiplicative' adaptation factor",
             defaultValue = "1"
             )
-            public Attribute.Double LAI_AF;
+            public Attribute.Double LAI_mAF;
+    
+    @JAMSVarDescription(
+            access = JAMSVarDescription.AccessType.READ,
+            description = "Leaf Area Index 'additive' adaptation factor",
+            defaultValue = "0.0"
+            )
+            public Attribute.Double LAI_aAF;
     
     
     int[] monthMean = {15,45,74,105,135,166,196,227,258,288,319,349};
@@ -125,8 +139,10 @@ import jams.model.*;
             int count = j+1;
             String LAIloopName = laiName + count;
             lai_vals[j] = entity.getDouble(LAIloopName);
-            lai_vals[j] = lai_vals[j] * this.LAI_AF.getValue();
-            }
+            lai_vals[j] = lai_vals[j] * this.LAI_mAF.getValue() + this.LAI_aAF.getValue();
+            if (lai_vals[j] < 0)
+                lai_vals[j] = 0;
+        }
         
         
         LAIArray.setValue(lai_vals);
@@ -138,8 +154,10 @@ import jams.model.*;
             int count = i+1;
             String loopName = cropcoeffName + count;
             cropcoeff[i] = entity.getDouble(loopName);
-            cropcoeff[i] = cropcoeff[i] * this.CropCoef_AF.getValue();
-            entity.setDouble(loopName+"_test", cropcoeff[i]);
+            cropcoeff[i] = cropcoeff[i] * this.CropCoef_mAF.getValue() + this.CropCoef_aAF.getValue();
+            if (cropcoeff[i] < 0)
+                cropcoeff[i] = 0;
+            entity.setDouble(loopName+"_test", cropcoeff[i]); // what's that?
         }
         cropcoeffArray.setValue(cropcoeff);
 
