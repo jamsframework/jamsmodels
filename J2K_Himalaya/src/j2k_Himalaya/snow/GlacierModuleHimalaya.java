@@ -6,16 +6,16 @@
  * Copyright (C) 2005 FSU Jena, c0krpe
  *
  * This program is free software; you can redistribute it and/or
- * modify it under the terms of the GNU Lesser General Public License
- * as published by the Free Software Foundation; either version 3
+ * modify it under the terms of the GNU General Public License
+ * as published by the Free Software Foundation; either version 2
  * of the License, or (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
+ * GNU General Public License for more details.
  *
- * You should have received a copy of the GNU Lesser General Public License
+ * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
  *
@@ -92,6 +92,28 @@ import jams.model.*;
             description = "attribute slope"
             )
             public Attribute.Double slope;
+
+              @JAMSVarDescription(
+            access = JAMSVarDescription.AccessType.READ,
+            description = "attribute elevation"
+            )
+            public Attribute.Double elevation;
+
+        
+        
+        
+              @JAMSVarDescription(
+            access = JAMSVarDescription.AccessType.READ,
+            description = "Elevation Threshold for debris covered Glacier"
+            )
+            public Attribute.Double elevationThreshold;
+
+        
+             @JAMSVarDescription(
+            access = JAMSVarDescription.AccessType.READ,
+            description = "Slope Threshold for debris covered Glacier"
+            )
+            public Attribute.Double slopeThreshold;
 
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
@@ -344,7 +366,8 @@ import jams.model.*;
         } else {
             iceMelt = 0;
         }
-        if (this.slope.getValue() < 30) {
+        if (this.slope.getValue() < this.slopeThreshold.getValue() &&
+                this.elevation.getValue() < this.elevationThreshold.getValue()) {
             iceMelt = iceMelt - (iceMelt * this.debrisFactor.getValue()/10) ;
         }
      else {
