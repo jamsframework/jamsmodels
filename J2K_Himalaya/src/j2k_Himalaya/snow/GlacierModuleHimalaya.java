@@ -98,10 +98,7 @@ import jams.model.*;
             description = "attribute elevation"
             )
             public Attribute.Double elevation;
-
-        
-        
-        
+            
               @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
             description = "Elevation Threshold for debris covered Glacier"

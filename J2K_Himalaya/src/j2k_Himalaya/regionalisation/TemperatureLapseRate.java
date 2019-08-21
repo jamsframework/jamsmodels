@@ -34,7 +34,7 @@ import java.util.Calendar;
 @JAMSComponentDescription(title = "TemperatureLapseRate",
         author = "Santosh Nepal, Peter Krause",
         description = "Regionalisation of Temp through general adiabatic rate"
-        + "depends upon given adaiabatic rate +++ included seasonal lapse rate. Two different Lapse rate for Summer and Winter season is proposed"
+        + "depends upon given adaiabatic rate +++ included seasonal lapse rate. Two seasonal different Lapse rate for Summer and Winter season is proposed"
         + "now accept if station has data gaps, another nearest station is considered for lapse rate")
 
 public class TemperatureLapseRate extends JAMSComponent {
