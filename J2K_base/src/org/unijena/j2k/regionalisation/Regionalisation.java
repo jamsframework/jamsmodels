@@ -99,10 +99,14 @@ public class Regionalisation extends JAMSComponent {
             description = "Weights of individual stations (first element equals first station in list)")
     public Attribute.Double[] actualWeights;
 
+    @JAMSVarDescription(access = JAMSVarDescription.AccessType.WRITE,
+            description = "Weighted average elevation of source stations")
+    public Attribute.Double averageSourceElevation;
+
     boolean invalidDatasetReported = false;
 
-    ArrayPool<double[]> memPool = new ArrayPool<double[]>(double.class);
-    ArrayPool<int[]> imemPool = new ArrayPool<int[]>(int.class);
+    ArrayPool<double[]> memPool = new ArrayPool<>(double.class);
+    ArrayPool<int[]> imemPool = new ArrayPool<>(int.class);
 
     @Override
     public void run() throws IOException {
@@ -169,6 +173,7 @@ public class Regionalisation extends JAMSComponent {
         }
 
         if (valid) {
+            
             for (int i = 0; i < counter; i++) {
                 if (actualWeights != null) {
                     actualWeights[station[i]].setValue(weights[i]);
@@ -181,13 +186,19 @@ public class Regionalisation extends JAMSComponent {
                     value = value + (data[i] * weights[i]);
                 }
             }
-            //checking for minimum
-            if (value < this.fixedMinimum.getValue()) {
-                value = this.fixedMinimum.getValue();
+
+            //checking for minimum/maximum
+            value = Math.max(value, fixedMinimum.getValue());
+            value = Math.min(value, fixedMaximum.getValue());
+            
+            if (averageSourceElevation != null) {
+                double avgElev = 0;
+                for (int i = 0; i < counter; i++) {
+                    avgElev += elev[i] * weights[i];
+                }
+                averageSourceElevation.setValue(avgElev);
             }
-            if (value > this.fixedMaximum.getValue()) {
-                value = this.fixedMaximum.getValue();
-            }
+
         } else {
             if (!invalidDatasetReported) {     //only report once
                 //in this case simulation should end, because it affects model behaviour seriously!

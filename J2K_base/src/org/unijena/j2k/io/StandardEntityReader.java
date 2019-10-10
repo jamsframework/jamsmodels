@@ -304,15 +304,6 @@ public class StandardEntityReader extends JAMSComponent {
         }
     }
 
-    public static void main(String[] args) {
-
-        Set<Double> s = new HashSet();
-        s.add(new Double(12));
-        long x = 12;
-        System.out.println(s.contains((double) x));
-
-    }
-
     private void createEntityCollections() {
 
         // create a node list of the graph starting at the root reach (breath first enumeration)
