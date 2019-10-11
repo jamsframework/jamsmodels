@@ -74,7 +74,7 @@ public class LapseRateRegionalization extends JAMSComponent {
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
             description = "Lapse rates for 100m elevation difference, given "
-                    + "either as a single values or as 12 (monthly) values")
+            + "either as a single values or as 12 (monthly) values")
     public Attribute.Double[] lapseRates;
 
     @JAMSVarDescription(
@@ -87,17 +87,26 @@ public class LapseRateRegionalization extends JAMSComponent {
             description = "Calculated output for the modelling entity")
     public Attribute.Double outputValue;
 
+    @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
+            description = "Absolute possible minimum value for data set",
+            defaultValue = "-Infinity")
+    public Attribute.Double fixedMinimum;
+
+    @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
+            description = "Absolute possible maximum value for data set",
+            defaultValue = "Infinity")
+    public Attribute.Double fixedMaximum;
+
     /*
      *  Component run stages
      */
-    
     @Override
     public void init() {
         if (lapseRates.length != 1 && lapseRates.length != 12) {
             getModel().getRuntime().sendHalt("Number of laps rate values must be either 1 or 12!");
         }
     }
-    
+
     @Override
     public void run() {
 
@@ -107,19 +116,22 @@ public class LapseRateRegionalization extends JAMSComponent {
             double input = inputValues.getValue()[closestStation];
 
             if (input != JAMS.getMissingDataValue()) {
-    
+
                 double lapseRate;
                 if (lapseRates.length > 1) {
                     int nowmonth = time.get(Calendar.MONTH);
                     lapseRate = lapseRates[nowmonth].getValue();
                 } else {
-                    lapseRate = lapseRates[0].getValue();                    
+                    lapseRate = lapseRates[0].getValue();
                 }
-                
+
                 //elevation difference
                 double elevationdiff = (statElev.getValue()[closestStation] - entityElev.getValue());
                 //result calculation
-                outputValue.setValue(elevationdiff * (lapseRate / 100.) + input);
+                double result = elevationdiff * (lapseRate / 100.) + input;
+                result = Math.min(fixedMaximum.getValue(), input);
+                result = Math.max(fixedMinimum.getValue(), input);
+                outputValue.setValue(result);
                 return;
             }
 

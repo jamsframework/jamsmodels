@@ -80,6 +80,16 @@ public class LapseRateAdaptation extends JAMSComponent {
             access = JAMSVarDescription.AccessType.WRITE,
             description = "Calculated output for the modelling entity")
     public Attribute.Double outputValue;
+    
+    @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
+            description = "Absolute possible minimum value for data set",
+            defaultValue = "-Infinity")
+    public Attribute.Double fixedMinimum;
+
+    @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
+            description = "Absolute possible maximum value for data set",
+            defaultValue = "Infinity")
+    public Attribute.Double fixedMaximum;    
 
     /*
      *  Component run stages
@@ -108,8 +118,12 @@ public class LapseRateAdaptation extends JAMSComponent {
 
             //elevation difference
             double elevationdiff = (sourceElev.getValue() - entityElev.getValue());
+            
             //result calculation
-            outputValue.setValue(elevationdiff * (lapseRate / 100.) + input);
+            double result = elevationdiff * (lapseRate / 100.) + input;
+            result = Math.min(fixedMaximum.getValue(), input);
+            result = Math.max(fixedMinimum.getValue(), input);
+            outputValue.setValue(result);
             return;
         }
 
