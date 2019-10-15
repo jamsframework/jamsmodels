@@ -33,76 +33,74 @@ import jams.data.*;
 import jams.model.*;
 import java.util.*;
 import jams.JAMS;
-import java.lang.Math.*;
 import jams.tools.FileTools;
 
 /**
  *
- * @author S. Kralisch, f?r mehrdimensionale Topologie modifiziert von D.Varga und B.Pfennig
- * 09.10.2008
+ * @author S. Kralisch, f?r mehrdimensionale Topologie modifiziert von D.Varga
+ * und B.Pfennig 09.10.2008
  */
 public class MultiEntityReader extends JAMSComponent {
 
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
-    description = "HRU parameter file name")
+            description = "HRU parameter file name")
     public Attribute.String hruFileName;
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
-    description = "Reach parameter file name")
+            description = "Reach parameter file name")
     public Attribute.String reachFileName;
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
-    description = "Parameter file name for topological linkage with receiver entities")
+            description = "Parameter file name for topological linkage with receiver entities")
     public Attribute.String to_hru_FileName;
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
-    description = "Parameter file name for weighting of receiver entity")
+            description = "Parameter file name for weighting of receiver entity")
     public Attribute.String bfl_FileName;
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.WRITE,
-    description = "Collection of hru objects")
+            description = "Collection of hru objects")
     public Attribute.EntityCollection hrus;
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.WRITE,
-    description = "Collection of reach objects")
+            description = "Collection of reach objects")
     public Attribute.EntityCollection reaches;
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.WRITE,
-    description = "Collection of hru objects with their topology")
+            description = "Collection of hru objects with their topology")
     public Attribute.EntityCollection topology;
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
-    description = "Name of the attribute containing the HRU identifiers",
-    defaultValue = "ID")
+            description = "Name of the attribute containing the HRU identifiers",
+            defaultValue = "ID")
     public Attribute.String hruIDAttribute;
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
-    description = "Name of the attribute containing the reach identifiers",
-    defaultValue = "ID")
+            description = "Name of the attribute containing the reach identifiers",
+            defaultValue = "ID")
     public Attribute.String reachIDAttribute;
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
-    description = "Name of the attribute describing the HRU to HRU relation in the input file",
-    defaultValue = "to_poly")
+            description = "Name of the attribute describing the HRU to HRU relation in the input file",
+            defaultValue = "to_poly")
     public Attribute.String hru2hruAttribute;
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
-    description = "Name of the attribute describing the HRU to HRU relation in the input file",
-    defaultValue = "to_poly_weights")
+            description = "Name of the attribute describing the HRU to HRU relation in the input file",
+            defaultValue = "to_poly_weights")
     public Attribute.String hru2hruWeightAttribute;
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
-    description = "Name of the attribute describing the HRU to reach relation in the input file",
-    defaultValue = "to_reach")
+            description = "Name of the attribute describing the HRU to reach relation in the input file",
+            defaultValue = "to_reach")
     public Attribute.String hru2reachAttribute;
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
-    description = "Name of the attribute describing the HRU to HRU relation in the input file",
-    defaultValue = "to_reach_weights")
+            description = "Name of the attribute describing the HRU to HRU relation in the input file",
+            defaultValue = "to_reach_weights")
     public Attribute.String hru2reachWeightAttribute;
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
-    description = "Name of the attribute describing the reach to reach relation in the input file",
-    defaultValue = "to_reach")
+            description = "Name of the attribute describing the reach to reach relation in the input file",
+            defaultValue = "to_reach")
     public Attribute.String reach2reachAttribute;
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
-    description = "Name of the attribute describing the HRU to HRU relation in the input file",
-    defaultValue = "bfl")
+            description = "Name of the attribute describing the HRU to HRU relation in the input file",
+            defaultValue = "bfl")
     public Attribute.String bflAttribute;
-    
+
     @Override
     public void init() {
- 
 
         ArrayList<Attribute.Entity> hruCollection = J2KFunctions.readParas(FileTools.createAbsoluteFileName(getModel().getWorkspaceDirectory().getPath(), hruFileName.getValue()), getModel());
-                
+
         //assign IDs to all hru entities
         for (Attribute.Entity e : hruCollection) {
             try {
@@ -112,10 +110,10 @@ public class MultiEntityReader extends JAMSComponent {
             }
         }
         hrus.setEntities(hruCollection);
-        
+
         //read reach parameter
         ArrayList<Attribute.Entity> reachCollection = J2KFunctions.readParas(FileTools.createAbsoluteFileName(getModel().getWorkspaceDirectory().getPath(), reachFileName.getValue()), getModel());
-        
+
         //assign IDs to all reach entities
         for (Attribute.Entity e : reachCollection) {
             try {
@@ -124,7 +122,7 @@ public class MultiEntityReader extends JAMSComponent {
                 getModel().getRuntime().sendErrorMsg("Couldn't find attribute \"ID\" while reading J2K Reach parameter file (" + reachFileName.getValue() + ")!");
             }
         }
-        
+
         reaches.setEntities(reachCollection);
 
         //create object associations from id attributes for hrus and reaches
@@ -140,7 +138,7 @@ public class MultiEntityReader extends JAMSComponent {
 
     }
 
-    private void createTopology() {          
+    protected void createTopology() {
         BufferedReader reader1;
         BufferedReader reader2;
 
@@ -154,7 +152,6 @@ public class MultiEntityReader extends JAMSComponent {
 
         Attribute.Entity e, zielHRU, zielReach;
 
-
         //put all entities into a HashMap with their ID as key
         hruIterator = hrus.getEntities().iterator();
         while (hruIterator.hasNext()) {
@@ -167,20 +164,19 @@ public class MultiEntityReader extends JAMSComponent {
             reachMap.put(e.getDouble(reachIDAttribute.getValue()), e);
         }
 
-
         Attribute.Entity nullEntity = getModel().getRuntime().getDataFactory().createEntity();
         hruMap.put(new Double(0), nullEntity);
         reachMap.put(new Double(0), nullEntity);
 
-         //associate the hru entities with their downstream entity
+        //associate the hru entities with their downstream entity
         hruIterator = hrus.getEntities().iterator();
         while (hruIterator.hasNext()) {
-            e = hruIterator.next();            
+            e = hruIterator.next();
             //empty list as default
             e.setObject(hru2hruAttribute.getValue(), new Attribute.Entity[0]);
             e.setObject(hru2hruWeightAttribute.getValue(), new Double[0]);
             e.setObject(hru2reachWeightAttribute.getValue(), new Double[0]);
-            
+
             e.setObject(hru2reachAttribute.getValue(), new Attribute.Entity[0]);
         }
 
@@ -190,8 +186,8 @@ public class MultiEntityReader extends JAMSComponent {
 
             String toHRUsLine = "#", toHRUsWeightsLine = "#";
             while (toHRUsLine != null && toHRUsLine.startsWith("#")) {
-                toHRUsLine = reader1.readLine();                
-            }            
+                toHRUsLine = reader1.readLine();
+            }
             while (toHRUsWeightsLine != null && toHRUsWeightsLine.startsWith("#")) {
                 toHRUsWeightsLine = reader2.readLine();
             }
@@ -205,7 +201,7 @@ public class MultiEntityReader extends JAMSComponent {
                 String toHRUsString = toHRUsSplitArray[3];
 
                 e = hruMap.get(HRUsID);
-                if (e == null){
+                if (e == null) {
                     getModel().getRuntime().sendHalt("missing HRU with ID = " + HRUsID);
                 }
                 e.setDouble("BFLDouble", HRUsBFl);
@@ -237,20 +233,20 @@ public class MultiEntityReader extends JAMSComponent {
                     double toHRUsID = 0;
                     double toHRUsWeight = 0;
 
-                    try{
-                        toHRUsID = Double.parseDouble(toHRUsToken.nextToken());                    
-                    }catch(NoSuchElementException nsee){
+                    try {
+                        toHRUsID = Double.parseDouble(toHRUsToken.nextToken());
+                    } catch (NoSuchElementException nsee) {
                         nsee.printStackTrace();
                         System.out.println("Not enough tokens in line:" + toHRUsLine);
                     }
-                    
-                    try{
+
+                    try {
                         toHRUsWeight = Double.parseDouble(toHRUsWeightsToken.nextToken());
-                    }catch(NoSuchElementException nsee){
+                    } catch (NoSuchElementException nsee) {
                         nsee.printStackTrace();
                         System.out.println("Not enough tokens in line:" + toHRUsWeightsLine);
                     }
-                    
+
                     sumWeights -= toHRUsWeight;
 
                     if ((toHRUsID == 0 && toHRUsWeight != 0) || (toHRUsID != 0 && toHRUsWeight == 0)) {
@@ -276,7 +272,7 @@ public class MultiEntityReader extends JAMSComponent {
                         break;
                     }
                 }
-                
+
                 if (Math.abs(sumWeights) > 0.03) {
                     getModel().getRuntime().sendHalt("Fehler bei HRU " + HRUsID + ". Summe der einzelnen Gewichte ungleich 1");
                 }
@@ -307,13 +303,12 @@ public class MultiEntityReader extends JAMSComponent {
             getModel().getRuntime().handle(ioe);
         }
 
-
         //associate the reach entities with their downstream entity
         reachIterator = reaches.getEntities().iterator();
         while (reachIterator.hasNext()) {
             e = reachIterator.next();
 
-            Attribute.Entity toReach = reachMap.get(e.getDouble(reach2reachAttribute.getValue()));            
+            Attribute.Entity toReach = reachMap.get(e.getDouble(reach2reachAttribute.getValue()));
             if (toReach == null) {
                 getModel().getRuntime().sendErrorMsg("Topological neighbour for reach with ID "
                         + e.getId() + " could not be found. This may cause errors!");
@@ -326,89 +321,88 @@ public class MultiEntityReader extends JAMSComponent {
     }
 
     //do depth first search to find cycles
-    protected boolean cycleCheck(Attribute.Entity node,Stack<Attribute.Entity> searchStack,HashSet<Attribute.Double> closedList,HashSet<Attribute.Double> visitedList) {
+    protected boolean cycleCheck(Attribute.Entity node, Stack<Attribute.Entity> searchStack, HashSet<Attribute.Double> closedList, HashSet<Attribute.Double> visitedList) {
         Attribute.Entity child_node[];
-        
+
         //current node allready in search stack -> circle found
-        if ( searchStack.indexOf(node) != -1) {
+        if (searchStack.indexOf(node) != -1) {
             int index = searchStack.indexOf(node);
-            
+
             String cyc_output = new String();
             for (int i = index; i < searchStack.size(); i++) {
-                cyc_output += ((Attribute.Entity)searchStack.get(i)).getDouble("ID") + " ";
-                closedList.add((Attribute.Double)((Attribute.Entity)searchStack.get(i)).getObject("ID"));
+                cyc_output += ((Attribute.Entity) searchStack.get(i)).getDouble("ID") + " ";
+                closedList.add((Attribute.Double) ((Attribute.Entity) searchStack.get(i)).getObject("ID"));
             }
-            getModel().getRuntime().println("Found circle with ids:" + cyc_output);            
+            getModel().getRuntime().println("Found circle with ids:" + cyc_output);
             return true;
         }
         //node in closed list? -> then skip it
-        if (closedList.contains(node.getObject("ID")) == true)
-            return false;
-        //now this node is visited
-        visitedList.add((Attribute.Double)node.getObject("ID"));
-        
-        if (node.getObject("to_poly") instanceof Attribute.Entity){
+        if (closedList.contains(node.getObject("ID")) == true) {
             return false;
         }
-        child_node = (Attribute.Entity[])node.getObject("to_poly");
-        
+        //now this node is visited
+        visitedList.add((Attribute.Double) node.getObject("ID"));
+
+        if (node.getObject("to_poly") instanceof Attribute.Entity) {
+            return false;
+        }
+        child_node = (Attribute.Entity[]) node.getObject("to_poly");
+
         boolean result = false;
         searchStack.push(node);
-        for (int i=0;i<child_node.length;i++) {
+        for (int i = 0; i < child_node.length; i++) {
             //push current node to search stack                        
-            result = cycleCheck(child_node[i],searchStack,closedList,visitedList);                                               
+            result = cycleCheck(child_node[i], searchStack, closedList, visitedList);
         }
         searchStack.pop();
         return result;
     }
-    
+
     protected boolean cycleCheck() {
         Iterator<Attribute.Entity> hruIterator;
-        
+
         HashSet<Attribute.Double> closedList = new HashSet<Attribute.Double>();
         HashSet<Attribute.Double> visitedList = new HashSet<Attribute.Double>();
-        
+
         Attribute.Entity start_node;
-        
+
         getModel().getRuntime().println("Cycle checking...");
-        
+
         hruIterator = hrus.getEntities().iterator();
-        
+
         boolean result = false;
-        
+
         while (hruIterator.hasNext()) {
             start_node = hruIterator.next();
             //connected component of start_node allready processed?
             if (closedList.contains(start_node.getObject("ID")) == false) {
-                if ( cycleCheck(start_node,new Stack<Attribute.Entity>(),closedList,visitedList) == true) {
+                if (cycleCheck(start_node, new Stack<Attribute.Entity>(), closedList, visitedList) == true) {
                     result = true;
                 }
                 closedList.addAll(visitedList);
                 visitedList.clear();
             }
-            
+
         }
         return result;
     }
-    
-    protected void createOrderedList(Attribute.EntityCollection col, String asso) {        
-        
+
+    protected void createOrderedList(Attribute.EntityCollection col, String asso) {
+
         Iterator<Attribute.Entity> entityIterator;
-        Attribute.Entity e = null ;
-        ArrayList<Attribute.Entity> newList = new ArrayList<Attribute.Entity>();
-        HashMap<Attribute.Entity, Integer> depthMap = new HashMap<Attribute.Entity, Integer>();
+        Attribute.Entity e = null;
+        ArrayList<Attribute.Entity> newList = new ArrayList<>();
+        HashMap<Attribute.Entity, Integer> depthMap = new HashMap<>();
         Integer eDepth, fDepth;
         boolean mapChanged;
 
         //Identifikation und Aufloesung von Zirkeln
-
-
         // Aufbau der Topologie
         mapChanged = true;
         entityIterator = col.getEntities().iterator();
         while (entityIterator.hasNext()) {
             Attribute.Entity entity = entityIterator.next();
-            depthMap.put(entity, new Integer(0));    
+            depthMap.put(entity, 0);
         }
 
         //put all collection elements (keys) and their maximum depth (values) into a HashMap
@@ -423,7 +417,7 @@ public class MultiEntityReader extends JAMSComponent {
 
                     Attribute.Entity[] e_ziel_to_hru;
                     e_ziel_to_hru = (Attribute.Entity[]) e.getObject(asso);
-                                        
+
                     if (e_ziel_to_hru.length > 0) {
 
                         for (int i = 0; i < e_ziel_to_hru.length; i++) {
