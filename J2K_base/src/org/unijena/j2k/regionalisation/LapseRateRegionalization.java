@@ -40,11 +40,12 @@ import java.util.Calendar;
         + "and station\n"
         + "3. Adjust the station measurement according to the "
         + "lapse rate and elevation difference",
-        date = "2019-10-08",
-        version = "1.0_0"
+        date = "2019-10-15",
+        version = "1.0_1"
 )
 @VersionComments(entries = {
-    @VersionComments.Entry(version = "1.0_0", comment = "Initial version")
+    @VersionComments.Entry(version = "1.0_0", comment = "Initial version"),
+    @VersionComments.Entry(version = "1.0_1", comment = "Fixed bug in fixedMinimum/fixedMaximum evaluation")
 })
 public class LapseRateRegionalization extends JAMSComponent {
 
@@ -129,8 +130,8 @@ public class LapseRateRegionalization extends JAMSComponent {
                 double elevationdiff = (statElev.getValue()[closestStation] - entityElev.getValue());
                 //result calculation
                 double result = elevationdiff * (lapseRate / 100.) + input;
-                result = Math.min(fixedMaximum.getValue(), input);
-                result = Math.max(fixedMinimum.getValue(), input);
+                result = Math.min(fixedMaximum.getValue(), result);
+                result = Math.max(fixedMinimum.getValue(), result);
                 outputValue.setValue(result);
                 return;
             }
