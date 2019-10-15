@@ -21,7 +21,7 @@
  *
  */
 
-package j2k_Himalaya.snow;
+package org.unijena.j2k.snow;
 ;
 import java.io.*;
 import jams.data.*;
