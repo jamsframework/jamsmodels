@@ -98,7 +98,7 @@ public class LapseRateAdaptation extends JAMSComponent {
     @Override
     public void init() {
         if (lapseRates.length != 1 && lapseRates.length != 12) {
-            getModel().getRuntime().sendHalt("Number of laps rate values must be either 1 or 12!");
+            getModel().getRuntime().sendHalt("Number of lapse rate values must be either 1 or 12!");
         }
     }
 
