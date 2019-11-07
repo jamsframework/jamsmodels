@@ -96,6 +96,7 @@ import jams.model.*;
             double RD1inside = this.inRD1.getValue();
             double RD1in = toReach.getDouble("inRD1");
             RD1in = RD1in + gm + RD1inside;
+            inRD1.setValue(0);
             toReach.setDouble("inRD1", RD1in);
         }
     }
