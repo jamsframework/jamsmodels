@@ -56,7 +56,7 @@ public class IDW implements Serializable {
     double pidw;
     Projection proj;
 
-    public void init(double[] statX, double[] statY, double[] statElevation, int pidw, Projection proj) {
+    public void init(double[] statX, double[] statY, double[] statElevation, double pidw, Projection proj) {
         n = statX.length;
         if (dist == null || dist.length != n) {
             dist = new double[n];
