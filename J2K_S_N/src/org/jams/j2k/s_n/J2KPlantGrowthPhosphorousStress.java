@@ -82,6 +82,7 @@ import jams.model.*;
         
         run_pstrs = 1 - (phi_nit / (phi_nit + Math.exp(3.535 - (0.02597 * phi_nit))));
         //actbioN.setValue(run_actbioN);
+		run_pstrs = Math.min(1,run_pstrs);
         pstrs.setValue(run_pstrs);
        
     
