@@ -274,12 +274,29 @@ public class J2KProcessLayeredSoilWater2015 extends JAMSComponent {
             lowerBound = 0,
             upperBound = 2000000000)
     public Attribute.DoubleArray stohru_FPS;
+    @JAMSVarDescription(
+            access = JAMSVarDescription.AccessType.WRITE,
+            description = "relative total soil saturation over all horizonts",
+            unit = "-",
+            lowerBound = 0,
+            upperBound = 1)
+    public Attribute.Double satsoil_out;
+    
+    @JAMSVarDescription(
+            access = JAMSVarDescription.AccessType.READWRITE,
+            description = "total FPS strorage",
+            unit = "l",
+            lowerBound = 0,
+            upperBound = 1,
+            defaultValue = "1")
+    public Attribute.Double stohru_FPS_soil;
+    
   
     
     //internal state variables
-    double run_actDPS, run_satSoil1, run_inRain, run_inSnow,
+    double run_actDPS, run_satSoil1, run_inRain, run_inSnow,satsoil_run,
             run_snowMelt, run_infiltration, run_latComp, run_vertComp, run_overlandflow, run_potETP, run_actETP, run_snowDepth, run_area, run_slope,
-            run_inRD1, soilSatMps, soilSatLps, soilActMps, soilActLps, soilMaxMps, soilMaxLps, run_outRD1, run_genRD1, lowpart, top_satsoil, run_RD2_sum;
+            run_inRD1, soilSatMps, soilSatLps, soilActMps, soilActLps, soilMaxMps, soilMaxLps, run_outRD1, run_genRD1, lowpart, top_satsoil, run_RD2_sum, stohru_FPS_run;
     double[] run_maxMPS, run_maxLPS, run_actMPS, run_actLPS, run_satMPS, run_satLPS, run_inRD2, run_satHor, run_outRD2, run_genRD2;
     double[] runlayerdepth, horETP, runkf_h, flux_h_h1;
     int nhor;
@@ -360,6 +377,7 @@ public class J2KProcessLayeredSoilWater2015 extends JAMSComponent {
             stLPS[h] = 0;
 
             inRD2[h] = 0;
+            this.stohru_FPS_run += mxFPS[h];
         }
 
         this.bulk_density_h.setValue(bulk_density);
@@ -377,6 +395,8 @@ public class J2KProcessLayeredSoilWater2015 extends JAMSComponent {
         this.satSoil.setValue(0);
         this.kf_h.setValue(Kf_val);
         this.root_h.setValue(root);
+        this.stohru_FPS_soil.setValue(stohru_FPS_run);
+        
 
 
 
@@ -394,6 +414,7 @@ public class J2KProcessLayeredSoilWater2015 extends JAMSComponent {
         double balET = 0;
         double sumactETP = 0;
         debug = false;
+        
 
         //long entityID = entities.getCurrent().getId();
         //if(entityID == 43)
@@ -413,6 +434,7 @@ public class J2KProcessLayeredSoilWater2015 extends JAMSComponent {
 
         this.flux_h_h1 = new double[nhor - 1];
         this.run_satHor = new double[nhor];
+        
 
         this.run_maxMPS = maxMPS.getValue();
         this.run_maxLPS = maxLPS.getValue();
@@ -669,6 +691,7 @@ public class J2KProcessLayeredSoilWater2015 extends JAMSComponent {
         soilActLPS.setValue(soilActLps);
         soilMaxLPS.setValue(soilMaxLps);
         soilSatLPS.setValue(soilSatLps);
+        satsoil_out.setValue(satsoil_run);
         infiltration_hor.setValue(infilhor);
         perco_hor.setValue(perchor);
         actETP_h.setValue(actETP_hor);
@@ -742,11 +765,11 @@ public class J2KProcessLayeredSoilWater2015 extends JAMSComponent {
             this.top_satsoil = ((upperActLps + upperActMps) / (upperMaxLps + upperMaxMps));
             soilSatMps = (soilActMps / soilMaxMps);
             soilSatLps = (soilActLps / soilMaxLps);
-
+            
         } else {
             this.run_satSoil1 = 0;
         }
-
+        this.satsoil_run = (soilActMps + soilActLps + stohru_FPS_soil.getValue())/(stohru_FPS_soil.getValue() + soilMaxLps + soilMaxMps);
         return true;
     }
 
