@@ -466,7 +466,7 @@ public class ReachRouting_deepsink extends JAMSComponent {
 
         if (deepsink.getValue()==1.0){
             //calculation of deep sink
-            //calculation of leckage area
+            //calculation of leakage area
             double Larea = Math.pow(rh,2.0) * length;
             
             //calculation of deep sinks amount
