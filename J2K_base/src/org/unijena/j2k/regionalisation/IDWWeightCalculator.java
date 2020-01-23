@@ -114,9 +114,9 @@ public class IDWWeightCalculator extends JAMSComponent {
 
         boolean isLatLon = latLong != null && latLong.getValue();
         if (isLatLon) {
-            idw.init(statX, statY, null, (int) pidw.getValue(), IDW.Projection.LATLON);
+            idw.init(statX, statY, null, pidw.getValue(), IDW.Projection.LATLON);
         } else {
-            idw.init(statX, statY, null, (int) pidw.getValue(), IDW.Projection.ANY);
+            idw.init(statX, statY, null, pidw.getValue(), IDW.Projection.ANY);
         }
     }
 
