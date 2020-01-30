@@ -268,7 +268,7 @@ import jams.model.*;
                 
             }
         }
-        
+
         runEnumerator.reset();
         while(runEnumerator.hasNext() && doRun) {
             Component comp = runEnumerator.next();
@@ -305,7 +305,7 @@ import jams.model.*;
                     paraWriter.writeData();
                     paraWriter.flush();
                 }catch(jams.runtime.RuntimeException e){
-                    
+                    e.printStackTrace();
                 }
                 
                 this.valueArray[runCounter] = this.targetValue.getValue();
@@ -324,6 +324,20 @@ import jams.model.*;
     
     public void initAll() {
         
+    }
+
+    public void cleanupAll() {
+        
+    }
+    
+    @Override
+    public long getNumberOfIterations() {
+        return 1;
+    }
+    
+    @Override
+    public long getRunCount() {
+        return runCounter;
     }
     
     public void cleanup() {
