@@ -31,7 +31,7 @@ import jams.model.*;
 @JAMSComponentDescription(
         title = "ArrayToScalar",
         author = "Sven Kralisch",
-        description = "Extracts single scalar doubles from an array of double values",
+        description = "Extracts single scalar doubles from an array of double values.",
         date = "2013-09-13",
         version = "1.0_1"
 )
@@ -52,7 +52,7 @@ public class ArrayToScalar extends JAMSComponent {
 
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            description = "the index of the value to be extracted"
+            description = "the index of the value to be extracted - first element has index 0"
     )
     public Attribute.Integer[] arrayIndex;
 
