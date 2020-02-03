@@ -41,7 +41,7 @@ import jams.model.*;
 @VersionComments(entries = {
     @VersionComments.Entry(version = "1.0_0", date = "2011-05-30", comment = "Initial version"),
     @VersionComments.Entry(version = "1.0_1", date = "2016-05-13", comment = "Added default value for tempRes; added elevationAdaptation attribute to switch off adaptation of vegetation period depending on elevation"),
-    @VersionComments.Entry(version = "1.0_2", date = "2019-02-01", comment = "Completed function of elevationAdaptation attribute affecting both effHeigth and LAI")})
+    @VersionComments.Entry(version = "1.0_2", date = "2019-02-01", comment = "Elevation adaptation now works for both effHeigth and LAI")})
 public class CalcLanduseStateVars extends JAMSComponent {
 
     /*
@@ -190,7 +190,10 @@ public class CalcLanduseStateVars extends JAMSComponent {
         //---------------------------------------
         // Calculation of Julian date of the specific points of LAI and eff. Height change
         //---------------------------------------
-        int d1, d2, d3, d4;
+        int d1; //start of spring   
+        int d2; //start of summer
+        int d3; //start of autumn
+        int d4; //start of winter
         if (elevationAdaptation.getValue()) {
              d1 = (int) (d1_400 + 0.025 * (targetElevation - 400));
              d2 = (int) (d2_400 + 0.025 * (targetElevation - 400));
