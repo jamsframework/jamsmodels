@@ -76,13 +76,13 @@ public class DailySolarRadiationCalculationMethods {
         
         double Rnl = BOLTZMANN * Math.pow(tabs,4) * (0.34 - 0.14 * Math.sqrt(ea)) * (1.35 * (Rs/Rs0) - 0.35);
         
-        if(debug)
-            System.out.println("Tmean: " + tmean + "\n" +
-                                         "ea: " + ea + "\n" +
-                                         "Rs: " + Rs + "\n" +
-                                         "Rs0: " + Rs0 + "\n" +
-                                         "B: " + BOLTZMANN + "\n" +
-                                         "Rnl: " + Rnl);
+//        if(debug)
+//            System.out.println("Tmean: " + tmean + "\n" +
+//                                         "ea: " + ea + "\n" +
+//                                         "Rs: " + Rs + "\n" +
+//                                         "Rs0: " + Rs0 + "\n" +
+//                                         "B: " + BOLTZMANN + "\n" +
+//                                         "Rnl: " + Rnl);
                     
         return Rnl;
     }

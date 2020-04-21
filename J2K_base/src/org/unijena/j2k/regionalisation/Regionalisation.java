@@ -110,6 +110,7 @@ public class Regionalisation extends JAMSComponent {
 
     @Override
     public void run() throws IOException {
+        
         //Retreiving data, elevations and weights
         double[] regCoeff = this.regCoeff.getValue();
         double gradient = regCoeff[1];
@@ -163,6 +164,7 @@ public class Regionalisation extends JAMSComponent {
                 }
             }
         }
+        
         //normalising weights
         double weightsum = 0;
         for (int i = 0; i < counter; i++) {
@@ -171,14 +173,14 @@ public class Regionalisation extends JAMSComponent {
         for (int i = 0; i < counter; i++) {
             weights[i] = weights[i] / weightsum;
         }
-
+        
         if (valid) {
             
             for (int i = 0; i < counter; i++) {
                 if (actualWeights != null) {
                     actualWeights[station[i]].setValue(weights[i]);
                 }
-                if ((rsq >= rsqThreshold.getValue()) && (elevationCorrection.getValue())) {  //Elevation correction is applied
+                if ((elevationCorrection.getValue()) && (rsq >= rsqThreshold.getValue())) {  //Elevation correction is applied
                     deltaElev = targetElevation - elev[i];  //Elevation difference between unit and Station
                     double tVal = ((deltaElev * gradient + data[i]) * weights[i]);
                     value = value + tVal;
@@ -215,5 +217,5 @@ public class Regionalisation extends JAMSComponent {
         data = memPool.free(data);
         weights = memPool.free(weights);
         elev = memPool.free(elev);
-    }
+    }  
 }

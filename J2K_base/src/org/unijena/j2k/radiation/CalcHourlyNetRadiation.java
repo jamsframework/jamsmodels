@@ -1,4 +1,4 @@
-/*
+    /*
  * CalcDailyNetRadiation.java
  * Created on 24. November 2005, 13:32
  *
@@ -22,7 +22,6 @@
  */
 package org.unijena.j2k.radiation;
 
-import java.io.*;
 import jams.data.*;
 import jams.model.*;
 

@@ -263,7 +263,7 @@ public class J2KFunctions {
                                 e.setObject(attributeNames.get(i), stringValue);
                             }
                         } catch (ArrayIndexOutOfBoundsException ex) {
-                            Logger.getLogger(J2KFunctions.class.getName()).log(Level.SEVERE, "Too few columns in row \"" + s + "\"!", ex);
+                            model.getRuntime().sendErrorMsg("Too few columns in row \"" + s + "\"!");
                         }
 
                     }

@@ -1,4 +1,4 @@
-/*
+    /*
  * CalcDailySolarRadiation.java
  * Created on 24. November 2005, 12:50
  *
@@ -27,7 +27,6 @@
 package org.unijena.j2k.radiation;
 
 import java.io.*;
-import jams.tools.JAMSTools;
 import jams.data.*;
 import jams.model.*;
 

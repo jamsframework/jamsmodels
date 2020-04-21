@@ -1,5 +1,5 @@
 /*
- * Regionalisation.java
+ * Regionalisation_IDW.java
  * Created on 27.11.2019, 14:56:33
  *
  * This file is part of JAMS
@@ -23,7 +23,6 @@
 package org.unijena.j2k.regionalisation;
 
 import jams.JAMS;
-import java.io.*;
 import jams.data.*;
 import jams.model.*;
 import java.util.ArrayList;
@@ -56,14 +55,17 @@ public class Regionalisation_IDW extends JAMSComponent {
     public Attribute.DoubleArray regCoeff;
 
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
+            update = JAMSVarDescription.UpdateType.INIT,
             description = "Array of station elevations")
     public Attribute.DoubleArray statElevation;
 
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
+            update = JAMSVarDescription.UpdateType.INIT,
             description = "Array of stations' x coordinates")
     public Attribute.DoubleArray statXCoord;
 
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
+            update = JAMSVarDescription.UpdateType.INIT,
             description = "Array of stations' y coordinates")
     public Attribute.DoubleArray statYCoord;
 
@@ -72,10 +74,12 @@ public class Regionalisation_IDW extends JAMSComponent {
     public Attribute.Double entityElevation;
 
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
+            update = JAMSVarDescription.UpdateType.INIT,
             description = "Entity's x coordinate")
     public Attribute.Double entityXCoord;
 
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
+            update = JAMSVarDescription.UpdateType.INIT,
             description = "Entity's y coordinate")
     public Attribute.Double entityYCoord;
 
@@ -134,6 +138,11 @@ public class Regionalisation_IDW extends JAMSComponent {
     public Attribute.Double dataValue;
 
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.WRITE,
+            description = "Calculate statis values for IDW (see next three variables)?",
+            defaultValue = "false")
+    public Attribute.Boolean calcStats;
+
+    @JAMSVarDescription(access = JAMSVarDescription.AccessType.WRITE,
             description = "Weights of individual stations (first element equals first station in list)")
     public Attribute.Double[] actualWeights;
 
@@ -159,23 +168,12 @@ public class Regionalisation_IDW extends JAMSComponent {
         double entityX = entityXCoord.getValue();
         double entityY = entityYCoord.getValue();
         double power = this.pidw.getValue();
-
+        
         // number of stations
         int nStations = statX.length;
         double[] weights = new double[nStations];
         double[] dists = new double[nStations];
         int[] order = new int[nStations];
-
-        // calc distances for lat/long or metric coordinates
-        if (latLong.getValue()) {
-            for (int i = 0; i < nStations; i++) {
-                dists[i] = getDistLatLong(entityX, entityY, statX[i], statY[i]);
-            }
-        } else {
-            for (int i = 0; i < nStations; i++) {
-                dists[i] = getDist(entityX, entityY, statX[i], statY[i]);
-            }
-        }
 
         // calc weights
         if (equalWeights.getValue()) {
@@ -183,8 +181,45 @@ public class Regionalisation_IDW extends JAMSComponent {
                 weights[i] = 1 / nStations;
             }
         } else {
+
+            // calc distances for lat/long or metric coordinates
+            if (latLong.getValue()) {
+                for (int i = 0; i < nStations; i++) {
+                    dists[i] = getDistLatLong(entityX, entityY, statX[i], statY[i]);
+                }
+            } else {
+                for (int i = 0; i < nStations; i++) {
+                    dists[i] = getDist(entityX, entityY, statX[i], statY[i]);
+                }
+            }
+
+            // get sum of all dists
+            double sum = 0;
             for (int i = 0; i < nStations; i++) {
-                weights[i] = 1 / Math.pow(dists[i], power);
+                sum += dists[i];
+            }
+
+            // calc weights
+            int sameLocation = -1;
+            for (int i = 0; i < nStations; i++) {
+                if (dists[i] != 0) {
+                    weights[i] = Math.pow(sum / dists[i], power);
+                } else {
+                    sameLocation = i;
+                    break;
+                }
+            }
+
+            // check whether one station is at the same location
+            // if so, set its weight to 1 and all others to 0
+            if (sameLocation > -1) {
+                for (int i = 0; i < nStations; i++) {
+                    if (sameLocation == i) {
+                        weights[i] = 1;
+                    } else {
+                        weights[i] = 0;
+                    }
+                }
             }
         }
 
@@ -210,23 +245,25 @@ public class Regionalisation_IDW extends JAMSComponent {
             order[i++] = s.id;
         }
 
-        statDistance.setValue(dists);
+        if (calcStats.getValue()) {
+            statDistance.setValue(dists);
+        }
         statWeights.setValue(weights);
         statOrder.setValue(order);
     }
 
     @Override
-    public void run() throws IOException {
+    public void run() {
+
         //Retreiving data, elevations and weights
         double[] rc = this.regCoeff.getValue();
         double gradient = rc[1];
         double rsq = rc[2];
 
-        double[] sourceWeights = statWeights.getValue();
-        double[] sourceDistances = statDistance.getValue();
         double[] sourceElevations = statElevation.getValue();
-        double targetElevation = entityElevation.getValue();
         double[] sourceData = dataArray.getValue();
+        double[] sourceWeights = statWeights.getValue();
+        double targetElevation = entityElevation.getValue();
         int[] wA = this.statOrder.getValue();
 
         double value = 0;
@@ -234,50 +271,54 @@ public class Regionalisation_IDW extends JAMSComponent {
 
         // set upper boundary to nidw or number of stations
         int nIDW = Math.min(this.nidw.getValue(), wA.length);
-        int[] station = imemPool.alloc(nIDW);
+//        int nIDW = this.nidw.getValue();
         double[] data = memPool.alloc(nIDW);
         double[] weights = memPool.alloc(nIDW);
         double[] elev = memPool.alloc(nIDW);
-        double[] dist = memPool.alloc(nIDW);
+        int[] source = imemPool.alloc(nIDW);
 
-        if (actualWeights != null) {
-            for (Attribute.Double w : actualWeights) {
-                w.setValue(0);
+        double[] dist = null;
+        double[] sourceDistances = null;
+        if (calcStats.getValue()) {
+            sourceDistances = statDistance.getValue();
+            dist = memPool.alloc(nIDW);
+            if (actualWeights != null) {
+                for (Attribute.Double w : actualWeights) {
+                    w.setValue(0);
+                }
             }
         }
 
-//@TODO: Recheck this for correct calculation, the Doug Boyle Problem!!
         int counter = 0, element = 0;
         boolean valid = false;
 
+        //identify the source locations to be used for IDW
         while (counter < nIDW) {
             int col = wA[element];
-            //check if data is valid or no data
+            //check if data is valid or not
             if (sourceData[col] == JAMS.getMissingDataValue()) {
                 element++;
-                if (element >= wA.length) {
-                    //getModel().getRuntime().println("BREAK1: too less data NIDW had been reduced!");
-                    break;
-                }
             } else {
                 valid = true;
-                station[counter] = col;
+                source[counter] = col;
                 data[counter] = sourceData[col];
                 weights[counter] = sourceWeights[col];
                 elev[counter] = sourceElevations[col];
-                dist[counter] = sourceDistances[col];
-
+                if (calcStats.getValue()) {
+                    dist[counter] = sourceDistances[col];
+                }
                 counter++;
                 element++;
-                if (element >= wA.length) {
-                    break;
-                }
+            }
+            if (element >= wA.length) {
+                break;
             }
         }
 
+        //apply IDW if data are available
         if (valid) {
-            
-            //normalising weights
+
+            //normalize weights
             double weightsum = 0;
             for (int i = 0; i < counter; i++) {
                 weightsum += weights[i];
@@ -286,11 +327,9 @@ public class Regionalisation_IDW extends JAMSComponent {
                 weights[i] = weights[i] / weightsum;
             }
 
+            //apply weights and calc actual value
             for (int i = 0; i < counter; i++) {
-                if (actualWeights != null) {
-                    actualWeights[station[i]].setValue(weights[i]);
-                }
-                if ((rsq >= rsqThreshold.getValue()) && (elevationCorrection.getValue())) {  //Elevation correction is applied
+                if ((elevationCorrection.getValue()) && (rsq >= rsqThreshold.getValue())) {  //Elevation correction is applied
                     deltaElev = targetElevation - elev[i];  //Elevation difference between unit and Station
                     double tVal = ((deltaElev * gradient + data[i]) * weights[i]);
                     value = value + tVal;
@@ -299,32 +338,34 @@ public class Regionalisation_IDW extends JAMSComponent {
                 }
             }
 
-            //checking for minimum/maximum
+            //ensure upper/lower bounds
             value = Math.max(value, fixedMinimum.getValue());
             value = Math.min(value, fixedMaximum.getValue());
 
-            if (averageSourceElevation != null) {
-                double avgElev = 0;
+            //store weights, avg elevation if stats wanted
+            if (calcStats.getValue()) {
+
+                double avgElev = 0, avgDist = 0;
                 for (int i = 0; i < counter; i++) {
                     avgElev += elev[i] * weights[i];
+                    avgDist += dist[i] * weights[i];
+                    if (actualWeights != null) {
+                        actualWeights[source[i]].setValue(weights[i]);
+                    }
                 }
                 averageSourceElevation.setValue(avgElev);
-            }
-
-            if (averageSourceDistance != null) {
-                double avgDist = 0;
-                for (int i = 0; i < counter; i++) {
-                    avgDist += dist[i] * weights[i];
-                }
                 averageSourceDistance.setValue(avgDist);
             }
 
         } else {
-            if (!invalidDatasetReported) {     //only report once
-                //in this case simulation should end, because it affects model behaviour seriously!
-                getModel().getRuntime().sendHalt("Invalid dataset found while regionalizing data in component " + this.getInstanceName() + "."
+
+            //only report once
+            if (!invalidDatasetReported) {
+
+                getModel().getRuntime().sendInfoMsg("Invalid dataset found while regionalizing data in component " + this.getInstanceName() + "."
                         + "\nThis might occur if all of the provided values are missing data values.");
                 invalidDatasetReported = true;
+
             }
             value = JAMS.getMissingDataValue();
         }
@@ -335,7 +376,9 @@ public class Regionalisation_IDW extends JAMSComponent {
         data = memPool.free(data);
         weights = memPool.free(weights);
         elev = memPool.free(elev);
-        dist = memPool.free(dist);
+        if (calcStats.getValue()) {
+            dist = memPool.free(dist);
+        }
     }
 
     private static class Station {
