@@ -26,13 +26,14 @@ import jams.model.*;
 import java.util.HashMap;
 import java.util.Map;
 
+
 /**
  *
  * @author Sven Kralisch <sven.kralisch@uni-jena.de>
  */
 @JAMSComponentDescription(
         title = "GlacierFraction_Assigner",
-        author = "Sven Kralisch",
+        author = "Sven Kralisch; updated by Jordi Bolibar",
         description = "Assign glacier fractions to model entities",
         date = "2020-04-08",
         version = "1.0_0"
@@ -70,7 +71,56 @@ public class GlacierFraction_Assigner extends JAMSComponent {
     public Attribute.Double glacierFraction;
 
     Map<Integer, Integer> hru2idMap;
-
+    
+    @JAMSVarDescription(
+        access = JAMSVarDescription.AccessType.READ,
+        description = "attribute area",
+        unit="m^2"
+    )
+    public Attribute.Double area;
+    
+    @JAMSVarDescription(
+        access = JAMSVarDescription.AccessType.WRITE,
+        description = "glacierized area",
+        unit="m^2"
+    )
+    public Attribute.Double glacierArea;
+    
+    @JAMSVarDescription(
+        access = JAMSVarDescription.AccessType.WRITE,
+        description = "non glacierized area",
+        unit="m^2"
+    )
+    public Attribute.Double noGlacierArea;
+    
+    @JAMSVarDescription(
+        access = JAMSVarDescription.AccessType.WRITE,
+        description = "the relative area weight of the glacierized fraction entity",
+        unit = "n/a"
+        )
+    public Attribute.Double glacierAreaWeight;
+    
+    @JAMSVarDescription(
+        access = JAMSVarDescription.AccessType.WRITE,
+        description = "the relative area weight of the non glacierized fraction entity",
+        unit = "n/a"
+        )
+    public Attribute.Double noGlacierAreaWeight;
+    
+    @JAMSVarDescription(
+        access = JAMSVarDescription.AccessType.READ,
+        description = "the area of the catchment",
+        unit = "m^2"
+        )
+    public Attribute.Double catchmentArea;  
+    
+    @JAMSVarDescription(
+        access = JAMSVarDescription.AccessType.WRITE,
+        description = "flag to determine if the current HRU is glacierized or not"
+        )
+    public Attribute.Double glacierized;  
+    
+    
     /*
      *  Component run stages
      */
@@ -90,14 +140,32 @@ public class GlacierFraction_Assigner extends JAMSComponent {
     public void run() {
 
         double fraction = 0;
-
+        
         // get glacier fraction if HRU ID is listed
         int pos = hru2idMap.getOrDefault((int) hruID.getValue(), -1);
         if (pos > -1) {
-            fraction = glacierFractionArray.getValue()[pos];
+          fraction = glacierFractionArray.getValue()[pos];
         }
 
         glacierFraction.setValue(fraction);
+        
+        if(glacierFraction.getValue() > 0){
+           glacierized.setValue(1);
+        }
+        else{
+            glacierized.setValue(0);
+        }
+        
+        getModel().getRuntime().println("HRU ID: " + hruID.getValue());
+        getModel().getRuntime().println("glacierFraction: " + glacierFraction.getValue());
+        
+        // Set the glacierized and non glacierized areas
+        glacierArea.setValue(area.getValue()*glacierFraction.getValue());
+        noGlacierArea.setValue(area.getValue()*(1-glacierFraction.getValue()));
+        
+        // Update the area weight
+        glacierAreaWeight.setValue(catchmentArea.getValue() / glacierArea.getValue());
+        noGlacierAreaWeight.setValue(catchmentArea.getValue() / noGlacierArea.getValue());
 
     }
 

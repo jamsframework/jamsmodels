@@ -30,6 +30,8 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.Calendar;
 
+import java.util.Arrays;
+
 /**
  *
  * @author Sven Kralisch <sven.kralisch@uni-jena.de>
@@ -123,9 +125,19 @@ public class GlacierFraction_Reader extends JAMSComponent {
 
     @Override
     public void run() {
+        
+        File file;
+        File f = new File(fileName.getValue());
+        if (f.isAbsolute()) {
+            file = new File(fileName.getValue());
+        } else {
+            file = new File(getModel().getWorkspacePath(), fileName.getValue());
+        }
 
         double[] fractions = new double[glacierFractionIDArray.getValue().length];
-
+        
+        getModel().getRuntime().println("time: " + time.getValue());
+        
         if (!time.before(startDate)) {
 
             try {
@@ -150,6 +162,10 @@ public class GlacierFraction_Reader extends JAMSComponent {
                     date.setValue(s[0]);
                     timeOffset = date.compareTo(time, Calendar.DAY_OF_YEAR);
                     
+                    getModel().getRuntime().println("s: " + s);
+                    getModel().getRuntime().println("date: " + date.getValue());
+                    
+                    
                 } while (timeOffset < 0);
 
                 // check if there is stil a date missmatch, i.e. model time not found in file
@@ -157,7 +173,38 @@ public class GlacierFraction_Reader extends JAMSComponent {
                     getModel().getRuntime().println("Date not found: " + time, JAMS.VERBOSE);
                 }
 
-                // parste and assign fractions
+                // parse and assign fractions
+                for (int i = 1; i < s.length; i++) {
+                    fractions[i - 1] = Double.parseDouble(s[i]);
+                }
+
+            } catch (IOException ex) {
+                getModel().getRuntime().handle(ex);
+            }
+        }
+        else{
+            try {
+                getModel().getRuntime().println("Using initial ice fraction");
+                // We use the initial ice fraction before the start date
+                int timeOffset = 0;
+                String[] s = null;  
+                              
+                // read the first line
+                reader.close();
+                reader = new BufferedReader(new FileReader(file));
+                reader.readLine();
+                String line = reader.readLine();
+                
+                getModel().getRuntime().println("line: " + line);
+
+                // parse line and compare date with model time
+                s = line.split("\\s+");
+                
+                getModel().getRuntime().println("s: " + s);
+                date.setValue(s[0]);
+                timeOffset = date.compareTo(time, Calendar.DAY_OF_YEAR);
+
+                // parse and assign fractions
                 for (int i = 1; i < s.length; i++) {
                     fractions[i - 1] = Double.parseDouble(s[i]);
                 }
@@ -168,6 +215,7 @@ public class GlacierFraction_Reader extends JAMSComponent {
         }
 
         glacierFractionArray.setValue(fractions);
+        
     }
 
     @Override

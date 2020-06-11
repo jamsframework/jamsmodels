@@ -37,8 +37,8 @@ import jams.model.*;
  */
 @JAMSComponentDescription(
         title="J2KProcessSnow_Glacier",
-        author="Francois Tilmant",
-        description="Calculates snow accumulation, metamorphosis and melt",
+        author="François Tilmant; updated by Jordi Bolibar",
+        description="Calculates snow accumulation, metamorphosis and melt on a glacier",
         version="1.0_0",
         date="2013-03-29")
         public class J2KProcessSnow_Glacier extends JAMSComponent {
@@ -59,15 +59,15 @@ import jams.model.*;
             description = "The current spatial modelling entity"
             )
             public JAMSEntity entity;
-    
+       
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
             update = JAMSVarDescription.UpdateType.RUN,
-            description = "attribute area",
+            description = "glacierized area",
             unit = "m²"
             )
-            public JAMSDouble area;
-    
+            public JAMSDouble glacierArea;
+          
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
             update = JAMSVarDescription.UpdateType.RUN,
@@ -120,6 +120,14 @@ import jams.model.*;
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
             update = JAMSVarDescription.UpdateType.RUN,
+            description = "total snow water equivalent for glacierized HRU",
+            unit = "L"
+            )
+            public JAMSDouble snowTotSWE_G;
+    
+@JAMSVarDescription(
+            access = JAMSVarDescription.AccessType.WRITE,
+            update = JAMSVarDescription.UpdateType.INIT,
             description = "total snow water equivalent",
             unit = "L"
             )
@@ -128,10 +136,10 @@ import jams.model.*;
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
             update = JAMSVarDescription.UpdateType.RUN,
-            description = "dry snow water equivalent",
+            description = "dry snow water equivalent for glacierized HRU",
             unit = "L"
             )
-            public JAMSDouble drySWE;
+            public JAMSDouble drySWE_G;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
@@ -152,25 +160,33 @@ import jams.model.*;
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
             update = JAMSVarDescription.UpdateType.RUN,
-            description = "snow depth",
+            description = "snow depth for glacierized HRU",
             unit = "mm"
             )
-            public JAMSDouble snowDepth;
+            public JAMSDouble snowDepth_G;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
             update = JAMSVarDescription.UpdateType.RUN,
-            description = "snow age",
+            description = "snow age for glacierized HRU",
             unit = "d"
             )
-            public JAMSDouble snowAge;
+            public JAMSDouble snowAge_G;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
             update = JAMSVarDescription.UpdateType.RUN,
-            description = "snow cold content"
+            description = "snow cold content for glacierized HRU"
             )
-            public JAMSDouble snowColdContent;
+            public JAMSDouble snowColdContent_G;
+    
+    @JAMSVarDescription(
+            access = JAMSVarDescription.AccessType.WRITE,
+            update = JAMSVarDescription.UpdateType.RUN,
+            description = "daily snow melt for glacierized HRU",
+            unit = "L"
+            )
+            public JAMSDouble snowMelt_G;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
@@ -246,13 +262,21 @@ import jams.model.*;
             )
             public JAMSDouble ccf_factor;
     
-        @JAMSVarDescription(
+    @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
             update = JAMSVarDescription.UpdateType.INIT,
             description = "1 if the HRU is covered with snow, else 0",
             unit = "-"
             )
-            public JAMSDouble snowCover;
+            public JAMSDouble snowCover_G;
+        
+    @JAMSVarDescription(
+            access = JAMSVarDescription.AccessType.READ,
+            update = JAMSVarDescription.UpdateType.INIT,
+            description = "Fraction of glacierized HRU surface",
+            unit = "-"
+            )
+            public JAMSDouble iceFraction; 
 
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
@@ -267,16 +291,16 @@ import jams.model.*;
     double run_area;
     double in_snow;
     double in_rain;
-    double run_snowDepth;
+    double run_snowDepth_G;
     double run_totSWE;
-    double run_drySWE;
+    double run_drySWE_G;
     double run_initDens = 0;
     double run_totDens;
     double run_dryDens;
-    double run_snowAge;
+    double run_snowAge_G;
     double run_coldContent;
-    double run_snowMelt = 0;
-    double run_snowCover = 0;
+    double run_snowMelt_G = 0;
+    double run_snowCover_G = 0;
 
    
     /*
@@ -285,153 +309,160 @@ import jams.model.*;
     
     public void init() {
     	if(this.active == null || this.active.getValue()){
-	        this.snowDepth.setValue(0.0);
-	        this.snowTotSWE.setValue(0.0);
-	        this.drySWE.setValue(0.0);
-	        this.totDens.setValue(0.0);
-	        this.dryDens.setValue(0.0);
-	        this.snowAge.setValue(0);
-	        this.snowColdContent.setValue(0.0);
-			this.snowCover.setValue(0.0);
-			
-			// Since there is no interception on glaciers we directly convert all precipitation into net rain and snow
-			//this.netRain.setValue(this.rain.getValue());
-			//this.netSnow.setValue(this.snow.getValue());
-			this.netSnow = this.snow;
-			this.netRain = this.rain;
+            this.snowDepth_G.setValue(0.0);
+            this.snowTotSWE_G.setValue(0.0);
+            this.snowTotSWE.setValue(0.0);
+            this.drySWE_G.setValue(0.0);
+            this.totDens.setValue(0.0);
+            this.dryDens.setValue(0.0);
+            this.snowAge_G.setValue(0);
+            this.snowColdContent_G.setValue(0.0);
+            this.snowCover_G.setValue(0.0);
+
 
     	}
     }
     
     public void run() throws JAMSEntity.NoSuchAttributeException {
         
-		getModel().getRuntime().println("Inside glacier block - J2KProcess_Snow_Glacier");
+        getModel().getRuntime().println("Inside glacier block - J2KProcess_Snow_Glacier");
         
     	if(this.active == null || this.active.getValue()){
            
-	        this.run_area = this.area.getValue();
+            this.run_area = this.glacierArea.getValue();
 
-	        double SAC = this.actSlAsCf.getValue();
-	        
-	        this.in_snow = this.netSnow.getValue();	               
-			this.in_rain = this.netRain.getValue();
+            double SAC = this.actSlAsCf.getValue();
+            
+             // Since there is no interception on glaciers we directly convert all precipitation into net rain and snow
+            this.netRain.setValue(this.rain.getValue());
+            this.netSnow.setValue(this.snow.getValue());
 
-			getModel().getRuntime().println("J2KProcessSnow_Glacier this.netSnow.getValue(): " + this.netSnow.getValue());
-			getModel().getRuntime().println("J2KProcessSnow_Glacier this.netRain.getValue(): " + this.netRain.getValue());
-			getModel().getRuntime().println("J2KProcessSnow_Glacier this.snow.getValue(): " + this.snow.getValue());
-			getModel().getRuntime().println("J2KProcessSnow_Glacier this.rain.getValue(): " + this.rain.getValue());
-			getModel().getRuntime().println("J2KProcessSnow_Glacier this.in_snow: " + this.in_snow);
-			getModel().getRuntime().println("J2KProcessSnow_Glacier this.in_rain: " + this.in_rain);
+            this.in_snow = this.netSnow.getValue();	               
+            this.in_rain = this.netRain.getValue();
 
-	        double balIn = this.in_snow + this.in_rain;
-	        
-	        double in_meanTemp = this.meanTemp.getValue();
-	        
+            getModel().getRuntime().println("J2KProcessSnow_Glacier this.netSnow.getValue(): " + this.netSnow.getValue());
+            getModel().getRuntime().println("J2KProcessSnow_Glacier this.rain.getValue(): " + this.netRain.getValue());
 
-                this.run_snowDepth = this.snowDepth.getValue();
+            double balIn = this.in_snow + this.in_rain;
 
-       
-	        this.run_totSWE    = snowTotSWE.getValue();
-	        double balStorStart = this.run_totSWE;
-	        this.run_drySWE    = drySWE.getValue();
-	        this.run_totDens   = totDens.getValue();
-	        this.run_dryDens   = dryDens.getValue();
-	        this.run_snowAge   = snowAge.getValue();
-	        this.run_coldContent = snowColdContent.getValue();
-	        
-	        double critDens = snowCritDens.getValue();
-	        double coldContentFactor = ccf_factor.getValue();
-	        double TRS = baseTemp.getValue();
-	        double temp_fac = t_factor.getValue();
-	        double rain_fac = r_factor.getValue();
-	        double ground_fac = g_factor.getValue();
-	        
-	        
-	        this.run_snowMelt = 0; 
-			this.run_snowCover = 0;
-	        
-	        
-	        run_coldContent = run_coldContent + this.calcColdContent(in_meanTemp, coldContentFactor);
-	        if(run_coldContent > 0)
-	            run_coldContent = 0;
-	        
-	        if(run_snowDepth > 0){
-	            //increasing snow age by one day
-	            run_snowAge += 1;
-	        }
-	        
-	        if(in_snow > 0){
-			// we want to have the snow accumulation at each timestep
-	            this.calcSnowAccumulation(in_meanTemp, run_area, critDens);
-	        }
-	        
-	        
-	        if((in_meanTemp >= TRS) && (this.run_snowDepth > 0)){
-	            this.calcMetamorphosis(in_meanTemp, temp_fac, rain_fac, ground_fac, run_area, SAC, critDens); // RQ IG : s'il a plu ET neigé, la pluie a été mise à 0 dans SnowAccumulation donc le melt lié à la pluie n'est pas calculé.
-	        }
-	        
-                if (run_snowDepth !=0){
-                    this.run_snowCover = 1;
-                } else { this.run_snowCover = 0;
-                
-                }
-                
-                
-	        this.calcSnowDensities(run_area);
+            double in_meanTemp = this.meanTemp.getValue();
 
-	        // Why the hell is this done if in_rain and in_snow are always set to 0???????
-	        //this.netRain.setValue(this.in_rain);
-	        //this.netSnow.setValue(this.in_snow);
-	        this.snowTotSWE.setValue(this.run_totSWE);
-	        this.drySWE.setValue(this.run_drySWE);
-	        this.totDens.setValue(this.run_totDens);
-	        this.dryDens.setValue(this.run_dryDens);
-	        this.snowDepth.setValue(this.run_snowDepth);
-			this.snowCover.setValue(this.run_snowCover);
-    
-	        this.snowAge.setValue(this.run_snowAge);
-	        this.snowColdContent.setValue(this.run_coldContent);
 
-	        if(this.run_snowMelt > 0){
-	            int i = 0;
-	        }
-	        this.snowMelt.setValue(this.run_snowMelt);
-	        double balStorEnd = this.run_totSWE;
-	        double balOut = this.run_snowMelt + this.in_rain + this.in_snow;
-	        double balance = balIn  + (balStorStart - balStorEnd) - balOut;
-	        if(Math.abs(balance) > 0.0001){
-	            getModel().getRuntime().println("balance error in snow module: "+balance);
-	            getModel().getRuntime().println("balIn: " + balIn);
-	            getModel().getRuntime().println("balStorStart: " + balStorStart);
-	            getModel().getRuntime().println("balStorEnd: " + balStorEnd);
-	            getModel().getRuntime().println("balOut: " + balOut);
-	            getModel().getRuntime().println("shit!");
-	        }
+            this.run_snowDepth_G = this.snowDepth_G.getValue();
+            
+            
+            getModel().getRuntime().println("J2KProcessSnow_Glacier this.glacierArea.getValue(): " + this.glacierArea.getValue());
+            getModel().getRuntime().println("J2KProcessSnow_Glacier this.snowDepth_G.getValue(): " + this.snowDepth_G.getValue());
+            getModel().getRuntime().println("J2KProcessSnow_Glacier snowTotSWE_G.getValue(): " + snowTotSWE_G.getValue());
+            getModel().getRuntime().println("J2KProcessSnow_Glacier snowAge_G.getValue(): " + snowAge_G.getValue());
+            
+            this.run_totSWE    = snowTotSWE_G.getValue();
+            double balStorStart = this.run_totSWE;
+            this.run_drySWE_G    = drySWE_G.getValue();
+            this.run_totDens   = totDens.getValue();
+            this.run_dryDens   = dryDens.getValue();
+            this.run_snowAge_G   = snowAge_G.getValue();
+            this.run_coldContent = snowColdContent_G.getValue();
 
-			getModel().getRuntime().println("-----------------------");
-			getModel().getRuntime().println("");
-			getModel().getRuntime().println("J2KProcessSnow_Glacier this.netRain: " + this.netRain);
-			getModel().getRuntime().println("J2KProcessSnow_Glacier this.netSnow: " + this.netSnow);
-			getModel().getRuntime().println("J2KProcessSnow_Glacier this.run_snowMelt: " + this.run_snowMelt);
-			getModel().getRuntime().println("");
-			getModel().getRuntime().println("-----------------------");
+            double critDens = snowCritDens.getValue();
+            double coldContentFactor = ccf_factor.getValue();
+            double TRS = baseTemp.getValue();
+            double temp_fac = t_factor.getValue();
+            double rain_fac = r_factor.getValue();
+            double ground_fac = g_factor.getValue();
 
-	        //if(this.run_drySWE > this.run_totSWE)
-	        //    System.out.getRuntime().println("dry is larger than tot at end at time: " + time.toString() + " in entity: " + entity.getDouble("ID"));
-	        if(this.run_snowMelt < 0)
-	            getModel().getRuntime().println("negative snowmelt!!");
+
+            this.run_snowMelt_G = 0; 
+            this.run_snowCover_G = 0;
+
+
+            run_coldContent = run_coldContent + this.calcColdContent(in_meanTemp, coldContentFactor);
+            if(run_coldContent > 0)
+                run_coldContent = 0;
+
+            if(run_snowDepth_G > 0){
+                //increasing snow age by one day
+                run_snowAge_G += 1;
+            }
+
+            if(in_snow > 0){
+                    // we want to have the snow accumulation at each timestep
+                this.calcSnowAccumulation(in_meanTemp, run_area, critDens);
+            }
+
+
+            if((in_meanTemp >= TRS) && (this.run_snowDepth_G > 0)){
+                this.calcMetamorphosis(in_meanTemp, temp_fac, rain_fac, ground_fac, run_area, SAC, critDens); // RQ IG : s'il a plu ET neigé, la pluie a été mise à 0 dans SnowAccumulation donc le melt lié à la pluie n'est pas calculé.
+            }
+
+            if (run_snowDepth_G !=0){
+                this.run_snowCover_G = 1;
+            } else { this.run_snowCover_G = 0;
+
+            }
+
+
+            this.calcSnowDensities(run_area);
+
+            //this.netRain.setValue(this.in_rain);
+            //this.netSnow.setValue(this.in_snow);
+            this.snowTotSWE_G.setValue(this.run_totSWE);
+            this.drySWE_G.setValue(this.run_drySWE_G);
+            this.totDens.setValue(this.run_totDens);
+            this.dryDens.setValue(this.run_dryDens);
+            this.snowDepth_G.setValue(this.run_snowDepth_G);
+            this.snowCover_G.setValue(this.run_snowCover_G);
+
+            this.snowAge_G.setValue(this.run_snowAge_G);
+            this.snowColdContent_G.setValue(this.run_coldContent);
+
+            if(this.run_snowMelt_G > 0){
+                int i = 0;
+            }
+
+            // Set actual glacier snow melt
+            this.snowMelt_G.setValue(this.run_snowMelt_G);
+
+            // Set empty snow melt (glacierized + non glacierized areas) to zero to be filled with SpatialSumAggregator
+            this.snowMelt.setValue(0);
+
+            double balStorEnd = this.run_totSWE;
+            double balOut = this.run_snowMelt_G + this.in_rain + this.in_snow;
+            double balance = balIn  + (balStorStart - balStorEnd) - balOut;
+            if(Math.abs(balance) > 0.0001){
+                getModel().getRuntime().println("balance error in snow module: "+balance);
+                getModel().getRuntime().println("balIn: " + balIn);
+                getModel().getRuntime().println("balStorStart: " + balStorStart);
+                getModel().getRuntime().println("balStorEnd: " + balStorEnd);
+                getModel().getRuntime().println("balOut: " + balOut);
+                getModel().getRuntime().println("shit!");
+            }
+
+            getModel().getRuntime().println("-----------------------");
+            getModel().getRuntime().println("");
+            getModel().getRuntime().println("J2KProcessSnow_Glacier this.netRain: " + this.netRain);
+            getModel().getRuntime().println("J2KProcessSnow_Glacier this.netSnow: " + this.netSnow);
+            getModel().getRuntime().println("J2KProcessSnow_Glacier this.run_snowMelt_G: " + this.run_snowMelt_G);
+            getModel().getRuntime().println("J2KProcessSnow_Glacier snowTotSWE_G.getValue(): " + snowTotSWE_G.getValue());
+            getModel().getRuntime().println("");
+            getModel().getRuntime().println("-----------------------");
+
+            //if(this.run_drySWE_G > this.run_totSWE)
+            //    System.out.getRuntime().println("dry is larger than tot at end at time: " + time.toString() + " in entity: " + entity.getDouble("ID"));
+            if(this.run_snowMelt_G < 0)
+                getModel().getRuntime().println("negative snowmelt!!");
     	}
     }
     
     public void cleanup() {
     	if(this.active == null || this.active.getValue()){
-	        this.snowDepth.setValue(0.0);
-	        this.snowTotSWE.setValue(0.0);
-	        this.drySWE.setValue(0.0);
+	        this.snowDepth_G.setValue(0.0);
+	        this.snowTotSWE_G.setValue(0.0);
+	        this.drySWE_G.setValue(0.0);
 	        this.totDens.setValue(0.0);
 	        this.dryDens.setValue(0.0);
-	        this.snowAge.setValue(0);
-	        this.snowColdContent.setValue(0.0);
+	        this.snowAge_G.setValue(0);
+	        this.snowColdContent_G.setValue(0.0);
    
     	}
     }
@@ -456,20 +487,30 @@ import jams.model.*;
             
             double new_snow_density = this.calcNewSnowDensity(temp);
             deltaHeight = this.in_snow / (new_snow_density * area);
-            this.run_snowDepth = this.run_snowDepth + deltaHeight; // mm; unit checked.
+            getModel().getRuntime().println("run_snowDepth_G: " + this.run_snowDepth_G);
+            getModel().getRuntime().println("new_snow_density: " + new_snow_density);
+            getModel().getRuntime().println("area: " + area);
+            this.run_snowDepth_G = this.run_snowDepth_G + deltaHeight; // mm; unit checked.
             
             
             //increase of dry and total snow water equivalent by snow precip amount
             //double old_SWE = this.tot_SWE;
-            this.run_drySWE = this.run_drySWE + this.in_snow;
+            this.run_drySWE_G = this.run_drySWE_G + this.in_snow;
             this.run_totSWE = this.run_totSWE + this.in_snow;
+            getModel().getRuntime().println("in_snow: " + this.in_snow);
+            getModel().getRuntime().println("run_totSWE: " + this.run_totSWE);
+            getModel().getRuntime().println("run_drySWE_G: " + this.run_drySWE_G);
             this.in_snow = 0;
             
             //recalculation of snow Densities
             this.calcSnowDensities(area);
+            getModel().getRuntime().println("this.calcSnowDensities(area)");
+            getModel().getRuntime().println("run_snowDepth_G: " + this.run_snowDepth_G);
+            getModel().getRuntime().println("run_totDens: " + this.run_totDens);
+            getModel().getRuntime().println("run_dryDens: " + this.run_dryDens);
             
             //resetting snow age
-            this.run_snowAge = 0;
+            this.run_snowAge_G = 0;
             
             //saving the initial density for snow pack settlement
             this.run_initDens = this.run_dryDens;
@@ -481,7 +522,7 @@ import jams.model.*;
             this.in_rain = 0;
         }
         //if snow pack has vanished, nothing more to do
-        if(this.run_snowDepth == 0)
+        if(this.run_snowDepth_G == 0)
             return true;
         
         //Calculation of new snow densities
@@ -489,14 +530,14 @@ import jams.model.*;
         
         /** water from snow pack */
         if(this.run_totDens > critDens){
-            this.run_snowMelt = this.run_snowMelt + calcSnowMeltRunoff(critDens, area);
-            //if(this.run_snowMelt < 0)
+            this.run_snowMelt_G = this.run_snowMelt_G + calcSnowMeltRunoff(critDens, area);
+            //if(this.run_snowMelt_G < 0)
             //System.out.getRuntime().println("negative SM a");
         } else{
-            double pRO = this.calcPotRunoff(critDens, this.run_totDens, this.run_totSWE - this.run_drySWE);
-            this.run_snowMelt = this.run_snowMelt + pRO;
+            double pRO = this.calcPotRunoff(critDens, this.run_totDens, this.run_totSWE - this.run_drySWE_G);
+            this.run_snowMelt_G = this.run_snowMelt_G + pRO;
             this.run_totSWE = this.run_totSWE - pRO;
-            //if(this.run_snowMelt < 0)
+            //if(this.run_snowMelt_G < 0)
             //System.out.getRuntime().println("negative SM b because of: " + pRO);
         //Calculation of new snow densities
         this.calcSnowDensities(area); // IG 5-07-2016: displacement because calcSnowDensities(area) is included in calcSnowMeltRunoff
@@ -516,16 +557,16 @@ import jams.model.*;
      */
     private double calcNewSnowDensity(double temp){
         double new_snow_density = 0;      
- // Francois Tilmant : we force new snow density = 0.3 to avoid enormous snowDepth 
+        // Francois Tilmant : we force new snow density = 0.3 to avoid enormous snowDepth_G 
         new_snow_density = 0.3;
         return new_snow_density;
     }
     
     private void calcSnowDensities(double area){
         //Calculation of new snow densities
-        if(this.run_snowDepth > 0){
-            this.run_totDens = this.run_totSWE / (area * this.run_snowDepth);
-            this.run_dryDens = this.run_drySWE / (area * this.run_snowDepth);
+        if(this.run_snowDepth_G > 0){
+            this.run_totDens = this.run_totSWE / (area * this.run_snowDepth_G);
+            this.run_dryDens = this.run_drySWE_G / (area * this.run_snowDepth_G);
         } else{
             this.run_totDens = 0;
             this.run_dryDens = 0;
@@ -540,29 +581,29 @@ import jams.model.*;
         if(inputWater > 0){
             this.run_totSWE = this.run_totSWE + inputWater;
             this.in_rain = 0;
-            pw = (this.run_totSWE / this.run_drySWE) * 100.0;
+            pw = (this.run_totSWE / this.run_drySWE_G) * 100.0;
         }
         
         //determination of settle rate after BERTLE 1966 due to rain on snow
         double ph = 147.4 - 0.474 * pw;
         
         if(ph > 0){
-            this.run_snowDepth = this.run_snowDepth * (ph / 100.);
+            this.run_snowDepth_G = this.run_snowDepth_G * (ph / 100.);
             this.calcSnowDensities(this.run_area);
             if(this.run_dryDens > this.snowCritDens.getValue()){
-              double maxSWE = this.snowCritDens.getValue() * run_area * this.run_snowDepth;
-              this.run_drySWE = maxSWE;
+              double maxSWE = this.snowCritDens.getValue() * run_area * this.run_snowDepth_G;
+              this.run_drySWE_G = maxSWE;
             }
         }
         else{ //loss of whole snow pack because of heavy rain on few snow or complete melting
-            this.run_snowMelt = this.run_snowMelt + this.run_totSWE;
-            this.run_snowDepth = 0;
+            this.run_snowMelt_G = this.run_snowMelt_G + this.run_totSWE;
+            this.run_snowDepth_G = 0;
             this.run_totSWE = 0;
-            this.run_drySWE = 0;
+            this.run_drySWE_G = 0;
             this.run_totDens = 0;
             this.run_dryDens = 0;
-            this.run_snowAge = 0;
-            //if(this.run_snowMelt < 0)
+            this.run_snowAge_G = 0;
+            //if(this.run_snowMelt_G < 0)
             //    System.out.getRuntime().println("negative SM 0");
         }
         
@@ -570,15 +611,25 @@ import jams.model.*;
     
     private double calcSnowMeltRunoff(double critDens, double area){
         /** maximum water capacity of snow pack */
-        double Wsmax = critDens * this.run_snowDepth * area;
+        double Wsmax = critDens * this.run_snowDepth_G * area;
+        getModel().getRuntime().println("calcSnowMeltRunoff");
+        getModel().getRuntime().println("Wsmax: " + Wsmax);
+        getModel().getRuntime().println("run_totSWE: " + this.run_totSWE);
         double snowmelt = this.run_totSWE - Wsmax;
         this.run_totSWE = Wsmax;
         
         this.calcSnowDensities(area);
+        getModel().getRuntime().println("snowmelt: " + snowmelt);
+        
         return snowmelt;
     }
     
     private double calcPotRunoff(double crit_dens, double tot_dens, double liq_water){
+        getModel().getRuntime().println("calcPotRunoff");
+        getModel().getRuntime().println("crit_dens: " + crit_dens);
+        getModel().getRuntime().println("tot_dens: " + tot_dens);
+        getModel().getRuntime().println("liq_water: " + liq_water);        
+        
         if(Math.abs(liq_water) > 0.00001 && liq_water < 0)
             getModel().getRuntime().println("liq_water is negative: "+liq_water);
         double potRunoff = (1 - Math.exp(-1 * Math.pow((crit_dens/tot_dens), 4))) * liq_water;
@@ -611,48 +662,48 @@ import jams.model.*;
         /** decrease of dry snow depth caused by snow melt */
         double deltaSnowDepth = potMeltrate / (this.run_dryDens * area);
         
-        //if(this.run_snowMelt < 0)
+        //if(this.run_snowMelt_G < 0)
         //    System.out.getRuntime().println("negative SM 1");
         /** depletion of whole snow pack */
-        if(deltaSnowDepth >= this.run_snowDepth){
-            deltaSnowDepth = this.run_snowDepth;
-            this.run_snowDepth = 0;
+        if(deltaSnowDepth >= this.run_snowDepth_G){
+            deltaSnowDepth = this.run_snowDepth_G;
+            this.run_snowDepth_G = 0;
             this.run_totDens = 0;
             this.run_dryDens = 0;
-            this.run_snowMelt = this.run_snowMelt + this.run_totSWE;
+            this.run_snowMelt_G = this.run_snowMelt_G + this.run_totSWE;
             this.run_totSWE = 0;
-            this.run_drySWE = 0;
-            this.run_snowAge = 0;
-            //if(this.run_snowMelt < 0)
+            this.run_drySWE_G = 0;
+            this.run_snowAge_G = 0;
+            //if(this.run_snowMelt_G < 0)
             //System.out.getRuntime().println("negative SM 1.5");
             //nothing more to do -- no snow left
             return true; // est-ce que cela signifie qu'on sort de la routine ?
         }
-        //if(this.run_snowMelt < 0)
+        //if(this.run_snowMelt_G < 0)
         //    System.out.getRuntime().println("negative SM 2");
         
         /** decrease of snow pack due to snow melt */
-        this.run_snowDepth = this.run_snowDepth - deltaSnowDepth;
+        this.run_snowDepth_G = this.run_snowDepth_G - deltaSnowDepth;
         
         /** decrease of dry SWE due to snow melt */
-        this.run_drySWE = this.run_drySWE - potMeltrate;
+        this.run_drySWE_G = this.run_drySWE_G - potMeltrate;
         potMeltrate = 0;
         
         //Calculation of new snow densities
         this.calcSnowDensities(area);
         
-        //if(this.run_snowMelt < 0)
+        //if(this.run_snowMelt_G < 0)
         //    System.out.getRuntime().println("negative SM 3");
         /** potential water from snow pack */
         if(this.run_totDens >= critDens){
-            this.run_snowMelt = this.run_snowMelt + calcSnowMeltRunoff(critDens, area);
-            //if(this.run_snowMelt < 0)
+            this.run_snowMelt_G = this.run_snowMelt_G + calcSnowMeltRunoff(critDens, area);
+            //if(this.run_snowMelt_G < 0)
             //System.out.getRuntime().println("negative SM 4");
         } else{
-            double pRO = this.calcPotRunoff(critDens, this.run_totDens, this.run_totSWE - this.run_drySWE);
-            this.run_snowMelt = this.run_snowMelt + pRO;
+            double pRO = this.calcPotRunoff(critDens, this.run_totDens, this.run_totSWE - this.run_drySWE_G);
+            this.run_snowMelt_G = this.run_snowMelt_G + pRO;
             this.run_totSWE = this.run_totSWE - pRO;
-            //if(this.run_snowMelt < 0)
+            //if(this.run_snowMelt_G < 0)
             //System.out.getRuntime().println("negative SM 5");
         }
         //Calculation of new snow densities
@@ -665,7 +716,7 @@ import jams.model.*;
         this.in_rain = 0;
         
         //if snow pack has vanished, nothing more to do
-        if(this.run_snowDepth == 0)
+        if(this.run_snowDepth_G == 0)
             return true;
         
         //Calculation of new snow densities
@@ -673,14 +724,14 @@ import jams.model.*;
         
         /** water from snow pack */
         if(this.run_totDens >= critDens){
-            this.run_snowMelt = this.run_snowMelt + calcSnowMeltRunoff(critDens, area);
-            //if(this.run_snowMelt < 0)
+            this.run_snowMelt_G = this.run_snowMelt_G + calcSnowMeltRunoff(critDens, area);
+            //if(this.run_snowMelt_G < 0)
             //System.out.getRuntime().println("negative SM 6");
         } else{
-            double pRO = this.calcPotRunoff(critDens, this.run_totDens, this.run_totSWE - this.run_drySWE);
-            this.run_snowMelt = this.run_snowMelt + pRO;
+            double pRO = this.calcPotRunoff(critDens, this.run_totDens, this.run_totSWE - this.run_drySWE_G);
+            this.run_snowMelt_G = this.run_snowMelt_G + pRO;
             this.run_totSWE = this.run_totSWE - pRO;
-            //if(this.run_snowMelt < 0)
+            //if(this.run_snowMelt_G < 0)
             //System.out.getRuntime().println("negative SM 7");
         }
         

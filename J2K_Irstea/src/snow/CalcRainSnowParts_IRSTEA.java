@@ -104,7 +104,7 @@ import jams.model.*;
      */
     
     public void init() {
-        
+
     }
     
     public void run() throws Attribute.Entity.NoSuchAttributeException{
@@ -127,9 +127,15 @@ import jams.model.*;
         //dividing input precip into rain and snow
         double rain = (1 - pSnow) * precip;
         double snow = pSnow * precip;
-        
+      
         this.snow.setValue(snow);
         this.rain.setValue(rain);
+		
+		//getModel().getRuntime().println("CalcRainSnowParts temperature: "+ temperature );
+		//getModel().getRuntime().println("CalcRainSnowParts pSnow: "+ pSnow );
+		//getModel().getRuntime().println("CalcRainSnowParts precip: "+this.precip );
+		//getModel().getRuntime().println("CalcRainSnowParts rain: "+this.rain );
+		//getModel().getRuntime().println("CalcRainSnowParts snow: "+this.snow );
         
     }
     
