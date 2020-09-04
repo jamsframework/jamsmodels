@@ -136,7 +136,7 @@ public class GlacierFraction_Reader extends JAMSComponent {
 
         double[] fractions = new double[glacierFractionIDArray.getValue().length];
         
-        getModel().getRuntime().println("time: " + time.getValue());
+        getModel().getRuntime().println("time: " + time.getValue(), JAMS.VVERBOSE);
         
         if (!time.before(startDate)) {
 
@@ -162,8 +162,8 @@ public class GlacierFraction_Reader extends JAMSComponent {
                     date.setValue(s[0]);
                     timeOffset = date.compareTo(time, Calendar.DAY_OF_YEAR);
                     
-                    getModel().getRuntime().println("s: " + s);
-                    getModel().getRuntime().println("date: " + date.getValue());
+                    getModel().getRuntime().println("s: " + s, JAMS.VVERBOSE);
+                    getModel().getRuntime().println("date: " + date.getValue(), JAMS.VVERBOSE);
                     
                     
                 } while (timeOffset < 0);
@@ -184,7 +184,7 @@ public class GlacierFraction_Reader extends JAMSComponent {
         }
         else{
             try {
-                getModel().getRuntime().println("Using initial ice fraction");
+                getModel().getRuntime().println("Using initial ice fraction", JAMS.VVERBOSE);
                 // We use the initial ice fraction before the start date
                 int timeOffset = 0;
                 String[] s = null;  
@@ -195,12 +195,12 @@ public class GlacierFraction_Reader extends JAMSComponent {
                 reader.readLine();
                 String line = reader.readLine();
                 
-                getModel().getRuntime().println("line: " + line);
+                getModel().getRuntime().println("line: " + line, JAMS.VVERBOSE);
 
                 // parse line and compare date with model time
                 s = line.split("\\s+");
                 
-                getModel().getRuntime().println("s: " + s);
+                getModel().getRuntime().println("s: " + s, JAMS.VVERBOSE);
                 date.setValue(s[0]);
                 timeOffset = date.compareTo(time, Calendar.DAY_OF_YEAR);
 
