@@ -21,6 +21,7 @@
  */
 package glacier;
 
+import jams.JAMS;
 import jams.data.*;
 import jams.model.*;
 import java.util.HashMap;
@@ -69,6 +70,12 @@ public class GlacierFraction_Assigner extends JAMSComponent {
             description = "Glacier fraction"
     )
     public Attribute.Double glacierFraction;
+
+    @JAMSVarDescription(
+            access = JAMSVarDescription.AccessType.WRITE,
+            description = "No Glacier fraction"
+    )
+    public Attribute.Double noGlacierFraction;
 
     Map<Integer, Integer> hru2idMap;
     
@@ -148,6 +155,7 @@ public class GlacierFraction_Assigner extends JAMSComponent {
         }
 
         glacierFraction.setValue(fraction);
+	noGlacierFraction.setValue(1-fraction);
         
         if(glacierFraction.getValue() > 0){
            glacierized.setValue(1);
@@ -156,8 +164,9 @@ public class GlacierFraction_Assigner extends JAMSComponent {
             glacierized.setValue(0);
         }
         
-        getModel().getRuntime().println("HRU ID: " + hruID.getValue());
-        getModel().getRuntime().println("glacierFraction: " + glacierFraction.getValue());
+        getModel().getRuntime().println("HRU ID: " + hruID.getValue(), JAMS.VVERBOSE);
+        getModel().getRuntime().println("glacierFraction: " + glacierFraction.getValue(), JAMS.VVERBOSE);
+        getModel().getRuntime().println("noGlacierFraction: " + noGlacierFraction.getValue(), JAMS.VVERBOSE);
         
         // Set the glacierized and non glacierized areas
         glacierArea.setValue(area.getValue()*glacierFraction.getValue());
