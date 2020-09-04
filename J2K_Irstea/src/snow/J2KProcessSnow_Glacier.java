@@ -325,7 +325,7 @@ import jams.model.*;
     
     public void run() throws JAMSEntity.NoSuchAttributeException {
         
-        getModel().getRuntime().println("Inside glacier block - J2KProcess_Snow_Glacier");
+        getModel().getRuntime().println("Inside glacier block - J2KProcess_Snow_Glacier", JAMS.VVERBOSE);
         
     	if(this.active == null || this.active.getValue()){
            
@@ -340,8 +340,8 @@ import jams.model.*;
             this.in_snow = this.netSnow.getValue();	               
             this.in_rain = this.netRain.getValue();
 
-            getModel().getRuntime().println("J2KProcessSnow_Glacier this.netSnow.getValue(): " + this.netSnow.getValue());
-            getModel().getRuntime().println("J2KProcessSnow_Glacier this.rain.getValue(): " + this.netRain.getValue());
+            //getModel().getRuntime().println("J2KProcessSnow_Glacier this.snow.getValue()=adjSnow=netSnow: " + this.snow.getValue()+this.netSnow.getValue());
+            //getModel().getRuntime().println("J2KProcessSnow_Glacier this.rain.getValue(): " + this.netRain.getValue());
 
             double balIn = this.in_snow + this.in_rain;
 
@@ -351,10 +351,10 @@ import jams.model.*;
             this.run_snowDepth_G = this.snowDepth_G.getValue();
             
             
-            getModel().getRuntime().println("J2KProcessSnow_Glacier this.glacierArea.getValue(): " + this.glacierArea.getValue());
-            getModel().getRuntime().println("J2KProcessSnow_Glacier this.snowDepth_G.getValue(): " + this.snowDepth_G.getValue());
-            getModel().getRuntime().println("J2KProcessSnow_Glacier snowTotSWE_G.getValue(): " + snowTotSWE_G.getValue());
-            getModel().getRuntime().println("J2KProcessSnow_Glacier snowAge_G.getValue(): " + snowAge_G.getValue());
+            //getModel().getRuntime().println("BEGINN : J2KProcessSnow_Glacier this.glacierArea.getValue(): " + this.glacierArea.getValue());
+            //getModel().getRuntime().println("BEGINN : J2KProcessSnow_Glacier this.snowDepth_G.getValue(): " + this.snowDepth_G.getValue());
+            //getModel().getRuntime().println("BEGINN :J2KProcessSnow_Glacier snowTotSWE_G.getValue(): " + snowTotSWE_G.getValue());
+            //getModel().getRuntime().println("BEGINN :J2KProcessSnow_Glacier snowAge_G.getValue(): " + snowAge_G.getValue());
             
             this.run_totSWE    = snowTotSWE_G.getValue();
             double balStorStart = this.run_totSWE;
@@ -404,8 +404,8 @@ import jams.model.*;
 
             this.calcSnowDensities(run_area);
 
-            //this.netRain.setValue(this.in_rain);
-            //this.netSnow.setValue(this.in_snow);
+            this.netRain.setValue(this.in_rain);
+            this.netSnow.setValue(this.in_snow);
             this.snowTotSWE_G.setValue(this.run_totSWE);
             this.drySWE_G.setValue(this.run_drySWE_G);
             this.totDens.setValue(this.run_totDens);
@@ -430,27 +430,27 @@ import jams.model.*;
             double balOut = this.run_snowMelt_G + this.in_rain + this.in_snow;
             double balance = balIn  + (balStorStart - balStorEnd) - balOut;
             if(Math.abs(balance) > 0.0001){
-                getModel().getRuntime().println("balance error in snow module: "+balance);
-                getModel().getRuntime().println("balIn: " + balIn);
-                getModel().getRuntime().println("balStorStart: " + balStorStart);
-                getModel().getRuntime().println("balStorEnd: " + balStorEnd);
-                getModel().getRuntime().println("balOut: " + balOut);
-                getModel().getRuntime().println("shit!");
+                getModel().getRuntime().println("balance error in snow module: "+balance, JAMS.VVERBOSE);
+                getModel().getRuntime().println("balIn: " + balIn, JAMS.VVERBOSE);
+                getModel().getRuntime().println("balStorStart: " + balStorStart, JAMS.VVERBOSE);
+                getModel().getRuntime().println("balStorEnd: " + balStorEnd, JAMS.VVERBOSE);
+                getModel().getRuntime().println("balOut: " + balOut, JAMS.VVERBOSE);
+                getModel().getRuntime().println("shit!", JAMS.VVERBOSE);
             }
 
-            getModel().getRuntime().println("-----------------------");
-            getModel().getRuntime().println("");
-            getModel().getRuntime().println("J2KProcessSnow_Glacier this.netRain: " + this.netRain);
-            getModel().getRuntime().println("J2KProcessSnow_Glacier this.netSnow: " + this.netSnow);
-            getModel().getRuntime().println("J2KProcessSnow_Glacier this.run_snowMelt_G: " + this.run_snowMelt_G);
-            getModel().getRuntime().println("J2KProcessSnow_Glacier snowTotSWE_G.getValue(): " + snowTotSWE_G.getValue());
-            getModel().getRuntime().println("");
-            getModel().getRuntime().println("-----------------------");
+//            getModel().getRuntime().println("-----------------------");
+//            getModel().getRuntime().println("");
+//            getModel().getRuntime().println("END: J2KProcessSnow_Glacier this.netRain: " + this.netRain);
+//            getModel().getRuntime().println("END: JJ2KProcessSnow_Glacier this.netSnow: " + this.netSnow);
+//            getModel().getRuntime().println("END: JJ2KProcessSnow_Glacier this.run_snowMelt_G: " + this.run_snowMelt_G);
+//            getModel().getRuntime().println("END: JJ2KProcessSnow_Glacier snowTotSWE_G.getValue(): " + snowTotSWE_G.getValue());
+//            getModel().getRuntime().println("");
+//            getModel().getRuntime().println("-----------------------");
 
             //if(this.run_drySWE_G > this.run_totSWE)
             //    System.out.getRuntime().println("dry is larger than tot at end at time: " + time.toString() + " in entity: " + entity.getDouble("ID"));
             if(this.run_snowMelt_G < 0)
-                getModel().getRuntime().println("negative snowmelt!!");
+                getModel().getRuntime().println("negative snowmelt!!", JAMS.VVERBOSE);
     	}
     }
     
@@ -487,9 +487,9 @@ import jams.model.*;
             
             double new_snow_density = this.calcNewSnowDensity(temp);
             deltaHeight = this.in_snow / (new_snow_density * area);
-            getModel().getRuntime().println("run_snowDepth_G: " + this.run_snowDepth_G);
-            getModel().getRuntime().println("new_snow_density: " + new_snow_density);
-            getModel().getRuntime().println("area: " + area);
+            //getModel().getRuntime().println("run_snowDepth_G: " + this.run_snowDepth_G);
+            //getModel().getRuntime().println("new_snow_density: " + new_snow_density);
+            //getModel().getRuntime().println("area: " + area);
             this.run_snowDepth_G = this.run_snowDepth_G + deltaHeight; // mm; unit checked.
             
             
@@ -497,17 +497,17 @@ import jams.model.*;
             //double old_SWE = this.tot_SWE;
             this.run_drySWE_G = this.run_drySWE_G + this.in_snow;
             this.run_totSWE = this.run_totSWE + this.in_snow;
-            getModel().getRuntime().println("in_snow: " + this.in_snow);
-            getModel().getRuntime().println("run_totSWE: " + this.run_totSWE);
-            getModel().getRuntime().println("run_drySWE_G: " + this.run_drySWE_G);
+            //getModel().getRuntime().println("in_snow: " + this.in_snow);
+            //getModel().getRuntime().println("run_totSWE: " + this.run_totSWE);
+            //getModel().getRuntime().println("run_drySWE_G: " + this.run_drySWE_G);
             this.in_snow = 0;
             
             //recalculation of snow Densities
             this.calcSnowDensities(area);
-            getModel().getRuntime().println("this.calcSnowDensities(area)");
-            getModel().getRuntime().println("run_snowDepth_G: " + this.run_snowDepth_G);
-            getModel().getRuntime().println("run_totDens: " + this.run_totDens);
-            getModel().getRuntime().println("run_dryDens: " + this.run_dryDens);
+            //getModel().getRuntime().println("this.calcSnowDensities(area)");
+            //getModel().getRuntime().println("run_snowDepth_G: " + this.run_snowDepth_G);
+            //getModel().getRuntime().println("run_totDens: " + this.run_totDens);
+            //getModel().getRuntime().println("run_dryDens: " + this.run_dryDens);
             
             //resetting snow age
             this.run_snowAge_G = 0;
@@ -612,26 +612,26 @@ import jams.model.*;
     private double calcSnowMeltRunoff(double critDens, double area){
         /** maximum water capacity of snow pack */
         double Wsmax = critDens * this.run_snowDepth_G * area;
-        getModel().getRuntime().println("calcSnowMeltRunoff");
-        getModel().getRuntime().println("Wsmax: " + Wsmax);
-        getModel().getRuntime().println("run_totSWE: " + this.run_totSWE);
+        //getModel().getRuntime().println("calcSnowMeltRunoff");
+        //getModel().getRuntime().println("Wsmax: " + Wsmax);
+        //getModel().getRuntime().println("run_totSWE: " + this.run_totSWE);
         double snowmelt = this.run_totSWE - Wsmax;
         this.run_totSWE = Wsmax;
         
         this.calcSnowDensities(area);
-        getModel().getRuntime().println("snowmelt: " + snowmelt);
+        getModel().getRuntime().println("snowmelt: " + snowmelt, JAMS.VVERBOSE);
         
         return snowmelt;
     }
     
     private double calcPotRunoff(double crit_dens, double tot_dens, double liq_water){
-        getModel().getRuntime().println("calcPotRunoff");
-        getModel().getRuntime().println("crit_dens: " + crit_dens);
-        getModel().getRuntime().println("tot_dens: " + tot_dens);
-        getModel().getRuntime().println("liq_water: " + liq_water);        
+        //getModel().getRuntime().println("calcPotRunoff");
+        //getModel().getRuntime().println("crit_dens: " + crit_dens);
+        //getModel().getRuntime().println("tot_dens: " + tot_dens);
+        //getModel().getRuntime().println("liq_water: " + liq_water);        
         
         if(Math.abs(liq_water) > 0.00001 && liq_water < 0)
-            getModel().getRuntime().println("liq_water is negative: "+liq_water);
+            getModel().getRuntime().println("liq_water is negative: "+liq_water, JAMS.VVERBOSE);
         double potRunoff = (1 - Math.exp(-1 * Math.pow((crit_dens/tot_dens), 4))) * liq_water;
         if(potRunoff < 0)
             potRunoff = 0;
