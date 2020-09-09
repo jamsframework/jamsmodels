@@ -103,7 +103,7 @@ public class IrrigationDam_PumpFromGroundwater extends JAMSComponent {
             upperBound = 366
     )
     public Attribute.Double groundwaterEnd;
-    
+
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
             description = "Name of sub-basin attribute",
@@ -114,10 +114,10 @@ public class IrrigationDam_PumpFromGroundwater extends JAMSComponent {
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
             description = "Name of groundwater attribute",
-            defaultValue = "actRG2"
+            defaultValue = "actRG1;actRG2"
     )
-    public Attribute.String groundwaterAttributeName;
-    
+    public Attribute.StringArray groundwaterAttributeNames;
+
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
             description = "Adaptation factor for reducing the water that is allowed to be pumped",
@@ -125,7 +125,7 @@ public class IrrigationDam_PumpFromGroundwater extends JAMSComponent {
             lowerBound = 0,
             upperBound = 1
     )
-    public Attribute.Double adaptationFactor;    
+    public Attribute.Double adaptationFactor;
 
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
@@ -136,7 +136,7 @@ public class IrrigationDam_PumpFromGroundwater extends JAMSComponent {
             upperBound = Double.POSITIVE_INFINITY
     )
     public Attribute.Double damStorage;
-    
+
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
             description = "Water volume pumped at current time step",
@@ -145,9 +145,8 @@ public class IrrigationDam_PumpFromGroundwater extends JAMSComponent {
             lowerBound = 0,
             upperBound = Double.POSITIVE_INFINITY
     )
-    public Attribute.Double pumpVolume;    
+    public Attribute.Double pumpVolume;
 
-    
     private Map<Attribute.Entity, List<Attribute.Entity>> reach2hruMap = new HashMap();
 
     /*
@@ -212,13 +211,15 @@ public class IrrigationDam_PumpFromGroundwater extends JAMSComponent {
 
             // sum up available groundwater
             double totalIn = 0;
-            for (Attribute.Entity hru : hrus) {
-                totalIn += hru.getDouble(groundwaterAttributeName.getValue());
+            for (String groundwaterAttributeName : groundwaterAttributeNames.getValue()) {
+                for (Attribute.Entity hru : hrus) {
+                    totalIn += hru.getDouble(groundwaterAttributeName);
+                }
             }
-            
+
             // reduce the water that we consider to be available?
-            totalIn *= adaptationFactor.getValue();            
-            
+            totalIn *= adaptationFactor.getValue();
+
             // get amount of water that is available for pumping
             double totalAvail = Math.min(totalIn, groundwaterPump.getValue());
 
@@ -227,14 +228,16 @@ public class IrrigationDam_PumpFromGroundwater extends JAMSComponent {
 
             // remove that fraction from single components
             double frac1 = 1 - frac;
-            for (Attribute.Entity hru : hrus) {
-                hru.setDouble(groundwaterAttributeName.getValue(), frac1 * hru.getDouble(groundwaterAttributeName.getValue()));
-            }            
+            for (String groundwaterAttributeName : groundwaterAttributeNames.getValue()) {
+                for (Attribute.Entity hru : hrus) {
+                    hru.setDouble(groundwaterAttributeName, frac1 * hru.getDouble(groundwaterAttributeName));
+                }
+            }
 
             // add the water to the dam
             pumpedWater = totalAvail * frac;
-            damStorage.setValue(damStorage.getValue() + pumpedWater);            
-            
+            damStorage.setValue(damStorage.getValue() + pumpedWater);
+
         }
 
         pumpVolume.setValue(pumpedWater);
