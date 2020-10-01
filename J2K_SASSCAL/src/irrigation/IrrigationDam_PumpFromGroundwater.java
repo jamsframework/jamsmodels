@@ -34,7 +34,7 @@ import java.util.Map;
  * @author Sven Kralisch <sven.kralisch@uni-jena.de>
  */
 @JAMSComponentDescription(
-        title = "IrrigationDam",
+        title = "IrrigationDam_PumpFromGroundwater",
         author = "Sven Kralisch",
         description = "TBD",
         date = "2020-09-07",
@@ -131,7 +131,7 @@ public class IrrigationDam_PumpFromGroundwater extends JAMSComponent {
             access = JAMSVarDescription.AccessType.READWRITE,
             description = "Current dam storage",
             defaultValue = "0",
-            unit = "m³",
+            unit = "L",
             lowerBound = 0,
             upperBound = Double.POSITIVE_INFINITY
     )
@@ -141,7 +141,7 @@ public class IrrigationDam_PumpFromGroundwater extends JAMSComponent {
             access = JAMSVarDescription.AccessType.WRITE,
             description = "Water volume pumped at current time step",
             defaultValue = "0",
-            unit = "m³",
+            unit = "L",
             lowerBound = 0,
             upperBound = Double.POSITIVE_INFINITY
     )
@@ -182,7 +182,7 @@ public class IrrigationDam_PumpFromGroundwater extends JAMSComponent {
     @Override
     public void run() {
 
-        double availableCapacity = damCapacity.getValue() - damStorage.getValue();
+        double availableCapacity = damCapacity.getValue() * 1000 - damStorage.getValue();
         double pumpedWater = 0;
 
         //check dam full
@@ -221,7 +221,7 @@ public class IrrigationDam_PumpFromGroundwater extends JAMSComponent {
             totalIn *= adaptationFactor.getValue();
 
             // get amount of water that is available for pumping
-            double totalAvail = Math.min(totalIn, groundwaterPump.getValue());
+            double totalAvail = Math.min(totalIn, groundwaterPump.getValue() * 1000);
 
             // calc fraction of available water that can be stored
             double frac = Math.min(availableCapacity / totalAvail, 1);

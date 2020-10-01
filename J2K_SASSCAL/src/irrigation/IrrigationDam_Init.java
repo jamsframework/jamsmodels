@@ -57,7 +57,7 @@ public class IrrigationDam_Init extends JAMSComponent {
             access = JAMSVarDescription.AccessType.READ,
             description = "Initial dam storage as proportion of dam capacity",
             defaultValue = "0",
-            unit = "%",
+            unit = "",
             lowerBound = 0,
             upperBound = 1
     )
@@ -67,7 +67,7 @@ public class IrrigationDam_Init extends JAMSComponent {
             access = JAMSVarDescription.AccessType.WRITE,
             description = "Current dam storage",
             defaultValue = "0",
-            unit = "m³",
+            unit = "L",
             lowerBound = 0,
             upperBound = Double.POSITIVE_INFINITY
     )
@@ -78,6 +78,6 @@ public class IrrigationDam_Init extends JAMSComponent {
      */
     @Override
     public void initAll() {
-        damStorage.setValue(damCapacity.getValue() * damStorageInit.getValue());
+        damStorage.setValue(damCapacity.getValue() * 1000 * damStorageInit.getValue());
     }
 }

@@ -30,7 +30,7 @@ import jams.model.*;
  * @author Sven Kralisch <sven.kralisch@uni-jena.de>
  */
 @JAMSComponentDescription(
-        title = "IrrigationDam",
+        title = "IrrigationDam_PumpFromReach",
         author = "Sven Kralisch",
         description = "TBD",
         date = "2020-09-07",
@@ -90,25 +90,29 @@ public class IrrigationDam_PumpFromReach extends JAMSComponent {
 
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
-            description = "RD1 component in reach"
+            description = "RD1 component in reach",
+            unit = "L"
     )
     public Attribute.Double inRD1;
 
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
-            description = "RD2 component in reach"
+            description = "RD2 component in reach",
+            unit = "L"
     )
     public Attribute.Double inRD2;
 
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
-            description = "RG1 component in reach"
+            description = "RG1 component in reach",
+            unit = "L"
     )
     public Attribute.Double inRG1;
 
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
-            description = "RG2 component in reach"
+            description = "RG2 component in reach",
+            unit = "L"
     )
     public Attribute.Double inRG2;
     
@@ -125,7 +129,7 @@ public class IrrigationDam_PumpFromReach extends JAMSComponent {
             access = JAMSVarDescription.AccessType.READWRITE,
             description = "Current dam storage",
             defaultValue = "0",
-            unit = "m³",
+            unit = "L",
             lowerBound = 0,
             upperBound = Double.POSITIVE_INFINITY
     )
@@ -135,7 +139,7 @@ public class IrrigationDam_PumpFromReach extends JAMSComponent {
             access = JAMSVarDescription.AccessType.WRITE,
             description = "Water volume pumped at current time step",
             defaultValue = "0",
-            unit = "m³",
+            unit = "L",
             lowerBound = 0,
             upperBound = Double.POSITIVE_INFINITY
     )
@@ -147,7 +151,7 @@ public class IrrigationDam_PumpFromReach extends JAMSComponent {
     @Override
     public void run() {
 
-        double availableCapacity = damCapacity.getValue() - damStorage.getValue();
+        double availableCapacity = damCapacity.getValue() * 1000 - damStorage.getValue();
         double pumpedWater = 0;
 
         //check dam full
@@ -177,7 +181,7 @@ public class IrrigationDam_PumpFromReach extends JAMSComponent {
             totalIn *= adaptationFactor.getValue();
 
             // get amount of water that is available for pumping
-            double totalAvail = Math.min(totalIn, riverPump.getValue());
+            double totalAvail = Math.min(totalIn, riverPump.getValue() * 1000);
 
             // calc fraction of available water that can be stored
             double frac = Math.min(availableCapacity / totalAvail, 1);
