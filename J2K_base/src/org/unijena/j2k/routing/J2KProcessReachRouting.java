@@ -314,6 +314,10 @@ public class J2KProcessReachRouting extends JAMSComponent {
                 getModel().getRuntime().sendHalt("Average reach slope is below 0.1%. please check your reach parameter file and \"slopeAsProportion\" parameter value!");
             }
         }
+        
+        if (this.slope.getValue() == 0) {
+            getModel().getRuntime().println("WARNING: Found zero slope in reach entity which will prevent water routing!", JAMS.VERBOSE);
+        }        
     }
 
     public void run() {
@@ -339,10 +343,6 @@ public class J2KProcessReachRouting extends JAMSComponent {
         double slope = this.slope.getValue();
         if (!slopeAsProportion.getValue()) {
             slope = slope / 100;
-        }
-
-        if (slope == 0) {
-            getModel().getRuntime().println("WARNING: Found zero slope in reach entity which will prevent water routing!", JAMS.VERBOSE);
         }
 
         double RD1act = actRD1.getValue() + inRD1.getValue();
