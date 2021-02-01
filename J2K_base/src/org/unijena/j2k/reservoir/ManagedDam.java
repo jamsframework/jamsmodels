@@ -57,11 +57,193 @@ public class ManagedDam extends J2KProcessReachRouting {
     /*
      *  Component run stages
      */
-
     @Override
     public void run() {
 
-        super.run();
+        Attribute.Entity entity = entities.getCurrent();
+
+        Attribute.Entity DestReach = (Attribute.Entity) entity.getObject("to_reach");
+        if (DestReach.isEmpty()) {
+            DestReach = null;
+        }
+        Attribute.Entity DestReservoir = null;
+
+        if (entity.existsAttribute("to_reservoir")) {
+            DestReservoir = (Attribute.Entity) entity.getObject("to_reservoir");
+        } else {
+            DestReservoir = null;
+        }
+
+        double width = this.width.getValue();
+        double rough = this.roughness.getValue();
+        double length = this.length.getValue();
+
+        double slope = this.slope.getValue();
+        if (!slopeAsProportion.getValue()) {
+            slope = slope / 100;
+        }
+
+        double RD1act = actRD1.getValue() + inRD1.getValue();
+        double RD2act = actRD2.getValue() + inRD2.getValue();
+        double RG1act = actRG1.getValue() + inRG1.getValue();
+        double RG2act = actRG2.getValue() + inRG2.getValue();
+
+        double addInAct = actAddIn.getValue() + this.inAddIn.getValue();
+
+        inRD1.setValue(0);
+        inRD2.setValue(0);
+        inRG1.setValue(0);
+        inRG2.setValue(0);
+
+        inAddIn.setValue(0);
+
+        actRD1.setValue(0);
+        actRD2.setValue(0);
+        actRG1.setValue(0);
+        actRG2.setValue(0);
+
+        actAddIn.setValue(0);
+
+        double RD1DestIn = 0;
+        double RD2DestIn = 0;
+        double RG1DestIn = 0;
+        double RG2DestIn = 0;
+        double addInDestIn = 0;
+
+        if (DestReach == null && DestReservoir == null) {
+            RD1DestIn = 0;//entity.getDouble(aNameCatchmentOutRD1.getValue());
+            RD2DestIn = 0;//entity.getDouble(aNameCatchmentOutRD2.getValue());
+            RG1DestIn = 0;//entity.getDouble(aNameCatchmentOutRG1.getValue());
+            RG2DestIn = 0;//entity.getDouble(aNameCatchmentOutRG2.getValue());
+
+            addInDestIn = 0;
+        } else if (DestReservoir != null) {
+            RD1DestIn = DestReservoir.getDouble("compRD1");
+            RD2DestIn = DestReservoir.getDouble("compRD2");
+            RG1DestIn = DestReservoir.getDouble("compRG1");
+            RG2DestIn = DestReservoir.getDouble("compRG2");
+        } else {
+            RD1DestIn = DestReach.getDouble("inRD1");
+            RD2DestIn = DestReach.getDouble("inRD2");
+            RG1DestIn = DestReach.getDouble("inRG1");
+            RG2DestIn = DestReach.getDouble("inRG2");
+
+            try {
+                addInDestIn = DestReach.getDouble("inAddIn");
+            } catch (jams.data.Attribute.Entity.NoSuchAttributeException e) {
+                addInDestIn = 0;
+            }
+        }
+
+        double q_act_tot = RD1act + RD2act + RG1act + RG2act + addInAct;
+
+        double RD1_part, RD2_part, RG1_part, RG2_part, addInPart;
+
+        //relative parts of the runoff components for later redistribution
+        if (q_act_tot == 0) {
+            RD1_part = RD1act / q_act_tot;
+            RD2_part = RD2act / q_act_tot;
+            RG1_part = RG1act / q_act_tot;
+            RG2_part = RG2act / q_act_tot;
+            addInPart = addInAct / q_act_tot;
+        } else {
+            RD1_part = 0.25;
+            RD2_part = 0.25;
+            RG1_part = 0.25;
+            RG2_part = 0.25;
+            addInPart = 0;
+        }
+
+        //the whole outflow
+        double q_act_out = releaseVol.getValue();
+
+        //the actual outflow from the reach
+        double RD1out = q_act_out * RD1_part;
+        double RD2out = q_act_out * RD2_part;
+        double RG1out = q_act_out * RG1_part;
+        double RG2out = q_act_out * RG2_part;
+
+        double addInOut = q_act_out * addInPart;
+
+        //transferring runoff from this reach to the next one or a reservoir
+        RD1DestIn = RD1DestIn + RD1out;
+        RD2DestIn = RD2DestIn + RD2out;
+        RG1DestIn = RG1DestIn + RG1out;
+        RG2DestIn = RG2DestIn + RG2out;
+
+        addInDestIn = addInDestIn + addInOut;
+
+        //reducing the actual storages
+        RD1act = RD1act - q_act_out * RD1_part;
+        RD2act = RD2act - q_act_out * RD2_part;
+        RG1act = RG1act - q_act_out * RG1_part;
+        RG2act = RG2act - q_act_out * RG2_part;
+
+        addInAct = addInAct - q_act_out * addInPart;
+
+        double channelStorage = RD1act + RD2act + RG1act + RG2act + addInAct;
+
+        double cumOutflow = RD1out + RD2out + RG1out + RG2out + addInOut;
+        /*if (reachID.getValue()==800)
+        {System.out.println(RD1out);
+        System.out.println(RD2out);
+        System.out.println(RG1out);
+        System.out.println(RG2out);
+        }
+         */
+
+        simRunoff.setValue(cumOutflow);
+        this.channelStorage.setValue(channelStorage);
+        inRD1.setValue(0);
+        inRD2.setValue(0);
+        inRG1.setValue(0);
+        inRG2.setValue(0);
+
+        inAddIn.setValue(0);
+
+        actRD1.setValue(RD1act);
+        actRD2.setValue(RD2act);
+        actRG1.setValue(RG1act);
+        actRG2.setValue(RG2act);
+
+        actAddIn.setValue(addInAct);
+
+        outRD1.setValue(RD1out);
+        outRD2.setValue(RD2out);
+        outRG1.setValue(RG1out);
+        outRG2.setValue(RG2out);
+
+        outAddIn.setValue(addInOut);
+        double verzoegerung;
+        //reach
+        if (DestReach != null && DestReservoir == null) {
+            DestReach.setDouble("inRD1", RD1DestIn);
+            DestReach.setDouble("inRD2", RD2DestIn);
+            DestReach.setDouble("inRG1", RG1DestIn);
+            DestReach.setDouble("inRG2", RG2DestIn);
+
+            DestReach.setDouble("inAddIn", addInDestIn);
+
+        } //reservoir
+        else if (DestReservoir != null) {
+            DestReservoir.setDouble("compRD1", RD1DestIn);
+            DestReservoir.setDouble("compRD2", RD2DestIn);
+            DestReservoir.setDouble("compRG1", RG1DestIn);
+            DestReservoir.setDouble("compRG2", RG2DestIn);
+        } //outlet
+        else if (DestReach == null && DestReservoir == null) {
+            catchmentRD1.setValue(RD1out);
+            catchmentRD2.setValue(RD2out);
+            catchmentRG1.setValue(RG1out);
+            catchmentRG2.setValue(RG2out);
+
+            this.catchmentAddIn.setValue(addInOut);
+            //neu verzoegerung
+
+            catchmentSimRunoff.setValue(cumOutflow);
+        }
+
+        waterLevel.setValue(channelStorage / (1000 * width * length));
 
     }
 
