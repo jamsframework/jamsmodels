@@ -288,22 +288,22 @@ import jams.model.*;
     	if(this.active == null || this.active.getValue()){
             
 	        this.run_area = this.area.getValue();
-
+                
 	        double SAC = this.actSlAsCf.getValue();
-	        
+                
 	        this.in_snow = this.netSnow.getValue();
-	
-
+                
+                
                 
                 this.in_rain = this.netRain.getValue();
 	        double balIn = this.in_snow + this.in_rain;
 	        
-	        double in_meanTemp = this.meanTemp.getValue();
-	        
-
+                double in_meanTemp = this.meanTemp.getValue();
+                
+                
                 this.run_snowDepth = this.snowDepth.getValue();
-
-       
+                
+                
 	        this.run_totSWE    = snowTotSWE.getValue();
 	        double balStorStart = this.run_totSWE;
 	        this.run_drySWE    = drySWE.getValue();
@@ -311,7 +311,7 @@ import jams.model.*;
 	        this.run_dryDens   = dryDens.getValue();
 	        this.run_snowAge   = snowAge.getValue();
 	        this.run_coldContent = snowColdContent.getValue();
-	        
+	
 	        double critDens = snowCritDens.getValue();
 	        double coldContentFactor = ccf_factor.getValue();
 	        double TRS = baseTemp.getValue();
@@ -454,7 +454,7 @@ import jams.model.*;
         this.calcSnowDensities(area);
         
         /** water from snow pack */
-        if(this.run_totDens > critDens){
+        if(Math.round(this.run_totDens * 100000d) / 100000d > critDens){
             this.run_snowMelt = this.run_snowMelt + calcSnowMeltRunoff(critDens, area);
             //if(this.run_snowMelt < 0)
             //System.out.getRuntime().println("negative SM a");
@@ -515,7 +515,7 @@ import jams.model.*;
         if(ph > 0){
             this.run_snowDepth = this.run_snowDepth * (ph / 100.);
             this.calcSnowDensities(this.run_area);
-            if(this.run_dryDens > this.snowCritDens.getValue()){
+            if(Math.round(this.run_dryDens * 100000d) / 100000d > this.snowCritDens.getValue()){
               double maxSWE = this.snowCritDens.getValue() * run_area * this.run_snowDepth;
               this.run_drySWE = maxSWE;
             }
@@ -610,7 +610,7 @@ import jams.model.*;
         //if(this.run_snowMelt < 0)
         //    System.out.getRuntime().println("negative SM 3");
         /** potential water from snow pack */
-        if(this.run_totDens >= critDens){
+        if(Math.round(this.run_totDens * 100000d) / 100000d >= critDens){
             this.run_snowMelt = this.run_snowMelt + calcSnowMeltRunoff(critDens, area);
             //if(this.run_snowMelt < 0)
             //System.out.getRuntime().println("negative SM 4");
@@ -638,7 +638,7 @@ import jams.model.*;
         this.calcSnowDensities(area);
         
         /** water from snow pack */
-        if(this.run_totDens >= critDens){
+        if(Math.round(this.run_totDens * 100000d) / 100000d >= critDens){
             this.run_snowMelt = this.run_snowMelt + calcSnowMeltRunoff(critDens, area);
             //if(this.run_snowMelt < 0)
             //System.out.getRuntime().println("negative SM 6");
