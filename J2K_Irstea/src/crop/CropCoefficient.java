@@ -4,6 +4,9 @@
  * Penman Monteith RefET and a crop coeff
  * following the FAO method
  * Author = Flora Branger, 17 April 2012
+ * 
+ * 26-05-2021 : Modified by Louise Mimeau
+ * adding conversion of etpot from mm to Liters 
  */
 
 package crop;
@@ -35,11 +38,19 @@ public class CropCoefficient extends JAMSComponent {
     /*
      *  Component attributes
      */
+     
+    @JAMSVarDescription(
+            access = JAMSVarDescription.AccessType.READ,
+            update = JAMSVarDescription.UpdateType.RUN,
+            description = "attribute area",
+            unit="m^2"
+            )
+            public JAMSDouble area;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,       // type of access, i.e. READ, WRITE, READWRITE
             description = "RefET",                       // description of purpose
-            unit = "L",                                     // unit of this var if numeric, defaults to ""
+            unit = "mm",                                     // unit of this var if numeric, defaults to ""
             lowerBound = 0,                                    // lowest allowed value of var if numeric, defaults to "0"
             upperBound = 1000                                 // highest allowed value of var if numeric, defaults to "0"        
             )
@@ -58,7 +69,7 @@ public class CropCoefficient extends JAMSComponent {
      @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
             description = "PotET",
-            unit = "L"
+            unit = "mm"
             )
             public Attribute.Double PotET;
     
@@ -75,10 +86,14 @@ public class CropCoefficient extends JAMSComponent {
         
         double RefET = this.RefET.getValue();
         double kc = this.CropCoeff.getValue();
+        double area = this.area.getValue();
         double MaxET = 0.0;
              
         // calculate MaxET
         MaxET = RefET*kc;
+        
+        // convert MaxET into Liters
+        MaxET = MaxET*area;
         
         // return the calculated value        
         this.PotET.setValue(MaxET);

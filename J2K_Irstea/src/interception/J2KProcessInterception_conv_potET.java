@@ -5,9 +5,8 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  * 
- * Dans ce module, on a change l'initialisation de l'ET0
- * et on a applique un changement d'unite pour potET (conversion de mm en L)
- * 
+ * 26-05-2021 : Modified by Louise Mimeau
+ * conversion of etpot from mm to Liters removed (conversion is now in CropCoefficient.java)
  */
 package interception;
 
@@ -64,10 +63,10 @@ public class J2KProcessInterception_conv_potET extends JAMSComponent {
             public JAMSDouble snow;
 
     @JAMSVarDescription(
-            access = JAMSVarDescription.AccessType.READWRITE,
+            access = JAMSVarDescription.AccessType.READ,
             update = JAMSVarDescription.UpdateType.RUN,
             description = "state variable potET",
-            unit="mm(i)-L(o)"
+            unit="L"
             )
             public JAMSDouble potET;
 
@@ -211,7 +210,8 @@ public class J2KProcessInterception_conv_potET extends JAMSComponent {
         double in_snow = snow.getValue();
         double in_temp = tmean.getValue();
 
-        double in_potETP = potET.getValue()*area.getValue();
+        // double in_potETP = potET.getValue()*area.getValue();
+        double in_potETP = potET.getValue();
         double in_actETP = 0;
 
         double in_LAI = this.actLAI.getValue();
@@ -306,7 +306,7 @@ public class J2KProcessInterception_conv_potET extends JAMSComponent {
         this.netRain.setValue(out_throughfall * relRain);
         this.netSnow.setValue(out_throughfall * relSnow);
         this.actET.setValue(out_actETP);
-        this.potET.setValue(in_potETP);
+        // this.potET.setValue(in_potETP);
         this.intercStorage.setValue(out_InterceptionStorage);
         this.interception.setValue(out_interception);
         this.throughfall.setValue(out_throughfall);
