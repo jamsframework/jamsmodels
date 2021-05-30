@@ -153,8 +153,8 @@ import jams.model.*;
         this.snow.setValue(snow);
         this.rain.setValue(rain);
         
-        this.svSnow.setValue(snow);
         this.svRain.setValue(rain);
+        this.svSnow.setValue(snow);
     }
     
     public void cleanup() {

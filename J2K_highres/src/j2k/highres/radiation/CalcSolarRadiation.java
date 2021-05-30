@@ -56,7 +56,7 @@ public class CalcSolarRadiation extends JAMSComponent {
 
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            description = "fraction of sunshine in one hour"
+            description = "number of sunshine hours in the time step"
     )
     public Attribute.Double sunFrac;
 

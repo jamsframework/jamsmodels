@@ -79,7 +79,7 @@ public class IrrigationDam_ApplicationAspersion extends JAMSComponent {
 
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            description = "correction factor for irrigation applied",
+            description = "correction factor for irrigation applied [0,1]",
             defaultValue = "1"
     )
     public Attribute.Double correctionFactor;    

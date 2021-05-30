@@ -95,6 +95,11 @@ public class Regionalisation extends JAMSComponent {
             defaultValue = "Infinity")
     public Attribute.Double fixedMaximum;
 
+    @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
+            description = "Ignore invalid datasets?",
+            defaultValue = "false")
+    public Attribute.Boolean ignoreInvalid;
+
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.WRITE,
             description = "Weights of individual stations (first element equals first station in list)")
     public Attribute.Double[] actualWeights;
@@ -110,7 +115,7 @@ public class Regionalisation extends JAMSComponent {
 
     @Override
     public void run() throws IOException {
-        
+
         //Retreiving data, elevations and weights
         double[] regCoeff = this.regCoeff.getValue();
         double gradient = regCoeff[1];
@@ -164,7 +169,7 @@ public class Regionalisation extends JAMSComponent {
                 }
             }
         }
-        
+
         //normalising weights
         double weightsum = 0;
         for (int i = 0; i < counter; i++) {
@@ -173,9 +178,9 @@ public class Regionalisation extends JAMSComponent {
         for (int i = 0; i < counter; i++) {
             weights[i] = weights[i] / weightsum;
         }
-        
+
         if (valid) {
-            
+
             for (int i = 0; i < counter; i++) {
                 if (actualWeights != null) {
                     actualWeights[station[i]].setValue(weights[i]);
@@ -192,7 +197,7 @@ public class Regionalisation extends JAMSComponent {
             //checking for minimum/maximum
             value = Math.max(value, fixedMinimum.getValue());
             value = Math.min(value, fixedMaximum.getValue());
-            
+
             if (averageSourceElevation != null) {
                 double avgElev = 0;
                 for (int i = 0; i < counter; i++) {
@@ -204,8 +209,10 @@ public class Regionalisation extends JAMSComponent {
         } else {
             if (!invalidDatasetReported) {     //only report once
                 //in this case simulation should end, because it affects model behaviour seriously!
-                getModel().getRuntime().sendHalt("Invalid dataset found while regionalizing data in component " + this.getInstanceName() + "."
-                        + "\nThis might occur if all of the provided values are missing data values.");
+                if (!ignoreInvalid.getValue()) {
+                    getModel().getRuntime().sendHalt("Invalid dataset found while regionalizing data in component " + this.getInstanceName() + "."
+                            + "\nThis might occur if all of the provided values are missing data values.");
+                }
                 invalidDatasetReported = true;
             }
             value = JAMS.getMissingDataValue();
@@ -217,5 +224,5 @@ public class Regionalisation extends JAMSComponent {
         data = memPool.free(data);
         weights = memPool.free(weights);
         elev = memPool.free(elev);
-    }  
+    }
 }
