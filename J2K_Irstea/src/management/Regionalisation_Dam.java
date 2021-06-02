@@ -42,11 +42,10 @@ public class Regionalisation_Dam extends JAMSComponent {
     /*
      * Component variables
      */
-      @JAMSVarDescription (access = JAMSVarDescription.AccessType.READ,
+    @JAMSVarDescription (access = JAMSVarDescription.AccessType.READ,
                          description = "Array of data values for current time step")
     public Attribute.DoubleArray dataArray;
-
-
+    
     @JAMSVarDescription (access = JAMSVarDescription.AccessType.WRITE,
                          description = "regionalised data value")
     public Attribute.Double dataValue;
@@ -60,22 +59,19 @@ public class Regionalisation_Dam extends JAMSComponent {
             description = "The reach collection"
             )
     public Attribute.EntityCollection entities;
-
-        
-                @JAMSVarDescription(
+    
+    @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
             description = "Maximum storage of the reservoir",
-            unit = "%"
+            unit = "Mm3"
             )
-            public Attribute.Double Smax;
+    public Attribute.Double Smax;
   
-  
-                @JAMSVarDescription(
+    @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            description = "reach ID",
-            unit = "%"
+            description = "reach ID"
             )
-            public Attribute.Double ID;
+    public Attribute.Double ID;
     
     boolean invalidDatasetReported = false;
     ArrayPool<double[]> memPool = new ArrayPool<double[]>(double.class);
@@ -92,13 +88,13 @@ public class Regionalisation_Dam extends JAMSComponent {
         //double Smax = entity.getDouble("Smax");
         double[] Nom = this.names.getValue();
         if (this.Smax.getValue() > 0) {
-        double reach = this.ID.getValue();
-        int t = 0;
-        while (Nom[t] != reach) {
-            t++;
-        }
-        value = sourceData[t];
-        dataValue.setValue(value);
+            double reach = this.ID.getValue();
+            int t = 0;
+            while (Nom[t] != reach) {
+                t++;
+            }
+            value = sourceData[t];
+            dataValue.setValue(value);
         }
     }
 }
