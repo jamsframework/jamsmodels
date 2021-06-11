@@ -93,10 +93,13 @@ public class Regionalisation_AEP extends JAMSComponent {
         
         // Find if reach in AEP table
         int t = 0;
-        while (Nom[t] != reach && t < n+2) {
+        while (t < n) {
+            if(Nom[t] == reach) {
+                break;
+            }
             t++;
         }
-        if(t < n+1) integerExists = true;
+        if(t < n) integerExists = true;
         
         // If reach in AEP table, associate AEP column with reach
         if (integerExists) {
