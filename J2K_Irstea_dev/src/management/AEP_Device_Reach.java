@@ -77,10 +77,40 @@ public class AEP_Device_Reach extends JAMSComponent {
         public Attribute.Double inRG2;
    
         @JAMSVarDescription(
+            access = JAMSVarDescription.AccessType.READWRITE,
+            description = "actRD1 component in reach"
+        )
+        public Attribute.Double actRD1;
+        
+        @JAMSVarDescription(
+            access = JAMSVarDescription.AccessType.READWRITE,
+            description = "actRD2 component in reach"
+        )
+        public Attribute.Double actRD2;
+        
+        @JAMSVarDescription(
+            access = JAMSVarDescription.AccessType.READWRITE,
+            description = "actRG1 component in reach"
+        )
+        public Attribute.Double actRG1;
+            
+        @JAMSVarDescription(
+            access = JAMSVarDescription.AccessType.READWRITE,
+            description = "actRG2 component in reach"
+        )
+        public Attribute.Double actRG2;
+                
+        @JAMSVarDescription(
                 access = JAMSVarDescription.AccessType.READ,
                 description = "Ratio of water available for AEP / water present in the Reach"
         )
         public Attribute.Double actPrel;
+        
+        @JAMSVarDescription(
+                access = JAMSVarDescription.AccessType.READ,
+                description = "Expected losses through the pipe network"
+        )
+        public Attribute.Double netLoss;
         
         @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
@@ -107,42 +137,84 @@ public class AEP_Device_Reach extends JAMSComponent {
             double FO_act;
 
             // Total inflow
-            double totalIn = this.inRD1.getValue();
-            totalIn = totalIn + this.inRD2.getValue();
-            totalIn = totalIn + this.inRG1.getValue();
-            totalIn = totalIn + this.inRG2.getValue();
-
-            // Water in the reach available for extraction 
-            // -- see if relevant in management scenarios
+            double totalIn = this.inRD1.getValue() + this.inRD2.getValue() + this.inRG1.getValue() + this.inRG2.getValue();
+            
+            // Water already in the reach available for extraction 
+            // -- see if actPrel relevant in management scenarios
             // -- set to 1 at first because AEP is generally prioritized over other uses
-            double totalAct = totalIn * this.actPrel.getValue();
-
-            calcRelComponents(); 
-
-            this.runComp[0] = this.inRD1.getValue();
-            this.runComp[1] = this.inRD2.getValue();
-            this.runComp[2] = this.inRG1.getValue();
-            this.runComp[3] = this.inRG2.getValue();
-
-            calcRelComponents();
-
+            double totalAct = this.actPrel.getValue() * (actRD1.getValue() + actRD2.getValue() + actRG1.getValue() + actRG2.getValue()); // eau du reach dispo pour l'irrigation.
+        
+            // Water to extract or release
             FO_act = this.FO.getValue();
-            if(FO_act < 0){
-                //Cas de prelevement
-                if( (totalAct + FO_act) <0) { FO_act = -totalAct;} 
+            
+            //Case of extraction
+            if (FO_act < 0) {
+                
+                // Account for losses in the network
+                FO_act = FO_act + netLoss.getValue()*FO_act;
+                //looking if we can cover the demand with in
+                double frac = FO_act/totalIn;
+                
+                if (frac >= -1) {
+
+                    //we can cover all only with in to the reach, reduce the components accordingly
+                    inRD1.setValue(inRD1.getValue() * (1 - frac));
+                    inRD2.setValue(inRD2.getValue() * (1 - frac));
+                    inRG1.setValue(inRG1.getValue() * (1 - frac));
+                    inRG2.setValue(inRG2.getValue() * (1 - frac));
+                    this.FO_fin.setValue(FO_act) ;
+
+                } else {
+                    //looking if we can cover the demand by including part of act...
+                    frac = FO_act / (totalIn+totalAct);
+
+                    //we can cover only part of the demand with in, reduce the components to 0
+                    inRD1.setValue(0);
+                    inRD2.setValue(0);
+                    inRG1.setValue(0);
+                    inRG2.setValue(0);
+
+                    if (frac >= -1) {
+                        //we can cover all of the demand but not only with in..., reduce the components accordingly
+                        double actDemand = 0;
+                        actDemand = FO_act + totalIn;
+                        double frac2 = -actDemand/totalAct;
+                        actRD1.setValue(actRD1.getValue() * (1 - frac2));
+                        actRD2.setValue(actRD2.getValue() * (1 - frac2));
+                        actRG1.setValue(actRG1.getValue() * (1 - frac2));
+                        actRG2.setValue(actRG2.getValue() * (1 - frac2));
+                        this.FO_fin.setValue(FO_act) ;
+
+                    } else {
+                        // we can cover part of the demand ; reduce the act... to (1 - actPrel)*act...
+                        actRD1.setValue(actRD1.getValue() * (1 - actPrel.getValue()));
+                        actRD2.setValue(actRD2.getValue() * (1 - actPrel.getValue()));
+                        actRG1.setValue(actRG1.getValue() * (1 - actPrel.getValue()));
+                        actRG2.setValue(actRG2.getValue() * (1 - actPrel.getValue()));
+                        this.FO_fin.setValue(-(totalIn+totalAct));
+                    }
+                }
+                
+                // restitute lost water to RD2 (when efficiency of the network netLoss <1) :
+                inRD2.setValue(inRD2.getValue()+Math.max(0.,-netLoss.getValue()*this.FO_fin.getValue()));
+            
+            //Case of release
+            } else {
+                
+                // Account for losses in the network
+                FO_act = FO_act - netLoss.getValue()*FO_act;
+                //looking if we can cover the demand with in
+                double frac = FO_act/totalIn;
+
+                //we can cover all only with in to the reach, reduce the components accordingly
+                inRD1.setValue(inRD1.getValue() * (1 + frac));
+                inRD2.setValue(inRD2.getValue() * (1 + frac));
+                inRG1.setValue(inRG1.getValue() * (1 + frac));
+                inRG2.setValue(inRG2.getValue() * (1 + frac));
+                this.FO_fin.setValue(FO_act) ;
+
             }
-
-            runOutflow = Math.max(0,totalIn + FO_act);       
-
-            this.FO_fin.setValue(FO_act) ;
-            for(int i = 0; i < runComp.length; i++){
-                outComp[i] = runOutflow * relComp[i];
-            }
-            this.inRD1.setValue(outComp[0]);
-            this.inRD2.setValue(outComp[1]);
-            this.inRG1.setValue(outComp[2]);
-            this.inRG2.setValue(outComp[3]);
-
+            
         }
     
         private void calcRelComponents(){
