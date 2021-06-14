@@ -36,7 +36,7 @@ import jams.model.*;
         description = "Component used for the simulation of drinking water extraction. It takes the different components outflows"
         + "coming from a sewer reach(threshold test) and adds it to the receiving reach river.",
         version = "3.0_0",
-        date = "2014-04-17")
+        date = "2021-06-14")
 public class AEP_Device_Reach extends JAMSComponent {
 
     /*
@@ -119,22 +119,8 @@ public class AEP_Device_Reach extends JAMSComponent {
         )
         public Attribute.Double FO_fin;
    
-        int nComp = 4;
-        double[] relComp;
-        double[] runComp;
-        double[] outComp;
-        double currVolume = 0;
-
-        public void init() {
-            relComp = new double[nComp];
-            runComp = new double[nComp];
-            outComp = new double[nComp];    
-        }
-
+        
         public void run() {
-
-            double runOutflow;
-            double FO_act;
 
             // Total inflow
             double totalIn = this.inRD1.getValue() + this.inRD2.getValue() + this.inRG1.getValue() + this.inRG2.getValue();
@@ -145,7 +131,7 @@ public class AEP_Device_Reach extends JAMSComponent {
             double totalAct = this.actPrel.getValue() * (actRD1.getValue() + actRD2.getValue() + actRG1.getValue() + actRG2.getValue()); // eau du reach dispo pour l'irrigation.
         
             // Water to extract or release
-            FO_act = this.FO.getValue();
+            double FO_act = this.FO.getValue();
             
             //Case of extraction
             if (FO_act < 0) {
@@ -179,6 +165,9 @@ public class AEP_Device_Reach extends JAMSComponent {
                         double actDemand = 0;
                         actDemand = FO_act + totalIn;
                         double frac2 = -actDemand/totalAct;
+                        if(frac2<0) {
+                            getModel().getRuntime().println("Warning: error in sign when extracting drinking water in reach");
+                        }
                         actRD1.setValue(actRD1.getValue() * (1 - frac2));
                         actRD2.setValue(actRD2.getValue() * (1 - frac2));
                         actRG1.setValue(actRG1.getValue() * (1 - frac2));
@@ -217,16 +206,4 @@ public class AEP_Device_Reach extends JAMSComponent {
             
         }
     
-        private void calcRelComponents(){
-            currVolume = 0;
-            for(int i = 0; i < nComp; i++){
-                currVolume = currVolume + runComp[i];
-            }
-            for(int i = 0; i < nComp; i++){
-                if(currVolume > 0)
-                    relComp[i] = runComp[i] / currVolume;
-                else
-                    relComp[i] = 0;
-            }
-        }
 }
