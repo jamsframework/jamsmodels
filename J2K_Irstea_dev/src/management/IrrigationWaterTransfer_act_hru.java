@@ -77,6 +77,18 @@ public class WaterTransfer_act_hru extends JAMSComponent {
     public Attribute.Double RG2;
    
     @JAMSVarDescription(
+            access = JAMSVarDescription.AccessType.READWRITE,
+            description = "actRG1 component in HRU"
+    )
+    public Attribute.Double actRG1;
+            
+    @JAMSVarDescription(
+            access = JAMSVarDescription.AccessType.READWRITE,
+            description = "actRG2 component in HRU"
+    )
+    public Attribute.Double actRG2;
+                
+    @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
             description = "Name of list of irrigated HRUs in reach entities",
             defaultValue = "irrigationEntities"
@@ -104,7 +116,7 @@ public class WaterTransfer_act_hru extends JAMSComponent {
     )
     public Attribute.String irrigationWaterName;
 
-            @JAMSVarDescription(
+    @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
             description = "Ratio of water available for irrigation / water present in the HRU (actR..)"
     )
@@ -122,7 +134,7 @@ public class WaterTransfer_act_hru extends JAMSComponent {
     )
     public Attribute.Double totalTransfer;
     
-        @JAMSVarDescription(
+    @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
             description = "Water available for transferin the HRU"
     )
@@ -138,26 +150,28 @@ public class WaterTransfer_act_hru extends JAMSComponent {
         Attribute.Entity currentHRU = hrus.getCurrent();
  
         double totalIn = RD1.getValue() + RD2.getValue() + RG1.getValue() + RG2.getValue(); 
-        double totalAct = this.actPrel.getValue() * totalIn;
-        this.totalInput.setValue(totalAct); // eau disponible pour l'irrigation à ce pas de temps
+        double totalAct = this.actPrel.getValue() * (actRG1.getValue() + actRG2.getValue());
+        double total = totalAct+totalIn;
+        this.totalInput.setValue(total); // eau disponible pour l'irrigation à ce pas de temps
+        
         //check if this reach even has irrigated HRUs in its catchment
         if (!currentHRU.existsAttribute(irrigationEntitiesListName.getValue())) {
             return;
         }
         double totalDemand = 0;
 
+        // cumulated demand from all HRUs supplied with water from the current HRU
         List<Attribute.Entity> l = (List) currentHRU.getObject(irrigationEntitiesListName.getValue());
         for (Attribute.Entity hru : l) {
             double demand = hru.getDouble(irrigationDemandName.getValue());
             totalDemand += demand;
         }
-
         this.totalDemand.setValue(totalDemand);
 
         //calculate proportion of total water that is needed
-        if (totalAct != 0.0){
+        if (total != 0.0){
                 
-            double frac = totalDemand /totalAct;
+            double frac = totalDemand /totalIn;
   
             if (frac <= 1) {
 
@@ -170,12 +184,30 @@ public class WaterTransfer_act_hru extends JAMSComponent {
 
             } else {
                 
-                //we can cover only part of the demand, reduce the components
-                RD1.setValue(RD1.getValue() * (1 - actPrel.getValue()));
-                RD2.setValue(RD2.getValue() * (1 - actPrel.getValue()));
-                RG1.setValue(RG1.getValue() * (1 - actPrel.getValue()));
-                RG2.setValue(RG2.getValue() * (1 - actPrel.getValue()));
-                totalTransfer.setValue(totalAct);
+                //looking if we can cover the demand by including part of act...
+                frac = totalDemand / (totalIn+totalAct);
+
+                //we can cover only part of the demand with in, reduce the components to 0
+                RD1.setValue(0);
+                RD2.setValue(0);
+                RG1.setValue(0);
+                RG2.setValue(0);
+                    
+                if (frac <= 1) {
+                    //we can cover all of the demand but not only with in..., reduce the components accordingly
+                    double actDemand = 0;
+                    actDemand = totalDemand - totalIn;
+                    double frac2 = actDemand/totalAct;
+                    actRG1.setValue(actRG1.getValue() * (1 - frac2));
+                    actRG2.setValue(actRG2.getValue() * (1 - frac2));
+                    totalTransfer.setValue(totalDemand);
+
+                } else {
+                    // we can cover part of the demand ; reduce the act... to (1 - actPrel)*act...
+                    actRG1.setValue(actRG1.getValue() * (1 - actPrel.getValue()));
+                    actRG2.setValue(actRG2.getValue() * (1 - actPrel.getValue()));
+                    totalTransfer.setValue(totalIn+totalAct);
+                }
                 
             }
             //in case frac = 0 (meaning Demand = 0), just to avoid problem with 1/frac
@@ -190,7 +222,9 @@ public class WaterTransfer_act_hru extends JAMSComponent {
             }
             // restitute lost water to RD2 (when efficiency of the irrigation network <1) :
             RD2.setValue(RD2.getValue()+Math.max(0.,totalTransfer.getValue()-providedWater_tmp) );
+            
         } else {
+            
             for (Attribute.Entity hru : l) {
                 hru.setDouble(irrigationWaterName.getValue(), 0); 
             }
