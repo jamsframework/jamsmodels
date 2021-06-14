@@ -163,10 +163,10 @@ public class IrrigationWaterTransfer_act extends JAMSComponent {
 
         //check if this reach even has irrigated HRUs in its catchment
         if (!currentReach.existsAttribute(irrigationEntitiesListName.getValue())) {
-                    double totalIn = inRD1.getValue() + inRD2.getValue() + inRG1.getValue() + inRG2.getValue();
-                    double totalAct = this.actPrel.getValue() * (actRD1.getValue() + actRD2.getValue() + actRG1.getValue() + actRG2.getValue());
-                    this.totalInput.setValue(totalIn + totalAct); // IG : ACHTUNG, cette variable n'est pas à jour !!
-        return;
+            double totalIn = inRD1.getValue() + inRD2.getValue() + inRG1.getValue() + inRG2.getValue();
+            double totalAct = this.actPrel.getValue() * (actRD1.getValue() + actRD2.getValue() + actRG1.getValue() + actRG2.getValue());
+            this.totalInput.setValue(totalIn + totalAct); // IG : ACHTUNG, cette variable n'est pas à jour !!
+            return;
         }
         double totalIn = inRD1.getValue() + inRD2.getValue() + inRG1.getValue() + inRG2.getValue();
         double totalAct = this.actPrel.getValue() * (actRD1.getValue() + actRD2.getValue() + actRG1.getValue() + actRG2.getValue()); // eau du reach dispo pour l'irrigation.
@@ -182,72 +182,68 @@ public class IrrigationWaterTransfer_act extends JAMSComponent {
 
         this.totalDemand.setValue(totalDemand);
 
-        //calcualte proportion of total water that is needed
-    if (totalIn != 0){
-                double frac = totalDemand /totalIn;
+        //calculate proportion of total water that is needed
+        if (totalIn != 0){
+                
+            double frac = totalDemand /totalIn;
   
+            if (frac <= 1) {
 
-        if (frac <= 1) {
+                //we can cover all only with in to the reach, reduce the components accordingly
+                inRD1.setValue(inRD1.getValue() * (1 - frac));
+                inRD2.setValue(inRD2.getValue() * (1 - frac));
+                inRG1.setValue(inRG1.getValue() * (1 - frac));
+                inRG2.setValue(inRG2.getValue() * (1 - frac));
+                totalTransfer.setValue(totalDemand);
 
-            //we can cover all, reduce the components accordingly
-            inRD1.setValue(inRD1.getValue() * (1 - frac));
-            inRD2.setValue(inRD2.getValue() * (1 - frac));
-            inRG1.setValue(inRG1.getValue() * (1 - frac));
-            inRG2.setValue(inRG2.getValue() * (1 - frac));
-            totalTransfer.setValue(totalDemand);
+            } else {
+                //looking if we can cover the demand by including part of act...
+                frac = totalDemand / (totalIn+totalAct);
+                
+                //we can cover only part of the demand with in, reduce the components to 0
+                inRD1.setValue(0);
+                inRD2.setValue(0);
+                inRG1.setValue(0);
+                inRG2.setValue(0);
+                    
+                if (frac <= 1) {
+                    //we can cover all of the demand but not only with in..., reduce the components accordingly
+                    double actDemand = 0;
+                    actDemand = totalDemand - totalIn;
+                    double frac2 = actDemand/totalAct;
+                    actRD1.setValue(actRD1.getValue() * (1 - frac2));
+                    actRD2.setValue(actRD2.getValue() * (1 - frac2));
+                    actRG1.setValue(actRG1.getValue() * (1 - frac2));
+                    actRG2.setValue(actRG2.getValue() * (1 - frac2));
+                    totalTransfer.setValue(totalDemand);
 
+                } else {
+                    // we can cover part of the demand ; reduce the act... to (1 - actPrel)*act...
+                    actRD1.setValue(actRD1.getValue() * (1 - actPrel.getValue()));
+                    actRD2.setValue(actRD2.getValue() * (1 - actPrel.getValue()));
+                    actRG1.setValue(actRG1.getValue() * (1 - actPrel.getValue()));
+                    actRG2.setValue(actRG2.getValue() * (1 - actPrel.getValue()));
+                    totalTransfer.setValue(totalIn+totalAct);
+                }
+            }
+            //in case frac = 0 (meaning Demand = 0), just to avoid problem with 1/frac
+            if (frac == 0){frac=1;}
+            //distribute total transfer over all HRUs
+            double providedFraction = Math.min(1, 1 / frac);
+            double providedWater_tmp=0.;
+            for (Attribute.Entity hru : l) {
+                double waterRequirements = hru.getDouble(waterRequirementsName.getValue());
+                hru.setDouble(irrigationWaterName.getValue(), waterRequirements * providedFraction);
+                providedWater_tmp= providedWater_tmp + waterRequirements * providedFraction;
+            }
+            // restitute lost water to RD2 (when efficiency of the irrigation network <1) :
+            inRD2.setValue(inRD2.getValue()+Math.max(0.,totalTransfer.getValue()-providedWater_tmp) );
         } else {
-            //looking if we can cover the demand by including part of act...
-             frac = totalDemand / (totalIn+totalAct);
-             
-        if (frac <= 1) {
-
-            //we can cover all of the demand but not only with in..., reduce the components accordingly
-            inRD1.setValue(0);
-            inRD2.setValue(0);
-            inRG1.setValue(0);
-            inRG2.setValue(0);
-            double actDemand = 0;
-            actDemand = totalDemand - totalIn;
-            double frac2 = actDemand/totalAct;
-            actRD1.setValue(actRD1.getValue() * (1 - frac2));
-            actRD2.setValue(actRD2.getValue() * (1 - frac2));
-            actRG1.setValue(actRG1.getValue() * (1 - frac2));
-            actRG2.setValue(actRG2.getValue() * (1 - frac2));
-            totalTransfer.setValue(totalDemand);
-
-        } else {
-            //we can cover only part of the demand, reduce the components to 0
-            inRD1.setValue(0);
-            inRD2.setValue(0);
-            inRG1.setValue(0);
-            inRG2.setValue(0);
-            // reduce the act... to (1 - actPrel)*act...
-            actRD1.setValue(actRD1.getValue() * (1 - actPrel.getValue()));
-            actRD2.setValue(actRD2.getValue() * (1 - actPrel.getValue()));
-            actRG1.setValue(actRG1.getValue() * (1 - actPrel.getValue()));
-            actRG2.setValue(actRG2.getValue() * (1 - actPrel.getValue()));
-            totalTransfer.setValue(totalIn+totalAct);
+            for (Attribute.Entity hru : l) {
+                hru.setDouble(irrigationWaterName.getValue(), 0); 
+            }
+            totalTransfer.setValue(0.); 
         }
-        }
-        //in case frac = 0 (meaning Demand = 0), just to avoid problem with 1/frac
-        if (frac == 0){frac=1;}
-        //distribute total transfer over all HRUs
-        double providedFraction = Math.min(1, 1 / frac);
-	double providedWater_tmp=0.;
-        for (Attribute.Entity hru : l) {
-            double waterRequirements = hru.getDouble(waterRequirementsName.getValue());
-            hru.setDouble(irrigationWaterName.getValue(), waterRequirements * providedFraction);
-	    providedWater_tmp= providedWater_tmp +waterRequirements * providedFraction;
-        }
-	// restitute lost water to RD2 (when efficiency of the irrigation network <1) :
-	 inRD2.setValue(inRD2.getValue()+Math.max(0.,totalTransfer.getValue()-providedWater_tmp) );
-    } else {
-       for (Attribute.Entity hru : l) {
-            hru.setDouble(irrigationWaterName.getValue(), 0); 
-    }
-	totalTransfer.setValue(0.); 
-    }
         //remove all HRUs from demand list
         l.removeAll(l);
     }
