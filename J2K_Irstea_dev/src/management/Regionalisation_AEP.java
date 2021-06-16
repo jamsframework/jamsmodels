@@ -25,6 +25,7 @@ package management;
 import java.io.*;
 import jams.data.*;
 import jams.model.*;
+import java.util.ArrayList;
 
 
 /**
@@ -61,50 +62,44 @@ public class Regionalisation_AEP extends JAMSComponent {
 
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            description = "The reach collection"
+            description = "The reach/hru collection"
     )
     public Attribute.EntityCollection entities;
-   
-    @JAMSVarDescription(
-            access = JAMSVarDescription.AccessType.READ,
-            description = "reach ID"
-            )
-    public Attribute.Double ID;
-        
-    boolean invalidDatasetReported = false;
-    boolean integerExists = false;
-    ArrayPool<double[]> memPool = new ArrayPool<double[]>(double.class);
-   
-    
+           
+       
    
             
     @Override
     public void run() throws IOException {
+                
         //Retreiving data
-        double value=0;
+        double value = 0;
         double[] sourceData = dataArray.getValue();
-        //Attribute.Entity entity = entities.getCurrent();
-        double[] Nom = this.names.getValue();
+        double[] name = this.names.getValue();
+        double entityID = this.entities.getCurrent().getId();
         
         // Number of names to avoid infinite loop
         double n = this.names.getValue().length;
         
-        double reach = this.ID.getValue();
         
-        // Find if reach in AEP table
+        // Find if reach in AEP table 
+        // !! while loop OK with just a few extraction points, but may need revision with larger/real datasets
         int t = 0;
         while (t < n) {
-            if(Nom[t] == reach) {
-                break;
-            }
+            if(name[t] == entityID) break;
             t++;
         }
-        if(t < n) integerExists = true;
         
         // If reach in AEP table, associate AEP column with reach
-        if (integerExists) {
+        if(t < n) {
+            
+            int isUsed = 1;
+            
             value = sourceData[t];
             dataValue.setValue(value);
+            
+            entities.getCurrent().setObject("AEP", isUsed);
+            
         }
     }
 }
