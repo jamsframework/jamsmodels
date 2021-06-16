@@ -41,7 +41,7 @@ import java.util.List;
 @VersionComments(entries = {
     @VersionComments.Entry(version = "1.0_0", comment = "Initial version")
 })
-public class WaterTransfer_act_hru extends JAMSComponent {
+public class IrrigationWaterTransfer_act_hru extends JAMSComponent {
 
     /*
      *  Component attributes
@@ -51,12 +51,6 @@ public class WaterTransfer_act_hru extends JAMSComponent {
             description = "HRUs list"
     )
     public Attribute.EntityCollection hrus;
-
-    @JAMSVarDescription(
-            access = JAMSVarDescription.AccessType.READWRITE,
-            description = "RD1 component in HRU"
-    )
-    public Attribute.Double RD1;
 
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
@@ -149,7 +143,7 @@ public class WaterTransfer_act_hru extends JAMSComponent {
 
         Attribute.Entity currentHRU = hrus.getCurrent();
  
-        double totalIn = RD1.getValue() + RD2.getValue() + RG1.getValue() + RG2.getValue(); 
+        double totalIn = RG1.getValue() + RG2.getValue(); 
         double totalAct = this.actPrel.getValue() * (actRG1.getValue() + actRG2.getValue());
         double total = totalAct+totalIn;
         this.totalInput.setValue(total); // eau disponible pour l'irrigation à ce pas de temps
@@ -176,8 +170,6 @@ public class WaterTransfer_act_hru extends JAMSComponent {
             if (frac <= 1) {
 
                 //we can cover all only with inputs to the reach, reduce the components accordingly
-                RD1.setValue(RD1.getValue() * (1 - frac));
-                RD2.setValue(RD2.getValue() * (1 - frac));
                 RG1.setValue(RG1.getValue() * (1 - frac));
                 RG2.setValue(RG2.getValue() * (1 - frac));
                 totalTransfer.setValue(totalDemand);
@@ -188,8 +180,6 @@ public class WaterTransfer_act_hru extends JAMSComponent {
                 frac = totalDemand / (totalIn+totalAct);
 
                 //we can cover only part of the demand with in, reduce the components to 0
-                RD1.setValue(0);
-                RD2.setValue(0);
                 RG1.setValue(0);
                 RG2.setValue(0);
                     
