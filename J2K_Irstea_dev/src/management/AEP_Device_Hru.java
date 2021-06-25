@@ -110,7 +110,12 @@ public class AEP_Device_Hru extends JAMSComponent {
         public void run() {
        
             // Check if HRU related to AEP transfers
-            if (!hrus.getCurrent().existsAttribute("AEP")) {
+            //if (hrus.getCurrent().existsAttribute("AEP")) {
+            if (hrus.getCurrent().getDouble("AEP")==1.0) {
+                
+                // check
+                //getModel().getRuntime().println("Drinking water in HRU:"+hrus.getCurrent().getId());
+                    
                 
                 // Total inflow
                 double totalIn = this.inRG1.getValue() + this.inRG2.getValue();
@@ -149,7 +154,7 @@ public class AEP_Device_Hru extends JAMSComponent {
 
                         if (frac >= -1) {
                             //we can cover all of the demand but not only with in..., reduce the components accordingly
-                            double actDemand = 0;
+                            double actDemand;
                             actDemand = FO_act + totalIn;
                             double frac2 = -actDemand/totalAct;
                             if(frac2<0) {
@@ -174,8 +179,7 @@ public class AEP_Device_Hru extends JAMSComponent {
                 } else {
 
                     getModel().getRuntime().println("Error: Drinking water restitution in HRU:"+hrus.getCurrent().getId());
-                    System.exit(1);
-
+                    
                 }
                 
             } else {
