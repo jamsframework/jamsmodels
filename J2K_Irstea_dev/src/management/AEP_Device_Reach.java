@@ -129,8 +129,12 @@ public class AEP_Device_Reach extends JAMSComponent {
         public void run() {
 
             // Check if reach related to AEP transfers
-            if (reach.getCurrent().existsAttribute("AEP")) {
-            
+            //if (reach.getCurrent().existsAttribute("AEP")) {
+            if (reach.getCurrent().getDouble("AEP")==1.0) {
+                            
+                // check
+                // getModel().getRuntime().println("Drinking water in Reach:"+reach.getCurrent().getId());
+                
                 // Total inflow
                 double totalIn = this.inRD1.getValue() + this.inRD2.getValue() + this.inRG1.getValue() + this.inRG2.getValue();
 
