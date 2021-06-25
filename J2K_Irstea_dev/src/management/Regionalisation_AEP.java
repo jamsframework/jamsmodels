@@ -26,6 +26,9 @@ import java.io.*;
 import jams.data.*;
 import jams.model.*;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 
 /**
@@ -67,6 +70,19 @@ public class Regionalisation_AEP extends JAMSComponent {
     public Attribute.EntityCollection entities;
            
        
+    
+    private Map<Long, Attribute.Entity> entityMap = new HashMap();
+
+    /*
+     *  Component run stages
+     */
+    @Override
+    public void init() {
+        //put all entities to a map for easier access
+        for (Attribute.Entity e : entities.getEntities()) {
+            entityMap.put(e.getId(), e);
+        }
+    }
    
             
     @Override
@@ -90,16 +106,33 @@ public class Regionalisation_AEP extends JAMSComponent {
             t++;
         }
         
+        
+        //get the current entity form the map
+        //Attribute.Entity entity = entityMap.get((long) this.entities.getCurrent().getId());
+        Attribute.Entity entity = this.entities.getCurrent();
+        
         // If reach in AEP table, associate AEP column with reach
+        double isUsed;
         if(t < n) {
             
-            int isUsed = 1;
-            
+            isUsed = 1.0;
             value = sourceData[t];
             dataValue.setValue(value);
             
-            entities.getCurrent().setObject("AEP", isUsed);
+        } else {
             
+            isUsed = 0.0;
         }
+                
+        entity.setDouble("AEP", isUsed);
+        
+        // check
+        //if(entity.getDouble("AEP")==1.0) {
+        //    getModel().getRuntime().println("Drinking water in HRU:"+this.entities.getCurrent().getId());
+        //} else {
+        //    getModel().getRuntime().println("No drinking water in HRU:"+this.entities.getCurrent().getId());
+        //}
+        
+        
     }
 }
