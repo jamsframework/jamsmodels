@@ -114,12 +114,6 @@ public class AEP_Device_Reach extends JAMSComponent {
         
         @JAMSVarDescription(
                 access = JAMSVarDescription.AccessType.READ,
-                description = "Expected losses through the pipe network"
-        )
-        public Attribute.Double netLoss;
-        
-        @JAMSVarDescription(
-                access = JAMSVarDescription.AccessType.READ,
                 description = "Multiplicative factor for adjusting the consumption values in AEP.dat"
         )
         public Attribute.Double aepFactor;
@@ -157,8 +151,9 @@ public class AEP_Device_Reach extends JAMSComponent {
                     //Case of extraction
                     if (FO_act < 0) {
 
-                        // Account for losses in the network
-                        FO_act = FO_act + netLoss.getValue()*FO_act;
+                        // Account for losses in the network - not possible with reaches
+                        //FO_act = FO_act + netLoss.getValue()*FO_act;
+                        
                         //looking if we can cover the demand with in
                         double frac = FO_act/totalIn;
                         if(Double.isInfinite(frac)){
@@ -215,7 +210,7 @@ public class AEP_Device_Reach extends JAMSComponent {
                         }
 
                         // restitute lost water to RD2 (when efficiency of the network netLoss <1) :
-                        inRD2.setValue(inRD2.getValue()+Math.max(0.,-netLoss.getValue()*this.FO_fin.getValue()));
+                        //inRD2.setValue(inRD2.getValue()+Math.max(0.,-netLoss.getValue()*this.FO_fin.getValue()));
 
                     //Case of release
                     } else {
