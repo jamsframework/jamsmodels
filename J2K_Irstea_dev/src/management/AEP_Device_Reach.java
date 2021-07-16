@@ -119,6 +119,12 @@ public class AEP_Device_Reach extends JAMSComponent {
         public Attribute.Double netLoss;
         
         @JAMSVarDescription(
+                access = JAMSVarDescription.AccessType.READ,
+                description = "Multiplicative factor for adjusting the consumption values in AEP.dat"
+        )
+        public Attribute.Double aepFactor;
+        
+        @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
             description = "FO corrected if there isn't enough water in the river",
             unit = "L"
@@ -143,78 +149,96 @@ public class AEP_Device_Reach extends JAMSComponent {
                 // -- set to 1 at first because AEP is generally prioritized over other uses
                 double totalAct = this.actPrel.getValue() * (actRD1.getValue() + actRD2.getValue() + actRG1.getValue() + actRG2.getValue()); // eau du reach dispo pour l'irrigation.
 
-                // Water to extract or release
-                double FO_act = this.FO.getValue();
+                if(totalIn > 1E-20) {
 
-                //Case of extraction
-                if (FO_act < 0) {
+                    // Water consumed
+                    double FO_act = this.FO.getValue() * this.aepFactor.getValue();
 
-                    // Account for losses in the network
-                    FO_act = FO_act + netLoss.getValue()*FO_act;
-                    //looking if we can cover the demand with in
-                    double frac = FO_act/totalIn;
+                    //Case of extraction
+                    if (FO_act < 0) {
 
-                    if (frac >= -1) {
-
-                        //we can cover all only with in to the reach, reduce the components accordingly
-                        inRD1.setValue(inRD1.getValue() * (1 - frac));
-                        inRD2.setValue(inRD2.getValue() * (1 - frac));
-                        inRG1.setValue(inRG1.getValue() * (1 - frac));
-                        inRG2.setValue(inRG2.getValue() * (1 - frac));
-                        this.FO_fin.setValue(FO_act) ;
-
-                    } else {
-                        //looking if we can cover the demand by including part of act...
-                        frac = FO_act / (totalIn+totalAct);
-
-                        //we can cover only part of the demand with in, reduce the components to 0
-                        inRD1.setValue(0);
-                        inRD2.setValue(0);
-                        inRG1.setValue(0);
-                        inRG2.setValue(0);
+                        // Account for losses in the network
+                        FO_act = FO_act + netLoss.getValue()*FO_act;
+                        //looking if we can cover the demand with in
+                        double frac = FO_act/totalIn;
+                        if(Double.isInfinite(frac)){
+                            getModel().getRuntime().println("Infinite frac:"+reach.getCurrent().getId());
+                        }
 
                         if (frac >= -1) {
-                            //we can cover all of the demand but not only with in..., reduce the components accordingly
-                            double actDemand = 0;
-                            actDemand = FO_act + totalIn;
-                            double frac2 = -actDemand/totalAct;
-                            if(frac2<0) {
-                                getModel().getRuntime().println("Warning: error in sign when extracting drinking water in reach");
-                            }
-                            actRD1.setValue(actRD1.getValue() * (1 - frac2));
-                            actRD2.setValue(actRD2.getValue() * (1 - frac2));
-                            actRG1.setValue(actRG1.getValue() * (1 - frac2));
-                            actRG2.setValue(actRG2.getValue() * (1 - frac2));
+
+                            //we can cover all only with in to the reach, reduce the components accordingly
+                            inRD1.setValue(inRD1.getValue() * (1 - frac));
+                            inRD2.setValue(inRD2.getValue() * (1 - frac));
+                            inRG1.setValue(inRG1.getValue() * (1 - frac));
+                            inRG2.setValue(inRG2.getValue() * (1 - frac));
                             this.FO_fin.setValue(FO_act) ;
 
                         } else {
-                            // we can cover part of the demand ; reduce the act... to (1 - actPrel)*act...
-                            actRD1.setValue(actRD1.getValue() * (1 - actPrel.getValue()));
-                            actRD2.setValue(actRD2.getValue() * (1 - actPrel.getValue()));
-                            actRG1.setValue(actRG1.getValue() * (1 - actPrel.getValue()));
-                            actRG2.setValue(actRG2.getValue() * (1 - actPrel.getValue()));
-                            this.FO_fin.setValue(-(totalIn+totalAct));
+                            //looking if we can cover the demand by including part of act...
+                            frac = FO_act / (totalIn+totalAct);
+                            if(Double.isInfinite(frac)){
+                                getModel().getRuntime().println("Infinite frac:"+reach.getCurrent().getId());
+                            }
+
+                            //we can cover only part of the demand with in, reduce the components to 0
+                            inRD1.setValue(0);
+                            inRD2.setValue(0);
+                            inRG1.setValue(0);
+                            inRG2.setValue(0);
+
+                            if (frac >= -1) {
+                                //we can cover all of the demand but not only with in..., reduce the components accordingly
+                                double actDemand = 0;
+                                actDemand = FO_act + totalIn;
+                                double frac2 = -actDemand/totalAct;
+                                if(Double.isInfinite(frac2)){
+                                    getModel().getRuntime().println("Infinite frac:"+reach.getCurrent().getId());
+                                }
+                                if(frac2<0) {
+                                    getModel().getRuntime().println("Warning: error in sign when extracting drinking water in reach");
+                                }
+                                actRD1.setValue(actRD1.getValue() * (1 - frac2));
+                                actRD2.setValue(actRD2.getValue() * (1 - frac2));
+                                actRG1.setValue(actRG1.getValue() * (1 - frac2));
+                                actRG2.setValue(actRG2.getValue() * (1 - frac2));
+                                this.FO_fin.setValue(FO_act) ;
+
+                            } else {
+                                // we can cover part of the demand ; reduce the act... to (1 - actPrel)*act...
+                                actRD1.setValue(actRD1.getValue() * (1 - actPrel.getValue()));
+                                actRD2.setValue(actRD2.getValue() * (1 - actPrel.getValue()));
+                                actRG1.setValue(actRG1.getValue() * (1 - actPrel.getValue()));
+                                actRG2.setValue(actRG2.getValue() * (1 - actPrel.getValue()));
+                                this.FO_fin.setValue(-(totalIn+totalAct));
+                            }
                         }
+
+                        // restitute lost water to RD2 (when efficiency of the network netLoss <1) :
+                        inRD2.setValue(inRD2.getValue()+Math.max(0.,-netLoss.getValue()*this.FO_fin.getValue()));
+
+                    //Case of release
+                    } else {
+
+                        //looking if we can cover the demand with in
+                        double frac = FO_act/totalIn;
+                        if(Double.isInfinite(frac)){
+                            getModel().getRuntime().println("Infinite frac:"+reach.getCurrent().getId());
+                        }
+
+                        //we can cover all only with in to the reach, reduce the components accordingly
+                        inRD1.setValue(inRD1.getValue() * (1 + frac));
+                        inRD2.setValue(inRD2.getValue() * (1 + frac));
+                        inRG1.setValue(inRG1.getValue() * (1 + frac));
+                        inRG2.setValue(inRG2.getValue() * (1 + frac));
+                        this.FO_fin.setValue(FO_act) ;
+
                     }
-
-                    // restitute lost water to RD2 (when efficiency of the network netLoss <1) :
-                    inRD2.setValue(inRD2.getValue()+Math.max(0.,-netLoss.getValue()*this.FO_fin.getValue()));
-
-                //Case of release
+                    
                 } else {
-
-                    // Account for losses in the network
-                    FO_act = FO_act - netLoss.getValue()*FO_act;
-                    //looking if we can cover the demand with in
-                    double frac = FO_act/totalIn;
-
-                    //we can cover all only with in to the reach, reduce the components accordingly
-                    inRD1.setValue(inRD1.getValue() * (1 + frac));
-                    inRD2.setValue(inRD2.getValue() * (1 + frac));
-                    inRG1.setValue(inRG1.getValue() * (1 + frac));
-                    inRG2.setValue(inRG2.getValue() * (1 + frac));
-                    this.FO_fin.setValue(FO_act) ;
-
+                    
+                    this.FO_fin.setValue(0.0);
+            
                 }
                 
             } else {
