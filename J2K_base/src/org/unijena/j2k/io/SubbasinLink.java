@@ -36,7 +36,8 @@ import java.util.Map;
 @JAMSComponentDescription(
     title="SubbasinLink",
     author="Sven Kralisch",
-    description="Calculates subbasin area and related HRU list for each reach",
+    description="Calculates (unnested) subbasin area and related HRU list "
+            + "for each reach",
     date = "2021-10-24",
     version = "1.0_0"
 )
@@ -84,6 +85,13 @@ public class SubbasinLink extends JAMSComponent {
 
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
+            description = "Store list of HRUs that belong to current subbasin?",
+            defaultValue = "false"
+    )
+    public Attribute.Boolean storeSubbasinHRUs;
+
+    @JAMSVarDescription(
+            access = JAMSVarDescription.AccessType.READ,
             description = "Name of HRU collection attribute in reaches",
             defaultValue = "subbasinHRUs"
     )
@@ -101,10 +109,12 @@ public class SubbasinLink extends JAMSComponent {
                 
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            description = "Auto-detect subbasin ID if not existing?",
-            defaultValue = "true"
+            description = "Auto-detect subbasin ID if not existing? This is a "
+                    + "workaround for old J2K parameter files without "
+                    + "\"subbasin\" attribute.",
+            defaultValue = "false"
     )
-    public Attribute.Boolean autoSubbasin;    
+    public Attribute.Boolean autoSubbasin;
                 
     /*
      *  Component run stages
@@ -122,14 +132,17 @@ public class SubbasinLink extends JAMSComponent {
             
             for (int i = hruList.size()-1; i >= 0; i--) {
                 Attribute.Entity hru = hruList.get(i);
-                
-                if (hru.existsAttribute(hru2reachAttributeName.getValue())) {
-                    Attribute.Entity toReach = (Attribute.Entity) hru.getObject(hru2reachAttributeName.getValue());
+
+                Attribute.Entity toReach = (Attribute.Entity) hru.getObject(hru2reachAttributeName.getValue());
+                Attribute.Entity toHRU = (Attribute.Entity) hru.getObject(hru2hruAttributeName.getValue());
+
+                if (toReach.getId() != -1) {
                     hru.setDouble(subbasinAttributeName.getValue(), toReach.getId());
-                } else if (hru.existsAttribute(hru2hruAttributeName.getValue())) {
-                    Attribute.Entity toHRU = (Attribute.Entity) hru.getObject(hru2hruAttributeName.getValue());
+                } else if (toHRU.getId() != -1) {
                     if (toHRU.existsAttribute(subbasinAttributeName.getValue())) {
                         hru.setDouble(subbasinAttributeName.getValue(), toHRU.getDouble(subbasinAttributeName.getValue()));
+                    } else {
+                        getModel().getRuntime().println("Problem: No subbbasin found for HRU " + hru.getId());
                     }
                 }
             }
@@ -164,7 +177,9 @@ public class SubbasinLink extends JAMSComponent {
             }
             
             reach.setDouble(areaAttributeName.getValue(), area);
-            reach.setObject(subbasinHRUsAttributeName.getValue(), hrus);
+            if (storeSubbasinHRUs.getValue()) {
+                reach.setObject(subbasinHRUsAttributeName.getValue(), hrus);
+            }
             
         }
         

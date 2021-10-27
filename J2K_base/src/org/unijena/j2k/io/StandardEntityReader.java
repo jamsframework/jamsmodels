@@ -101,6 +101,10 @@ public class StandardEntityReader extends JAMSComponent {
             + "will be used on the resulting entity collections",
             defaultValue = "-1")
     public Attribute.Double subcatchmentReachID;
+    @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
+            description = "If false, topoology information is not considered",
+            defaultValue = "true")
+    public Attribute.Boolean doTopo;
 
     ArrayList<Attribute.Entity> hruList, reachList;
     HashMap<Double, Attribute.Entity> hruMap, reachMap;
@@ -160,11 +164,13 @@ public class StandardEntityReader extends JAMSComponent {
         //create enttiy maps
         createEntityMaps();
 
-        //create object associations from id attributes for hrus and reaches
-        createTopology();
+        if (doTopo.getValue()) {
+            //create object associations from id attributes for hrus and reaches
+            createTopology();
 
-        // create a map containing enties and lists of source entites
-        createChildrenMap();
+            // create a map containing enties and lists of source entites
+            createChildrenMap();
+        }
 
         getModel().getRuntime().println("Model entities read successfully. This resulted in "
                 + hruList.size() + " HRUs / " + reachList.size() + " reaches overall.", JAMS.STANDARD);
