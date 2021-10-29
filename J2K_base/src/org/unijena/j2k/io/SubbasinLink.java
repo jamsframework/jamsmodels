@@ -112,7 +112,7 @@ public class SubbasinLink extends JAMSComponent {
             description = "Auto-detect subbasin ID if not existing? This is a "
                     + "workaround for old J2K parameter files without "
                     + "\"subbasin\" attribute.",
-            defaultValue = "false"
+            defaultValue = "true"
     )
     public Attribute.Boolean autoSubbasin;
                 
