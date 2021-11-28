@@ -1,0 +1,12 @@
+R:> install.packages("rJava")
+
+> set R_HOME=D:\software\R\R-4.1.2
+> java -Djava.library.path=%R_HOME%\library\rJava\jri\x64 -jar RJava.jar
+
+J:> install.packages("devtools")
+J:> library(devtools)
+J:> install_github("mkoohafkan/flowregime")
+
+> java -Djava.library.path=/usr/local/lib/R/site-library/rJava/jri -jar RJava.jar runoff.csv
+
+
