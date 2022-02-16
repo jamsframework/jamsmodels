@@ -29,15 +29,14 @@ import jams.model.*;
  * @author Sven Kralisch <sven at kralisch.com>
  */
 @JAMSComponentDescription(
-        title = "Title",
-        author = "Author",
-        description = "Description",
-        date = "YYYY-MM-DD",
+        title = "SnowSublimation",
+        author = "Sven Kralisch",
+        description = "Calculate snow sublimation after https://doi.org/10.1029/2020WR029266",
+        date = "2022-02-16",
         version = "1.0_0"
 )
 @VersionComments(entries = {
-    @VersionComments.Entry(version = "1.0_0", comment = "Initial version"),
-    @VersionComments.Entry(version = "1.0_1", comment = "Some improvements")
+    @VersionComments.Entry(version = "1.0_0", comment = "Initial version")
 })
 public class SnowSublimation extends JAMSComponent {
 
@@ -129,8 +128,6 @@ public class SnowSublimation extends JAMSComponent {
         //scale inputs to sublimation probability to [0, 1]
         scaledElevation -= minElevation.getValue();
         scaledElevation /= maxElevation.getValue() - minElevation.getValue();
-        //double topexNorm = Math.min(topex.getValue() / 1.35, 1);
-        //double swRadNorm = swRad.getValue()/swRadMax.getValue();
               
         //calc sublimation probability
         double pSub = swRad.getValue() * topex.getValue() * scaledElevation;
@@ -141,7 +138,6 @@ public class SnowSublimation extends JAMSComponent {
         if (pSub != 0) {
             pSub = (pSub - pSubMin) / (pSubMax - pSubMin);
         }
-
         
         //calc theoretical maximum sublimation
         double sMax = (1 - albedo.getValue()) * swRad.getValue() * L;
@@ -163,7 +159,7 @@ public class SnowSublimation extends JAMSComponent {
         //reduce to actual sublimation
         double sAct = Math.min(sPot, totSWE.getValue());
         
-        //totSWE.setValue(totSWE.getValue() - sAct);
+        totSWE.setValue(totSWE.getValue() - sAct);
         sublimation.setValue(sAct);
         
     }
