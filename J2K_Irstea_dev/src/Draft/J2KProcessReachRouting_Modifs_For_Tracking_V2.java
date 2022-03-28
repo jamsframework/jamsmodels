@@ -197,7 +197,7 @@ public class J2KProcessReachRouting_Modifs_For_Tracking_V2 extends JAMSComponent
             unit = "L"
     )
     public Attribute.Double actRG2;
-
+    
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
             description = "additional inflow storage inside reach",
@@ -307,6 +307,7 @@ public class J2KProcessReachRouting_Modifs_For_Tracking_V2 extends JAMSComponent
     )
     public Attribute.Double actRG2Temp;
     
+    
         /*
      *  Component run stages
      */
@@ -371,6 +372,7 @@ public class J2KProcessReachRouting_Modifs_For_Tracking_V2 extends JAMSComponent
         double RD2act = actRD2.getValue() + inRD2.getValue();
         double RG1act = actRG1.getValue() + inRG1.getValue();
         double RG2act = actRG2.getValue() + inRG2.getValue();
+        double Totact = RD1act + RD2act + RG1act + RG2act;
 
         double addInAct = actAddIn.getValue() + this.inAddIn.getValue();
         

@@ -97,9 +97,6 @@ public class ArrayCreator extends JAMSComponent {
         )
     public Attribute.DoubleArray trackedVolumeTotal_actArray;  
             
-        @JAMSVarDescription(access = JAMSVarDescription.AccessType.WRITE,
-        description = "List of upstream reaches")
-    public Attribute.IntegerArray IndexListUpstreamReach;
             
 public void init() {
     
@@ -118,9 +115,7 @@ public void init() {
     double[] ArrayTrackedVolume_actRG1 = new double[t];
     double[] ArrayTrackedVolume_actRG2 = new double[t];    
     double[] ArrayTrackedVolume_actTotal = new double[t]; 
-    
-    int[] ArrayIndexUpstreamReach = new int[0] ;
-    
+      
     for(int i=0;i<t;i++)
     {
         ArrayTrackedVolumeRD1[i] = -999.;
@@ -141,10 +136,6 @@ public void init() {
     trackedVolumeRG1_actArray.setValue(ArrayTrackedVolume_actRG1);
     trackedVolumeRG2_actArray.setValue(ArrayTrackedVolume_actRG2);
     trackedVolumeTotal_actArray.setValue(ArrayTrackedVolume_actTotal);
-
-    IndexListUpstreamReach.setValue(ArrayIndexUpstreamReach);
-    
-    Attribute.Entity entity = entities.getCurrent();
 }
 public void run(){ 
     

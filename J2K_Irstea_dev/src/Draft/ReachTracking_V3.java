@@ -29,6 +29,10 @@ public class ReachTracking_V3 extends JAMSComponent {
             description = "The reach collection"
     )
     public Attribute.EntityCollection entities;
+    
+    @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
+        description = "Array of station names")
+    public Attribute.DoubleArray names;         
         
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
@@ -53,6 +57,12 @@ public class ReachTracking_V3 extends JAMSComponent {
             description = "RG2 storage in the Reach before routing volume out of the actual Reach"
     )
     public Attribute.Double actRG2Temp;
+    
+    @JAMSVarDescription(
+            access = JAMSVarDescription.AccessType.WRITE,
+            description = "Total storage in the Reach before routing volume out of the actual Reach"
+    )
+    public Attribute.Double actTotTemp;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
@@ -88,139 +98,119 @@ public class ReachTracking_V3 extends JAMSComponent {
             unit = "L"
     )
     public Attribute.Double simRunoff;
+//    
+//    @JAMSVarDescription(
+//            access = JAMSVarDescription.AccessType.READWRITE,
+//            description = "RD1 contribution from tracked reach",
+//            unit = "L",
+//            defaultValue = "0"
+//    )
+//    public Attribute.Double trackedVolumeRD1;
+//    
+//    @JAMSVarDescription(
+//            access = JAMSVarDescription.AccessType.READWRITE,
+//            description = "RD2 contribution from tracked reach",
+//            unit = "L",
+//            defaultValue = "0"
+//    )
+//    public Attribute.Double trackedVolumeRD2;
+//    
+//    @JAMSVarDescription(
+//            access = JAMSVarDescription.AccessType.READWRITE,
+//            description = "RG1 contribution from tracked reach",
+//            unit = "L",
+//            defaultValue = "0"
+//    )
+//    public Attribute.Double trackedVolumeRG1;
+//    
+//    @JAMSVarDescription(
+//            access = JAMSVarDescription.AccessType.READWRITE,
+//            description = "RG2 contribution from tracked reach",
+//            unit = "L",
+//            defaultValue = "0"
+//    )
+//    public Attribute.Double trackedVolumeRG2;
+//    
+//    @JAMSVarDescription(
+//            access = JAMSVarDescription.AccessType.READWRITE,
+//            description = "contribution from tracked reach in total simulated runoff",
+//            unit = "L",
+//            defaultValue = "0"
+//    )
+//    public Attribute.Double trackedVolumeTotal;  
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
-            description = "RD1 contribution from tracked reach",
-            unit = "L",
-            defaultValue = "0"
-    )
-    public Attribute.Double trackedVolumeRD1;
-    
-    @JAMSVarDescription(
-            access = JAMSVarDescription.AccessType.READWRITE,
-            description = "RD2 contribution from tracked reach",
-            unit = "L",
-            defaultValue = "0"
-    )
-    public Attribute.Double trackedVolumeRD2;
-    
-    @JAMSVarDescription(
-            access = JAMSVarDescription.AccessType.READWRITE,
-            description = "RG1 contribution from tracked reach",
-            unit = "L",
-            defaultValue = "0"
-    )
-    public Attribute.Double trackedVolumeRG1;
-    
-    @JAMSVarDescription(
-            access = JAMSVarDescription.AccessType.READWRITE,
-            description = "RG2 contribution from tracked reach",
-            unit = "L",
-            defaultValue = "0"
-    )
-    public Attribute.Double trackedVolumeRG2;
-    
-    @JAMSVarDescription(
-            access = JAMSVarDescription.AccessType.READWRITE,
-            description = "contribution from tracked reach in total simulated runoff",
-            unit = "L",
-            defaultValue = "0"
-    )
-    public Attribute.Double trackedVolumeTotal;  
-   
-    @JAMSVarDescription(
-            access = JAMSVarDescription.AccessType.READ,
-            description = "Tracked reach"
-    )
-    public Attribute.Integer trackedReach;
-    
-        @JAMSVarDescription(
-            access = JAMSVarDescription.AccessType.READWRITE,
-            description = "Tracked volume RD1 array",
-            unit = "L"
+            description = "Tracked volume RD1 array"
             )
     public Attribute.DoubleArray trackedVolumeRD1Array;
         
         @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
-            description = "Tracked volume RD2 array",
-            unit = "L",
-            defaultValue = "0"
+            description = "Tracked volume RD2 array"
             )
     public Attribute.DoubleArray trackedVolumeRD2Array;  
         
         @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
-            description = "Tracked volume RG1 array",
-            unit = "L",
-            defaultValue = "0"
+            description = "Tracked volume RG1 array"
             )
     public Attribute.DoubleArray trackedVolumeRG1Array;  
         
         @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
-            description = "Tracked volume RG2 array",
-            unit = "L",
-            defaultValue = "0"
+            description = "Tracked volume RG2 array"
             )
     public Attribute.DoubleArray trackedVolumeRG2Array;  
         
         @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
-            description = "Tracked volume Total array",
-            unit = "L",
-            defaultValue = "0"
+            description = "Tracked volume Total array"
             )
     public Attribute.DoubleArray trackedVolumeTotalArray;   
              
             @JAMSVarDescription(
         access = JAMSVarDescription.AccessType.READWRITE,
-        description = "Array of RD1 remaining volume from tracked reach in actual reach after routing",
-            unit = "L",
-            defaultValue = "0"
+        description = "Array of RD1 remaining volume from tracked reach in actual reach after routing"
         )
     public Attribute.DoubleArray trackedVolumeRD1_actArray; 
              
             @JAMSVarDescription(
         access = JAMSVarDescription.AccessType.READWRITE,
-        description = "Array of RD2 remaining volume from tracked reach in actual reach after routing",
-            unit = "L",
-            defaultValue = "0"
+        description = "Array of RD2 remaining volume from tracked reach in actual reach after routing"
         )
     public Attribute.DoubleArray trackedVolumeRD2_actArray; 
              
             @JAMSVarDescription(
         access = JAMSVarDescription.AccessType.READWRITE,
-        description = "Array of RG1 remaining volume from tracked reach in actual reach after routing",
-            unit = "L",
-            defaultValue = "0"
+        description = "Array of RG1 remaining volume from tracked reach in actual reach after routing"
         )
     public Attribute.DoubleArray trackedVolumeRG1_actArray; 
              
             @JAMSVarDescription(
         access = JAMSVarDescription.AccessType.READWRITE,
-        description = "Array of RG2 remaining volume from tracked reach in actual reach after routing",
-            unit = "L",
-            defaultValue = "0"
+        description = "Array of RG2 remaining volume from tracked reach in actual reach after routing"
         )
     public Attribute.DoubleArray trackedVolumeRG2_actArray;
             
             @JAMSVarDescription(
         access = JAMSVarDescription.AccessType.READWRITE,
-        description = "Array of total remaining volume from tracked reach in actual reach after routing",
-            unit = "L",
-            defaultValue = "0"
+        description = "Array of total remaining volume from tracked reach in actual reach after routing"
         )
     public Attribute.DoubleArray trackedVolumeTotal_actArray;
             
-        @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
-        description = "Array of station names")
-    public Attribute.DoubleArray names;   
-           
-        @JAMSVarDescription(access = JAMSVarDescription.AccessType.READWRITE,
-        description = "List of upstream reaches")
-    public Attribute.IntegerArray IndexListUpstreamReach;        
+//    @JAMSVarDescription(
+//            access = JAMSVarDescription.AccessType.READ,
+//            description = "Tracked reach"
+//    )
+//    public Attribute.Integer trackedReach;
+    
+    @JAMSVarDescription(
+            access = JAMSVarDescription.AccessType.READ,
+            description = "reach track or not"
+    )
+    public Attribute.Double track;
+            
 
     public void init(){
     
@@ -237,13 +227,17 @@ public class ReachTracking_V3 extends JAMSComponent {
 //    double[] ArrayTrackedVolume_actRD1 = new double[t];
 //    double[] ArrayTrackedVolume_actRD2 = new double[t];
 //    double[] ArrayTrackedVolume_actRG1 = new double[t];
-//    double[] ArrayTrackedVolume_actRG2 = new double[t];
-//    double[] ArrayTrackedVolume_actTotal = new double[t];
-//    
-//    
-//    getModel().getRuntime().println("INIT");
-//    getModel().getRuntime().println("Contenu de ArrayTrackedVolumeRD1 : " + Arrays.toString(Nom));
-//    getModel().getRuntime().println("Contenu de ArrayTrackedVolumeRD1 : " +Arrays.toString(ArrayTrackedVolumeRD1));
+//    double[] ArrayTrackedVolume_actRG2 = new double[t];    
+//    double[] ArrayTrackedVolume_actTotal = new double[t]; 
+//      
+//    for(int i=0;i<t;i++)
+//    {
+//        ArrayTrackedVolumeRD1[i] = -999.;
+//        ArrayTrackedVolumeRD2[i] = -999;
+//        ArrayTrackedVolumeRG1[i] = -999;
+//        ArrayTrackedVolumeRG2[i] = -999;
+//        ArrayTrackedVolumeTotal[i] = 5;   
+//    }
 //
 //    trackedVolumeRD1Array.setValue(ArrayTrackedVolumeRD1);
 //    trackedVolumeRD2Array.setValue(ArrayTrackedVolumeRD2);
@@ -255,12 +249,17 @@ public class ReachTracking_V3 extends JAMSComponent {
 //    trackedVolumeRD2_actArray.setValue(ArrayTrackedVolume_actRD2);
 //    trackedVolumeRG1_actArray.setValue(ArrayTrackedVolume_actRG1);
 //    trackedVolumeRG2_actArray.setValue(ArrayTrackedVolume_actRG2);
-//
-//    getModel().getRuntime().println("TrackedVolumeRD1Array : " + Arrays.toString(trackedVolumeRD1Array.getValue()));
-        
+//    trackedVolumeTotal_actArray.setValue(ArrayTrackedVolume_actTotal);
+//    
+//    getModel().getRuntime().println("TrackedVolumeTotalArray : " + Arrays.toString(this.trackedVolumeTotalArray.getValue()));
+
+
     } 
     
     public void run(){
+        
+//        getModel().getRuntime().println("TrackedVolumeTotalArray : " + Arrays.toString(this.trackedVolumeTotalArray.getValue()));
+
                 
         Attribute.Entity entity = entities.getCurrent();
         Attribute.Entity DestReach = (Attribute.Entity) entity.getObject("to_reach");        
@@ -270,17 +269,20 @@ public class ReachTracking_V3 extends JAMSComponent {
         // Array des noms des reachs
         double[] Nom = this.names.getValue();
         
+        
+        double track = this.track.getValue();
+
         int ID = (int)entity.getDouble("ID");
         int DestID = 0;
         if(DestReach != null){
             DestID = (int)DestReach.getDouble("ID");
         }
-        int ReachTracked = this.trackedReach.getValue();
-        // Index du reach tracé
-        int r = 0;
-        while (Nom[r] != ReachTracked) {
-            r++;
-        }        
+//        int ReachTracked = this.trackedReach.getValue();
+        // Index des reach tracé
+//        int r = 0;
+//        while (Nom[r] != ReachTracked) {
+//            r++;
+//        }        
         int t = 0;
         while (Nom[t] != ID) {
             t++;
@@ -296,7 +298,12 @@ public class ReachTracking_V3 extends JAMSComponent {
         
 
         
-        getModel().getRuntime().println("Processing Reach " + ID);
+//        getModel().getRuntime().println("Processing Reach " + ID);
+//        
+//        if(track == 1){
+//            getModel().getRuntime().println("C'est un brin tracé");
+//
+//        }
         
 //      Lecture des données pour le reach actuel
 //      Volume tracé
@@ -313,46 +320,21 @@ public class ReachTracking_V3 extends JAMSComponent {
         double[] ArrayTrackedVolume_actRG2 = trackedVolumeRG2_actArray.getValue();
         double[] ArrayTrackedVolume_actTotal = trackedVolumeTotal_actArray.getValue();
         
-        // Est-ce que le reach contient des données de débit ou non?
-        // Si c'est true, toutes les données sont égales à -999
-        // Si c'est false, il y a une donnée différente qui correspond à un volume d'eau
-        boolean areAllSame = AreAllSame(ArrayTrackedVolumeTotal);
-        
-//        double RD1TrackedVolume = 0;
-//        double RD2TrackedVolume = 0;
-//        double RG1TrackedVolume = 0;
-//        double RG2TrackedVolume = 0;
-//        double TotalTrackedVolume = 0;
-//        
-
-//        ArrayTrackedVolumeRD1[t] = RD1out;
-//        ArrayTrackedVolumeRD2[t] = RD2out;
-//        ArrayTrackedVolumeRG1[t] = RG1out;
-//        ArrayTrackedVolumeRG2[t] = RG2out;
-//        ArrayTrackedVolumeTotal[t] = cumOutflow;
-
-        getModel().getRuntime().println("Entrée ArrayTrackedVolumeTotal = " + Arrays.toString(ArrayTrackedVolumeTotal));
-
-        // Liste des indices de Reachs contribuant à chaque Reach
+        // Liste des indices de Reachs contribuant au brin actuel
         List<Integer> listIndex = new ArrayList<Integer>();
         for(int i = 0; i < Nom.length; i++){
             if(ArrayTrackedVolumeTotal[i] != -999){
                 listIndex.add(i);
             }
         }
-        getModel().getRuntime().println("Elements  contribuant à ce reach = " + listIndex);
-
-        // Liste des indices de reach amonts
-        int[] ArrayIndexUpstreamReach = IndexListUpstreamReach.getValue();
-        List<Integer> listIndexUpstreamReach = new ArrayList<Integer>(ArrayIndexUpstreamReach.length);
-        for (int i : ArrayIndexUpstreamReach)
-        {
-            listIndexUpstreamReach.add(i);
-        }
 
 
-        // Si il s'agit d'un reach amont, sans contribution en amont
-        if(listIndex.size() == 0){
+        // Si il s'agit d'un reach tracé, sans contribution en amont
+        if(track == 1){
+            
+//            getModel().getRuntime().println("Elements  contribuant à ce reach = " + listIndex);
+//            getModel().getRuntime().println("Il s'agit d'un reach amont");           
+
                    
             //      Lecture des données du reach de destination
             //      Volume tracé pour le reach de destination
@@ -369,19 +351,20 @@ public class ReachTracking_V3 extends JAMSComponent {
             double[] destReachArrayTrackedVolumeRG2 = destReachDoubleArrayTrackedVolumeRG2.getValue();
             double[] destReachArrayTrackedVolumeTotal = destReachDoubleArrayTrackedVolumeTotal.getValue();  
 
-    //      Enregistrement du volume tracé dans le array.
+    //      Enregistrement temporaire du volume tracé dans le array.
             ArrayTrackedVolumeRD1[t] = RD1out;
             ArrayTrackedVolumeRD2[t] = RD2out;
             ArrayTrackedVolumeRG1[t] = RG1out;
             ArrayTrackedVolumeRG2[t] = RG2out;
             ArrayTrackedVolumeTotal[t] = cumOutflow;  
             
-            trackedVolumeRD1Array.setValue(ArrayTrackedVolumeRD1);
-            trackedVolumeRD2Array.setValue(ArrayTrackedVolumeRD2);
-            trackedVolumeRG1Array.setValue(ArrayTrackedVolumeRG1);
-            trackedVolumeRG2Array.setValue(ArrayTrackedVolumeRG2);
-            trackedVolumeTotalArray.setValue(ArrayTrackedVolumeTotal);
-
+    //      Enregistrement temporaire du volume restant dans le brin.
+            ArrayTrackedVolume_actRD1[t] = actRD1Temp.getValue() - RD1out;
+            ArrayTrackedVolume_actRD2[t] = actRD2Temp.getValue() - RD2out;
+            ArrayTrackedVolume_actRG1[t] = actRG1Temp.getValue() - RG1out;
+            ArrayTrackedVolume_actRG2[t] = actRG2Temp.getValue() - RG2out;
+            ArrayTrackedVolume_actTotal[t] = actTotTemp - cumOutflow;  
+                   
     //      Transfert du volume tracé dans l'array du reach suivant       
             destReachArrayTrackedVolumeRD1[t] = ArrayTrackedVolumeRD1[t];
             destReachArrayTrackedVolumeRD2[t] = ArrayTrackedVolumeRD2[t];
@@ -401,20 +384,32 @@ public class ReachTracking_V3 extends JAMSComponent {
             DestReach.setObject("TrackedVolumeRG2Array", destReachDoubleArrayTrackedVolumeRG2);
             DestReach.setObject("TrackedVolumeTotalArray", destReachDoubleArrayTrackedVolumeTotal); 
             
-            getModel().getRuntime().println("Sortie ArrayTrackedVolumeRD1 = " + Arrays.toString(ArrayTrackedVolumeRD1));           
-            getModel().getRuntime().println("Sortie ArrayTrackedVolumeTotal = " + Arrays.toString(ArrayTrackedVolumeTotal));
+//            getModel().getRuntime().println("Sortie du brin " + ID + " = " + Arrays.toString(ArrayTrackedVolumeTotal));
             
-            listIndexUpstreamReach.add(t);
-            ArrayIndexUpstreamReach = new int[listIndexUpstreamReach.size()];    
-            for(int i = 0; i < listIndexUpstreamReach.size(); i++) ArrayIndexUpstreamReach[i] = listIndexUpstreamReach.get(i);
-            DestReach.setObject("IndexListUpstreamReach", ArrayIndexUpstreamReach);
+            // remise à zéro des array pour les reach amonts
+            ArrayTrackedVolumeRD1[t] = -999;
+            ArrayTrackedVolumeRD2[t] = -999;
+            ArrayTrackedVolumeRG1[t] = -999;
+            ArrayTrackedVolumeRG2[t] = -999;
+            ArrayTrackedVolumeTotal[t] = -999; 
+            
+            trackedVolumeRD1Array.setValue(ArrayTrackedVolumeRD1);
+            trackedVolumeRD2Array.setValue(ArrayTrackedVolumeRD2);
+            trackedVolumeRG1Array.setValue(ArrayTrackedVolumeRG1);
+            trackedVolumeRG2Array.setValue(ArrayTrackedVolumeRG2);
+            trackedVolumeTotalArray.setValue(ArrayTrackedVolumeTotal);
+            
+            trackedVolumeRD1_actArray.setValue(ArrayTrackedVolume_actRD1);
+            trackedVolumeRD2_actArray.setValue(ArrayTrackedVolume_actRD2);
+            trackedVolumeRG1_actArray.setValue(ArrayTrackedVolume_actRG1);
+            trackedVolumeRG2_actArray.setValue(ArrayTrackedVolume_actRG2);
+            trackedVolumeTotal_actArray.setValue(ArrayTrackedVolume_actTotal);
 
+        } else if (listIndex.size()!= 0 & DestReach != null){ 
+        
+//        getModel().getRuntime().println("Elements  contribuant à ce reach = " + listIndex);
+//        getModel().getRuntime().println("Entrée du reach = " + Arrays.toString(ArrayTrackedVolumeTotal));
 
-
-            getModel().getRuntime().println("Reach amonts = " + listIndexUpstreamReach);
-
-
-        } else if (!listIndexUpstreamReach.contains(t) & DestReach != null){ 
             
         //      Lecture des données du reach de destination
         //          Volume tracé pour le reach de destination
@@ -505,7 +500,7 @@ public class ReachTracking_V3 extends JAMSComponent {
             destReachArrayTrackedVolumeTotal[i] = ArrayTrackedVolumeTotal[i];
   
         }   
-        getModel().getRuntime().println("Sortie ArrayTrackedVolumeTotal = " + Arrays.toString(ArrayTrackedVolumeTotal));
+//        getModel().getRuntime().println("Sortie du reach = " + Arrays.toString(ArrayTrackedVolumeTotal));
 
         
         // Enregistrement du tableau des volumes tracés
@@ -535,12 +530,12 @@ public class ReachTracking_V3 extends JAMSComponent {
         DestReach.setObject("TrackedVolumeRG2Array", destReachDoubleArrayTrackedVolumeRG2);
         DestReach.setObject("TrackedVolumeTotalArray", destReachDoubleArrayTrackedVolumeTotal);
         
-        // Extraction du reach tracé           
-        trackedVolumeRD1.setValue(ArrayTrackedVolumeRD1[r]);
-        trackedVolumeRD2.setValue(ArrayTrackedVolumeRD2[r]);
-        trackedVolumeRG1.setValue(ArrayTrackedVolumeRG1[r]);
-        trackedVolumeRG2.setValue(ArrayTrackedVolumeRG2[r]);
-        trackedVolumeTotal.setValue(ArrayTrackedVolumeTotal[r]);
+//        // Extraction du reach tracé           
+//        trackedVolumeRD1.setValue(ArrayTrackedVolumeRD1[r]);
+//        trackedVolumeRD2.setValue(ArrayTrackedVolumeRD2[r]);
+//        trackedVolumeRG1.setValue(ArrayTrackedVolumeRG1[r]);
+//        trackedVolumeRG2.setValue(ArrayTrackedVolumeRG2[r]);
+//        trackedVolumeTotal.setValue(ArrayTrackedVolumeTotal[r]);
         
     } else if(DestReach == null){
         
@@ -621,29 +616,17 @@ public class ReachTracking_V3 extends JAMSComponent {
         trackedVolumeRG2_actArray.setValue(ArrayTrackedVolume_actRG2);
         trackedVolumeTotal_actArray.setValue(ArrayTrackedVolume_actTotal);
         
-        // Extraction du reach tracé           
-        trackedVolumeRD1.setValue(ArrayTrackedVolumeRD1[r]);
-        trackedVolumeRD2.setValue(ArrayTrackedVolumeRD2[r]);
-        trackedVolumeRG1.setValue(ArrayTrackedVolumeRG1[r]);
-        trackedVolumeRG2.setValue(ArrayTrackedVolumeRG2[r]);
-        trackedVolumeTotal.setValue(ArrayTrackedVolumeTotal[r]);
+//        // Extraction du reach tracé           
+//        trackedVolumeRD1.setValue(ArrayTrackedVolumeRD1[r]);
+//        trackedVolumeRD2.setValue(ArrayTrackedVolumeRD2[r]);
+//        trackedVolumeRG1.setValue(ArrayTrackedVolumeRG1[r]);
+//        trackedVolumeRG2.setValue(ArrayTrackedVolumeRG2[r]);
+//        trackedVolumeTotal.setValue(ArrayTrackedVolumeTotal[r]);
                 
     } else {
 //        getModel().getRuntime().println("Ce n'est pas le Reach tracé");
     }
     }   
     
-    public static boolean AreAllSame(double[] array)
-{
-    for(int i = 1; i < array.length; i++)
-    {
-        if(array[i]!= -999) return false;
-    }
-    return true;
-    }
 }
 
-//        
-//    
-//    
-//    
