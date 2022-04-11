@@ -29,10 +29,10 @@ import jams.model.*;
  * @author Sven Kralisch <sven at kralisch.com>
  */
 @JAMSComponentDescription(
-        title = "Title",
-        author = "Author",
-        description = "Description",
-        date = "YYYY-MM-DD",
+        title = "Component to calculate flow conditions",
+        author = "Sven Kralisch & Annika Künne",
+        description = "Uses a threshold for the simulated runoff to define different flow conditions",
+        date = "2022-04-06",
         version = "1.0_0"
 )
 @VersionComments(entries = {
