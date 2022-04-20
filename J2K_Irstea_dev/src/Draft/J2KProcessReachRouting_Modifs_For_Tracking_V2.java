@@ -284,28 +284,28 @@ public class J2KProcessReachRouting_Modifs_For_Tracking_V2 extends JAMSComponent
             description = "RD1 storage in the Reach before routing volume out of the actual Reach, saved and used for tracking "
                     + "in ReachTracking component"
     )
-    public Attribute.Double actRD1Temp;
+    public Attribute.Double actTotalRD1;
         
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
             description = "RD2 storage in the Reach before routing volume out of the actual Reach, saved and used for tracking "
                     + "in ReachTracking component"
     )
-    public Attribute.Double actRD2Temp;
+    public Attribute.Double actTotalRD2;
         
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
             description = "RG1 storage in the Reach before routing volume out of the actual Reach, saved and used for tracking "
                     + "in ReachTracking component"
     )
-    public Attribute.Double actRG1Temp;
+    public Attribute.Double actTotalRG1;
         
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
             description = "RG2 storage in the Reach before routing volume out of the actual Reach, saved and used for tracking "
                     + "in ReachTracking component"
     )
-    public Attribute.Double actRG2Temp;
+    public Attribute.Double actTotalRG2;
     
     
         /*
@@ -379,10 +379,10 @@ public class J2KProcessReachRouting_Modifs_For_Tracking_V2 extends JAMSComponent
 // NEW - Saving actRD1, actRD2, actRG1 and actRG2 in new variables to use
         // in ReachTracking component
         
-        actRD1Temp.setValue(RD1act);
-        actRD2Temp.setValue(RD2act);
-        actRG1Temp.setValue(RG1act);
-        actRG2Temp.setValue(RG2act);
+        actTotalRD1.setValue(RD1act);
+        actTotalRD2.setValue(RD2act);
+        actTotalRG1.setValue(RG1act);
+        actTotalRG2.setValue(RG2act);
         
         inRD1.setValue(0);
         inRD2.setValue(0);

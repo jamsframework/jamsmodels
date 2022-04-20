@@ -8,6 +8,10 @@ package Draft;
 import jams.JAMS;
 import jams.data.*;
 import jams.model.*;
+import jams.workspace.DataSetDefinition;
+import jams.workspace.stores.InputDataStore;
+import jams.workspace.stores.TSDataStore;
+import java.util.ArrayList;
 import java.util.Arrays;
 
 /**
@@ -17,7 +21,7 @@ import java.util.Arrays;
 @JAMSComponentDescription(
         title = "ArrayCreator",
         author = "Olivier Grandjouan",
-        description = "Create arrays full of 0 values",
+        description = "Create arrays full of -999 values",
         version = "1.0",
         date = "2022-03-08"
 )
@@ -31,10 +35,13 @@ public class ArrayCreator extends JAMSComponent {
             description = "The reach collection"
     )
     public Attribute.EntityCollection entities;
-   
+    
+     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
+            description = "Datastore ID")
+    public Attribute.String dataStoreID;  
             
-    @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
-        description = "Array of station names")
+    @JAMSVarDescription(access = JAMSVarDescription.AccessType.WRITE,
+        description = "Array of reach IDs")
     public Attribute.DoubleArray names;  
 
         @JAMSVarDescription(
@@ -97,10 +104,35 @@ public class ArrayCreator extends JAMSComponent {
         )
     public Attribute.DoubleArray trackedVolumeTotal_actArray;  
             
+    private TSDataStore store;
+    boolean shifted = false;
+
             
 public void init() {
     
+    shifted = false;
+    InputDataStore is = null;
+
+    if (dataStoreID != null) {
+        is = getModel().getWorkspace().getInputDataStore(dataStoreID.getValue());
+    }
+
+    // check if store exists
+        if (is == null) {
+            getModel().getRuntime().sendHalt("Error accessing datastore \""
+                    + dataStoreID + "\" from " + getInstanceName() + ": Datastore could not be found!");
+            return;
+        }
+    store = (TSDataStore) is;
+    
+    // extract some meta information
+
+    DataSetDefinition dsDef = store.getDataSetDefinition();
+
+    names.setValue(listToDoubleArray(dsDef.getAttributeValues("X")));
+
     double[] Nom = this.names.getValue();
+    
     int t = Nom.length;
 
 //  Création et sauvegarde des tableaux pour les volumes tracés et restants au début du modèle
@@ -137,6 +169,18 @@ public void init() {
     trackedVolumeRG2_actArray.setValue(ArrayTrackedVolume_actRG2);
     trackedVolumeTotal_actArray.setValue(ArrayTrackedVolume_actTotal);
 }
+
+    
+private double[] listToDoubleArray(ArrayList<Object> list) {
+double[] result = new double[list.size()];
+int i = 0;
+for (Object o : list) {
+    result[i] = ((Double) o).doubleValue();
+    i++;
+}
+return result;
+}
+
 public void run(){ 
     
 

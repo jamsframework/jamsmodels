@@ -38,31 +38,31 @@ public class ReachTracking_V3 extends JAMSComponent {
             access = JAMSVarDescription.AccessType.READ,
             description = "RD1 storage in the Reach before routing volume out of the actual Reach"
     )
-    public Attribute.Double actRD1Temp;
+    public Attribute.Double actTotalRD1;
         
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
             description = "RD2 storage in the Reach before routing volume out of the actual Reach"
     )
-    public Attribute.Double actRD2Temp;
+    public Attribute.Double actTotalRD2;
         
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
             description = "RG1 storage in the Reach before routing volume out of the actual Reach"
     )
-    public Attribute.Double actRG1Temp;
+    public Attribute.Double actTotalRG1;
         
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
             description = "RG2 storage in the Reach before routing volume out of the actual Reach"
     )
-    public Attribute.Double actRG2Temp;
+    public Attribute.Double actTotalRG2;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
             description = "Total storage in the Reach before routing volume out of the actual Reach"
     )
-    public Attribute.Double actTotTemp;
+    public Attribute.Double actTotalTot;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
@@ -98,46 +98,7 @@ public class ReachTracking_V3 extends JAMSComponent {
             unit = "L"
     )
     public Attribute.Double simRunoff;
-//    
-//    @JAMSVarDescription(
-//            access = JAMSVarDescription.AccessType.READWRITE,
-//            description = "RD1 contribution from tracked reach",
-//            unit = "L",
-//            defaultValue = "0"
-//    )
-//    public Attribute.Double trackedVolumeRD1;
-//    
-//    @JAMSVarDescription(
-//            access = JAMSVarDescription.AccessType.READWRITE,
-//            description = "RD2 contribution from tracked reach",
-//            unit = "L",
-//            defaultValue = "0"
-//    )
-//    public Attribute.Double trackedVolumeRD2;
-//    
-//    @JAMSVarDescription(
-//            access = JAMSVarDescription.AccessType.READWRITE,
-//            description = "RG1 contribution from tracked reach",
-//            unit = "L",
-//            defaultValue = "0"
-//    )
-//    public Attribute.Double trackedVolumeRG1;
-//    
-//    @JAMSVarDescription(
-//            access = JAMSVarDescription.AccessType.READWRITE,
-//            description = "RG2 contribution from tracked reach",
-//            unit = "L",
-//            defaultValue = "0"
-//    )
-//    public Attribute.Double trackedVolumeRG2;
-//    
-//    @JAMSVarDescription(
-//            access = JAMSVarDescription.AccessType.READWRITE,
-//            description = "contribution from tracked reach in total simulated runoff",
-//            unit = "L",
-//            defaultValue = "0"
-//    )
-//    public Attribute.Double trackedVolumeTotal;  
+
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
@@ -198,19 +159,12 @@ public class ReachTracking_V3 extends JAMSComponent {
         description = "Array of total remaining volume from tracked reach in actual reach after routing"
         )
     public Attribute.DoubleArray trackedVolumeTotal_actArray;
-            
-//    @JAMSVarDescription(
-//            access = JAMSVarDescription.AccessType.READ,
-//            description = "Tracked reach"
-//    )
-//    public Attribute.Integer trackedReach;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
             description = "reach track or not"
     )
-    public Attribute.Double track;
-            
+    public Attribute.Double track;        
 
     public void init(){
     
@@ -236,7 +190,7 @@ public class ReachTracking_V3 extends JAMSComponent {
 //        ArrayTrackedVolumeRD2[i] = -999;
 //        ArrayTrackedVolumeRG1[i] = -999;
 //        ArrayTrackedVolumeRG2[i] = -999;
-//        ArrayTrackedVolumeTotal[i] = 5;   
+//        ArrayTrackedVolumeTotal[i] = -999;   
 //    }
 //
 //    trackedVolumeRD1Array.setValue(ArrayTrackedVolumeRD1);
@@ -252,7 +206,6 @@ public class ReachTracking_V3 extends JAMSComponent {
 //    trackedVolumeTotal_actArray.setValue(ArrayTrackedVolume_actTotal);
 //    
 //    getModel().getRuntime().println("TrackedVolumeTotalArray : " + Arrays.toString(this.trackedVolumeTotalArray.getValue()));
-
 
     } 
     
@@ -288,7 +241,7 @@ public class ReachTracking_V3 extends JAMSComponent {
             t++;
         }    
         
-        double actTotTemp = actRD1Temp.getValue() + actRD2Temp.getValue() + actRG1Temp.getValue() + actRG2Temp.getValue();
+        double actTotalTot = actTotalRD1.getValue() + actTotalRD2.getValue() + actTotalRG1.getValue() + actTotalRG2.getValue();
                 
         double RD1out = this.outRD1.getValue();
         double RD2out = this.outRD2.getValue();
@@ -359,11 +312,11 @@ public class ReachTracking_V3 extends JAMSComponent {
             ArrayTrackedVolumeTotal[t] = cumOutflow;  
             
     //      Enregistrement temporaire du volume restant dans le brin.
-            ArrayTrackedVolume_actRD1[t] = actRD1Temp.getValue() - RD1out;
-            ArrayTrackedVolume_actRD2[t] = actRD2Temp.getValue() - RD2out;
-            ArrayTrackedVolume_actRG1[t] = actRG1Temp.getValue() - RG1out;
-            ArrayTrackedVolume_actRG2[t] = actRG2Temp.getValue() - RG2out;
-            ArrayTrackedVolume_actTotal[t] = actTotTemp - cumOutflow;  
+            ArrayTrackedVolume_actRD1[t] = actTotalRD1.getValue() - RD1out;
+            ArrayTrackedVolume_actRD2[t] = actTotalRD2.getValue() - RD2out;
+            ArrayTrackedVolume_actRG1[t] = actTotalRG1.getValue() - RG1out;
+            ArrayTrackedVolume_actRG2[t] = actTotalRG2.getValue() - RG2out;
+            ArrayTrackedVolume_actTotal[t] = actTotalTot - cumOutflow;  
                    
     //      Transfert du volume tracé dans l'array du reach suivant       
             destReachArrayTrackedVolumeRD1[t] = ArrayTrackedVolumeRD1[t];
@@ -456,26 +409,26 @@ public class ReachTracking_V3 extends JAMSComponent {
 
             
             //   Règle de trois pour calculer le volume tracé sortant du brin
-            ArrayTrackedVolumeRD1_new[i] = (ArrayTrackedVolume_actRD1_new[i]*RD1out)/actRD1Temp.getValue();
-            ArrayTrackedVolumeRD2_new[i] = (ArrayTrackedVolume_actRD2_new[i]*RD2out)/actRD2Temp.getValue();
-            ArrayTrackedVolumeRG1_new[i] = (ArrayTrackedVolume_actRG1_new[i]*RG1out)/actRG1Temp.getValue();
-            ArrayTrackedVolumeRG2_new[i] = (ArrayTrackedVolume_actRG2_new[i]*RG2out)/actRG2Temp.getValue();
-            ArrayTrackedVolumeTotal_new[i] = (ArrayTrackedVolume_actTotal_new[i]*cumOutflow)/actTotTemp;
+            ArrayTrackedVolumeRD1_new[i] = (ArrayTrackedVolume_actRD1_new[i]*RD1out)/actTotalRD1.getValue();
+            ArrayTrackedVolumeRD2_new[i] = (ArrayTrackedVolume_actRD2_new[i]*RD2out)/actTotalRD2.getValue();
+            ArrayTrackedVolumeRG1_new[i] = (ArrayTrackedVolume_actRG1_new[i]*RG1out)/actTotalRG1.getValue();
+            ArrayTrackedVolumeRG2_new[i] = (ArrayTrackedVolume_actRG2_new[i]*RG2out)/actTotalRG2.getValue();
+            ArrayTrackedVolumeTotal_new[i] = (ArrayTrackedVolume_actTotal_new[i]*cumOutflow)/actTotalTot;
             
             
-            if(actRD1Temp.getValue() == 0){
+            if(actTotalRD1.getValue() == 0){
                 ArrayTrackedVolumeRD1_new[i] = 0;
             }
-            if(actRD2Temp.getValue() == 0){
+            if(actTotalRD2.getValue() == 0){
                 ArrayTrackedVolumeRD2_new[i] = 0;
             }
-            if(actRG1Temp.getValue() == 0){
+            if(actTotalRG1.getValue() == 0){
                 ArrayTrackedVolumeRG1_new[i] = 0;
             }
-            if(actRG2Temp.getValue() == 0){
+            if(actTotalRG2.getValue() == 0){
                 ArrayTrackedVolumeRG2_new[i] = 0;
             }
-            if(actTotTemp == 0){
+            if(actTotalTot == 0){
                 ArrayTrackedVolumeTotal_new[i] = 0;
             }  
             // Enregistrement dans le tableau originel
@@ -565,25 +518,25 @@ public class ReachTracking_V3 extends JAMSComponent {
             ArrayTrackedVolume_actTotal_new[i] = ArrayTrackedVolumeTotal[i] + ArrayTrackedVolume_actTotal[i];
             
             //   Règle de trois pour calculer le volume tracé sortant du brin
-            ArrayTrackedVolumeRD1_new[i] = (ArrayTrackedVolume_actRD1_new[i]*RD1out)/actRD1Temp.getValue();
-            ArrayTrackedVolumeRD2_new[i] = (ArrayTrackedVolume_actRD2_new[i]*RD2out)/actRD2Temp.getValue();
-            ArrayTrackedVolumeRG1_new[i] = (ArrayTrackedVolume_actRG1_new[i]*RG1out)/actRG1Temp.getValue();
-            ArrayTrackedVolumeRG2_new[i] = (ArrayTrackedVolume_actRG2_new[i]*RG2out)/actRG2Temp.getValue();
-            ArrayTrackedVolumeTotal_new[i] = (ArrayTrackedVolume_actTotal_new[i]*cumOutflow)/actTotTemp;
+            ArrayTrackedVolumeRD1_new[i] = (ArrayTrackedVolume_actRD1_new[i]*RD1out)/actTotalRD1.getValue();
+            ArrayTrackedVolumeRD2_new[i] = (ArrayTrackedVolume_actRD2_new[i]*RD2out)/actTotalRD2.getValue();
+            ArrayTrackedVolumeRG1_new[i] = (ArrayTrackedVolume_actRG1_new[i]*RG1out)/actTotalRG1.getValue();
+            ArrayTrackedVolumeRG2_new[i] = (ArrayTrackedVolume_actRG2_new[i]*RG2out)/actTotalRG2.getValue();
+            ArrayTrackedVolumeTotal_new[i] = (ArrayTrackedVolume_actTotal_new[i]*cumOutflow)/actTotalTot;
             
-            if(actRD1Temp.getValue() == 0){
+            if(actTotalRD1.getValue() == 0){
                 ArrayTrackedVolumeRD1_new[i] = 0;
             }
-            if(actRD2Temp.getValue() == 0){
+            if(actTotalRD2.getValue() == 0){
                 ArrayTrackedVolumeRD2_new[i] = 0;
             }
-            if(actRG1Temp.getValue() == 0){
+            if(actTotalRG1.getValue() == 0){
                 ArrayTrackedVolumeRG1_new[i] = 0;
             }
-            if(actRG2Temp.getValue() == 0){
+            if(actTotalRG2.getValue() == 0){
                 ArrayTrackedVolumeRG2_new[i] = 0;
             }
-            if(actTotTemp == 0){
+            if(actTotalTot == 0){
                 ArrayTrackedVolumeTotal_new[i] = 0;
             }  
             // Enregistrement dans le tableau originel
@@ -627,6 +580,6 @@ public class ReachTracking_V3 extends JAMSComponent {
 //        getModel().getRuntime().println("Ce n'est pas le Reach tracé");
     }
     }   
-    
+
 }
 
