@@ -36,7 +36,7 @@ import java.util.Map;
 @JAMSComponentDescription(
     title="SubbasinLink",
     author="Sven Kralisch",
-    description="Calculates (unnested) subbasin area and related HRU list "
+    description="Calculates subbasin area and related HRU list "
             + "for each reach",
     date = "2021-10-24",
     version = "1.0_0"
