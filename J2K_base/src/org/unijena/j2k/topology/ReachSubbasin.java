@@ -72,22 +72,64 @@ public class ReachSubbasin extends JAMSComponent {
             defaultValue = "subbasinhrus"
     )
     public Attribute.String subbasinEntitiesAttributeName;        
+    
+    @JAMSVarDescription(
+            access = JAMSVarDescription.AccessType.READ,
+            description = "Auto-detect subbasin ID if not existing? This is a "
+                    + "workaround for old J2K parameter files without "
+                    + "\"subbasin\" attribute.",
+            defaultValue = "true"
+    )
+    public Attribute.Boolean autoSubbasin;    
+    
+    @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
+            description = "Name of the attribute describing the HRU to HRU relation in the input file",
+            defaultValue = "to_poly")
+    public Attribute.String hru2hruAttributeName;
+    
+    @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
+            description = "Name of the attribute describing the HRU to reach relation in the input file",
+            defaultValue = "to_reach")
+    public Attribute.String hru2reachAttributeName;         
 
     
-    private Map<Attribute.Entity, List<Attribute.Entity>> reach2hruMap = new HashMap();
+    protected Map<Attribute.Entity, List<Attribute.Entity>> reach2hruMap = new HashMap();
     
     /*
      *  Component run stages
      */
     @Override
     public void init() {
+        
+        // check if we should auto-detect subbasin IDs
+        if (autoSubbasin.getValue() && !hrus.getEntities().get(0).existsAttribute(subbasinAttributeName.getValue())) {
+
+            List<Attribute.Entity> hruList = hrus.getEntities();
+            
+            for (int i = hruList.size()-1; i >= 0; i--) {
+                Attribute.Entity hru = hruList.get(i);
+
+                Attribute.Entity toReach = (Attribute.Entity) hru.getObject(hru2reachAttributeName.getValue());
+                Attribute.Entity toHRU = (Attribute.Entity) hru.getObject(hru2hruAttributeName.getValue());
+
+                if (toReach.getId() != -1) {
+                    hru.setDouble(subbasinAttributeName.getValue(), toReach.getId());
+                } else if (toHRU.getId() != -1) {
+                    if (toHRU.existsAttribute(subbasinAttributeName.getValue())) {
+                        hru.setDouble(subbasinAttributeName.getValue(), toHRU.getDouble(subbasinAttributeName.getValue()));
+                    } else {
+                        getModel().getRuntime().println("Problem: No subbbasin found for HRU " + hru.getId());
+                    }
+                }
+            }
+        }           
 
         Map<Long, Attribute.Entity> reachMap = new HashMap();
         for (Attribute.Entity reach : reaches.getEntities()) {
             reachMap.put(reach.getId(), reach);
         }
 
-        for (Attribute.Entity hru : hrus.getEntities()) {
+        for (Attribute.Entity hru : hrus.getEntities()) {   
             double subbasinID = hru.getDouble(subbasinAttributeName.getValue());
             Attribute.Entity reach = reachMap.get((long) subbasinID);
 
