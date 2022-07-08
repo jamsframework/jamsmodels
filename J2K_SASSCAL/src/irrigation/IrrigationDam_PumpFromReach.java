@@ -181,10 +181,13 @@ public class IrrigationDam_PumpFromReach extends JAMSComponent {
             totalIn *= adaptationFactor.getValue();
 
             // get amount of water that is available for pumping
-            double totalAvail = Math.min(totalIn, riverPump.getValue() * 1000);
-
+            pumpedWater = Math.min(totalIn, riverPump.getValue() * 1000);
+            
+            pumpedWater = Math.min(pumpedWater, availableCapacity);
+            
             // calc fraction of available water that can be stored
-            double frac = Math.min(availableCapacity / totalAvail, 1);
+            double frac = pumpedWater / totalIn;
+            //double frac = Math.min(availableCapacity / totalAvail, 1);
 
             // remove that fraction from single components
             inRD1.setValue(inRD1.getValue() * (1 - frac));
@@ -193,7 +196,7 @@ public class IrrigationDam_PumpFromReach extends JAMSComponent {
             inRG2.setValue(inRG2.getValue() * (1 - frac));
 
             // add the water to the dam
-            pumpedWater = totalAvail * frac;
+            //pumpedWater = pumpedWater * frac;
             damStorage.setValue(damStorage.getValue() + pumpedWater);
         }
         
