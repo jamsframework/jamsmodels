@@ -73,7 +73,20 @@ public class FlowIndices extends JAMSComponent {
 
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.WRITE,
             description = "number of consecutive days with flowing condition")
-    public Attribute.Double consecutiveDaysFlowing;    
+    public Attribute.Double consecutiveDaysFlowing;
+
+    @JAMSVarDescription(access = JAMSVarDescription.AccessType.WRITE,
+            description = "length of period with dry condition")
+    public Attribute.Double lengthPeriodDry;
+
+    @JAMSVarDescription(access = JAMSVarDescription.AccessType.WRITE,
+            description = "length of period with pool condition")
+    public Attribute.Double lengthPeriodPool;
+
+    @JAMSVarDescription(access = JAMSVarDescription.AccessType.WRITE,
+            description = "length of period with flowing condition")
+    public Attribute.Double lengthPeriodFlowing;
+
     /*
      *  Component run stages
      */
@@ -83,9 +96,18 @@ public class FlowIndices extends JAMSComponent {
 
     @Override
     public void run() {
+
+        int lastDayMonth = time.getActualMaximum(Attribute.Calendar.DAY_OF_MONTH);
+        int lastDayYear = time.getActualMaximum(Attribute.Calendar.DAY_OF_YEAR);
+        int currentDayMonth = time.get(Attribute.Calendar.DAY_OF_MONTH);
+        int currentDayYear = time.get(Attribute.Calendar.DAY_OF_YEAR);
+
         isDry.setValue(0);
         isPool.setValue(0);
         isFlowing.setValue(0);
+        lengthPeriodDry.setValue(0);
+        lengthPeriodPool.setValue(0);
+        lengthPeriodFlowing.setValue(0);
 
         if (flowState.getValue() == 1) {
             isFlowing.setValue(1);
@@ -95,20 +117,37 @@ public class FlowIndices extends JAMSComponent {
             isPool.setValue(1);
         }
 
+
         // consecutive days
         if (flowState.getValue() == 1) {
             consecutiveDaysFlowing.setValue(consecutiveDaysFlowing.getValue() + 1);
+            lengthPeriodDry.setValue(consecutiveDaysDry.getValue());
             consecutiveDaysDry.setValue(0);
+            lengthPeriodPool.setValue(consecutiveDaysPool.getValue());
             consecutiveDaysPool.setValue(0);
         } else if (flowState.getValue() == 0) {
             consecutiveDaysDry.setValue(consecutiveDaysDry.getValue() + 1);
+            lengthPeriodFlowing.setValue(consecutiveDaysFlowing.getValue());
             consecutiveDaysFlowing.setValue(0);
+            lengthPeriodPool.setValue(consecutiveDaysPool.getValue());
             consecutiveDaysPool.setValue(0);
-        } else if (flowState.getValue() == 1) {
+        } else if (flowState.getValue() == 2) {
             consecutiveDaysPool.setValue(consecutiveDaysPool.getValue() + 1);
+            lengthPeriodDry.setValue(consecutiveDaysDry.getValue());
             consecutiveDaysDry.setValue(0);
+            lengthPeriodFlowing.setValue(consecutiveDaysFlowing.getValue());
             consecutiveDaysFlowing.setValue(0);
         }
+        
+        if (currentDayMonth == lastDayMonth || currentDayYear == lastDayYear) {
+            lengthPeriodDry.setValue(consecutiveDaysDry.getValue());
+            lengthPeriodPool.setValue(consecutiveDaysPool.getValue());
+            lengthPeriodFlowing.setValue(consecutiveDaysFlowing.getValue());
+            consecutiveDaysDry.setValue(0);
+            consecutiveDaysPool.setValue(0);
+            consecutiveDaysFlowing.setValue(0);
+        }
+        
 
 //            if (successiveDaysWithoutRain.getValue() == 11.0) {
 //                isDryPeriod.setValue(11.0);
@@ -122,7 +161,6 @@ public class FlowIndices extends JAMSComponent {
 //            longestPeriodWithoutRain.setValue(Math.max(successiveDaysWithoutRain.getValue(), longestPeriodWithoutRain.getValue()));
 //            successiveDaysWithoutRain.setValue(0.0);
 //        }
-
     }
 
     @Override
