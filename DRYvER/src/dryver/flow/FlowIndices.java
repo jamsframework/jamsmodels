@@ -65,28 +65,52 @@ public class FlowIndices extends JAMSComponent {
 
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.WRITE,
             description = "number of consecutive days with dry condition")
-    public Attribute.Double consecutiveDaysDry;
+    public Attribute.Double consecutiveDaysDryYear;
 
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.WRITE,
             description = "number of consecutive days with pool condition")
-    public Attribute.Double consecutiveDaysPool;
+    public Attribute.Double consecutiveDaysPoolYear;
 
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.WRITE,
             description = "number of consecutive days with flowing condition")
-    public Attribute.Double consecutiveDaysFlowing;
-
+    public Attribute.Double consecutiveDaysFlowingYear;
+    
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.WRITE,
             description = "length of period with dry condition")
-    public Attribute.Double lengthPeriodDry;
+    public Attribute.Double lengthPeriodDryYear;
 
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.WRITE,
             description = "length of period with pool condition")
-    public Attribute.Double lengthPeriodPool;
+    public Attribute.Double lengthPeriodPoolYear;
 
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.WRITE,
             description = "length of period with flowing condition")
-    public Attribute.Double lengthPeriodFlowing;
+    public Attribute.Double lengthPeriodFlowingYear;    
+    
+    @JAMSVarDescription(access = JAMSVarDescription.AccessType.WRITE,
+            description = "number of consecutive days with dry condition")
+    public Attribute.Double consecutiveDaysDryMonth;
 
+    @JAMSVarDescription(access = JAMSVarDescription.AccessType.WRITE,
+            description = "number of consecutive days with pool condition")
+    public Attribute.Double consecutiveDaysPoolMonth;
+
+    @JAMSVarDescription(access = JAMSVarDescription.AccessType.WRITE,
+            description = "number of consecutive days with flowing condition")
+    public Attribute.Double consecutiveDaysFlowingMonth;
+
+    @JAMSVarDescription(access = JAMSVarDescription.AccessType.WRITE,
+            description = "length of period with dry condition")
+    public Attribute.Double lengthPeriodDryMonth;
+
+    @JAMSVarDescription(access = JAMSVarDescription.AccessType.WRITE,
+            description = "length of period with pool condition")
+    public Attribute.Double lengthPeriodPoolMonth;
+
+    @JAMSVarDescription(access = JAMSVarDescription.AccessType.WRITE,
+            description = "length of period with flowing condition")
+    public Attribute.Double lengthPeriodFlowingMonth;
+    
     /*
      *  Component run stages
      */
@@ -105,9 +129,12 @@ public class FlowIndices extends JAMSComponent {
         isDry.setValue(0);
         isPool.setValue(0);
         isFlowing.setValue(0);
-        lengthPeriodDry.setValue(0);
-        lengthPeriodPool.setValue(0);
-        lengthPeriodFlowing.setValue(0);
+        lengthPeriodDryYear.setValue(0);
+        lengthPeriodPoolYear.setValue(0);
+        lengthPeriodFlowingYear.setValue(0);
+        lengthPeriodDryMonth.setValue(0);
+        lengthPeriodPoolMonth.setValue(0);
+        lengthPeriodFlowingMonth.setValue(0);
 
         if (flowState.getValue() == 1) {
             isFlowing.setValue(1);
@@ -117,37 +144,70 @@ public class FlowIndices extends JAMSComponent {
             isPool.setValue(1);
         }
 
-
         // consecutive days
         if (flowState.getValue() == 1) {
-            consecutiveDaysFlowing.setValue(consecutiveDaysFlowing.getValue() + 1);
-            lengthPeriodDry.setValue(consecutiveDaysDry.getValue());
-            consecutiveDaysDry.setValue(0);
-            lengthPeriodPool.setValue(consecutiveDaysPool.getValue());
-            consecutiveDaysPool.setValue(0);
+            consecutiveDaysFlowingYear.setValue(consecutiveDaysFlowingYear.getValue() + 1);
+            lengthPeriodDryYear.setValue(consecutiveDaysDryYear.getValue());
+            consecutiveDaysDryYear.setValue(0);
+            lengthPeriodPoolYear.setValue(consecutiveDaysPoolYear.getValue());
+            consecutiveDaysPoolYear.setValue(0);
+            consecutiveDaysFlowingMonth.setValue(consecutiveDaysFlowingMonth.getValue() + 1);
+            lengthPeriodDryMonth.setValue(consecutiveDaysDryMonth.getValue());
+            consecutiveDaysDryMonth.setValue(0);
+            lengthPeriodPoolMonth.setValue(consecutiveDaysPoolMonth.getValue());
+            consecutiveDaysPoolMonth.setValue(0);
         } else if (flowState.getValue() == 0) {
-            consecutiveDaysDry.setValue(consecutiveDaysDry.getValue() + 1);
-            lengthPeriodFlowing.setValue(consecutiveDaysFlowing.getValue());
-            consecutiveDaysFlowing.setValue(0);
-            lengthPeriodPool.setValue(consecutiveDaysPool.getValue());
-            consecutiveDaysPool.setValue(0);
+            consecutiveDaysDryYear.setValue(consecutiveDaysDryYear.getValue() + 1);
+            lengthPeriodFlowingYear.setValue(consecutiveDaysFlowingYear.getValue());
+            consecutiveDaysFlowingYear.setValue(0);
+            lengthPeriodPoolYear.setValue(consecutiveDaysPoolYear.getValue());
+            consecutiveDaysPoolYear.setValue(0);
+            consecutiveDaysDryMonth.setValue(consecutiveDaysDryMonth.getValue() + 1);
+            lengthPeriodFlowingMonth.setValue(consecutiveDaysFlowingMonth.getValue());
+            consecutiveDaysFlowingMonth.setValue(0);
+            lengthPeriodPoolMonth.setValue(consecutiveDaysPoolMonth.getValue());
+            consecutiveDaysPoolMonth.setValue(0);
         } else if (flowState.getValue() == 2) {
-            consecutiveDaysPool.setValue(consecutiveDaysPool.getValue() + 1);
-            lengthPeriodDry.setValue(consecutiveDaysDry.getValue());
-            consecutiveDaysDry.setValue(0);
-            lengthPeriodFlowing.setValue(consecutiveDaysFlowing.getValue());
-            consecutiveDaysFlowing.setValue(0);
+            consecutiveDaysPoolYear.setValue(consecutiveDaysPoolYear.getValue() + 1);
+            lengthPeriodDryYear.setValue(consecutiveDaysDryYear.getValue());
+            consecutiveDaysDryYear.setValue(0);
+            lengthPeriodFlowingYear.setValue(consecutiveDaysFlowingYear.getValue());
+            consecutiveDaysFlowingYear.setValue(0);
+            consecutiveDaysPoolMonth.setValue(consecutiveDaysPoolMonth.getValue() + 1);
+            lengthPeriodDryMonth.setValue(consecutiveDaysDryMonth.getValue());
+            consecutiveDaysDryMonth.setValue(0);
+            lengthPeriodFlowingMonth.setValue(consecutiveDaysFlowingMonth.getValue());
+            consecutiveDaysFlowingMonth.setValue(0);
         }
-        
-        if (currentDayMonth == lastDayMonth || currentDayYear == lastDayYear) {
-            lengthPeriodDry.setValue(consecutiveDaysDry.getValue());
-            lengthPeriodPool.setValue(consecutiveDaysPool.getValue());
-            lengthPeriodFlowing.setValue(consecutiveDaysFlowing.getValue());
-            consecutiveDaysDry.setValue(0);
-            consecutiveDaysPool.setValue(0);
-            consecutiveDaysFlowing.setValue(0);
+
+        if (currentDayYear == lastDayYear) {
+            if (lengthPeriodDryYear.getValue() == 0) {
+                lengthPeriodDryYear.setValue(consecutiveDaysDryYear.getValue());
+            }
+            if (lengthPeriodPoolYear.getValue() == 0) {
+                lengthPeriodPoolYear.setValue(consecutiveDaysPoolYear.getValue());
+            }
+            if (lengthPeriodFlowingYear.getValue() == 0) {
+                lengthPeriodFlowingYear.setValue(consecutiveDaysFlowingYear.getValue());
+            }
+            consecutiveDaysDryYear.setValue(0);
+            consecutiveDaysPoolYear.setValue(0);
+            consecutiveDaysFlowingYear.setValue(0);
         }
-        
+        if (currentDayMonth == lastDayMonth) {
+            if (lengthPeriodDryMonth.getValue() == 0) {
+                lengthPeriodDryMonth.setValue(consecutiveDaysDryMonth.getValue());
+            }
+            if (lengthPeriodPoolMonth.getValue() == 0) {
+                lengthPeriodPoolMonth.setValue(consecutiveDaysPoolMonth.getValue());
+            }
+            if (lengthPeriodFlowingMonth.getValue() == 0) {
+                lengthPeriodFlowingMonth.setValue(consecutiveDaysFlowingMonth.getValue());
+            }
+            consecutiveDaysDryMonth.setValue(0);
+            consecutiveDaysPoolMonth.setValue(0);
+            consecutiveDaysFlowingMonth.setValue(0);
+        }
 
 //            if (successiveDaysWithoutRain.getValue() == 11.0) {
 //                isDryPeriod.setValue(11.0);
