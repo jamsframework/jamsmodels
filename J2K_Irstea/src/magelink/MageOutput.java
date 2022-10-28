@@ -80,7 +80,7 @@ public class MageOutput extends JAMSComponent {
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
             description = "Description")
-    public Attribute.String mageReachName;
+    public Attribute.Double mageBIEF;
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
             description = "Description")
@@ -201,12 +201,12 @@ public class MageOutput extends JAMSComponent {
 
                 for (Double reachID : reachList) {
                     double[] startEnd = startEndMap.get(reachID);
-                    writer.write(String.format(Locale.US, "$%10.0f%10.3f%10.3f", reachID, startEnd[0], startEnd[1]));
+                    writer.write(String.format(Locale.US, "$%3.0f%16.0f%10.0f", reachID, startEnd[0], startEnd[1]));
                     writer.newLine();
 
                     List<double[]> ts = reachInFlows.get(reachID);
                     for (double[] result : ts) {
-                        writer.write(String.format(Locale.US, "%10.0f%10.6f", result[0], result[1]));
+                        writer.write(String.format(Locale.US, "%10.0f%10.3f", result[0], result[1]));
                         writer.newLine();
                     }
                 }
@@ -249,7 +249,7 @@ public class MageOutput extends JAMSComponent {
 
                     List<double[]> ts = nodeOutputs.get(reachID);
                     for (double[] result : ts) {
-                        writer.write(String.format(Locale.US, "%10.0f%10.6f", result[0], result[1]));
+                        writer.write(String.format(Locale.US, "%10.0f%10.3f", result[0], result[1]));
                         writer.newLine();
                     }
                 }

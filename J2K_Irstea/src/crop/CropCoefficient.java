@@ -24,11 +24,12 @@ import jams.model.*;
  */
  @JAMSComponentDescription(
         title="CropCoeff",
-        author="Flora Branger",
+        author="Flora Branger, Louise Mimeau",
         description="CropCoeff"
          + "Component for calculation of Potential Evapotranspiration (MaxEt)"
          + "according to Penman Monteith RefET and a crop coeff"
-         + "following the FAO method",
+         + "following the FAO method"
+         + "+ conversion of PET from mm to L",
         date = "2012-04-17",
         version = "0.1_0"
         )
@@ -69,7 +70,7 @@ public class CropCoefficient extends JAMSComponent {
      @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
             description = "PotET",
-            unit = "mm"
+            unit = "L"
             )
             public Attribute.Double PotET;
     
