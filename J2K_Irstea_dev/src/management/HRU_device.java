@@ -104,24 +104,24 @@ public class HRU_device extends JAMSComponent {
     // Percentage of RD1 to flow into device 
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ, // type of access, i.e. READ, WRITE, READWRITE
-            description = "% of RD1 from HRU area to device" // description of purpose
+            description = "% of RD1 from HRU to device" // description of purpose
     )
     public Attribute.Double frac_RD1;    // for a list of attribute types, see jams.data.Attribute  
     // Percentage of RD2 to flow into device 
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ, // type of access, i.e. READ, WRITE, READWRITE
-            description = "% of RD2 from HRU area to device" // description of purpose
+            description = "% of RD2 from HRU to device" // description of purpose
     )
     public Attribute.Double frac_RD2;    // for a list of attribute types, see jams.data.Attribute 
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ, // type of access, i.e. READ, WRITE, READWRITE
-            description = "% of RG1 from HRU area to device" // description of purpose
+            description = "% of RG1 from HRU to device" // description of purpose
     )
     public Attribute.Double frac_RG1;    // for a list of attribute types, see jams.data.Attribute  
     // Percentage of RD2 to flow into device 
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ, // type of access, i.e. READ, WRITE, READWRITE
-            description = "% of RG2 from HRU area to device" // description of purpose
+            description = "% of RG2 from HRU to device" // description of purpose
     )
     public Attribute.Double frac_RG2;    // for a list of attribute types, see jams.data.Attribute 
     // Depth of the device -  to be read from parameter file
@@ -163,13 +163,43 @@ public class HRU_device extends JAMSComponent {
             unit = "L"
     )
     public Attribute.Double DeviceVol;
-    // outflow underdrain
+
+    // intercepted flow
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
             description = "Total inflow from HRU intercepted in device",
             unit = "L"
     )
     public Attribute.Double DeviceIn;
+
+    // intercepted flow
+    @JAMSVarDescription(
+            access = JAMSVarDescription.AccessType.WRITE,
+            description = "Total RD1 from HRU intercepted in device",
+            unit = "L"
+    )
+    public Attribute.Double DeviceRD1;
+
+    @JAMSVarDescription(
+            access = JAMSVarDescription.AccessType.WRITE,
+            description = "Total RD2 from HRU intercepted in device",
+            unit = "L"
+    )
+    public Attribute.Double DeviceRD2;
+    @JAMSVarDescription(
+            access = JAMSVarDescription.AccessType.WRITE,
+            description = "Total RG1 from HRU intercepted in device",
+            unit = "L"
+    )
+    public Attribute.Double DeviceRG1;
+
+    @JAMSVarDescription(
+            access = JAMSVarDescription.AccessType.WRITE,
+            description = "Total RG2 from HRU intercepted in device",
+            unit = "L"
+    )
+    public Attribute.Double DeviceRG2;
+
     // outflow underdrain
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
@@ -177,7 +207,7 @@ public class HRU_device extends JAMSComponent {
             unit = "L"
     )
     public Attribute.Double DeviceOut;
-        // poential ET
+    // poential ET
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
             description = "Potential evapotranspiration from device",
@@ -234,8 +264,9 @@ public class HRU_device extends JAMSComponent {
     public Attribute.Calendar time;
 
     //internal state variables
-    double run_Precip, run_InRD1, run_InRD2, run_InRG1, run_InRG2, run_RefET, isLin, 
-            run_Qin, run_Qrain, run_PET, run_ActET, run_Qinf, run_Qout, run_Qovf, run_actvolumeInDevice;
+    double run_Precip, run_InRD1, run_InRD2, run_InRG1, run_InRG2, run_RefET, isLin,
+            run_QRD1, run_QRD2, run_QRG1, run_QRG2, run_Qin, run_Qrain, run_PET,
+            run_ActET, run_Qinf, run_Qout, run_Qovf, run_actvolumeInDevice;
     private int seconds;
 
     /*
@@ -259,7 +290,7 @@ public class HRU_device extends JAMSComponent {
 
         // constant parameters to read	
         double g = 9.80665;
-        double Cout = deviceDisCoeff.getValue();
+        //double Cout = deviceDisCoeff.getValue();
         double H = deviceDepth.getValue();
         double fracRD1 = frac_RD1.getValue(); //fraction of RD1 in device
         double fracRD2 = frac_RD2.getValue(); //fraction of RD2 in device
@@ -279,6 +310,10 @@ public class HRU_device extends JAMSComponent {
         this.run_RefET = RefET.getValue(); // in mm!!
         this.run_actvolumeInDevice = DeviceVol.getValue();
 
+        this.run_QRD1 = 0;
+        this.run_QRD2 = 0;
+        this.run_QRG1 = 0;
+        this.run_QRG2 = 0;
         this.run_Qin = 0;
         this.run_Qrain = 0;
         this.run_PET = 0;
@@ -293,6 +328,10 @@ public class HRU_device extends JAMSComponent {
 
         // if no device (ie area == 0, do nothing and set all fluxes to zero
         if (area == 0) {
+            this.run_QRD1 = 0;
+            this.run_QRD2 = 0;
+            this.run_QRG1 = 0;
+            this.run_QRG2 = 0;
             this.run_Qin = 0;
             this.run_Qrain = 0;
             this.run_ActET = 0;
@@ -300,18 +339,21 @@ public class HRU_device extends JAMSComponent {
             this.run_Qout = 0;
             this.run_Qovf = 0;
             this.run_actvolumeInDevice = 0;
-        }
-        
-        //if not, calculate fluxes
+        } //if not, calculate fluxes
         else if (area > 0) {
-            
+
             // In flows            
             // interception of precipitation            
             this.run_Qrain = this.run_Precip * area; // rain in mm, area GI in m2 so Qrain in L
-            
+
             // interception of flows coming from the HRU
-            this.run_Qin = fracRD1 * this.run_InRD1 + fracRD2 * this.run_InRD2
-                    + fracRG1 * this.run_InRG1 + fracRG2 * this.run_InRG2; //FlowIn in L, Qin in L
+            this.run_QRD1 = fracRD1 * this.run_InRD1;
+            this.run_QRD2 = fracRD2 * this.run_InRD2;
+            this.run_QRG1 = fracRG1 * this.run_InRG1;
+            this.run_QRG2 = fracRG2 * this.run_InRG2;
+
+            this.run_Qin = this.run_QRD1 + this.run_QRD2
+                    + this.run_QRG1 + this.run_QRG2; //FlowIn in L, Qin in L
 
             // update the total water volume in device
             this.run_actvolumeInDevice = this.run_actvolumeInDevice + this.run_Qrain + this.run_Qin;
@@ -321,7 +363,7 @@ public class HRU_device extends JAMSComponent {
                 this.run_Qovf = this.run_actvolumeInDevice - MaxVolumeDevice;
                 this.run_actvolumeInDevice = MaxVolumeDevice;
             }
-            
+
             // Outflows
             // Evaporation or Evapotranspiration
             // calculate Potential evapotranspiration and convert in L
@@ -367,6 +409,10 @@ public class HRU_device extends JAMSComponent {
         DeviceOut.setValue(this.run_Qout);
         DeviceInfiltration.setValue(this.run_Qinf);
         DeviceVol.setValue(this.run_actvolumeInDevice);
+        DeviceRD1.setValue(this.run_QRD1);
+        DeviceRD2.setValue(this.run_QRD2);
+        DeviceRG1.setValue(this.run_QRG1);
+        DeviceRG2.setValue(this.run_QRG2);
         DeviceIn.setValue(this.run_Qin);
         DevicePrecip.setValue(this.run_Qrain);
         DeviceOverFlow.setValue(this.run_Qovf);
