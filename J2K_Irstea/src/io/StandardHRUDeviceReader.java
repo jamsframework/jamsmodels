@@ -64,13 +64,12 @@ public class StandardHRUDeviceReader extends JAMSComponent {
         Iterator<Attribute.Entity> HRUDeviceIterator = HRUDeviceTypes.getEntities().iterator();
         while (HRUDeviceIterator.hasNext()) {
             HRUDevice = HRUDeviceIterator.next();
-            HRUDeviceMap.put(HRUDevice.getDouble("deviceID"), HRUDevice);
+            HRUDeviceMap.put(HRUDevice.getDouble("DID"), HRUDevice);
         }
 
         Iterator<Attribute.Entity> hruIterator = hrus.getEntities().iterator();
         while (hruIterator.hasNext()) {
             e = hruIterator.next();
-
             HRUDevice = HRUDeviceMap.get(e.getDouble("deviceID"));
             e.setObject("HRUDeviceType", HRUDevice);
 
