@@ -47,24 +47,28 @@ public class HRU_device extends JAMSComponent {
             unit = "L"
     )
     public Attribute.Double InRD1;
+    
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
             description = "RD2 from HRU",
             unit = "L"
     )
     public Attribute.Double InRD2;
+    
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
             description = "RG1 from HRU",
             unit = "L"
     )
     public Attribute.Double InRG1;
+    
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
             description = "RG2 from HRU",
             unit = "L"
     )
     public Attribute.Double InRG2;
+    
     // Total precipitation (including snow)
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
@@ -72,6 +76,7 @@ public class HRU_device extends JAMSComponent {
             unit = "mm"
     )
     public Attribute.Double InPrecip;
+    
     // Reference evapotranspiration // watch out this is in mm
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ, // type of access, i.e. READ, WRITE, READWRITE
@@ -82,65 +87,68 @@ public class HRU_device extends JAMSComponent {
     )
     public Attribute.Double RefET;
 
-// Parameters
-    @JAMSVarDescription(
-            access = JAMSVarDescription.AccessType.READ, // type of access, i.e. READ, WRITE, READWRITE
-            description = "ID of HRU device" // description of purpose
-    )
-    public Attribute.Double deviceID;    // for a list of attribute types, see jams.data.Attribute  
-
+//// Parameters
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ, // type of access, i.e. READ, WRITE, READWRITE
             description = "Crop coefficient for PotET calculation" // description of purpose
     )
     public Attribute.Double deviceCropCoeff;    // for a list of attribute types, see jams.data.Attribute
 
-    // Percentage of HRU area covered by GI
-    // @JAMSVarDescription(
-    //       access = JAMSVarDescription.AccessType.READ, // type of access, i.e. READ, WRITE, READWRITE
-    //     description = "% of HRU area covered by GI" // description of purpose
-    //   )
-    // public Attribute.Double coverGI;    // for a list of attribute types, see jams.data.Attribute  
     // Percentage of RD1 to flow into device 
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ, // type of access, i.e. READ, WRITE, READWRITE
             description = "% of RD1 from HRU to device" // description of purpose
     )
     public Attribute.Double frac_RD1;    // for a list of attribute types, see jams.data.Attribute  
+    
     // Percentage of RD2 to flow into device 
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ, // type of access, i.e. READ, WRITE, READWRITE
             description = "% of RD2 from HRU to device" // description of purpose
     )
     public Attribute.Double frac_RD2;    // for a list of attribute types, see jams.data.Attribute 
+    
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ, // type of access, i.e. READ, WRITE, READWRITE
             description = "% of RG1 from HRU to device" // description of purpose
     )
     public Attribute.Double frac_RG1;    // for a list of attribute types, see jams.data.Attribute  
+    
     // Percentage of RD2 to flow into device 
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ, // type of access, i.e. READ, WRITE, READWRITE
             description = "% of RG2 from HRU to device" // description of purpose
     )
     public Attribute.Double frac_RG2;    // for a list of attribute types, see jams.data.Attribute 
+    
     // Depth of the device -  to be read from parameter file
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
             description = "Device depth",
             unit = "m")
     public Attribute.Double deviceDepth;
+    
     // Device Porosity -  to be read from parameter file
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
             description = "Device porosity",
             unit = "-")
     public Attribute.Double devicePorosity;
-    // Hydraulic conductivity of underlying soil test
+    
+    // Hydraulic conductivity of underlying soil - to be read from parameter file
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
             description = "Hydraulic conductivity of underlying soil",
             unit = "m/s"
     )
     public Attribute.Double deviceKs;
+    
+    // Initial volume stored in device 
+    @JAMSVarDescription(
+            access = JAMSVarDescription.AccessType.READ,
+            description = "Initial water volume stored in Device as fraction of max volume",
+            unit = "-"
+    )
+    public Attribute.Double DeviceInitVol;
+    
     // area of device in HRU
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
@@ -148,22 +156,32 @@ public class HRU_device extends JAMSComponent {
             unit = "m2"
     )
     public Attribute.Double deviceArea;
-    // Device Discharge coefficient
+    
+    // isLined
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            description = "Device discharge coefficient controlling outflow",
+            description = "Is Lined ?",
             unit = "-"
     )
-    public Attribute.Double deviceDisCoeff;
-    // Output variables
+    public Attribute.Double isLined;
+    
+//    // Device Discharge coefficient
+//    @JAMSVarDescription(
+//            access = JAMSVarDescription.AccessType.READ,
+//            description = "Device discharge coefficient controlling outflow",
+//            unit = "-"
+//    )
+//    public Attribute.Double deviceDisCoeff;
+    
+    // State and output variables
     // volume stored in device 
     @JAMSVarDescription(
-            access = JAMSVarDescription.AccessType.WRITE,
+            access = JAMSVarDescription.AccessType.READWRITE,
             description = "Water volume stored in Device",
             unit = "L"
     )
     public Attribute.Double DeviceVol;
-
+    
     // intercepted flow
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
@@ -203,24 +221,27 @@ public class HRU_device extends JAMSComponent {
     // outflow underdrain
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
-            description = "Outflow from device",
+            description = "Emptying outflow from device",
             unit = "L"
     )
     public Attribute.Double DeviceOut;
-    // poential ET
+    
+    // potential ET
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
             description = "Potential evapotranspiration from device",
             unit = "L"
     )
     public Attribute.Double DevicePET;
-    // outflow ET
+    
+    // actual ET
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
             description = "Actual evapotranspiration from device",
             unit = "L"
     )
     public Attribute.Double DeviceActET;
+    
     // outflow infiltration
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
@@ -228,6 +249,7 @@ public class HRU_device extends JAMSComponent {
             unit = "L"
     )
     public Attribute.Double DeviceInfiltration;
+    
     // rain in GI
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
@@ -235,6 +257,7 @@ public class HRU_device extends JAMSComponent {
             unit = "L"
     )
     public Attribute.Double DevicePrecip;
+    
     // overflow when GI is full
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
@@ -242,51 +265,60 @@ public class HRU_device extends JAMSComponent {
             unit = "L"
     )
     public Attribute.Double DeviceOverFlow;
-    // isLined
+    
+   // time variables used for initialization
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            description = "Is Lined ?",
-            unit = "-"
+            description = "Current time"
     )
-    public Attribute.Double isLined;
-    //timestep
-    @JAMSVarDescription(
-            access = JAMSVarDescription.AccessType.READ,
-            description = "time interval",
-            unit = "d")
-    public Attribute.TimeInterval dt;
-
-//current timestep
-    @JAMSVarDescription(
-            access = JAMSVarDescription.AccessType.READ,
-            description = "Current time step",
-            unit = "d")
     public Attribute.Calendar time;
 
+    @JAMSVarDescription(
+            access = JAMSVarDescription.AccessType.READ,
+            description = "The time interval"
+    )
+    public Attribute.TimeInterval timeInterval;
+    
+//    //timestep
+//    @JAMSVarDescription(
+//            access = JAMSVarDescription.AccessType.READ,
+//            description = "time interval",
+//            unit = "d")
+//    public Attribute.TimeInterval dt;
+
+//current timestep
+//    @JAMSVarDescription(
+//            access = JAMSVarDescription.AccessType.READ,
+//            description = "Current time step",
+//            unit = "d")
+//    public Attribute.Calendar time;
+
     //internal state variables
-    double run_Precip, run_InRD1, run_InRD2, run_InRG1, run_InRG2, run_RefET, isLin,
+    double run_Precip, run_InRD1, run_InRD2, run_InRG1, run_InRG2, run_RefET,
             run_QRD1, run_QRD2, run_QRG1, run_QRG2, run_Qin, run_Qrain, run_PET,
             run_ActET, run_Qinf, run_Qout, run_Qovf, run_actvolumeInDevice;
-    private int seconds;
+    //private int seconds;
 
     /*
      *  Component run stages
      */
     @Override
     public void init() {
-        if (dt.getTimeUnit() == GregorianCalendar.MINUTE) {
-            seconds = 60 * dt.getTimeUnitCount();
-        } else if (dt.getTimeUnit() == GregorianCalendar.HOUR) {
-            seconds = 3600 * dt.getTimeUnitCount();
-        } else if (dt.getTimeUnit() == GregorianCalendar.DAY_OF_YEAR) {
-            seconds = 24 * 3600 * dt.getTimeUnitCount();
-        } else if (dt.getTimeUnit() == GregorianCalendar.MONTH) {
-            seconds = time.getActualMaximum(GregorianCalendar.DAY_OF_MONTH) * 24 * 3600 * dt.getTimeUnitCount();
-        }
+//        if (dt.getTimeUnit() == GregorianCalendar.MINUTE) {
+//            seconds = 60 * dt.getTimeUnitCount();
+//        } else if (dt.getTimeUnit() == GregorianCalendar.HOUR) {
+//            seconds = 3600 * dt.getTimeUnitCount();
+//        } else if (dt.getTimeUnit() == GregorianCalendar.DAY_OF_YEAR) {
+//            seconds = 24 * 3600 * dt.getTimeUnitCount();
+//        } else if (dt.getTimeUnit() == GregorianCalendar.MONTH) {
+//            seconds = time.getActualMaximum(GregorianCalendar.DAY_OF_MONTH) * 24 * 3600 * dt.getTimeUnitCount();
+//        }
     }
 
     @Override
     public void run() {
+        
+
 
         // constant parameters to read	
         double g = 9.80665;
@@ -301,6 +333,17 @@ public class HRU_device extends JAMSComponent {
         double area = deviceArea.getValue();
         double Ks = deviceKs.getValue();
         double CropCoeff = deviceCropCoeff.getValue();
+        double isLin = isLined.getValue();
+        
+        //Calculate max volume of device in L; area and H in m -> m3, convert to L
+        double MaxVolumeDevice = p * H * area * 1000;
+        
+        //Initialize device volume
+        String Date = time.toString();
+        String Start = timeInterval.getStart().toString();
+        if ((Date.equals(Start))) {
+            this.DeviceVol.setValue(this.DeviceInitVol.getValue()*MaxVolumeDevice);
+        }
 
         this.run_Precip = InPrecip.getValue();// in mm!!
         this.run_InRD1 = InRD1.getValue();
@@ -321,10 +364,9 @@ public class HRU_device extends JAMSComponent {
         this.run_Qout = 0;
         this.run_Qovf = 0;
         this.run_Qinf = 0; //infiltration flux set to zero
-        this.isLin = isLined.getValue();
 
-        //Calculate max volume of GI;
-        double MaxVolumeDevice = p * H * area * 1000;
+
+        
 
         // if no device (ie area == 0, do nothing and set all fluxes to zero
         if (area == 0) {
@@ -364,6 +406,8 @@ public class HRU_device extends JAMSComponent {
                 this.run_actvolumeInDevice = MaxVolumeDevice;
             }
 
+
+
             // Outflows
             // Evaporation or Evapotranspiration
             // calculate Potential evapotranspiration and convert in L
@@ -373,9 +417,9 @@ public class HRU_device extends JAMSComponent {
 
             // Infiltration 
             // /!\ need to change 3600 by variable 'seconds' defined earlier
-            if (this.isLin == 1) {
+            if (isLin == 1) {
                 this.run_Qinf = 0;
-            } else if (this.isLin == 0) {
+            } else if (isLin == 0) {
                 if (this.run_actvolumeInDevice > 0) {
                     this.run_Qinf = Math.min(area * Ks * 1000 * 3600, this.run_actvolumeInDevice); //area in m2, Kssoil m/s, Qinf in L
                 } else if (this.run_actvolumeInDevice == 0) {
@@ -383,15 +427,13 @@ public class HRU_device extends JAMSComponent {
                 }//  L
             }
 
-            // what if there is not enough water for ET and infiltration? split as a proportion of
-            double share_Qet = this.run_ActET / (this.run_ActET + this.run_Qinf + 0.00001);
-            double share_Qinf = this.run_Qinf / (this.run_ActET + this.run_Qinf + 0.00001);
-
+            // what if there is not enough water for ET and infiltration? split as a proportion
             if (this.run_ActET + this.run_Qinf > this.run_actvolumeInDevice) {
+                double share_Qet = this.run_ActET / (this.run_ActET + this.run_Qinf + 0.00001);
+                double share_Qinf = this.run_Qinf / (this.run_ActET + this.run_Qinf + 0.00001);
 
                 this.run_ActET = this.run_actvolumeInDevice * share_Qet;
                 this.run_Qinf = this.run_actvolumeInDevice * share_Qinf;
-
             }
 
             // update volume
