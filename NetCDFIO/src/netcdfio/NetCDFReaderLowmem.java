@@ -1,5 +1,5 @@
 /*
- * NetCDFReader.java
+ * NetCDFReaderLowmem.java
  * Created on 17.01.2023, 22:04:20
  *
  * This file is part of JAMS
@@ -21,7 +21,6 @@
  */
 package netcdfio;
 
-import jams.JAMS;
 import jams.data.*;
 import jams.model.*;
 import java.io.FileNotFoundException;
@@ -51,7 +50,7 @@ import ucar.nc2.Variable;
 @VersionComments(entries = {
     @VersionComments.Entry(version = "1.0_0", comment = "Initial version")
 })
-public class NetCDFReader extends JAMSComponent {
+public class NetCDFReaderLowmem extends JAMSComponent {
 
     /*
      *  Component attributes
@@ -111,20 +110,15 @@ public class NetCDFReader extends JAMSComponent {
     List<Variable> vars = new ArrayList();
     List<List<Dimension>> varDims = new ArrayList();
     Dimension time, space;
+    int index1, index2;
     Map<Long, Integer> timeMap = new HashMap();
     Map<Long, Integer> spaceMap = new HashMap();
-    Array[] dataArray;
-    double[] missingDataValues;
 
     /*
      *  Component run stages
      */
     @Override
     public void init() {
-        
-        dataArray = new Array[varNames.length];
-        missingDataValues = new double[varNames.length];
-        
         try {
             ncfile = NetcdfFiles.open(fileName.getValue());
 
@@ -153,10 +147,10 @@ public class NetCDFReader extends JAMSComponent {
             }
 
             for (int i = 0; i < spaceValues.getSize(); i++) {
+//                System.out.println(spaceValues.getInt(i));
                 spaceMap.put(spaceValues.getLong(i), i);
             }
 
-            int i = 0;
             List<Variable> variables = ncfile.getVariables();
             for (Attribute.String varName : varNames) {
                 Variable var = ncfile.findVariable(varName.getValue());
@@ -172,10 +166,16 @@ public class NetCDFReader extends JAMSComponent {
                 }
 
                 vars.add(var);
-                ucar.nc2.Attribute fillValue = var.findAttribute("_FillValue");
-                if (fillValue != null) {
-                    missingDataValues[i++] = fillValue.getNumericValue().doubleValue();
-                }
+//                List<Dimension> dims = var.getDimensions();
+//                varDims.add(dims);
+//
+//                for (Dimension dim : dims) {
+//                    System.out.println(dim);
+//                }
+//
+//                System.out.println(var.getShape()[0]);
+//                System.out.println(var.getShape()[1]);
+
             }
         } catch (FileNotFoundException ex) {
             getModel().getRuntime().sendHalt("Error reading NetCDF file " + fileName.getValue() + "\n" + ex);
@@ -186,7 +186,6 @@ public class NetCDFReader extends JAMSComponent {
 
     long oldMillis = -1;
     int tIndex, sIndex;
-    
 
     @Override
     public void run() throws IOException, InvalidRangeException {
@@ -195,20 +194,15 @@ public class NetCDFReader extends JAMSComponent {
         if (millis != oldMillis) {
             oldMillis = millis;
             tIndex = timeMap.get(currentTime.getTimeInMillis());
-            int[] origin = new int[]{0, tIndex};
-            int[] shape = new int[]{space.getLength(), 1};
-            for (int i = 0; i < vars.size(); i++) {
-                dataArray[i] = vars.get(i).read(origin, shape);
-    //            System.out.println(value);
-            }
         }
-        
         sIndex = spaceMap.get(currentEntity.getId());
+
+        int[] origin = new int[]{sIndex, tIndex};
+        int[] shape = new int[]{1, 1};
+
         for (int i = 0; i < vars.size(); i++) {
-            double value = dataArray[i].getDouble(sIndex);
-            if (value == missingDataValues[i]) {
-                value = JAMS.getMissingDataValue();
-            }
+            Array dataArray = vars.get(i).read(origin, shape);
+            double value = dataArray.getDouble(0);
             values[i].setValue(value);
         }
 
