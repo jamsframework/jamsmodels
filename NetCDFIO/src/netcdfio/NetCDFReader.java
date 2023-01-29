@@ -30,6 +30,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import ucar.ma2.Array;
 import ucar.ma2.InvalidRangeException;
 import ucar.nc2.Dimension;
@@ -76,15 +78,13 @@ public class NetCDFReader extends JAMSComponent {
 
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            description = "name of temporal dimension",
-            defaultValue = "date"
+            description = "name of temporal dimension"
     )
     public Attribute.String timeDimName;
 
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            description = "name of spatial dimension",
-            defaultValue = "reachID"
+            description = "name of spatial dimension"
     )
     public Attribute.String spaceDimName;
 
@@ -94,6 +94,15 @@ public class NetCDFReader extends JAMSComponent {
             defaultValue = "1950-01-01 00:00"
     )
     public Attribute.Calendar baseDate;
+
+    @JAMSVarDescription(
+            access = JAMSVarDescription.AccessType.READ,
+            description = "Apply data chaching? Will read data of all entities "
+            + "on changing time steps in one go. Not meaningful if "
+            + "spatial iteration is outside temporal iteration.",
+            defaultValue = "false"
+    )
+    public Attribute.Boolean dataCaching;
 
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
@@ -115,27 +124,39 @@ public class NetCDFReader extends JAMSComponent {
     Map<Long, Integer> spaceMap = new HashMap();
     Array[] dataArray;
     double[] missingDataValues;
+    long oldMillis = -1;
+    int tIndex, sIndex;
+    Runnable runner;
+
 
     /*
      *  Component run stages
      */
     @Override
     public void init() {
-        
-        dataArray = new Array[varNames.length];
-        missingDataValues = new double[varNames.length];
-        
+
+        if (values == null) {
+            getModel().getRuntime().sendHalt("No output attributes defined!");
+            return;
+        }
+
+        dataArray = new Array[values.length];
+        missingDataValues = new double[values.length];
+
         try {
             ncfile = NetcdfFiles.open(fileName.getValue());
 
-            time = ncfile.findDimension(timeDimName.getValue());
-            space = ncfile.findDimension(spaceDimName.getValue());
+            if (timeDimName != null && spaceDimName != null) {
+                time = ncfile.findDimension(timeDimName.getValue());
+                space = ncfile.findDimension(spaceDimName.getValue());
+            }
 
             if (time == null || space == null) {
                 List<Dimension> dimensions = ncfile.getDimensions();
                 String error = "Please choose one of the following dimensions:";
                 for (Dimension dimension : dimensions) {
-                    error += "\nDimension: " + dimension;
+                    String unit = ncfile.findVariable(dimension.getName()).getUnitsString();
+                    error += "\nDimension: " + dimension + " [" + unit + "]";
                 }
                 getModel().getRuntime().sendHalt("Wrong dimension name. " + error);
                 return;
@@ -156,15 +177,26 @@ public class NetCDFReader extends JAMSComponent {
                 spaceMap.put(spaceValues.getLong(i), i);
             }
 
+            if (varNames == null) {
+                String error = "Please choose one or more of the following variables:";
+                List<Variable> allVars = ncfile.getVariables();
+                for (Variable variable : allVars) {
+                    error += "\nVariable: " + variable.getFullName() + " (Dimensions: " + variable.getDimensionsString() + ")";
+                }
+                getModel().getRuntime().sendHalt("Wrong variable name. " + error);
+
+                return;
+            }
+
             int i = 0;
             List<Variable> variables = ncfile.getVariables();
             for (Attribute.String varName : varNames) {
                 Variable var = ncfile.findVariable(varName.getValue());
                 if (var == null) {
-                    String error = "Please choose one of the following variables:";
+                    String error = "Please choose one or more of the following variables:";
                     List<Variable> allVars = ncfile.getVariables();
                     for (Variable variable : allVars) {
-                        error += "\nVariable: " + variable.getName();
+                        error += "\nVariable: " + variable.getFullName() + " (Dimensions: " + variable.getDimensionsString() + ")";
                     }
                     getModel().getRuntime().sendHalt("Wrong variable name. " + error);
 
@@ -177,6 +209,13 @@ public class NetCDFReader extends JAMSComponent {
                     missingDataValues[i++] = fillValue.getNumericValue().doubleValue();
                 }
             }
+
+            if (dataCaching.getValue()) {
+                runner = run_cached;
+            } else {
+                runner = run_normal;
+            }
+
         } catch (FileNotFoundException ex) {
             getModel().getRuntime().sendHalt("Error reading NetCDF file " + fileName.getValue() + "\n" + ex);
         } catch (IOException ex) {
@@ -184,32 +223,119 @@ public class NetCDFReader extends JAMSComponent {
         }
     }
 
-    long oldMillis = -1;
-    int tIndex, sIndex;
-    
-
     @Override
     public void run() throws IOException, InvalidRangeException {
+
+        runner.run();
+
+    }
+
+    int[] origin = {0, 0};
+    int[] shape = {1, 1};
+    
+    Runnable run_normal = new Runnable() {
+        @Override
+        public void run() {
+            long millis = currentTime.getTimeInMillis();
+
+            tIndex = timeMap.get(currentTime.getTimeInMillis());
+            sIndex = spaceMap.get(currentEntity.getId());
+
+            origin[0] = sIndex;
+            origin[1] = tIndex;
+            
+            for (int i = 0; i < vars.size(); i++) {
+                double value = 0;
+                try {
+                    value = vars.get(i).read(origin, shape).getDouble(0);
+                } catch (IOException ex) {
+                    getModel().getRuntime().sendHalt("Error reading NetCDF file " + fileName.getValue() + "\n" + ex);
+                } catch (InvalidRangeException ex) {
+                    getModel().getRuntime().sendHalt("Error reading NetCDF file " + fileName.getValue() + "\n" + ex);
+                }
+                if (value == missingDataValues[i]) {
+                    value = JAMS.getMissingDataValue();
+                }
+                values[i].setValue(value);
+            }
+        }
+    };
+    
+    Runnable run_cached = new Runnable() {
+        @Override
+        public void run() {
+            long millis = currentTime.getTimeInMillis();
+            if (millis != oldMillis) {
+                oldMillis = millis;
+                tIndex = timeMap.get(currentTime.getTimeInMillis());
+//                int[] origin = new int[]{0, tIndex};
+                
+                origin[1] = tIndex;
+                shape[0] = space.getLength();
+                
+                for (int i = 0; i < vars.size(); i++) {
+                    try {
+                        dataArray[i] = vars.get(i).read(origin, shape);
+                    } catch (IOException ex) {
+                        getModel().getRuntime().sendHalt("Error reading NetCDF file " + fileName.getValue() + "\n" + ex);
+                    } catch (InvalidRangeException ex) {
+                        getModel().getRuntime().sendHalt("Error reading NetCDF file " + fileName.getValue() + "\n" + ex);
+                    }
+                }
+            }
+
+            sIndex = spaceMap.get(currentEntity.getId());
+
+            for (int i = 0; i < vars.size(); i++) {
+                double value = dataArray[i].getDouble(sIndex);
+                if (value == missingDataValues[i]) {
+                    value = JAMS.getMissingDataValue();
+                }
+                values[i].setValue(value);
+            }
+        }
+    };
+
+    @Override
+    public void cleanup() {
+    }
+
+    public void run_old() throws IOException, InvalidRangeException {
 
         long millis = currentTime.getTimeInMillis();
         if (millis != oldMillis) {
             oldMillis = millis;
             tIndex = timeMap.get(currentTime.getTimeInMillis());
-            int[] origin = new int[]{0, tIndex};
-            int[] shape = new int[]{space.getLength(), 1};
-            for (int i = 0; i < vars.size(); i++) {
-                dataArray[i] = vars.get(i).read(origin, shape);
-    //            System.out.println(value);
+            if (dataCaching.getValue()) {
+                int[] origin = new int[]{0, tIndex};
+                int[] shape = new int[]{space.getLength(), 1};
+                for (int i = 0; i < vars.size(); i++) {
+                    dataArray[i] = vars.get(i).read(origin, shape);
+                    //            System.out.println(value);
+                }
             }
         }
-        
+
         sIndex = spaceMap.get(currentEntity.getId());
-        for (int i = 0; i < vars.size(); i++) {
-            double value = dataArray[i].getDouble(sIndex);
-            if (value == missingDataValues[i]) {
-                value = JAMS.getMissingDataValue();
+
+        if (dataCaching.getValue()) {
+            for (int i = 0; i < vars.size(); i++) {
+                double value = dataArray[i].getDouble(sIndex);
+                if (value == missingDataValues[i]) {
+                    value = JAMS.getMissingDataValue();
+                }
+                values[i].setValue(value);
             }
-            values[i].setValue(value);
+        } else {
+            int[] origin = new int[]{sIndex, tIndex};
+            int[] shape = new int[]{1, 1};
+            for (int i = 0; i < vars.size(); i++) {
+                double value = vars.get(i).read(origin, shape).getDouble(0);
+                if (value == missingDataValues[i]) {
+                    value = JAMS.getMissingDataValue();
+                }
+                values[i].setValue(value);
+            }
         }
 
 //        System.out.println(tIndex + " - " + sIndex);
@@ -227,10 +353,6 @@ public class NetCDFReader extends JAMSComponent {
 //
 //            var.readScalarFloat(new int[]{0, 1});
 //        }
-    }
-
-    @Override
-    public void cleanup() {
     }
 
 }
