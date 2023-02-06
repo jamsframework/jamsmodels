@@ -144,6 +144,10 @@ public class ReachSubbasin extends JAMSComponent {
         
         for (Attribute.Entity reach : reaches.getEntities()) {            
             List<Attribute.Entity> hruList = reach2hruMap.get(reach);
+            if (hruList == null) {
+                hruList = new ArrayList();
+                getModel().getRuntime().println("Reach found without subbasin: " + reach.getId());
+            }
             Attribute.EntityCollection hrus = getModel().getRuntime().getDataFactory().createEntityCollection();
             hrus.setEntities(hruList);
             reach.setObject(subbasinEntitiesAttributeName.getValue(), hrus);
