@@ -45,14 +45,13 @@ public class ReachUpstream extends ReachSubbasin {
     /*
      *  Component attributes
      */
-
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
             description = "Name of reach downstream linkage",
             defaultValue = "to_reach"
     )
-    public Attribute.String reach2reachAttributeName;    
-    
+    public Attribute.String reach2reachAttributeName;
+
     /*
      *  Component run stages
      */
@@ -60,7 +59,7 @@ public class ReachUpstream extends ReachSubbasin {
     public void init() {
 
         super.init();
-        
+
         for (Attribute.Entity reach : reaches.getEntities()) {
             reach.setObject("__upstreamHRUs", new ArrayList<Attribute.Entity>());
         }
@@ -69,11 +68,13 @@ public class ReachUpstream extends ReachSubbasin {
 
             List<Attribute.Entity> upstreamList = (List<Attribute.Entity>) reach.getObject("__upstreamHRUs");
             List<Attribute.Entity> subbasinList = reach2hruMap.get(reach);
-            upstreamList.addAll(subbasinList);
-            
+            if (subbasinList != null) {
+                upstreamList.addAll(subbasinList);
+            }
+
             Attribute.EntityCollection hrus = getModel().getRuntime().getDataFactory().createEntityCollection();
             hrus.setEntities(upstreamList);
-            reach.setObject(subbasinEntitiesAttributeName.getValue(), hrus);            
+            reach.setObject(subbasinEntitiesAttributeName.getValue(), hrus);
 
             Attribute.Entity destReach = (Attribute.Entity) reach.getObject(reach2reachAttributeName.getValue());
             if (!destReach.isEmpty()) {
