@@ -39,12 +39,13 @@ import java.util.Calendar;
         + "and climate data source\n"
         + "2. Adjust the climate value according to the "
         + "lapse rate and elevation difference",
-        date = "2019-10-15",
+        date = "2023-02-06",
         version = "1.0_1"
 )
 @VersionComments(entries = {
     @VersionComments.Entry(version = "1.0_0", comment = "Initial version"),
-    @VersionComments.Entry(version = "1.0_1", comment = "Fixed bug in fixedMinimum/fixedMaximum evaluation")
+    @VersionComments.Entry(version = "1.0_1", comment = "Fixed bug in fixedMinimum/fixedMaximum evaluation"),
+    @VersionComments.Entry(version = "1.0_2", date = "2023-02-06", comment = "Added option to force keeping zero values")
 })
 public class LapseRateAdaptation extends JAMSComponent {
 
@@ -92,6 +93,10 @@ public class LapseRateAdaptation extends JAMSComponent {
             defaultValue = "Infinity")
     public Attribute.Double fixedMaximum;
 
+    @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
+            description = "Don't change zero values",
+            defaultValue = "False")
+    public Attribute.Boolean retainZero;    
     /*
      *  Component run stages
      */
@@ -121,7 +126,12 @@ public class LapseRateAdaptation extends JAMSComponent {
             double elevationdiff = (sourceElev.getValue() - entityElev.getValue());
 
             //result calculation
-            double result = elevationdiff * (lapseRate / 100.) + input;
+            double result;
+            if (input > 0 || !retainZero.getValue()) {
+                result = elevationdiff * (lapseRate / 100.) + input;
+            } else {
+                result = 0;
+            }
             result = Math.min(fixedMaximum.getValue(), result);
             result = Math.max(fixedMinimum.getValue(), result);
             outputValue.setValue(result);
