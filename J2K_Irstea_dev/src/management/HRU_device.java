@@ -157,14 +157,6 @@ public class HRU_device extends JAMSComponent {
     )
     public Attribute.Double deviceArea;
     
-    // isLined
-    @JAMSVarDescription(
-            access = JAMSVarDescription.AccessType.READ,
-            description = "Is Lined ?",
-            unit = "-"
-    )
-    public Attribute.Double isLined;
-    
 //    // Device Discharge coefficient
 //    @JAMSVarDescription(
 //            access = JAMSVarDescription.AccessType.READ,
@@ -333,7 +325,6 @@ public class HRU_device extends JAMSComponent {
         double area = deviceArea.getValue();
         double Ks = deviceKs.getValue();
         double CropCoeff = deviceCropCoeff.getValue();
-        double isLin = isLined.getValue();
         
         //Calculate max volume of device in L; area and H in m -> m3, convert to L
         double MaxVolumeDevice = p * H * area * 1000;
@@ -416,16 +407,11 @@ public class HRU_device extends JAMSComponent {
             this.run_ActET = Math.min(this.run_PET, this.run_actvolumeInDevice);
 
             // Infiltration 
-            // /!\ need to change 3600 by variable 'seconds' defined earlier
-            if (isLin == 1) {
-                this.run_Qinf = 0;
-            } else if (isLin == 0) {
                 if (this.run_actvolumeInDevice > 0) {
-                    this.run_Qinf = Math.min(area * Ks * 1000 * 3600, this.run_actvolumeInDevice); //area in m2, Kssoil m/s, Qinf in L
+                    this.run_Qinf = Math.min(area * Ks * 1000 * 3600, this.run_actvolumeInDevice); //area in m2, Ks m/s, Qinf in L
                 } else if (this.run_actvolumeInDevice == 0) {
                     this.run_Qinf = 0;
-                }//  L
-            }
+                }//
 
             // what if there is not enough water for ET and infiltration? split as a proportion
             if (this.run_ActET + this.run_Qinf > this.run_actvolumeInDevice) {
@@ -435,14 +421,13 @@ public class HRU_device extends JAMSComponent {
                 this.run_ActET = this.run_actvolumeInDevice * share_Qet;
                 this.run_Qinf = this.run_actvolumeInDevice * share_Qinf;
             }
-
-            // update volume
-            this.run_actvolumeInDevice = Math.max(this.run_actvolumeInDevice - this.run_Qinf - this.run_ActET, 0);
-
+            
             //Qout - underdrain flow - for the moment lets forget about that
             this.run_Qout = 0; //Math.min(Cout * Math.sqrt(2 * g * volumeInGI/volumeGI) , volumeInGI) ; // in L 
             //volumeInGI = Math.max(volumeInGI - Qout,0);
 
+            // update volume
+            this.run_actvolumeInDevice = Math.max(this.run_actvolumeInDevice - this.run_Qinf - this.run_ActET, 0);
         }
 
         // write values  
