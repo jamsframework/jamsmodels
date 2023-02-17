@@ -1,3 +1,5 @@
+package irrigation;
+
 /*
  * IrrigationDam_ApplicationAspersion.java
  * Created on 10.09.2020, 23:04:51
@@ -19,8 +21,6 @@
  * along with JAMS. If not, see <http://www.gnu.org/licenses/>.
  *
  */
-package irrigation;
-
 import jams.data.*;
 import jams.model.*;
 import java.util.HashMap;
@@ -40,7 +40,7 @@ import java.util.Map;
 @VersionComments(entries = {
     @VersionComments.Entry(version = "1.0_0", comment = "Initial version")
 })
-public class IrrigationDam_ApplicationAspersion extends JAMSComponent {
+public class IrrigationDam_ApplicationAspersion2 extends JAMSComponent {
 
     /*
      *  Component attributes
@@ -62,35 +62,42 @@ public class IrrigationDam_ApplicationAspersion extends JAMSComponent {
             description = "The subbasin reach"
     )
     public Attribute.Entity subbasinReach;
-    
-    @JAMSVarDescription(
-            access = JAMSVarDescription.AccessType.READ,
-            description = "maximum MPS",
-            unit = "L"
-    )
-    public Attribute.Double maxMPS;
 
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
             description = "state var actual MPS",
             unit = "L"
     )
-    public Attribute.Double actMPS;    
+    public Attribute.Double actMPS;
+
+    @JAMSVarDescription(
+            access = JAMSVarDescription.AccessType.READ,
+            description = "actual ET",
+            unit = "L"
+    )
+    public Attribute.Double actET;
+
+    @JAMSVarDescription(
+            access = JAMSVarDescription.AccessType.READ,
+            description = "potential ET",
+            unit = "L"
+    )
+    public Attribute.Double potET;
 
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
             description = "correction factor for irrigation applied [0,1]",
             defaultValue = "1"
     )
-    public Attribute.Double correctionFactor;    
-    
+    public Attribute.Double correctionFactor;
+
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
             description = "Name of reach dam storage attribute",
             defaultValue = "damStorage"
     )
     public Attribute.String damStorageAttributeName;
-    
+
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
             description = "Applied irrigation volume",
@@ -98,13 +105,12 @@ public class IrrigationDam_ApplicationAspersion extends JAMSComponent {
     )
     public Attribute.Double irrigationApplied;
 
-        @JAMSVarDescription(
-            access = JAMSVarDescription.AccessType.WRITE,
+    @JAMSVarDescription(
+            access = JAMSVarDescription.AccessType.READWRITE,
             description = "Irrigation demand",
             unit = "L"
     )
     public Attribute.Double demand;
-    
 
     Map<Long, Attribute.Entity> reachMap = new HashMap();
 
@@ -127,16 +133,16 @@ public class IrrigationDam_ApplicationAspersion extends JAMSComponent {
 
     @Override
     public void run() {
-        
+
         // calculation of irrigation demand
-        double demand = maxMPS.getValue() - actMPS.getValue();
-        
+        double demand = potET.getValue() - actET.getValue();
+
         // get available water from corresponding dam
         double storage = subbasinReach.getDouble(damStorageAttributeName.getValue());
-        
+
         // irrigation is the min of both
         double irrigation = Math.min(demand, storage);
-        
+
         // adapt irrigation
         irrigation *= correctionFactor.getValue();
 
@@ -147,10 +153,10 @@ public class IrrigationDam_ApplicationAspersion extends JAMSComponent {
         subbasinReach.setDouble(damStorageAttributeName.getValue(), storage - irrigation);
 
         // set irrigationApplied to the irrigation volume
-        irrigationApplied.setValue(irrigation);        
-     
-       this.demand.setValue (demand); 
-        
+        irrigationApplied.setValue(irrigation);
+
+        this.demand.setValue(demand);
+
     }
 
     @Override

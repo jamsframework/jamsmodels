@@ -1,3 +1,5 @@
+package irrigation;
+
 /*
  * IrrigationDam_Init.java
  * Created on 07.09.2020, 11:23:03
@@ -19,7 +21,7 @@
  * along with JAMS. If not, see <http://www.gnu.org/licenses/>.
  *
  */
-package irrigation;
+
 
 import jams.data.*;
 import jams.model.*;
@@ -47,7 +49,7 @@ public class IrrigationDam_Init extends JAMSComponent {
             access = JAMSVarDescription.AccessType.READ,
             description = "Dam capacity",
             defaultValue = "0",
-            unit = "m³",
+            unit = "m3",
             lowerBound = 0,
             upperBound = Double.POSITIVE_INFINITY
     )
@@ -78,6 +80,6 @@ public class IrrigationDam_Init extends JAMSComponent {
      */
     @Override
     public void initAll() {
-        damStorage.setValue(damCapacity.getValue() * 1000 * damStorageInit.getValue());
+        damStorage.setValue(damCapacity.getValue() * damStorageInit.getValue());
     }
 }
