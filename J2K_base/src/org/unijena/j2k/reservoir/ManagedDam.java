@@ -140,7 +140,7 @@ public class ManagedDam extends J2KProcessReachRouting {
         double RD1_part, RD2_part, RG1_part, RG2_part, addInPart;
 
         //relative parts of the runoff components for later redistribution
-        if (q_act_tot == 0) {
+        if (q_act_tot != 0) {
             RD1_part = RD1act / q_act_tot;
             RD2_part = RD2act / q_act_tot;
             RG1_part = RG1act / q_act_tot;
