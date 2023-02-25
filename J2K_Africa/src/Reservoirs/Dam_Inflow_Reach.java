@@ -152,7 +152,7 @@ public class Dam_Inflow_Reach extends JAMSComponent {
 
         riverInflowRG2.setValue(riverInflowRG2.getValue() * (1 - frac));
 
-        damStorage.setValue(maxInflow);
+        damStorage.setValue(damStorage.getValue() + maxInflow);
 
     }
 
