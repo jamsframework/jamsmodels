@@ -1,7 +1,7 @@
 package Isotopes;
 
 /*
- * IrrigationDam_Init.java
+ * IsotopeMixer.java
  * Created on 07.09.2020, 11:23:03
  *
  * This file is part of JAMS
@@ -88,7 +88,7 @@ public class IsotopeMixer extends JAMSComponent {
             access = JAMSVarDescription.AccessType.READ,
             description = "Actual_Mass",
             defaultValue = "0",
-            unit = "mg",
+            unit = "unitless",
             lowerBound = 0,
             upperBound = Double.NEGATIVE_INFINITY
     )
