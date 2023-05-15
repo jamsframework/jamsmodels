@@ -58,14 +58,14 @@ public class IsotopeMixer extends JAMSComponent {
             access = JAMSVarDescription.AccessType.READ,
             description = "Initial_concentration",
             defaultValue = "0",
-            unit = "L",
+            unit = "mol/L",
             lowerBound = 0,
             upperBound = Double.NEGATIVE_INFINITY
     )
     public Attribute.Double inConc;
 
     @JAMSVarDescription(
-            access = JAMSVarDescription.AccessType.READ,
+            access = JAMSVarDescription.AccessType.READWRITE,
             description = "Actual_volume",
             defaultValue = "0",
             unit = "L",
@@ -75,17 +75,17 @@ public class IsotopeMixer extends JAMSComponent {
     public Attribute.Double actVol;
 
     @JAMSVarDescription(
-            access = JAMSVarDescription.AccessType.READ,
+            access = JAMSVarDescription.AccessType.READWRITE,
             description = "Actual_concentration",
             defaultValue = "0",
-            unit = "L",
+            unit = "mol/L",
             lowerBound = 0,
             upperBound = Double.NEGATIVE_INFINITY
     )
     public Attribute.Double actConc;
 
     @JAMSVarDescription(
-            access = JAMSVarDescription.AccessType.READ,
+            access = JAMSVarDescription.AccessType.READWRITE,
             description = "Actual_Mass",
             defaultValue = "0",
             unit = "unitless",
@@ -124,7 +124,7 @@ public class IsotopeMixer extends JAMSComponent {
         this.actConc.setValue(newConcentration);
 
         // Calculate the new mass
-        double newMass = newConcentration * totalVolume * 1000;
+        double newMass = newConcentration * totalVolume;
         this.actM.setValue(newMass);
 
     }
