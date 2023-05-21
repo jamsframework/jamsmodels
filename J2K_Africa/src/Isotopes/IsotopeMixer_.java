@@ -39,7 +39,7 @@ import jams.model.*;
 @VersionComments(entries = {
     @VersionComments.Entry(version = "1.0_0", comment = "Initial version")
 })
-public class IsotopeMixer extends JAMSComponent {
+public class IsotopeMixer_ extends JAMSComponent {
 
     /*
     *   Component atrributes
@@ -52,7 +52,7 @@ public class IsotopeMixer extends JAMSComponent {
             lowerBound = 0,
             upperBound = Double.POSITIVE_INFINITY
     )
-    public Attribute.Double[] inVolA;
+    public Attribute.Double inVol;
 
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
@@ -62,54 +62,75 @@ public class IsotopeMixer extends JAMSComponent {
             lowerBound = 0,
             upperBound = Double.NEGATIVE_INFINITY
     )
-    public Attribute.Double[] inConcA;
+    public Attribute.Double inConc;
 
     @JAMSVarDescription(
-            access = JAMSVarDescription.AccessType.READ,
-            description = "intial_volume",
+            access = JAMSVarDescription.AccessType.READWRITE,
+            description = "Actual_volume",
             defaultValue = "0",
             unit = "L",
             lowerBound = 0,
             upperBound = Double.POSITIVE_INFINITY
     )
-    public Attribute.Double[] inVolB;
+    public Attribute.Double actVol;
 
     @JAMSVarDescription(
-            access = JAMSVarDescription.AccessType.READ,
-            description = "Initial_concentration",
-            defaultValue = "0",
-            unit = "mol/L",
-            lowerBound = 0,
-            upperBound = Double.NEGATIVE_INFINITY
-    )
-    public Attribute.Double[] inConcB;
-
-    @JAMSVarDescription(
-            access = JAMSVarDescription.AccessType.WRITE,
+            access = JAMSVarDescription.AccessType.READWRITE,
             description = "Actual_concentration",
             defaultValue = "0",
             unit = "mol/L",
             lowerBound = 0,
             upperBound = Double.NEGATIVE_INFINITY
     )
-    public Attribute.Double[] outConc;
+    public Attribute.Double actConc;
+
+    @JAMSVarDescription(
+            access = JAMSVarDescription.AccessType.READWRITE,
+            description = "Actual_Mass",
+            defaultValue = "0",
+            unit = "unitless",
+            lowerBound = 0,
+            upperBound = Double.NEGATIVE_INFINITY
+    )
+    public Attribute.Double actM;
 
     /*
      *  Component run stages
      */
     @Override
+    public void init() {
+
+        // Set the actual volume and concentration to the initial values
+        this.actVol.setValue(this.inVol.getValue());
+        this.actConc.setValue(this.inConc.getValue());
+    }
+
+    @Override
     public void run() {
 
-        for (int i = 0; i < inVolA.length; i++) {
-            double x;
-            if (inVolA[i].getValue() + inVolB[i].getValue() == 0)  {
-                x = 0;
-            } else {
-                x = (inConcA[i].getValue() * inVolA[i].getValue() + inConcB[i].getValue() * inVolB[i].getValue()) / (inVolA[i].getValue() + inVolB[i].getValue());
-            }
-            outConc[i].setValue(x);
-        }
+// Get the incoming volume and isotope concentration
+        double incomingVolume = this.inVol.getValue();
+        double incomingConcentration = this.inConc.getValue();
 
+        // Calculate the total volume
+        double totalVolume = this.actVol.getValue() + incomingVolume;
+
+        // Calculate the new concentration as a weighted average of the old and new concentrations
+        double newConcentration = (this.actConc.getValue() * this.actVol.getValue()
+                + incomingConcentration * incomingVolume) / totalVolume;
+
+        // Update the actual volume and concentration
+        this.actVol.setValue(totalVolume);
+        this.actConc.setValue(newConcentration);
+
+        // Calculate the new mass
+        double newMass = newConcentration * totalVolume;
+        this.actM.setValue(newMass);
+
+    }
+
+    @Override
+    public void cleanup() {
     }
 
 }

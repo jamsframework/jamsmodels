@@ -61,7 +61,7 @@ public class Dam_Inflow_Reach extends JAMSComponent {
     public Attribute.Double damCapacity;
 
     @JAMSVarDescription(
-            access = JAMSVarDescription.AccessType.READ,
+            access = JAMSVarDescription.AccessType.READWRITE,
             description = "Inflow from the river RD1",
             defaultValue = "0",
             unit = "L",
@@ -71,7 +71,7 @@ public class Dam_Inflow_Reach extends JAMSComponent {
     public Attribute.Double riverInflowRD1;
 
     @JAMSVarDescription(
-            access = JAMSVarDescription.AccessType.READ,
+            access = JAMSVarDescription.AccessType.READWRITE,
             description = "Inflow from the river RD2",
             defaultValue = "0",
             unit = "L",
@@ -81,7 +81,7 @@ public class Dam_Inflow_Reach extends JAMSComponent {
     public Attribute.Double riverInflowRD2;
 
     @JAMSVarDescription(
-            access = JAMSVarDescription.AccessType.READ,
+            access = JAMSVarDescription.AccessType.READWRITE,
             description = "Inflow from the river RG1",
             defaultValue = "0",
             unit = "L",
@@ -91,7 +91,7 @@ public class Dam_Inflow_Reach extends JAMSComponent {
     public Attribute.Double riverInflowRG1;
 
     @JAMSVarDescription(
-            access = JAMSVarDescription.AccessType.READ,
+            access = JAMSVarDescription.AccessType.READWRITE,
             description = "Inflow from the river RG2",
             defaultValue = "0",
             unit = "L",
@@ -110,15 +110,15 @@ public class Dam_Inflow_Reach extends JAMSComponent {
     )
     public Attribute.Double damStorage;
 
-    @JAMSVarDescription(
-            access = JAMSVarDescription.AccessType.READWRITE,
-            description = "Volume of water release program based on rules and storage condition",
-            defaultValue = "0",
-            unit = "L",
-            lowerBound = 0,
-            upperBound = Double.POSITIVE_INFINITY
-    )
-    public Attribute.Double releaseProgram;
+//    @JAMSVarDescription(
+//            access = JAMSVarDescription.AccessType.READWRITE,
+//            description = "Volume of water release program based on rules and storage condition",
+//            defaultValue = "0",
+//            unit = "L",
+//            lowerBound = 0,
+//            upperBound = Double.POSITIVE_INFINITY
+//    )
+//    public Attribute.Double releaseProgram;
 
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
