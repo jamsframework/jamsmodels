@@ -76,39 +76,19 @@ public class Isotope_fractionation extends JAMSComponent {
 
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            description = "atmospheric water vapor concentration",
+            description = "Precipitation water vapor concentration",
             defaultValue = "0",
-            unit = "mol/mol",
+            unit = "permil",
             lowerBound = 0,
             upperBound = Double.NEGATIVE_INFINITY
     )
     public Attribute.Double pConc;
 
     @JAMSVarDescription(
-            access = JAMSVarDescription.AccessType.READ,
-            description = "actual evapotranspiration",
-            defaultValue = "0",
-            unit = "L",
-            lowerBound = 0,
-            upperBound = Double.POSITIVE_INFINITY
-    )
-    public Attribute.Double actET;
-
-    @JAMSVarDescription(
-            access = JAMSVarDescription.AccessType.WRITE,
-            description = "actual evapotranspiration using isotopes",
-            defaultValue = "0",
-            unit = "L",
-            lowerBound = 0,
-            upperBound = Double.POSITIVE_INFINITY
-    )
-    public Attribute.Double actETiso;
-
-    @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
             description = "concentration of water in the soil",
             defaultValue = "0",
-            unit = "mol/L",
+            unit = "permil",
             lowerBound = 0,
             upperBound = Double.NEGATIVE_INFINITY
     )
@@ -116,23 +96,103 @@ public class Isotope_fractionation extends JAMSComponent {
 
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
-            description = "isotopic composition of water in the soil",
+            description = "isotopic composition of water in the atmosphere",
             defaultValue = "0",
-            unit = "mol/L",
+            unit = "permil",
             lowerBound = 0,
             upperBound = Double.NEGATIVE_INFINITY
     )
     public Attribute.Double concA;
 
     @JAMSVarDescription(
-            access = JAMSVarDescription.AccessType.READWRITE,
+            access = JAMSVarDescription.AccessType.WRITE,
             description = "isotopic composition of water evaporated from the soil",
             defaultValue = "0",
-            unit = "mol/L",
+            unit = "permil",
             lowerBound = 0,
             upperBound = Double.NEGATIVE_INFINITY
     )
     public Attribute.Double concE;
+
+    @JAMSVarDescription(
+            access = JAMSVarDescription.AccessType.READ,
+            description = "seasonality factor",
+            defaultValue = "1",
+            unit = "unitless",
+            lowerBound = 0,
+            upperBound = Double.NEGATIVE_INFINITY
+    )
+    public Attribute.Double k;
+
+    @JAMSVarDescription(
+            access = JAMSVarDescription.AccessType.READ,
+            description = "exchange factor",
+            defaultValue = "0.9",
+            unit = "unitless",
+            lowerBound = 0,
+            upperBound = Double.NEGATIVE_INFINITY
+    )
+    public Attribute.Double x;
+
+    @JAMSVarDescription(
+            access = JAMSVarDescription.AccessType.READ,
+            description = "initital soil-water Isototope composition",
+            defaultValue = "0",
+            unit = "permil",
+            lowerBound = 0,
+            upperBound = Double.NEGATIVE_INFINITY
+    )
+    public Attribute.Double init_concS;
+
+    @JAMSVarDescription(
+            access = JAMSVarDescription.AccessType.READWRITE,
+            description = "alphamas",
+            defaultValue = "0",
+            unit = "permil",
+            lowerBound = 0,
+            upperBound = Double.NEGATIVE_INFINITY
+    )
+    public Attribute.Double alphamas;
+
+    @JAMSVarDescription(
+            access = JAMSVarDescription.AccessType.READWRITE,
+            description = "epsimas",
+            defaultValue = "0",
+            unit = "permil",
+            lowerBound = 0,
+            upperBound = Double.NEGATIVE_INFINITY
+    )
+    public Attribute.Double epsimas;
+
+    @JAMSVarDescription(
+            access = JAMSVarDescription.AccessType.READWRITE,
+            description = "enrichment_slope",
+            defaultValue = "0",
+            unit = "permil",
+            lowerBound = 0,
+            upperBound = Double.NEGATIVE_INFINITY
+    )
+    public Attribute.Double enrichment_slope;
+
+    @JAMSVarDescription(
+            access = JAMSVarDescription.AccessType.READWRITE,
+            description = "dstar",
+            defaultValue = "0",
+            unit = "permil",
+            lowerBound = 0,
+            upperBound = Double.NEGATIVE_INFINITY
+    )
+    public Attribute.Double dstar;
+
+    @JAMSVarDescription(
+            access = JAMSVarDescription.AccessType.READWRITE,
+            description = "epsk_H",
+            defaultValue = "0",
+            unit = "permil",
+            lowerBound = 0,
+            upperBound = Double.NEGATIVE_INFINITY
+    )
+    public Attribute.Double epsk_H;
 
     /*
      *  Component run stages
@@ -147,34 +207,53 @@ public class Isotope_fractionation extends JAMSComponent {
         double concA = this.concA.getValue();
         double concE = this.concE.getValue();
         double concS = this.concS.getValue();
-        double actETiso = this.actETiso.getValue();
+        double alphamas = this.alphamas.getValue();
+        double epsimas = this.epsimas.getValue();
+        double epsk_H = this.epsk_H.getValue();
+        double enrichment_slope = this.enrichment_slope.getValue();
+        double dstar = this.dstar.getValue();
 
         tempK.setValue(273.13 + temp.getValue());
 
         /* a+ is the liquid-vapor equilibrium isotopic fractionation, (Horita and Wesolowski)    
          */
-        double alphamas = Math.exp(((1158.8 * Math.pow(tempK.getValue(), 3) / Math.pow(10, 9))
-                - (1620.1 * Math.pow(tempK.getValue(), 2) / Math.pow(10, 6))
-                + (794.84 * tempK.getValue() / Math.pow(10, 3)) - 161.04
-                + (2.9992 * (Math.pow(10, 9) / Math.pow(tempK.getValue(), 3)))) / Math.pow(10, 3));
-
-        /*  e+ the equilibrium isotopic separation between liquid and vapor, calculated as e+ = (a+  1);
+        alphamas = Math.exp(1 / 1000. * (1158.8 * Math.pow(tempK.getValue(), 3) / Math.pow(10, 9) - 1620.1 * Math.pow(tempK.getValue(), 2)
+                / Math.pow(10, 6) + 794.84 * tempK.getValue() / Math.pow(10, 3) - 161.04 + 2.9992 * Math.pow(10, 9) / Math.pow(tempK.getValue(), 3)));
+        /*convert to permil notation
          */
-        double epsimas = alphamas - 1;
-        /*     
-   #eK kinetic isotopic separation, 12.5 per mil for 2H on eK = nCK o q (1  h) where CK o is25.0%
-   # and 28.6% for deuterium and oxygen-18, respectively,           
+        epsimas = (alphamas - 1) * 1000;
+        /* get kinetic fractionation factors value from Merlivat (1978) #permil notation       
          */
-        double epsiK = 12.5 * (1 - (rhum.getValue() / 100));
+        epsk_H = 0.9755 * (1 - 0.9755) * 1000 * (1 - rhum.getValue());
 
-        concA = (pConc.getValue() - epsimas) / alphamas;
+        /* compute the useful variables m and dstar ('enrichment slope and limiting isotopic composition)(Gibson et al.(2016))   
+         */
+        enrichment_slope = (rhum.getValue() - Math.pow(10, -3) * (epsk_H + epsimas / alphamas)) / (1 - rhum.getValue() + Math.pow(10, -3) * epsk_H);
+        /*
+        # get atmospheric composition from precipitation-equilibrium assumption (Gibson et al., 2008)k <- 1 #seasonality factor 
+         */
+        concA = (pConc.getValue() - k.getValue() * epsimas) / (1 + epsimas * Math.pow(10, -3));
+        /*
+       this is A/B in Gonfiantini 1986
+         */
+        dstar = (rhum.getValue() * concA + epsk_H + epsimas / alphamas) / (rhum.getValue() - Math.pow(10, -3) * (epsk_H + epsimas / alphamas));
+        /*
+        compute the isotopic composition of the residual liquid,desiccating water body
+         */
+        concS = (init_concS.getValue() - dstar * Math.pow(1 - x.getValue(), enrichment_slope) + dstar);
+        /*
+        compute vapor isotopic composition (Craig and Gordon 1965 formula, with notation by Gibson 2016)permil notation
+         */
+        concE = ((concS - epsimas) / alphamas - rhum.getValue() * concA - epsk_H) / (1 - rhum.getValue() + Math.pow(10, -3) * epsk_H);
 
-        concE = ((1 / (1 - (rhum.getValue() / 100) + epsiK))
-                * ((((pConc.getValue() / 1000) - epsimas) / alphamas)
-                - ((rhum.getValue() / 100) * (concA / 1000)) - epsiK));
-
-        // Only calculate soil-water evaporation
-        actETiso = actET.getValue() - (concE / concS) * actET.getValue();
+        this.concA.setValue(concA);
+        this.concS.setValue(concS);
+        this.alphamas.setValue(alphamas);
+        this.epsimas.setValue(epsimas);
+        this.enrichment_slope.setValue(enrichment_slope);
+        this.dstar.setValue(dstar);
+        this.epsk_H.setValue(epsk_H);
+        this.concE.setValue(concE);
 
     }
 
