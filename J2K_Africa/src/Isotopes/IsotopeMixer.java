@@ -52,17 +52,17 @@ public class IsotopeMixer extends JAMSComponent {
             lowerBound = 0,
             upperBound = Double.POSITIVE_INFINITY
     )
-    public Attribute.Double[] inVolA;
+    public Attribute.Double[] volA;
 
     @JAMSVarDescription(
-            access = JAMSVarDescription.AccessType.READ,
+            access = JAMSVarDescription.AccessType.READWRITE,
             description = "Initial_concentration",
             defaultValue = "0",
             unit = "mol/L",
             lowerBound = 0,
             upperBound = Double.NEGATIVE_INFINITY
     )
-    public Attribute.Double[] inConcA;
+    public Attribute.Double[] concA;
 
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
@@ -72,27 +72,17 @@ public class IsotopeMixer extends JAMSComponent {
             lowerBound = 0,
             upperBound = Double.POSITIVE_INFINITY
     )
-    public Attribute.Double[] inVolB;
+    public Attribute.Double[] volB;
 
     @JAMSVarDescription(
-            access = JAMSVarDescription.AccessType.READ,
+            access = JAMSVarDescription.AccessType.READWRITE,
             description = "Initial_concentration",
             defaultValue = "0",
             unit = "mol/L",
             lowerBound = 0,
             upperBound = Double.NEGATIVE_INFINITY
     )
-    public Attribute.Double[] inConcB;
-
-    @JAMSVarDescription(
-            access = JAMSVarDescription.AccessType.WRITE,
-            description = "Actual_concentration",
-            defaultValue = "0",
-            unit = "mol/L",
-            lowerBound = 0,
-            upperBound = Double.NEGATIVE_INFINITY
-    )
-    public Attribute.Double[] outConc;
+    public Attribute.Double[] concB;
 
     /*
      *  Component run stages
@@ -100,16 +90,23 @@ public class IsotopeMixer extends JAMSComponent {
     @Override
     public void run() {
 
-        for (int i = 0; i < inVolA.length; i++) {
+        for (int i = 0; i < volA.length; i++) {
             double x;
-            if (inVolA[i].getValue() + inVolB[i].getValue() == 0)  {
+            if (volA[i].getValue() + volB[i].getValue() == 0)  {
                 x = 0;
             } else {
-                x = (inConcA[i].getValue() * inVolA[i].getValue() + inConcB[i].getValue() * inVolB[i].getValue()) / (inVolA[i].getValue() + inVolB[i].getValue());
+                x = (concA[i].getValue() * volA[i].getValue() + concB[i].getValue() * volB[i].getValue()) / (volA[i].getValue() + volB[i].getValue());
             }
-            outConc[i].setValue(x);
+            concA[i].setValue(x);
+            concB[i].setValue(x);
         }
 
     }
 
+    
+//    - drei Variablen in einem Mixer: LPS, MPS, DPS
+//    - Zweiwege-Mixer: LPS, MPS
+   
+    
+    
 }
