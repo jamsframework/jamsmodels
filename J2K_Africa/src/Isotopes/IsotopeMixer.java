@@ -46,6 +46,14 @@ public class IsotopeMixer extends JAMSComponent {
      */
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
+            description = "Updates both concentrations if true, otherwise "
+                    + "just concB",
+            defaultValue = "true"
+    )
+    public Attribute.Boolean bidirectional;
+
+    @JAMSVarDescription(
+            access = JAMSVarDescription.AccessType.READ,
             description = "intial_volume",
             defaultValue = "0",
             unit = "L",
@@ -97,7 +105,9 @@ public class IsotopeMixer extends JAMSComponent {
             } else {
                 x = (concA[i].getValue() * volA[i].getValue() + concB[i].getValue() * volB[i].getValue()) / (volA[i].getValue() + volB[i].getValue());
             }
-            concA[i].setValue(x);
+            if (bidirectional.getValue()) {
+                concA[i].setValue(x);
+            }
             concB[i].setValue(x);
         }
 
