@@ -175,7 +175,7 @@ public class Isotope_fractionation extends JAMSComponent {
     public Attribute.Double enrichment_slope;
 
     @JAMSVarDescription(
-            access = JAMSVarDescription.AccessType.READWRITE,
+            access = JAMSVarDescription.AccessType.WRITE,
             description = "dstar",
             defaultValue = "0",
             unit = "permil",

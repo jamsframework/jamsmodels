@@ -112,11 +112,5 @@ public class IsotopeMixer extends JAMSComponent {
         }
 
     }
-
-    
-//    - drei Variablen in einem Mixer: LPS, MPS, DPS
-//    - Zweiwege-Mixer: LPS, MPS
-   
-    
     
 }
