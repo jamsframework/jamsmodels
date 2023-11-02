@@ -82,7 +82,7 @@ public class ManagedDam extends J2KProcessReachRouting {
         if (!slopeAsProportion.getValue()) {
             slope = slope / 100;
         }
-
+        
         double RD1act = actRD1.getValue() + inRD1.getValue();
         double RD2act = actRD2.getValue() + inRD2.getValue();
         double RG1act = actRG1.getValue() + inRG1.getValue();
@@ -155,7 +155,7 @@ public class ManagedDam extends J2KProcessReachRouting {
         }
 
         //the whole outflow
-        double q_act_out = releaseVol.getValue();
+        double q_act_out = Math.min(releaseVol.getValue(), q_act_tot);
 
         //the actual outflow from the reach
         double RD1out = q_act_out * RD1_part;
@@ -207,7 +207,7 @@ public class ManagedDam extends J2KProcessReachRouting {
         actRG2.setValue(RG2act);
 
         actAddIn.setValue(addInAct);
-
+        
         outRD1.setValue(RD1out);
         outRD2.setValue(RD2out);
         outRG1.setValue(RG1out);
