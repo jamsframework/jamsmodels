@@ -641,39 +641,21 @@ import jams.model.*;
     }
     
    
-     private double calcMPSInflow(double infiltration){
-        double inflow = infiltration;
-        
-        /** updating saturations */
+    private double calcMPSInflow(double infiltration){
         this.calcSoilSaturations(false);
-        
-        /**checking if MPS can take all the water */
-        if(inflow < (this.run_maxMPS - this.run_actMPS)){ //christian: this seams wrong to me, because if this test fails mps gets all the water even if it wouldn't because of alpha .. 
-            /** if MPS is empty it takes all the water */
-            if(this.run_actMPS == 0){
-                this.run_actMPS = this.run_actMPS + inflow;
-                inflow = 0;
-            }
-            /** MPS is partly filled and gets part of the water */
-            else{
-                double alpha = this.soilDistMPSLPS.getValue();
-                //if sat_MPS is 0 the next equation would produce an error,
-                //therefore it is set to MPS_sat is set to 0.0000001 in that case
-                if(this.run_satMPS == 0)
-                    this.run_satMPS = 0.0000001;
-                double inMPS = (inflow) * (1. - Math.exp(-1*alpha / this.run_satMPS));
-                this.run_actMPS = this.run_actMPS + inMPS;
-                inflow = inflow - inMPS;
-            }
+        double run_deltaMPS = this.run_maxMPS - this.run_actMPS;
+        double inMPS = 0;
+        if(this.run_satMPS == 0){
+            inMPS = infiltration;
         }
-        /** infiltration exceeds storage capacity of MPS */
         else{
-            double deltaMPS = this.run_maxMPS - this.run_actMPS;
-            this.run_actMPS = this.run_maxMPS;
-            inflow = inflow - deltaMPS;
+            inMPS = (infiltration) * (1. - Math.exp(-1 * this.soilDistMPSLPS.getValue() / this.run_satMPS));
         }
-        
-        return inflow;
+        if (inMPS > run_deltaMPS)
+            inMPS = run_deltaMPS;
+        this.run_actMPS = this.run_actMPS + inMPS;
+        infiltration = infiltration - inMPS;
+        return infiltration;
     }
 	
     
