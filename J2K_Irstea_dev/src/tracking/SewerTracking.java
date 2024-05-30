@@ -352,7 +352,7 @@ public class SewerTracking extends JAMSComponent {
             destReachTrackedVolumeSewRG2 = TrackedVolumeSewRG2;
             destReachTrackedVolumeSewTotal = TrackedVolumeSewTotal;
             
-            destReachDoubleTrackedVolumeSewRD1.setValue(destReachTrackedVolumeSewRD1);
+            destReachDoubleTrackedVolumeSewRD1.setValue(destReachTrackedVolumeSewRD1); // couldn't this be set directly to TrackedVolumeSewRD1, skipping the previous two steps?
             destReachDoubleTrackedVolumeSewRD2.setValue(destReachTrackedVolumeSewRD2);
             destReachDoubleTrackedVolumeSewRG1.setValue(destReachTrackedVolumeSewRG1);
             destReachDoubleTrackedVolumeSewRG2.setValue(destReachTrackedVolumeSewRG2);
