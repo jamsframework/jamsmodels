@@ -233,96 +233,96 @@ public class WaterInOut_track extends JAMSComponent {
     public Attribute.DoubleArray trackedVolumeTotal_actArray;
             
     @JAMSVarDescription(
-        access = JAMSVarDescription.AccessType.READ,
+        access = JAMSVarDescription.AccessType.READWRITE,
         description = "Are there tracked sewers in the model? (1/0)"
         )
     public Attribute.Double trackSewers;
             
     @JAMSVarDescription(
-        access = JAMSVarDescription.AccessType.READ,
+        access = JAMSVarDescription.AccessType.READWRITE,
         description = "Is there a tracked waste water treatment plant in the model? (1/0)"
         )
     public Attribute.Double trackWW;
 
     @JAMSVarDescription(
-            access = JAMSVarDescription.AccessType.READ,
+            access = JAMSVarDescription.AccessType.READWRITE,
             description = "Tracked RD1 volume from Sewer in reach",
             unit = "L"
     )
     public Attribute.Double trackedVolumeSewRD1;
 
     @JAMSVarDescription(
-            access = JAMSVarDescription.AccessType.READ,
+            access = JAMSVarDescription.AccessType.READWRITE,
             description = "Tracked RD2 volume from Sewer in reach",
             unit = "L"
     )
     public Attribute.Double trackedVolumeSewRD2;
 
     @JAMSVarDescription(
-            access = JAMSVarDescription.AccessType.READ,
+            access = JAMSVarDescription.AccessType.READWRITE,
             description = "Tracked RG1 volume from Sewer in reach",
             unit = "L"
     )
     public Attribute.Double trackedVolumeSewRG1;
 
     @JAMSVarDescription(
-            access = JAMSVarDescription.AccessType.READ,
+            access = JAMSVarDescription.AccessType.READWRITE,
             description = "Tracked RG2 volume from Sewer in reach",
             unit = "L"
     )
     public Attribute.Double trackedVolumeSewRG2;
     
     @JAMSVarDescription(
-            access = JAMSVarDescription.AccessType.READ,
+            access = JAMSVarDescription.AccessType.READWRITE,
             description = "Tracked total volume from Sewer in reach",
             unit = "L"
     )
     public Attribute.Double trackedVolumeSewTotal; 
     
     @JAMSVarDescription(
-            access = JAMSVarDescription.AccessType.READ,
+            access = JAMSVarDescription.AccessType.READWRITE,
             description = "Remaining tracked RD1 volume from Sewer",
             unit = "L"
     )
     public Attribute.Double trackedVolumeSewRD1_act;
 
     @JAMSVarDescription(
-            access = JAMSVarDescription.AccessType.READ,
+            access = JAMSVarDescription.AccessType.READWRITE,
             description = "Remaining tracked RD2 volume from Sewer in reach",
             unit = "L"
     )
     public Attribute.Double trackedVolumeSewRD2_act;
 
     @JAMSVarDescription(
-            access = JAMSVarDescription.AccessType.READ,
+            access = JAMSVarDescription.AccessType.READWRITE,
             description = "Remaining tracked RG1 volume from Sewer in reach",
             unit = "L"
     )
     public Attribute.Double trackedVolumeSewRG1_act;
 
     @JAMSVarDescription(
-            access = JAMSVarDescription.AccessType.READ,
+            access = JAMSVarDescription.AccessType.READWRITE,
             description = "Remaining tracked RG2 volume from Sewer in reach",
             unit = "L"
     )
     public Attribute.Double trackedVolumeSewRG2_act;
     
     @JAMSVarDescription(
-            access = JAMSVarDescription.AccessType.READ,
+            access = JAMSVarDescription.AccessType.READWRITE,
             description = "Remaining tracked total volume from Sewer in reach",
             unit = "L"
     )
     public Attribute.Double trackedVolumeSewTotal_act;
 
     @JAMSVarDescription(
-            access = JAMSVarDescription.AccessType.READ,
+            access = JAMSVarDescription.AccessType.READWRITE,
             description = "Tracked volume from waste water treatment plant in reach",
             unit = "L"
     )
     public Attribute.Double trackedVolumeWW;
     
     @JAMSVarDescription(
-            access = JAMSVarDescription.AccessType.READ,
+            access = JAMSVarDescription.AccessType.READWRITE,
             description = "Remaining tracked volume from waste water treatment plant",
             unit = "L"
     )

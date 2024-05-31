@@ -1,5 +1,5 @@
 /*
- * AnimalWaterExtraction_track.java
+ * IrrigationWaterTransferr.java
  * Created on 13.08.2015, 16:17:09
  *
  * This file is part of JAMS
@@ -19,12 +19,11 @@
  * along with JAMS. If not, see <http://www.gnu.org/licenses/>.
  *
  */
-package AnimalWater;
+package management;
 
 import jams.data.*;
 import jams.model.*;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.List;
 
 /**
@@ -32,19 +31,20 @@ import java.util.List;
  * @author Sven Kralisch <sven.kralisch at uni-jena.de>
  */
 @JAMSComponentDescription(
-        title = "",
-        author = "Nico Hachgenei",
-        description = "Extraction of water from reaches for animal consumption"
-        + " using animal need and limit to available water"
-	+ " water comes from incoming water to the reach and water inside the reach (actRG1, etc..)."
-        + " modified for tracking version: also remove water from tracked volumes",
-        date = "2024-05-29",
+        title = "IrrigationWaterTransfer_track",
+        author = "François Tilmant + Sven Kralisch, Nico Hachgenei",
+        description = "Transfer water from reaches to HRUs depending on water"
+        + " availability and irrigation demand"
+	+ "irrigation water comes from incoming water to the reach and water inside the reach (actRG1, etc..)."
+        + " Modified for tracking: removed extracted water from tracked volumes as well."
+        + " Modified after IrrigationWaterTransfer_act version 2",
+        date = "2024-05-31",
         version = "1.0_0"
 )
 @VersionComments(entries = {
     @VersionComments.Entry(version = "1.0_0", comment = "Initial version")
 })
-public class AnimalWaterExtraction_track extends JAMSComponent {
+public class IrrigationWaterTransfer_track extends JAMSComponent {
 
     /*
      *  Component attributes
@@ -54,24 +54,6 @@ public class AnimalWaterExtraction_track extends JAMSComponent {
             description = "Reaches list"
     )
     public Attribute.EntityCollection reaches;
-    
-    @JAMSVarDescription(
-            access = JAMSVarDescription.AccessType.READ,
-            description = "Current time"
-            )
-            public Attribute.Calendar time;
-                
-    @JAMSVarDescription(
-            access = JAMSVarDescription.AccessType.READ,
-            description = "Julian day of beginning of summer (hot, dry conditions)"
-            )
-            public Attribute.Double summerStart;
-                
-    @JAMSVarDescription(
-            access = JAMSVarDescription.AccessType.READ,
-            description = "Julian day of end of summer (hot, dry conditions)"
-            )
-            public Attribute.Double summerEnd;
 
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
@@ -97,59 +79,81 @@ public class AnimalWaterExtraction_track extends JAMSComponent {
     )
     public Attribute.Double inRG2;
     
-    @JAMSVarDescription(
+        @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
             description = "actRD1 component in reach"
     )
     public Attribute.Double actRD1;
         
-    @JAMSVarDescription(
+        @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
             description = "actRD2 component in reach"
     )
     public Attribute.Double actRD2;
         
-    @JAMSVarDescription(
+            @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
             description = "actRG1 component in reach"
     )
     public Attribute.Double actRG1;
             
-    @JAMSVarDescription(
+                @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
             description = "actRG2 component in reach"
     )
     public Attribute.Double actRG2;
 
-    @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
-            description = "Ratio of water available for animals / water present in the reach (actR..)",
-            defaultValue = "1.0"
+    @JAMSVarDescription(
+            access = JAMSVarDescription.AccessType.READ,
+            description = "Name of list of irrigated HRUs in reach entities",
+            defaultValue = "irrigationEntities"
+    )
+    public Attribute.String irrigationEntitiesListName;
+
+    @JAMSVarDescription(
+            access = JAMSVarDescription.AccessType.READ,
+            description = "Name of attribute that stores irrigation demand of an HRU - plant water requirement / efficiency",
+            defaultValue = "irrigationDemand"
+    )
+    public Attribute.String irrigationDemandName;
+    
+    @JAMSVarDescription(
+            access = JAMSVarDescription.AccessType.READ,
+            description = "Name of attribute that stores water requirements of an HRU - the real plant requirements",
+            defaultValue = "waterRequirements"
+    )
+    public Attribute.String waterRequirementsName;
+    
+    @JAMSVarDescription(
+            access = JAMSVarDescription.AccessType.READ,
+            description = "Name of attribute that stores the irrigation water delivered HRU (totalTransfer minus losses due to efficiency)",
+            defaultValue = "irrigationWater"
+    )
+    public Attribute.String irrigationWaterName;
+
+            @JAMSVarDescription(
+            access = JAMSVarDescription.AccessType.READ,
+            description = "Ratio of water available for irrigation / water present in the reach (actR..)"
     )
     public Attribute.Double actPrel;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
-            description = "Total demand of water for animal drinking. For verification purposes"
+            description = "Total demand of water for irrigation, including the enhancement by poor efficiency"
     )
     public Attribute.Double totalDemand;
 
     @JAMSVarDescription(
-            access = JAMSVarDescription.AccessType.READWRITE,
-            description = "volume extracted for animals, cummulative -> all reaches"
-    )
-    public Attribute.Double animalExtractedAll;
-
-    @JAMSVarDescription(
-            access = JAMSVarDescription.AccessType.READWRITE,
-            description = "volume extracted for animals from current reach"
-    )
-    public Attribute.Double animalExtractedR;
-    
-    @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
-            description = "Total water in the reach available for irrigation"
+            description = "Total irrigation transfer (= prelemenents, enhanced by poor efficiency)"
     )
-    public Attribute.Double totalAvail;
+    public Attribute.Double totalTransfer;
+    
+        @JAMSVarDescription(
+            access = JAMSVarDescription.AccessType.WRITE,
+            description = "Total input in the reach"
+    )
+    public Attribute.Double totalInput;
     
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
         description = "Array of reach names (IDs)")
@@ -311,8 +315,6 @@ public class AnimalWaterExtraction_track extends JAMSComponent {
             unit = "L"
     )
     public Attribute.Double trackedVolumeWW_act;
-            
-    
 
     /*
      *  Component run stages
@@ -384,39 +386,44 @@ public class AnimalWaterExtraction_track extends JAMSComponent {
                 listIndex.add(i);
             }
         }
-        // check if animals are drinking from this reach --> not in here, but add switch context for this
-        
-        // calculate water available for animal drinking
-        double totalIn = inRD1.getValue() + inRD2.getValue() + inRG1.getValue() + inRG2.getValue();
-        double totalAct = this.actPrel.getValue() * (actRD1.getValue() + actRD2.getValue() + actRG1.getValue() + actRG2.getValue()); // water in the reach that is available for animal needs
-        double totalAv = totalIn + totalAct; // all available water for animal drinking
-        this.totalAvail.setValue(totalIn + totalAct); // all available water for animal drinking
-        double totalDemand = 0;
-        
-        // check season in order to decide which quantity animals drink
-        int jDay = time.get(Calendar.DAY_OF_YEAR);
-        if (jDay >= summerStart.getValue() && jDay <= summerEnd.getValue()) {
-            totalDemand = currentReach.getDouble("cons_su");
-        } else {
-            totalDemand = currentReach.getDouble("cons_wi");
+
+        //check if this reach even has irrigated HRUs in its catchment
+        if (!currentReach.existsAttribute(irrigationEntitiesListName.getValue())) {
+            double totalIn = inRD1.getValue() + inRD2.getValue() + inRG1.getValue() + inRG2.getValue();
+            double totalAct = this.actPrel.getValue() * (actRD1.getValue() + actRD2.getValue() + actRG1.getValue() + actRG2.getValue());
+            this.totalInput.setValue(totalIn + totalAct); // IG : ACHTUNG, cette variable n'est pas à jour !!
+            return;
         }
+        double totalIn = inRD1.getValue() + inRD2.getValue() + inRG1.getValue() + inRG2.getValue();
+        double totalAct = this.actPrel.getValue() * (actRD1.getValue() + actRD2.getValue() + actRG1.getValue() + actRG2.getValue()); // eau du reach dispo pour l'irrigation.
+        double totalAv = totalIn + totalAct; // all available water
+        this.totalInput.setValue(totalIn + totalAct); // eau disponible pour l'irrigation à ce pas de temps
+        //this.totalInput.setValue(totalIn);
+        double totalDemand = 0;
+
+        List<Attribute.Entity> l = (List) currentReach.getObject(irrigationEntitiesListName.getValue());
+        for (Attribute.Entity hru : l) {
+            double demand = hru.getDouble(irrigationDemandName.getValue());
+            totalDemand += demand;
+        }
+
         this.totalDemand.setValue(totalDemand);
-        
+
         //calculate proportion of total water that is needed
-        if (totalAv != 0.0){ // if there is water available
-            if (totalIn != 0){ // if there is water coming into reach
+        if (totalAv != 0){ // if there is water avilable (in and/or act)
+            if (totalIn != 0){ // if there is water coming in
 
                 double frac = totalDemand /totalIn;
 
                 if (frac <= 1) {
 
-                    //we can cover all only with input to the reach, reduce the components accordingly
+                    //we can cover all only with in to the reach, reduce the components accordingly
                     inRD1.setValue(inRD1.getValue() * (1 - frac));
                     inRD2.setValue(inRD2.getValue() * (1 - frac));
                     inRG1.setValue(inRG1.getValue() * (1 - frac));
                     inRG2.setValue(inRG2.getValue() * (1 - frac));
-                    animalExtractedR.setValue(totalDemand);
-                    
+                    totalTransfer.setValue(totalDemand);
+
                     // reduce tracked volumes proportionally
                     for(int i : listIndex){
                         ArrayTrackedVolumeRD1[i] = ArrayTrackedVolumeRD1[i] * (1 - frac);
@@ -439,15 +446,15 @@ public class AnimalWaterExtraction_track extends JAMSComponent {
                     }
 
                 } else {
-                    //looking if we can cover the demand by including usable part of act...
+                    //looking if we can cover the demand by including part of act...
                     frac = totalDemand / (totalIn+totalAct);
 
-                    //we can cover only part of the demand with input, reduce the components to 0
+                    //we can cover only part of the demand with in, reduce the components to 0
                     inRD1.setValue(0);
                     inRD2.setValue(0);
                     inRG1.setValue(0);
                     inRG2.setValue(0);
-                    
+
                     // set incoming tracked volumes to 0
                     for(int i : listIndex){
                         ArrayTrackedVolumeRD1[i] = 0;
@@ -470,7 +477,7 @@ public class AnimalWaterExtraction_track extends JAMSComponent {
                     }
 
                     if (frac <= 1) {
-                        //we can cover all of the demand with input and act together, reduce the components accordingly
+                        //we can cover all of the demand but not only with in..., reduce the components accordingly
                         double actDemand = 0;
                         actDemand = totalDemand - totalIn;
                         double frac2 = actDemand/totalAct;
@@ -478,8 +485,8 @@ public class AnimalWaterExtraction_track extends JAMSComponent {
                         actRD2.setValue(actRD2.getValue() * (1 - frac2));
                         actRG1.setValue(actRG1.getValue() * (1 - frac2));
                         actRG2.setValue(actRG2.getValue() * (1 - frac2));
-                        animalExtractedR.setValue(totalDemand);
-                        
+                        totalTransfer.setValue(totalDemand);
+
                         // reduce tracked stocked volumes proportionally
                         for(int i : listIndex){
                             ArrayTrackedVolume_actRD1[i] = ArrayTrackedVolume_actRD1[i] * (1 - frac2);
@@ -502,13 +509,13 @@ public class AnimalWaterExtraction_track extends JAMSComponent {
                         }
 
                     } else {
-                        // we can only cover part of the demand ; reduce the act... to (1 - actPrel)*act...
+                        // we can cover part of the demand ; reduce the act... to (1 - actPrel)*act...
                         actRD1.setValue(actRD1.getValue() * (1 - actPrel.getValue()));
                         actRD2.setValue(actRD2.getValue() * (1 - actPrel.getValue()));
                         actRG1.setValue(actRG1.getValue() * (1 - actPrel.getValue()));
                         actRG2.setValue(actRG2.getValue() * (1 - actPrel.getValue()));
-                        animalExtractedR.setValue(totalIn+totalAct);
-                        
+                        totalTransfer.setValue(totalIn+totalAct);
+
                         // reduce tracked volumes to zero (except leaving minimum flow)
                         for(int i : listIndex){
                             ArrayTrackedVolume_actRD1[i] = ArrayTrackedVolume_actRD1[i] * (1 - actPrel.getValue());
@@ -531,8 +538,7 @@ public class AnimalWaterExtraction_track extends JAMSComponent {
                         }
                     }
                 }
-
-            } else { // if no water coming into reach, but there is water in the reach act
+            } else {// no water coming into reach but water available
                 //looking if we can cover the demand by including usable part of act...
                 double frac = totalDemand / (totalAct);
                 if (frac <= 1) {
@@ -541,7 +547,7 @@ public class AnimalWaterExtraction_track extends JAMSComponent {
                     actRD2.setValue(actRD2.getValue() * (1 - frac));
                     actRG1.setValue(actRG1.getValue() * (1 - frac));
                     actRG2.setValue(actRG2.getValue() * (1 - frac));
-                    animalExtractedR.setValue(totalDemand);
+                    totalTransfer.setValue(totalDemand);
                         
                     // reduce tracked volumes proportionally
                     for(int i : listIndex){
@@ -564,14 +570,13 @@ public class AnimalWaterExtraction_track extends JAMSComponent {
                         TrackedVolumeWW_act = TrackedVolumeWW_act * (1 - frac);
                     }
 
-                        
                 } else {
                     // we can only cover part of the demand ; reduce the act... to (1 - actPrel)*act...
                     actRD1.setValue(actRD1.getValue() * (1 - actPrel.getValue()));
                     actRD2.setValue(actRD2.getValue() * (1 - actPrel.getValue()));
                     actRG1.setValue(actRG1.getValue() * (1 - actPrel.getValue()));
                     actRG2.setValue(actRG2.getValue() * (1 - actPrel.getValue()));
-                    animalExtractedR.setValue(totalAct);
+                    totalTransfer.setValue(totalAct);
                         
                     // reduce tracked volumes to zero (except leaving minimum flow)
                     for(int i : listIndex){
@@ -595,12 +600,23 @@ public class AnimalWaterExtraction_track extends JAMSComponent {
                     }
                 }
             }
-        } else { 
-            animalExtractedR.setValue(0.);
+            
+            //distribute total transfer over all HRUs
+            double providedFraction = totalTransfer.getValue()/totalDemand;
+            double providedWater_tmp=0.;
+            for (Attribute.Entity hru : l) {
+                double waterRequirements = hru.getDouble(waterRequirementsName.getValue());
+                hru.setDouble(irrigationWaterName.getValue(), waterRequirements * providedFraction);
+                providedWater_tmp= providedWater_tmp + waterRequirements * providedFraction;
+            }
+            // restitute lost water to RD2 (when efficiency of the irrigation network <1) :
+            inRD2.setValue(inRD2.getValue()+Math.max(0.,totalTransfer.getValue()-providedWater_tmp) );
+        } else { // no water available
+            for (Attribute.Entity hru : l) {
+                hru.setDouble(irrigationWaterName.getValue(), 0); 
+            }
+            totalTransfer.setValue(0.); 
         }
-        // extracted volume for all animals (cumulative over reaches)
-        this.animalExtractedAll.setValue(this.animalExtractedAll.getValue() + this.animalExtractedR.getValue());
-        
         // read tracked volumes of the current reach --> incoming
         trackedVolumeRD1Array.setValue(ArrayTrackedVolumeRD1);
         trackedVolumeRD2Array.setValue(ArrayTrackedVolumeRD2);
@@ -633,5 +649,7 @@ public class AnimalWaterExtraction_track extends JAMSComponent {
             // available
             trackedVolumeWW.setValue(TrackedVolumeWW);
         }
+        //remove all HRUs from demand list
+        l.removeAll(l);
     }
 }
