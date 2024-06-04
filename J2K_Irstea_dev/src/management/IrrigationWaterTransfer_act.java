@@ -162,7 +162,6 @@ public class IrrigationWaterTransfer_act extends JAMSComponent {
     public void run() {
 
         Attribute.Entity currentReach = reaches.getCurrent();
-
         //check if this reach even has irrigated HRUs in its catchment
         if (!currentReach.existsAttribute(irrigationEntitiesListName.getValue())) { // no irrigated HRUs --> step out of function
             double totalIn = inRD1.getValue() + inRD2.getValue() + inRG1.getValue() + inRG2.getValue();
@@ -170,6 +169,7 @@ public class IrrigationWaterTransfer_act extends JAMSComponent {
             this.totalInput.setValue(totalIn + totalAct); // IG : ACHTUNG, cette variable n'est pas à jour !!
             return;
         }
+//        getModel().getRuntime().println("START - incoming RD1: "+inRD1.getValue()+", RD2: "+inRD2.getValue()+", RG1: "+inRG1.getValue()+", RG2: "+inRG2.getValue()+"; actRD1: "+actRD1.getValue()+", actRD2: "+actRD2.getValue()+", actRG1: "+actRG1.getValue()+", actRG2: "+actRG2.getValue()+". Reach "+currentReach.getObject("ID"));
         double totalIn = inRD1.getValue() + inRD2.getValue() + inRG1.getValue() + inRG2.getValue();
         double totalAct = this.actPrel.getValue() * (actRD1.getValue() + actRD2.getValue() + actRG1.getValue() + actRG2.getValue()); // eau du reach dispo pour l'irrigation.
         double totalAv = totalIn + totalAct; // all available water
@@ -188,7 +188,7 @@ public class IrrigationWaterTransfer_act extends JAMSComponent {
         //calculate proportion of total water that is needed
         if (totalAv != 0){ // if there is water avilable (in and/or act)
             if (totalIn != 0){ // if there is water coming in
-
+//                getModel().getRuntime().println("++ water coming in, "+totalAv+" available("+totalIn+" incoming, "+totalAct+" in reach), needing "+totalDemand+" . Reach "+currentReach.getObject("ID"));
                 double frac = totalDemand /totalIn;
 
                 if (frac <= 1) {
@@ -199,6 +199,7 @@ public class IrrigationWaterTransfer_act extends JAMSComponent {
                     inRG1.setValue(inRG1.getValue() * (1 - frac));
                     inRG2.setValue(inRG2.getValue() * (1 - frac));
                     totalTransfer.setValue(totalDemand);
+//                    getModel().getRuntime().println("took from incoming, remaining: inRD1: "+inRD1.getValue()+", inRD2: "+inRD2.getValue()+", inRG1: "+inRG1.getValue()+", inRG2: "+inRG2.getValue()+".");
 
                 } else {
                     //looking if we can cover the demand by including part of act...
@@ -230,8 +231,10 @@ public class IrrigationWaterTransfer_act extends JAMSComponent {
                         totalTransfer.setValue(totalIn+totalAct);
                     }
                 }
+//                getModel().getRuntime().println("took "+totalTransfer);
             } else {// no water coming into reach but water available
                 //looking if we can cover the demand by including usable part of act...
+//                getModel().getRuntime().println("-- no water coming in, "+totalAct+" available, needing "+totalDemand);
                 double frac = totalDemand / (totalAct);
                 if (frac <= 1) {
                     //we can cover all of the demand with act, reduce the components accordingly
@@ -249,10 +252,17 @@ public class IrrigationWaterTransfer_act extends JAMSComponent {
                     actRG2.setValue(actRG2.getValue() * (1 - actPrel.getValue()));
                     totalTransfer.setValue(totalAct);
                 }
+//                getModel().getRuntime().println("took "+totalTransfer);
             }
             
             //distribute total transfer over all HRUs
-            double providedFraction = totalTransfer.getValue()/totalDemand;
+            double providedFraction = 0.;
+            if (totalDemand != 0.){
+                providedFraction = totalTransfer.getValue()/totalDemand;
+            } else {
+                providedFraction = 1;
+            }
+            
             double providedWater_tmp=0.;
             for (Attribute.Entity hru : l) {
                 double waterRequirements = hru.getDouble(waterRequirementsName.getValue());
@@ -269,6 +279,8 @@ public class IrrigationWaterTransfer_act extends JAMSComponent {
             }
             totalTransfer.setValue(0.); 
         }
+        
+//        getModel().getRuntime().println("END - incoming RD1: "+inRD1.getValue()+", RD2: "+inRD2.getValue()+", RG1: "+inRG1.getValue()+", RG2: "+inRG2.getValue()+"; actRD1: "+actRD1.getValue()+", actRD2: "+actRD2.getValue()+", actRG1: "+actRG1.getValue()+", actRG2: "+actRG2.getValue()+". Reach "+currentReach.getObject("ID"));
 //remove all HRUs from demand list
         l.removeAll(l);
     }

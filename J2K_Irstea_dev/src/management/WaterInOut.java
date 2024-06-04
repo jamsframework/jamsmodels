@@ -186,11 +186,12 @@ public class WaterInOut extends JAMSComponent {
             
             totalDemand = volume * (-1);
             this.totalDemand.setValue(totalDemand);
-
+            
             //calculate proportion of total water that is needed
             if (totalAv != 0.0){ // if there is water available
                 if (totalIn != 0){ // if there is water coming into reach
-
+//                    getModel().getRuntime().println("DW ++ water coming in, "+totalAv+" available("+totalIn+" incoming, "+totalAct+" in reach), needing "+totalDemand+" . Reach "+currentReach.getObject("ID"));
+                    
                     double frac = totalDemand /totalIn;
 
                     if (frac <= 1) {
@@ -232,8 +233,9 @@ public class WaterInOut extends JAMSComponent {
                             ExtractedR.setValue(totalIn+totalAct);
                         }
                     }
-
+//                    getModel().getRuntime().println("DW took "+ExtractedR.getValue());
                 } else { // if no water coming into reach, but there is water in the reach act
+//                    getModel().getRuntime().println("DW ++ water coming in, "+totalAv+" available("+totalIn+" incoming, "+totalAct+" in reach), needing "+totalDemand+" . Reach "+currentReach.getObject("ID"));
                     //looking if we can cover the demand by including usable part of act...
                     double frac = totalDemand / (totalAct);
                     if (frac <= 1) {
@@ -252,6 +254,7 @@ public class WaterInOut extends JAMSComponent {
                         actRG2.setValue(actRG2.getValue() * (1 - actPrel.getValue()));
                         ExtractedR.setValue(totalAct);
                     }
+//                    getModel().getRuntime().println("DW took "+ExtractedR.getValue());
                 }
             } else { 
                 this.ExtractedR.setValue(0.);
@@ -259,6 +262,7 @@ public class WaterInOut extends JAMSComponent {
             // if water is extracted --> no water is added
             this.addedR.setValue(0.);
         } else if (volume > 0) { // water injected
+//            getModel().getRuntime().println("++ WW will be injecting "+volume);
             double AddRD1, AddRD2, AddRG1, AddRG2;
             AddRD1 = AddRD2 = AddRG1 = AddRG2 = 0.0;
             if (targetComp.getValue() == "distr"){
@@ -306,7 +310,8 @@ public class WaterInOut extends JAMSComponent {
             inRD2.setValue(inRD2.getValue() + AddRD2);
             inRG1.setValue(inRG1.getValue() + AddRG1);
             inRG2.setValue(inRG2.getValue() + AddRG2);
-            
+            addedR.setValue(AddRD1 + AddRD2 + AddRG1 + AddRG2);
+//            getModel().getRuntime().println("++ WW added "+addedR.getValue());
         } else { // neither extraction nor injection (volume = 0)
             this.ExtractedR.setValue(0.);
             this.addedR.setValue(0.);

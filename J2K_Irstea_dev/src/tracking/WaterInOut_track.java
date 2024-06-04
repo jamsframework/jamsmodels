@@ -698,6 +698,7 @@ public class WaterInOut_track extends JAMSComponent {
             inRD2.setValue(inRD2.getValue() + AddRD2);
             inRG1.setValue(inRG1.getValue() + AddRG1);
             inRG2.setValue(inRG2.getValue() + AddRG2);
+            addedR.setValue(AddRD1 + AddRD2 + AddRG1 + AddRG2);
             
         } else { // neither extraction nor injection (volume = 0)
             this.ExtractedR.setValue(0.);

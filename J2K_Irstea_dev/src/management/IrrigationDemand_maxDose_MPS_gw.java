@@ -270,7 +270,7 @@ public class IrrigationDemand_maxDose_MPS_gw extends JAMSComponent {
                 l1.add(hruID);
                 
                 //Check : Display source for each irrigated HRU
-                //getModel().getRuntime().sendInfoMsg("HRU ID " + hruID.getId() + " has source " + sourceReach.getValue());
+                getModel().getRuntime().sendInfoMsg("HRU ID " + hruID.getId() + " has source " + sourceReach.getValue()+". Irrigation demand: "+irrigationDemand.getValue());
             }
             
         }

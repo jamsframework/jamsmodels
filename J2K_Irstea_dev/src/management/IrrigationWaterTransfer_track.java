@@ -602,7 +602,12 @@ public class IrrigationWaterTransfer_track extends JAMSComponent {
             }
             
             //distribute total transfer over all HRUs
-            double providedFraction = totalTransfer.getValue()/totalDemand;
+            double providedFraction = 0;
+            if (totalDemand != 0.){
+                providedFraction = totalTransfer.getValue()/totalDemand;
+            } else {
+                providedFraction = 1;
+            }
             double providedWater_tmp=0.;
             for (Attribute.Entity hru : l) {
                 double waterRequirements = hru.getDouble(waterRequirementsName.getValue());
