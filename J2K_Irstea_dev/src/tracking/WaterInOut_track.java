@@ -316,6 +316,13 @@ public class WaterInOut_track extends JAMSComponent {
 
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
+            description = "Tracked incoming volume from waste water treatment plant in reach",
+            unit = "L"
+    )
+    public Attribute.Double InWW;
+
+    @JAMSVarDescription(
+            access = JAMSVarDescription.AccessType.READWRITE,
             description = "Tracked volume from waste water treatment plant in reach",
             unit = "L"
     )
@@ -360,13 +367,13 @@ public class WaterInOut_track extends JAMSComponent {
                 TrackedVolumeSewRD1_act, TrackedVolumeSewRD2_act, 
                 TrackedVolumeSewRG1_act, TrackedVolumeSewRG2_act, 
                 TrackedVolumeSewTotal_act,
-                TrackedVolumeWW, TrackedVolumeWW_act;
+                WWin, TrackedVolumeWW, TrackedVolumeWW_act;
         TrackedVolumeSewRD1 = TrackedVolumeSewRD2 = TrackedVolumeSewRG1 =
                 TrackedVolumeSewRG2 = TrackedVolumeSewTotal =
                 TrackedVolumeSewRD1_act = TrackedVolumeSewRD2_act = 
                 TrackedVolumeSewRG1_act = TrackedVolumeSewRG2_act =  
                 TrackedVolumeSewTotal_act = 
-                TrackedVolumeWW = TrackedVolumeWW_act = 0.0;
+                WWin = TrackedVolumeWW = TrackedVolumeWW_act = 0.0;
         if(SewTrack){
             // read tracked volumes of the current reach --> incoming
             TrackedVolumeSewRD1 = trackedVolumeSewRD1.getValue();
@@ -384,7 +391,7 @@ public class WaterInOut_track extends JAMSComponent {
         
         if(WWTrack){
             // read tracked volumes of the current reach --> incoming
-            TrackedVolumeWW = trackedVolumeWW.getValue();
+            WWin = InWW.getValue();
             // available
             TrackedVolumeWW_act = trackedVolumeWW_act.getValue();
         }
@@ -448,7 +455,7 @@ public class WaterInOut_track extends JAMSComponent {
                         }
                         if(WWTrack){
                             // reduce tracked volumes from WWTP proportionally
-                            TrackedVolumeWW = TrackedVolumeWW * (1 - frac);
+                            WWin = WWin * (1 - frac);
                         }
 
                     } else {
@@ -479,7 +486,7 @@ public class WaterInOut_track extends JAMSComponent {
                         }
                         if(WWTrack){
                             // set incoming tracked WW volumes to 0
-                            TrackedVolumeWW = 0;
+                            WWin = 0;
                         }
 
                         if (frac <= 1) {
@@ -641,7 +648,7 @@ public class WaterInOut_track extends JAMSComponent {
                 // read tracked volumes of the current reach --> incoming
                 trackedVolumeWW_act.setValue(TrackedVolumeWW_act);
                 // available
-                trackedVolumeWW.setValue(TrackedVolumeWW);
+                InWW.setValue(WWin);
             }
             // if water is extracted --> no water is added
             this.addedR.setValue(0.);
@@ -690,8 +697,8 @@ public class WaterInOut_track extends JAMSComponent {
                 }
             }
             if (WWTrack){
-                TrackedVolumeWW = TrackedVolumeWW + volume;
-                trackedVolumeWW.setValue(TrackedVolumeWW);
+                WWin = WWin + volume;
+                InWW.setValue(WWin);
             }
             
             inRD1.setValue(inRD1.getValue() + AddRD1);
@@ -700,6 +707,8 @@ public class WaterInOut_track extends JAMSComponent {
             inRG2.setValue(inRG2.getValue() + AddRG2);
             addedR.setValue(AddRD1 + AddRD2 + AddRG1 + AddRG2);
             
+//            getModel().getRuntime().println("WIO -- tracked volume from WWTP "+trackedVolumeWW.getValue() + ". Incoming: "+ WWin);
+            
         } else { // neither extraction nor injection (volume = 0)
             this.ExtractedR.setValue(0.);
             this.addedR.setValue(0.);
@@ -707,6 +716,7 @@ public class WaterInOut_track extends JAMSComponent {
         this.addedAll.setValue(this.addedAll.getValue() + this.addedR.getValue());
         // extracted volume for all animals (cumulative over reaches)
         this.ExtractedAll.setValue(this.ExtractedAll.getValue() + this.ExtractedR.getValue());
+        
     }
        
     

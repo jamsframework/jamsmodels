@@ -302,12 +302,19 @@ public class IrrigationWaterTransfer_track extends JAMSComponent {
     )
     public Attribute.Double trackedVolumeSewTotal_act;
 
+//    @JAMSVarDescription(
+//            access = JAMSVarDescription.AccessType.READWRITE,
+//            description = "Tracked volume from waste water treatment plant in reach",
+//            unit = "L"
+//    )
+//    public Attribute.Double trackedVolumeWW;
+
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
-            description = "Tracked volume from waste water treatment plant in reach",
+            description = "Tracked volume from waste water treatment plant incoming into reach",
             unit = "L"
     )
-    public Attribute.Double trackedVolumeWW;
+    public Attribute.Double inWW;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
@@ -347,13 +354,13 @@ public class IrrigationWaterTransfer_track extends JAMSComponent {
                 TrackedVolumeSewRD1_act, TrackedVolumeSewRD2_act, 
                 TrackedVolumeSewRG1_act, TrackedVolumeSewRG2_act, 
                 TrackedVolumeSewTotal_act,
-                TrackedVolumeWW, TrackedVolumeWW_act;
+                InWW, TrackedVolumeWW_act;
         TrackedVolumeSewRD1 = TrackedVolumeSewRD2 = TrackedVolumeSewRG1 =
                 TrackedVolumeSewRG2 = TrackedVolumeSewTotal =
                 TrackedVolumeSewRD1_act = TrackedVolumeSewRD2_act = 
                 TrackedVolumeSewRG1_act = TrackedVolumeSewRG2_act =  
                 TrackedVolumeSewTotal_act = 
-                TrackedVolumeWW = TrackedVolumeWW_act = 0.0;
+                InWW = TrackedVolumeWW_act = 0.0;
         if(SewTrack){
             // read tracked volumes of the current reach --> incoming
             TrackedVolumeSewRD1 = trackedVolumeSewRD1.getValue();
@@ -371,7 +378,7 @@ public class IrrigationWaterTransfer_track extends JAMSComponent {
         
         if(WWTrack){
             // read tracked volumes of the current reach --> incoming
-            TrackedVolumeWW = trackedVolumeWW.getValue();
+            InWW = inWW.getValue();
             // available
             TrackedVolumeWW_act = trackedVolumeWW_act.getValue();
         }
@@ -442,7 +449,7 @@ public class IrrigationWaterTransfer_track extends JAMSComponent {
                     }
                     if(WWTrack){
                         // reduce tracked volumes from WWTP proportionally
-                        TrackedVolumeWW = TrackedVolumeWW * (1 - frac);
+                        InWW = InWW * (1 - frac);
                     }
 
                 } else {
@@ -473,7 +480,7 @@ public class IrrigationWaterTransfer_track extends JAMSComponent {
                     }
                     if(WWTrack){
                         // set incoming tracked WW volumes to 0
-                        TrackedVolumeWW = 0;
+                        InWW = 0;
                     }
 
                     if (frac <= 1) {
@@ -652,7 +659,7 @@ public class IrrigationWaterTransfer_track extends JAMSComponent {
             // read tracked volumes of the current reach --> incoming
             trackedVolumeWW_act.setValue(TrackedVolumeWW_act);
             // available
-            trackedVolumeWW.setValue(TrackedVolumeWW);
+            inWW.setValue(InWW);
         }
         //remove all HRUs from demand list
         l.removeAll(l);

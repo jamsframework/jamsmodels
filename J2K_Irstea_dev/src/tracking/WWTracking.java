@@ -53,6 +53,13 @@ public class WWTracking extends JAMSComponent {
             unit = "L"
     )
     public Attribute.Double trackedVolumeWW;
+
+    @JAMSVarDescription(
+            access = JAMSVarDescription.AccessType.READWRITE,
+            description = "incoming tracked volume from WWTP",
+            unit = "L"
+    )
+    public Attribute.Double InWW;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
@@ -89,7 +96,7 @@ public class WWTracking extends JAMSComponent {
 //        
 //        // double track = this.track.getValue();
 //
-//        int ID = (int)entity.getDouble("ID");
+        int ID = (int)entity.getDouble("ID");
 //        int DestID = 0;
 //        if(DestReach != null){
 //            DestID = (int)DestReach.getDouble("ID");
@@ -106,17 +113,46 @@ public class WWTracking extends JAMSComponent {
 //        }    
                 
         double RD1out = this.outRD1.getValue();
+        
+//        // TODO: test different 
+//        Attribute.Double ReachDoubleTrackedVolumeWW = (Attribute.Double) entity.getObject("trackedVolumeWW");
+//        //  Convert Double to double
+//        double ReachTrackedVolumeWW = ReachDoubleTrackedVolumeWW.getValue();
+//        int ID = (int)entity.getDouble("ID");
+//        getModel().getRuntime().println("-- reach " + ID + " got : " + ReachTrackedVolumeWW + " coming in.");
+
+//        // chasing bugs:
+//        Attribute.Double testReachDoubleTrackedVolumeWW = (Attribute.Double) entity.getObject("trackedVolumeWW");
+//        double testReachTrackedVolumeWW = testReachDoubleTrackedVolumeWW.getValue();
+//        if(testReachTrackedVolumeWW > 0 || ID == 427601.0){
+////                int ID = (int)entity.getDouble("ID");
+//            getModel().getRuntime().println("-- reach " + ID + " received : " + testReachTrackedVolumeWW + ". Did this work?");
+//
+//        }
 
 //      tracked incoming volume (directly from WWTP or from WWTP further upstream
+        double WWin = InWW.getValue();
+
+//      tracked volume
         double TrackedVolumeWW = trackedVolumeWW.getValue();
         
 //      tracked WW volume already in reach
         double TrackedVolumeWW_act = trackedVolumeWW_act.getValue();
         
+//        // chasing bugs:
+//        if(TrackedVolumeWW > 0 || TrackedVolumeWW_act > 0){
+////            int ID = (int)entity.getDouble("ID");
+//            getModel().getRuntime().println("WWtracking: " + TrackedVolumeWW + " tracked, " + WWin + " incoming, " + TrackedVolumeWW_act + " present (reach "+ID+").");
+//            if (DestReach != null){ 
+//                getModel().getRuntime().println("-- destination reach: " + DestReach.getDouble("ID"));
+//            } else {
+//                getModel().getRuntime().println("-- there is no destination reach!");
+//            }
+//        }
         
         // update tracked WW volume in reach:
         // New WW volume = present tracked WW + tracked incoming volume (directly from WWTP or from WWTP further upstream
-        TrackedVolumeWW_act = TrackedVolumeWW_act + TrackedVolumeWW;
+        TrackedVolumeWW_act = TrackedVolumeWW_act + WWin;
  
         // calculate outflow of tracked waste water from reach
         TrackedVolumeWW = (TrackedVolumeWW_act * RD1out)/actTotalRD1.getValue();
@@ -124,10 +160,17 @@ public class WWTracking extends JAMSComponent {
         if(actTotalRD1.getValue() == 0){
             TrackedVolumeWW = 0;
         }
+        
+//        // print percent of available water discharged
+//        if ((ID == 298800) & (TrackedVolumeWW >0)){
+//            getModel().getRuntime().println(" -- WWT ++ reach " + ID + " discharging " + RD1out/actTotalRD1.getValue()*100 + "% (= "+ RD1out +") of present RD1 (" + actTotalRD1.getValue() + "). TrackedVolumeWW = "+ TrackedVolumeWW);
+//        }
 
         // remaining tracked WW volume in reach
         TrackedVolumeWW_act = TrackedVolumeWW_act - TrackedVolumeWW;
         
+        WWin = 0;
+        InWW.setValue(WWin);
 
         trackedVolumeWW.setValue(TrackedVolumeWW);
 
@@ -136,17 +179,34 @@ public class WWTracking extends JAMSComponent {
         //  Set tracked WW volume incoming into destination reach
         if (DestReach != null){ 
             //  get destination reach incoming tracked volume (Double)        
-            Attribute.Double destReachDoubleTrackedVolumeWW = (Attribute.Double) DestReach.getObject("trackedVolumeWW");
+            Attribute.Double destReachDoubleTrackedVolumeWW = (Attribute.Double) DestReach.getObject("InWW");
 
             
             //  Convert Double to double
             double destReachTrackedVolumeWW = destReachDoubleTrackedVolumeWW.getValue();
+            
+//            // chasing bugs:
+//            if(TrackedVolumeWW > 0 || TrackedVolumeWW_act > 0){
+////                int ID = (int)entity.getDouble("ID");
+//                getModel().getRuntime().println("-- sending " + TrackedVolumeWW + " from present ("+ID+") to destination reach(" + DestReach.getDouble("ID") + "), previously containing " + destReachTrackedVolumeWW + ". " + TrackedVolumeWW_act + " remaining in current reach. RD1 out = " + RD1out + ". RD1_act before = " + actTotalRD1 + ".");
+//                
+//            }
 
-            // Transfer into destination reach
-            destReachTrackedVolumeWW = TrackedVolumeWW;
+            // Transfer into destination reach +++ modified to add to previous incoming volume
+            destReachTrackedVolumeWW += TrackedVolumeWW;
             
             destReachDoubleTrackedVolumeWW.setValue(destReachTrackedVolumeWW); // couldn't this be set directly to TrackedVolumeWW, skipping the previous two steps?
-            DestReach.setObject("trackedVolumeWW", destReachDoubleTrackedVolumeWW);
+            DestReach.setObject("InWW", destReachDoubleTrackedVolumeWW);
+            
+//            // chasing bugs:
+//            if(TrackedVolumeWW > 0 || TrackedVolumeWW_act > 0){
+////                int ID = (int)entity.getDouble("ID");
+//                // reload destination reach in order to check if the transfer worked
+//                Attribute.Entity newDestReach = (Attribute.Entity) entity.getObject("to_reach");  
+//                Attribute.Double newdestReachDoubleTrackedVolumeWW = (Attribute.Double) newDestReach.getObject("trackedVolumeWW");
+//                double newdestReachTrackedVolumeWW = newdestReachDoubleTrackedVolumeWW.getValue();
+//                getModel().getRuntime().println("++ actually sent " + newdestReachTrackedVolumeWW + ". Did this work?");
+//            }
 
         }  
                 

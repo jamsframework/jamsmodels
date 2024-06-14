@@ -271,14 +271,19 @@ public class SewerTracking extends JAMSComponent {
         double TrackedVolumeSew_actRG2 = trackedVolumeSewRG2_act.getValue();
         double TrackedVolumeSew_actTotal = trackedVolumeSewTotal_act.getValue(); 
         
+//        if (inTotal_SEW>0 || TrackedVolumeSew_actTotal>0){
+//            getModel().getRuntime().println("reach " + ID + " got " + inTotal_SEW + " sewer water. " + TrackedVolumeSew_actTotal + " were allready present. ");
+//        }
         
-        // Mise à jour du volume provenant de SEW tracé dans le brin :
-        // Nouveau volume SEW = Volume déja présent + volume provenant directement d'un SEW + volume SEW transféré par des reachs amonts
-        TrackedVolumeSew_actRD1 = TrackedVolumeSew_actRD1 + inRD1_SEW + TrackedVolumeSewRD1;
-        TrackedVolumeSew_actRD2 = TrackedVolumeSew_actRD2 + inRD2_SEW + TrackedVolumeSewRD2;
-        TrackedVolumeSew_actRG1 = TrackedVolumeSew_actRG1 + inRG1_SEW + TrackedVolumeSewRG1;
-        TrackedVolumeSew_actRG2 = TrackedVolumeSew_actRG2 + inRG2_SEW + TrackedVolumeSewRG2;
-        TrackedVolumeSew_actTotal = TrackedVolumeSew_actTotal + inTotal_SEW + TrackedVolumeSewTotal;
+        
+        
+        // update tracked sewer volume present in reach:
+        // new volume = present volume + incoming volume
+        TrackedVolumeSew_actRD1 = TrackedVolumeSew_actRD1 + inRD1_SEW;
+        TrackedVolumeSew_actRD2 = TrackedVolumeSew_actRD2 + inRD2_SEW;
+        TrackedVolumeSew_actRG1 = TrackedVolumeSew_actRG1 + inRG1_SEW;
+        TrackedVolumeSew_actRG2 = TrackedVolumeSew_actRG2 + inRG2_SEW;
+        TrackedVolumeSew_actTotal = TrackedVolumeSew_actTotal + inTotal_SEW;
  
         // Calcul du volume provenant du SEW sortant du brin tracé
         TrackedVolumeSewRD1 = (TrackedVolumeSew_actRD1 * RD1out)/actTotalRD1.getValue();
@@ -310,7 +315,7 @@ public class SewerTracking extends JAMSComponent {
         TrackedVolumeSew_actRG2 = TrackedVolumeSew_actRG2 - TrackedVolumeSewRG2;
         TrackedVolumeSew_actTotal = TrackedVolumeSew_actTotal - TrackedVolumeSewTotal;
         
-
+        // this is still the outflow
         trackedVolumeSewRD1.setValue(TrackedVolumeSewRD1);
         trackedVolumeSewRD2.setValue(TrackedVolumeSewRD2);
         trackedVolumeSewRG1.setValue(TrackedVolumeSewRG1);
@@ -331,11 +336,10 @@ public class SewerTracking extends JAMSComponent {
         //  Sauvegarde du volume SEW tracé dans le reach de destination
         if (DestReach != null){ 
             //  Importation des Double du brin de destination        
-            Attribute.Double destReachDoubleTrackedVolumeSewRD1 = (Attribute.Double) DestReach.getObject("trackedVolumeSewRD1");
-            Attribute.Double destReachDoubleTrackedVolumeSewRD2 = (Attribute.Double) DestReach.getObject("trackedVolumeSewRD2");
-            Attribute.Double destReachDoubleTrackedVolumeSewRG1 = (Attribute.Double) DestReach.getObject("trackedVolumeSewRG1");
-            Attribute.Double destReachDoubleTrackedVolumeSewRG2 = (Attribute.Double) DestReach.getObject("trackedVolumeSewRG2");
-            Attribute.Double destReachDoubleTrackedVolumeSewTotal = (Attribute.Double) DestReach.getObject("trackedVolumeSewTotal");
+            Attribute.Double destReachDoubleTrackedVolumeSewRD1 = (Attribute.Double) DestReach.getObject("SewInRD1");
+            Attribute.Double destReachDoubleTrackedVolumeSewRD2 = (Attribute.Double) DestReach.getObject("SewInRD2");
+            Attribute.Double destReachDoubleTrackedVolumeSewRG1 = (Attribute.Double) DestReach.getObject("SewInRG1");
+            Attribute.Double destReachDoubleTrackedVolumeSewRG2 = (Attribute.Double) DestReach.getObject("SewInRG2");
 
             
             //  Conversion de DoubleArray à double[]
@@ -343,25 +347,26 @@ public class SewerTracking extends JAMSComponent {
             double destReachTrackedVolumeSewRD2 = destReachDoubleTrackedVolumeSewRD2.getValue();
             double destReachTrackedVolumeSewRG1 = destReachDoubleTrackedVolumeSewRG1.getValue();
             double destReachTrackedVolumeSewRG2 = destReachDoubleTrackedVolumeSewRG2.getValue();
-            double destReachTrackedVolumeSewTotal = destReachDoubleTrackedVolumeSewTotal.getValue();
 
-            // Transfert du volume de SEW tracé dans le brin suivant
-            destReachTrackedVolumeSewRD1 = TrackedVolumeSewRD1;
-            destReachTrackedVolumeSewRD2 = TrackedVolumeSewRD2;
-            destReachTrackedVolumeSewRG1 = TrackedVolumeSewRG1;
-            destReachTrackedVolumeSewRG2 = TrackedVolumeSewRG2;
-            destReachTrackedVolumeSewTotal = TrackedVolumeSewTotal;
+            // Transfert du volume de SEW tracé dans le brin suivant +++ modified: add instead of overwriting
+            destReachTrackedVolumeSewRD1 += TrackedVolumeSewRD1;
+            destReachTrackedVolumeSewRD2 += TrackedVolumeSewRD2;
+            destReachTrackedVolumeSewRG1 += TrackedVolumeSewRG1;
+            destReachTrackedVolumeSewRG2 += TrackedVolumeSewRG2;
+            
+//            if ((TrackedVolumeSewRD1 + TrackedVolumeSewRD2 + TrackedVolumeSewRG1 + TrackedVolumeSewRG2) > 0){
+//                getModel().getRuntime().println("sent " + (TrackedVolumeSewRD1 + TrackedVolumeSewRD2 + TrackedVolumeSewRG1 + TrackedVolumeSewRG2)+ " to reach " + DestID + ".");
+//            }
+            
             
             destReachDoubleTrackedVolumeSewRD1.setValue(destReachTrackedVolumeSewRD1); // couldn't this be set directly to TrackedVolumeSewRD1, skipping the previous two steps?
             destReachDoubleTrackedVolumeSewRD2.setValue(destReachTrackedVolumeSewRD2);
             destReachDoubleTrackedVolumeSewRG1.setValue(destReachTrackedVolumeSewRG1);
             destReachDoubleTrackedVolumeSewRG2.setValue(destReachTrackedVolumeSewRG2);
-            destReachDoubleTrackedVolumeSewTotal.setValue(destReachTrackedVolumeSewTotal);
-            DestReach.setObject("trackedVolumeSewRD1", destReachDoubleTrackedVolumeSewRD1);
-            DestReach.setObject("trackedVolumeSewRD2", destReachDoubleTrackedVolumeSewRD2);
-            DestReach.setObject("trackedVolumeSewRG1", destReachDoubleTrackedVolumeSewRG1);
-            DestReach.setObject("trackedVolumeSewRG2", destReachDoubleTrackedVolumeSewRG2);
-            DestReach.setObject("trackedVolumeSewTotal", destReachDoubleTrackedVolumeSewTotal);
+            DestReach.setObject("SewInRD1", destReachDoubleTrackedVolumeSewRD1);
+            DestReach.setObject("SewInRD2", destReachDoubleTrackedVolumeSewRD2);
+            DestReach.setObject("SewInRG1", destReachDoubleTrackedVolumeSewRG1);
+            DestReach.setObject("SewInRG2", destReachDoubleTrackedVolumeSewRG2);
 
         }  
                 

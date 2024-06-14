@@ -278,8 +278,14 @@ public class ReachTrackingSewWW extends JAMSComponent {
         if(DestReach != null){
             DestID = (int)DestReach.getDouble("ID");
         }
-
-       
+        
+//        // bugfix
+//        if(DestID == 425601){
+//            Attribute.Double destReachDoubleTrackedVolumeWW = (Attribute.Double) DestReach.getObject("trackedVolumeWW");
+//            double destReachTrackedVolumeWW = destReachDoubleTrackedVolumeWW.getValue();
+//            getModel().getRuntime().println("++ ReackTracking ("+ ID +") -- next reach (DestID " + DestID + ") got " + destReachTrackedVolumeWW + " WW. Did this work?");
+//        }
+        
         int t = 0;
         while (Nom[t] != ID) {
             t++;
@@ -295,7 +301,7 @@ public class ReachTrackingSewWW extends JAMSComponent {
         
 
         
-//        getModel().getRuntime().println("Processing Reach " + ID);
+//        getModel().getRuntime().println("Processing Reach " + ID + ". 'track' = "+track);
         
       
         //      Lecture des données pour le reach actuel
@@ -315,14 +321,24 @@ public class ReachTrackingSewWW extends JAMSComponent {
         
         // Liste des indices de Reachs contribuant au brin actuel
         List<Integer> listIndex = new ArrayList<Integer>();
+        List<Double> trackedIn = new ArrayList<Double>();
         for(int i = 0; i < Nom.length; i++){
             if(ArrayTrackedVolumeTotal[i] != -999){
                 listIndex.add(i);
+                trackedIn.add(ArrayTrackedVolumeTotal[i]);
             }
         }
+        
+//        if((ID == 427600) & trackedVolumeWW.getValue() != 0){
+////            getModel().getRuntime().println("reach "+ ID + ": t = "+ t + " tracked indexes = " + listIndex); // ATTENTION: the index list "listIndex" includes the current reach!
+//            getModel().getRuntime().println("reach "+ ID + ": RD1out = "+ RD1out + " trackedVolumeWW = " + trackedVolumeWW.getValue());
+////            if (trackedVolumeWW.getValue() > RD1out){ // this is never the case
+////                getModel().getRuntime().println("reach "+ ID + ": RD1out = "+ RD1out + " trackedVolumeWW = " + trackedVolumeWW.getValue());
+////            }
+//        }
 
-//        getModel().getRuntime().println("Elements  contribuant à ce reach = " + listIndex);
-//        getModel().getRuntime().println("Entrée du reach = " + Arrays.toString(ArrayTrackedVolumeTotal));
+//        getModel().getRuntime().println("contributing tracked reaches = " + listIndex);
+//        getModel().getRuntime().println("total tracked volumes entering reach = " + trackedIn);
         
         // Création d'un tableau temporaire où sauvegarder le volume du brin tracé qui ira au reach suivant
         double[] destReachArrayTrackedVolumeRD1_temp = new double[Nom.length];
@@ -334,7 +350,7 @@ public class ReachTrackingSewWW extends JAMSComponent {
         // Si il s'agit d'un reach tracé
         if(track == 1){
             
-//            getModel().getRuntime().println("C'est un brin tracé");
+//            getModel().getRuntime().println("This reach is tracked");
 
             // Calcul et transfert du volume tracé provenant du brin
             // Le volume que l'on veut tracer est le volume sortant de ce brin
@@ -349,31 +365,36 @@ public class ReachTrackingSewWW extends JAMSComponent {
             ArrayTrackedVolume_actRD2[t] = actTotalRD2.getValue() - RD2out;
             ArrayTrackedVolume_actRG1[t] = actTotalRG1.getValue() - RG1out;
             ArrayTrackedVolume_actRG2[t] = actTotalRG2.getValue() - RG2out;
-            ArrayTrackedVolume_actTotal[t] = actTotalTot - cumOutflow;  
+            ArrayTrackedVolume_actTotal[t] = actTotalTot - cumOutflow;
             
-            if(trackedVolumeSewTotal.getValue() != 0){ // remove tracked sewer contribution from tracked volume from this reach to avoid double counting it
-                
-                ArrayTrackedVolumeRD1[t] = ArrayTrackedVolumeRD1[t] - trackedVolumeSewRD1.getValue();
-                ArrayTrackedVolumeRD2[t] = ArrayTrackedVolumeRD2[t] - trackedVolumeSewRD2.getValue();
-                ArrayTrackedVolumeRG1[t] = ArrayTrackedVolumeRG1[t] - trackedVolumeSewRG1.getValue();
-                ArrayTrackedVolumeRG2[t] = ArrayTrackedVolumeRG2[t] - trackedVolumeSewRG2.getValue();
-                ArrayTrackedVolumeTotal[t] = ArrayTrackedVolumeTotal[t] - trackedVolumeSewTotal.getValue(); 
-                
-                ArrayTrackedVolume_actRD1[t] = ArrayTrackedVolume_actRD1[t] - trackedVolumeSewRD1_act.getValue();
-                ArrayTrackedVolume_actRD2[t] = ArrayTrackedVolume_actRD2[t] - trackedVolumeSewRD2_act.getValue();
-                ArrayTrackedVolume_actRG1[t] = ArrayTrackedVolume_actRG1[t] - trackedVolumeSewRG1_act.getValue();
-                ArrayTrackedVolume_actRG2[t] = ArrayTrackedVolume_actRG2[t] - trackedVolumeSewRG2_act.getValue();
-                ArrayTrackedVolume_actTotal[t] = ArrayTrackedVolume_actTotal[t] - trackedVolumeSewTotal_act.getValue();  
-            }
-            if(trackedVolumeWW.getValue() != 0){ // if outflow contains waste water, remove it from tracked reach volume
-                ArrayTrackedVolumeRD1[t] = ArrayTrackedVolumeRD1[t] - trackedVolumeWW.getValue(); // WW is stocked as RD1
-                ArrayTrackedVolumeTotal[t] = ArrayTrackedVolumeTotal[t] - trackedVolumeWW.getValue(); // remove from total as well
-                
-                // remove from stocked tracked volume as well (which is set to everything stocked in the reach just above)
-                ArrayTrackedVolume_actRD1[t] = ArrayTrackedVolume_actRD1[t] - trackedVolumeWW_act.getValue(); // WW is stocked as RD1
-                ArrayTrackedVolume_actTotal[t] = ArrayTrackedVolume_actTotal[t] - trackedVolumeWW_act.getValue(); // remove from total as well
-                
-            }
+            // TODO: the following is problematic: it removes the tracked volume from sewers / WWTP from EVERY reach that has some. (so if it is routed over several reaches, it gets removed several times)
+            // test without removing tracked ww / sew volumes from tracked arrays --> has to be removed manually in post-processing!
+            // an alternative would be to du this removal in the corresponding WW / Sewer tracking module
+//            if(trackedVolumeSewTotal.getValue() != 0){ // remove tracked sewer contribution from tracked volume from this reach to avoid double counting it
+//                
+//                ArrayTrackedVolumeRD1[t] = ArrayTrackedVolumeRD1[t] - trackedVolumeSewRD1.getValue();
+//                ArrayTrackedVolumeRD2[t] = ArrayTrackedVolumeRD2[t] - trackedVolumeSewRD2.getValue();
+//                ArrayTrackedVolumeRG1[t] = ArrayTrackedVolumeRG1[t] - trackedVolumeSewRG1.getValue();
+//                ArrayTrackedVolumeRG2[t] = ArrayTrackedVolumeRG2[t] - trackedVolumeSewRG2.getValue();
+//                ArrayTrackedVolumeTotal[t] = ArrayTrackedVolumeTotal[t] - trackedVolumeSewTotal.getValue(); 
+//                getModel().getRuntime().println("SEW ++ tracked " + trackedVolumeSewTotal.getValue()+" from sewer leaving to next reach (allready added to next reaches inflow), removed it from current ("+ID+") reaches tracked volume, "+ArrayTrackedVolumeTotal[t]+" remaining");
+////                getModel().getRuntime().println("tracked " + trackedVolumeWW.getValue()+" from waster water (reach "+ID+").");
+//                
+//                ArrayTrackedVolume_actRD1[t] = ArrayTrackedVolume_actRD1[t] - trackedVolumeSewRD1_act.getValue();
+//                ArrayTrackedVolume_actRD2[t] = ArrayTrackedVolume_actRD2[t] - trackedVolumeSewRD2_act.getValue();
+//                ArrayTrackedVolume_actRG1[t] = ArrayTrackedVolume_actRG1[t] - trackedVolumeSewRG1_act.getValue();
+//                ArrayTrackedVolume_actRG2[t] = ArrayTrackedVolume_actRG2[t] - trackedVolumeSewRG2_act.getValue();
+//                ArrayTrackedVolume_actTotal[t] = ArrayTrackedVolume_actTotal[t] - trackedVolumeSewTotal_act.getValue();  
+//            }
+//            if(trackedVolumeWW.getValue() != 0){ // if outflow contains waste water, remove it from tracked reach volume
+//                ArrayTrackedVolumeRD1[t] = ArrayTrackedVolumeRD1[t] - trackedVolumeWW.getValue(); // WW is stocked as RD1
+//                ArrayTrackedVolumeTotal[t] = ArrayTrackedVolumeTotal[t] - trackedVolumeWW.getValue(); // remove from total as well
+//                getModel().getRuntime().println("WW  ++ tracked " + trackedVolumeWW.getValue()+" from waste water, removed it from current ("+ID+") reaches tracked volume, "+ArrayTrackedVolumeTotal[t]+" remaining");
+//                
+//                // remove from stocked tracked volume as well (which is set to everything stocked in the reach just above)
+//                ArrayTrackedVolume_actRD1[t] = ArrayTrackedVolume_actRD1[t] - trackedVolumeWW_act.getValue(); // WW is stocked as RD1
+//                ArrayTrackedVolume_actTotal[t] = ArrayTrackedVolume_actTotal[t] - trackedVolumeWW_act.getValue(); // remove from total as well
+//            }
 
             // Transfert du volume tracé dans le tableau de sauvegarde pour transfert dans le reach suivant       
             destReachArrayTrackedVolumeRD1_temp[t] = ArrayTrackedVolumeRD1[t];
@@ -391,55 +412,77 @@ public class ReachTrackingSewWW extends JAMSComponent {
         // y a une contribution de l'amont. --> on garde les indices 
         // Sinon c'est qu'il n'y en a pas
         for(int i : listIndex){
+            // ATTENTION: the index list "listIndex" includes the current reach!
+            // therefore the current reach needs to be excluded from this block in order to avoid overwriting its tracked volume (which should still correspond to R..out and not to "(ArrayTrackedVolume_actRD1[i]*RD1out)/actTotalRD1.getValue()", as it was allready removed from "ArrayTrackedVolume_actRD1[i]" above)
+            if (i != t){ // exclude current reach --> avoids double calculation ( add, recalculate, remove)
+//                if((ID == 427600) & trackedVolumeWW.getValue() != 0){
+//                    getModel().getRuntime().println(" -- reach "+ ID + ": t = "+ t + " i = " + i + " ArrayTrackedVolumeRD1[i] = "+ ArrayTrackedVolumeRD1[i]);
+//                }
+    //            if (Arrays.asList(427600,425601,425600,425200,424800,422000,300800,300600,300200,300000,298800,298601,9999).contains(ID) & (i==t)){
+    //                getModel().getRuntime().println("reach "+ ID + ": t = "+ t + " i = " + i + " ArrayTrackedVolumeRD1[i] = "+ ArrayTrackedVolumeRD1[i]);
+    //            }    
+                //   Ajout du nouveau volume tracé au volume tracé déjà présent           
+                ArrayTrackedVolume_actRD1[i] = ArrayTrackedVolumeRD1[i] + ArrayTrackedVolume_actRD1[i];
+                ArrayTrackedVolume_actRD2[i] = ArrayTrackedVolumeRD2[i] + ArrayTrackedVolume_actRD2[i];
+                ArrayTrackedVolume_actRG1[i] = ArrayTrackedVolumeRG1[i] + ArrayTrackedVolume_actRG1[i];
+                ArrayTrackedVolume_actRG2[i] = ArrayTrackedVolumeRG2[i] + ArrayTrackedVolume_actRG2[i];
+                ArrayTrackedVolume_actTotal[i] = ArrayTrackedVolumeTotal[i] + ArrayTrackedVolume_actTotal[i];
 
-            //   Ajout du nouveau volume tracé au volume tracé déjà présent           
-            ArrayTrackedVolume_actRD1[i] = ArrayTrackedVolumeRD1[i] + ArrayTrackedVolume_actRD1[i];
-            ArrayTrackedVolume_actRD2[i] = ArrayTrackedVolumeRD2[i] + ArrayTrackedVolume_actRD2[i];
-            ArrayTrackedVolume_actRG1[i] = ArrayTrackedVolumeRG1[i] + ArrayTrackedVolume_actRG1[i];
-            ArrayTrackedVolume_actRG2[i] = ArrayTrackedVolumeRG2[i] + ArrayTrackedVolume_actRG2[i];
-            ArrayTrackedVolume_actTotal[i] = ArrayTrackedVolumeTotal[i] + ArrayTrackedVolume_actTotal[i];
+                //   Règle de trois pour calculer le volume tracé sortant du brin
+                ArrayTrackedVolumeRD1[i] = (ArrayTrackedVolume_actRD1[i]*RD1out)/actTotalRD1.getValue();
+                ArrayTrackedVolumeRD2[i] = (ArrayTrackedVolume_actRD2[i]*RD2out)/actTotalRD2.getValue();
+                ArrayTrackedVolumeRG1[i] = (ArrayTrackedVolume_actRG1[i]*RG1out)/actTotalRG1.getValue();
+                ArrayTrackedVolumeRG2[i] = (ArrayTrackedVolume_actRG2[i]*RG2out)/actTotalRG2.getValue();
+                ArrayTrackedVolumeTotal[i] = (ArrayTrackedVolume_actTotal[i]*cumOutflow)/actTotalTot;
 
-            //   Règle de trois pour calculer le volume tracé sortant du brin
-            ArrayTrackedVolumeRD1[i] = (ArrayTrackedVolume_actRD1[i]*RD1out)/actTotalRD1.getValue();
-            ArrayTrackedVolumeRD2[i] = (ArrayTrackedVolume_actRD2[i]*RD2out)/actTotalRD2.getValue();
-            ArrayTrackedVolumeRG1[i] = (ArrayTrackedVolume_actRG1[i]*RG1out)/actTotalRG1.getValue();
-            ArrayTrackedVolumeRG2[i] = (ArrayTrackedVolume_actRG2[i]*RG2out)/actTotalRG2.getValue();
-            ArrayTrackedVolumeTotal[i] = (ArrayTrackedVolume_actTotal[i]*cumOutflow)/actTotalTot;
+                if(actTotalRD1.getValue() == 0){
+                    ArrayTrackedVolumeRD1[i] = 0;
+                }
+                if(actTotalRD2.getValue() == 0){
+                    ArrayTrackedVolumeRD2[i] = 0;
+                }
+                if(actTotalRG1.getValue() == 0){
+                    ArrayTrackedVolumeRG1[i] = 0;
+                }
+                if(actTotalRG2.getValue() == 0){
+                    ArrayTrackedVolumeRG2[i] = 0;
+                }
+                if(actTotalTot == 0){
+                    ArrayTrackedVolumeTotal[i] = 0;
+                }  
 
-            if(actTotalRD1.getValue() == 0){
-                ArrayTrackedVolumeRD1[i] = 0;
+                //    Calcul du volume tracé restant dans le brin
+                ArrayTrackedVolume_actRD1[i] = ArrayTrackedVolume_actRD1[i] - ArrayTrackedVolumeRD1[i];
+                ArrayTrackedVolume_actRD2[i] = ArrayTrackedVolume_actRD2[i] - ArrayTrackedVolumeRD2[i];
+                ArrayTrackedVolume_actRG1[i] = ArrayTrackedVolume_actRG1[i] - ArrayTrackedVolumeRG1[i];
+                ArrayTrackedVolume_actRG2[i] = ArrayTrackedVolume_actRG2[i] - ArrayTrackedVolumeRG2[i];
+                ArrayTrackedVolume_actTotal[i] = ArrayTrackedVolume_actTotal[i] - ArrayTrackedVolumeTotal[i];
+
+                // Transfert des volumes tracés au brin suivant - 1ere partie
+                destReachArrayTrackedVolumeRD1_temp[i] = ArrayTrackedVolumeRD1[i];
+                destReachArrayTrackedVolumeRD2_temp[i] = ArrayTrackedVolumeRD2[i];
+                destReachArrayTrackedVolumeRG1_temp[i] = ArrayTrackedVolumeRG1[i];
+                destReachArrayTrackedVolumeRG2_temp[i] = ArrayTrackedVolumeRG2[i];
+                destReachArrayTrackedVolumeTotal_temp[i] = ArrayTrackedVolumeTotal[i];
+    //            if (Arrays.asList(427600,425601,425600,425200,424800,422000,300800,300600,300200,300000,298800,298601,9999).contains(ID) & (i==t)){
+    //                getModel().getRuntime().println("--> [after] reach "+ ID + ": t = "+ t + " i = " + i + " ArrayTrackedVolumeRD1[i] = "+ ArrayTrackedVolumeRD1[i]);
+    //            }    
+
             }
-            if(actTotalRD2.getValue() == 0){
-                ArrayTrackedVolumeRD2[i] = 0;
-            }
-            if(actTotalRG1.getValue() == 0){
-                ArrayTrackedVolumeRG1[i] = 0;
-            }
-            if(actTotalRG2.getValue() == 0){
-                ArrayTrackedVolumeRG2[i] = 0;
-            }
-            if(actTotalTot == 0){
-                ArrayTrackedVolumeTotal[i] = 0;
-            }  
-
-            //    Calcul du volume tracé restant dans le brin
-            ArrayTrackedVolume_actRD1[i] = ArrayTrackedVolume_actRD1[i] - ArrayTrackedVolumeRD1[i];
-            ArrayTrackedVolume_actRD2[i] = ArrayTrackedVolume_actRD2[i] - ArrayTrackedVolumeRD2[i];
-            ArrayTrackedVolume_actRG1[i] = ArrayTrackedVolume_actRG1[i] - ArrayTrackedVolumeRG1[i];
-            ArrayTrackedVolume_actRG2[i] = ArrayTrackedVolume_actRG2[i] - ArrayTrackedVolumeRG2[i];
-            ArrayTrackedVolume_actTotal[i] = ArrayTrackedVolume_actTotal[i] - ArrayTrackedVolumeTotal[i];
-
-            // Transfert des volumes tracés au brin suivant - 1ere partie
-            destReachArrayTrackedVolumeRD1_temp[i] = ArrayTrackedVolumeRD1[i];
-            destReachArrayTrackedVolumeRD2_temp[i] = ArrayTrackedVolumeRD2[i];
-            destReachArrayTrackedVolumeRG1_temp[i] = ArrayTrackedVolumeRG1[i];
-            destReachArrayTrackedVolumeRG2_temp[i] = ArrayTrackedVolumeRG2[i];
-            destReachArrayTrackedVolumeTotal_temp[i] = ArrayTrackedVolumeTotal[i];
-
+            
         }   
             
 //        getModel().getRuntime().println("Sortie du reach = " + Arrays.toString(ArrayTrackedVolumeTotal));
-
+//        if((ID == 427600) & trackedVolumeWW.getValue() != 0){
+//            getModel().getRuntime().println("reach "+ ID + ": RD1out = "+ RD1out + ", trackedVolumeWW = " + trackedVolumeWW.getValue() + ", ArrayTrackedVolumeRD1[t] = "+ ArrayTrackedVolumeRD1[t]);
+//        }
+//        if((ID == 9999) & trackedVolumeWW.getValue() != 0){
+//            getModel().getRuntime().println("reach "+ ID + ": RD1out = "+ RD1out + ", trackedVolumeWW = " + trackedVolumeWW.getValue() + ", ArrayTrackedVolumeRD1[t] = "+ ArrayTrackedVolumeRD1[t]);
+//        }
+//        if(Arrays.asList(427600,425601,425600,425200,424800,422000,300800,300600,300200,300000,298800,298601,9999).contains(ID) & trackedVolumeWW.getValue() != 0){
+//            getModel().getRuntime().println(" -- reach "+ ID + ": RD1out = "+ RD1out + ", trackedVolumeWW = " + trackedVolumeWW.getValue() + ", ArrayTrackedVolumeRD1[t] = "+ ArrayTrackedVolumeRD1[t]);
+//        }
+        
         // Enregistrement du tableau des volumes tracés
         trackedVolumeRD1Array.setValue(ArrayTrackedVolumeRD1);
         trackedVolumeRD2Array.setValue(ArrayTrackedVolumeRD2);
@@ -498,7 +541,12 @@ public class ReachTrackingSewWW extends JAMSComponent {
             DestReach.setObject("TrackedVolumeRG2Array", destReachDoubleArrayTrackedVolumeRG2);
             DestReach.setObject("TrackedVolumeTotalArray", destReachDoubleArrayTrackedVolumeTotal);            
         }
-
+//        // bugfix
+//        if(DestID == 425601){
+//            Attribute.Double destReachDoubleTrackedVolumeWW = (Attribute.Double) DestReach.getObject("trackedVolumeWW");
+//            double destReachTrackedVolumeWW = destReachDoubleTrackedVolumeWW.getValue();
+//            getModel().getRuntime().println("++ ReackTracking END -- next reach (DestID " + DestID + ") got " + destReachTrackedVolumeWW + " WW. Did this work?");
+//        }
     }   
 
 }

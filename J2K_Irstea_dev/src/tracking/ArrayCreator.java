@@ -108,83 +108,84 @@ public class ArrayCreator extends JAMSComponent {
     boolean shifted = false;
 
             
-public void init() {
-    
-    shifted = false;
-    InputDataStore is = null;
+    public void init() {
 
-    if (dataStoreID != null) {
-        is = getModel().getWorkspace().getInputDataStore(dataStoreID.getValue());
-    }
+        shifted = false;
+        InputDataStore is = null;
 
-    // check if store exists
-        if (is == null) {
-            getModel().getRuntime().sendHalt("Error accessing datastore \""
-                    + dataStoreID + "\" from " + getInstanceName() + ": Datastore could not be found!");
-            return;
+        if (dataStoreID != null) {
+            is = getModel().getWorkspace().getInputDataStore(dataStoreID.getValue());
         }
-    store = (TSDataStore) is;
-    
-    // extract some meta information
 
-    DataSetDefinition dsDef = store.getDataSetDefinition();
+        // check if store exists
+            if (is == null) {
+                getModel().getRuntime().sendHalt("Error accessing datastore \""
+                        + dataStoreID + "\" from " + getInstanceName() + ": Datastore could not be found!");
+                return;
+            }
+        store = (TSDataStore) is;
 
-    names.setValue(listToDoubleArray(dsDef.getAttributeValues("X")));
+        // extract some meta information
 
-    double[] Nom = this.names.getValue();
-    
-    int t = Nom.length;
+        DataSetDefinition dsDef = store.getDataSetDefinition();
 
-//  Création et sauvegarde des tableaux pour les volumes tracés et restants au début du modèle
-    double[] ArrayTrackedVolumeRD1 = new double[t];
-    double[] ArrayTrackedVolumeRD2 = new double[t];
-    double[] ArrayTrackedVolumeRG1 = new double[t];
-    double[] ArrayTrackedVolumeRG2 = new double[t];
-    double[] ArrayTrackedVolumeTotal = new double[t];
+        names.setValue(listToDoubleArray(dsDef.getAttributeValues("X")));
 
-    double[] ArrayTrackedVolume_actRD1 = new double[t];
-    double[] ArrayTrackedVolume_actRD2 = new double[t];
-    double[] ArrayTrackedVolume_actRG1 = new double[t];
-    double[] ArrayTrackedVolume_actRG2 = new double[t];    
-    double[] ArrayTrackedVolume_actTotal = new double[t]; 
-      
-    for(int i=0;i<t;i++)
-    {
-        ArrayTrackedVolumeRD1[i] = -999.;
-        ArrayTrackedVolumeRD2[i] = -999;
-        ArrayTrackedVolumeRG1[i] = -999;
-        ArrayTrackedVolumeRG2[i] = -999;
-        ArrayTrackedVolumeTotal[i] = -999;   
+        double[] Nom = this.names.getValue();
+
+        int t = Nom.length;
+//        getModel().getRuntime().println("+++ ArrayCreator - length: "+t+" tracked reaches, names: "+Arrays.toString(Nom));
+
+    //  Création et sauvegarde des tableaux pour les volumes tracés et restants au début du modèle
+        double[] ArrayTrackedVolumeRD1 = new double[t];
+        double[] ArrayTrackedVolumeRD2 = new double[t];
+        double[] ArrayTrackedVolumeRG1 = new double[t];
+        double[] ArrayTrackedVolumeRG2 = new double[t];
+        double[] ArrayTrackedVolumeTotal = new double[t];
+
+        double[] ArrayTrackedVolume_actRD1 = new double[t];
+        double[] ArrayTrackedVolume_actRD2 = new double[t];
+        double[] ArrayTrackedVolume_actRG1 = new double[t];
+        double[] ArrayTrackedVolume_actRG2 = new double[t];    
+        double[] ArrayTrackedVolume_actTotal = new double[t]; 
+
+        for(int i=0;i<t;i++)
+        {
+            ArrayTrackedVolumeRD1[i] = -999.;
+            ArrayTrackedVolumeRD2[i] = -999;
+            ArrayTrackedVolumeRG1[i] = -999;
+            ArrayTrackedVolumeRG2[i] = -999;
+            ArrayTrackedVolumeTotal[i] = -999;   
+        }
+
+        trackedVolumeRD1Array.setValue(ArrayTrackedVolumeRD1);
+        trackedVolumeRD2Array.setValue(ArrayTrackedVolumeRD2);
+        trackedVolumeRG1Array.setValue(ArrayTrackedVolumeRG1);
+        trackedVolumeRG2Array.setValue(ArrayTrackedVolumeRG2);
+        trackedVolumeTotalArray.setValue(ArrayTrackedVolumeTotal);
+
+        trackedVolumeRD1_actArray.setValue(ArrayTrackedVolume_actRD1);
+        trackedVolumeRD2_actArray.setValue(ArrayTrackedVolume_actRD2);
+        trackedVolumeRG1_actArray.setValue(ArrayTrackedVolume_actRG1);
+        trackedVolumeRG2_actArray.setValue(ArrayTrackedVolume_actRG2);
+        trackedVolumeTotal_actArray.setValue(ArrayTrackedVolume_actTotal);
     }
 
-    trackedVolumeRD1Array.setValue(ArrayTrackedVolumeRD1);
-    trackedVolumeRD2Array.setValue(ArrayTrackedVolumeRD2);
-    trackedVolumeRG1Array.setValue(ArrayTrackedVolumeRG1);
-    trackedVolumeRG2Array.setValue(ArrayTrackedVolumeRG2);
-    trackedVolumeTotalArray.setValue(ArrayTrackedVolumeTotal);
-
-    trackedVolumeRD1_actArray.setValue(ArrayTrackedVolume_actRD1);
-    trackedVolumeRD2_actArray.setValue(ArrayTrackedVolume_actRD2);
-    trackedVolumeRG1_actArray.setValue(ArrayTrackedVolume_actRG1);
-    trackedVolumeRG2_actArray.setValue(ArrayTrackedVolume_actRG2);
-    trackedVolumeTotal_actArray.setValue(ArrayTrackedVolume_actTotal);
-}
-
     
-private double[] listToDoubleArray(ArrayList<Object> list) {
-double[] result = new double[list.size()];
-int i = 0;
-for (Object o : list) {
-    result[i] = ((Double) o).doubleValue();
-    i++;
-}
-return result;
-}
+    private double[] listToDoubleArray(ArrayList<Object> list) {
+    double[] result = new double[list.size()];
+    int i = 0;
+    for (Object o : list) {
+        result[i] = ((Double) o).doubleValue();
+        i++;
+    }
+    return result;
+    }
 
-public void run(){ 
-    
+    public void run(){ 
 
-}
+
+    }
 }
 
 
