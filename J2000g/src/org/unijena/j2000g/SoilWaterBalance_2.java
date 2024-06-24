@@ -25,6 +25,7 @@ package org.unijena.j2000g;
 
 import jams.data.*;
 import jams.model.*;
+import java.util.Date;
 
 /**
  *
@@ -162,6 +163,28 @@ import jams.model.*;
             )
             public Attribute.Double petMult;
 
+    @JAMSVarDescription(
+            access = JAMSVarDescription.AccessType.READ,
+            description = "Actuall soil moisture adjustment factor",
+            defaultValue = "1",
+            lowerBound = 0
+            )
+            public Attribute.Double act_soilMult;
+    
+    @JAMSVarDescription(
+            access = JAMSVarDescription.AccessType.READ,
+            description = "Current date"
+    )
+    public Attribute.Calendar date;
+    
+        @JAMSVarDescription(
+            access = JAMSVarDescription.AccessType.READ,
+            description = "Date when soil moisture adjustment will be performed"
+    )
+    public Attribute.Calendar adjustment_date;
+    
+    
+    
     /*
      *  Component run stages
      */
@@ -308,6 +331,28 @@ import jams.model.*;
         dirQ = dirQ + interflow;
         
         //writing values back
+        
+        //soil moisture adjustment 
+        
+        if (adjustment_date.getValue() != null){
+            
+            if (adjustment_date.compareTo(date.getValue(), 3600000) == 0){
+           
+                actMPS = actMPS * act_soilMult.getValue();
+                
+                actMPS = Math.min(actMPS, maxMPS);
+                
+            }
+            
+            
+            
+            
+            
+            
+            
+        }
+        
+        
         this.actET.setValue(actET);
         this.actMPS.setValue(actMPS);
         this.satMPS.setValue(actMPS / maxMPS);
