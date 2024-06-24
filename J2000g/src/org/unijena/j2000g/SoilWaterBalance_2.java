@@ -33,8 +33,11 @@ import java.util.Date;
  */
 @JAMSComponentDescription(
         title="SoilWaterBalance",
-        author="Peter Krause",
+        author="Peter Krause + Manfred Fink",
+		version = "1.1",
         description="Calculates a simplified soil water balance for each HRU"
+		+ " add on soil water adjustment during runtime"
+		+ " for automized adjustment to actual measurements"
         )
         public class SoilWaterBalance_2 extends JAMSComponent {
     
