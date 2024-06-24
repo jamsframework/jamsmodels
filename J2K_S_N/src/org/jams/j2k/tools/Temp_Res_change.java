@@ -16,7 +16,7 @@ import java.util.TimeZone;
 
 /**
  * Konvertierung von verschiedenen zeitlichen Auflösungen (von Minuten bis zu 1
- * Tag)
+ * Tag) vollständige Zeitreihen in den Datums und Zeitspalten notwendig.
  *
  *
  * @author Manfred Fink TFW
@@ -29,22 +29,22 @@ public class Temp_Res_change {
     SimpleDateFormat objSDFTime = new SimpleDateFormat(strTimeFormat);
     BufferedWriter writer;
     boolean[] flag;
+    int dl_sav_cont = 8;
 
     public void convert(String Consoleinput) throws IOException {
         //public void convert(String inputfile) throws IOException {
-        
+
         TimeZone new_time_default = TimeZone.getTimeZone("Etc/GMT-1");
         //TimeZone.getDefault();
         //new_time_default.useDaylightTime();
         //new_time_default.getDSTSavings();
-        
+
         //TimeZone.setDefault(TimeZone.getTimeZone("Etc/GMT-1"));
         TimeZone.setDefault(new_time_default);
         //TimeZone.getDefault();
         this.objSDF = new SimpleDateFormat(strDateFormat); //Date format string is passed as an argument to the Date format object
         this.objSDFTime = new SimpleDateFormat(strTimeFormat);
-        
-        
+
         boolean flag1 = false;
         //int jj = 0;
 
@@ -81,7 +81,7 @@ public class Temp_Res_change {
             inputArray[ll] = tokcons.nextToken();
             ll++;
         }
-        if (ll != 3){
+        if (ll != 3) {
             System.out.println("Falsche anzahl von Parametern: Usage: Inputfilename, resolution in sec, number of header lines, average (0) or sum");
         }
 
@@ -149,6 +149,9 @@ public class Temp_Res_change {
                     tokinit1 = new StringTokenizer(initstr1);
                     String datum1 = tokinit1.nextToken();
                     String zeit1 = tokinit1.nextToken();
+                    if (zeit1.equals("24:00")) {
+                        zeit1 = "00:00";
+                    }
                     startdate = dateparser(datum1, zeit1);
 
                 } else if (j == header_count + 1) {
@@ -157,6 +160,9 @@ public class Temp_Res_change {
                     tokinit2 = new StringTokenizer(initstr2);
                     String datum2 = tokinit2.nextToken();
                     String zeit2 = tokinit2.nextToken();
+                    if (zeit2.equals("24:00")) {
+                        zeit2 = "00:00";
+                    }
                     startdate2 = dateparser(datum2, zeit2);
                 }
 
@@ -180,7 +186,7 @@ public class Temp_Res_change {
 
             int v = 0;
 
-            Date dateinput = startdate;
+            Date dateinput = new Date();
             Date dateoutput = startdate;
 
             int ih = 0;
@@ -203,6 +209,17 @@ public class Temp_Res_change {
             double weightlores = 0; //Gewicht im Verhaeltnis zum Inputzeitschritt
             double weighthires = 0; //Gewicht im Verhaeltnis zum Inputzeitschritt
             double weightsum = 0;
+            long inpsec = 0;
+            long oldsec = 0;
+            long outsec = 0;
+            long inres_sec = 0;
+            long outres_sec = 0;
+
+            inres_sec = input_res / 1000;
+            outres_sec = output_res / 1000;
+
+            int ressteps = (int) (1 / ratio);
+            int n = 0;
 
             while (f < j) {
 
@@ -210,23 +227,58 @@ public class Temp_Res_change {
                 tokval = new StringTokenizer(lineraw[f], "\t");
                 e = 0;
                 while (tokval.hasMoreTokens()) {
-
-                    valstring[e] = tokval.nextToken();
+                    if (e == 1) {
+                        String Uhrzeit = tokval.nextToken();
+                        if (Uhrzeit.equals("24:00")) {
+                            Uhrzeit = "00:00";
+                        }
+                        valstring[e] = Uhrzeit;
+                    } else {
+                        valstring[e] = tokval.nextToken();
+                    }
                     e++;
                 }
 
+                oldsec = dateinput.getTime() / 1000;
                 dateinput = dateparser(valstring[0], valstring[1]);
+                inpsec = dateinput.getTime() / 1000;
+                outsec = dateoutput.getTime() / 1000;
+                //Daylight saving spring check for cadenza output only used by 15 min data for gauging stations
+                if (oldsec == inpsec - (3600 + input_res / 1000)) {
+                    inpsec = inpsec - 3600;
+                    dl_sav_cont = 0;
 
-                long inpsec = dateinput.getTime() / 1000;
-                long outsec = dateoutput.getTime() / 1000;
-                long inres_sec = input_res / 1000;
-                long outres_sec = output_res / 1000;
+                } else if (dl_sav_cont < 6) {
+
+                    switch (dl_sav_cont) {
+                        case 0:
+                            inpsec = inpsec - 3 * (input_res / 1000);
+                            break;
+                        case 1:
+                            inpsec = inpsec - 3 * (input_res / 1000);
+                            break;
+                        case 2:
+                            inpsec = inpsec - 2 * (input_res / 1000);
+                            break;
+                        case 3:
+                            inpsec = inpsec - 2 * (input_res / 1000);
+                            break;
+                        case 4:
+                            inpsec = inpsec - 1 * (input_res / 1000);
+                            break;
+                        case 5:
+                            inpsec = inpsec - 1 * (input_res / 1000);
+                            break;
+                    }
+                    dl_sav_cont++;
+                } else {
+
+                }
 
                 if (ratio <= 1) { //resolution decreases
 
                     //long diff = outsec - inpsec;
                     //System.out.println("differenz in out in sec: " + (diff));
-
                     if ((inpsec < outsec) && (inpsec + inres_sec > outsec) && (inpsec + inres_sec < outsec + outres_sec)) {
                         weightlores = (((double) inpsec + (double) inres_sec) - (double) outsec) / (double) inres_sec;
                         weightsum = weightlores;
@@ -236,7 +288,7 @@ public class Temp_Res_change {
                         while (v < colunms - 2) {
                             num_value[v] = Double.parseDouble(valstring[v + 2]);
 
-                            if (num_value[v] == -9999) {
+                            if (num_value[v] == -9999 || e < colunms) {
                                 this.flag[v] = true;
                             }
                             num_sum[v] = num_value[v] * weightlores;
@@ -253,8 +305,14 @@ public class Temp_Res_change {
                         while (v < colunms - 2) {
                             num_value[v] = Double.parseDouble(valstring[v + 2]);
 
-                            if (num_value[v] == -9999) {
-                                this.flag[v] = true;
+                            if (num_value[v] == -9999 || e < colunms) {
+                                n++;
+                                if (n >= ressteps - 1) {
+                                    this.flag[v] = true;
+                                    n = 0;
+                                }
+                            } else {
+                                n = 0;
                             }
                             num_sum[v] = num_sum[v] + num_value[v];
                             v++;
@@ -286,8 +344,14 @@ public class Temp_Res_change {
                         while (v < colunms - 2) {
 
                             num_value[v] = Double.parseDouble(valstring[v + 2]);
-                            if (num_value[v] == -9999) {
-                                this.flag[v] = true;
+                            if (num_value[v] == -9999 || e < colunms) {
+                                n++;
+                                if (n >= ressteps - 1) {
+                                    this.flag[v] = true;
+                                    n = 0;
+                                }
+                            } else {
+                                n = 0;
                             }
 
                             num_sum[v] = num_sum[v] + (num_value[v] * weightlores);
@@ -318,14 +382,14 @@ public class Temp_Res_change {
                     if (flag1) { //Fall 1, Anfang der Reihe
                         //if ((inpsec + inres_sec < outsec) && (inpsec + inres_sec > outsec - outres_sec))
 
-                        double weight = ((double)outres_sec  / (double)inres_sec) - weighthires;
+                        double weight = ((double) outres_sec / (double) inres_sec) - weighthires;
 
                         v = 0;
 
                         while (v < colunms - 2) {
                             num_value[v] = Double.parseDouble(valstring[v + 2]);
 
-                            if (num_value[v] == -9999) {
+                            if (num_value[v] == -9999 || e < colunms) {
                                 this.flag[v] = true;
                             }
                             num_sum[v] = num_sum[v] + (num_value[v] * weight);
@@ -376,7 +440,7 @@ public class Temp_Res_change {
                         while (v < colunms - 2) {
                             num_value[v] = Double.parseDouble(valstring[v + 2]);
 
-                            if (num_value[v] == -9999) {
+                            if (num_value[v] == -9999 || e < colunms) {
                                 this.flag[v] = true;
                             }
                             num_sum[v] = num_value[v] * weightsum;
@@ -407,7 +471,7 @@ public class Temp_Res_change {
                         while (v < colunms - 2) {
                             num_value[v] = Double.parseDouble(valstring[v + 2]);
 
-                            if (num_value[v] == -9999) {
+                            if (num_value[v] == -9999 || e < colunms) {
                                 this.flag[v] = true;
                             }
                             num_sum[v] = num_sum[v] + (num_value[v] * weighthires);
@@ -495,8 +559,8 @@ public class Temp_Res_change {
     public static void main(String[] args) throws IOException {
         Temp_Res_change Precipi = new Temp_Res_change();
 
-        Precipi.convert("d:\\\\\\oberlemnitz\\\\harra_lemnitzhammer_Durchfluss_15min.dat 3600 16 0");
+        Precipi.convert("d:\\\\\\Manfred\\\\GEO415a\\\\Ziegenrueck_D.dat 900 16 0");
         //Precipi.convert(args[0]);
-        
+
     }
 }
