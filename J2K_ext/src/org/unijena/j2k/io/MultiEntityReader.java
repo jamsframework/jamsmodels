@@ -337,6 +337,7 @@ public class MultiEntityReader extends JAMSComponent {
             return true;
         }
         //node in closed list? -> then skip it
+        getModel().getRuntime().println("ID " + node.getObject("ID"));
         if (closedList.contains(node.getObject("ID")) == true) {
             return false;
         }
