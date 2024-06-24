@@ -32,12 +32,16 @@ import jams.model.*;
  */
 @JAMSComponentDescription(title = "CalcPotentialETSamani",
         author = "Peter Krause",
-        version = "1.0_1",
+        version = "1.2",
         description = "Calculates potential ET according to Hargreaves Samani")
 @VersionComments(entries = {
     @VersionComments.Entry(version = "1.0_0", comment = "Initial version", date = "2011-05-30"),
-    @VersionComments.Entry(version = "1.0_1", comment = "Corrected description of units of potET/actET", date = "2018-07-04")
-})public class HargreavesSamani extends JAMSComponent {
+    @VersionComments.Entry(version = "1.0_1", comment = "Corrected description of units of potET/actET", date = "2018-07-04"),
+    @VersionComments.Entry(version = "1.1", comment = "Data caching removed. Increase robustness in case of tmin > tmax; this can occur if datagaps are unfortunate. Manfred ", date = "2021-09-01"),
+    @VersionComments.Entry(version = "1.2", comment = "Including the use of a crop factor, Manfred ", date = "2021-10-22"),
+    @VersionComments.Entry(version = "1.2", comment = "Including the use of an altitude factor, Manfred ", date = "2022-09-28")
+})
+public class HargreavesSamani extends JAMSComponent {
 
     /*
      *  Component variables
@@ -73,7 +77,32 @@ import jams.model.*;
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
             description = "attribute area")
     public Attribute.Double area;
+    
+    @JAMSVarDescription(
+            access = JAMSVarDescription.AccessType.READ,
+            description = "HRU attribute name elevation",
+            defaultValue = "0.0")
+            public Attribute.Double elevation;
+    
+    @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
+            description = "crop factor",
+            defaultValue = "1.0")
+    public Attribute.Double Kc;
+    
+    @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
+            description = "Multplier for the adaptation per meter of ET according to altitude",
+            defaultValue = "0.0",
+            lowerBound = -0.002,
+            upperBound = 0.002)
+    public Attribute.Double Altituede_factor;    
 
+    @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
+            description = "Base altitude for the adaptation per meter of ET according to altitude",
+            defaultValue = "400.0",
+            lowerBound = -200.0,
+            upperBound = 9000.0)
+    public Attribute.Double Altituede_base;
+    
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.WRITE,
             description = "potential ET",
             unit = "L")
@@ -84,85 +113,86 @@ import jams.model.*;
             unit = "L")
     public Attribute.Double actET;
 
-    @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
-            description = "Caching configuration: 0 - write cache, 1 - use cache, 2 - caching off",
-            defaultValue = "0")
-    public Attribute.Integer dataCaching;
-
-    private File cacheFile;
-
-    transient private ObjectOutputStream writer;
-
-    transient private ObjectInputStream reader;
 
     /*
      *  Component run stages
      */
     public void init() throws Attribute.Entity.NoSuchAttributeException, IOException {
-        //first, check if cached data are available
-        //cacheFile = new File(dirName.getValue() + "/$" + this.getInstanceName() + ".cache");
-        cacheFile = new File(getModel().getWorkspace().getTempDirectory(), this.getInstanceName() + ".cache");
-        if (!cacheFile.exists() && (dataCaching.getValue() == 1)) {
-            getModel().getRuntime().sendHalt(this.getInstanceName() + ": dataCaching is true but no cache file available!");
-        }
 
-        if (dataCaching.getValue() == 1) {
-            reader = new ObjectInputStream(new BufferedInputStream(new FileInputStream(cacheFile)));//new FileInputStream(cacheFile));
-        } else if (dataCaching.getValue() == 0) {
-            writer = new ObjectOutputStream(new BufferedOutputStream(new FileOutputStream(cacheFile)));
-        }
     }
 
     public void run() throws Attribute.Entity.NoSuchAttributeException, IOException {
 
-        if (dataCaching.getValue() == 1) {
-            this.potET.setValue(reader.readDouble());
-        } else {
-            double extRad = this.extRad.getValue();
-            double tmin = this.tmin.getValue();
-            double tavg = this.tmean.getValue();
-            double tmax = this.tmax.getValue();
-            double area = this.area.getValue();
+        double extRad = this.extRad.getValue();
+        double tmin = this.tmin.getValue();
+        double tavg = this.tmean.getValue();
+        double tmax = this.tmax.getValue();
+        double area = this.area.getValue();
+        double Kc = this.Kc.getValue();
+        double deltaET = 0;
+        double latH = org.unijena.j2k.physicalCalculations.ClimatologicalVariables.calc_latentHeatOfVaporization(tavg);
 
-            double latH = org.unijena.j2k.physicalCalculations.ClimatologicalVariables.calc_latentHeatOfVaporization(tavg);
-
-            double pET = 0;
-            double aET = 0;
-
-            pET = (0.0023 * extRad * Math.sqrt(tmax - tmin) * (tavg + 17.8)) / latH;
-
-            //converting mm to litres
-            pET = pET * area;
-
-            //aggregation to monthly values
-            if (this.time != null) {
-                if (this.tempRes.getValue().equals("m")) {
-                    int daysInMonth = this.time.getActualMaximum(Attribute.Calendar.DATE);
-                    pET = pET * daysInMonth;
-                }
-            }
-
-            //avoiding negative potETPs
-            if (pET < 0) {
-                pET = 0;
-            }
-            this.potET.setValue(pET);
-            this.actET.setValue(aET);
-
-            if (dataCaching.getValue() == 0) {
-                writer.writeDouble(pET);
+        double pET = 0;
+        double aET = 0;
+        // avoiding data problem with tmin or tmax; Manfred
+        if (tmin > tmax) {
+            if (tmax > tavg) {
+                tmin = tavg - (tmax - tavg);
+            } else if(tmin < tavg){
+                tmax = tavg + (tavg - tmin);
+            } else {
+                tmin = tmax; // leads to zero ET
             }
 
         }
+
+        pET = ((0.0023 * extRad * Math.sqrt(tmax - tmin) * (tavg + 17.8)) / latH) * Kc;
+
+        //converting mm to litres
+        pET = pET * area;
+
+        //aggregation to monthly values
+        if (this.time != null) {
+            if (this.tempRes.getValue().equals("m")) {
+                int daysInMonth = this.time.getActualMaximum(Attribute.Calendar.DATE);
+                pET = pET * daysInMonth;
+            }
+        }
+
+        //avoiding negative potETPs
+        if (pET < 0) {
+            pET = 0;
+        }
+         //Altitude adaptation; Altituede_factor = 0 swiched off 
+         
+        deltaET = ((Altituede_base.getValue() - elevation.getValue()) * Altituede_factor.getValue() * pET);   
+         
+        deltaET = Math.max(-pET, deltaET);
+        deltaET = Math.min(pET, deltaET);
+        
+        
+        pET =  pET + deltaET;
+        
+        
+        this.potET.setValue(pET);
+
+        if (pET >= 0.0) {
+
+        } else {
+            System.out.println("extRad = " + extRad + " tmin = " + tmin + " tavg = " + tavg + " tmax  = " + tmax + " area = " + area + "latH = " + latH);
+        }
+        
+       
+        
+       
+        
+        
+        this.actET.setValue(aET);
+
     }
 
     public void cleanup() throws IOException {
-        if (dataCaching.getValue() == 0) {
-            writer.flush();
-            writer.close();
-        } else if (dataCaching.getValue() == 1) {
-            reader.close();
-        }
+
     }
 
 }
