@@ -139,10 +139,10 @@ public class StandardDataWriter extends JAMSComponent {
         //always write time
         //the time also knows a toString() method with additional formatting parameters
         //e.g. time.toString("%1$tY-%1$tm-%1$td %1$tH:%1$tM")
-        writer.addData(time.toString(new SimpleDateFormat("%1$tH:%1$tM:%1$tS")));
+        writer.addData(time.toString(new SimpleDateFormat("dd.MM.yyyy HH:mm")));
         
         for (int i = 0; i < value.length; i++) {
-            writer.addData(value[i].getValue(), 3);
+            writer.addData(value[i].getValue(), 10);
         }
         
         try {
