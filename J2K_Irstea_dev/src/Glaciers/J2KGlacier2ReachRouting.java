@@ -21,7 +21,7 @@
  *
  */
 
-package Draft;
+package Glaciers;
 
 import jams.data.*;
 import jams.model.*;
