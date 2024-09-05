@@ -368,33 +368,34 @@ public class ReachTrackingSewWW extends JAMSComponent {
             ArrayTrackedVolume_actTotal[t] = actTotalTot - cumOutflow;
             
             // TODO: the following is problematic: it removes the tracked volume from sewers / WWTP from EVERY reach that has some. (so if it is routed over several reaches, it gets removed several times)
+            // no, it's actually correct, because tracked outflow is first set to all outflow (incl Sew / WW).
             // test without removing tracked ww / sew volumes from tracked arrays --> has to be removed manually in post-processing!
             // an alternative would be to du this removal in the corresponding WW / Sewer tracking module
-//            if(trackedVolumeSewTotal.getValue() != 0){ // remove tracked sewer contribution from tracked volume from this reach to avoid double counting it
-//                
-//                ArrayTrackedVolumeRD1[t] = ArrayTrackedVolumeRD1[t] - trackedVolumeSewRD1.getValue();
-//                ArrayTrackedVolumeRD2[t] = ArrayTrackedVolumeRD2[t] - trackedVolumeSewRD2.getValue();
-//                ArrayTrackedVolumeRG1[t] = ArrayTrackedVolumeRG1[t] - trackedVolumeSewRG1.getValue();
-//                ArrayTrackedVolumeRG2[t] = ArrayTrackedVolumeRG2[t] - trackedVolumeSewRG2.getValue();
-//                ArrayTrackedVolumeTotal[t] = ArrayTrackedVolumeTotal[t] - trackedVolumeSewTotal.getValue(); 
+            if(trackedVolumeSewTotal.getValue() != 0){ // remove tracked sewer contribution from tracked volume from this reach to avoid double counting it
+                
+                ArrayTrackedVolumeRD1[t] = ArrayTrackedVolumeRD1[t] - trackedVolumeSewRD1.getValue();
+                ArrayTrackedVolumeRD2[t] = ArrayTrackedVolumeRD2[t] - trackedVolumeSewRD2.getValue();
+                ArrayTrackedVolumeRG1[t] = ArrayTrackedVolumeRG1[t] - trackedVolumeSewRG1.getValue();
+                ArrayTrackedVolumeRG2[t] = ArrayTrackedVolumeRG2[t] - trackedVolumeSewRG2.getValue();
+                ArrayTrackedVolumeTotal[t] = ArrayTrackedVolumeTotal[t] - trackedVolumeSewTotal.getValue(); 
 //                getModel().getRuntime().println("SEW ++ tracked " + trackedVolumeSewTotal.getValue()+" from sewer leaving to next reach (allready added to next reaches inflow), removed it from current ("+ID+") reaches tracked volume, "+ArrayTrackedVolumeTotal[t]+" remaining");
-////                getModel().getRuntime().println("tracked " + trackedVolumeWW.getValue()+" from waster water (reach "+ID+").");
-//                
-//                ArrayTrackedVolume_actRD1[t] = ArrayTrackedVolume_actRD1[t] - trackedVolumeSewRD1_act.getValue();
-//                ArrayTrackedVolume_actRD2[t] = ArrayTrackedVolume_actRD2[t] - trackedVolumeSewRD2_act.getValue();
-//                ArrayTrackedVolume_actRG1[t] = ArrayTrackedVolume_actRG1[t] - trackedVolumeSewRG1_act.getValue();
-//                ArrayTrackedVolume_actRG2[t] = ArrayTrackedVolume_actRG2[t] - trackedVolumeSewRG2_act.getValue();
-//                ArrayTrackedVolume_actTotal[t] = ArrayTrackedVolume_actTotal[t] - trackedVolumeSewTotal_act.getValue();  
-//            }
-//            if(trackedVolumeWW.getValue() != 0){ // if outflow contains waste water, remove it from tracked reach volume
-//                ArrayTrackedVolumeRD1[t] = ArrayTrackedVolumeRD1[t] - trackedVolumeWW.getValue(); // WW is stocked as RD1
-//                ArrayTrackedVolumeTotal[t] = ArrayTrackedVolumeTotal[t] - trackedVolumeWW.getValue(); // remove from total as well
+//                getModel().getRuntime().println("tracked " + trackedVolumeWW.getValue()+" from waster water (reach "+ID+").");
+                
+                ArrayTrackedVolume_actRD1[t] = ArrayTrackedVolume_actRD1[t] - trackedVolumeSewRD1_act.getValue();
+                ArrayTrackedVolume_actRD2[t] = ArrayTrackedVolume_actRD2[t] - trackedVolumeSewRD2_act.getValue();
+                ArrayTrackedVolume_actRG1[t] = ArrayTrackedVolume_actRG1[t] - trackedVolumeSewRG1_act.getValue();
+                ArrayTrackedVolume_actRG2[t] = ArrayTrackedVolume_actRG2[t] - trackedVolumeSewRG2_act.getValue();
+                ArrayTrackedVolume_actTotal[t] = ArrayTrackedVolume_actTotal[t] - trackedVolumeSewTotal_act.getValue();  
+            }
+            if(trackedVolumeWW.getValue() != 0){ // if outflow contains waste water, remove it from tracked reach volume
+                ArrayTrackedVolumeRD1[t] = ArrayTrackedVolumeRD1[t] - trackedVolumeWW.getValue(); // WW is stocked as RD1
+                ArrayTrackedVolumeTotal[t] = ArrayTrackedVolumeTotal[t] - trackedVolumeWW.getValue(); // remove from total as well
 //                getModel().getRuntime().println("WW  ++ tracked " + trackedVolumeWW.getValue()+" from waste water, removed it from current ("+ID+") reaches tracked volume, "+ArrayTrackedVolumeTotal[t]+" remaining");
-//                
-//                // remove from stocked tracked volume as well (which is set to everything stocked in the reach just above)
-//                ArrayTrackedVolume_actRD1[t] = ArrayTrackedVolume_actRD1[t] - trackedVolumeWW_act.getValue(); // WW is stocked as RD1
-//                ArrayTrackedVolume_actTotal[t] = ArrayTrackedVolume_actTotal[t] - trackedVolumeWW_act.getValue(); // remove from total as well
-//            }
+                
+                // remove from stocked tracked volume as well (which is set to everything stocked in the reach just above)
+                ArrayTrackedVolume_actRD1[t] = ArrayTrackedVolume_actRD1[t] - trackedVolumeWW_act.getValue(); // WW is stocked as RD1
+                ArrayTrackedVolume_actTotal[t] = ArrayTrackedVolume_actTotal[t] - trackedVolumeWW_act.getValue(); // remove from total as well
+            }
 
             // Transfert du volume tracé dans le tableau de sauvegarde pour transfert dans le reach suivant       
             destReachArrayTrackedVolumeRD1_temp[t] = ArrayTrackedVolumeRD1[t];
