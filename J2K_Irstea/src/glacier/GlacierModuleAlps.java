@@ -51,7 +51,7 @@ import jams.model.*;
         "Changed:meltTemp is derived from the average of Tmax and Tmean"+
         "integrating melt correction factor to include slope and aspect in radiation based model//s.nepal., to be changed"+
         "Changed for the new version for the Alps: glaciers can now retreat and their surface area is changed with an annual"+
-        "timestep."
+        "timestep + use of the simplified melt formula only (no radiation)"
         )
 
     public class GlacierModuleAlps extends JAMSComponent {
@@ -293,161 +293,135 @@ import jams.model.*;
 
     public void run() throws Attribute.Entity.NoSuchAttributeException, IOException {
 
-        getModel().getRuntime().println("GlacierModuleAlps", JAMS.VVERBOSE);
+        //getModel().getRuntime().println("GlacierModuleAlps", JAMS.VVERBOSE);
+        //getModel().getRuntime().println("SMB in -> adjSnow: " + this.adjSnow.getValue(), JAMS.VVERBOSE);
+        //getModel().getRuntime().println("SMB in -> adjRain: " + this.adjRain.getValue(), JAMS.VVERBOSE);
+	//getModel().getRuntime().println("SMB in -> netRain: " + this.netRain.getValue(), JAMS.VVERBOSE);
         
-        getModel().getRuntime().println("SMB in -> adjSnow: " + this.adjSnow.getValue(), JAMS.VVERBOSE);
-        getModel().getRuntime().println("SMB in -> adjRain: " + this.adjRain.getValue(), JAMS.VVERBOSE);
-	getModel().getRuntime().println("SMB in -> netRain: " + this.netRain.getValue(), JAMS.VVERBOSE);
         //retreive the actual states and input
-
-        double snowStor = this.snowTotSWE_G.getValue();
-       // double snowMelt_G = this.snowMelt_G.getValue();
-        double tmean = this.tmean.getValue();
-        double glacIn = this.adjRain.getValue() + this.adjSnow.getValue(); //IG changed net-> adj
-        double glacOut = 0;
-
-        double SAC = this.actSlAsCf.getValue();
-		getModel().getRuntime().println("Tmean: "+tmean, JAMS.VVERBOSE);
-
-        double meltTemp = tmean;
-
-        double n = 0;
-        if (this.tempRes.getValue().equals("d")) {
-            n = 1;
-        } else if (this.tempRes.getValue().equals("h")) {
-            n = 24;
-        } else if (this.tempRes.getValue().equals("m")) {
-            n = 1 / 30;
-        }
-        //calc potential snow accumulation
-//        if (this.snow.getValue() > 0) {
-//            snowStor = snowStor + this.snow.getValue();
-
-     //   double iceStorage = 9999;
+        double glacierArea = this.glacierArea.getValue();
         
-        //calc potential melt
-//        double snowMelt_G = 0;
-        double iceMelt = 0;
-        double totalMelt = 0;
-		getModel().getRuntime().println("n: "+n, JAMS.VVERBOSE);
-
- //if (time.equals(c) && (id.getValue() == 1787)) {
-        if ((meltTemp > tbase.getValue()) && (snowStor == 0)) {
-            if (this.meltFormula.getValue() == 1) {
-                iceMelt = (1 / n) * this.ddfIce.getValue() * (meltTemp - this.tbase.getValue());
-                iceMelt = iceMelt * this.glacierArea.getValue();
-            }
-
-            if (this.meltFormula.getValue() == 2) {
-                iceMelt = (1 / n) * (this.meltFactorIce.getValue()) * (meltTemp - this.tbase.getValue());
-                iceMelt = iceMelt * this.glacierArea.getValue();
-            }
-        } else {
-            iceMelt = 0;
-        }
-		//getModel().getRuntime().println("this.slope.getValue(): " + this.slope.getValue());
-		//getModel().getRuntime().println("this.slopeThreshold.getValue(): " + this.slopeThreshold.getValue());
-		//getModel().getRuntime().println("this.elevation.getValue(): " + this.elevation.getValue());
-		//getModel().getRuntime().println("this.elevationThreshold.getValue(): " + this.elevationThreshold.getValue());
-		
-		if (this.slope.getValue() < this.slopeThreshold.getValue() &&
-                this.elevation.getValue() < this.elevationThreshold.getValue()) {
-            iceMelt = iceMelt - (iceMelt * this.debrisFactor.getValue()/10) ;
-	
-		getModel().getRuntime().println("CAREFULL, your glacier is considered debris-covered ; this.slope.getValue():"+ this.slope.getValue(), JAMS.VVERBOSE);
-        }
-		else {
-			iceMelt = iceMelt;
-		}
-		
-		// No use of SAC in this version
-        //iceMelt = iceMelt *  SAC;
-
-        totalMelt = snowMelt_G.getValue() + iceMelt;
-
-		//getModel().getRuntime().println("-----------------------");
-		//getModel().getRuntime().println("");
-		//getModel().getRuntime().println("Total melt: "+totalMelt );
-
-		double allIn = snowMelt_G.getValue() + this.netRain.getValue();
+        // do calculations only if glacier Area > 0.0
+        if(glacierArea > 0.0){
+            double snowStor = this.snowTotSWE_G.getValue();
+            // double snowMelt_G = this.snowMelt_G.getValue();
+            double tmean = this.tmean.getValue();
+            // variables for glacier mass balance
+            double glacIn = this.adjRain.getValue() + this.adjSnow.getValue(); //IG changed net-> adj
+            double glacOut = 0;
+            
+            double meltTemp = tmean;
+            double n = 0;
+            if (this.tempRes.getValue().equals("d")) {
+                n = 1;
+                } else if (this.tempRes.getValue().equals("h")) {
+                    n = 24;
+                    } else if (this.tempRes.getValue().equals("m")) {
+                        n = 1 / 30;
+                        }
+            //calc potential snow accumulation
+            //        if (this.snow.getValue() > 0) {
+            //            snowStor = snowStor + this.snow.getValue();
+            //   double iceStorage = 9999;
+            
+            //calc potential melt
+            //double snowMelt_G = 0;
+            double iceMelt = 0;
+            double totalMelt = 0;
+            //getModel().getRuntime().println("n: "+n, JAMS.VVERBOSE);
+            
+            // calculation of icemelt
+            if ((meltTemp > tbase.getValue()) && (snowStor == 0)) {
+                if (this.meltFormula.getValue() == 1) {
+                    iceMelt = (1 / n) * this.ddfIce.getValue() * (meltTemp - this.tbase.getValue());
+                    iceMelt = iceMelt * this.glacierArea.getValue();
+                    }
                 
-		//getModel().getRuntime().println("Ice melt: "+ iceMelt );
-		//getModel().getRuntime().println("Snow melt: "+ snowMelt_G.getValue() );
-		//getModel().getRuntime().println("Snow melt + rain: "+allIn );
-		//getModel().getRuntime().println("");
-		//getModel().getRuntime().println("-----------------------");
-
-		//route runoff inside glacier
-		//snow routing
-
-			//snowRunofffftm1 += glacStorage
-			// glacStorage = 0;
-
-
-		double q_snow = this.snowRunofftm1.getValue() * Math.exp(-1/this.kSnow.getValue()) + (snowMelt_G.getValue()) * (1-Math.exp(-1/this.kSnow.getValue())); // IG : this includes rain-on-snow plus melt
-		double q_rain = this.rainRunofftm1.getValue() * Math.exp(-1/this.kRain.getValue()) + (this.netRain.getValue()) * (1-Math.exp(-1/this.kRain.getValue())); // IG this is rain on ice only. netRain and not adjRain, since part of the adjRain may have fallen on snow
-		//double q_snowRain = this.snowRunofftm1.getValue() * Math.exp(-1/this.kSnow.getValue()) + (snowMelt_G + this.rain.getValue()) * (1-Math.exp(-1/this.kSnow.getValue()));
-		//ice routing
-		double q_ice = this.iceRunofftm1.getValue() * Math.exp(-1/this.kIce.getValue()) + iceMelt * (1-Math.exp(-1/this.kIce.getValue()));
-
-		//double iceStorage = 9999 -double q_ice
-		
-		//calc total glacier runoff
-		//double tot_q = q_ice + snowMelt_G.getValue();
-
-		double tot_q = q_ice + q_snow + q_rain;
-
-		//q_ice should not be included in the balance, since it is not provided as input. otherwise, waterbalnce is wrong
+                if (this.meltFormula.getValue() == 2) {
+                    iceMelt = (1 / n) * (this.meltFactorIce.getValue()) * (meltTemp - this.tbase.getValue());
+                    iceMelt = iceMelt * this.glacierArea.getValue();
+                    }
+                } else {
+                iceMelt = 0;
+                }
+            
+            // correction of iceMelt if slope and elevation below treshold?
+            if (this.slope.getValue() < this.slopeThreshold.getValue() &&
+                    this.elevation.getValue() < this.elevationThreshold.getValue()) {
+                iceMelt = iceMelt - (iceMelt * this.debrisFactor.getValue()/10) ;
+                //getModel().getRuntime().println("CAREFULL, your glacier is considered debris-covered ; this.slope.getValue():"+ this.slope.getValue(), JAMS.VVERBOSE)
+                }
+            else {
+                iceMelt = iceMelt;
+                }
+            
+            totalMelt = snowMelt_G.getValue() + iceMelt;
+            //getModel().getRuntime().println("Total melt: "+totalMelt );
+            
+            // snow melt and rain on snow routing
+            double q_snow = this.snowRunofftm1.getValue() * Math.exp(-1/this.kSnow.getValue()) + (snowMelt_G.getValue()) * (1-Math.exp(-1/this.kSnow.getValue())); // IG : this includes rain-on-snow plus melt
+            double q_rain = this.rainRunofftm1.getValue() * Math.exp(-1/this.kRain.getValue()) + (this.netRain.getValue()) * (1-Math.exp(-1/this.kRain.getValue())); // IG this is rain on ice only. netRain and not adjRain, since part of the adjRain may have fallen on snow
+            // iceMelt routing
+            double q_ice = this.iceRunofftm1.getValue() * Math.exp(-1/this.kIce.getValue()) + iceMelt * (1-Math.exp(-1/this.kIce.getValue()));
+            
+            //calc total glacier runoff
+            double tot_q = q_ice + q_snow + q_rain;
+            
+            // FB: weird attempt at calculating mass balance. I don't get it
+            double allIn = snowMelt_G.getValue() + this.netRain.getValue();
+            //q_ice should not be included in the balance, since it is not provided as input. otherwise, waterbalnce is wrong
+            //this.glacStorage.setValue(glacStorage.getValue()+ allIn - q_ice - q_snow - q_rain); //why is q_ice missing in that calculation??//water balance is wrong
+            //water balance is right
+            this.glacStorage.setValue(allIn - q_snow - q_rain); //q_ice is not considered as input
+            glacOut = tot_q;
+            
+            //writing variables back
+            // updating the "last time step" variables
+            this.snowRunofftm1.setValue(q_snow);
+            this.rainRunofftm1.setValue(q_rain);
+            this.iceRunofftm1.setValue(q_ice);
+            
+            // glacier outputs
+            this.rainRunoff.setValue(q_rain);
+            this.snowRunoff.setValue(q_snow); //// IG I found this has to be de-commented
+            this.iceRunoff.setValue(q_ice);
+            this.glacierRunoff.setValue(tot_q);
+            this.snowTotSWE_G.setValue(snowStor);
+            //this.snowMelt_G.setValue(q_snow); ////IG  I found this line weird and commented it
+            //this.snowMelt_G.setValue(snowMelt_G.getValue());
+            
+            //        getModel().getRuntime().println("-----------------------", JAMS.VVERBOSE);
+            //        getModel().getRuntime().println("", JAMS.VVERBOSE);
+            //        getModel().getRuntime().println("iceRunoff: " + iceRunoff.getValue(), JAMS.VVERBOSE);
+            //        getModel().getRuntime().println("snowMelt_G: " + snowMelt_G.getValue(), JAMS.VVERBOSE);
+            //        getModel().getRuntime().println("rainRunoff: " + rainRunoff.getValue(), JAMS.VVERBOSE);
+            //        getModel().getRuntime().println("snowRunoff: " + snowRunoff.getValue(), JAMS.VVERBOSE);
+            //        getModel().getRuntime().println("glacierRunoff: " + glacierRunoff.getValue(), JAMS.VVERBOSE);
+            //        getModel().getRuntime().println("", JAMS.VVERBOSE);
+            //        getModel().getRuntime().println("-----------------------", JAMS.VVERBOSE);
+            
+            this.massBalance.setValue(glacIn - glacOut);
+            
+            //        getModel().getRuntime().println("glacIn: " + glacIn, JAMS.VVERBOSE);
+            //        getModel().getRuntime().println("glacOut: " + glacOut, JAMS.VVERBOSE);
+            //        getModel().getRuntime().println("massBalance: " + this.massBalance.getValue(), JAMS.VVERBOSE);
+            }
         
-        //this.glacStorage.setValue(glacStorage.getValue()+ allIn - q_ice - q_snow - q_rain); //why is q_ice missing in that calculation??//water balance is wrong
-        
-        
-        //water balance is right
-        this.glacStorage.setValue(allIn - q_snow - q_rain); //q_ice is not considered as input
-        
-        //getModel().getRuntime().println("glacStorage: " + this.glacStorage.getValue());
-        //getModel().getRuntime().println("allIn: " + allIn);
-        //getModel().getRuntime().println("q_snow: " + q_snow);
-        //getModel().getRuntime().println("q_rain: " + q_rain);
-        
-     //   this.glacStorage.setValue(snowMelt_G - q_snow);
-       // this.glacStorage.setValue(allIn - q_snow - q_rain);
-       glacOut = tot_q;
-
-        //writing variables back
-
-        this.snowRunofftm1.setValue(q_snow);
-        this.rainRunofftm1.setValue(q_rain);
-        this.iceRunofftm1.setValue(q_ice);
-        this.rainRunoff.setValue(q_rain);
-
-
-        this.glacierRunoff.setValue(tot_q);
-        this.iceRunoff.setValue(q_ice);
-        this.snowTotSWE_G.setValue(snowStor);
-        //this.snowMelt_G.setValue(q_snow); ////IG  I found this line weird and commented it
-        //this.snowMelt_G.setValue(snowMelt_G.getValue());
-        this.snowRunoff.setValue(q_snow); //// IG I found this has to be de-commented
-   
-        getModel().getRuntime().println("-----------------------", JAMS.VVERBOSE);
-        getModel().getRuntime().println("", JAMS.VVERBOSE);
-        getModel().getRuntime().println("iceRunoff: " + iceRunoff.getValue(), JAMS.VVERBOSE);
-        getModel().getRuntime().println("snowMelt_G: " + snowMelt_G.getValue(), JAMS.VVERBOSE);
-        getModel().getRuntime().println("rainRunoff: " + rainRunoff.getValue(), JAMS.VVERBOSE);
-	getModel().getRuntime().println("snowRunoff: " + snowRunoff.getValue(), JAMS.VVERBOSE);
-        getModel().getRuntime().println("glacierRunoff: " + glacierRunoff.getValue(), JAMS.VVERBOSE);
-        getModel().getRuntime().println("", JAMS.VVERBOSE);
-        getModel().getRuntime().println("-----------------------", JAMS.VVERBOSE);
-        
-
-        //this.snowTotSWE_G.setValue(snowStor);
-       // this.precip.setValue(this.precip.getValue()*this.area.getValue());
-       //double precip = this.precip.getValue();
-        this.massBalance.setValue(glacIn - glacOut);
-        
-        getModel().getRuntime().println("glacIn: " + glacIn, JAMS.VVERBOSE);
-        getModel().getRuntime().println("glacOut: " + glacOut, JAMS.VVERBOSE);
-        getModel().getRuntime().println("massBalance: " + this.massBalance.getValue(), JAMS.VVERBOSE);
+        // if glacier Area == 0! Set all variables to 0!!
+        else{
+            this.glacStorage.setValue(0.0);
+            // updating the "last time step" variables
+            this.snowRunofftm1.setValue(0.0);
+            this.rainRunofftm1.setValue(0.0);
+            this.iceRunofftm1.setValue(0.0);
+            // glacier outputs
+            this.rainRunoff.setValue(0.0);
+            this.snowRunoff.setValue(0.0);
+            this.iceRunoff.setValue(0.0);
+            this.glacierRunoff.setValue(0.0);
+            this.snowTotSWE_G.setValue(0.0);
+            this.massBalance.setValue(0.0);
+            }
     }
 
     public void cleanup()  throws IOException {
