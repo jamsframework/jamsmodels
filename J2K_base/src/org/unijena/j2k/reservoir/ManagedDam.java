@@ -34,10 +34,11 @@ import org.unijena.j2k.routing.J2KProcessReachRouting;
         author = "Sven Kralisch",
         description = "Component for simulation of artificial releases from a dam",
         date = "2021-01-28",
-        version = "1.0_0"
+        version = "1.0_1"
 )
 @VersionComments(entries = {
-    @VersionComments.Entry(version = "1.0_0", comment = "Initial version")
+    @VersionComments.Entry(version = "1.0_0", comment = "Initial version"),
+    @VersionComments.Entry(version = "1.0_1", comment = "Fixed")
 })
 public class ManagedDam extends J2KProcessReachRouting {
 

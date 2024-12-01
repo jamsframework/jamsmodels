@@ -22,7 +22,7 @@
  */
 
 package org.unijena.j2k.snow;
-;
+
 import java.io.*;
 import jams.data.*;
 import jams.model.*;

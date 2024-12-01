@@ -127,7 +127,7 @@ public class SubbasinLink extends JAMSComponent {
         
         // check if we should auto-detect subbasin IDs
         if (autoSubbasin.getValue() && !hrus.getEntities().get(0).existsAttribute(subbasinAttributeName.getValue())) {
-
+            
             List<Attribute.Entity> hruList = hrus.getEntities();
             
             for (int i = hruList.size()-1; i >= 0; i--) {

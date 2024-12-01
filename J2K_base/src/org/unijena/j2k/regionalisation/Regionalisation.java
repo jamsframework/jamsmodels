@@ -33,7 +33,7 @@ import jams.model.*;
  */
 @JAMSComponentDescription(title = "Regionalisation",
         author = "Peter Krause",
-        version = "1.1_0",
+        version = "1.2_0",
         description = "Calculate local (regionalised) input values based on the "
         + "inverse distance weighting procedure.")
 @VersionComments(entries = {
@@ -41,7 +41,10 @@ import jams.model.*;
     @VersionComments.Entry(version = "1.1_0", comment = "Added option to output "
             + "actual weights for individual stations in order to find out "
             + "which stations were used in each time step and for each "
-            + "modelling unit.")
+            + "modelling unit."),
+    @VersionComments.Entry(version = "1.2_0", comment = "Changed weight output "
+            + "such that all weights are provided. Changed datatype from "
+            + "Double[] to DoubleArray.")
 })
 public class Regionalisation extends JAMSComponent {
 
@@ -102,7 +105,7 @@ public class Regionalisation extends JAMSComponent {
 
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.WRITE,
             description = "Weights of individual stations (first element equals first station in list)")
-    public Attribute.Double[] actualWeights;
+    public Attribute.DoubleArray actualWeights;
 
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.WRITE,
             description = "Weighted average elevation of source stations")
@@ -135,12 +138,12 @@ public class Regionalisation extends JAMSComponent {
         double[] weights = memPool.alloc(nIDW);
         double[] elev = memPool.alloc(nIDW);
         int[] station = imemPool.alloc(nIDW);
+        double[] allWeights = null;
 
         if (actualWeights != null) {
-            for (Attribute.Double w : actualWeights) {
-                w.setValue(0);
-            }
+            allWeights = new double[sourceData.length];
         }
+
 
 //@TODO: Recheck this for correct calculation, the Doug Boyle Problem!!
         int counter = 0, element = 0;
@@ -183,7 +186,7 @@ public class Regionalisation extends JAMSComponent {
 
             for (int i = 0; i < counter; i++) {
                 if (actualWeights != null) {
-                    actualWeights[station[i]].setValue(weights[i]);
+                    allWeights[station[i]] = weights[i];
                 }
                 if ((elevationCorrection.getValue()) && (rsq >= rsqThreshold.getValue())) {  //Elevation correction is applied
                     deltaElev = targetElevation - elev[i];  //Elevation difference between unit and Station
@@ -219,6 +222,7 @@ public class Regionalisation extends JAMSComponent {
         }
 
         dataValue.setValue(value);
+        actualWeights.setValue(allWeights);
 
         //free data
         data = memPool.free(data);

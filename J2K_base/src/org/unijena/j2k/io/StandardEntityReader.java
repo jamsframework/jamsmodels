@@ -466,7 +466,7 @@ public class StandardEntityReader extends JAMSComponent {
 
         hruIterator = col.getEntities().iterator();
         while (hruIterator.hasNext()) {
-            depthMap.put(hruIterator.next(), new Integer(0));
+            depthMap.put(hruIterator.next(), 0);
         }
 
         //put all collection elements (keys) and their depth (values) into a HashMap
@@ -489,7 +489,7 @@ public class StandardEntityReader extends JAMSComponent {
                     eDepth = depthMap.get(e);
                     fDepth = depthMap.get(f);
                     if (fDepth.intValue() <= eDepth.intValue()) {
-                        depthMap.put(f, new Integer(eDepth.intValue() + 1));
+                        depthMap.put(f, eDepth.intValue() + 1);
                         mapChanged = true;
 
                     }
