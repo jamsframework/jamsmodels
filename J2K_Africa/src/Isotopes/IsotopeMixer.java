@@ -47,20 +47,20 @@ public class IsotopeMixer extends JAMSComponent {
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
             description = "Updates both concentrations if true, otherwise "
-                    + "just concB",
+            + "just concB",
             defaultValue = "true"
     )
     public Attribute.Boolean bidirectional;
-    
+
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
             description = "Updates both concentrations if true, otherwise "
-                    + "just concB",
+            + "just concB",
             defaultValue = "1",
             lowerBound = 0,
             upperBound = 1
     )
-    public Attribute.Double mixingProportion;    
+    public Attribute.Double mixingProportion;
 
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
@@ -102,6 +102,13 @@ public class IsotopeMixer extends JAMSComponent {
     )
     public Attribute.Double[] concB;
 
+    @JAMSVarDescription(
+            access = JAMSVarDescription.AccessType.READ,
+            description = "missingDataValue",
+            defaultValue = "-999"
+    )
+    public Attribute.Double missingDataValue;
+
     /*
      *  Component run stages
      */
@@ -111,14 +118,13 @@ public class IsotopeMixer extends JAMSComponent {
         for (int i = 0; i < volA.length; i++) {
             double x;
             double volA_, volB_;
-            if (mixingProportion.getValue() == 0) {
+            if (mixingProportion.getValue() == 0 || concA[i].getValue() == missingDataValue.getValue()) {
                 continue;
-            } else {
-                volA_ = volA[i].getValue();
-                volB_ = volB[i].getValue() / mixingProportion.getValue();
             }
-            
-            if (volA[i].getValue() + volB[i].getValue() == 0)  {
+            volA_ = volA[i].getValue();
+            volB_ = volB[i].getValue() / mixingProportion.getValue();
+
+            if (volA[i].getValue() + volB[i].getValue() == 0) {
                 x = 0;
             } else {
                 x = (concA[i].getValue() * volA_ + concB[i].getValue() * volB_) / (volA_ + volB_);
@@ -130,5 +136,5 @@ public class IsotopeMixer extends JAMSComponent {
         }
 
     }
-    
+
 }
