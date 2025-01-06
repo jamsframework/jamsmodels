@@ -29,12 +29,12 @@ import jams.data.*;
  *
  * @author S. Kralisch
  */
-@JAMSComponentDescription (title = "Thorntwaite runoff",
+@JAMSComponentDescription (title = "Thorntwaite runoff (2007)",
                            author = "Sven Kralisch",
                            date = "30. September 2005",
-                           description = "This component calculates the runoff based on a runoff factor, tank storage, " +
+                           description = "This component calculates the runoff based on a runoff factor " +
                            "surface runoff and snowmelt")
-public class Runoff extends JAMSComponent {
+public class Direct_Runoff extends JAMSComponent {
 
     @JAMSVarDescription (access = JAMSVarDescription.AccessType.READ,
     description="A factorn defining how much water leaves the model - the remain will be stored in the model",
@@ -42,33 +42,33 @@ public class Runoff extends JAMSComponent {
     )
     public Attribute.Double runoffFactor;
 
-    @JAMSVarDescription (access = JAMSVarDescription.AccessType.READWRITE,
-    description="The remain, i.e. the models tank storage")
-    public Attribute.Double remain;
-
     @JAMSVarDescription (access = JAMSVarDescription.AccessType.READ,
+    description="precip (storage)")
+    public Attribute.Double precip;
+
+    @JAMSVarDescription (access = JAMSVarDescription.AccessType.WRITE,
     description="Surface runoff water")
-    public Attribute.Double surfaceRunoff;
+    public Attribute.Double directRunoff;
 
     @JAMSVarDescription (access = JAMSVarDescription.AccessType.READ,
     description="Water coming from snow melt")
     public Attribute.Double snowMelt;
 
     @JAMSVarDescription (access = JAMSVarDescription.AccessType.WRITE,
-    description="Simulated runoff as function of tank storage (remain), surface runoff water and snowmelt water")
-    public Attribute.Double runoff;
+    description="Water that potenially infiltrates")
+    public Attribute.Double surface_water;
 
 
     public void run() {
         double runoffFactor = this.runoffFactor.getValue();
-        double surfaceRunoff = this.surfaceRunoff.getValue();
+        double directRunoff = this.directRunoff.getValue();
         double snowMelt = this.snowMelt.getValue();
-        double remain = this.remain.getValue();
+        double precip = this.precip.getValue();
 
-        double ro1 = (surfaceRunoff + remain) * runoffFactor;
-        remain = (surfaceRunoff + remain) * (1.0 - runoffFactor);
-
-        this.runoff.setValue(ro1 + snowMelt);
-        this.remain.setValue(remain);
+        double ro1 = (snowMelt + precip) * runoffFactor;
+        double surface_water = (snowMelt + precip) * (1.0 - runoffFactor);
+        this.surface_water.setValue(surface_water);
+        this.directRunoff.setValue(ro1);
+        this.precip.setValue(precip);
     }
 }

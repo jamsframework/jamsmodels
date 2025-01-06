@@ -47,6 +47,13 @@ public class HamonET extends JAMSComponent {
     @JAMSVarDescription (access = JAMSVarDescription.AccessType.READ,
                          description = "Length of a day in this month")
     public Attribute.Double daylength;
+    
+    @JAMSVarDescription (access = JAMSVarDescription.AccessType.READ,
+                         description = "Calibration Parameter for ET",
+                         lowerBound = 0.5,
+                         upperBound = 1.5,                         
+                         defaultValue = "1.0")
+    public Attribute.Double cal_ET;
 
     @JAMSVarDescription (access = JAMSVarDescription.AccessType.WRITE,
                          description = "Resulting potential ET")
@@ -79,6 +86,6 @@ public class HamonET extends JAMSComponent {
 
         potET *= 25.4;
 
-        this.potET.setValue(potET);
+        this.potET.setValue(potET* cal_ET.getValue());
     }
 }
