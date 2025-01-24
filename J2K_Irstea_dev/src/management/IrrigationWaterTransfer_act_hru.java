@@ -54,37 +54,42 @@ public class IrrigationWaterTransfer_act_hru extends JAMSComponent {
 
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
-            description = "RD2 component in HRU"
+            description = "statevar RD2 inflow",
+            unit = "L"
     )
-    public Attribute.Double RD2;
+    public Attribute.Double inRD2;
 
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
-            description = "RG1 component in HRU"
+            description = "statevar RG1 inflow",
+            unit = "L"
     )
-    public Attribute.Double RG1;
+    public Attribute.Double inRG1;
 
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
-            description = "RG2 component in HRU"
+            description = "statevar RG2 inflow",
+            unit = "L"
     )
-    public Attribute.Double RG2;
+    public Attribute.Double inRG2;
    
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
-            description = "actRG1 component in HRU"
+            description = "statevar RG1 in HRU",
+            unit = "L"
     )
     public Attribute.Double actRG1;
             
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
-            description = "actRG2 component in HRU"
+            description = "statevar RG2 in HRU",
+            unit = "L"
     )
     public Attribute.Double actRG2;
                 
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            description = "Name of list of irrigated HRUs in reach entities",
+            description = "Name of list of irrigated HRUs in HRUs entities",
             defaultValue = "irrigationEntities"
     )
     public Attribute.String irrigationEntitiesListName;
@@ -99,14 +104,16 @@ public class IrrigationWaterTransfer_act_hru extends JAMSComponent {
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
             description = "Name of attribute that stores water requirements of an HRU - the real plant requirements",
-            defaultValue = "waterRequirements"
+            defaultValue = "waterRequirements",
+            unit = "L"
     )
     public Attribute.String waterRequirementsName;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
             description = "Name of attribute that stores the irrigation water delivered HRU (totalTransfer minus losses due to efficiency)",
-            defaultValue = "irrigationWater"
+            defaultValue = "irrigationWater",
+            unit = "L"
     )
     public Attribute.String irrigationWaterName;
 
@@ -118,19 +125,22 @@ public class IrrigationWaterTransfer_act_hru extends JAMSComponent {
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
-            description = "Total demand of water for irrigation, including the enhancement by poor efficiency"
+            description = "Total demand of water for irrigation, including the enhancement by poor efficiency",
+            unit = "L"
     )
     public Attribute.Double totalDemand;
 
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
-            description = "Total irrigation transfer (= prelemenents, enhanced by poor efficiency)"
+            description = "Total irrigation transfer (= prelemenents, enhanced by poor efficiency)",
+            unit = "L"
     )
     public Attribute.Double totalTransfer;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
-            description = "Water available for transferin the HRU"
+            description = "Water available for transferin the HRU",
+            unit = "L"
     )
     public Attribute.Double totalInput;
 
@@ -143,12 +153,12 @@ public class IrrigationWaterTransfer_act_hru extends JAMSComponent {
 
         Attribute.Entity currentHRU = hrus.getCurrent();
  
-        double totalIn = RG1.getValue() + RG2.getValue(); 
+        double totalIn = inRG1.getValue() + inRG2.getValue(); 
         double totalAct = this.actPrel.getValue() * (actRG1.getValue() + actRG2.getValue());
         double total = totalAct+totalIn;
         this.totalInput.setValue(total); // eau disponible pour l'irrigation à ce pas de temps
         
-        //check if this reach even has irrigated HRUs in its catchment
+        //check if this hru even has irrigated HRUs in its catchment
         if (!currentHRU.existsAttribute(irrigationEntitiesListName.getValue())) {
             return;
         }
@@ -170,8 +180,8 @@ public class IrrigationWaterTransfer_act_hru extends JAMSComponent {
             if (frac <= 1) {
 
                 //we can cover all only with inputs to the reach, reduce the components accordingly
-                RG1.setValue(RG1.getValue() * (1 - frac));
-                RG2.setValue(RG2.getValue() * (1 - frac));
+                inRG1.setValue(inRG1.getValue() * (1 - frac));
+                inRG2.setValue(inRG2.getValue() * (1 - frac));
                 totalTransfer.setValue(totalDemand);
 
             } else {
@@ -180,8 +190,8 @@ public class IrrigationWaterTransfer_act_hru extends JAMSComponent {
                 frac = totalDemand / (totalIn+totalAct);
 
                 //we can cover only part of the demand with in, reduce the components to 0
-                RG1.setValue(0);
-                RG2.setValue(0);
+                inRG1.setValue(0);
+                inRG2.setValue(0);
                     
                 if (frac <= 1) {
                     //we can cover all of the demand but not only with in..., reduce the components accordingly
@@ -211,7 +221,7 @@ public class IrrigationWaterTransfer_act_hru extends JAMSComponent {
                 providedWater_tmp= providedWater_tmp + waterRequirements * providedFraction;
             }
             // restitute lost water to RD2 (when efficiency of the irrigation network <1) :
-            RD2.setValue(RD2.getValue()+Math.max(0.,totalTransfer.getValue()-providedWater_tmp) );
+            inRD2.setValue(inRD2.getValue()+Math.max(0.,totalTransfer.getValue()-providedWater_tmp) );
             
         } else {
             
