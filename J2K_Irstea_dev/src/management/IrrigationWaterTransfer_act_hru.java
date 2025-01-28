@@ -212,6 +212,7 @@ public class IrrigationWaterTransfer_act_hru extends JAMSComponent {
             }
             //in case frac = 0 (meaning Demand = 0), just to avoid problem with 1/frac
             if (frac == 0){frac=1;}
+            
             //distribute total transfer over all HRUs
             double providedFraction = Math.min(1, 1 / frac);
             double providedWater_tmp=0.;
@@ -223,13 +224,16 @@ public class IrrigationWaterTransfer_act_hru extends JAMSComponent {
             // restitute lost water to RD2 (when efficiency of the irrigation network <1) :
             inRD2.setValue(inRD2.getValue()+Math.max(0.,totalTransfer.getValue()-providedWater_tmp) );
             
-        } else {
+        }
+        
+        else {
             
             for (Attribute.Entity hru : l) {
                 hru.setDouble(irrigationWaterName.getValue(), 0); 
             }
             totalTransfer.setValue(0.); 
         }
+        
         //remove all HRUs from demand list
         l.removeAll(l);
     }
