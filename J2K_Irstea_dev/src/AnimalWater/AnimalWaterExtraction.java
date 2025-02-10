@@ -61,91 +61,91 @@ public class AnimalWaterExtraction extends JAMSComponent {
                 
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            description = "Julian day of beginning of summer (hot, dry conditions)"
+            description = "Julian day of beginning of summer (hot, dry conditions) - parameter"
             )
             public Attribute.Double summerStart;
                 
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            description = "Julian day of end of summer (hot, dry conditions)"
+            description = "Julian day of end of summer (hot, dry conditions) - parameter"
             )
             public Attribute.Double summerEnd;
 
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
-            description = "RD1 component in reach"
+            description = "inflow into RD1 component in reach, used to extract water from - state variable or input ?"
     )
     public Attribute.Double inRD1;
 
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
-            description = "RD2 component in reach"
+            description = "inflow into RD2 component in reach, used to extract water from - state variable or input ?"
     )
     public Attribute.Double inRD2;
 
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
-            description = "RG1 component in reach"
+            description = "inflow into RG1 component in reach, used to extract water from - state variable or input ?"
     )
     public Attribute.Double inRG1;
 
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
-            description = "RG2 component in reach"
+            description = "inflow into RG2 component in reach, used to extract water from - state variable or input ?"
     )
     public Attribute.Double inRG2;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
-            description = "actRD1 component in reach"
+            description = "current volume in actRD1 component in reach, used to extract water from - state variable or input ?"
     )
     public Attribute.Double actRD1;
         
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
-            description = "actRD2 component in reach"
+            description = "current volume in actRD2 component in reach, used to extract water from - state variable or input ?"
     )
     public Attribute.Double actRD2;
         
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
-            description = "actRG1 component in reach"
+            description = "current volume in actRG1 component in reach, used to extract water from - state variable or input ?"
     )
     public Attribute.Double actRG1;
             
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
-            description = "actRG2 component in reach"
+            description = "current volume in actRG2 component in reach, used to extract water from - state variable or input ?"
     )
     public Attribute.Double actRG2;
 
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
-            description = "Ratio of water available for animals / water present in the reach (actR..)",
+            description = "Ratio of water available for animals / water present in the reach (actR..). Which fraction are we allowed to take? - parameter",
             defaultValue = "1.0"
     )
     public Attribute.Double actPrel;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
-            description = "Total demand of water for animal drinking. For verification purposes"
+            description = "Total demand of water for animal drinking. For verification purposes. No need to be defined. - output"
     )
     public Attribute.Double totalDemand;
 
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
-            description = "volume extracted for animals, cummulative -> all reaches"
+            description = "volume extracted for animals, cummulative over all reaches - state variable (or output of this module?)"
     )
     public Attribute.Double animalExtractedAll;
 
     @JAMSVarDescription(
-            access = JAMSVarDescription.AccessType.READWRITE,
-            description = "volume extracted for animals from current reach"
+            access = JAMSVarDescription.AccessType.WRITE,
+            description = "volume extracted for animals from current reach - output"
     )
     public Attribute.Double animalExtractedR;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
-            description = "Total water in the reach available for irrigation"
+            description = "Total water in the reach available for animal drinking. For verification purposes. No need to be defined. - output"
     )
     public Attribute.Double totalAvail;
 
@@ -156,44 +156,46 @@ public class AnimalWaterExtraction extends JAMSComponent {
     @Override
     public void run() {
 
-        Attribute.Entity currentReach = reaches.getCurrent();
+        Attribute.Entity run_currentReach = reaches.getCurrent();
         
         // check if animals are drinking from this reach --> not in here, but add switch context for this
         
         // calculate water available for animal drinking
-        double totalIn = inRD1.getValue() + inRD2.getValue() + inRG1.getValue() + inRG2.getValue();
-        double totalAct = this.actPrel.getValue() * (actRD1.getValue() + actRD2.getValue() + actRG1.getValue() + actRG2.getValue()); // water in the reach that is available for animal needs
-        double totalAv = totalIn + totalAct; // all available water for animal drinking
-        this.totalAvail.setValue(totalIn + totalAct); // all available water for animal drinking
-        double totalDemand = 0;
+        double run_totalIn = inRD1.getValue() + inRD2.getValue() + inRG1.getValue() + inRG2.getValue();
+        double run_totalAct = this.actPrel.getValue() * (actRD1.getValue() + actRD2.getValue() + actRG1.getValue() + actRG2.getValue()); // water in the reach that is available for animal needs
+        double run_totalAv = run_totalIn + run_totalAct; // all available water for animal drinking
+        this.totalAvail.setValue(run_totalAv); // all available water for animal drinking
+        double run_totalDemand;
+        double run_animalExtractedR = 0;
+        double run_frac;
         
         // check season in order to decide which quantity animals drink
-        int jDay = time.get(Calendar.DAY_OF_YEAR);
-        if (jDay >= summerStart.getValue() && jDay <= summerEnd.getValue()) {
-            totalDemand = currentReach.getDouble("cons_su");
+        int run_jDay = time.get(Calendar.DAY_OF_YEAR);
+        if (run_jDay >= summerStart.getValue() && run_jDay <= summerEnd.getValue()) {
+            run_totalDemand = run_currentReach.getDouble("cons_su");
         } else {
-            totalDemand = currentReach.getDouble("cons_wi");
+            run_totalDemand = run_currentReach.getDouble("cons_wi");
         }
-        this.totalDemand.setValue(totalDemand);
+        this.totalDemand.setValue(run_totalDemand);
         
         //calculate proportion of total water that is needed
-        if (totalAv != 0.0){ // if there is water available
-            if (totalIn != 0){ // if there is water coming into reach
+        if (run_totalAv != 0.0){ // if there is water available
+            if (run_totalIn != 0){ // if there is water coming into reach
 
-                double frac = totalDemand /totalIn;
+                run_frac = run_totalDemand /run_totalIn;
 
-                if (frac <= 1) {
+                if (run_frac <= 1) {
 
                     //we can cover all only with input to the reach, reduce the components accordingly
-                    inRD1.setValue(inRD1.getValue() * (1 - frac));
-                    inRD2.setValue(inRD2.getValue() * (1 - frac));
-                    inRG1.setValue(inRG1.getValue() * (1 - frac));
-                    inRG2.setValue(inRG2.getValue() * (1 - frac));
-                    animalExtractedR.setValue(totalDemand);
+                    inRD1.setValue(inRD1.getValue() * (1 - run_frac));
+                    inRD2.setValue(inRD2.getValue() * (1 - run_frac));
+                    inRG1.setValue(inRG1.getValue() * (1 - run_frac));
+                    inRG2.setValue(inRG2.getValue() * (1 - run_frac));
+                    run_animalExtractedR = run_totalDemand ;
 
                 } else {
                     //looking if we can cover the demand by including usable part of act...
-                    frac = totalDemand / (totalIn+totalAct);
+                    run_frac = run_totalDemand / (run_totalAv);
 
                     //we can cover only part of the demand with input, reduce the components to 0
                     inRD1.setValue(0);
@@ -201,16 +203,16 @@ public class AnimalWaterExtraction extends JAMSComponent {
                     inRG1.setValue(0);
                     inRG2.setValue(0);
 
-                    if (frac <= 1) {
+                    if (run_frac <= 1) {
                         //we can cover all of the demand with input and act together, reduce the components accordingly
-                        double actDemand = 0;
-                        actDemand = totalDemand - totalIn;
-                        double frac2 = actDemand/totalAct;
-                        actRD1.setValue(actRD1.getValue() * (1 - frac2));
-                        actRD2.setValue(actRD2.getValue() * (1 - frac2));
-                        actRG1.setValue(actRG1.getValue() * (1 - frac2));
-                        actRG2.setValue(actRG2.getValue() * (1 - frac2));
-                        animalExtractedR.setValue(totalDemand);
+                        double run_actDemand;
+                        run_actDemand = run_totalDemand - run_totalIn;
+                        double run_frac2 = run_actDemand/run_totalAct;
+                        actRD1.setValue(actRD1.getValue() * (1 - run_frac2));
+                        actRD2.setValue(actRD2.getValue() * (1 - run_frac2));
+                        actRG1.setValue(actRG1.getValue() * (1 - run_frac2));
+                        actRG2.setValue(actRG2.getValue() * (1 - run_frac2));
+                        run_animalExtractedR = run_totalDemand ;
 
                     } else {
                         // we can only cover part of the demand ; reduce the act... to (1 - actPrel)*act...
@@ -218,20 +220,20 @@ public class AnimalWaterExtraction extends JAMSComponent {
                         actRD2.setValue(actRD2.getValue() * (1 - actPrel.getValue()));
                         actRG1.setValue(actRG1.getValue() * (1 - actPrel.getValue()));
                         actRG2.setValue(actRG2.getValue() * (1 - actPrel.getValue()));
-                        animalExtractedR.setValue(totalIn+totalAct);
+                        run_animalExtractedR = run_totalAv ;
                     }
                 }
 
             } else { // if no water coming into reach, but there is water in the reach act
                 //looking if we can cover the demand by including usable part of act...
-                double frac = totalDemand / (totalAct);
-                if (frac <= 1) {
+                run_frac = run_totalDemand / (run_totalAct);
+                if (run_frac <= 1) {
                     //we can cover all of the demand with act, reduce the components accordingly
-                    actRD1.setValue(actRD1.getValue() * (1 - frac));
-                    actRD2.setValue(actRD2.getValue() * (1 - frac));
-                    actRG1.setValue(actRG1.getValue() * (1 - frac));
-                    actRG2.setValue(actRG2.getValue() * (1 - frac));
-                    animalExtractedR.setValue(totalDemand);
+                    actRD1.setValue(actRD1.getValue() * (1 - run_frac));
+                    actRD2.setValue(actRD2.getValue() * (1 - run_frac));
+                    actRG1.setValue(actRG1.getValue() * (1 - run_frac));
+                    actRG2.setValue(actRG2.getValue() * (1 - run_frac));
+                    run_animalExtractedR = run_totalDemand ;
 
                 } else {
                     // we can only cover part of the demand ; reduce the act... to (1 - actPrel)*act...
@@ -239,13 +241,13 @@ public class AnimalWaterExtraction extends JAMSComponent {
                     actRD2.setValue(actRD2.getValue() * (1 - actPrel.getValue()));
                     actRG1.setValue(actRG1.getValue() * (1 - actPrel.getValue()));
                     actRG2.setValue(actRG2.getValue() * (1 - actPrel.getValue()));
-                    animalExtractedR.setValue(totalAct);
+                    run_animalExtractedR = run_totalAct ;
                 }
             }
         } else { 
             animalExtractedR.setValue(0.);
         }
         // extracted volume for all animals (cumulative over reaches)
-        this.animalExtractedAll.setValue(this.animalExtractedAll.getValue() + this.animalExtractedR.getValue());
+        this.animalExtractedAll.setValue(this.animalExtractedAll.getValue() + run_animalExtractedR);
     }
 }
