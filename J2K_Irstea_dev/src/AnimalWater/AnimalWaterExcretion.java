@@ -59,26 +59,26 @@ public class AnimalWaterExcretion extends JAMSComponent {
                 
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            description = "Julian day of beginning of summer (hot, dry conditions)"
+            description = "Julian day of beginning of summer (hot, dry conditions) - parameter"
             )
             public Attribute.Double summerStart;
                 
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            description = "Julian day of end of summer (hot, dry conditions)"
+            description = "Julian day of end of summer (hot, dry conditions) - parameter"
             )
             public Attribute.Double summerEnd;;
 
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
-            description = "HRU throughfall or precipitation -> adding animal excretion to this value",
+            description = "HRU throughfall or precipitation -> adding animal excretion to this value - state variable",
             unit = "L"
     )
     public Attribute.Double throughfall;
 
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            description = "HRU area",
+            description = "HRU area - parameter",
             unit = "m²"
     )
     public Attribute.Double area;
@@ -89,19 +89,19 @@ public class AnimalWaterExcretion extends JAMSComponent {
 
     @Override
     public void run() {
-        Attribute.Entity currentHRU = hrus.getCurrent();
+        Attribute.Entity run_currentHRU = hrus.getCurrent();
         
-        double HRUExcretion = 0;
+        double run_HRUExcretion;
         // check season in order to decide how much animals excrete
-        int jDay = time.get(Calendar.DAY_OF_YEAR);
-        if (jDay >= summerStart.getValue() && jDay <= summerEnd.getValue()) {
-            HRUExcretion = currentHRU.getDouble("excr_su");
+        int run_jDay = time.get(Calendar.DAY_OF_YEAR);
+        if (run_jDay >= summerStart.getValue() && run_jDay <= summerEnd.getValue()) {
+            run_HRUExcretion = run_currentHRU.getDouble("excr_su");
         } else {
-            HRUExcretion = currentHRU.getDouble("excr_wi");
+            run_HRUExcretion = run_currentHRU.getDouble("excr_wi");
         }
         
         //double HRUExcretionInMM = HRUExcretion / area.getValue(); // only needed if adding to precip in mm, not for throughfall in L
-        throughfall.setValue(throughfall.getValue() + HRUExcretion);
+        throughfall.setValue(throughfall.getValue() + run_HRUExcretion);
 
     }
 }
