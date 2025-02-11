@@ -39,8 +39,9 @@ import jams.model.*;
         + "absolute storage capacity values in litres. Secondly the actual"
         + "content of the two storages can be set to a relative amount."
         + "Modified to explicitly read RG1_max and RG2_max from HRUInit context"
-        + " as they are modified by the spatial setters (for calibration of"
-        + " distributed parameters).",
+        + "as they are modified by the spatial setters (for calibration of"
+        + "distributed parameters). This version is only to be used for distributed"
+        + "calibration of maxRG1 and max RG2 and should be placed after spatial setters",
         version="1.0_0",
         date="2024-07-18"
         )
@@ -52,13 +53,13 @@ import jams.model.*;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            description = "The collection of model entities"
+            description = "The collection of model HRUs."
             )
             public Attribute.EntityCollection entities;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            description = "maximum RG1 storage in water height",
+            description = "Maximum RG1 storage in water height [mm] to read explicitely from HRUInit context. - parameter to read",
             lowerBound = 0,
             //upperBound = infinity,
             unit="mm"
@@ -67,7 +68,7 @@ import jams.model.*;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            description = "maximum RG2 storage in water height",
+            description = "Maximum RG2 storage in water height [mm] to read explicitely from HRUInit context. - parameter to read",
             lowerBound = 0,
             //upperBound = infinity,
             unit="mm"
@@ -76,7 +77,7 @@ import jams.model.*;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
-            description = "maximum RG1 storage",
+            description = "Maximum RG1 storage (volume in L), to be set by this component. - parameter to set",
             lowerBound = 0,
             //upperBound = infinity,
             unit="L"
@@ -85,7 +86,7 @@ import jams.model.*;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
-            description = "maximum RG2 storage",
+            description = "Maximum RG2 storage (volume in L), to be set by this component. - parameter to set",
             lowerBound = 0,
             //upperBound = infinity,
             unit="L"
@@ -93,7 +94,7 @@ import jams.model.*;
             public Attribute.Double maxRG2;
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
-            description = "actual RG1 storage",
+            description = "Initial RG1 storage to be set by this component (should be actRG1 attribute of HRUInit). - output(?)",
             lowerBound = 0,
             //upperBound = infinity,
             unit="L"
@@ -102,7 +103,7 @@ import jams.model.*;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
-            description = "actual RG2 storage",
+            description = "Initial RG2 storage to be set by this component (should be actRG1 attribute of HRUInit). - output(?)",
             lowerBound = 0,
             //upperBound = infinity,
             unit="L"
@@ -111,7 +112,7 @@ import jams.model.*;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            description = "relative initial RG1 storage",
+            description = "Initial RG1 storage as fraction of max capacity. Used by this module to set inital actRG1. - parameter",
             lowerBound = 0,
             upperBound = 1.0,
             unit="n/a",
@@ -121,7 +122,7 @@ import jams.model.*;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            description = "relative initial RG2 storage",
+            description = "Initial RG2 storage as fraction of max capacity. Used by this module to set inital actRG2. - parameter",
             lowerBound = 0,
             upperBound = 1.0,
             unit="n/a",
@@ -134,19 +135,21 @@ import jams.model.*;
      *  Component run stages
      */
     
+    @Override
     public void init() {
         
     }
     
+    @Override
     public void run() {
         
-        Attribute.Entity entity = entities.getCurrent();
-        double area = entity.getDouble("area");
-//        maxRG1.setValue(entity.getDouble("RG1_max") * area);
-//        maxRG2.setValue(entity.getDouble("RG2_max") * area);
+        Attribute.Entity run_entity = entities.getCurrent();
+        double run_area = run_entity.getDouble("area");
+//        maxRG1.setValue(entity.getDouble("RG1_max") * run_area);
+//        maxRG2.setValue(entity.getDouble("RG2_max") * run_area);
         
-        maxRG1.setValue(RG1_max.getValue() * area);
-        maxRG2.setValue(RG2_max.getValue() * area);
+        maxRG1.setValue(RG1_max.getValue() * run_area);
+        maxRG2.setValue(RG2_max.getValue() * run_area);
         
 //        getModel().getRuntime().println("HRU " + entity.getObject("ID") + ". RG1_max (from entity) : " + entity.getDouble("RG1_max") + ". RG1_max (from loop) : " + RG1_max.getValue() + ". maxRG1 : " + maxRG1.getValue() + ".");
         
@@ -154,6 +157,7 @@ import jams.model.*;
         actRG2.setValue(maxRG2.getValue() * initRG2.getValue());       
     }
     
+    @Override
     public void cleanup() {
         
     }
