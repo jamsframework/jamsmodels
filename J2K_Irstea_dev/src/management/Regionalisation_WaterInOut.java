@@ -32,7 +32,7 @@ import jams.model.*;
  *
  * @author Sven Kralisch & Mériem Labbas & Christian Fischer
  */
-@JAMSComponentDescription(title = "Regionalisation_WaterInOutRegionalisation_Dam",
+@JAMSComponentDescription(title = "Regionalisation_WaterInOut",
         author = "Francois Tilmant, Nico Hachgenei",
         description = "Component used to select reach to extract / inject the objective function"
         + " modified after Regionalisation_Dam",
@@ -44,37 +44,39 @@ public class Regionalisation_WaterInOut extends JAMSComponent {
      * Component variables
      */
     @JAMSVarDescription (access = JAMSVarDescription.AccessType.READ,
-                         description = "Array of data values for current time step")
+                         description = "Array of data values for current time step (volumes to add to or substract from"+
+                                 "reach for each concerned reach) - input")
     public Attribute.DoubleArray dataArray;
     
     @JAMSVarDescription (access = JAMSVarDescription.AccessType.WRITE,
-                         description = "regionalised data value (volume to inject / extract")
+                         description = "Regionalised data value (volume to inject into / extract from current reach)."+
+                                 "This should be the attribute of the ReachLoop to set this value to. - output")
     public Attribute.Double dataValue;
     
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
-            description = "Array of reach names (IDs")
+            description = "Array of reach names (IDs) for which volumes are added / substracted, corresponding to dataArray. - pointer")
     public Attribute.DoubleArray names;
 
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            description = "The reach collection"
+            description = "All reaches - pointer"
             )
     public Attribute.EntityCollection entities;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            description = "does this reach have Input / Output?"
+            description = "does this reach have Input / Output? - property of the reach"
             )
     public Attribute.Double IO;
   
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            description = "reach ID"
+            description = "ID of the current reach - property of the reach"
             )
     public Attribute.Double ID;
     
-    boolean invalidDatasetReported = false;
-    ArrayPool<double[]> memPool = new ArrayPool<double[]>(double.class);
+    //boolean invalidDatasetReported = false;
+    //ArrayPool<double[]> memPool = new ArrayPool<double[]>(double.class);
    
     
    
@@ -82,21 +84,21 @@ public class Regionalisation_WaterInOut extends JAMSComponent {
     @Override
     public void run() throws IOException {
         //Retreiving data, elevations and weights
-        double value=0;
-        double[] sourceData = dataArray.getValue();
-        //Attribute.Entity entity = entities.getCurrent();
-        //double Smax = entity.getDouble("Smax");
-        double[] Nom = this.names.getValue();
+        double run_value;
+        double[] run_sourceData = dataArray.getValue();
+        //Attribute.Entity run_entity = entities.getCurrent();
+        //double run_Smax = run_entity.getDouble("Smax");
+        double[] run_names = this.names.getValue();
         if (this.IO.getValue() == 1) {
-            double reach = this.ID.getValue();
-            int t = 0;
-            while (Nom[t] != reach) {
-                //getModel().getRuntime().println("no match -- reach: " + reach + ", name: " + Nom[t]);
-                t++;
+            double run_reach = this.ID.getValue();
+            int run_t = 0;
+            while (run_names[run_t] != run_reach) {
+                //getModel().getRuntime().println("no match -- reach: " + run_reach + ", name: " + run_names[t]);
+                run_t++;
             }
-            //getModel().getRuntime().println("+++ match -- reach: " + reach + ", name: " + Nom[t] + ", value: " + sourceData[t]);
-            value = sourceData[t];
-            dataValue.setValue(value);
+            //getModel().getRuntime().println("+++ match -- reach: " + run_reach + ", name: " + run_names[t] + ", value: " + run_sourceData[t]);
+            run_value = run_sourceData[run_t];
+            dataValue.setValue(run_value);
         }
     }
 }
