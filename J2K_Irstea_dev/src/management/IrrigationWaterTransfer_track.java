@@ -57,247 +57,292 @@ public class IrrigationWaterTransfer_track extends JAMSComponent {
 
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
-            description = "RD1 component in reach"
+            description = "Current time step RD1 inflow into reach. Will be updated by this component,"+
+                    "extracting water for irrigation. - input / state variable"
     )
     public Attribute.Double inRD1;
 
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
-            description = "RD2 component in reach"
+            description = "Current time step RD2 inflow into reach. Will be updated by this component,"+
+                    "extracting water for irrigation. - input / state variable"
     )
     public Attribute.Double inRD2;
 
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
-            description = "RG1 component in reach"
+            description = "Current time step RG1 inflow into reach. Will be updated by this component,"+
+                    "extracting water for irrigation. - input / state variable"
     )
     public Attribute.Double inRG1;
 
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
-            description = "RG2 component in reach"
+            description = "Current time step RG2 inflow into reach. Will be updated by this component,"+
+                    "extracting water for irrigation. - input / state variable"
     )
     public Attribute.Double inRG2;
     
-        @JAMSVarDescription(
+    @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
-            description = "actRD1 component in reach"
+            description = "Current time step RD1 volume inside reach. Will be updated by this component"+
+                    "(if not enough water in inflow), extracting water for irrigation."+
+                    "- state variable"
     )
     public Attribute.Double actRD1;
         
-        @JAMSVarDescription(
+    @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
-            description = "actRD2 component in reach"
+            description = "Current time step RD2 volume inside reach. Will be updated by this component"+
+                    "(if not enough water in inflow), extracting water for irrigation."+
+                    "- state variable"
     )
     public Attribute.Double actRD2;
         
-            @JAMSVarDescription(
+    @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
-            description = "actRG1 component in reach"
+            description = "Current time step RG1 volume inside reach. Will be updated by this component"+
+                    "(if not enough water in inflow), extracting water for irrigation."+
+                    "- state variable"
     )
     public Attribute.Double actRG1;
             
-                @JAMSVarDescription(
+    @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
-            description = "actRG2 component in reach"
+            description = "Current time step RG2 volume inside reach. Will be updated by this component"+
+                    "(if not enough water in inflow), extracting water for irrigation."+
+                    "- state variable"
     )
     public Attribute.Double actRG2;
 
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            description = "Name of list of irrigated HRUs in reach entities",
+            description = "Name of list of irrigated HRUs in reach entities. List will be read by this"+
+                    "component. - parameter / pointer",
             defaultValue = "irrigationEntities"
     )
     public Attribute.String irrigationEntitiesListName;
 
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            description = "Name of attribute that stores irrigation demand of an HRU - plant water requirement / efficiency",
+            description = "Name of attribute that stores irrigation demand of an HRU - (plant water"+
+                    "requirement / efficiency). Irrigation demand will be read by this component."+
+                    "- parameter / pointer",
             defaultValue = "irrigationDemand"
     )
     public Attribute.String irrigationDemandName;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            description = "Name of attribute that stores water requirements of an HRU - the real plant requirements",
+            description = "Name of attribute that stores water requirements of an HRU - the real plant"+
+                    "requirements. Water requirements will be read by this component. - parameter / pointer",
             defaultValue = "waterRequirements"
     )
     public Attribute.String waterRequirementsName;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            description = "Name of attribute that stores the irrigation water delivered HRU (totalTransfer minus losses due to efficiency)",
+            description = "Name of attribute that stores the irrigation water delivered to HRU (totalTransfer"+
+                    "minus losses due to efficiency). This attribute will be written to by this component"+
+                    "- parameter / pointer",
             defaultValue = "irrigationWater"
     )
     public Attribute.String irrigationWaterName;
 
-            @JAMSVarDescription(
+    @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            description = "Ratio of water available for irrigation / water present in the reach (actR..)"
+            description = "Ratio of water available (allowed to be taken) for irrigation over water present"+
+                    "in the reach (actR..). - parameter"
     )
     public Attribute.Double actPrel;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
-            description = "Total demand of water for irrigation, including the enhancement by poor efficiency"
+            description = "Total demand of water for irrigation, including the enhancement by poor efficiency."+
+                    "Should be attribute of the ReachLoop to write. This component cumulates the irrigation"+ 
+                    "demands of irrigated HRUs and writes this attribute. - output"
     )
     public Attribute.Double totalDemand;
 
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
-            description = "Total irrigation transfer (= prelemenents, enhanced by poor efficiency)"
+            description = "Total irrigation transfer (= totalDemand, but limited to available water). Calculated in this component. - output"
     )
     public Attribute.Double totalTransfer;
     
-        @JAMSVarDescription(
+    @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
-            description = "Total input in the reach"
+            description = "Total input in the reach as sum of the four components, after extraction for irrigation. - output"
     )
     public Attribute.Double totalInput;
-    
+
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
-        description = "Array of reach names (IDs)")
+        description = "Array of reach names (IDs). Used for tracked volumes from each reach.")
     public Attribute.DoubleArray names;   
 
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
-            description = "Tracked volume RD1 array"
+            description = "Array of current time step RD1 inflow into reach per source reach. Will be updated by this component,"+
+                    "extracting water for irrigation. - input / state variable"
             )
     public Attribute.DoubleArray trackedVolumeRD1Array;
         
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
-            description = "Tracked volume RD2 array"
+            description = "Array of current time step RD2 inflow into reach per source reach. Will be updated by this component,"+
+                    "extracting water for irrigation. - input / state variable"
             )
     public Attribute.DoubleArray trackedVolumeRD2Array;  
         
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
-            description = "Tracked volume RG1 array"
+            description = "Array of current time step RG1 inflow into reach per source reach. Will be updated by this component,"+
+                    "extracting water for irrigation. - input / state variable"
             )
     public Attribute.DoubleArray trackedVolumeRG1Array;  
         
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
-            description = "Tracked volume RG2 array"
+            description = "Array of current time step RG2 inflow into reach per source reach. Will be updated by this component,"+
+                    "extracting water for irrigation. - input / state variable"
             )
     public Attribute.DoubleArray trackedVolumeRG2Array;  
         
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
-            description = "Tracked volume Total array"
+            description = "Total array of input into the reach as sum of the four components per source reach. - output"
             )
     public Attribute.DoubleArray trackedVolumeTotalArray;   
              
     @JAMSVarDescription(
         access = JAMSVarDescription.AccessType.READWRITE,
-        description = "Array of RD1 remaining volume from tracked reach in actual reach after routing"
+        description = "Array of RD1 volume inside reach per source reach. Will be updated by this component"+
+                    "(if not enough water in inflow), extracting water for irrigation."+
+                    "- state variable"
         )
     public Attribute.DoubleArray trackedVolumeRD1_actArray; 
              
     @JAMSVarDescription(
         access = JAMSVarDescription.AccessType.READWRITE,
-        description = "Array of RD2 remaining volume from tracked reach in actual reach after routing"
+        description = "Array of RD2 volume inside reach per source reach. Will be updated by this component"+
+                    "(if not enough water in inflow), extracting water for irrigation."+
+                    "- state variable"
         )
     public Attribute.DoubleArray trackedVolumeRD2_actArray; 
              
     @JAMSVarDescription(
         access = JAMSVarDescription.AccessType.READWRITE,
-        description = "Array of RG1 remaining volume from tracked reach in actual reach after routing"
+        description = "Array of RG1 volume inside reach per source reach. Will be updated by this component"+
+                    "(if not enough water in inflow), extracting water for irrigation."+
+                    "- state variable"
         )
     public Attribute.DoubleArray trackedVolumeRG1_actArray; 
              
     @JAMSVarDescription(
         access = JAMSVarDescription.AccessType.READWRITE,
-        description = "Array of RG2 remaining volume from tracked reach in actual reach after routing"
+        description = "Array of RG2 volume inside reach per source reach. Will be updated by this component"+
+                    "(if not enough water in inflow), extracting water for irrigation."+
+                    "- state variable"
         )
     public Attribute.DoubleArray trackedVolumeRG2_actArray;
             
     @JAMSVarDescription(
         access = JAMSVarDescription.AccessType.READWRITE,
-        description = "Array of total remaining volume from tracked reach in actual reach after routing"
+        description = "Array of total volume inside reach per source reach (sum of the four flow components)."+
+                "Will be updated by this component (if not enough water in inflow), extracting water for irrigation."+
+                "- state variable"
         )
     public Attribute.DoubleArray trackedVolumeTotal_actArray;
             
     @JAMSVarDescription(
         access = JAMSVarDescription.AccessType.READ,
-        description = "Are there tracked sewers in the model? (1/0)"
+        description = "Are there tracked sewers in the model? (1/0) - parameter"
         )
     public Attribute.Double trackSewers;
             
     @JAMSVarDescription(
         access = JAMSVarDescription.AccessType.READ,
-        description = "Is there a tracked waste water treatment plant in the model? (1/0)"
+        description = "Is there a tracked waste water treatment plant in the model? (1/0) - parameter"
         )
     public Attribute.Double trackWW;
 
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
-            description = "Tracked RD1 volume from Sewer in reach",
+            description = "Volume in RD1 inflow into reach coming from Sewer. Will be updated by this component,"+
+                    "extracting water for irrigation. - input / state variable",
             unit = "L"
     )
     public Attribute.Double trackedVolumeSewRD1;
 
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
-            description = "Tracked RD2 volume from Sewer in reach",
+            description = "Volume in RD2 inflow into reach coming from Sewer. Will be updated by this component,"+
+                    "extracting water for irrigation. - input / state variable",
             unit = "L"
     )
     public Attribute.Double trackedVolumeSewRD2;
 
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
-            description = "Tracked RG1 volume from Sewer in reach",
+            description = "Volume in RG1 inflow into reach coming from Sewer. Will be updated by this component,"+
+                    "extracting water for irrigation. - input / state variable",
             unit = "L"
     )
     public Attribute.Double trackedVolumeSewRG1;
 
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
-            description = "Tracked RG2 volume from Sewer in reach",
+            description = "Volume in RG2 inflow into reach coming from Sewer. Will be updated by this component,"+
+                    "extracting water for irrigation. - input / state variable",
             unit = "L"
     )
     public Attribute.Double trackedVolumeSewRG2;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
-            description = "Tracked total volume from Sewer in reach",
+            description = "Total volume of inflow into reach coming from Sewer. Will be updated by this component,"+
+                    "extracting water for irrigation. - input / state variable",
             unit = "L"
     )
     public Attribute.Double trackedVolumeSewTotal; 
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
-            description = "Remaining tracked RD1 volume from Sewer",
+            description = "Volume of RD1 inside reach coming from Sewer. Will be updated by this component"+
+                    "(if not enough water in inflow), extracting water for irrigation. - state variable",
             unit = "L"
     )
     public Attribute.Double trackedVolumeSewRD1_act;
 
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
-            description = "Remaining tracked RD2 volume from Sewer in reach",
+            description = "Volume of RD2 inside reach coming from Sewer. Will be updated by this component"+
+                    "(if not enough water in inflow), extracting water for irrigation. - state variable",
             unit = "L"
     )
     public Attribute.Double trackedVolumeSewRD2_act;
 
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
-            description = "Remaining tracked RG1 volume from Sewer in reach",
+            description = "Volume of RG1 inside reach coming from Sewer. Will be updated by this component"+
+                    "(if not enough water in inflow), extracting water for irrigation. - state variable",
             unit = "L"
     )
     public Attribute.Double trackedVolumeSewRG1_act;
 
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
-            description = "Remaining tracked RG2 volume from Sewer in reach",
+            description = "Volume of RG2 inside reach coming from Sewer. Will be updated by this component"+
+                    "(if not enough water in inflow), extracting water for irrigation. - state variable",
             unit = "L"
     )
     public Attribute.Double trackedVolumeSewRG2_act;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
-            description = "Remaining tracked total volume from Sewer in reach",
+            description = "Total volume inside reach coming from Sewer. Will be updated by this component"+
+                    "(if not enough water in inflow), extracting water for irrigation. - state variable",
             unit = "L"
     )
     public Attribute.Double trackedVolumeSewTotal_act;
@@ -311,14 +356,17 @@ public class IrrigationWaterTransfer_track extends JAMSComponent {
 
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
-            description = "Tracked volume from waste water treatment plant incoming into reach",
+            description = "Tracked volume from waste water treatment plant incoming into reach. Will be"+
+                    "updated by this component, extracting water for irrigation. - input / state variable",
             unit = "L"
     )
     public Attribute.Double inWW;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
-            description = "Remaining tracked volume from waste water treatment plant",
+            description = "Tracked volume from waste water treatment plant inside reach. Will be"+
+                    "updated by this component (if not enough water in inflow), extracting water for irrigation."+
+                    "- input / state variable",
             unit = "L"
     )
     public Attribute.Double trackedVolumeWW_act;
@@ -330,131 +378,131 @@ public class IrrigationWaterTransfer_track extends JAMSComponent {
     @Override
     public void run() {
 
-        Attribute.Entity currentReach = reaches.getCurrent();
+        Attribute.Entity run_currentReach = reaches.getCurrent();
         
-        boolean SewTrack = trackSewers.getValue() == 1;
-        boolean WWTrack = trackWW.getValue() == 1;
+        boolean run_SewTrack = trackSewers.getValue() == 1;
+        boolean run_WWTrack = trackWW.getValue() == 1;
         
         // read tracked volumes of the current reach --> incoming
-        double[] ArrayTrackedVolumeRD1 = trackedVolumeRD1Array.getValue();
-        double[] ArrayTrackedVolumeRD2 = trackedVolumeRD2Array.getValue();
-        double[] ArrayTrackedVolumeRG1 = trackedVolumeRG1Array.getValue();
-        double[] ArrayTrackedVolumeRG2 = trackedVolumeRG2Array.getValue();
-        double[] ArrayTrackedVolumeTotal = trackedVolumeTotalArray.getValue();
+        double[] run_ArrayTrackedVolumeRD1 = trackedVolumeRD1Array.getValue();
+        double[] run_ArrayTrackedVolumeRD2 = trackedVolumeRD2Array.getValue();
+        double[] run_ArrayTrackedVolumeRG1 = trackedVolumeRG1Array.getValue();
+        double[] run_ArrayTrackedVolumeRG2 = trackedVolumeRG2Array.getValue();
+        double[] run_ArrayTrackedVolumeTotal = trackedVolumeTotalArray.getValue();
         // available
-        double[] ArrayTrackedVolume_actRD1 = trackedVolumeRD1_actArray.getValue();
-        double[] ArrayTrackedVolume_actRD2 = trackedVolumeRD2_actArray.getValue();
-        double[] ArrayTrackedVolume_actRG1 = trackedVolumeRG1_actArray.getValue();
-        double[] ArrayTrackedVolume_actRG2 = trackedVolumeRG2_actArray.getValue();
-        double[] ArrayTrackedVolume_actTotal = trackedVolumeTotal_actArray.getValue();
+        double[] run_ArrayTrackedVolume_actRD1 = trackedVolumeRD1_actArray.getValue();
+        double[] run_ArrayTrackedVolume_actRD2 = trackedVolumeRD2_actArray.getValue();
+        double[] run_ArrayTrackedVolume_actRG1 = trackedVolumeRG1_actArray.getValue();
+        double[] run_ArrayTrackedVolume_actRG2 = trackedVolumeRG2_actArray.getValue();
+        double[] run_ArrayTrackedVolume_actTotal = trackedVolumeTotal_actArray.getValue();
         
-        double TrackedVolumeSewRD1, TrackedVolumeSewRD2, 
-                TrackedVolumeSewRG1, TrackedVolumeSewRG2, 
-                TrackedVolumeSewTotal, 
-                TrackedVolumeSewRD1_act, TrackedVolumeSewRD2_act, 
-                TrackedVolumeSewRG1_act, TrackedVolumeSewRG2_act, 
-                TrackedVolumeSewTotal_act,
-                InWW, TrackedVolumeWW_act;
-        TrackedVolumeSewRD1 = TrackedVolumeSewRD2 = TrackedVolumeSewRG1 =
-                TrackedVolumeSewRG2 = TrackedVolumeSewTotal =
-                TrackedVolumeSewRD1_act = TrackedVolumeSewRD2_act = 
-                TrackedVolumeSewRG1_act = TrackedVolumeSewRG2_act =  
-                TrackedVolumeSewTotal_act = 
-                InWW = TrackedVolumeWW_act = 0.0;
-        if(SewTrack){
+        double run_TrackedVolumeSewRD1, run_TrackedVolumeSewRD2, 
+                run_TrackedVolumeSewRG1, run_TrackedVolumeSewRG2, 
+                run_TrackedVolumeSewTotal, 
+                run_TrackedVolumeSewRD1_act, run_TrackedVolumeSewRD2_act, 
+                run_TrackedVolumeSewRG1_act, run_TrackedVolumeSewRG2_act, 
+                run_TrackedVolumeSewTotal_act,
+                run_InWW, run_TrackedVolumeWW_act;
+        run_TrackedVolumeSewRD1 = run_TrackedVolumeSewRD2 = run_TrackedVolumeSewRG1 =
+                run_TrackedVolumeSewRG2 = run_TrackedVolumeSewTotal =
+                run_TrackedVolumeSewRD1_act = run_TrackedVolumeSewRD2_act = 
+                run_TrackedVolumeSewRG1_act = run_TrackedVolumeSewRG2_act =  
+                run_TrackedVolumeSewTotal_act = 
+                run_InWW = run_TrackedVolumeWW_act = 0.0;
+        if(run_SewTrack){
             // read tracked volumes of the current reach --> incoming
-            TrackedVolumeSewRD1 = trackedVolumeSewRD1.getValue();
-            TrackedVolumeSewRD2 = trackedVolumeSewRD2.getValue();
-            TrackedVolumeSewRG1 = trackedVolumeSewRG1.getValue();
-            TrackedVolumeSewRG2 = trackedVolumeSewRG2.getValue();
-            TrackedVolumeSewTotal = trackedVolumeSewTotal.getValue();
+            run_TrackedVolumeSewRD1 = trackedVolumeSewRD1.getValue();
+            run_TrackedVolumeSewRD2 = trackedVolumeSewRD2.getValue();
+            run_TrackedVolumeSewRG1 = trackedVolumeSewRG1.getValue();
+            run_TrackedVolumeSewRG2 = trackedVolumeSewRG2.getValue();
+            run_TrackedVolumeSewTotal = trackedVolumeSewTotal.getValue();
             // available
-            TrackedVolumeSewRD1_act = trackedVolumeSewRD1_act.getValue();
-            TrackedVolumeSewRD2_act = trackedVolumeSewRD2_act.getValue();
-            TrackedVolumeSewRG1_act = trackedVolumeSewRG1_act.getValue();
-            TrackedVolumeSewRG2_act = trackedVolumeSewRG2_act.getValue();
-            TrackedVolumeSewTotal_act = trackedVolumeSewTotal_act.getValue();
+            run_TrackedVolumeSewRD1_act = trackedVolumeSewRD1_act.getValue();
+            run_TrackedVolumeSewRD2_act = trackedVolumeSewRD2_act.getValue();
+            run_TrackedVolumeSewRG1_act = trackedVolumeSewRG1_act.getValue();
+            run_TrackedVolumeSewRG2_act = trackedVolumeSewRG2_act.getValue();
+            run_TrackedVolumeSewTotal_act = trackedVolumeSewTotal_act.getValue();
         }
         
-        if(WWTrack){
+        if(run_WWTrack){
             // read tracked volumes of the current reach --> incoming
-            InWW = inWW.getValue();
+            run_InWW = inWW.getValue();
             // available
-            TrackedVolumeWW_act = trackedVolumeWW_act.getValue();
+            run_TrackedVolumeWW_act = trackedVolumeWW_act.getValue();
         }
         
         // Array of reach names
-        double[] Nom = this.names.getValue();
+        double[] run_names = this.names.getValue();
         
         // Liste des indices de Reachs contribuant au brin actuel
-        List<Integer> listIndex = new ArrayList<Integer>();
-        for(int i = 0; i < Nom.length; i++){
-            if(ArrayTrackedVolumeTotal[i] != -999){
-                listIndex.add(i);
+        List<Integer> run_listIndex = new ArrayList<Integer>();
+        for(int i = 0; i < run_names.length; i++){
+            if(run_ArrayTrackedVolumeTotal[i] != -999){
+                run_listIndex.add(i);
             }
         }
 
         //check if this reach even has irrigated HRUs in its catchment
-        if (!currentReach.existsAttribute(irrigationEntitiesListName.getValue())) {
-            double totalIn = inRD1.getValue() + inRD2.getValue() + inRG1.getValue() + inRG2.getValue();
-            double totalAct = this.actPrel.getValue() * (actRD1.getValue() + actRD2.getValue() + actRG1.getValue() + actRG2.getValue());
-            this.totalInput.setValue(totalIn + totalAct); // IG : ACHTUNG, cette variable n'est pas à jour !!
+        if (!run_currentReach.existsAttribute(irrigationEntitiesListName.getValue())) {
+            double run_totalIn = inRD1.getValue() + inRD2.getValue() + inRG1.getValue() + inRG2.getValue();
+            double run_totalAct = this.actPrel.getValue() * (actRD1.getValue() + actRD2.getValue() + actRG1.getValue() + actRG2.getValue());
+            this.totalInput.setValue(run_totalIn + run_totalAct); // IG : ACHTUNG, cette variable n'est pas à jour !!
             return;
         }
-        double totalIn = inRD1.getValue() + inRD2.getValue() + inRG1.getValue() + inRG2.getValue();
-        double totalAct = this.actPrel.getValue() * (actRD1.getValue() + actRD2.getValue() + actRG1.getValue() + actRG2.getValue()); // eau du reach dispo pour l'irrigation.
-        double totalAv = totalIn + totalAct; // all available water
-        this.totalInput.setValue(totalIn + totalAct); // eau disponible pour l'irrigation à ce pas de temps
+        double run_totalIn = inRD1.getValue() + inRD2.getValue() + inRG1.getValue() + inRG2.getValue();
+        double run_totalAct = this.actPrel.getValue() * (actRD1.getValue() + actRD2.getValue() + actRG1.getValue() + actRG2.getValue()); // eau du reach dispo pour l'irrigation.
+        double run_totalAv = run_totalIn + run_totalAct; // all available water
+        this.totalInput.setValue(run_totalIn + run_totalAct); // eau disponible pour l'irrigation à ce pas de temps
         //this.totalInput.setValue(totalIn);
-        double totalDemand = 0;
+        double run_totalDemand = 0;
 
-        List<Attribute.Entity> l = (List) currentReach.getObject(irrigationEntitiesListName.getValue());
-        for (Attribute.Entity hru : l) {
-            double demand = hru.getDouble(irrigationDemandName.getValue());
-            totalDemand += demand;
+        List<Attribute.Entity> run_l = (List) run_currentReach.getObject(irrigationEntitiesListName.getValue());
+        for (Attribute.Entity run_hru : run_l) {
+            double run_demand = run_hru.getDouble(irrigationDemandName.getValue());
+            run_totalDemand += run_demand;
         }
 
-        this.totalDemand.setValue(totalDemand);
+        this.totalDemand.setValue(run_totalDemand);
 
         //calculate proportion of total water that is needed
-        if (totalAv != 0){ // if there is water avilable (in and/or act)
-            if (totalIn != 0){ // if there is water coming in
+        if (run_totalAv != 0){ // if there is water avilable (in and/or act)
+            if (run_totalIn != 0){ // if there is water coming in
 
-                double frac = totalDemand /totalIn;
+                double run_frac = run_totalDemand /run_totalIn;
 
-                if (frac <= 1) {
+                if (run_frac <= 1) {
 
                     //we can cover all only with in to the reach, reduce the components accordingly
-                    inRD1.setValue(inRD1.getValue() * (1 - frac));
-                    inRD2.setValue(inRD2.getValue() * (1 - frac));
-                    inRG1.setValue(inRG1.getValue() * (1 - frac));
-                    inRG2.setValue(inRG2.getValue() * (1 - frac));
-                    totalTransfer.setValue(totalDemand);
+                    inRD1.setValue(inRD1.getValue() * (1 - run_frac));
+                    inRD2.setValue(inRD2.getValue() * (1 - run_frac));
+                    inRG1.setValue(inRG1.getValue() * (1 - run_frac));
+                    inRG2.setValue(inRG2.getValue() * (1 - run_frac));
+                    totalTransfer.setValue(run_totalDemand);
 
                     // reduce tracked volumes proportionally
-                    for(int i : listIndex){
-                        ArrayTrackedVolumeRD1[i] = ArrayTrackedVolumeRD1[i] * (1 - frac);
-                        ArrayTrackedVolumeRD2[i] = ArrayTrackedVolumeRD2[i] * (1 - frac);
-                        ArrayTrackedVolumeRG1[i] = ArrayTrackedVolumeRG1[i] * (1 - frac);
-                        ArrayTrackedVolumeRG2[i] = ArrayTrackedVolumeRG2[i] * (1 - frac);
-                        ArrayTrackedVolumeTotal[i] = ArrayTrackedVolumeTotal[i] * (1 - frac);
+                    for(int i : run_listIndex){
+                        run_ArrayTrackedVolumeRD1[i] = run_ArrayTrackedVolumeRD1[i] * (1 - run_frac);
+                        run_ArrayTrackedVolumeRD2[i] = run_ArrayTrackedVolumeRD2[i] * (1 - run_frac);
+                        run_ArrayTrackedVolumeRG1[i] = run_ArrayTrackedVolumeRG1[i] * (1 - run_frac);
+                        run_ArrayTrackedVolumeRG2[i] = run_ArrayTrackedVolumeRG2[i] * (1 - run_frac);
+                        run_ArrayTrackedVolumeTotal[i] = run_ArrayTrackedVolumeTotal[i] * (1 - run_frac);
                     }
-                    if(SewTrack){
+                    if(run_SewTrack){
                         // reduce tracked volumes from sewer proportionally
-                        TrackedVolumeSewRD1 = TrackedVolumeSewRD1 * (1 - frac);
-                        TrackedVolumeSewRD2 = TrackedVolumeSewRD2 * (1 - frac);
-                        TrackedVolumeSewRG1 = TrackedVolumeSewRG1 * (1 - frac);
-                        TrackedVolumeSewRG2 = TrackedVolumeSewRG2 * (1 - frac);
-                        TrackedVolumeSewTotal = TrackedVolumeSewTotal * (1 - frac);
+                        run_TrackedVolumeSewRD1 = run_TrackedVolumeSewRD1 * (1 - run_frac);
+                        run_TrackedVolumeSewRD2 = run_TrackedVolumeSewRD2 * (1 - run_frac);
+                        run_TrackedVolumeSewRG1 = run_TrackedVolumeSewRG1 * (1 - run_frac);
+                        run_TrackedVolumeSewRG2 = run_TrackedVolumeSewRG2 * (1 - run_frac);
+                        run_TrackedVolumeSewTotal = run_TrackedVolumeSewTotal * (1 - run_frac);
                     }
-                    if(WWTrack){
+                    if(run_WWTrack){
                         // reduce tracked volumes from WWTP proportionally
-                        InWW = InWW * (1 - frac);
+                        run_InWW = run_InWW * (1 - run_frac);
                     }
 
                 } else {
                     //looking if we can cover the demand by including part of act...
-                    frac = totalDemand / (totalIn+totalAct);
+                    run_frac = run_totalDemand / (run_totalIn+run_totalAct);
 
                     //we can cover only part of the demand with in, reduce the components to 0
                     inRD1.setValue(0);
@@ -463,56 +511,56 @@ public class IrrigationWaterTransfer_track extends JAMSComponent {
                     inRG2.setValue(0);
 
                     // set incoming tracked volumes to 0
-                    for(int i : listIndex){
-                        ArrayTrackedVolumeRD1[i] = 0;
-                        ArrayTrackedVolumeRD2[i] = 0;
-                        ArrayTrackedVolumeRG1[i] = 0;
-                        ArrayTrackedVolumeRG2[i] = 0;
-                        ArrayTrackedVolumeTotal[i] = 0;
+                    for(int i : run_listIndex){
+                        run_ArrayTrackedVolumeRD1[i] = 0;
+                        run_ArrayTrackedVolumeRD2[i] = 0;
+                        run_ArrayTrackedVolumeRG1[i] = 0;
+                        run_ArrayTrackedVolumeRG2[i] = 0;
+                        run_ArrayTrackedVolumeTotal[i] = 0;
                     }
-                    if(SewTrack){
+                    if(run_SewTrack){
                         // set incoming tracked sewer volumes to 0
-                        TrackedVolumeSewRD1 = 0;
-                        TrackedVolumeSewRD2 = 0;
-                        TrackedVolumeSewRG1 = 0;
-                        TrackedVolumeSewRG2 = 0;
-                        TrackedVolumeSewTotal = 0;
+                        run_TrackedVolumeSewRD1 = 0;
+                        run_TrackedVolumeSewRD2 = 0;
+                        run_TrackedVolumeSewRG1 = 0;
+                        run_TrackedVolumeSewRG2 = 0;
+                        run_TrackedVolumeSewTotal = 0;
                     }
-                    if(WWTrack){
+                    if(run_WWTrack){
                         // set incoming tracked WW volumes to 0
-                        InWW = 0;
+                        run_InWW = 0;
                     }
 
-                    if (frac <= 1) {
+                    if (run_frac <= 1) {
                         //we can cover all of the demand but not only with in..., reduce the components accordingly
-                        double actDemand = 0;
-                        actDemand = totalDemand - totalIn;
-                        double frac2 = actDemand/totalAct;
-                        actRD1.setValue(actRD1.getValue() * (1 - frac2));
-                        actRD2.setValue(actRD2.getValue() * (1 - frac2));
-                        actRG1.setValue(actRG1.getValue() * (1 - frac2));
-                        actRG2.setValue(actRG2.getValue() * (1 - frac2));
-                        totalTransfer.setValue(totalDemand);
+                        double run_actDemand;
+                        run_actDemand = run_totalDemand - run_totalIn;
+                        double run_frac2 = run_actDemand/run_totalAct;
+                        actRD1.setValue(actRD1.getValue() * (1 - run_frac2));
+                        actRD2.setValue(actRD2.getValue() * (1 - run_frac2));
+                        actRG1.setValue(actRG1.getValue() * (1 - run_frac2));
+                        actRG2.setValue(actRG2.getValue() * (1 - run_frac2));
+                        totalTransfer.setValue(run_totalDemand);
 
                         // reduce tracked stocked volumes proportionally
-                        for(int i : listIndex){
-                            ArrayTrackedVolume_actRD1[i] = ArrayTrackedVolume_actRD1[i] * (1 - frac2);
-                            ArrayTrackedVolume_actRD2[i] = ArrayTrackedVolume_actRD2[i] * (1 - frac2);
-                            ArrayTrackedVolume_actRG1[i] = ArrayTrackedVolume_actRG1[i] * (1 - frac2);
-                            ArrayTrackedVolume_actRG2[i] = ArrayTrackedVolume_actRG2[i] * (1 - frac2);
-                            ArrayTrackedVolume_actTotal[i] = ArrayTrackedVolume_actTotal[i] * (1 - frac2);
+                        for(int i : run_listIndex){
+                            run_ArrayTrackedVolume_actRD1[i] = run_ArrayTrackedVolume_actRD1[i] * (1 - run_frac2);
+                            run_ArrayTrackedVolume_actRD2[i] = run_ArrayTrackedVolume_actRD2[i] * (1 - run_frac2);
+                            run_ArrayTrackedVolume_actRG1[i] = run_ArrayTrackedVolume_actRG1[i] * (1 - run_frac2);
+                            run_ArrayTrackedVolume_actRG2[i] = run_ArrayTrackedVolume_actRG2[i] * (1 - run_frac2);
+                            run_ArrayTrackedVolume_actTotal[i] = run_ArrayTrackedVolume_actTotal[i] * (1 - run_frac2);
                         }
-                        if(SewTrack){
+                        if(run_SewTrack){
                             // reduce tracked stocked volumes from sewer proportionally
-                            TrackedVolumeSewRD1_act = TrackedVolumeSewRD1_act * (1 - frac2);
-                            TrackedVolumeSewRD2_act = TrackedVolumeSewRD2_act * (1 - frac2);
-                            TrackedVolumeSewRG1_act = TrackedVolumeSewRG1_act * (1 - frac2);
-                            TrackedVolumeSewRG2_act = TrackedVolumeSewRG2_act * (1 - frac2);
-                            TrackedVolumeSewTotal_act = TrackedVolumeSewTotal_act * (1 - frac2);
+                            run_TrackedVolumeSewRD1_act = run_TrackedVolumeSewRD1_act * (1 - run_frac2);
+                            run_TrackedVolumeSewRD2_act = run_TrackedVolumeSewRD2_act * (1 - run_frac2);
+                            run_TrackedVolumeSewRG1_act = run_TrackedVolumeSewRG1_act * (1 - run_frac2);
+                            run_TrackedVolumeSewRG2_act = run_TrackedVolumeSewRG2_act * (1 - run_frac2);
+                            run_TrackedVolumeSewTotal_act = run_TrackedVolumeSewTotal_act * (1 - run_frac2);
                         }
-                        if(WWTrack){
+                        if(run_WWTrack){
                             // reduce tracked stocked volumes from WWTP proportionally
-                            TrackedVolumeWW_act = TrackedVolumeWW_act * (1 - frac2);
+                            run_TrackedVolumeWW_act = run_TrackedVolumeWW_act * (1 - run_frac2);
                         }
 
                     } else {
@@ -521,60 +569,60 @@ public class IrrigationWaterTransfer_track extends JAMSComponent {
                         actRD2.setValue(actRD2.getValue() * (1 - actPrel.getValue()));
                         actRG1.setValue(actRG1.getValue() * (1 - actPrel.getValue()));
                         actRG2.setValue(actRG2.getValue() * (1 - actPrel.getValue()));
-                        totalTransfer.setValue(totalIn+totalAct);
+                        totalTransfer.setValue(run_totalIn+run_totalAct);
 
                         // reduce tracked volumes to zero (except leaving minimum flow)
-                        for(int i : listIndex){
-                            ArrayTrackedVolume_actRD1[i] = ArrayTrackedVolume_actRD1[i] * (1 - actPrel.getValue());
-                            ArrayTrackedVolume_actRD2[i] = ArrayTrackedVolume_actRD2[i] * (1 - actPrel.getValue());
-                            ArrayTrackedVolume_actRG1[i] = ArrayTrackedVolume_actRG1[i] * (1 - actPrel.getValue());
-                            ArrayTrackedVolume_actRG2[i] = ArrayTrackedVolume_actRG2[i] * (1 - actPrel.getValue());
-                            ArrayTrackedVolume_actTotal[i] = ArrayTrackedVolume_actTotal[i] * (1 - actPrel.getValue());
+                        for(int i : run_listIndex){
+                            run_ArrayTrackedVolume_actRD1[i] = run_ArrayTrackedVolume_actRD1[i] * (1 - actPrel.getValue());
+                            run_ArrayTrackedVolume_actRD2[i] = run_ArrayTrackedVolume_actRD2[i] * (1 - actPrel.getValue());
+                            run_ArrayTrackedVolume_actRG1[i] = run_ArrayTrackedVolume_actRG1[i] * (1 - actPrel.getValue());
+                            run_ArrayTrackedVolume_actRG2[i] = run_ArrayTrackedVolume_actRG2[i] * (1 - actPrel.getValue());
+                            run_ArrayTrackedVolume_actTotal[i] = run_ArrayTrackedVolume_actTotal[i] * (1 - actPrel.getValue());
                         }
-                        if(SewTrack){
+                        if(run_SewTrack){
                             // reduce tracked stocked volumes from sewer to zero (except leaving minimum flow)
-                            TrackedVolumeSewRD1_act = TrackedVolumeSewRD1_act * (1 - actPrel.getValue());
-                            TrackedVolumeSewRD2_act = TrackedVolumeSewRD2_act * (1 - actPrel.getValue());
-                            TrackedVolumeSewRG1_act = TrackedVolumeSewRG1_act * (1 - actPrel.getValue());
-                            TrackedVolumeSewRG2_act = TrackedVolumeSewRG2_act * (1 - actPrel.getValue());
-                            TrackedVolumeSewTotal_act = TrackedVolumeSewTotal_act * (1 - actPrel.getValue());
+                            run_TrackedVolumeSewRD1_act = run_TrackedVolumeSewRD1_act * (1 - actPrel.getValue());
+                            run_TrackedVolumeSewRD2_act = run_TrackedVolumeSewRD2_act * (1 - actPrel.getValue());
+                            run_TrackedVolumeSewRG1_act = run_TrackedVolumeSewRG1_act * (1 - actPrel.getValue());
+                            run_TrackedVolumeSewRG2_act = run_TrackedVolumeSewRG2_act * (1 - actPrel.getValue());
+                            run_TrackedVolumeSewTotal_act = run_TrackedVolumeSewTotal_act * (1 - actPrel.getValue());
                         }
-                        if(WWTrack){
+                        if(run_WWTrack){
                             // reduce tracked stocked volumes from WWTP to zero (except leaving minimum flow)
-                            TrackedVolumeWW_act = TrackedVolumeWW_act * (1 - actPrel.getValue());
+                            run_TrackedVolumeWW_act = run_TrackedVolumeWW_act * (1 - actPrel.getValue());
                         }
                     }
                 }
             } else {// no water coming into reach but water available
                 //looking if we can cover the demand by including usable part of act...
-                double frac = totalDemand / (totalAct);
-                if (frac <= 1) {
+                double run_frac = run_totalDemand / (run_totalAct);
+                if (run_frac <= 1) {
                     //we can cover all of the demand with act, reduce the components accordingly
-                    actRD1.setValue(actRD1.getValue() * (1 - frac));
-                    actRD2.setValue(actRD2.getValue() * (1 - frac));
-                    actRG1.setValue(actRG1.getValue() * (1 - frac));
-                    actRG2.setValue(actRG2.getValue() * (1 - frac));
-                    totalTransfer.setValue(totalDemand);
+                    actRD1.setValue(actRD1.getValue() * (1 - run_frac));
+                    actRD2.setValue(actRD2.getValue() * (1 - run_frac));
+                    actRG1.setValue(actRG1.getValue() * (1 - run_frac));
+                    actRG2.setValue(actRG2.getValue() * (1 - run_frac));
+                    totalTransfer.setValue(run_totalDemand);
                         
                     // reduce tracked volumes proportionally
-                    for(int i : listIndex){
-                        ArrayTrackedVolume_actRD1[i] = ArrayTrackedVolume_actRD1[i] * (1 - frac);
-                        ArrayTrackedVolume_actRD2[i] = ArrayTrackedVolume_actRD2[i] * (1 - frac);
-                        ArrayTrackedVolume_actRG1[i] = ArrayTrackedVolume_actRG1[i] * (1 - frac);
-                        ArrayTrackedVolume_actRG2[i] = ArrayTrackedVolume_actRG2[i] * (1 - frac);
-                        ArrayTrackedVolume_actTotal[i] = ArrayTrackedVolume_actTotal[i] * (1 - frac);
+                    for(int i : run_listIndex){
+                        run_ArrayTrackedVolume_actRD1[i] = run_ArrayTrackedVolume_actRD1[i] * (1 - run_frac);
+                        run_ArrayTrackedVolume_actRD2[i] = run_ArrayTrackedVolume_actRD2[i] * (1 - run_frac);
+                        run_ArrayTrackedVolume_actRG1[i] = run_ArrayTrackedVolume_actRG1[i] * (1 - run_frac);
+                        run_ArrayTrackedVolume_actRG2[i] = run_ArrayTrackedVolume_actRG2[i] * (1 - run_frac);
+                        run_ArrayTrackedVolume_actTotal[i] = run_ArrayTrackedVolume_actTotal[i] * (1 - run_frac);
                     }
-                    if(SewTrack){
+                    if(run_SewTrack){
                         // reduce tracked stocked volumes from sewer proportionally
-                        TrackedVolumeSewRD1_act = TrackedVolumeSewRD1_act * (1 - frac);
-                        TrackedVolumeSewRD2_act = TrackedVolumeSewRD2_act * (1 - frac);
-                        TrackedVolumeSewRG1_act = TrackedVolumeSewRG1_act * (1 - frac);
-                        TrackedVolumeSewRG2_act = TrackedVolumeSewRG2_act * (1 - frac);
-                        TrackedVolumeSewTotal_act = TrackedVolumeSewTotal_act * (1 - frac);
+                        run_TrackedVolumeSewRD1_act = run_TrackedVolumeSewRD1_act * (1 - run_frac);
+                        run_TrackedVolumeSewRD2_act = run_TrackedVolumeSewRD2_act * (1 - run_frac);
+                        run_TrackedVolumeSewRG1_act = run_TrackedVolumeSewRG1_act * (1 - run_frac);
+                        run_TrackedVolumeSewRG2_act = run_TrackedVolumeSewRG2_act * (1 - run_frac);
+                        run_TrackedVolumeSewTotal_act = run_TrackedVolumeSewTotal_act * (1 - run_frac);
                     }
-                    if(WWTrack){
+                    if(run_WWTrack){
                         // reduce tracked stocked volumes from WWTP proportionally
-                        TrackedVolumeWW_act = TrackedVolumeWW_act * (1 - frac);
+                        run_TrackedVolumeWW_act = run_TrackedVolumeWW_act * (1 - run_frac);
                     }
 
                 } else {
@@ -583,85 +631,85 @@ public class IrrigationWaterTransfer_track extends JAMSComponent {
                     actRD2.setValue(actRD2.getValue() * (1 - actPrel.getValue()));
                     actRG1.setValue(actRG1.getValue() * (1 - actPrel.getValue()));
                     actRG2.setValue(actRG2.getValue() * (1 - actPrel.getValue()));
-                    totalTransfer.setValue(totalAct);
+                    totalTransfer.setValue(run_totalAct);
                         
                     // reduce tracked volumes to zero (except leaving minimum flow)
-                    for(int i : listIndex){
-                        ArrayTrackedVolume_actRD1[i] = ArrayTrackedVolume_actRD1[i] * (1 - actPrel.getValue());
-                        ArrayTrackedVolume_actRD2[i] = ArrayTrackedVolume_actRD2[i] * (1 - actPrel.getValue());
-                        ArrayTrackedVolume_actRG1[i] = ArrayTrackedVolume_actRG1[i] * (1 - actPrel.getValue());
-                        ArrayTrackedVolume_actRG2[i] = ArrayTrackedVolume_actRG2[i] * (1 - actPrel.getValue());
-                        ArrayTrackedVolume_actTotal[i] = ArrayTrackedVolume_actTotal[i] * (1 - actPrel.getValue());
+                    for(int i : run_listIndex){
+                        run_ArrayTrackedVolume_actRD1[i] = run_ArrayTrackedVolume_actRD1[i] * (1 - actPrel.getValue());
+                        run_ArrayTrackedVolume_actRD2[i] = run_ArrayTrackedVolume_actRD2[i] * (1 - actPrel.getValue());
+                        run_ArrayTrackedVolume_actRG1[i] = run_ArrayTrackedVolume_actRG1[i] * (1 - actPrel.getValue());
+                        run_ArrayTrackedVolume_actRG2[i] = run_ArrayTrackedVolume_actRG2[i] * (1 - actPrel.getValue());
+                        run_ArrayTrackedVolume_actTotal[i] = run_ArrayTrackedVolume_actTotal[i] * (1 - actPrel.getValue());
                     }
-                    if(SewTrack){
+                    if(run_SewTrack){
                         // reduce tracked stocked volumes from sewer to zero (except leaving minimum flow)
-                        TrackedVolumeSewRD1_act = TrackedVolumeSewRD1_act * (1 - actPrel.getValue());
-                        TrackedVolumeSewRD2_act = TrackedVolumeSewRD2_act * (1 - actPrel.getValue());
-                        TrackedVolumeSewRG1_act = TrackedVolumeSewRG1_act * (1 - actPrel.getValue());
-                        TrackedVolumeSewRG2_act = TrackedVolumeSewRG2_act * (1 - actPrel.getValue());
-                        TrackedVolumeSewTotal_act = TrackedVolumeSewTotal_act * (1 - actPrel.getValue());
+                        run_TrackedVolumeSewRD1_act = run_TrackedVolumeSewRD1_act * (1 - actPrel.getValue());
+                        run_TrackedVolumeSewRD2_act = run_TrackedVolumeSewRD2_act * (1 - actPrel.getValue());
+                        run_TrackedVolumeSewRG1_act = run_TrackedVolumeSewRG1_act * (1 - actPrel.getValue());
+                        run_TrackedVolumeSewRG2_act = run_TrackedVolumeSewRG2_act * (1 - actPrel.getValue());
+                        run_TrackedVolumeSewTotal_act = run_TrackedVolumeSewTotal_act * (1 - actPrel.getValue());
                     }
-                    if(WWTrack){
+                    if(run_WWTrack){
                         // reduce tracked stocked volumes from WWTP proportionally
-                        TrackedVolumeWW_act = TrackedVolumeWW_act * (1 - actPrel.getValue());
+                        run_TrackedVolumeWW_act = run_TrackedVolumeWW_act * (1 - actPrel.getValue());
                     }
                 }
             }
             
             //distribute total transfer over all HRUs
-            double providedFraction = 0;
-            if (totalDemand != 0.){
-                providedFraction = totalTransfer.getValue()/totalDemand;
+            double run_providedFraction;
+            if (run_totalDemand != 0.){
+                run_providedFraction = totalTransfer.getValue()/run_totalDemand;
             } else {
-                providedFraction = 1;
+                run_providedFraction = 1;
             }
-            double providedWater_tmp=0.;
-            for (Attribute.Entity hru : l) {
-                double waterRequirements = hru.getDouble(waterRequirementsName.getValue());
-                hru.setDouble(irrigationWaterName.getValue(), waterRequirements * providedFraction);
-                providedWater_tmp= providedWater_tmp + waterRequirements * providedFraction;
+            double run_providedWater_tmp=0.;
+            for (Attribute.Entity run_hru : run_l) {
+                double run_waterRequirements = run_hru.getDouble(waterRequirementsName.getValue());
+                run_hru.setDouble(irrigationWaterName.getValue(), run_waterRequirements * run_providedFraction);
+                run_providedWater_tmp= run_providedWater_tmp + run_waterRequirements * run_providedFraction;
             }
             // restitute lost water to RD2 (when efficiency of the irrigation network <1) :
-            inRD2.setValue(inRD2.getValue()+Math.max(0.,totalTransfer.getValue()-providedWater_tmp) );
+            inRD2.setValue(inRD2.getValue()+Math.max(0.,totalTransfer.getValue()-run_providedWater_tmp) );
         } else { // no water available
-            for (Attribute.Entity hru : l) {
-                hru.setDouble(irrigationWaterName.getValue(), 0); 
+            for (Attribute.Entity run_hru : run_l) {
+                run_hru.setDouble(irrigationWaterName.getValue(), 0); 
             }
             totalTransfer.setValue(0.); 
         }
         // read tracked volumes of the current reach --> incoming
-        trackedVolumeRD1Array.setValue(ArrayTrackedVolumeRD1);
-        trackedVolumeRD2Array.setValue(ArrayTrackedVolumeRD2);
-        trackedVolumeRG1Array.setValue(ArrayTrackedVolumeRG1);
-        trackedVolumeRG2Array.setValue(ArrayTrackedVolumeRG2);
-        trackedVolumeTotalArray.setValue(ArrayTrackedVolumeTotal);
+        trackedVolumeRD1Array.setValue(run_ArrayTrackedVolumeRD1);
+        trackedVolumeRD2Array.setValue(run_ArrayTrackedVolumeRD2);
+        trackedVolumeRG1Array.setValue(run_ArrayTrackedVolumeRG1);
+        trackedVolumeRG2Array.setValue(run_ArrayTrackedVolumeRG2);
+        trackedVolumeTotalArray.setValue(run_ArrayTrackedVolumeTotal);
         // available
-        trackedVolumeRD1_actArray.setValue(ArrayTrackedVolume_actRD1);
-        trackedVolumeRD2_actArray.setValue(ArrayTrackedVolume_actRD2);
-        trackedVolumeRG1_actArray.setValue(ArrayTrackedVolume_actRG1);
-        trackedVolumeRG2_actArray.setValue(ArrayTrackedVolume_actRG2);
-        trackedVolumeTotal_actArray.setValue(ArrayTrackedVolume_actTotal);
-        if(SewTrack){
+        trackedVolumeRD1_actArray.setValue(run_ArrayTrackedVolume_actRD1);
+        trackedVolumeRD2_actArray.setValue(run_ArrayTrackedVolume_actRD2);
+        trackedVolumeRG1_actArray.setValue(run_ArrayTrackedVolume_actRG1);
+        trackedVolumeRG2_actArray.setValue(run_ArrayTrackedVolume_actRG2);
+        trackedVolumeTotal_actArray.setValue(run_ArrayTrackedVolume_actTotal);
+        if(run_SewTrack){
             // read tracked volumes of the current reach --> incoming
-            trackedVolumeSewRD1.setValue(TrackedVolumeSewRD1);
-            trackedVolumeSewRD2.setValue(TrackedVolumeSewRD2);
-            trackedVolumeSewRG1.setValue(TrackedVolumeSewRG1);
-            trackedVolumeSewRG2.setValue(TrackedVolumeSewRG2);
-            trackedVolumeSewTotal.setValue(TrackedVolumeSewTotal);
+            trackedVolumeSewRD1.setValue(run_TrackedVolumeSewRD1);
+            trackedVolumeSewRD2.setValue(run_TrackedVolumeSewRD2);
+            trackedVolumeSewRG1.setValue(run_TrackedVolumeSewRG1);
+            trackedVolumeSewRG2.setValue(run_TrackedVolumeSewRG2);
+            trackedVolumeSewTotal.setValue(run_TrackedVolumeSewTotal);
             // available
-            trackedVolumeSewRD1_act.setValue(TrackedVolumeSewRD1_act);
-            trackedVolumeSewRD2_act.setValue(TrackedVolumeSewRD2_act);
-            trackedVolumeSewRG1_act.setValue(TrackedVolumeSewRG1_act);
-            trackedVolumeSewRG2_act.setValue(TrackedVolumeSewRG2_act);
-            trackedVolumeSewTotal_act.setValue(TrackedVolumeSewTotal_act);
+            trackedVolumeSewRD1_act.setValue(run_TrackedVolumeSewRD1_act);
+            trackedVolumeSewRD2_act.setValue(run_TrackedVolumeSewRD2_act);
+            trackedVolumeSewRG1_act.setValue(run_TrackedVolumeSewRG1_act);
+            trackedVolumeSewRG2_act.setValue(run_TrackedVolumeSewRG2_act);
+            trackedVolumeSewTotal_act.setValue(run_TrackedVolumeSewTotal_act);
         }
-        if(WWTrack){
+        if(run_WWTrack){
             // read tracked volumes of the current reach --> incoming
-            trackedVolumeWW_act.setValue(TrackedVolumeWW_act);
+            trackedVolumeWW_act.setValue(run_TrackedVolumeWW_act);
             // available
-            inWW.setValue(InWW);
+            inWW.setValue(run_InWW);
         }
         //remove all HRUs from demand list
-        l.removeAll(l);
+        run_l.removeAll(run_l);
     }
 }
