@@ -105,7 +105,7 @@ public class ED extends JAMSComponent {
         }
         
         double run_EDi;
-        run_EDi = Math.sqrt(run_"diffSquareSum);
+        run_EDi = Math.sqrt(run_diffSquareSum);
         this.ED.setValue(run_EDi);
     }
 
