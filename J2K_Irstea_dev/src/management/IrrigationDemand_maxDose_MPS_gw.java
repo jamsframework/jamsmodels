@@ -61,62 +61,62 @@ public class IrrigationDemand_maxDose_MPS_gw extends JAMSComponent {
 
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            description = "HRU area",
+            description = "HRU area (get from HRULoop). - parameter",
             unit = "m²"
     )
     public Attribute.Double area;
         
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            description = "Reach/Subbasin ID for irrigation source"
+            description = "Reach/Subbasin ID for irrigation source (get from HRULoop). - parameter"
     )
     public Attribute.Double sourceReach;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            description = "HRU ID for irrigation source"
+            description = "HRU ID for irrigation source (get from HRULoop). - parameter"
     )
     public Attribute.Double sourceHRU;
 
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            description = "potET value"
+            description = "potential evapotranspiration value (get from HRULoop). - input"
     )
     public Attribute.Double potET;
 
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            description = "actET value"
+            description = "actual evapotranspiration value (get from HRULoop). - input"
     )
     public Attribute.Double actET;
 
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            description = "satLPS value"
+            description = "Large pore space LPS saturation value (get from HRULoop). - input"
     )
     public Attribute.Double satLPS;
 
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            description = "satMPS value"
+            description = "Medium pore space MPS saturation value (get from HRULoop). - input"
     )
     public Attribute.Double satMPS;
 
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            description = "maxLPS value"
+            description = "Large pore space LPS capacity (get from HRULoop). - parameter"
     )
     public Attribute.Double maxLPS;
 
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            description = "maxMPS value"
+            description = "Medium pore space MPS capacity (get from HRULoop). - parameter"
     )
     public Attribute.Double maxMPS;
 
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            description = "Minimal allowed ET deficit (actET/potET)",
+            description = "Minimal allowed actual evapotranspiration fraction (actET/potET). Below this threshold, irrigation is required. - parameter [comment: deficit is not the right name]",
             defaultValue = "0.9"
     )
     public Attribute.Double etDeficit;
@@ -130,21 +130,21 @@ public class IrrigationDemand_maxDose_MPS_gw extends JAMSComponent {
 
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            description = "Correction factor for irrigation demand based on MPS",
+            description = "Correction factor for irrigation demand based on medium pore space MPS - parameter",
             defaultValue = "1"
     )
     public Attribute.Double irrigationDemandCorrectionMPS;    
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            description = "Correction factor for irrigation demand based on LPS",
+            description = "Correction factor for irrigation demand based on large pore space LPS - parameter",
             defaultValue = "1"
     )
     public Attribute.Double irrigationDemandCorrectionLPS;
 
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            description = "maximal dosis for irrigation",
+            description = "Maximal dose for irrigation - parameter",
             unit = "mm",
             defaultValue = "0"
     )
@@ -152,21 +152,21 @@ public class IrrigationDemand_maxDose_MPS_gw extends JAMSComponent {
     
         @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            description = "expected saturation of MPS"
+            description = "Expected saturation of medium pore space MPS (saturation goal of irrigation). - parameter"
             
     )
     public Attribute.Double satMPSexp; 
     
                 @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            description = "expected saturation of LPS"
+            description = "expected saturation of large pore space LPS (saturation goal of irrigation). - parameter"
             
     )
     public Attribute.Double satLPSexp; 
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            description = "efficiency of the irrigation system",
+            description = "Efficiency of the irrigation system. The lower this efficiency, the higher the irrigation demand for the same plant water requirement. - parameter",
  	    defaultValue = "1"
 
     )
@@ -174,21 +174,21 @@ public class IrrigationDemand_maxDose_MPS_gw extends JAMSComponent {
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
-            description = "Real plant irrigation water requirement"            
+            description = "Real plant irrigation water requirement (= water deficit). - output"            
               )
     public Attribute.Double waterRequirements;
     
         @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
-            description = "Irrigation demand (= waterRequirements/efficiency)"
+            description = "Irrigation demand (amount of water to take = waterRequirements/efficiency) - output"
     )
     public Attribute.Double irrigationDemand;
 
 
                 
                 
-    private Map<Long, Attribute.Entity> reachMap = new HashMap();
-    private Map<Long, Attribute.Entity> hruMap = new HashMap();
+    private Map<Long, Attribute.Entity> run_reachMap = new HashMap();
+    private Map<Long, Attribute.Entity> run_hruMap = new HashMap();
 
     /*
      *  Component run stages
@@ -196,12 +196,12 @@ public class IrrigationDemand_maxDose_MPS_gw extends JAMSComponent {
     @Override
     public void init() {
         //put all reaches to a map for easier access
-        for (Attribute.Entity reach : reaches.getEntities()) {
-            reachMap.put(reach.getId(), reach);
+        for (Attribute.Entity run_reach : reaches.getEntities()) {
+            run_reachMap.put(run_reach.getId(), run_reach);
         }
         //put all hrus to a map for easier access
-        for (Attribute.Entity hru : hrus.getEntities()) {
-            hruMap.put(hru.getId(), hru);
+        for (Attribute.Entity run_hru : hrus.getEntities()) {
+            run_hruMap.put(run_hru.getId(), run_hru);
         }
     }
 
@@ -222,52 +222,52 @@ public class IrrigationDemand_maxDose_MPS_gw extends JAMSComponent {
             //                      (1 - satMPS.getValue()) * maxMPS.getValue() * irrigationDemandCorrectionMPS.getValue();
              //  double deficiteVolume = Math.max(0,(0.2 - satLPS.getValue())) * maxLPS.getValue() * irrigationDemandCorrectionLPS.getValue() +
             //                      Math.max(0,(0.2 - satMPS.getValue())) * maxMPS.getValue() * irrigationDemandCorrectionMPS.getValue();
-          double deficiteVolume = Math.max(0,(satLPSexp.getValue() - satLPS.getValue())) * maxLPS.getValue() * irrigationDemandCorrectionLPS.getValue() +
+          double run_deficiteVolume = Math.max(0,(satLPSexp.getValue() - satLPS.getValue())) * maxLPS.getValue() * irrigationDemandCorrectionLPS.getValue() +
                                     Math.max(0,(satMPSexp.getValue() - satMPS.getValue())) * maxMPS.getValue() * irrigationDemandCorrectionMPS.getValue();
             if (maxDosis.getValue() > 0) {
-            deficiteVolume = Math.min(deficiteVolume, maxDosis.getValue() * area.getValue());
+            run_deficiteVolume = Math.min(run_deficiteVolume, maxDosis.getValue() * area.getValue());
             }
          
             //set the demand
-            waterRequirements.setValue(deficiteVolume);
-            irrigationDemand.setValue(deficiteVolume/efficiency.getValue());
+            waterRequirements.setValue(run_deficiteVolume);
+            irrigationDemand.setValue(run_deficiteVolume/efficiency.getValue());
 
             //get the matching reach/hru for the current HRU
-            Attribute.Entity hruID = hrus.getCurrent();
-            Attribute.Entity reach = reachMap.get((long) sourceReach.getValue());
-            Attribute.Entity hru = hruMap.get((long) sourceHRU.getValue());
+            Attribute.Entity run_hruID = hrus.getCurrent();
+            Attribute.Entity run_reach = run_reachMap.get((long) sourceReach.getValue());
+            Attribute.Entity run_hru = run_hruMap.get((long) sourceHRU.getValue());
             
-            if (reach == null) {
-                if (hru == null) {
+            if (run_reach == null) {
+                if (run_hru == null) {
                     //this should never happen
                     return;
                 }
                 
                 //add the current HRU to the list of HRUs to be irrigated by that HRU/Subbasin
-                if (!hru.existsAttribute(irrigationEntitiesListName.getValue())) {
-                    hru.setObject(irrigationEntitiesListName.getValue(), new ArrayList<Attribute.Entity>());
+                if (!run_hru.existsAttribute(irrigationEntitiesListName.getValue())) {
+                    run_hru.setObject(irrigationEntitiesListName.getValue(), new ArrayList<Attribute.Entity>());
                 }
-                List<Attribute.Entity> l2 = (List) hru.getObject(irrigationEntitiesListName.getValue());
+                List<Attribute.Entity> run_l2 = (List) run_hru.getObject(irrigationEntitiesListName.getValue());
 
-                l2.add(hruID);
+                run_l2.add(run_hruID);
                 
                 //Check : Display source for each irrigated HRU
                 //getModel().getRuntime().sendInfoMsg("HRU ID " + hruID.getId() + " has source " + sourceHRU.getValue());
             }
             
-            if (hru == null) {
-                if (reach == null) {
+            if (run_hru == null) {
+                if (run_reach == null) {
                     //this should never happen
                     return;
                 }
                 
                 //add the current HRU to the list of HRUs to be irrigated by that reach
-                if (!reach.existsAttribute(irrigationEntitiesListName.getValue())) {
-                    reach.setObject(irrigationEntitiesListName.getValue(), new ArrayList<Attribute.Entity>());
+                if (!run_reach.existsAttribute(irrigationEntitiesListName.getValue())) {
+                    run_reach.setObject(irrigationEntitiesListName.getValue(), new ArrayList<Attribute.Entity>());
                 }
-                List<Attribute.Entity> l1 = (List) reach.getObject(irrigationEntitiesListName.getValue());
+                List<Attribute.Entity> run_l1 = (List) run_reach.getObject(irrigationEntitiesListName.getValue());
 
-                l1.add(hruID);
+                run_l1.add(run_hruID);
                 
                 //Check : Display source for each irrigated HRU
 //                getModel().getRuntime().sendInfoMsg("HRU ID " + hruID.getId() + " has source " + sourceReach.getValue()+". Irrigation demand: "+irrigationDemand.getValue());
