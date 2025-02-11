@@ -31,7 +31,8 @@ import jams.model.*;
 @JAMSComponentDescription(
         title = "",
         author = "Nico Hachgenei",
-        description = "Calculation of Euclidian distance to one (or the defined optimum value) of a list of efficiencies",
+        description = "Calculation of Euclidian distance to one (or the defined optimum value)"+
+                "of a list of efficiencies. The closer to 0, the better the fit.",
         date = "2024-04-18",
         version = "1.0_0"
 )
@@ -66,13 +67,13 @@ public class ED extends JAMSComponent {
     **/
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            description = "value of perfect fit (1 for KGE, 0 for KGE_normalized)"
+            description = "value of perfect fit (e.g. 1 for KGE, 0 for KGE_normalized)"
     )
     public Attribute.Double optimum;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
-            description = "calculated euclidean distance"
+            description = "calculated euclidean distance - output"
     )
     public Attribute.Double ED;
     /*
@@ -89,23 +90,23 @@ public class ED extends JAMSComponent {
             }
         }
         
-        double pow = 2.0;
-        double diffSquareSum = 0;
-        double weight = 1; // by default equal weight of 1 for each component / subbassin
+        double run_pow = 2.0;
+        double run_diffSquareSum = 0;
+        double run_weight = 1; // by default equal weight of 1 for each component / subbassin
         
         //for (Attribute.Double efficiency : efficiencies) {
         for (int i = 0; i < efficiencies.length; i++) {
-            Attribute.Double efficiency = efficiencies[i];
+            Attribute.Double run_efficiency = efficiencies[i];
             if (weights != null){
-                weight = weights[i].getValue();
+                run_weight = weights[i].getValue();
             }
             
-            diffSquareSum += weight * Math.pow(optimum.getValue() - efficiency.getValue(), pow);
+            run_diffSquareSum += run_weight * Math.pow(optimum.getValue() - run_efficiency.getValue(), run_pow);
         }
         
-        double EDi;
-        EDi = Math.sqrt(diffSquareSum);
-        this.ED.setValue(EDi);
+        double run_EDi;
+        run_EDi = Math.sqrt(run_"diffSquareSum);
+        this.ED.setValue(run_EDi);
     }
 
 }
