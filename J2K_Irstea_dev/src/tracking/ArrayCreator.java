@@ -47,35 +47,35 @@ public class ArrayCreator extends JAMSComponent {
 
         @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
-            description = "Array of current time step RD1 inflow into reach per source reach. Created by this component"+
+            description = "Array of current time step RD1 per source reach. Created by this component"+
                     "and filled with NANs (-999) - output"
             )
     public Attribute.DoubleArray trackedVolumeRD1Array;
         
         @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
-            description = "Array of current time step RD2 inflow into reach per source reach. Created by this component"+
+            description = "Array of current time step RD2 per source reach. Created by this component"+
                     "and filled with NANs (-999) - output"
             )
     public Attribute.DoubleArray trackedVolumeRD2Array;  
         
         @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
-            description = "Array of current time step RG1 inflow into reach per source reach. Created by this component"+
+            description = "Array of current time step RG1 per source reach. Created by this component"+
                     "and filled with NANs (-999) - output"
             )
     public Attribute.DoubleArray trackedVolumeRG1Array;  
         
         @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
-            description = "Array of current time step RG2 inflow into reach per source reach. Created by this component"+
+            description = "Array of current time step RG2 per source reach. Created by this component"+
                     "and filled with NANs (-999) - output"
             )
     public Attribute.DoubleArray trackedVolumeRG2Array;  
         
         @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
-            description = "Array of current time step total inflow into reach per source reach. Created by this component"+
+            description = "Array of current time step total volume per source reach. Created by this component"+
                     "and filled with NANs (-999) - output"
             )
     public Attribute.DoubleArray trackedVolumeTotalArray;   
