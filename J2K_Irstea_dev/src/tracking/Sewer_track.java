@@ -43,24 +43,28 @@ public class Sewer_track extends JAMSComponent {
      * Component variables
      */
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
-    description = "Target river reach")
+    description = "Target river reach (entity) of the current sewer. Inflow (inNames) and sewer inflow (saveNames)"+
+            "of the reach will be updated (seems to work even though read mode) - pointer")
     public Attribute.Entity to_river;
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
-    description = "Target reach's receiving attributes")
+    description = "List of target reach's inflow attributes (e.g. inRD1 etc.). Those will be updated - pointer")
     public Attribute.String[] inNames;
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
-    description = "Target reach's receiving attributes for tracking")
+    description = "List of target reach's sewer inflow attributes (e.g. SewInRD1 etc.). Those will be updated - pointer")
     public Attribute.String[] saveNames;
-    @JAMSVarDescription(access = JAMSVarDescription.AccessType.READWRITE,
-    description = "outflow from the Sewer",
+    @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
+    description = "Outflow from the Sewer (list per component RD1 etc.). Read and set as input"+
+            "into target reach - input",
     unit = "L")
     public Attribute.Double[] outValues;
     
 
+    @Override
     public void init() {
         
     }
     
+    @Override
     public void run() throws Attribute.Entity.NoSuchAttributeException {
         
         if (to_river.isEmpty()) {
@@ -68,11 +72,11 @@ public class Sewer_track extends JAMSComponent {
         }
         
         int i = 0;
-        for (Attribute.Double value : outValues) {   
+        for (Attribute.Double run_value : outValues) {   
             // add sewer outflow values to reach inflow values
-            to_river.setDouble(inNames[i].getValue(), value.getValue() + to_river.getDouble(inNames[i].getValue()));
+            to_river.setDouble(inNames[i].getValue(), run_value.getValue() + to_river.getDouble(inNames[i].getValue()));
             // add sewer outflow values to reaches tracked sewer volumes
-            to_river.setDouble(saveNames[i].getValue(), value.getValue() + to_river.getDouble(saveNames[i].getValue()));
+            to_river.setDouble(saveNames[i].getValue(), run_value.getValue() + to_river.getDouble(saveNames[i].getValue()));
             i++;
         } 
     }
