@@ -37,151 +37,164 @@ public class ArrayCreator extends JAMSComponent {
     public Attribute.EntityCollection entities;
     
      @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
-            description = "Datastore ID")
+            description = "Name of datastore listing reaches to track. Should contain 'X' field,"+
+                    "storing ID of the reaches.")
     public Attribute.String dataStoreID;  
             
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.WRITE,
-        description = "Array of reach IDs")
+        description = "Array of reach IDs to generate by this component. (Taken from datastore) - output")
     public Attribute.DoubleArray names;  
 
         @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
-            description = "Tracked volume RD1 array"
+            description = "Array of current time step RD1 inflow into reach per source reach. Created by this component"+
+                    "and filled with NANs (-999) - output"
             )
     public Attribute.DoubleArray trackedVolumeRD1Array;
         
         @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
-            description = "Tracked volume RD2 array"
+            description = "Array of current time step RD2 inflow into reach per source reach. Created by this component"+
+                    "and filled with NANs (-999) - output"
             )
     public Attribute.DoubleArray trackedVolumeRD2Array;  
         
         @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
-            description = "Tracked volume RG1 array"
+            description = "Array of current time step RG1 inflow into reach per source reach. Created by this component"+
+                    "and filled with NANs (-999) - output"
             )
     public Attribute.DoubleArray trackedVolumeRG1Array;  
         
         @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
-            description = "Tracked volume RG2 array"
+            description = "Array of current time step RG2 inflow into reach per source reach. Created by this component"+
+                    "and filled with NANs (-999) - output"
             )
     public Attribute.DoubleArray trackedVolumeRG2Array;  
         
         @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
-            description = "Tracked volume Total array"
+            description = "Array of current time step total inflow into reach per source reach. Created by this component"+
+                    "and filled with NANs (-999) - output"
             )
     public Attribute.DoubleArray trackedVolumeTotalArray;   
              
             @JAMSVarDescription(
         access = JAMSVarDescription.AccessType.WRITE,
-        description = "Array of RD1 remaining volume from tracked reach in actual reach after routing"
+        description = "Array of RD1 remaining volume from each tracked reach in actual reach after routing. Created by this component"+
+                    "and filled with NANs (-999) - output"
         )
     public Attribute.DoubleArray trackedVolumeRD1_actArray; 
              
             @JAMSVarDescription(
         access = JAMSVarDescription.AccessType.WRITE,
-        description = "Array of RD2 remaining volume from tracked reach in actual reach after routing"
+        description = "Array of RD2 remaining volume from each tracked reach in actual reach after routing. Created by this component"+
+                    "and filled with NANs (-999) - output"
         )
     public Attribute.DoubleArray trackedVolumeRD2_actArray; 
              
             @JAMSVarDescription(
         access = JAMSVarDescription.AccessType.WRITE,
-        description = "Array of RG1 remaining volume from tracked reach in actual reach after routing"
+        description = "Array of RG1 remaining volume from each tracked reach in actual reach after routing. Created by this component"+
+                    "and filled with NANs (-999) - output"
         )
     public Attribute.DoubleArray trackedVolumeRG1_actArray; 
              
             @JAMSVarDescription(
         access = JAMSVarDescription.AccessType.WRITE,
-        description = "Array of RG2 remaining volume from tracked reach in actual reach after routing"
+        description = "Array of RG2 remaining volume from each tracked reach in actual reach after routing. Created by this component"+
+                    "and filled with NANs (-999) - output"
         )
     public Attribute.DoubleArray trackedVolumeRG2_actArray; 
             
             @JAMSVarDescription(
         access = JAMSVarDescription.AccessType.WRITE,
-        description = "Array of total remaining volume from tracked reach in actual reach after routing"
+        description = "Array of total remaining volume from each tracked reach in actual reach after routing. Created by this component"+
+                    "and filled with NANs (-999) - output"
         )
     public Attribute.DoubleArray trackedVolumeTotal_actArray;  
             
-    private TSDataStore store;
-    boolean shifted = false;
+    private TSDataStore run_store;
+    //boolean run_shifted = false;
 
             
+    @Override
     public void init() {
 
-        shifted = false;
-        InputDataStore is = null;
+        //run_shifted = false;
+        InputDataStore run_is = null;
 
         if (dataStoreID != null) {
-            is = getModel().getWorkspace().getInputDataStore(dataStoreID.getValue());
+            run_is = getModel().getWorkspace().getInputDataStore(dataStoreID.getValue());
         }
 
         // check if store exists
-            if (is == null) {
+            if (run_is == null) {
                 getModel().getRuntime().sendHalt("Error accessing datastore \""
                         + dataStoreID + "\" from " + getInstanceName() + ": Datastore could not be found!");
                 return;
             }
-        store = (TSDataStore) is;
+        run_store = (TSDataStore) run_is;
 
         // extract some meta information
 
-        DataSetDefinition dsDef = store.getDataSetDefinition();
+        DataSetDefinition run_dsDef = run_store.getDataSetDefinition();
 
-        names.setValue(listToDoubleArray(dsDef.getAttributeValues("X")));
+        names.setValue(listToDoubleArray(run_dsDef.getAttributeValues("X")));
 
-        double[] Nom = this.names.getValue();
+        double[] run_names = this.names.getValue();
 
-        int t = Nom.length;
+        int run_t = run_names.length;
 //        getModel().getRuntime().println("+++ ArrayCreator - length: "+t+" tracked reaches, names: "+Arrays.toString(Nom));
 
     //  Création et sauvegarde des tableaux pour les volumes tracés et restants au début du modèle
-        double[] ArrayTrackedVolumeRD1 = new double[t];
-        double[] ArrayTrackedVolumeRD2 = new double[t];
-        double[] ArrayTrackedVolumeRG1 = new double[t];
-        double[] ArrayTrackedVolumeRG2 = new double[t];
-        double[] ArrayTrackedVolumeTotal = new double[t];
+        double[] run_ArrayTrackedVolumeRD1 = new double[run_t];
+        double[] run_ArrayTrackedVolumeRD2 = new double[run_t];
+        double[] run_ArrayTrackedVolumeRG1 = new double[run_t];
+        double[] run_ArrayTrackedVolumeRG2 = new double[run_t];
+        double[] run_ArrayTrackedVolumeTotal = new double[run_t];
 
-        double[] ArrayTrackedVolume_actRD1 = new double[t];
-        double[] ArrayTrackedVolume_actRD2 = new double[t];
-        double[] ArrayTrackedVolume_actRG1 = new double[t];
-        double[] ArrayTrackedVolume_actRG2 = new double[t];    
-        double[] ArrayTrackedVolume_actTotal = new double[t]; 
+        double[] run_ArrayTrackedVolume_actRD1 = new double[run_t];
+        double[] run_ArrayTrackedVolume_actRD2 = new double[run_t];
+        double[] run_ArrayTrackedVolume_actRG1 = new double[run_t];
+        double[] run_ArrayTrackedVolume_actRG2 = new double[run_t];    
+        double[] run_ArrayTrackedVolume_actTotal = new double[run_t]; 
 
-        for(int i=0;i<t;i++)
+        for(int i=0;i<run_t;i++)
         {
-            ArrayTrackedVolumeRD1[i] = -999.;
-            ArrayTrackedVolumeRD2[i] = -999;
-            ArrayTrackedVolumeRG1[i] = -999;
-            ArrayTrackedVolumeRG2[i] = -999;
-            ArrayTrackedVolumeTotal[i] = -999;   
+            run_ArrayTrackedVolumeRD1[i] = -999.;
+            run_ArrayTrackedVolumeRD2[i] = -999;
+            run_ArrayTrackedVolumeRG1[i] = -999;
+            run_ArrayTrackedVolumeRG2[i] = -999;
+            run_ArrayTrackedVolumeTotal[i] = -999;   
         }
 
-        trackedVolumeRD1Array.setValue(ArrayTrackedVolumeRD1);
-        trackedVolumeRD2Array.setValue(ArrayTrackedVolumeRD2);
-        trackedVolumeRG1Array.setValue(ArrayTrackedVolumeRG1);
-        trackedVolumeRG2Array.setValue(ArrayTrackedVolumeRG2);
-        trackedVolumeTotalArray.setValue(ArrayTrackedVolumeTotal);
+        trackedVolumeRD1Array.setValue(run_ArrayTrackedVolumeRD1);
+        trackedVolumeRD2Array.setValue(run_ArrayTrackedVolumeRD2);
+        trackedVolumeRG1Array.setValue(run_ArrayTrackedVolumeRG1);
+        trackedVolumeRG2Array.setValue(run_ArrayTrackedVolumeRG2);
+        trackedVolumeTotalArray.setValue(run_ArrayTrackedVolumeTotal);
 
-        trackedVolumeRD1_actArray.setValue(ArrayTrackedVolume_actRD1);
-        trackedVolumeRD2_actArray.setValue(ArrayTrackedVolume_actRD2);
-        trackedVolumeRG1_actArray.setValue(ArrayTrackedVolume_actRG1);
-        trackedVolumeRG2_actArray.setValue(ArrayTrackedVolume_actRG2);
-        trackedVolumeTotal_actArray.setValue(ArrayTrackedVolume_actTotal);
+        trackedVolumeRD1_actArray.setValue(run_ArrayTrackedVolume_actRD1);
+        trackedVolumeRD2_actArray.setValue(run_ArrayTrackedVolume_actRD2);
+        trackedVolumeRG1_actArray.setValue(run_ArrayTrackedVolume_actRG1);
+        trackedVolumeRG2_actArray.setValue(run_ArrayTrackedVolume_actRG2);
+        trackedVolumeTotal_actArray.setValue(run_ArrayTrackedVolume_actTotal);
     }
 
     
-    private double[] listToDoubleArray(ArrayList<Object> list) {
-    double[] result = new double[list.size()];
-    int i = 0;
-    for (Object o : list) {
-        result[i] = ((Double) o).doubleValue();
-        i++;
+    private double[] listToDoubleArray(ArrayList<Object> run_list) {
+    double[] run_result = new double[run_list.size()];
+    int run_i = 0;
+    for (Object o : run_list) {
+        run_result[run_i] = ((Double) o).doubleValue();
+        run_i++;
     }
-    return result;
+    return run_result;
     }
 
+    @Override
     public void run(){ 
 
 
