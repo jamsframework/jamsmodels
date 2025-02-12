@@ -14,7 +14,7 @@ import java.util.List;
 @JAMSComponentDescription(
         title = "ReachTrackingSewWW",
         author = "Olivier Grandjouan, Nico Hachgenei",
-        description = "Calcule the volume contribution from all Reaches to the output discharge."
+        description = "Compute the volume contribution from all Reaches to the output discharge."
         + " If reach is tracked, remove sewer and waste water part from tracked volume from this reach"
         + " to avoid double-counting it. The WW volume will be removed from RD1 as it is stored as RD1.",
         version = "1.0",
