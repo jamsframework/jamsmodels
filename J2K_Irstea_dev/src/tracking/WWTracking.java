@@ -36,34 +36,37 @@ public class WWTracking extends JAMSComponent {
         
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            description = "RD1 storage in the Reach before routing volume out of the current Reach"
+            description = "RD1 volume in the current reach before routing water out of it. Read by this component"+
+                    "for proportional calculation of tracked volumes. - input"
     )
     public Attribute.Double actTotalRD1;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            description = "RD1 outflow from reach",
+            description = "RD1 outflow from reach. Read to calulate tracked volumes to route to next reach - input",
             unit = "L"
     )
     public Attribute.Double outRD1;
 
     @JAMSVarDescription(
-            access = JAMSVarDescription.AccessType.READWRITE,
-            description = "Tracked volume from WWTP",
+            access = JAMSVarDescription.AccessType.WRITE,
+            description = "Volume in reach coming from WWTP (for routing to next reach). Set by this component."+
+                    "- output",
             unit = "L"
     )
     public Attribute.Double trackedVolumeWW;
 
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
-            description = "incoming tracked volume from WWTP",
+            description = "Inflow into reach from WWTP. Read, added to tracked and reset to 0. - input",
             unit = "L"
     )
     public Attribute.Double InWW;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
-            description = "Remaining tracked volume from WWTP in reach",
+            description ="Remaining volume in reach coming from WWTP. Updated by this component."+
+                    "- state variable",
             unit = "L"
     )
     public Attribute.Double trackedVolumeWW_act;
@@ -75,20 +78,22 @@ public class WWTracking extends JAMSComponent {
 //    )
 //    public Attribute.Double track;        
 
+    @Override
     public void init(){
     
 
     } 
     
+    @Override
     public void run(){
         
 //        getModel().getRuntime().println("TrackedVolumeTotalArray : " + Arrays.toString(this.trackedVolumeTotalArray.getValue()));
 
                 
-        Attribute.Entity entity = entities.getCurrent();
-        Attribute.Entity DestReach = (Attribute.Entity) entity.getObject("to_reach");        
-        if (DestReach.isEmpty()) {
-                    DestReach = null;
+        Attribute.Entity run_entity = entities.getCurrent();
+        Attribute.Entity run_DestReach = (Attribute.Entity) run_entity.getObject("to_reach");        
+        if (run_DestReach.isEmpty()) {
+                    run_DestReach = null;
                 }
 //        // Array des noms des reachs
 //        double[] Nom = this.names.getValue();
@@ -96,7 +101,7 @@ public class WWTracking extends JAMSComponent {
 //        
 //        // double track = this.track.getValue();
 //
-        int ID = (int)entity.getDouble("ID");
+//        int run_ID = (int)run_entity.getDouble("ID");
 //        int DestID = 0;
 //        if(DestReach != null){
 //            DestID = (int)DestReach.getDouble("ID");
@@ -108,11 +113,11 @@ public class WWTracking extends JAMSComponent {
 //            r++;
 //        }        
 //        int t = 0;
-//        while (Nom[t] != ID) {
+//        while (Nom[t] != run_ID) {
 //            t++;
 //        }    
                 
-        double RD1out = this.outRD1.getValue();
+        double run_RD1out = this.outRD1.getValue();
         
 //        // TODO: test different 
 //        Attribute.Double ReachDoubleTrackedVolumeWW = (Attribute.Double) entity.getObject("trackedVolumeWW");
@@ -131,13 +136,14 @@ public class WWTracking extends JAMSComponent {
 //        }
 
 //      tracked incoming volume (directly from WWTP or from WWTP further upstream
-        double WWin = InWW.getValue();
+        double run_WWin = InWW.getValue();
 
 //      tracked volume
-        double TrackedVolumeWW = trackedVolumeWW.getValue();
+//        double run_TrackedVolumeWW = trackedVolumeWW.getValue();
+        double run_TrackedVolumeWW;
         
 //      tracked WW volume already in reach
-        double TrackedVolumeWW_act = trackedVolumeWW_act.getValue();
+        double run_TrackedVolumeWW_act = trackedVolumeWW_act.getValue();
         
 //        // chasing bugs:
 //        if(TrackedVolumeWW > 0 || TrackedVolumeWW_act > 0){
@@ -152,13 +158,13 @@ public class WWTracking extends JAMSComponent {
         
         // update tracked WW volume in reach:
         // New WW volume = present tracked WW + tracked incoming volume (directly from WWTP or from WWTP further upstream
-        TrackedVolumeWW_act = TrackedVolumeWW_act + WWin;
+        run_TrackedVolumeWW_act = run_TrackedVolumeWW_act + run_WWin;
  
         // calculate outflow of tracked waste water from reach
-        TrackedVolumeWW = (TrackedVolumeWW_act * RD1out)/actTotalRD1.getValue();
+        run_TrackedVolumeWW = (run_TrackedVolumeWW_act * run_RD1out)/actTotalRD1.getValue();
                
         if(actTotalRD1.getValue() == 0){
-            TrackedVolumeWW = 0;
+            run_TrackedVolumeWW = 0;
         }
         
 //        // print percent of available water discharged
@@ -167,23 +173,23 @@ public class WWTracking extends JAMSComponent {
 //        }
 
         // remaining tracked WW volume in reach
-        TrackedVolumeWW_act = TrackedVolumeWW_act - TrackedVolumeWW;
+        run_TrackedVolumeWW_act = run_TrackedVolumeWW_act - run_TrackedVolumeWW;
         
-        WWin = 0;
-        InWW.setValue(WWin);
+        run_WWin = 0;
+        InWW.setValue(run_WWin);
 
-        trackedVolumeWW.setValue(TrackedVolumeWW);
+        trackedVolumeWW.setValue(run_TrackedVolumeWW);
 
-        trackedVolumeWW_act.setValue(TrackedVolumeWW_act);
+        trackedVolumeWW_act.setValue(run_TrackedVolumeWW_act);
 
         //  Set tracked WW volume incoming into destination reach
-        if (DestReach != null){ 
+        if (run_DestReach != null){ 
             //  get destination reach incoming tracked volume (Double)        
-            Attribute.Double destReachDoubleTrackedVolumeWW = (Attribute.Double) DestReach.getObject("InWW");
+            Attribute.Double run_destReachDoubleTrackedVolumeWW = (Attribute.Double) run_DestReach.getObject("InWW");
 
             
             //  Convert Double to double
-            double destReachTrackedVolumeWW = destReachDoubleTrackedVolumeWW.getValue();
+            double run_destReachTrackedVolumeWW = run_destReachDoubleTrackedVolumeWW.getValue();
             
 //            // chasing bugs:
 //            if(TrackedVolumeWW > 0 || TrackedVolumeWW_act > 0){
@@ -193,10 +199,10 @@ public class WWTracking extends JAMSComponent {
 //            }
 
             // Transfer into destination reach +++ modified to add to previous incoming volume
-            destReachTrackedVolumeWW += TrackedVolumeWW;
+            run_destReachTrackedVolumeWW += run_TrackedVolumeWW;
             
-            destReachDoubleTrackedVolumeWW.setValue(destReachTrackedVolumeWW); // couldn't this be set directly to TrackedVolumeWW, skipping the previous two steps?
-            DestReach.setObject("InWW", destReachDoubleTrackedVolumeWW);
+            run_destReachDoubleTrackedVolumeWW.setValue(run_destReachTrackedVolumeWW); // couldn't this be set directly to TrackedVolumeWW, skipping the previous two steps?
+            run_DestReach.setObject("InWW", run_destReachDoubleTrackedVolumeWW);
             
 //            // chasing bugs:
 //            if(TrackedVolumeWW > 0 || TrackedVolumeWW_act > 0){
