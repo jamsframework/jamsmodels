@@ -21,7 +21,7 @@
  *
  */
 
-package snow;
+package glacier;
 ;
 import jams.JAMS;
 import java.io.*;
@@ -37,7 +37,7 @@ import jams.model.*;
 
 @JAMSComponentDescription(
         title="GlacierModuleAlps",
-        author="Peter Krause",
+        author="Peter Krause; Santosh Nepal, Jordi Bolibar, Isabelle Gouttevin",
         description="Simple process module for glacier simulation. The module " +
         "calculates snow accumulation by a temperature threshold approach and " +
         "snow melt from the glacier with a day-degree-approach. Melt from the " +
