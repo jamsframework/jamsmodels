@@ -5,8 +5,13 @@ import jams.model.*;
 import java.util.Calendar;
 
 @JAMSComponentDescription(title = "JAMSMusle_j2ks",
-description = "JAMS native Version of MusleMay",
+description = "JAMS native Version of MusleMay, new calibration parameters",
+date = "19. February 2025",
 author = "Holm + Manfred")
+@VersionComments(entries = {
+    @VersionComments.Entry(version = "1.0_0", comment = "Version Salmar - LUCCI"),
+    @VersionComments.Entry(version = "1.1", comment = "Introduction of Redu_erosion parameter and bypass also afects RD1 amount", date = "2025-02-19"),
+})
 public class JAMSMusle_j2ks extends JAMSComponent {
 
 //Read access variables
@@ -68,8 +73,16 @@ public class JAMSMusle_j2ks extends JAMSComponent {
     public JAMSDouble ID;
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
     update = JAMSVarDescription.UpdateType.RUN,
-    description = "Bypass factor for surface runoff sediment from upstream")
+    description = "Bypass factor for surface runoff sediment from upstream",
+    lowerBound = 0,
+    upperBound = 1,
+    defaultValue = "0")
     public JAMSDouble Surrun_bypass;
+    @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
+    update = JAMSVarDescription.UpdateType.RUN,
+    description = "Erosion calibration factor for reduction, longer timesteps lead to overestimation",
+    defaultValue = "1")
+    public JAMSDouble Redu_erosion;
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READWRITE,
     update = JAMSVarDescription.UpdateType.RUN,
     description = "HRU statevar sediment inflow")
@@ -100,6 +113,7 @@ public class JAMSMusle_j2ks extends JAMSComponent {
 
         // passing reads into in's
         Double bysed = 0.0;
+        Double bysurrun = 0.0;
         Double area = this.area.getValue();
         Double ID = this.ID.getValue();
         Double slope = this.slope.getValue();
@@ -114,10 +128,12 @@ public class JAMSMusle_j2ks extends JAMSComponent {
         Double precip = this.precip.getValue();
         Double insed = this.insed.getValue();
         Double sedpool = this.sedpool.getValue();
-
-
+        outRD1 = outRD1 * (1 - Surrun_bypass.getValue());
+        bysurrun = outRD1 * (Surrun_bypass.getValue());
+        
         bysed = insed * (Surrun_bypass.getValue());
         insed = insed * (1 - Surrun_bypass.getValue());
+        
         Double irri_act = irrigation_act.getValue();
         
         // calling the oms3 execute
@@ -205,7 +221,7 @@ public class JAMSMusle_j2ks extends JAMSComponent {
                 double acc = (-1) * bal;
                 neuaccpool = sedpool + acc;
                 if (outRD1 > 0) {
-                    out = 0.05 * acc;
+                    out = Redu_erosion.getValue() * acc;
                     neuaccpool = neuaccpool - out;
                     
                 }
