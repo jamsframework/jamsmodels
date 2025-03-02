@@ -32,7 +32,7 @@ import jams.model.*;
  */
 @JAMSComponentDescription(
         title = "ReachRouting_KinematicWave",
-        author = "Peter Krause + VT",
+        author = "Peter Krause + VT + olivier champagne",
         description = "Calculates flow processes in the river network by a simplified kinematic wave approach",
         version = "1.0_1",
         date = "2011-05-30"
@@ -47,7 +47,7 @@ import jams.model.*;
             + "slopes to avoid misconfiguration of slope parameters. Use \"checkSlopes\" switch to "
             + "turn this off!")
 })
-public class J2KProcessReachRouting_sed extends JAMSComponent {
+public class J2KProcessReachRouting_sed_bagnold extends JAMSComponent {
 
     /*
      *  Component variables
@@ -120,7 +120,41 @@ public class J2KProcessReachRouting_sed extends JAMSComponent {
             unit = "T"
     )
     public Attribute.Double outsed;
-
+    
+    @JAMSVarDescription(
+            access = JAMSVarDescription.AccessType.WRITE,
+            description = "Sediment outflow from reach",
+            unit = "T"
+    )
+    public Attribute.Double Degsed;
+    
+    @JAMSVarDescription(
+            access = JAMSVarDescription.AccessType.WRITE,
+            description = "Sediment outflow from reach",
+            unit = "T"
+    )
+    public Attribute.Double Depsed;
+    
+    @JAMSVarDescription(
+            access = JAMSVarDescription.AccessType.WRITE,
+            description = "Sediment outflow from reach",
+            unit = "T"
+    )
+    public Attribute.Double sedConc;
+    
+    @JAMSVarDescription(
+            access = JAMSVarDescription.AccessType.WRITE,
+            description = "Sediment outflow from reach",
+            unit = "T"
+    )
+    public Attribute.Double maxConc;
+    
+    @JAMSVarDescription(
+            access = JAMSVarDescription.AccessType.WRITE,
+            description = "Sediment outflow from reach",
+            unit = "T"
+    )
+    public Attribute.Double qactot;
 
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
@@ -192,8 +226,38 @@ public class J2KProcessReachRouting_sed extends JAMSComponent {
             access = JAMSVarDescription.AccessType.READ,
             description = "water velocity in reach"
     )
-    public Attribute.Double waterVelocity;   
-
+    public Attribute.Double waterVelocity;
+    
+    @JAMSVarDescription(
+            access = JAMSVarDescription.AccessType.READ,
+            description = "Channel Storage inside Reach"
+    )
+    public Attribute.Double channelStorage; 
+    
+    @JAMSVarDescription(
+            access = JAMSVarDescription.AccessType.READ,
+            description = "coefficient for maximum amount of sediment"
+    )
+    public Attribute.Double csp;
+    
+    @JAMSVarDescription(
+            access = JAMSVarDescription.AccessType.READ,
+            description = "exponent coefficient for maximum amount of sediment"
+    )
+    public Attribute.Double spexp;
+    
+    @JAMSVarDescription(
+            access = JAMSVarDescription.AccessType.READ,
+            description = "peak flow rate"
+    )
+    public Attribute.Double prf;
+    
+    @JAMSVarDescription(
+            access = JAMSVarDescription.AccessType.READ,
+            description = "Channel erodibility and cover factors"
+    )
+    public Attribute.Double KCCH;
+    
     /*
      *  Component run stages
      */
@@ -312,14 +376,49 @@ public class J2KProcessReachRouting_sed extends JAMSComponent {
         }
         //double flow_veloc = this.calcFlowVelocity(q_act_tot, width, slope, rough, sec_inTStep);
         double flow_veloc = waterVelocity.getValue();
-
-        //recession coefficient
+        //calculate concentration of sediments
+        
+        double channelstor = this.channelStorage.getValue();
+        double concsed;
+        if (channelstor == 0 || q_act_tot == 0) {
+            concsed = 0;
+        } else {     
+            //concsed = (float)((1000 * q_act_tot) / channelstor);
+            concsed = q_act_tot;
+        }
+        //maximum concentration of sediment that can be transported
+        double concmax = this.csp.getValue() * Math.pow(flow_veloc,this.spexp.getValue());
+        
+        //concentration to quantity from T/m3 to T
+        concmax = concmax  * (channelstor / 1000);
+        //calculate deposition (sedDep) or degradation (sedDeg) of sediment 
+        double sedDep;
+        double sedDeg;
+        if (concsed > concmax) {
+            sedDep = (concsed - concmax);
+            sedDeg = 0;
+        } else {
+            sedDep = 0;
+            sedDeg = (concmax - concsed) * KCCH.getValue();
+        }
+        
+        double sedpool;
+        
+        sedpool = q_act_tot - sedDep + sedDeg ;
+        
+        if (sedpool < 0) {
+            sedpool = 0;
+        }
+        else {
+       // do nothing
+        }
+        
+                //recession coefficient
         double Rk = (flow_veloc / length) * this.flowRouteTA.getValue() * 3600;
-
         //the whole outflow
         double q_act_out;
         if (Rk > 0) {
-            q_act_out = q_act_tot * Math.exp(-1 / Rk);
+            q_act_out = sedpool * Math.exp(-1 / Rk);
         } else {
             q_act_out = 0;
         }
@@ -333,7 +432,7 @@ public class J2KProcessReachRouting_sed extends JAMSComponent {
         //addInDestIn = addInDestIn + addInOut;
 
         //reducing the actual storages
-        sedact = sedact - q_act_out;
+        sedact = sedpool - q_act_out;
 
         //addInAct = addInAct - q_act_out * addInPart;
 
@@ -351,7 +450,6 @@ public class J2KProcessReachRouting_sed extends JAMSComponent {
         //simRunoff.setValue(cumOutflow);
         //this.channelStorage.setValue(channelStorage);
         insed.setValue(0);
-
         //inAddIn.setValue(0);
 
         actsed.setValue(sedact);
@@ -359,7 +457,12 @@ public class J2KProcessReachRouting_sed extends JAMSComponent {
         //actAddIn.setValue(addInAct);
 
         outsed.setValue(sedout);
-
+        
+        Degsed.setValue(sedDeg);
+        Depsed.setValue(sedDep);
+        sedConc.setValue(concsed);
+        maxConc.setValue(concmax);
+        qactot.setValue(q_act_tot);
         //outAddIn.setValue(addInOut);
         //double verzoegerung; it means delay
         //reach
@@ -386,57 +489,6 @@ public class J2KProcessReachRouting_sed extends JAMSComponent {
     }
 
     public void cleanup() {
-
+        
     }
-
-    /**
-     * Calculates flow velocity in specific reach
-     *
-     * @param q the runoff in the reach
-     * @param width the width of reach
-     * @param slope the slope of reach
-     * @param rough the roughness of reach
-     * @param secondsOfTimeStep the current time step in seconds
-     * @return flow_velocity in m/s
-     */
-    public static double calcFlowVelocity(double q, double width, double slope, double rough, int secondsOfTimeStep) {
-        double afv = 1;
-        double veloc = 0;
-
-        /**
-         * transfering liter/d to m³/s
-         *
-         */
-        double q_m = q / (1000 * secondsOfTimeStep);
-        double rh = calcHydraulicRadius(afv, q_m, width);
-        boolean cont = true;
-        while (cont) {
-            veloc = (rough) * Math.pow(rh, (2.0 / 3.0)) * Math.sqrt(slope);
-            if ((Math.abs(veloc - afv)) > 0.001) {
-                afv = veloc;
-                rh = calcHydraulicRadius(afv, q_m, width);
-            } else {
-                cont = false;
-                afv = veloc;
-            }
-        }
-        return afv;
     }
-
-    /**
-     * Calculates the hydraulic radius of a rectangular stream bed depending on
-     * daily runoff and flow_velocity
-     *
-     * @param v the flow velocity
-     * @param q the daily runoff
-     * @param width the width of reach
-     * @return hydraulic radius in m
-     */
-    public static double calcHydraulicRadius(double v, double q, double width) {
-        double A = (q / v);
-
-        double rh = A / (width + 2 * (A / width));
-
-        return rh;
-    }
-}
