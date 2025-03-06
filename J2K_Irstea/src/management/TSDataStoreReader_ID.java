@@ -48,257 +48,257 @@ public class TSDataStoreReader_ID extends JAMSComponent {
      */
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
             description = "Datastore ID")
-    public Attribute.String id;
+    public Attribute.String in_id;
 
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
             description = "The time interval within which the component shall read "
             + "data from the datastore")
-    public Attribute.TimeInterval timeInterval;
+    public Attribute.TimeInterval par_time_interval;
 
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
             description = "Aggregate multiple datastore entries to averages or sums?",
             defaultValue = "true")
-    public Attribute.Boolean calcAvg;
+    public Attribute.Boolean par_calc_avg;
 
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
             description = "The current model time - needed in case of aggregation over irregular time steps (e.g. months). "
                     + "Aggregation is disabled if this value is not set.")
-    public Attribute.Calendar time;
+    public Attribute.Calendar par_time;
 
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.WRITE,
             description = "Descriptive name of the dataset (equals datastore ID)")
-    public Attribute.String dataSetName;
+    public Attribute.String par_data_set_name;
 
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.WRITE,
             description = "Array of double values received from the datastore. Order "
             + "according to datastore")
-    public Attribute.DoubleArray dataArray;
+    public Attribute.DoubleArray in_data_array;
 
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.WRITE,
             description = "Array of station elevations")
-    public Attribute.DoubleArray elevation;
+    public Attribute.DoubleArray in_elevation;
     
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.WRITE,
             description = "Array of station names")
-    public Attribute.DoubleArray names;
+    public Attribute.DoubleArray in_names;
 
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.WRITE,
             description = "Array of station's x coordinate")
-    public Attribute.DoubleArray xCoord;
+    public Attribute.DoubleArray in_x_coord;
 
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.WRITE,
             description = "Array of station's y coordinate")
-    public Attribute.DoubleArray yCoord;
+    public Attribute.DoubleArray in_y_coord;
 
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.WRITE,
             description = "Regression coefficients")
-    public Attribute.DoubleArray regCoeff;
+    public Attribute.DoubleArray par_reg_coeff;
 
-    private TSDataStore store;
-    private double[] doubles;
-    private double[] elevationArray;
-    private double[] namesArray;
-    boolean shifted = false;
-    int tsRatio = 1;
-    Attribute.Calendar storeDate;
-    int storeUnit, storeUnitCount, targetUnit, targetUnitCount;
+    private TSDataStore run_store;
+    private double[] run_doubles;
+    private double[] run_elevation_array;
+    private double[] run_names_array;
+    boolean run_shifted = false;
+    int run_ts_ratio = 1;
+    Attribute.Calendar run_store_date;
+    int run_store_unit, run_store_unit_count, run_target_unit, run_target_unit_count;
 
     @Override
     public void init() {
-        shifted = false;
-        InputDataStore is = null;
-        if (id != null) {
-            is = getModel().getWorkspace().getInputDataStore(id.getValue());
+        run_shifted = false;
+        InputDataStore run_is = null;
+        if (in_id != null) {
+            run_is = getModel().getWorkspace().getInputDataStore(in_id.getValue());
         }
 
         // check if store exists
-        if (is == null) {
+        if (run_is == null) {
             getModel().getRuntime().sendHalt("Error accessing datastore \""
-                    + id + "\" from " + getInstanceName() + ": Datastore could not be found!");
+                    + in_id + "\" from " + getInstanceName() + ": Datastore could not be found!");
             return;
         }
 
         // check if this is a TSDataStore
-        if (!(is instanceof TSDataStore)) {
+        if (!(run_is instanceof TSDataStore)) {
             getModel().getRuntime().sendHalt("Error accessing datastore \""
-                    + id + "\" from " + getInstanceName() + ": Datastore is not a time series datastore!");
+                    + in_id + "\" from " + getInstanceName() + ": Datastore is not a time series datastore!");
             return;
         }
 
-        store = (TSDataStore) is;
+        run_store = (TSDataStore) run_is;
 
         // check if the store's time interval matches the provided time interval
-        if (store.getStartDate().after(timeInterval.getStart()) && (store.getStartDate().compareTo(timeInterval.getStart(), timeInterval.getTimeUnit()) != 0)) {
+        if (run_store.getStartDate().after(par_time_interval.getStart()) && (run_store.getStartDate().compareTo(par_time_interval.getStart(), par_time_interval.getTimeUnit()) != 0)) {
             getModel().getRuntime().sendHalt("Error accessing datastore \""
-                    + id + "\" from " + getInstanceName() + ": Start date of datastore ("
-                    + store.getStartDate() + ") does not match given time interval ("
-                    + timeInterval.getStart() + ")!");
+                    + in_id + "\" from " + getInstanceName() + ": Start date of datastore ("
+                    + run_store.getStartDate() + ") does not match given time interval ("
+                    + par_time_interval.getStart() + ")!");
             return;
         }
 
-        if (store.getEndDate().before(timeInterval.getEnd()) && (store.getEndDate().compareTo(timeInterval.getEnd(), timeInterval.getTimeUnit()) != 0)) {
+        if (run_store.getEndDate().before(par_time_interval.getEnd()) && (run_store.getEndDate().compareTo(par_time_interval.getEnd(), par_time_interval.getTimeUnit()) != 0)) {
             getModel().getRuntime().sendHalt("Error accessing datastore \""
-                    + id + "\" from " + getInstanceName() + ": End date of datastore ("
-                    + store.getEndDate() + ") does not match given time interval ("
-                    + timeInterval.getEnd() + ")!");
+                    + in_id + "\" from " + getInstanceName() + ": End date of datastore ("
+                    + run_store.getEndDate() + ") does not match given time interval ("
+                    + par_time_interval.getEnd() + ")!");
             return;
         }
 
         // extract some meta information
-        DataSetDefinition dsDef = store.getDataSetDefinition();
-        if (dsDef.getAttributeValues("X") == null) {
+        DataSetDefinition run_ds_def = run_store.getDataSetDefinition();
+        if (run_ds_def.getAttributeValues("X") == null) {
             getModel().getRuntime().sendHalt("Error in data set definition \""
-                    + id + "\" from " + getInstanceName() + ": x coordinate not specified");
+                    + in_id + "\" from " + getInstanceName() + ": x coordinate not specified");
         }
-        if (dsDef.getAttributeValues("Y") == null) {
+        if (run_ds_def.getAttributeValues("Y") == null) {
             getModel().getRuntime().sendHalt("Error in data set definition \""
-                    + id + "\" from " + getInstanceName() + ": y coordinate not specified");
+                    + in_id + "\" from " + getInstanceName() + ": y coordinate not specified");
         }
-        if (dsDef.getAttributeValues("ELEVATION") == null) {
+        if (run_ds_def.getAttributeValues("ELEVATION") == null) {
             getModel().getRuntime().sendHalt("Error in data set definition \""
-                    + id + "\" from " + getInstanceName() + ": elevation not specified");
+                    + in_id + "\" from " + getInstanceName() + ": elevation not specified");
         }
-        if (dsDef.getAttributeValues("ID") == null) {
+        if (run_ds_def.getAttributeValues("ID") == null) {
             getModel().getRuntime().sendHalt("Error in data set definition \""
-                    + id + "\" from " + getInstanceName() + ": name not specified");
+                    + in_id + "\" from " + getInstanceName() + ": name not specified");
         }
-        xCoord.setValue(listToDoubleArray(dsDef.getAttributeValues("X")));
-        yCoord.setValue(listToDoubleArray(dsDef.getAttributeValues("Y")));
-        elevation.setValue(listToDoubleArray(dsDef.getAttributeValues("ELEVATION")));
-        elevationArray = elevation.getValue();
-        names.setValue(listToDoubleArray(dsDef.getAttributeValues("X")));
-        namesArray = names.getValue();
-        dataSetName.setValue(id.getValue());
+        in_x_coord.setValue(listToDoubleArray(run_ds_def.getAttributeValues("X")));
+        in_y_coord.setValue(listToDoubleArray(run_ds_def.getAttributeValues("Y")));
+        in_elevation.setValue(listToDoubleArray(run_ds_def.getAttributeValues("ELEVATION")));
+        run_elevation_array = in_elevation.getValue();
+        in_names.setValue(listToDoubleArray(run_ds_def.getAttributeValues("X")));
+        run_names_array = in_names.getValue();
+        par_data_set_name.setValue(in_id.getValue());
 
-        getModel().getRuntime().println("Datastore " + id + " initialized!", JAMS.VVERBOSE);
-        doubles = new double[store.getDataSetDefinition().getColumnCount()];
-        dataArray.setValue(doubles);
+        getModel().getRuntime().println("Datastore " + in_id + " initialized!", JAMS.VVERBOSE);
+        run_doubles = new double[run_store.getDataSetDefinition().getColumnCount()];
+        in_data_array.setValue(run_doubles);
     }
 
-    private double[] listToDoubleArray(ArrayList<Object> list) {
-        double[] result = new double[list.size()];
+    private double[] listToDoubleArray(ArrayList<Object> run_list) {
+        double[] run_result = new double[run_list.size()];
         int i = 0;
-        for (Object o : list) {
-            result[i] = ((Double) o).doubleValue();
+        for (Object o : run_list) {
+            run_result[i] = ((Double) o).doubleValue();
             i++;
         }
-        return result;
+        return run_result;
     }
 
     private void checkConsistency() {
 
         // check if we need to shift forward
-        Attribute.Calendar targetDate = timeInterval.getStart().clone();
-        targetUnit = timeInterval.getTimeUnit();
-        targetUnitCount = timeInterval.getTimeUnitCount();
-        storeDate = store.getStartDate().clone();
-        storeUnit = store.getTimeUnit();
-        storeUnitCount = store.getTimeUnitCount();
+        Attribute.Calendar run_target_date = par_time_interval.getStart().clone();
+        run_target_unit = par_time_interval.getTimeUnit();
+        run_target_unit_count = par_time_interval.getTimeUnitCount();
+        run_store_date = run_store.getStartDate().clone();
+        run_store_unit = run_store.getTimeUnit();
+        run_store_unit_count = run_store.getTimeUnitCount();
 
-        storeDate.removeUnsignificantComponents(storeUnit);
-        targetDate.removeUnsignificantComponents(targetUnit);
+        run_store_date.removeUnsignificantComponents(run_store_unit);
+        run_target_date.removeUnsignificantComponents(run_target_unit);
 
-        int offset = storeDate.compareTo(targetDate, targetUnit);
+        int run_offset = run_store_date.compareTo(run_target_date, run_target_unit);
 
-        if (offset > 0) {
+        if (run_offset > 0) {
 
             getModel().getRuntime().sendHalt("Time series data read by " + this.getInstanceName() + " start after model start time!"
-                    + "\n(" + store.getStartDate() + " vs " + timeInterval.getStart() + ")");
+                    + "\n(" + run_store.getStartDate() + " vs " + par_time_interval.getStart() + ")");
 
-        } else if (offset < 0) {
+        } else if (run_offset < 0) {
 
             // check if we can calculate offset directly
             // this can be done if the step size can be calculated directly from
             // milliseconds representation, i.e. for weekly time steps and below
             // else we calculate offset by iterating in time (less efficient)
-            long diff = (targetDate.getTimeInMillis() - storeDate.getTimeInMillis()) / 1000;
-            int steps;
-            switch (storeUnit) {
+            long run_diff = (run_target_date.getTimeInMillis() - run_store_date.getTimeInMillis()) / 1000;
+            int run_steps;
+            switch (run_store_unit) {
                 case Attribute.Calendar.DAY_OF_YEAR:
-                    steps = (int) (diff / 3600 / 24 / storeUnitCount);
-                    storeDate.add(storeUnit, storeUnitCount * steps);
+                    run_steps = (int) (run_diff / 3600 / 24 / run_store_unit_count);
+                    run_store_date.add(run_store_unit, run_store_unit_count * run_steps);
                     break;
                 case Attribute.Calendar.HOUR_OF_DAY:
-                    steps = (int) (diff / 3600 / storeUnitCount);
-                    storeDate.add(storeUnit, storeUnitCount * steps);
+                    run_steps = (int) (run_diff / 3600 / run_store_unit_count);
+                    run_store_date.add(run_store_unit, run_store_unit_count * run_steps);
                     break;
                 case Attribute.Calendar.WEEK_OF_YEAR:
-                    steps = (int) (diff / 3600 / 24 / 7 / storeUnitCount);
-                    storeDate.add(storeUnit, storeUnitCount * steps);
+                    run_steps = (int) (run_diff / 3600 / 24 / 7 / run_store_unit_count);
+                    run_store_date.add(run_store_unit, run_store_unit_count * run_steps);
                     break;
                 case Attribute.Calendar.MINUTE:
-                    steps = (int) (diff / 60 / storeUnitCount);
-                    storeDate.add(storeUnit, storeUnitCount * steps);
+                    run_steps = (int) (run_diff / 60 / run_store_unit_count);
+                    run_store_date.add(run_store_unit, run_store_unit_count * run_steps);
                     break;
                 case Attribute.Calendar.SECOND:
-                    steps = (int) (diff / storeUnitCount);
-                    storeDate.add(storeUnit, storeUnitCount * steps);
+                    run_steps = (int) (run_diff / run_store_unit_count);
+                    run_store_date.add(run_store_unit, run_store_unit_count * run_steps);
                     break;
                 default:
-                    steps = iterateStoreDate(targetDate);
+                    run_steps = iterateStoreDate(run_target_date);
             }
 
             // skip forward datastore to required start time
-            store.skip(steps);
+            run_store.skip(run_steps);
 
         }
 
         // check if we have different step size in store and model
-        if (storeUnit != targetUnit || storeUnitCount != targetUnitCount) {
+        if (run_store_unit != run_target_unit || run_store_unit_count != run_target_unit_count) {
 
             // if both units have a constant duration, calculate this duration and the related ratio
-            if (storeUnit > Attribute.Calendar.MONTH && targetUnit > Attribute.Calendar.MONTH) {
-                int storeMS = getMilliseconds(storeUnit);
-                int targetMS = getMilliseconds(targetUnit);
-                double dRatio = (double) (targetMS * targetUnitCount) / (storeMS * storeUnitCount);
-                int ratio = (int) Math.floor(dRatio);
-                if (ratio != dRatio) {
-                    getModel().getRuntime().sendHalt("Time steps in datastore " + store.getID() + " and model are incompatible. "
+            if (run_store_unit > Attribute.Calendar.MONTH && run_target_unit > Attribute.Calendar.MONTH) {
+                int run_store_ms = getMilliseconds(run_store_unit);
+                int run_target_ms = getMilliseconds(run_target_unit);
+                double run_d_ratio = (double) (run_target_ms * run_target_unit_count) / (run_store_ms * run_store_unit_count);
+                int run_ratio = (int) Math.floor(run_d_ratio);
+                if (run_ratio != run_d_ratio) {
+                    getModel().getRuntime().sendHalt("Time steps in datastore " + run_store.getID() + " and model are incompatible. "
                             + "Please adapt your datastore first!");
                 }
 
-                tsRatio = ratio;
+                run_ts_ratio = run_ratio;
             } else {
-                tsRatio = -1;
+                run_ts_ratio = -1;
             }
 
         }
     }
 
-    private int getMilliseconds(int unit) {
-        int ms = 0;
-        switch (unit) {
+    private int getMilliseconds(int run_unit) {
+        int run_ms = 0;
+        switch (run_unit) {
             case Attribute.Calendar.DAY_OF_YEAR:
-                ms = 1000 * 3600 * 24;
+                run_ms = 1000 * 3600 * 24;
                 break;
             case Attribute.Calendar.HOUR_OF_DAY:
-                ms = 1000 * 3600;
+                run_ms = 1000 * 3600;
                 break;
             case Attribute.Calendar.WEEK_OF_YEAR:
-                ms = 1000 * 3600 * 24 * 7;
+                run_ms = 1000 * 3600 * 24 * 7;
                 break;
             case Attribute.Calendar.MINUTE:
-                ms = 1000 * 60;
+                run_ms = 1000 * 60;
                 break;
             case Attribute.Calendar.SECOND:
-                ms = 1000;
+                run_ms = 1000;
                 break;
             case Attribute.Calendar.MILLISECOND:
-                ms = 1;
+                run_ms = 1;
                 break;
             default:
                 getModel().getRuntime().sendHalt("Cannot calculate constant time unit duration!");
         }
-        return ms;
+        return run_ms;
     }
 
-    private int iterateStoreDate(Attribute.Calendar date) {
-        int steps = 0;
-        while (storeDate.compareTo(date, storeUnit) < 0) {
-            storeDate.add(storeUnit, storeUnitCount);
-            steps++;
+    private int iterateStoreDate(Attribute.Calendar run_date) {
+        int run_steps = 0;
+        while (run_store_date.compareTo(run_date, run_store_unit) < 0) {
+            run_store_date.add(run_store_unit, run_store_unit_count);
+            run_steps++;
         }
-        return steps;
+        return run_steps;
     }
 
     @Override
@@ -309,15 +309,15 @@ public class TSDataStoreReader_ID extends JAMSComponent {
     @Override
     public void run() {
 
-        if (tsRatio == 1 || time == null) {
+        if (run_ts_ratio == 1 || par_time == null) {
 
-            DefaultDataSet ds = store.getNext();
-            DataValue[] data = ds.getData();
-            for (int i = 1; i < data.length; i++) {
-                doubles[i - 1] = data[i].getDouble();
+            DefaultDataSet run_ds = run_store.getNext();
+            DataValue[] run_data = run_ds.getData();
+            for (int i = 1; i < run_data.length; i++) {
+                run_doubles[i - 1] = run_data[i].getDouble();
             }
 
-            dataArray.setValue(doubles);
+            in_data_array.setValue(run_doubles);
 
 
         } else {
@@ -325,34 +325,34 @@ public class TSDataStoreReader_ID extends JAMSComponent {
             int n;
 
             // get the ratio (fixed or dynamic)
-            if (tsRatio < 0) {
-                Attribute.Calendar nextTime = time.clone();
-                nextTime.add(targetUnit, targetUnitCount);
-                n = iterateStoreDate(nextTime);
+            if (run_ts_ratio < 0) {
+                Attribute.Calendar run_next_time = par_time.clone();
+                run_next_time.add(run_target_unit, run_target_unit_count);
+                n = iterateStoreDate(run_next_time);
             } else {
-                n = tsRatio;
+                n = run_ts_ratio;
             }
 
             // calc the aggregated values based on the ratio
-            for (int i = 0; i < doubles.length; i++) {
-                doubles[i] = 0;
+            for (int i = 0; i < run_doubles.length; i++) {
+                run_doubles[i] = 0;
             }
 
             for (int j = 0; j < n; j++) {
-                DefaultDataSet ds = store.getNext();
-                DataValue[] data = ds.getData();
-                for (int i = 1; i < data.length; i++) {
-                    doubles[i - 1] += data[i].getDouble();
+                DefaultDataSet run_ds = run_store.getNext();
+                DataValue[] run_data = run_ds.getData();
+                for (int i = 1; i < run_data.length; i++) {
+                    run_doubles[i - 1] += run_data[i].getDouble();
                 }
             }
 
-            if (calcAvg.getValue()) {
-                for (int i = 0; i < doubles.length; i++) {
-                    doubles[i] /= n;
+            if (par_calc_avg.getValue()) {
+                for (int i = 0; i < run_doubles.length; i++) {
+                    run_doubles[i] /= n;
                 }
             }
 
-            dataArray.setValue(doubles);
+            in_data_array.setValue(run_doubles);
 
 
             // create some output
@@ -371,6 +371,6 @@ public class TSDataStoreReader_ID extends JAMSComponent {
 
     @Override
     public void cleanup() {
-        store.close();
+        run_store.close();
     }
 }

@@ -48,14 +48,14 @@ import jams.model.*;
             access = JAMSVarDescription.AccessType.READ,
             description = "The model entity set"
             )
-            public Attribute.EntityCollection entities;
+            public Attribute.EntityCollection st_entities;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
             description = "attribute area",
             unit="m^2"
             )
-            public Attribute.Double area;
+            public Attribute.Double par_area;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
@@ -65,7 +65,7 @@ import jams.model.*;
             //upperBound = 1000000,
             defaultValue = "1.0"
             )
-            public Attribute.Double FCAdaptation;
+            public Attribute.Double par_fc_adaptation;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
@@ -75,7 +75,7 @@ import jams.model.*;
             //upperBound = 1000000,
             defaultValue = "1.0"
             )
-            public Attribute.Double ACAdaptation;
+            public Attribute.Double par_ac_adaptation;
     
     
     @JAMSVarDescription(
@@ -85,7 +85,7 @@ import jams.model.*;
             lowerBound = 0
             //upperBound = 1000000
             )
-            public Attribute.Double rootDepth;    
+            public Attribute.Double st_root_depth;    
             
     
             
@@ -98,7 +98,7 @@ import jams.model.*;
             lowerBound = 0
             //upperBound = 1000000
             )
-            public Attribute.Double maxMPS;
+            public Attribute.Double out_max_mps;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
@@ -108,7 +108,7 @@ import jams.model.*;
             defaultValue = "0.0"
             //upperBound = 1000000
             )
-            public Attribute.Double maxMPS_aAF;
+            public Attribute.Double par_max_mps_aaf;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
@@ -117,7 +117,7 @@ import jams.model.*;
             lowerBound = 0
             //upperBound = 1000000
             )
-            public Attribute.Double maxLPS;
+            public Attribute.Double out_max_lps;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
@@ -127,7 +127,7 @@ import jams.model.*;
             defaultValue = "0.0"
             //upperBound = 1000000
             )
-            public Attribute.Double maxLPS_aAF;
+            public Attribute.Double par_max_lps_aaf;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
@@ -136,7 +136,7 @@ import jams.model.*;
             lowerBound = 0
             //upperBound = 1000000
             )
-            public Attribute.Double actMPS;
+            public Attribute.Double st_act_mps;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
@@ -145,7 +145,7 @@ import jams.model.*;
             lowerBound = 0
             //upperBound = 1000000
             )
-            public Attribute.Double actLPS;
+            public Attribute.Double st_act_lps;
    
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
@@ -154,7 +154,7 @@ import jams.model.*;
             lowerBound = 0,
             upperBound = 1
             )
-            public Attribute.Double satMPS;
+            public Attribute.Double st_sat_mps;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
@@ -163,7 +163,7 @@ import jams.model.*;
             lowerBound = 0,
             upperBound = 1
             )
-            public Attribute.Double satLPS;
+            public Attribute.Double st_sat_lps;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
@@ -172,7 +172,7 @@ import jams.model.*;
             lowerBound = 0,
             upperBound = 1
             )
-            public Attribute.Double satSoil;
+            public Attribute.Double st_sat_soil;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
@@ -182,7 +182,7 @@ import jams.model.*;
             upperBound = 1,
             defaultValue = "0.0"
             )
-            public Attribute.Double satStartLPS;
+            public Attribute.Double par_sat_start_lps;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
@@ -192,7 +192,7 @@ import jams.model.*;
             upperBound = 1,
             defaultValue = "0.0"
             )
-            public Attribute.Double satStartMPS;
+            public Attribute.Double par_sat_start_mps;
     
     
     
@@ -208,17 +208,17 @@ import jams.model.*;
     
     public void run() {
         
-        Attribute.Entity entity = entities.getCurrent();
+        Attribute.Entity run_entity = st_entities.getCurrent();
         
-        double rootDepth = this.rootDepth.getValue();
-        double mxMPS = 0;
-        String aNameFC = "fc_";
-        for(int d = 0; d < rootDepth; d++){
-            int count = d + 1;
-            String mpsDesc = aNameFC + count;
+        double run_root_depth = this.st_root_depth.getValue();
+        double run_mx_mps = 0;
+        String run_a_name_fc = "fc_";
+        for(int d = 0; d < run_root_depth; d++){
+            int run_count = d + 1;
+            String run_mps_desc = run_a_name_fc + run_count;
             try {
-                double mpsVal = entity.getDouble(mpsDesc);
-                mxMPS = mxMPS + mpsVal;
+                double run_mps_val = run_entity.getDouble(run_mps_desc);
+                run_mx_mps = run_mx_mps + run_mps_val;
             } catch (Attribute.Entity.NoSuchAttributeException nsae) {
                 getModel().getRuntime().sendErrorMsg(nsae.getMessage() + "\n"
                         + "This problem typically occurs if the root depht of "
@@ -228,33 +228,33 @@ import jams.model.*;
                         + "root depht!");
             }
         }
-        mxMPS = mxMPS + this.maxMPS_aAF.getValue();
-        mxMPS = mxMPS * this.area.getValue();
-        mxMPS = mxMPS * this.FCAdaptation.getValue();
-        if (mxMPS < 1){
-            mxMPS = 1;
+        run_mx_mps = run_mx_mps + this.par_max_mps_aaf.getValue();
+        run_mx_mps = run_mx_mps * this.par_area.getValue();
+        run_mx_mps = run_mx_mps * this.par_fc_adaptation.getValue();
+        if (run_mx_mps < 1){
+            run_mx_mps = 1;
         }
         
-        double mxLPS = entity.getDouble("aircap") + this.maxLPS_aAF.getValue();
-        mxLPS = mxLPS * this.ACAdaptation.getValue() * area.getValue();
-        if (mxLPS < 1){
-            mxLPS = 1;
+        double run_mx_lps = run_entity.getDouble("aircap") + this.par_max_lps_aaf.getValue();
+        run_mx_lps = run_mx_lps * this.par_ac_adaptation.getValue() * par_area.getValue();
+        if (run_mx_lps < 1){
+            run_mx_lps = 1;
         }
 
 
-        if(satStartLPS != null){
-        	this.actLPS.setValue(mxLPS * this.satStartLPS.getValue());
+        if(par_sat_start_lps != null){
+        	this.st_act_lps.setValue(run_mx_lps * this.par_sat_start_lps.getValue());
         }
         
-        if(satStartMPS != null){
-        	this.actMPS.setValue(mxMPS * this.satStartMPS.getValue());
+        if(par_sat_start_mps != null){
+        	this.st_act_mps.setValue(run_mx_mps * this.par_sat_start_mps.getValue());
         }
         
-        this.maxMPS.setValue(mxMPS);
-        this.maxLPS.setValue(mxLPS);
-        this.satMPS.setValue(this.actMPS.getValue()/mxMPS);
-        this.satLPS.setValue(this.actLPS.getValue()/mxLPS);
-        this.satSoil.setValue((this.actMPS.getValue()+this.actLPS.getValue()) / (mxMPS+mxLPS));
+        this.out_max_mps.setValue(run_mx_mps);
+        this.out_max_lps.setValue(run_mx_lps);
+        this.st_sat_mps.setValue(this.st_sat_mps.getValue()/run_mx_mps);
+        this.st_sat_lps.setValue(this.st_sat_lps.getValue()/run_mx_lps);
+        this.st_sat_soil.setValue((this.st_sat_mps.getValue()+this.st_sat_lps.getValue()) / (run_mx_mps+run_mx_lps));
     }
     
     public void cleanup() {

@@ -56,42 +56,42 @@ public class J2KProcessReachRouting_sa extends JAMSComponent {
             access = JAMSVarDescription.AccessType.READ,
             description = "The reach collection"
     )
-    public Attribute.EntityCollection entities;
+    public Attribute.EntityCollection st_entities;
 
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
             description = "reach length",
             unit = "m"
     )
-    public Attribute.Double length;
+    public Attribute.Double par_length;
 
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
             description = "reach slope",
             unit = "%"
     )
-    public Attribute.Double slope;
+    public Attribute.Double par_slope;
 
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
             description = "Is slope provided as proportion of length and elevation difference [m/m]?",
             defaultValue = "false"
     )
-    public Attribute.Boolean slopeAsProportion;
+    public Attribute.Boolean par_slope_as_proportion;
 
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
             description = "If true, slopes of all reaches will be checked if they are compliant to the value of the \"slopeAsProportion\" parameter",
             defaultValue = "true"
     )
-    public Attribute.Boolean checkSlopes;
+    public Attribute.Boolean par_check_slopes;
 
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
             description = "reach width",
             unit = "m"
     )
-    public Attribute.Double width;
+    public Attribute.Double par_width;
 	
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
@@ -99,62 +99,62 @@ public class J2KProcessReachRouting_sa extends JAMSComponent {
             unit = "-",
             defaultValue = "1"
     )
-    public Attribute.Double width_mAF;
+    public Attribute.Double par_width_maf;
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
             description = "reach width additive adaptation factor",
             unit = "-",
             defaultValue = "0"
     )
-    public Attribute.Double width_aAF;
+    public Attribute.Double par_width_aaf;
 
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
             description = "reach roughness"
     )
-    public Attribute.Double roughness;
+    public Attribute.Double par_roughness;
 
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
             description = "reach roughness mutliplicative adaptation factor",
             defaultValue = "1"
     )
-    public Attribute.Double roughness_mAF;
+    public Attribute.Double par_roughness_maf;
 	
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
             description = "reach roughness additive adaptation factor",
             defaultValue = "0"
     )
-    public Attribute.Double roughness_aAF;
+    public Attribute.Double par_roughness_aaf;
 
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
             description = "RD1 inflow to reach",
             unit = "L"
     )
-    public Attribute.Double inRD1;
+    public Attribute.Double in_rd1;
 
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
             description = "RD2 inflow to reach",
             unit = "L"
     )
-    public Attribute.Double inRD2;
+    public Attribute.Double in_rd2;
 
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
             description = "RG1 inflow to reach",
             unit = "L"
     )
-    public Attribute.Double inRG1;
+    public Attribute.Double in_rg1;
 
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
             description = "RG2 inflow to reach",
             unit = "L"
     )
-    public Attribute.Double inRG2;
+    public Attribute.Double in_rg2;
 
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
@@ -162,35 +162,35 @@ public class J2KProcessReachRouting_sa extends JAMSComponent {
             unit = "L",
             defaultValue = "0"
     )
-    public Attribute.Double inAddIn;
+    public Attribute.Double in_add_in;
 
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
             description = "RD1 outflow from reach",
             unit = "L"
     )
-    public Attribute.Double outRD1;
+    public Attribute.Double out_rd1;
 
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
             description = "RD2 outflow from reach",
             unit = "L"
     )
-    public Attribute.Double outRD2;
+    public Attribute.Double out_rd2;
 
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
             description = "RG1 outflow from reach",
             unit = "L"
     )
-    public Attribute.Double outRG1;
+    public Attribute.Double out_rg1;
 
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
             description = "RG2 outflow from reach",
             unit = "L"
     )
-    public Attribute.Double outRG2;
+    public Attribute.Double out_rg2;
 
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
@@ -198,42 +198,42 @@ public class J2KProcessReachRouting_sa extends JAMSComponent {
             unit = "L",
             defaultValue = "0"
     )
-    public Attribute.Double outAddIn;
+    public Attribute.Double out_add_in;
 
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
             description = "simulated runoff from reach",
             unit = "L"
     )
-    public Attribute.Double simRunoff;
+    public Attribute.Double out_sim_runoff;
 
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
             description = "RD1 storage inside reach",
             unit = "L"
     )
-    public Attribute.Double actRD1;
+    public Attribute.Double out_act_rd1;
 
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
             description = "RD2 storage inside reach",
             unit = "L"
     )
-    public Attribute.Double actRD2;
+    public Attribute.Double out_act_rd2;
 
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
             description = "RG1 storage inside reach",
             unit = "L"
     )
-    public Attribute.Double actRG1;
+    public Attribute.Double out_act_rg1;
 
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
             description = "RG2 storage inside reach",
             unit = "L"
     )
-    public Attribute.Double actRG2;
+    public Attribute.Double out_act_rg2;
 
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
@@ -241,14 +241,14 @@ public class J2KProcessReachRouting_sa extends JAMSComponent {
             unit = "L",
             defaultValue = "0"
     )
-    public Attribute.Double actAddIn;
+    public Attribute.Double out_act_add_in;
 
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
             description = "Channel storage inside reach",
             unit = "L"
     )
-    public Attribute.Double channelStorage;
+    public Attribute.Double out_channel_storage;
 
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
@@ -257,35 +257,35 @@ public class J2KProcessReachRouting_sa extends JAMSComponent {
             upperBound = 50.0,
             defaultValue = "1.0"
     )
-    public Attribute.Double flowRouteTA;
+    public Attribute.Double par_flow_route_ta;
 
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
             description = "Catchment outlet RD1 storage",
             unit = "L"
     )
-    public Attribute.Double catchmentRD1;
+    public Attribute.Double out_catchment_rd1;
 
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
             description = "Catchment outlet RD2 storage",
             unit = "L"
     )
-    public Attribute.Double catchmentRD2;
+    public Attribute.Double out_catchment_rd2;
 
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
             description = "Catchment outlet RG1 storage",
             unit = "L"
     )
-    public Attribute.Double catchmentRG1;
+    public Attribute.Double out_catchment_rg1;
 
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
             description = "Catchment outlet RG2 storage",
             unit = "L"
     )
-    public Attribute.Double catchmentRG2;
+    public Attribute.Double out_catchment_rg2;
 
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
@@ -293,53 +293,53 @@ public class J2KProcessReachRouting_sa extends JAMSComponent {
             unit = "L",
             defaultValue = "0"
     )
-    public Attribute.Double catchmentAddIn;
+    public Attribute.Double out_catchment_add_in;
 
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
             description = "Catchment outlet RG2 storage",
             unit = "L"
     )
-    public Attribute.Double catchmentSimRunoff;
+    public Attribute.Double out_catchment_sim_runoff;
 
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
             description = "temporal resolution [d or h]"
     )
-    public Attribute.String tempRes;
+    public Attribute.String par_temp_res;
 
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
             description = "water level in reach"
     )
-    public Attribute.Double waterLevel;
+    public Attribute.Double out_water_level;
 
     /*
      *  Component run stages
      */
-    int count = 0;
-    double avg = 0;
-    int slopefactor;
+    int run_count = 0;
+    double run_avg = 0;
+    int run_slope_factor;
 
     public void init() {
 
-        if (slopeAsProportion.getValue()) {
-            slopefactor = 100;
+        if (par_slope_as_proportion.getValue()) {
+            run_slope_factor = 100;
         } else {
-            slopefactor = 1;
+            run_slope_factor = 1;
         }
     }
 
     public void initAll() {
 
-        if (checkSlopes.getValue()) {
+        if (par_check_slopes.getValue()) {
 
-            avg = (avg * count + slopefactor * slope.getValue()) / ++count;
+            run_avg = (run_avg * run_count + run_slope_factor * par_slope.getValue()) / ++run_count;
 
-            if (avg >= 100) {
+            if (run_avg >= 100) {
                 getModel().getRuntime().sendHalt("Average reach slope exceeds 100%. please check your reach parameter file and \"slopeAsProportion\" parameter value!");
             }
-            if (avg <= 0.1) {
+            if (run_avg <= 0.1) {
                 getModel().getRuntime().sendHalt("Average reach slope is below 0.1%. please check your reach parameter file and \"slopeAsProportion\" parameter value!");
             }
         }
@@ -347,156 +347,156 @@ public class J2KProcessReachRouting_sa extends JAMSComponent {
 
     public void run() {
 
-        Attribute.Entity entity = entities.getCurrent();
+        Attribute.Entity run_entity = st_entities.getCurrent();
 
-        Attribute.Entity DestReach = (Attribute.Entity) entity.getObject("to_reach");
-        if (DestReach.isEmpty()) {
-            DestReach = null;
+        Attribute.Entity run_dest_reach = (Attribute.Entity) run_entity.getObject("to_reach");
+        if (run_dest_reach.isEmpty()) {
+            run_dest_reach = null;
         }
-        Attribute.Entity DestReservoir = null;
+        Attribute.Entity run_dest_reservoir = null;
 
-        if (entity.existsAttribute("to_reservoir")) {
-            DestReservoir = (Attribute.Entity) entity.getObject("to_reservoir");
+        if (run_entity.existsAttribute("to_reservoir")) {
+            run_dest_reservoir = (Attribute.Entity) run_entity.getObject("to_reservoir");
         } else {
-            DestReservoir = null;
+            run_dest_reservoir = null;
         }
 
-        double width = this.width.getValue() * this.width_mAF.getValue() + this.width_aAF.getValue();
-        double rough = this.roughness.getValue() * this.roughness_mAF.getValue() + this.roughness_aAF.getValue();
-        double length = this.length.getValue();
+        double run_width = this.par_width.getValue() * this.par_width_maf.getValue() + this.par_width_aaf.getValue();
+        double run_rough = this.par_roughness.getValue() * this.par_roughness_maf.getValue() + this.par_roughness_aaf.getValue();
+        double run_length = this.par_length.getValue();
 
-        double slope = this.slope.getValue();
-        if (!slopeAsProportion.getValue()) {
-            slope = slope / 100;
+        double run_slope = this.par_slope.getValue();
+        if (!par_slope_as_proportion.getValue()) {
+            run_slope = run_slope / 100;
         }
 
-        if (slope == 0) {
+        if (run_slope == 0) {
             getModel().getRuntime().println("WARNING: Found zero slope in reach entity which will prevent water routing!", JAMS.VERBOSE);
         }
 
-        double RD1act = actRD1.getValue() + inRD1.getValue();
-        double RD2act = actRD2.getValue() + inRD2.getValue();
-        double RG1act = actRG1.getValue() + inRG1.getValue();
-        double RG2act = actRG2.getValue() + inRG2.getValue();
+        double run_rd1_act = out_act_rd1.getValue() + in_rd1.getValue();
+        double run_rd2_act = out_act_rd2.getValue() + in_rd2.getValue();
+        double run_rg1_act = out_act_rg1.getValue() + in_rg1.getValue();
+        double run_rg2_act = out_act_rg2.getValue() + in_rg2.getValue();
 
-        double addInAct = actAddIn.getValue() + this.inAddIn.getValue();
+        double run_add_in_act = out_act_add_in.getValue() + this.in_add_in.getValue();
 
-        inRD1.setValue(0);
-        inRD2.setValue(0);
-        inRG1.setValue(0);
-        inRG2.setValue(0);
+        in_rd1.setValue(0);
+        in_rd2.setValue(0);
+        in_rg1.setValue(0);
+        in_rg2.setValue(0);
 
-        inAddIn.setValue(0);
+        in_add_in.setValue(0);
 
-        actRD1.setValue(0);
-        actRD2.setValue(0);
-        actRG1.setValue(0);
-        actRG2.setValue(0);
+        out_act_rd1.setValue(0);
+        out_act_rd2.setValue(0);
+        out_act_rg1.setValue(0);
+        out_act_rg2.setValue(0);
 
-        actAddIn.setValue(0);
+        out_act_add_in.setValue(0);
 
-        double RD1DestIn = 0;
-        double RD2DestIn = 0;
-        double RG1DestIn = 0;
-        double RG2DestIn = 0;
-        double addInDestIn = 0;
+        double run_rd1_dest_in = 0;
+        double run_rd2_dest_in = 0;
+        double run_rg1_dest_in = 0;
+        double run_rg2_dest_in = 0;
+        double run_add_in_dest_in = 0;
 
-        if (DestReach == null && DestReservoir == null) {
-            RD1DestIn = 0;//entity.getDouble(aNameCatchmentOutRD1.getValue());
-            RD2DestIn = 0;//entity.getDouble(aNameCatchmentOutRD2.getValue());
-            RG1DestIn = 0;//entity.getDouble(aNameCatchmentOutRG1.getValue());
-            RG2DestIn = 0;//entity.getDouble(aNameCatchmentOutRG2.getValue());
+        if (run_dest_reach == null && run_dest_reservoir == null) {
+            run_rd1_dest_in = 0;//entity.getDouble(aNameCatchmentOutRD1.getValue());
+            run_rd2_dest_in = 0;//entity.getDouble(aNameCatchmentOutRD2.getValue());
+            run_rg1_dest_in = 0;//entity.getDouble(aNameCatchmentOutRG1.getValue());
+            run_rg2_dest_in = 0;//entity.getDouble(aNameCatchmentOutRG2.getValue());
 
-            addInDestIn = 0;
-        } else if (DestReservoir != null) {
-            RD1DestIn = DestReservoir.getDouble("compRD1");
-            RD2DestIn = DestReservoir.getDouble("compRD2");
-            RG1DestIn = DestReservoir.getDouble("compRG1");
-            RG2DestIn = DestReservoir.getDouble("compRG2");
+            run_add_in_dest_in = 0;
+        } else if (run_dest_reservoir != null) {
+            run_rd1_dest_in = run_dest_reservoir.getDouble("compRD1");
+            run_rd2_dest_in = run_dest_reservoir.getDouble("compRD2");
+            run_rg1_dest_in = run_dest_reservoir.getDouble("compRG1");
+            run_rg2_dest_in = run_dest_reservoir.getDouble("compRG2");
         } else {
-            RD1DestIn = DestReach.getDouble("inRD1");
-            RD2DestIn = DestReach.getDouble("inRD2");
-            RG1DestIn = DestReach.getDouble("inRG1");
-            RG2DestIn = DestReach.getDouble("inRG2");
+            run_rd1_dest_in = run_dest_reach.getDouble("in_rd1");
+            run_rd2_dest_in = run_dest_reach.getDouble("in_rd2");
+            run_rg1_dest_in = run_dest_reach.getDouble("in_rg1");
+            run_rg2_dest_in = run_dest_reach.getDouble("in_rg2");
 
             try {
-                addInDestIn = DestReach.getDouble("inAddIn");
+                run_add_in_dest_in = run_dest_reach.getDouble("in_add_in");
             } catch (jams.data.Attribute.Entity.NoSuchAttributeException e) {
-                addInDestIn = 0;
+                run_add_in_dest_in = 0;
             }
         }
 
-        double q_act_tot = RD1act + RD2act + RG1act + RG2act + addInAct;
+        double run_q_act_tot = run_rd1_act + run_rd2_act + run_rg1_act + run_rg2_act + run_add_in_act;
 
         //int ID = (int)entity.getDouble("ID");
         // System.out.getRuntime().println("Processing reach: " + ID);
-        if (q_act_tot == 0) {
-            outRD1.setValue(0);
-            outRD2.setValue(0);
-            outRG1.setValue(0);
-            outRG2.setValue(0);
+        if (run_q_act_tot == 0) {
+            out_rd1.setValue(0);
+            out_rd2.setValue(0);
+            out_rg1.setValue(0);
+            out_rg2.setValue(0);
 
-            this.outAddIn.setValue(0);
+            this.out_add_in.setValue(0);
 
             //nothing more to do here
             return;
         }
 
         //relative parts of the runoff components for later redistribution
-        double RD1_part = RD1act / q_act_tot;
-        double RD2_part = RD2act / q_act_tot;
-        double RG1_part = RG1act / q_act_tot;
-        double RG2_part = RG2act / q_act_tot;
+        double run_rd1_part = run_rd1_act / run_q_act_tot;
+        double run_rd2_part = run_rd2_act / run_q_act_tot;
+        double run_rg1_part = run_rg1_act / run_q_act_tot;
+        double run_rg2_part = run_rg2_act / run_q_act_tot;
 
-        double addInPart = addInAct / q_act_tot;
+        double run_add_in_part = run_add_in_act / run_q_act_tot;
 
         //calculation of flow velocity
-        int sec_inTStep = 0;
-        if (this.tempRes.getValue().equals("d")) {
-            sec_inTStep = 86400;
-        } else if (this.tempRes.getValue().equals("h")) {
-            sec_inTStep = 3600;
+        int run_sec_in_t_step = 0;
+        if (this.par_temp_res.getValue().equals("d")) {
+            run_sec_in_t_step = 86400;
+        } else if (this.par_temp_res.getValue().equals("h")) {
+            run_sec_in_t_step = 3600;
         }
-        double flow_veloc = this.calcFlowVelocity(q_act_tot, width, slope, rough, sec_inTStep);
+        double run_flow_veloc = this.calcFlowVelocity(run_q_act_tot, run_width, run_slope, run_rough, run_sec_in_t_step);
 
         //recession coefficient
-        double Rk = (flow_veloc / length) * this.flowRouteTA.getValue() * 3600;
+        double run_rk = (run_flow_veloc / run_length) * this.par_flow_route_ta.getValue() * 3600;
 
         //the whole outflow
-        double q_act_out;
-        if (Rk > 0) {
-            q_act_out = q_act_tot * Math.exp(-1 / Rk);
+        double run_q_act_out;
+        if (run_rk > 0) {
+            run_q_act_out = run_q_act_tot * Math.exp(-1 / run_rk);
         } else {
-            q_act_out = 0;
+            run_q_act_out = 0;
         }
 
         //the actual outflow from the reach
-        double RD1out = q_act_out * RD1_part;
-        double RD2out = q_act_out * RD2_part;
-        double RG1out = q_act_out * RG1_part;
-        double RG2out = q_act_out * RG2_part;
+        double run_rd1_out = run_q_act_out * run_rd1_part;
+        double run_rd2_out = run_q_act_out * run_rd2_part;
+        double run_rg1_out = run_q_act_out * run_rg1_part;
+        double run_rg2_out = run_q_act_out * run_rg2_part;
 
-        double addInOut = q_act_out * addInPart;
+        double run_add_in_out = run_q_act_out * run_add_in_part;
 
         //transferring runoff from this reach to the next one or a reservoir
-        RD1DestIn = RD1DestIn + RD1out;
-        RD2DestIn = RD2DestIn + RD2out;
-        RG1DestIn = RG1DestIn + RG1out;
-        RG2DestIn = RG2DestIn + RG2out;
+        run_rd1_dest_in = run_rd1_dest_in + run_rd1_out;
+        run_rd2_dest_in = run_rd2_dest_in + run_rd2_out;
+        run_rg1_dest_in = run_rg1_dest_in + run_rg1_out;
+        run_rg2_dest_in = run_rg2_dest_in + run_rg2_out;
 
-        addInDestIn = addInDestIn + addInOut;
+        run_add_in_dest_in = run_add_in_dest_in + run_add_in_out;
 
         //reducing the actual storages
-        RD1act = RD1act - q_act_out * RD1_part;
-        RD2act = RD2act - q_act_out * RD2_part;
-        RG1act = RG1act - q_act_out * RG1_part;
-        RG2act = RG2act - q_act_out * RG2_part;
+        run_rd1_act = run_rd1_act - run_q_act_out * run_rd1_part;
+        run_rd2_act = run_rd2_act - run_q_act_out * run_rd2_part;
+        run_rg1_act = run_rg1_act - run_q_act_out * run_rg1_part;
+        run_rg2_act = run_rg2_act - run_q_act_out * run_rg2_part;
 
-        addInAct = addInAct - q_act_out * addInPart;
+        run_add_in_act = run_add_in_act - run_q_act_out * run_add_in_part;
 
-        double channelStorage = RD1act + RD2act + RG1act + RG2act + addInAct;
+        double run_channel_storage = run_rd1_act + run_rd2_act + run_rg1_act + run_rg2_act + run_add_in_act;
 
-        double cumOutflow = RD1out + RD2out + RG1out + RG2out + addInOut;
+        double run_cum_outflow = run_rd1_out + run_rd2_out + run_rg1_out + run_rg2_out + run_add_in_out;
         /*if (reachID.getValue()==800)
         {System.out.println(RD1out);
         System.out.println(RD2out);
@@ -505,58 +505,58 @@ public class J2KProcessReachRouting_sa extends JAMSComponent {
         }
          */
 
-        simRunoff.setValue(cumOutflow);
-        this.channelStorage.setValue(channelStorage);
-        inRD1.setValue(0);
-        inRD2.setValue(0);
-        inRG1.setValue(0);
-        inRG2.setValue(0);
+        out_sim_runoff.setValue(run_cum_outflow);
+        this.out_channel_storage.setValue(run_channel_storage);
+        in_rd1.setValue(0);
+        in_rd2.setValue(0);
+        in_rg1.setValue(0);
+        in_rg2.setValue(0);
 
-        inAddIn.setValue(0);
+        in_add_in.setValue(0);
 
-        actRD1.setValue(RD1act);
-        actRD2.setValue(RD2act);
-        actRG1.setValue(RG1act);
-        actRG2.setValue(RG2act);
+        out_act_rd1.setValue(run_rd1_act);
+        out_act_rd2.setValue(run_rd2_act);
+        out_act_rg1.setValue(run_rg1_act);
+        out_act_rg2.setValue(run_rg2_act);
 
-        actAddIn.setValue(addInAct);
+        out_act_add_in.setValue(run_add_in_act);
 
-        outRD1.setValue(RD1out);
-        outRD2.setValue(RD2out);
-        outRG1.setValue(RG1out);
-        outRG2.setValue(RG2out);
+        out_rd1.setValue(run_rd1_out);
+        out_rd2.setValue(run_rd2_out);
+        out_rg1.setValue(run_rg1_out);
+        out_rg2.setValue(run_rg2_out);
 
-        outAddIn.setValue(addInOut);
-        double verzoegerung;
+        out_add_in.setValue(run_add_in_out);
+       // double verzoegerung; mise en commentaire par Michael Rabotin mars 2025
         //reach
-        if (DestReach != null && DestReservoir == null) {
-            DestReach.setDouble("inRD1", RD1DestIn);
-            DestReach.setDouble("inRD2", RD2DestIn);
-            DestReach.setDouble("inRG1", RG1DestIn);
-            DestReach.setDouble("inRG2", RG2DestIn);
+        if (run_dest_reach != null && run_dest_reservoir == null) {
+            run_dest_reach.setDouble("in_rd1", run_rd1_dest_in);
+            run_dest_reach.setDouble("in_rd2", run_rd2_dest_in);
+            run_dest_reach.setDouble("in_rg1", run_rg1_dest_in);
+            run_dest_reach.setDouble("in_rg2", run_rg2_dest_in);
 
-            DestReach.setDouble("inAddIn", addInDestIn);
+            run_dest_reach.setDouble("in_add_in", run_add_in_dest_in);
 
         } //reservoir
-        else if (DestReservoir != null) {
-            DestReservoir.setDouble("compRD1", RD1DestIn);
-            DestReservoir.setDouble("compRD2", RD2DestIn);
-            DestReservoir.setDouble("compRG1", RG1DestIn);
-            DestReservoir.setDouble("compRG2", RG2DestIn);
+        else if (run_dest_reservoir != null) {
+            run_dest_reservoir.setDouble("compRD1", run_rd1_dest_in);
+            run_dest_reservoir.setDouble("compRD2", run_rd2_dest_in);
+            run_dest_reservoir.setDouble("compRG1", run_rg1_dest_in);
+            run_dest_reservoir.setDouble("compRG2", run_rg2_dest_in);
         } //outlet
-        else if (DestReach == null && DestReservoir == null) {
-            catchmentRD1.setValue(RD1out);
-            catchmentRD2.setValue(RD2out);
-            catchmentRG1.setValue(RG1out);
-            catchmentRG2.setValue(RG2out);
+        else if (run_dest_reach == null && run_dest_reservoir == null) {
+            out_catchment_rd1.setValue(run_rd1_out);
+            out_catchment_rd2.setValue(run_rd2_out);
+            out_catchment_rg1.setValue(run_rg1_out);
+            out_catchment_rg2.setValue(run_rg2_out);
 
-            this.catchmentAddIn.setValue(addInOut);
+            this.out_catchment_add_in.setValue(run_add_in_out);
             //neu verzoegerung
 
-            catchmentSimRunoff.setValue(cumOutflow);
+            out_catchment_sim_runoff.setValue(run_cum_outflow);
         }
 
-        waterLevel.setValue(channelStorage / (1000 * width * length));
+        out_water_level.setValue(run_channel_storage / (1000 * run_width * run_length));
 
     }
 
@@ -567,51 +567,51 @@ public class J2KProcessReachRouting_sa extends JAMSComponent {
     /**
      * Calculates flow velocity in specific reach
      *
-     * @param q the runoff in the reach
-     * @param width the width of reach
-     * @param slope the slope of reach
-     * @param rough the roughness of reach
-     * @param secondsOfTimeStep the current time step in seconds
+     * @param run_q the runoff in the reach
+     * @param run_width the width of reach
+     * @param run_slope the slope of reach
+     * @param run_rough the roughness of reach
+     * @param run_seconds_of_time_step the current time step in seconds
      * @return flow_velocity in m/s
      */
-    public static double calcFlowVelocity(double q, double width, double slope, double rough, int secondsOfTimeStep) {
-        double afv = 1;
-        double veloc = 0;
+    public static double calcFlowVelocity(double run_q, double run_width, double run_slope, double run_rough, int run_seconds_of_time_step) {
+        double run_afv = 1;
+        double run_veloc = 0;
 
         /**
          * transfering liter/d to m³/s
          *
          */
-        double q_m = q / (1000 * secondsOfTimeStep);
-        double rh = calcHydraulicRadius(afv, q_m, width);
-        boolean cont = true;
-        while (cont) {
-            veloc = (rough) * Math.pow(rh, (2.0 / 3.0)) * Math.sqrt(slope);
-            if ((Math.abs(veloc - afv)) > 0.001) {
-                afv = veloc;
-                rh = calcHydraulicRadius(afv, q_m, width);
+        double run_q_m = run_q / (1000 * run_seconds_of_time_step);
+        double run_rh = calcHydraulicRadius(run_afv, run_q_m, run_width);
+        boolean run_cont = true;
+        while (run_cont) {
+            run_veloc = (run_rough) * Math.pow(run_rh, (2.0 / 3.0)) * Math.sqrt(run_slope);
+            if ((Math.abs(run_veloc - run_afv)) > 0.001) {
+                run_afv = run_veloc;
+                run_rh = calcHydraulicRadius(run_afv, run_q_m, run_width);
             } else {
-                cont = false;
-                afv = veloc;
+                run_cont = false;
+                run_afv = run_veloc;
             }
         }
-        return afv;
+        return run_afv;
     }
 
     /**
      * Calculates the hydraulic radius of a rectangular stream bed depending on
      * daily runoff and flow_velocity
      *
-     * @param v the flow velocity
-     * @param q the daily runoff
-     * @param width the width of reach
+     * @param run_v the flow velocity
+     * @param run_q the daily runoff
+     * @param run_width the width of reach
      * @return hydraulic radius in m
      */
-    public static double calcHydraulicRadius(double v, double q, double width) {
-        double A = (q / v);
+    public static double calcHydraulicRadius(double run_v, double run_q, double run_width) {
+        double run_a = (run_q / run_v);
 
-        double rh = A / (width + 2 * (A / width));
+        double run_rh = run_a / (run_width + 2 * (run_a / run_width));
 
-        return rh;
+        return run_rh;
     }
 }

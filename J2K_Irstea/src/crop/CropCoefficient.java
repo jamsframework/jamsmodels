@@ -46,7 +46,7 @@ public class CropCoefficient extends JAMSComponent {
             description = "attribute area",
             unit="m^2"
             )
-            public JAMSDouble area;
+            public JAMSDouble par_area;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,       // type of access, i.e. READ, WRITE, READWRITE
@@ -55,7 +55,7 @@ public class CropCoefficient extends JAMSComponent {
             lowerBound = 0,                                    // lowest allowed value of var if numeric, defaults to "0"
             upperBound = 1000                                 // highest allowed value of var if numeric, defaults to "0"        
             )
-            public Attribute.Double RefET;                // for a list of attribute types, see jams.data.Attribute  
+            public Attribute.Double par_ref_et;                // for a list of attribute types, see jams.data.Attribute  
 
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,       // type of access, i.e. READ, WRITE, READWRITE
@@ -65,14 +65,14 @@ public class CropCoefficient extends JAMSComponent {
             lowerBound = 0,                                    // lowest allowed value of var if numeric, defaults to "0"
             upperBound = 2                                 // highest allowed value of var if numeric, defaults to "0"        
             )
-            public Attribute.Double CropCoeff;                // for a list of attribute types, see jams.data.Attribute  
+            public Attribute.Double par_crop_coeff;                // for a list of attribute types, see jams.data.Attribute  
 
      @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
             description = "PotET",
             unit = "L"
             )
-            public Attribute.Double PotET;
+            public Attribute.Double out_pot_et;
     
     /*
      *  Component run stages
@@ -85,19 +85,19 @@ public class CropCoefficient extends JAMSComponent {
     @Override
     public void run() {
         
-        double RefET = this.RefET.getValue();
-        double kc = this.CropCoeff.getValue();
-        double area = this.area.getValue();
-        double MaxET = 0.0;
+        double run_ref_et = this.par_ref_et.getValue();
+        double run_kc = this.par_crop_coeff.getValue();
+        double run_area = this.par_area.getValue();
+        double run_max_et = 0.0;
              
-        // calculate MaxET
-        MaxET = RefET*kc;
+        // calculate run_max_et
+        run_max_et = run_ref_et*run_kc;
         
-        // convert MaxET into Liters
-        MaxET = MaxET*area;
+        // convert run_max_et into Liters
+        run_max_et = run_max_et*run_area;
         
         // return the calculated value        
-        this.PotET.setValue(MaxET);
+        this.out_pot_et.setValue(run_max_et);
     }
 
     @Override

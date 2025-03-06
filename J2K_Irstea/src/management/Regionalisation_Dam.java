@@ -44,37 +44,37 @@ public class Regionalisation_Dam extends JAMSComponent {
      */
     @JAMSVarDescription (access = JAMSVarDescription.AccessType.READ,
                          description = "Array of data values for current time step")
-    public Attribute.DoubleArray dataArray;
+    public Attribute.DoubleArray in_data_array;
     
     @JAMSVarDescription (access = JAMSVarDescription.AccessType.WRITE,
                          description = "regionalised data value")
-    public Attribute.Double dataValue;
+    public Attribute.Double out_data_value;
     
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
             description = "Array of station names")
-    public Attribute.DoubleArray names;
+    public Attribute.DoubleArray in_names;
 
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
             description = "The reach collection"
             )
-    public Attribute.EntityCollection entities;
+    public Attribute.EntityCollection st_entities;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
             description = "Maximum storage of the reservoir",
             unit = "Mm3"
             )
-    public Attribute.Double Smax;
+    public Attribute.Double st_smax;
   
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
             description = "reach ID"
             )
-    public Attribute.Double ID;
+    public Attribute.Double in_id;
     
-    boolean invalidDatasetReported = false;
-    ArrayPool<double[]> memPool = new ArrayPool<double[]>(double.class);
+    boolean run_invalid_dataset_reported = false;
+    ArrayPool<double[]> run_mem_pool = new ArrayPool<double[]>(double.class);
    
     
    
@@ -82,19 +82,19 @@ public class Regionalisation_Dam extends JAMSComponent {
     @Override
     public void run() throws IOException {
         //Retreiving data, elevations and weights
-        double value=0;
-        double[] sourceData = dataArray.getValue();
+        double run_value=0;
+        double[] run_source_data = in_data_array.getValue();
         //Attribute.Entity entity = entities.getCurrent();
         //double Smax = entity.getDouble("Smax");
-        double[] Nom = this.names.getValue();
-        if (this.Smax.getValue() > 0) {
-            double reach = this.ID.getValue();
-            int t = 0;
-            while (Nom[t] != reach) {
-                t++;
+        double[] run_nom = this.in_names.getValue();
+        if (this.st_smax.getValue() > 0) {
+            double run_reach = this.in_id.getValue();
+            int run_t = 0;
+            while (run_nom[run_t] != run_reach) {
+                run_t++;
             }
-            value = sourceData[t];
-            dataValue.setValue(value);
+            run_value = run_source_data[run_t];
+            out_data_value.setValue(run_value);
         }
     }
 }
