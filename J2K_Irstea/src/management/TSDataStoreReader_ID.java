@@ -53,7 +53,7 @@ public class TSDataStoreReader_ID extends JAMSComponent {
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
             description = "The time interval within which the component shall read "
             + "data from the datastore")
-    public Attribute.TimeInterval par_time_interval;
+    public Attribute.TimeInterval timeInterval;
 
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
             description = "Aggregate multiple datastore entries to averages or sums?",
@@ -128,19 +128,19 @@ public class TSDataStoreReader_ID extends JAMSComponent {
         run_store = (TSDataStore) run_is;
 
         // check if the store's time interval matches the provided time interval
-        if (run_store.getStartDate().after(par_time_interval.getStart()) && (run_store.getStartDate().compareTo(par_time_interval.getStart(), par_time_interval.getTimeUnit()) != 0)) {
+        if (run_store.getStartDate().after(timeInterval.getStart()) && (run_store.getStartDate().compareTo(timeInterval.getStart(), timeInterval.getTimeUnit()) != 0)) {
             getModel().getRuntime().sendHalt("Error accessing datastore \""
                     + in_id + "\" from " + getInstanceName() + ": Start date of datastore ("
                     + run_store.getStartDate() + ") does not match given time interval ("
-                    + par_time_interval.getStart() + ")!");
+                    + timeInterval.getStart() + ")!");
             return;
         }
 
-        if (run_store.getEndDate().before(par_time_interval.getEnd()) && (run_store.getEndDate().compareTo(par_time_interval.getEnd(), par_time_interval.getTimeUnit()) != 0)) {
+        if (run_store.getEndDate().before(timeInterval.getEnd()) && (run_store.getEndDate().compareTo(timeInterval.getEnd(), timeInterval.getTimeUnit()) != 0)) {
             getModel().getRuntime().sendHalt("Error accessing datastore \""
                     + in_id + "\" from " + getInstanceName() + ": End date of datastore ("
                     + run_store.getEndDate() + ") does not match given time interval ("
-                    + par_time_interval.getEnd() + ")!");
+                    + timeInterval.getEnd() + ")!");
             return;
         }
 
@@ -188,9 +188,9 @@ public class TSDataStoreReader_ID extends JAMSComponent {
     private void checkConsistency() {
 
         // check if we need to shift forward
-        Attribute.Calendar run_target_date = par_time_interval.getStart().clone();
-        run_target_unit = par_time_interval.getTimeUnit();
-        run_target_unit_count = par_time_interval.getTimeUnitCount();
+        Attribute.Calendar run_target_date = timeInterval.getStart().clone();
+        run_target_unit = timeInterval.getTimeUnit();
+        run_target_unit_count = timeInterval.getTimeUnitCount();
         run_store_date = run_store.getStartDate().clone();
         run_store_unit = run_store.getTimeUnit();
         run_store_unit_count = run_store.getTimeUnitCount();
@@ -203,7 +203,7 @@ public class TSDataStoreReader_ID extends JAMSComponent {
         if (run_offset > 0) {
 
             getModel().getRuntime().sendHalt("Time series data read by " + this.getInstanceName() + " start after model start time!"
-                    + "\n(" + run_store.getStartDate() + " vs " + par_time_interval.getStart() + ")");
+                    + "\n(" + run_store.getStartDate() + " vs " + timeInterval.getStart() + ")");
 
         } else if (run_offset < 0) {
 

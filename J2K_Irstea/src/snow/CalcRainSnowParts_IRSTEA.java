@@ -47,7 +47,7 @@ import jams.model.*;
             description = "HRU attribute name area",
             unit = "m²"
             )
-            public Attribute.Double par_area;
+            public Attribute.Double area;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
@@ -57,7 +57,7 @@ import jams.model.*;
             defaultValue = "0.0",
             unit = "°C"
             )
-            public Attribute.Double par_snow_trs;
+            public Attribute.Double snow_trs;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
@@ -67,7 +67,7 @@ import jams.model.*;
             defaultValue = "2.0",
             unit = "K"
             )
-            public Attribute.Double par_snow_trans;
+            public Attribute.Double snow_trans;
     
     
     @JAMSVarDescription(
@@ -75,28 +75,28 @@ import jams.model.*;
             description = "state variable mean temperature",
             unit = "°C"
             )
-            public Attribute.Double par_tmean;
+            public Attribute.Double tmean;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
             description = "state variable precipitation",
             unit = "mm"
             )
-            public Attribute.Double par_precip;
+            public Attribute.Double precip;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
             description = "state variable rain",
             unit = "L"
             )
-            public Attribute.Double st_rain;
+            public Attribute.Double rain;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
             description = "state variable snow",
             unit = "L"
             )
-            public Attribute.Double st_snow;
+            public Attribute.Double snow;
         
     
     /*
@@ -108,28 +108,28 @@ import jams.model.*;
     }
     
     public void run() throws Attribute.Entity.NoSuchAttributeException{
-        double run_temperature = this.par_tmean.getValue();
+        double temperature = this.tmean.getValue();
         //determinining relative snow amount of total precip depending on temperature
-        double run_pSnow = (par_snow_trs.getValue() + par_snow_trans.getValue() - run_temperature) /
-                (2 * par_snow_trans.getValue());
+        double pSnow = (snow_trs.getValue() + snow_trans.getValue() - temperature) /
+                (2 * snow_trans.getValue());
         
         //fixing upper and lower bound for pSnow (has to be between 0 and 1
-        if(run_pSnow > 1.0)
-            run_pSnow = 1.0;
-        else if(run_pSnow < 0)
-            run_pSnow = 0;
+        if(pSnow > 1.0)
+            pSnow = 1.0;
+        else if(pSnow < 0)
+            pSnow = 0;
         
         //converting mm/m² to absolute litres
-        double run_precip = this.par_precip.getValue() * this.par_area.getValue();
-        if (run_precip < 0){
-           run_precip = 0; 
+        double precip = this.precip.getValue() * this.area.getValue();
+        if (precip < 0){
+           precip = 0; 
         }
         //dividing input precip into rain and snow
-        double run_rain = (1 - run_pSnow) * run_precip;
-        double run_snow = run_pSnow * run_precip;
+        double rain = (1 - pSnow) * precip;
+        double snow = pSnow * precip;
       
-        this.st_snow.setValue(run_snow);
-        this.st_rain.setValue(run_rain);
+        this.snow.setValue(snow);
+        this.rain.setValue(rain);
 		
 		//getModel().getRuntime().println("CalcRainSnowParts temperature: "+ temperature );
 		//getModel().getRuntime().println("CalcRainSnowParts pSnow: "+ pSnow );

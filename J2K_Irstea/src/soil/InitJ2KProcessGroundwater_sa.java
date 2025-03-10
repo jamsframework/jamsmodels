@@ -52,7 +52,7 @@ import jams.model.*;
             access = JAMSVarDescription.AccessType.READ,
             description = "The collection of model entities"
             )
-            public Attribute.EntityCollection st_entities;
+            public Attribute.EntityCollection entities;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
@@ -61,7 +61,7 @@ import jams.model.*;
             //upperBound = infinity,
             unit="L"
             )
-            public Attribute.Double st_max_rg1;
+            public Attribute.Double maxRG1;
             
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
@@ -69,7 +69,7 @@ import jams.model.*;
             defaultValue = "1.0",
             unit="-"
             )
-            public Attribute.Double par_rg1_max_maf;
+            public Attribute.Double RG1_max_mAF;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
@@ -77,7 +77,7 @@ import jams.model.*;
             defaultValue = "0.0",
             unit="-"
             )
-            public Attribute.Double par_rg1_max_aaf;
+            public Attribute.Double RG1_max_aAF;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
@@ -86,7 +86,7 @@ import jams.model.*;
             //upperBound = infinity,
             unit="L"
             )
-            public Attribute.Double st_max_rg2;
+            public Attribute.Double maxRG2;
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
             description = "actual RG1 storage",
@@ -94,7 +94,7 @@ import jams.model.*;
             //upperBound = infinity,
             unit="L"
             )
-            public Attribute.Double out_act_rg1;
+            public Attribute.Double actRG1;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
@@ -103,7 +103,7 @@ import jams.model.*;
             //upperBound = infinity,
             unit="L"
             )
-            public Attribute.Double out_act_rg2;
+            public Attribute.Double actRG2;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
@@ -113,7 +113,7 @@ import jams.model.*;
             unit="n/a",
             defaultValue = "0.0"
             )
-            public Attribute.Double par_init_rg1;
+            public Attribute.Double initRG1;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
@@ -123,7 +123,7 @@ import jams.model.*;
             unit="n/a",
             defaultValue = "0.0"
             )
-            public Attribute.Double par_init_rg2;
+            public Attribute.Double initRG2;
     
     
     /*
@@ -136,18 +136,18 @@ import jams.model.*;
     
     public void run() {
         
-        Attribute.Entity run_entity = st_entities.getCurrent();
-        double run_area = run_entity.getDouble("area");
-        double run_rg1_max = run_entity.getDouble("RG1_max");
-        run_rg1_max = run_rg1_max * this.par_rg1_max_maf.getValue()+ this.par_rg1_max_aaf.getValue();
-        if (run_rg1_max < 1) {
-            run_rg1_max = 1;
+        Attribute.Entity entity = entities.getCurrent();
+        double area = entity.getDouble("area");
+        double RG1max = entity.getDouble("RG1_max");
+        RG1max = RG1max * this.RG1_max_mAF.getValue()+ this.RG1_max_aAF.getValue();
+        if (RG1max < 1) {
+            RG1max = 1;
         }
-        st_max_rg1.setValue(run_rg1_max * run_area);
-        st_max_rg2.setValue(run_entity.getDouble("RG2_max") * run_area);
+        maxRG1.setValue(RG1max * area);
+        maxRG2.setValue(entity.getDouble("RG2_max") * area);
         
-        out_act_rg1.setValue(st_max_rg1.getValue() * par_init_rg1.getValue());
-        out_act_rg2.setValue(st_max_rg2.getValue() * par_init_rg2.getValue());       
+        actRG1.setValue(maxRG1.getValue() * initRG1.getValue());
+        actRG2.setValue(maxRG2.getValue() * initRG2.getValue());       
     }
     
     public void cleanup() {

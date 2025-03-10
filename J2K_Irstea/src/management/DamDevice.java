@@ -119,7 +119,7 @@ public class DamDevice extends JAMSComponent {
             access = JAMSVarDescription.AccessType.READ,
             description = "The time interval"
         )
-        public Attribute.TimeInterval par_time_interval;
+        public Attribute.TimeInterval timeInterval;
     
 
     
@@ -142,7 +142,7 @@ public class DamDevice extends JAMSComponent {
         if (this.par_v0.getValue() > 0) {
 
             String run_date = par_time.toString();
-            String run_start = par_time_interval.getStart().toString();
+            String run_start = timeInterval.getStart().toString();
             if ( (run_date.equals(run_start) )) {
                 this.st_storage.setValue(Math.pow(10,9)*this.par_v0.getValue());
             }

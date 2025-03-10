@@ -36,7 +36,7 @@ public class J2KProcessInterception_conv_potET extends JAMSComponent {
             description = "attribute area",
             unit="m^2"
             )
-            public JAMSDouble par_area;
+            public JAMSDouble area;
 
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
@@ -44,7 +44,7 @@ public class J2KProcessInterception_conv_potET extends JAMSComponent {
             description = "state variable mean tempeature",
             unit="degC"
             )
-            public JAMSDouble st_tmean;
+            public JAMSDouble tmean;
 
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
@@ -52,7 +52,7 @@ public class J2KProcessInterception_conv_potET extends JAMSComponent {
             description = "state variable rain",
             unit="L"
             )
-            public JAMSDouble st_rain;
+            public JAMSDouble rain;
 
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
@@ -60,7 +60,7 @@ public class J2KProcessInterception_conv_potET extends JAMSComponent {
             description = "state variable snow",
             unit="L"
             )
-            public JAMSDouble st_snow;
+            public JAMSDouble snow;
 
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
@@ -68,7 +68,7 @@ public class J2KProcessInterception_conv_potET extends JAMSComponent {
             description = "state variable potET",
             unit="L"
             )
-            public JAMSDouble st_pot_et;
+            public JAMSDouble potET;
 
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
@@ -76,14 +76,14 @@ public class J2KProcessInterception_conv_potET extends JAMSComponent {
             description = "state variable actET",
             unit="L"
             )
-            public JAMSDouble st_act_et;
+            public JAMSDouble actET;
 
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
             update = JAMSVarDescription.UpdateType.RUN,
             description = "state variable LAI"
             )
-            public JAMSDouble st_act_lai;
+            public JAMSDouble actLAI;
 
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
@@ -94,7 +94,7 @@ public class J2KProcessInterception_conv_potET extends JAMSComponent {
             defaultValue = "0.0",
             unit = "degC"
             )
-            public JAMSDouble par_snow_trs;
+            public JAMSDouble snow_trs;
 
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
@@ -105,7 +105,7 @@ public class J2KProcessInterception_conv_potET extends JAMSComponent {
             defaultValue = "2.0",
             unit = "K"
             )
-            public JAMSDouble par_snow_trans;
+            public JAMSDouble snow_trans;
 
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
@@ -116,7 +116,7 @@ public class J2KProcessInterception_conv_potET extends JAMSComponent {
             defaultValue = "0.2",
             unit = "mm"
             )
-            public JAMSDouble par_a_rain;
+            public JAMSDouble a_rain;
 
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
@@ -127,7 +127,7 @@ public class J2KProcessInterception_conv_potET extends JAMSComponent {
             defaultValue = "0.5",
             unit = "mm"
             )
-            public JAMSDouble par_a_snow;
+            public JAMSDouble a_snow;
 
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
@@ -135,7 +135,7 @@ public class J2KProcessInterception_conv_potET extends JAMSComponent {
             description = "state variable net-rain",
             unit="L"
             )
-            public JAMSDouble st_net_rain;
+            public JAMSDouble netRain;
 
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
@@ -143,7 +143,7 @@ public class J2KProcessInterception_conv_potET extends JAMSComponent {
             description = "state variable net-snow",
             unit="L"
             )
-            public JAMSDouble st_net_snow;
+            public JAMSDouble netSnow;
 
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
@@ -151,7 +151,7 @@ public class J2KProcessInterception_conv_potET extends JAMSComponent {
             description = "state variable throughfall",
             unit="L"
             )
-            public JAMSDouble st_throughfall;
+            public JAMSDouble throughfall;
 
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
@@ -159,7 +159,7 @@ public class J2KProcessInterception_conv_potET extends JAMSComponent {
            description = "state variable dy-interception",
             unit="L"
             )
-            public JAMSDouble st_interception;
+            public JAMSDouble interception;
 
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
@@ -167,7 +167,7 @@ public class J2KProcessInterception_conv_potET extends JAMSComponent {
             description = "state variable interception storage",
             unit="L"
             )
-            public JAMSDouble st_interc_storage;
+            public JAMSDouble intercStorage;
 
         
      /* @JAMSVarDescription(
@@ -195,87 +195,87 @@ public class J2KProcessInterception_conv_potET extends JAMSComponent {
      */
 
     public void init() throws JAMSEntity.NoSuchAttributeException{
-        this.st_interc_storage.setValue(0);
+        this.intercStorage.setValue(0);
     }
 
     public void run() throws JAMSEntity.NoSuchAttributeException{
 
-        double run_alpha = 0;
-        double run_out_throughfall = 0;
-        double run_out_interception = 0;
+        double alpha = 0;
+        double out_throughfall = 0;
+        double out_interception = 0;
         
         /*double ID_HRU = HRU_id.getDouble();/*/
 
-        double run_in_rain = st_rain.getValue();
-        double run_in_snow = st_snow.getValue();
-        double run_in_temp = st_tmean.getValue();
+        double in_rain = rain.getValue();
+        double in_snow = snow.getValue();
+        double in_temp = tmean.getValue();
 
         // double in_potETP = potET.getValue()*area.getValue();
-        double run_in_pot_etp = st_pot_et.getValue();
-        double run_in_act_etp = 0;
+        double in_potETP = potET.getValue();
+        double in_actETP = 0;
 
-        double run_in_lai = this.st_act_lai.getValue();
-        double run_in_area = par_area.getValue();
+        double in_LAI = this.actLAI.getValue();
+        double in_Area = area.getValue();
 
-        double run_out_interception_storage = st_interc_storage.getValue();
-        double run_out_act_etp = run_in_act_etp;
+        double out_InterceptionStorage = intercStorage.getValue();
+        double out_actETP = in_actETP;
 
-        double run_sum_precip = run_in_rain + run_in_snow;
+        double sum_precip = in_rain + in_snow;
         
       // if (HRU_id.getValue() == 1.0){
            //System.out.println(time.toString());
        // }
         
-        double run_delta_etp = run_in_pot_etp - run_in_act_etp;
+        double deltaETP = in_potETP - in_actETP;
 
-        double run_rel_rain, run_rel_snow;
-        if(run_sum_precip > 0){
-            run_rel_rain = run_in_rain / run_sum_precip;
-            run_rel_snow = run_in_snow / run_sum_precip;
+        double relRain, relSnow;
+        if(sum_precip > 0){
+            relRain = in_rain / sum_precip;
+            relSnow = in_snow / sum_precip;
         } else{
-            run_rel_rain = 1.0; //throughfall without precip is in general considered to be liquid
-            run_rel_snow = 0;
+            relRain = 1.0; //throughfall without precip is in general considered to be liquid
+            relSnow = 0;
         }
 
         //determining if precip falls as rain or snow
-        if(run_in_temp < (par_snow_trs.getValue() - par_snow_trans.getValue())){
+        if(in_temp < (snow_trs.getValue() - snow_trans.getValue())){
             //alpha = alpha_snow;
-            run_alpha = par_a_snow.getValue();
+            alpha = a_snow.getValue();
         } else{
             //alpha = alpha_rain;
-            run_alpha = par_a_rain.getValue();
+            alpha = a_rain.getValue();
         }
 
         //determinining maximal interception capacity of actual day
-        double run_max_int_ccap = (run_in_lai * run_alpha) * run_in_area;
+        double maxIntcCap = (in_LAI * alpha) * in_Area;
 
         //if interception storage has changed from snow to rain then throughfall
         //occur because interception storage of antecedend day might be larger
         //then the maximum storage capacity of the actual time step.
-        if(run_out_interception_storage > run_max_int_ccap){
-            run_out_throughfall = run_out_interception_storage - run_max_int_ccap;
-            run_out_interception_storage = run_max_int_ccap;
+        if(out_InterceptionStorage > maxIntcCap){
+            out_throughfall = out_InterceptionStorage - maxIntcCap;
+            out_InterceptionStorage = maxIntcCap;
         }
 
         //determining the potential storage volume for daily Interception
-        double run_delta_intc = run_max_int_ccap - run_out_interception_storage;
+        double deltaIntc = maxIntcCap - out_InterceptionStorage;
 
         //reducing rain and filling of Interception storage
-        if(run_delta_intc > 0){
+        if(deltaIntc > 0){
             //double save_rain = sum_precip;
-            if(run_sum_precip > run_delta_intc){
-                run_out_interception_storage = run_max_int_ccap;
-                run_sum_precip = run_sum_precip - run_delta_intc;
-                run_out_throughfall = run_out_throughfall + run_sum_precip;
-                run_out_interception = run_delta_intc;
-                run_delta_intc = 0;
+            if(sum_precip > deltaIntc){
+                out_InterceptionStorage = maxIntcCap;
+                sum_precip = sum_precip - deltaIntc;
+                out_throughfall = out_throughfall + sum_precip;
+                out_interception = deltaIntc;
+                deltaIntc = 0;
             } else{
-                run_out_interception_storage = (run_out_interception_storage + run_sum_precip);
-                run_out_interception = run_sum_precip;
-                run_sum_precip = 0;
+                out_InterceptionStorage = (out_InterceptionStorage + sum_precip);
+                out_interception = sum_precip;
+                sum_precip = 0;
             }
         } else{
-            run_out_throughfall = run_out_throughfall + run_sum_precip;
+            out_throughfall = out_throughfall + sum_precip;
         }
         
         
@@ -286,16 +286,16 @@ public class J2KProcessInterception_conv_potET extends JAMSComponent {
         //depletion of interception storage; beside the throughfall from above interc.
         //storage can only be depleted by evapotranspiration
 
-        if(run_delta_etp > 0){
-            if(run_out_interception_storage > run_delta_etp){
-                run_out_interception_storage = run_out_interception_storage - run_delta_etp;
-                run_out_act_etp = run_in_act_etp + run_delta_etp;
-                run_delta_etp = 0;
+        if(deltaETP > 0){
+            if(out_InterceptionStorage > deltaETP){
+                out_InterceptionStorage = out_InterceptionStorage - deltaETP;
+                out_actETP = in_actETP + deltaETP;
+                deltaETP = 0;
 
             } else{
-                run_out_act_etp = run_in_act_etp + run_out_interception_storage;
-                run_out_interception_storage = 0;
-                run_delta_etp = 0;
+                out_actETP = in_actETP + out_InterceptionStorage;
+                out_InterceptionStorage = 0;
+                deltaETP = 0;
             }
         } 
         
@@ -303,18 +303,18 @@ public class J2KProcessInterception_conv_potET extends JAMSComponent {
      //      System.out.println(time.toString());
      //   }
         
-        this.st_net_rain.setValue(run_out_throughfall * run_rel_rain);
-        this.st_net_snow.setValue(run_out_throughfall * run_rel_snow);
-        this.st_act_et.setValue(run_out_act_etp);
+        this.netRain.setValue(out_throughfall * relRain);
+        this.netSnow.setValue(out_throughfall * relSnow);
+        this.actET.setValue(out_actETP);
         // this.potET.setValue(in_potETP);
-        this.st_interc_storage.setValue(run_out_interception_storage);
-        this.st_interception.setValue(run_out_interception);
-        this.st_throughfall.setValue(run_out_throughfall);
+        this.intercStorage.setValue(out_InterceptionStorage);
+        this.interception.setValue(out_interception);
+        this.throughfall.setValue(out_throughfall);
         
     }
 
     public void cleanup() {
-        this.st_interc_storage.setValue(0);
+        this.intercStorage.setValue(0);
     }
 
 }

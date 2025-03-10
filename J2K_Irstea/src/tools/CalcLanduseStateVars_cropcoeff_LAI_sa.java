@@ -50,13 +50,13 @@ import jams.model.*;
             access = JAMSVarDescription.AccessType.READ,
             description = "The current spatial entity"
             )
-            public Attribute.EntityCollection st_entities;
+            public Attribute.EntityCollection entities;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
             description = "Array with LAI values for a standard year"
             )
-            public Attribute.DoubleArray in_lai_array;
+            public Attribute.DoubleArray LAIArray;
     
 /*    @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
@@ -74,48 +74,46 @@ import jams.model.*;
             upperBound = 2,
             unit = "-"
             )
-            public Attribute.DoubleArray in_crop_coeff_array;
+            public Attribute.DoubleArray cropcoeffArray;
       
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
             description = "temporal resolution [d | h | m]"
             )
-            public Attribute.String par_temp_res;
+            public Attribute.String tempRes;
             
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
             description = "Crop coefficient 'multiplicative' adaptation factor",
             defaultValue = "1"
             )
-            public Attribute.Double par_crop_coef_maf;
+            public Attribute.Double CropCoef_mAF;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
             description = "Crop coefficient 'additive' adaptation factor",
             defaultValue = "0.0"
             )
-            public Attribute.Double par_crop_coef_aaf;
+            public Attribute.Double CropCoef_aAF;
             
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
             description = "Leaf Area Index 'multiplicative' adaptation factor",
             defaultValue = "1"
             )
-            public Attribute.Double par_lai_maf;
+            public Attribute.Double LAI_mAF;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
             description = "Leaf Area Index 'additive' adaptation factor",
             defaultValue = "0.0"
             )
-            public Attribute.Double par_lai_aaf;
+            public Attribute.Double LAI_aAF;
     
-    /* Following variables are not used ?
-    * Michael Rabotin mars 2025
-    */
-    int[] run_month_mean = {15,45,74,105,135,166,196,227,258,288,319,349};
-    int run_old_month = 0;
-    double run_crop = 0;
+    
+    int[] monthMean = {15,45,74,105,135,166,196,227,258,288,319,349};
+    int oldmonth = 0;
+    double crop = 0;
     
     /*
      *  Component run stages
@@ -127,41 +125,41 @@ import jams.model.*;
     
     public void run() throws Attribute.Entity.NoSuchAttributeException {
         
-        Attribute.Entity entity = st_entities.getCurrent();
+        Attribute.Entity entity = entities.getCurrent();
         
-        double[] run_lai_vals = null; 
+        double[] lai_vals = null; 
        // double[] effH_vals = null;
-        if(this.par_temp_res == null || this.par_temp_res.getValue().equals("d") || this.par_temp_res.getValue().equals("h") || this.par_temp_res.getValue().equals("m")){
-            run_lai_vals = new double[12];
+        if(this.tempRes == null || this.tempRes.getValue().equals("d") || this.tempRes.getValue().equals("h") || this.tempRes.getValue().equals("m")){
+            lai_vals = new double[12];
             //effH_vals = new double[366];
         }
          
-        String run_lai_name = "LAI_";
+        String laiName = "LAI_";
         for(int j = 0; j < 12; j++){
-            int run_count = j+1;
-            String run_lai_loop_name = run_lai_name + run_count;
-            run_lai_vals[j] = entity.getDouble(run_lai_loop_name);
-            run_lai_vals[j] = run_lai_vals[j] * this.par_lai_maf.getValue() + this.par_lai_aaf.getValue();
-            if (run_lai_vals[j] < 0)
-                run_lai_vals[j] = 0;
+            int count = j+1;
+            String LAIloopName = laiName + count;
+            lai_vals[j] = entity.getDouble(LAIloopName);
+            lai_vals[j] = lai_vals[j] * this.LAI_mAF.getValue() + this.LAI_aAF.getValue();
+            if (lai_vals[j] < 0)
+                lai_vals[j] = 0;
         }
         
         
-        in_lai_array.setValue(run_lai_vals);
+        LAIArray.setValue(lai_vals);
         //effHArray.setValue(effH_vals);
         
-        double[] run_crop_coeff = new double[12];
-        String run_crop_coeff_name = "Kc_";
+        double[] cropcoeff = new double[12];
+        String cropcoeffName = "Kc_";
         for(int i = 0; i < 12; i++){
-            int run_count = i+1;
-            String run_loop_name = run_crop_coeff_name + run_count;
-            run_crop_coeff[i] = entity.getDouble(run_loop_name);
-            run_crop_coeff[i] = run_crop_coeff[i] * this.par_crop_coef_maf.getValue() + this.par_crop_coef_aaf.getValue();
-            if (run_crop_coeff[i] < 0)
-                run_crop_coeff[i] = 0;
-            entity.setDouble(run_loop_name+"_test", run_crop_coeff[i]); // what's that?
+            int count = i+1;
+            String loopName = cropcoeffName + count;
+            cropcoeff[i] = entity.getDouble(loopName);
+            cropcoeff[i] = cropcoeff[i] * this.CropCoef_mAF.getValue() + this.CropCoef_aAF.getValue();
+            if (cropcoeff[i] < 0)
+                cropcoeff[i] = 0;
+            entity.setDouble(loopName+"_test", cropcoeff[i]); // what's that?
         }
-        in_crop_coeff_array.setValue(run_crop_coeff);
+        cropcoeffArray.setValue(cropcoeff);
 
     }
     

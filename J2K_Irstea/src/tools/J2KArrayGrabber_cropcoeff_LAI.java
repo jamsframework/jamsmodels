@@ -64,98 +64,98 @@ import jams.model.*;
             access = JAMSVarDescription.AccessType.READ,
             description = "temporal resolution [m | d | h]"
             )
-            public Attribute.String par_temp_res;
+            public Attribute.String tempRes;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
             description = "time"
             )
-            public Attribute.Calendar par_time;
+            public Attribute.Calendar time;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
             description = "extraTerrRadiationArray"
             )
-            public Attribute.DoubleArray in_ext_rad_array;
+            public Attribute.DoubleArray extRadArray;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
             description = "LeafAreaIndexArray"
             )
-            public Attribute.DoubleArray in_lai_array;
+            public Attribute.DoubleArray LAIArray;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
             description = "EffectiveHeightArray"
             )
-            public Attribute.DoubleArray in_eff_h_array;
+            public Attribute.DoubleArray effHArray;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
             description = "rsc0 Array"
             )
-            public Attribute.DoubleArray in_rsc0_array;
+            public Attribute.DoubleArray rsc0Array;
     
         @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
             description = "CropCoeff Array"
             )
-            public Attribute.DoubleArray in_crop_coeff_array;
+            public Attribute.DoubleArray cropcoeffArray;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
             description = "slopeAscpectCorrectionFactorArray"
             )
-            public Attribute.DoubleArray par_sl_as_c_f_array;
+            public Attribute.DoubleArray slAsCfArray;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
             description = "actExtraTerrRadiation"
             )
-            public Attribute.Double out_act_ext_rad;
+            public Attribute.Double actExtRad;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
             description = "actLAI"
             )
-            public Attribute.Double out_act_lai;
+            public Attribute.Double actLAI;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
             description = "actEffH"
             )
-            public Attribute.Double out_act_effh;
+            public Attribute.Double actEffH;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
             description = "actRsc0"
             )
-            public Attribute.Double out_act_rsc0;
+            public Attribute.Double actRsc0;
     
         @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
             description = "actCropCoeff"
             )
-            public Attribute.Double out_act_crop_coeff;
+            public Attribute.Double actCropCoeff;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
             description = "Haude factor array"
             )
-            public Attribute.DoubleArray par_haude_factor_array;
+            public Attribute.DoubleArray haudeFactorArray;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
             description = "actHaudeFactor",
             defaultValue="0"
             )
-            public Attribute.Double par_act_haude_factor;
+            public Attribute.Double actHaudeFactor;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
-            description = "actSlopeAspectCorrectionFactor"
+            description = "actSlopeAscpectCorrectionFactor"
             )
-            public Attribute.Double par_act_sl_as_c_f;
+            public Attribute.Double actSlAsCf;
     /*
      *  Component run stages
      */
@@ -166,37 +166,37 @@ import jams.model.*;
     
     public void run() throws Attribute.Entity.NoSuchAttributeException{
     	
-        int run_month_count = par_time.get(Attribute.Calendar.MONTH);
-        int run_day_count = par_time.get(Attribute.Calendar.DAY_OF_YEAR) - 1;
-        int run_hour_count = par_time.get(Attribute.Calendar.HOUR_OF_DAY) + (24 * run_day_count);
+        int monthCount = time.get(Attribute.Calendar.MONTH);
+        int dayCount = time.get(Attribute.Calendar.DAY_OF_YEAR) - 1;
+        int hourCount = time.get(Attribute.Calendar.HOUR_OF_DAY) + (24 * dayCount);
         
-        double run_in_lai = -9999;
-        double run_in_effh = -9999;
-        double run_in_ext_rad = -9999;
-        double run_in_scf = -9999;
-        double run_in_rsc0 = -9999;
-        double run_in_cropcoeff = -9999;
-        double run_in_haudef = -9999;
+        double in_LAI = -9999;
+        double in_effH = -9999;
+        double in_extRad = -9999;
+        double in_scf = -9999;
+        double in_rsc0 = -9999;
+        double in_cropcoeff = -9999;
+        double in_haudeF = -9999;
         
-        if(this.in_rsc0_array != null)
-            run_in_rsc0 = this.in_rsc0_array.getValue()[run_month_count];
+        if(this.rsc0Array != null)
+            in_rsc0 = this.rsc0Array.getValue()[monthCount];
         
-        if(this.in_crop_coeff_array != null)
-            run_in_cropcoeff = this.in_crop_coeff_array.getValue()[run_month_count];
+        if(this.cropcoeffArray != null)
+            in_cropcoeff = this.cropcoeffArray.getValue()[monthCount];
         
-        if(this.par_haude_factor_array != null)
-            run_in_haudef = this.par_haude_factor_array.getValue()[run_month_count];
+        if(this.haudeFactorArray != null)
+            in_haudeF = this.haudeFactorArray.getValue()[monthCount];
         
-        if(this.in_lai_array != null)
-            run_in_lai = this.in_lai_array.getValue()[run_month_count];
+        if(this.LAIArray != null)
+            in_LAI = this.LAIArray.getValue()[monthCount];
         
-        this.out_act_lai.setValue(run_in_lai);
-        this.out_act_effh.setValue(run_in_effh);
-        this.out_act_rsc0.setValue(run_in_rsc0);
-        this.out_act_crop_coeff.setValue(run_in_cropcoeff);
-        this.par_act_sl_as_c_f.setValue(run_in_scf);
-        this.out_act_ext_rad.setValue(run_in_ext_rad);
-        this.par_act_haude_factor.setValue(run_in_haudef);
+        this.actLAI.setValue(in_LAI);
+        this.actEffH.setValue(in_effH);
+        this.actRsc0.setValue(in_rsc0);
+        this.actCropCoeff.setValue(in_cropcoeff);
+        this.actSlAsCf.setValue(in_scf);
+        this.actExtRad.setValue(in_extRad);
+        this.actHaudeFactor.setValue(in_haudeF);
         
     }
     
