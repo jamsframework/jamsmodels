@@ -51,69 +51,69 @@ public class DamDevice extends JAMSComponent {
             access = JAMSVarDescription.AccessType.READ,
             description = "regionalised data value (objective function)"
         )
-        public Attribute.Double par_fo;
+        public Attribute.Double FO;
         
         @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
             description = "Initial volume in the reservoir",
             unit = "Mm3"
         )
-        public Attribute.Double par_v0;
+        public Attribute.Double V0;
         
         @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
             description = "Maximum storage of the reservoir",
             unit = "Mm3"
         )
-        public Attribute.Double par_smax;
+        public Attribute.Double Smax;
                 
         @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
             description = "RD1 inflow to reach",
             unit = "L"
         )
-        public Attribute.Double out_in_rd1;
+        public Attribute.Double inRD1;
     
         @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
             description = "RD2 inflow to reach",
             unit = "L"
         )
-        public Attribute.Double out_in_rd2;
+        public Attribute.Double inRD2;
     
         @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
             description = "RG1 inflow to reach",
             unit = "L"
         )
-        public Attribute.Double out_in_rg1;
+        public Attribute.Double inRG1;
     
         @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
             description = "RG2 inflow to reach",
             unit = "L"
         )
-        public Attribute.Double out_in_rg2;
+        public Attribute.Double inRG2;
     
         @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
             description = "FO corrected if there isn't enough water in the river",
             unit = "L"
         )
-        public Attribute.Double out_fo_fin;
+        public Attribute.Double FO_fin;
         
         @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
             description = "state variable - Storage in the reservoir",
             unit = "L"
         )
-        public Attribute.Double st_storage;
+        public Attribute.Double Storage;
         
         @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
             description = "Current time"
         )
-        public Attribute.Calendar par_time;
+        public Attribute.Calendar time;
             
         @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
@@ -123,89 +123,89 @@ public class DamDevice extends JAMSComponent {
     
 
     
-    int run_n_comp = 4;
-    double[] run_rel_comp;
-    double[] run_comp;
-    double[] run_out_comp;
-    double run_curr_volume = 0;
+    int nComp = 4;
+    double[] relComp;
+    double[] runComp;
+    double[] outComp;
+    double currVolume = 0;
     
     public void init() {
-        run_rel_comp = new double[run_n_comp];
-        run_comp = new double[run_n_comp];
-        run_out_comp = new double[run_n_comp];    
+        relComp = new double[nComp];
+        runComp = new double[nComp];
+        outComp = new double[nComp];    
     }
     
    
 
     public void run() {
        
-        if (this.par_v0.getValue() > 0) {
+        if (this.V0.getValue() > 0) {
 
-            String run_date = par_time.toString();
-            String run_start = timeInterval.getStart().toString();
-            if ( (run_date.equals(run_start) )) {
-                this.st_storage.setValue(Math.pow(10,9)*this.par_v0.getValue());
+            String Date = time.toString();
+            String Start = timeInterval.getStart().toString();
+            if ( (Date.equals(Start) )) {
+                this.Storage.setValue(Math.pow(10,9)*this.V0.getValue());
             }
 
-            double run_test = this.out_in_rd1.getValue();
-            run_test = run_test + this.out_in_rd2.getValue();
-            run_test = run_test + this.out_in_rg1.getValue();
-            run_test = run_test + this.out_in_rg2.getValue();
-            double run_outflow = 0;
-            double run_new_s = 0;
-            double run_fo_act = 0;
+            double test = this.inRD1.getValue();
+            test = test + this.inRD2.getValue();
+            test = test + this.inRG1.getValue();
+            test = test + this.inRG2.getValue();
+            double runOutflow = 0;
+            double newS = 0;
+            double FO_act = 0;
 
             calcRelComponents(); 
 
-            this.run_comp[0] = this.out_in_rd1.getValue();
-            this.run_comp[1] = this.out_in_rd2.getValue();
-            this.run_comp[2] = this.out_in_rg1.getValue();
-            this.run_comp[3] = this.out_in_rg2.getValue();
+            this.runComp[0] = this.inRD1.getValue();
+            this.runComp[1] = this.inRD2.getValue();
+            this.runComp[2] = this.inRG1.getValue();
+            this.runComp[3] = this.inRG2.getValue();
 
             calcRelComponents();
             
-            run_fo_act = this.par_fo.getValue();
-            if(run_fo_act >= 0){
+            FO_act = this.FO.getValue();
+            if(FO_act >= 0){
                 //Cas de restitution
-                if (this.st_storage.getValue() < run_fo_act) {run_fo_act = this.st_storage.getValue();}
-                run_new_s = Math.max(this.st_storage.getValue() - run_fo_act,0);
+                if (this.Storage.getValue() < FO_act) {FO_act = this.Storage.getValue();}
+                newS = Math.max(this.Storage.getValue() - FO_act,0);
             }    else  {
                 //Cas de stockage
                 // in case test < FO, we put FO = test 
                 // because we can't keep more water than there is in the river
-                if( (run_test+ run_fo_act) <0) { run_fo_act = -run_test;} 
-                run_new_s = Math.min(this.st_storage.getValue() - run_fo_act,Math.pow(10,9)*this.par_smax.getValue());        
+                if( (test+ FO_act) <0) { FO_act = -test;} 
+                newS = Math.min(this.Storage.getValue() - FO_act,Math.pow(10,9)*this.Smax.getValue());        
             }
 
             // Calcul de la restitution réelle
-            run_outflow = Math.max(0,run_test -(run_new_s- this.st_storage.getValue()));
-            this.st_storage.setValue(run_new_s);   
-            this.out_fo_fin.setValue(run_fo_act) ; 
-            for(int i = 0; i < run_comp.length; i++){
-                run_out_comp[i] = run_outflow * run_rel_comp[i];
-                run_comp[i] = run_comp[i] - run_out_comp[i];
+            runOutflow = Math.max(0,test -(newS- this.Storage.getValue()));
+            this.Storage.setValue(newS);   
+            this.FO_fin.setValue(FO_act) ; 
+            for(int i = 0; i < runComp.length; i++){
+                outComp[i] = runOutflow * relComp[i];
+                runComp[i] = runComp[i] - outComp[i];
             }
-            this.out_in_rd1.setValue(run_out_comp[0]);  
-            this.out_in_rd2.setValue(run_out_comp[1]);  
-            this.out_in_rg1.setValue(run_out_comp[2]);  
-            this.out_in_rg2.setValue(run_out_comp[3]);  
+            this.inRD1.setValue(outComp[0]);  
+            this.inRD2.setValue(outComp[1]);  
+            this.inRG1.setValue(outComp[2]);  
+            this.inRG2.setValue(outComp[3]);  
 
         }    else {
-            this.st_storage.setValue(0.0);
-            this.out_fo_fin.setValue(0.0) ; 
+            this.Storage.setValue(0.0);
+            this.FO_fin.setValue(0.0) ; 
         }
     }
     
     private void calcRelComponents(){
-        run_curr_volume = 0;
-        for(int i = 0; i < run_n_comp; i++){
-            run_curr_volume = run_curr_volume + run_comp[i];
+        currVolume = 0;
+        for(int i = 0; i < nComp; i++){
+            currVolume = currVolume + runComp[i];
         }
-        for(int i = 0; i < run_n_comp; i++){
-            if(run_curr_volume > 0)
-                run_rel_comp[i] = run_comp[i] / run_curr_volume;
+        for(int i = 0; i < nComp; i++){
+            if(currVolume > 0)
+                relComp[i] = runComp[i] / currVolume;
             else
-                run_rel_comp[i] = 0;
+                relComp[i] = 0;
         }
     }
 }
