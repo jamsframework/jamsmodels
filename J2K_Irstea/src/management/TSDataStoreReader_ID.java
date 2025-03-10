@@ -103,6 +103,7 @@ public class TSDataStoreReader_ID extends JAMSComponent {
     Attribute.Calendar storeDate;
     int storeUnit, storeUnitCount, targetUnit, targetUnitCount;
 
+    // composante à modifier par MRA
     @Override
     public void init() {
         shifted = false;

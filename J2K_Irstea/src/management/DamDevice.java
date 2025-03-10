@@ -122,7 +122,7 @@ public class DamDevice extends JAMSComponent {
         public Attribute.TimeInterval timeInterval;
     
 
-    
+   // composante à modifier par MRA 
     int nComp = 4;
     double[] relComp;
     double[] runComp;
