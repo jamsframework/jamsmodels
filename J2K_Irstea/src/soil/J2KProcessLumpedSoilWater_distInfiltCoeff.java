@@ -239,7 +239,7 @@ import jams.model.*;
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
             description = "maximum depression storage",
-            unit="L"
+            unit="mm"
             )
             public Attribute.Double soilMaxDPS;
     
