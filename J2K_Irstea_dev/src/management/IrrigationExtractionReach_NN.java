@@ -1,0 +1,295 @@
+/*
+ * IrrigationWaterTransferr.java
+ * Created on 13.08.2015, 16:17:09
+ *
+ * This file is part of JAMS
+ * Copyright (C) FSU Jena
+ *
+ * JAMS is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU Lesser General Public License
+ * as published by the Free Software Foundation; either version 3
+ * of the License, or (at your option) any later version.
+ *
+ * JAMS is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with JAMS. If not, see <http://www.gnu.org/licenses/>.
+ *
+ */
+package management;
+
+import jams.data.*;
+import jams.model.*;
+import java.util.List;
+
+/**
+ *
+ * @author Sven Kralisch <sven.kralisch at uni-jena.de>
+ */
+@JAMSComponentDescription(
+        title = "",
+        author = "François Tilmant + Sven Kralisch, Nico Hachgenei",
+        description = "Transfer water from reaches to HRUs depending on water"
+        + " availability and irrigation demand."
+	+ "Irrigation water comes from incoming water to the reach and water inside the reach (actRG1, etc..)."
+        + "New names. Bugfix in water extraction from act. Use of more"
+        + "internal variables. Application of extraction limitation to in and act, equal extraction"
+        + "from both.",
+        date = "2015-08-13 / 2025-03-25",
+        version = "3.0_0"
+)
+@VersionComments(entries = {
+    @VersionComments.Entry(version = "1.0_0", comment = "Initial version"),
+    @VersionComments.Entry(version = "2.0_0", comment = "Modififed case where no water comes into the reach,"
+            + " but water is inside the reach --> now water will be extracted from the reach in this case."),
+    @VersionComments.Entry(version = "3.0_0", comment = "New names. Bugfix in water extraction from act. Use of more"
+            + "internal variables. Application of extraction limitation to in and act, equal extraction"
+            + "from both.")
+})
+public class IrrigationExtractionReach_NN extends JAMSComponent {
+
+    /*
+     *  Component attributes
+     */
+    @JAMSVarDescription(
+            access = JAMSVarDescription.AccessType.READ,
+            description = "Reaches list"
+    )
+    public Attribute.EntityCollection reaches;
+
+    @JAMSVarDescription(
+            access = JAMSVarDescription.AccessType.READWRITE,
+            description = "Current time step RD1 inflow into reach. Will be updated by this component,"+
+                    "extracting water for irrigation. - input / state variable"
+    )
+    public Attribute.Double inRD1;
+
+    @JAMSVarDescription(
+            access = JAMSVarDescription.AccessType.READWRITE,
+            description = "Current time step RD2 inflow into reach. Will be updated by this component,"+
+                    "extracting water for irrigation. - input / state variable"
+    )
+    public Attribute.Double inRD2;
+
+    @JAMSVarDescription(
+            access = JAMSVarDescription.AccessType.READWRITE,
+            description = "Current time step RG1 inflow into reach. Will be updated by this component,"+
+                    "extracting water for irrigation. - input / state variable"
+    )
+    public Attribute.Double inRG1;
+
+    @JAMSVarDescription(
+            access = JAMSVarDescription.AccessType.READWRITE,
+            description = "Current time step RG2 inflow into reach. Will be updated by this component,"+
+                    "extracting water for irrigation. - input / state variable"
+    )
+    public Attribute.Double inRG2;
+    
+        @JAMSVarDescription(
+            access = JAMSVarDescription.AccessType.READWRITE,
+            description = "Current time step RD1 volume inside reach. Will be updated by this component"+
+                    ", extracting water for irrigation."+
+                    "- state variable"
+    )
+    public Attribute.Double actRD1;
+        
+        @JAMSVarDescription(
+            access = JAMSVarDescription.AccessType.READWRITE,
+            description = "Current time step RD2 volume inside reach. Will be updated by this component"+
+                    ", extracting water for irrigation."+
+                    "- state variable"
+    )
+    public Attribute.Double actRD2;
+        
+            @JAMSVarDescription(
+            access = JAMSVarDescription.AccessType.READWRITE,
+            description = "Current time step RG1 volume inside reach. Will be updated by this component"+
+                    ", extracting water for irrigation."+
+                    "- state variable"
+    )
+    public Attribute.Double actRG1;
+            
+                @JAMSVarDescription(
+            access = JAMSVarDescription.AccessType.READWRITE,
+            description = "Current time step RG2 volume inside reach. Will be updated by this component"+
+                    ", extracting water for irrigation."+
+                    "- state variable"
+    )
+    public Attribute.Double actRG2;
+
+    @JAMSVarDescription(
+            access = JAMSVarDescription.AccessType.READ,
+            description = "Name of list of irrigated HRUs in reach entities. List will be read by this"+
+                    "component. - parameter / pointer",
+            defaultValue = "irrigationEntities"
+    )
+    public Attribute.String irrigationEntitiesListName;
+
+    @JAMSVarDescription(
+            access = JAMSVarDescription.AccessType.READ,
+            description = "Name of attribute that stores irrigation demand of an HRU - (plant water"+
+                    "requirement / efficiency). Irrigation demand will be read by this component."+
+                    "- parameter / pointer",
+            defaultValue = "irrigationDemand"
+    )
+    public Attribute.String irrigationDemandName;
+    
+    @JAMSVarDescription(
+            access = JAMSVarDescription.AccessType.READ,
+            description = "Name of attribute that stores water requirements of an HRU - the real plant"+
+                    "requirements. Water requirements will be read by this component. - parameter / pointer",
+            defaultValue = "plantIrrigRequirements"
+    )
+    public Attribute.String plantIrrigRequirementsName;
+    
+    @JAMSVarDescription(
+            access = JAMSVarDescription.AccessType.READ,
+            description = "Name of attribute that stores the irrigation water delivered to HRU for application (extraction"+
+                    "minus losses due to efficiency). This attribute will be written to by this component."+
+                    " - parameter / pointer",
+            defaultValue = "irrigationApplication"
+    )
+    public Attribute.String irrigationApplicationName;
+
+    @JAMSVarDescription(
+            access = JAMSVarDescription.AccessType.READ,
+            description = "Ratio of water available (allowed to be taken) for irrigation over water present"+
+                    "in the reach (actR.. + inR..). - parameter"
+    )
+    public Attribute.Double allowedExtractionFraction;
+    
+    @JAMSVarDescription(
+            access = JAMSVarDescription.AccessType.WRITE,
+            description = "Total demand of water for irrigation, including the enhancement by poor efficiency."+
+                    "Should be attribute of the ReachLoop to write. This component cumulates the irrigation"+ 
+                    "demands of irrigated HRUs and writes this attribute. - output"
+    )
+    public Attribute.Double totalDemand;
+
+    @JAMSVarDescription(
+            access = JAMSVarDescription.AccessType.WRITE,
+            description = "Total extraction for irrigation (= totalDemand, but limited to available water)."+
+                    "Calculated in this component. Losses due to poor efficiency are removed from this volume"+
+                    "before transfer to irrigated HRUs. - output"
+    )
+    public Attribute.Double totalExtraction;
+    
+    @JAMSVarDescription(
+            access = JAMSVarDescription.AccessType.WRITE,
+            description = "Total water available for irrigation in the reach (act+in) as sum of the four components"+
+                    "BEFORE EXTRACTION. Not used. - output" // TODO: do we need this?
+    )
+    public Attribute.Double totalAvailable;
+
+    /*
+     *  Component run stages
+     */
+
+    @Override
+    public void run() {
+        double run_inRD1 = inRD1.getValue();
+        double run_inRD2 = inRD2.getValue();
+        double run_inRG1 = inRG1.getValue();
+        double run_inRG2 = inRG2.getValue();
+        double run_actRD1 = actRD1.getValue();
+        double run_actRD2 = actRD2.getValue();
+        double run_actRG1 = actRG1.getValue();
+        double run_actRG2 = actRG2.getValue();
+        double run_allowedExtractionFraction = allowedExtractionFraction.getValue();
+
+        Attribute.Entity run_currentReach = reaches.getCurrent();
+        //check if this reach even has irrigated HRUs in its catchment
+        if (!run_currentReach.existsAttribute(irrigationEntitiesListName.getValue())) { // no irrigated HRUs --> step out of function
+            double run_inAvailable = run_allowedExtractionFraction * (run_inRD1 + run_inRD2 + run_inRG1 + run_inRG2);
+            double run_actAvailable = run_allowedExtractionFraction * (run_actRD1 + run_actRD2 + run_actRG1 + run_actRG2);
+            totalAvailable.setValue(run_inAvailable + run_actAvailable); // IG : ACHTUNG, cette variable n'est pas à jour !!
+            return;
+        }
+//        getModel().getRuntime().println("START - incoming RD1: "+inRD1.getValue()+", RD2: "+inRD2.getValue()+", RG1: "+inRG1.getValue()+", RG2: "+inRG2.getValue()+"; actRD1: "+actRD1.getValue()+", actRD2: "+actRD2.getValue()+", actRG1: "+actRG1.getValue()+", actRG2: "+actRG2.getValue()+". Reach "+currentReach.getObject("ID"));
+        double run_totalExtraction; // local variable to store actually extracted volume
+        double run_totalIn = run_inRD1 + run_inRD2 + run_inRG1 + run_inRG2; // all water in inflow (for proportional extraction)
+        double run_totalAct = run_actRD1 + run_actRD2 + run_actRG1 + run_actRG2; // all water in act (for proportional extraction)
+        double run_totalStorage = run_totalIn + run_totalAct; // all water in inflow and act
+        double run_inAvailable = run_allowedExtractionFraction * run_totalIn;
+        double run_actAvailable = run_allowedExtractionFraction * run_totalAct; // eau du reach dispo pour l'irrigation.
+        double run_totalAvailable = run_inAvailable + run_actAvailable; // all available water
+        totalAvailable.setValue(run_totalAvailable); // eau disponible pour l'irrigation à ce pas de temps
+        //totalAvailable.setValue(totalIn);
+        double run_totalDemand = 0;
+        double run_providedFraction;
+
+        List<Attribute.Entity> run_l = (List) run_currentReach.getObject(irrigationEntitiesListName.getValue());
+        for (Attribute.Entity run_hru : run_l) {
+            double run_demand = run_hru.getDouble(irrigationDemandName.getValue());
+            run_totalDemand += run_demand;
+        }
+
+        totalDemand.setValue(run_totalDemand);
+
+        //calculate proportion of total water that is needed
+        if ((run_totalAvailable != 0) & (run_totalDemand != 0)){ // if there is water available (in and/or act) AND demanded for irrigation
+            
+            double run_availableDemandFraction = run_totalDemand / run_totalAvailable;// fraction of available water that is demanded for irrigation
+            
+            if (run_availableDemandFraction <=1){ // demand can be satisfied with available water from inflow and act
+                double run_storageDemandFraction = run_totalDemand / run_totalStorage;// fraction of all stored water that is demanded for irrigation
+                run_totalExtraction = run_totalDemand; // we can satisfy the demand (extract everything that is needed)
+                run_providedFraction = 1;
+                
+                // extract proportionally from inflow (ratio demand over all water)
+                inRD1.setValue(run_inRD1 * (1 - run_storageDemandFraction));
+                inRD2.setValue(run_inRD2 * (1 - run_storageDemandFraction));
+                inRG1.setValue(run_inRG1 * (1 - run_storageDemandFraction));
+                inRG2.setValue(run_inRG2 * (1 - run_storageDemandFraction));
+                // extract proportionally from act (ratio demand over all water)
+                actRD1.setValue(run_actRD1 * (1 - run_storageDemandFraction));
+                actRD2.setValue(run_actRD2 * (1 - run_storageDemandFraction));
+                actRG1.setValue(run_actRG1 * (1 - run_storageDemandFraction));
+                actRG2.setValue(run_actRG2 * (1 - run_storageDemandFraction));
+            } else { // not all of the demand can be satisfied from available water. Only available water will be extracted
+                run_totalExtraction = run_totalAvailable; // we extract all available water
+                run_providedFraction = run_totalExtraction/run_totalDemand;
+                
+                // extract proportionally from inflow (ratio demand over all water)
+                inRD1.setValue(run_inRD1 * (1 - run_allowedExtractionFraction));
+                inRD2.setValue(run_inRD2 * (1 - run_allowedExtractionFraction));
+                inRG1.setValue(run_inRG1 * (1 - run_allowedExtractionFraction));
+                inRG2.setValue(run_inRG2 * (1 - run_allowedExtractionFraction));
+                // extract proportionally from act (ratio demand over all water)
+                actRD1.setValue(run_actRD1 * (1 - run_allowedExtractionFraction));
+                actRD2.setValue(run_actRD2 * (1 - run_allowedExtractionFraction));
+                actRG1.setValue(run_actRG1 * (1 - run_allowedExtractionFraction));
+                actRG2.setValue(run_actRG2 * (1 - run_allowedExtractionFraction));
+            }
+            
+            //distribute total transfer over all HRUs
+            double run_totalProvidedWater=0.;
+            for (Attribute.Entity run_hru : run_l) { // loop over HRUs irrigated with water from this HRU
+                double run_plantIrrigRequirements = run_hru.getDouble(plantIrrigRequirementsName.getValue()); // plant water requirements of current HRU
+                double run_providedWater = run_plantIrrigRequirements * run_providedFraction; // irrigation water provided to current HRU
+                run_hru.setDouble(irrigationApplicationName.getValue(), run_providedWater + run_hru.getDouble(irrigationApplicationName.getValue())); // provide water to irrigated HRU (add to eventually remaining water)
+                run_totalProvidedWater += run_providedWater; // add to counter of total provided water
+            }
+            // restitute lost water to RD2 (when efficiency of the irrigation network <1) :
+            inRD2.setValue(inRD2.getValue()+Math.max(0.,run_totalExtraction-run_totalProvidedWater) );
+            // TODO: this does not really make sens to put this water to RD2 of this REACH! (only makes sens for HRU)
+            
+            
+        } else { // no water available OR no water demanded for irrigation -> no extraction, no delivery
+            // -> no modification of available volume
+//            for (Attribute.Entity run_hru : run_l) {
+//                run_hru.setDouble(irrigationApplicationName.getValue(), 0); // no delivery
+//            }
+            run_totalExtraction = 0; // No extraction
+        }
+        
+        totalExtraction.setValue(run_totalExtraction);
+        
+//        getModel().getRuntime().println("END - incoming RD1: "+inRD1.getValue()+", RD2: "+inRD2.getValue()+", RG1: "+inRG1.getValue()+", RG2: "+inRG2.getValue()+"; actRD1: "+actRD1.getValue()+", actRD2: "+actRD2.getValue()+", actRG1: "+actRG1.getValue()+", actRG2: "+actRG2.getValue()+". Reach "+currentReach.getObject("ID"));
+//remove all HRUs from demand list
+        run_l.removeAll(run_l);
+    }
+}
