@@ -179,7 +179,7 @@ public class IrrigationDemand_NN extends JAMSComponent {
  	    defaultValue = "1"
 
     )
-    public Attribute.Double efficiency; 
+    public Attribute.Double irrigSystemEfficiency; 
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
@@ -190,7 +190,7 @@ public class IrrigationDemand_NN extends JAMSComponent {
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
-            description = "Irrigation demand (amount of water to take = plantIrrigRequirements/efficiency) - output",
+            description = "Irrigation demand (amount of water to take = plantIrrigRequirements/irrigSystemEfficiency) - output",
             unit = "L"
     )
     public Attribute.Double irrigationDemand;
@@ -235,7 +235,7 @@ public class IrrigationDemand_NN extends JAMSComponent {
             
             //set the demand
             plantIrrigRequirements.setValue(run_deficiteVolume);
-            irrigationDemand.setValue(run_deficiteVolume/efficiency.getValue());
+            irrigationDemand.setValue(run_deficiteVolume/irrigSystemEfficiency.getValue());
 
             //get the matching reach/hru for the current HRU
             Attribute.Entity run_hruID = hrus.getCurrent();
