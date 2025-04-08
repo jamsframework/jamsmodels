@@ -40,7 +40,7 @@ import java.util.List;
         + "from both."
         + "totalIrrigAvailable is written only for reach sources",
         date = "2015-08-13 / 2025-03-25",
-        version = "3.0_0"
+        version = "3.1_0"
 )
 @VersionComments(entries = {
     @VersionComments.Entry(version = "1.0_0", comment = "Initial version"),
@@ -224,9 +224,9 @@ public class IrrigationExtractionReach_NN extends JAMSComponent {
         double run_totalAct = run_actRD1 + run_actRD2 + run_actRG1 + run_actRG2; // all water in act (for proportional extraction)
         double run_totalStorage = run_totalIn + run_totalAct; // all water in inflow and act
         double run_inAvailable = run_allowedExtractionFraction * run_totalIn;
-        double run_actAvailable = run_allowedExtractionFraction * run_totalAct; // eau du reach dispo pour l'irrigation.
+        double run_actAvailable = run_allowedExtractionFraction * run_totalAct; // water in the reach for irrigation
         double run_totalAvailable = run_inAvailable + run_actAvailable; // all available water
-        totalIrrigAvailable.setValue(run_totalAvailable); // eau disponible pour l'irrigation à ce pas de temps
+        totalIrrigAvailable.setValue(run_totalAvailable); // water available for irrigation purpose at this time step
 
         double run_totalDemand = 0;
         double run_providedFraction;
