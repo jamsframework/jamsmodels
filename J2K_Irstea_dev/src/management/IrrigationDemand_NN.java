@@ -39,12 +39,13 @@ import java.util.Map;
                 " saturation goal, groundwater demand, new names. Modification for the case" +
                 "where source reach and hru are defined -> warn and take from reach.",
         date = "2015-08-12 / 2021-05-26 / 2025-03-25",
-        version = "2.0_0"
+        version = "2.1_0"
 )
 @VersionComments(entries = {
     @VersionComments.Entry(version = "1.0_0", comment = "Initial version"),
     @VersionComments.Entry(version = "2.0_0", comment = "New names. Modification for the case" +
-                "where source reach and hru are defined -> warn and take from reach.")
+                "where source reach and hru are defined -> warn and take from reach."),
+    @VersionComments.Entry(version = "2.1_0", comment = "All variables contain irrigation terminology")
 })
 public class IrrigationDemand_NN extends JAMSComponent {
 
@@ -156,7 +157,7 @@ public class IrrigationDemand_NN extends JAMSComponent {
             unit = "mm",
             defaultValue = "0"
     )
-    public Attribute.Double maxDosis; 
+    public Attribute.Double maxIrrigDosis; 
     
         @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
@@ -229,8 +230,8 @@ public class IrrigationDemand_NN extends JAMSComponent {
             //need to irrigate, now check water deficit
             double run_deficiteVolume = Math.max(0,(satLPSexp.getValue() - satLPS.getValue())) * maxLPS.getValue() * irrigationDemandCorrectionLPS.getValue() +
                                     Math.max(0,(satMPSexp.getValue() - satMPS.getValue())) * maxMPS.getValue() * irrigationDemandCorrectionMPS.getValue();
-            if (maxDosis.getValue() > 0) {
-                run_deficiteVolume = Math.min(run_deficiteVolume, maxDosis.getValue() * area.getValue());
+            if (maxIrrigDosis.getValue() > 0) {
+                run_deficiteVolume = Math.min(run_deficiteVolume, maxIrrigDosis.getValue() * area.getValue());
             }
             
             //set the demand
