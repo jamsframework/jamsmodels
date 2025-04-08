@@ -40,13 +40,14 @@ import java.util.Map;
                 "where source reach and hru are defined -> warn and take from reach."
                 + "multiple source extraction",
         date = "2015-08-12 / 2021-05-26 / 2025-03-25",
-        version = "3.0_0"
+        version = "3.1_0"
 )
 @VersionComments(entries = {
     @VersionComments.Entry(version = "1.0_0", comment = "Initial version"),
     @VersionComments.Entry(version = "2.0_0", comment = "New names. Modification for the case" +
                 "where source reach and hru are defined -> warn and take from reach."),
-    @VersionComments.Entry(version = "3.0_0", comment = "multiple source extraction")
+    @VersionComments.Entry(version = "3.0_0", comment = "multiple source extraction"),
+    @VersionComments.Entry(version = "3.1_0", comment = "All variables contain irrigation terminology")
 })
 public class IrrigationMultipleSourceDemand_NN extends JAMSComponent {
 
@@ -139,7 +140,7 @@ public class IrrigationMultipleSourceDemand_NN extends JAMSComponent {
 
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            description = "Name of list of irrigated HRUs in GW entities (hru reservoir). List will be read by this"+
+            description = "Name of list of irrigated HRUs in hru entities (GW reservoir). List will be read by this"+
                     "component. - parameter / pointer",
             defaultValue = "irrigationGWEntities"
     )
@@ -155,7 +156,7 @@ public class IrrigationMultipleSourceDemand_NN extends JAMSComponent {
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            description = "Name of list of irrigated HRUs in Farm Dams entities (hru reservoir). List will be read by this"+
+            description = "Name of list of irrigated HRUs in hru entities (farm dam reservoir). List will be read by this"+
                     "component. - parameter / pointer",
             defaultValue = "irrigationFarmdamsEntities"
     )
@@ -181,7 +182,7 @@ public class IrrigationMultipleSourceDemand_NN extends JAMSComponent {
             unit = "mm",
             defaultValue = "0"
     )
-    public Attribute.Double maxDosis; 
+    public Attribute.Double maxIrrigDosis; 
     
         @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
@@ -201,7 +202,7 @@ public class IrrigationMultipleSourceDemand_NN extends JAMSComponent {
                 "demand for the same plant water requirement. Difference lost into RD2. - parameter",
  	    defaultValue = "1"
     )
-    public Attribute.Double efficiency; 
+    public Attribute.Double irrigSystemEfficiency; 
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
@@ -212,7 +213,7 @@ public class IrrigationMultipleSourceDemand_NN extends JAMSComponent {
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
-            description = "Irrigation demand (amount of water to take = plantIrrigRequirements/efficiency) - output",
+            description = "Irrigation demand (amount of water to take = plantIrrigRequirements/irrigSystemEfficiency) - output",
             unit = "L"
     )
     public Attribute.Double irrigationDemand;
@@ -257,18 +258,19 @@ public class IrrigationMultipleSourceDemand_NN extends JAMSComponent {
             //need to irrigate, now check water deficit
             double run_deficiteVolume = Math.max(0,(satLPSexp.getValue() - satLPS.getValue())) * maxLPS.getValue() * irrigationDemandCorrectionLPS.getValue() +
                                     Math.max(0,(satMPSexp.getValue() - satMPS.getValue())) * maxMPS.getValue() * irrigationDemandCorrectionMPS.getValue();
-            if (maxDosis.getValue() > 0) {
-                run_deficiteVolume = Math.min(run_deficiteVolume, maxDosis.getValue() * area.getValue());
+            if (maxIrrigDosis.getValue() > 0) {
+                run_deficiteVolume = Math.min(run_deficiteVolume, maxIrrigDosis.getValue() * area.getValue());
             }
             
             //set the demand
             plantIrrigRequirements.setValue(run_deficiteVolume);
-            irrigationDemand.setValue(run_deficiteVolume/efficiency.getValue());
+            irrigationDemand.setValue(run_deficiteVolume/irrigSystemEfficiency.getValue());
 
             //get the matching reach/hru for the current HRU
             Attribute.Entity run_hruID = hrus.getCurrent();
             
-            // Activate type of connection
+            // Add the hru ID which is irrigated in list, depending on the source type configuration
+            // Source type configurations
             /* 1 : HRU
              * 2 : Reach
              * 3 : farmdams
