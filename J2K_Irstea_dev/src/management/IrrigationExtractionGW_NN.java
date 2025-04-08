@@ -34,22 +34,22 @@ import java.util.List;
         author = "Sven Kralisch / LC / Nathan Pellerin",
         description = "Transfer water from HRUs to HRUs depending on water"
         + " availability and demand"
-        + "Irrigation water comes from incoming water to the reach and water inside the reach (actRG1, etc..)."
+        + "Irrigation water comes from incoming water to the hru (inRG1, ect..) and water inside the hru (actRG1, etc..)."
         + "New names. Bugfix in water extraction from act. Use of more"
         + "internal variables. Application of extraction limitation to in and act, equal extraction"
         + "from both."
-        + "totalIrrigAvailable is written only for reach sources",
+        + "totalIrrigAvailable is written only for hru sources",
         date = "2015-08-13 / 2025-03-25",
-        version = "3.0_0"
+        version = "3.1_0"
 )
 @VersionComments(entries = {
     @VersionComments.Entry(version = "1.0_0", comment = "Initial version"),
-    @VersionComments.Entry(version = "2.0_0", comment = "Modififed case where no water comes into the reach,"
-            + " but water is inside the reach --> now water will be extracted from the reach in this case."),
+    @VersionComments.Entry(version = "2.0_0", comment = "Modififed case where no water comes into the hru,"
+            + " but water is inside the hru --> now water will be extracted from the hru in this case."),
     @VersionComments.Entry(version = "3.0_0", comment = "New names. Bugfix in water extraction from act. Use of more"
             + "internal variables. Application of extraction limitation to in and act, equal extraction"
             + "from both."),
-        @VersionComments.Entry(version = "3.1_0", comment = "All variables contain irrigation terminology")
+    @VersionComments.Entry(version = "3.1_0", comment = "All variables contain irrigation terminology")
 })
 public class IrrigationExtractionGW_NN extends JAMSComponent {
 
@@ -64,7 +64,7 @@ public class IrrigationExtractionGW_NN extends JAMSComponent {
 
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
-            description = "Current time step RD2 inflow into reach. Will be updated by this component,"+
+            description = "Current time step RD2 inflow into hru. Will be updated by this component,"+
                     "extracting water for irrigation. - input / state variable",
             unit = "L"
     )
@@ -72,7 +72,7 @@ public class IrrigationExtractionGW_NN extends JAMSComponent {
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
-            description = "Current time step RG1 inflow into reach. Will be updated by this component,"+
+            description = "Current time step RG1 inflow into hru. Will be updated by this component,"+
                     "extracting water for irrigation. - input / state variable",
             unit = "L"
     )
@@ -80,7 +80,7 @@ public class IrrigationExtractionGW_NN extends JAMSComponent {
             
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
-            description = "Current time step RG2 inflow into reach. Will be updated by this component,"+
+            description = "Current time step RG2 inflow into hru. Will be updated by this component,"+
                     "extracting water for irrigation. - input / state variable",
             unit = "L"
     )
@@ -88,7 +88,7 @@ public class IrrigationExtractionGW_NN extends JAMSComponent {
    
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
-            description = "Current time step RG1 volume inside reach. Will be updated by this component"+
+            description = "Current time step RG1 volume inside hru. Will be updated by this component"+
                     ", extracting water for irrigation."+
                     "- state variable",
             unit = "L"
@@ -97,7 +97,7 @@ public class IrrigationExtractionGW_NN extends JAMSComponent {
             
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
-            description = "Current time step RG2 volume inside reach. Will be updated by this component"+
+            description = "Current time step RG2 volume inside hru. Will be updated by this component"+
                     ", extracting water for irrigation."+
                     "- state variable",
             unit = "L"
@@ -106,7 +106,7 @@ public class IrrigationExtractionGW_NN extends JAMSComponent {
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            description = "Name of list of irrigated HRUs in reach entities. List will be read by this"+
+            description = "Name of list of irrigated HRUs in hru entities. List will be read by this"+
                     "component. - parameter / pointer",
             defaultValue = "irrigationEntities"
     )
@@ -141,7 +141,7 @@ public class IrrigationExtractionGW_NN extends JAMSComponent {
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
             description = "Ratio of water available (allowed to be taken) for irrigation over water present"+
-                    "in the reach (actR.. + inR..). - parameter"
+                    "in the GW reservoir (actR.. + inR..). - parameter"
     )
     public Attribute.Double allowedIrrigExtractionFraction;
     
@@ -165,7 +165,7 @@ public class IrrigationExtractionGW_NN extends JAMSComponent {
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
-            description = "Total water available for irrigation in the reach (act+in) as sum of the four components"+
+            description = "Total water available for irrigation in the GW reservoir (act+in) as sum of the four components"+
                     "BEFORE EXTRACTION. Not used. - output",
             unit = "L"
     )
@@ -196,8 +196,8 @@ public class IrrigationExtractionGW_NN extends JAMSComponent {
         double run_totalAct = run_actRG1 + run_actRG2; // all water in act (for proportional extraction)
         double run_totalStorage = run_totalIn + run_totalAct; // all water in inflow and act
         double run_inAvailable = run_allowedExtractionFraction * run_totalIn;
-        double run_actAvailable = run_allowedExtractionFraction * run_totalAct; // reach water available for irrigation.
-        double run_totalAvailable = run_inAvailable + run_actAvailable; // all available water
+        double run_actAvailable = run_allowedExtractionFraction * run_totalAct; // ground water available for irrigation
+        double run_totalAvailable = run_inAvailable + run_actAvailable; // total water available for irrigation at this time step
         totalIrrigAvailable.setValue(run_totalAvailable);
 
         double run_totalDemand = 0;
@@ -257,7 +257,7 @@ public class IrrigationExtractionGW_NN extends JAMSComponent {
         
         totalIrrigExtraction.setValue(run_totalExtraction);
         
-//        getModel().getRuntime().println("END - incoming RD1: "+inRD1.getValue()+", RD2: "+inRD2.getValue()+", RG1: "+inRG1.getValue()+", RG2: "+inRG2.getValue()+"; actRD1: "+actRD1.getValue()+", actRD2: "+actRD2.getValue()+", actRG1: "+actRG1.getValue()+", actRG2: "+actRG2.getValue()+". Reach "+currentReach.getObject("ID"));
+//        getModel().getRuntime().println("END - incoming RD1: "+inRD1.getValue()+", RD2: "+inRD2.getValue()+", RG1: "+inRG1.getValue()+", RG2: "+inRG2.getValue()+"; actRD1: "+actRD1.getValue()+", actRD2: "+actRD2.getValue()+", actRG1: "+actRG1.getValue()+", actRG2: "+actRG2.getValue()+". GW "+run_currentHRU.getObject("ID"));
     //remove all HRUs from demand list
         run_l.removeAll(run_l);
     }
