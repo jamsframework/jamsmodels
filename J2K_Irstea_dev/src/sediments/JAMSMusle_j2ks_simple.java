@@ -87,6 +87,14 @@ public class JAMSMusle_j2ks_simple extends JAMSComponent {
     update = JAMSVarDescription.UpdateType.RUN,
     description = "soil loss")
     public JAMSDouble gensed;
+    @JAMSVarDescription(access = JAMSVarDescription.AccessType.WRITE,
+    update = JAMSVarDescription.UpdateType.RUN,
+    description = "factors C, K, slope and slopelength together")
+    public JAMSDouble allFac;
+    @JAMSVarDescription(access = JAMSVarDescription.AccessType.WRITE,
+    update = JAMSVarDescription.UpdateType.RUN,
+    description = "factors L and S")
+    public JAMSDouble LSfac;
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
     update = JAMSVarDescription.UpdateType.RUN,
     description = "additional P-Factor, for scenario building")
@@ -124,41 +132,44 @@ public class JAMSMusle_j2ks_simple extends JAMSComponent {
 
 
         Double gensed = 0.0;
+        Double allFac = 0.0;
         double area_ha = area / 10000; //m2 to ha
 
-        if ((slope > 0) && (surfacetemp > 0.1) && (snowDepth == 0) && (outRD1 > 0)) {
+       
 
-            // slope-Umrechung von � in %
-            double slopeperc = Math.tan(Math.toRadians(slope)) * 100;
-            //System.out.println("ID: "+ ID  + " slope_deg : " + slope + " slope_perc: " + slopeperc);
-            // slope Sfac = S-Factor f?r slope kleiner 9% und g??er gleich 9%
-            double Sfac = 0;
-            if (slopeperc >= 9) {
-                Sfac = 16.8 * Math.sin(Math.toRadians(slope)) - 0.5;   // steil
-            } else {
-                Sfac = 10.8 * Math.sin(Math.toRadians(slope)) + 0.03; // flach
-            }
+        // slope-Umrechung von � in %
+        double slopeperc = Math.tan(Math.toRadians(slope)) * 100;
+        //System.out.println("ID: "+ ID  + " slope_deg : " + slope + " slope_perc: " + slopeperc);
+        // slope Sfac = S-Factor f?r slope kleiner 9% und g??er gleich 9%
+        double Sfac = 0;
+        if (slopeperc >= 9) {
+            Sfac = 16.8 * Math.sin(Math.toRadians(slope)) - 0.5;   // steil
+        } else {
+            Sfac = 10.8 * Math.sin(Math.toRadians(slope)) + 0.03; // flach
+        }
 
-            double Lfacbeta = (Math.sin(Math.toRadians(slope)) / 0.0896)
-                    / (3 * Math.pow(Math.sin(Math.toRadians(slope)), 0.8) + 0.56);
-            double Lfacm = Lfacbeta / (1 + Lfacbeta);
-            double Lfac = Math.pow(slopelength / 22.13, Lfacm);
-            double LSfac = Lfac * Sfac;
-            double Pvorl = 0.4 * 0.02 * slopeperc;
-            double HLkrit = 170 * Math.pow(Math.E, -0.13 * slopeperc);
-            double Pfac = slopelength < HLkrit ? Pvorl : 1;
-            double ROKF = Math.pow(Math.E, -0.053 * ROK);
-            double p_mgt = 1;
-            if (p_managm != null){
-                p_mgt = p_managm.getValue();
-            }
+        double Lfacbeta = (Math.sin(Math.toRadians(slope)) / 0.0896)
+                / (3 * Math.pow(Math.sin(Math.toRadians(slope)), 0.8) + 0.56);
+        double Lfacm = Lfacbeta / (1 + Lfacbeta);
+        double Lfac = Math.pow(slopelength / 22.13, Lfacm);
+        double LSfac = Lfac * Sfac;
+            //double Pvorl = 0.4 * 0.02 * slopeperc;
+            //double HLkrit = 170 * Math.pow(Math.E, -0.13 * slopeperc);
+            //double Pfac = slopelength < HLkrit ? Pvorl : 1;
+        double Pfac = 1;
+            //double ROKF = Math.pow(Math.E, -0.053 * ROK);
+        double p_mgt = 1;
+        double ROKF = 1;
+           //if (p_managm != null){
+                //p_mgt = p_managm.getValue();
+            //}
             //method used for paddy rice fields (ponded water protects from erosion)
-            if (irri_act > 0){
-                p_mgt = 0;
-            }
+            //if (irri_act > 0){
+                //p_mgt = 0;
+            //}
+        allFac = Kfac * LSfac * Pfac * Cfac * ROKF * p_mgt;
             
-            
-
+        if ((slope > 0) && (surfacetemp > 0.1) && (snowDepth == 0) && (outRD1 > 0)) {
             double peaktime = 0; // hours
             if (time.get(Calendar.MONTH) > 4 & time.get(Calendar.MONTH) < 10) {
                 peaktime = 4;               // Summer
@@ -173,29 +184,34 @@ public class JAMSMusle_j2ks_simple extends JAMSComponent {
 
             
             //double area_km2 = area / 1000000; //m2 to km2
-            double Qsurf_peak_m3 = outRD1 / (1000 * area_ha); // m?
-            
+            //double Qsurf_peak_m3 = outRD1 / (1000 * area_ha); // m?
+            double Qsurf_peak_m3 = outRD1 / 1000;
             
 
 
             // double Qsurf_mm_ha = (outRD1 / area) * 10000; Holm orginal
-            double Qsurf_mm_ha = (outRD1 / area); //manfred new checked with SWAT sources
+            double Qsurf_mm_ha = outRD1 / area; //manfred new checked with SWAT sources
 
             //System.out.println("ID: "+ ID + " Qsurf_peak_m3:" + Qsurf_peak_m3 + " Qsurf_mm_ha:" + Qsurf_mm_ha + " und NS:" + precip + " PeakTime: "+ peaktime);
-
-            double Qpeak = (0.278 * Qsurf_peak_m3) / (3.6 * peaktime);//--> m3/s
+            //double Qpeak = (0.278 * Qsurf_peak_m3) / (3.6 * peaktime);//--> m3/s
+            double Qpeak = Qsurf_peak_m3 / (3600 * 24);//--> m3/s
             //double Qpeak_m3_s = (0.278 * Qsurf_peak_m3) / (3.6 * peaktime) / area_ha;//--> (m3/s)/ha
-            double Lamb = 11.8 * Math.pow((Qsurf_mm_ha * Qpeak * 1), 0.56); // SWAT-MULSE Williams, 1995
-            double sedperhainto = Lamb * Kfac * LSfac * Pfac * Cfac * ROKF * p_mgt; // SWAT-MULSE Williams, 1995
+            double Lamb = 11.8 * Math.pow((Qsurf_peak_m3 * Qpeak), 0.56); // SWAT-MULSE Williams, 1995
+            //double Lamb = 11.8 * Math.pow((Qsurf_mm_ha * Qsurf_peak_m3), 0.56); // Qpeak = Qdaily
+             
+            
+            
+            double sedperhainto = Lamb * allFac; // SWAT-MULSE Williams, 1995
             //gensed = (sedperhainto / 10000) * area;     // t / HRU
-            gensed = sedperhainto * area_ha; // t / hru
-
+            gensed = sedperhainto; // t / hru
         }
 
         double out = gensed + insed;
 
         // reading the outs
         this.insed.setValue(0);
+        this.allFac.setValue(allFac);
+        this.LSfac.setValue(LSfac);
         this.outsed.setValue(out);
         this.gensed.setValue(gensed);
     }
