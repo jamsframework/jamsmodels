@@ -18,13 +18,12 @@ import java.util.SimpleTimeZone;
 import java.util.TimeZone;
 
 /**
- * Konvertierung von DWD-Stundenwerten ins tabgetrente-Format + Konvertierung
- * Taupunkt in relative Luftfeuchte + Zusammenfassung in Tageswerte
+ * Konvertierung von DWD-Tagesnwerten ins tabgetrente-Format + Kl RSK niederschlag
  *
  *
  * @author Manfred Fink TFW
  */
-public class DWD_2_J2k {
+public class DWD_2_J2k_d_KL_TXK {
 
     BufferedWriter writer;
     BufferedWriter writerrhum;
@@ -94,6 +93,16 @@ public class DWD_2_J2k {
         //Beispiel Filename: produkt_td_stunde_19961018_20070630_05419.txt
 
         String paramet = path_file[k - 1].substring(8, 10);
+        
+        if ("ni".equals(paramet)){
+            paramet = "RS";
+        }
+        
+        if ("kl".equals(paramet)){
+            paramet = "TXK";
+        }
+        
+        
         String st_num = path_file[k - 1].substring(36, 41);
 
         String Path = "";
@@ -200,9 +209,9 @@ public class DWD_2_J2k {
         int year_int = Integer.parseInt(startdatestr.substring(0, 4));
         int month_int = Integer.parseInt(startdatestr.substring(4, 6)) - 1;
         int day_int = Integer.parseInt(startdatestr.substring(6, 8));
-        int hour_int = Integer.parseInt(startdatestr.substring(8, 10));
+        //int hour_int = Integer.parseInt(startdatestr.substring(8, 10));
         // für Stündliche Zeitschritte
-        int increment = 3600000;
+        int increment = 86400000;
         long itterationen = 0;
         Date date = new Date();
         Date date2 = new Date();
@@ -212,9 +221,9 @@ public class DWD_2_J2k {
         date.setYear(year_int - 1900);
         date.setMonth(month_int);
         date.setDate(day_int);
-        date.setHours(hour_int);
-        date.setMinutes(0);
-        date.setSeconds(0);
+//        date.setHours(hour_int);
+//        date.setMinutes(0);
+//        date.setSeconds(0);
         tag_int_alt = date.getDay();
         
         
@@ -314,14 +323,14 @@ public class DWD_2_J2k {
                     int Jahr = Integer.parseInt(datestr.substring(0, 4));
                     int Monat = Integer.parseInt(datestr.substring(4, 6)) - 1;
                     int Tag = Integer.parseInt(datestr.substring(6, 8));
-                    int Stunde = Integer.parseInt(datestr.substring(8, 10));
+//                    int Stunde = Integer.parseInt(datestr.substring(8, 10));
 
                     date2.setYear(Jahr - 1900);
                     date2.setMonth(Monat);
                     date2.setDate(Tag);
-                    date2.setHours(Stunde);
-                    date2.setMinutes(0);
-                    date2.setSeconds(0);
+//                    date2.setHours(Stunde);
+//                    date2.setMinutes(0);
+//                    date2.setSeconds(0);
 
                     i = 0;
                     
@@ -331,6 +340,10 @@ public class DWD_2_J2k {
                         param2 = Double.parseDouble(hum_string[4]);
                     } else if ((paramet.equals("rr")) || (paramet.equals("sd")) || paramet.equals("ff")) {
                         param1 = Double.parseDouble(hum_string[3]);
+                    } else if (paramet.equals("RS")){ 
+                        param1 = Double.parseDouble(hum_string[3]);
+                    } else if (paramet.equals("TXK")){ 
+                        param1 = Double.parseDouble(hum_string[15]);
                     }
 
                     if (f > 1) {
@@ -391,7 +404,7 @@ public class DWD_2_J2k {
 
                                     }
 
-                                    if (paramet.equals("rr") || paramet.equals("sd")) {
+                                    if (paramet.equals("rr") || paramet.equals("sd") || paramet.equals("RS") || paramet.equals("TXK")) {
                                         result_tag = result_sum;
                                     }
 
@@ -451,7 +464,7 @@ public class DWD_2_J2k {
                         result = (100 * SDD_tau) / SDD_temp;
                     } else if (paramet.equals("sd")) {
                         result = param1 / 60; //Sonnenscheindauer von Minute zu Stunde                            
-                    } else if (paramet.equals("tu") || paramet.equals("rr") || paramet.equals("tu") || paramet.equals("ff")) {
+                    } else if (paramet.equals("tu") || paramet.equals("rr") || paramet.equals("tu") || paramet.equals("ff") || paramet.equals("RS") || paramet.equals("TXK")) {
                         result = param1;
                         result2 = param2;
                     }
@@ -610,9 +623,9 @@ public class DWD_2_J2k {
     
 
     public static void main(String[] args) throws IOException {
-        DWD_2_J2k Precipi = new DWD_2_J2k();
+        DWD_2_J2k_d_KL_TXK Precipi = new DWD_2_J2k_d_KL_TXK();
 
-        Precipi.convert("C:\\\\unzip\\\\produkt_klima_tag_19370101_20181130_04692.txt");
-        //Precipi.convert(args[0]);
+        //Precipi.convert("C:\\\\unzip\\\\produkt_nieder_tag_18910711_20241231_03952.txt");
+        Precipi.convert(args[0]);
     }
 }

@@ -5,108 +5,112 @@ import jams.model.*;
 import java.util.Calendar;
 
 @JAMSComponentDescription(title = "JAMSMusle_j2ks",
-description = "JAMS native Version of MusleMay, new calibration parameters",
-date = "19. February 2025",
-author = "Holm + Manfred")
+        description = "JAMS native Version of MusleMay, new calibration parameters",
+        date = "19. February 2025",
+        author = "Holm + Manfred")
 @VersionComments(entries = {
     @VersionComments.Entry(version = "1.0_0", comment = "Version Salmar - LUCCI"),
     @VersionComments.Entry(version = "1.1", comment = "Introduction of Redu_erosion parameter and bypass also afects RD1 amount", date = "2025-02-19"),
-})
+    @VersionComments.Entry(version = "1.2", comment = "Introduction of diffrent time steps (houly and daily)", date = "2025-05-09"),})
 public class JAMSMusle_j2ks extends JAMSComponent {
 
 //Read access variables
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
-    update = JAMSVarDescription.UpdateType.RUN,
-    description = "The current hru entity")
+            update = JAMSVarDescription.UpdateType.RUN,
+            description = "The current hru entity")
     public JAMSEntityCollection entities;
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
-    update = JAMSVarDescription.UpdateType.RUN,
-    description = "in cm depth of soil layer")
+            update = JAMSVarDescription.UpdateType.RUN,
+            description = "in cm depth of soil layer")
     public JAMSDoubleArray layerdepth;
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
-    update = JAMSVarDescription.UpdateType.RUN,
-    description = "")
+            description = "temporal resolution [d | h]",
+            defaultValue = "d")
+    public Attribute.String tempRes;
+    @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
+            update = JAMSVarDescription.UpdateType.RUN,
+            description = "")
     public JAMSDouble area;
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
-    update = JAMSVarDescription.UpdateType.RUN,
-    description = "")
+            update = JAMSVarDescription.UpdateType.RUN,
+            description = "")
     public JAMSDouble slope;
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
-    update = JAMSVarDescription.UpdateType.RUN,
-    description = "")
+            update = JAMSVarDescription.UpdateType.RUN,
+            description = "")
     public JAMSDouble Cfac;
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
-    update = JAMSVarDescription.UpdateType.RUN,
-    description = "")
+            update = JAMSVarDescription.UpdateType.RUN,
+            description = "")
     public JAMSDouble ROK;
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
-    update = JAMSVarDescription.UpdateType.RUN,
-    description = "")
+            update = JAMSVarDescription.UpdateType.RUN,
+            description = "")
     public JAMSDouble flowlength;
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
-    update = JAMSVarDescription.UpdateType.RUN,
-    description = "")
+            update = JAMSVarDescription.UpdateType.RUN,
+            description = "")
     public JAMSDouble Kfac;
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
-    update = JAMSVarDescription.UpdateType.RUN,
-    description = "Current time")
+            update = JAMSVarDescription.UpdateType.RUN,
+            description = "Current time")
     public JAMSCalendar time;
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
-    update = JAMSVarDescription.UpdateType.RUN,
-    description = "HRU statevar RD1")
+            update = JAMSVarDescription.UpdateType.RUN,
+            description = "HRU statevar RD1")
     public JAMSDouble outRD1;
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
-    update = JAMSVarDescription.UpdateType.RUN,
-    description = "snow depth")
+            update = JAMSVarDescription.UpdateType.RUN,
+            description = "snow depth")
     public JAMSDouble snowDepth;
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
-    update = JAMSVarDescription.UpdateType.RUN,
-    description = "precipitation mm")
+            update = JAMSVarDescription.UpdateType.RUN,
+            description = "precipitation mm")
     public JAMSDouble precip;
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
-    update = JAMSVarDescription.UpdateType.RUN,
-    description = "surface temperature")
+            update = JAMSVarDescription.UpdateType.RUN,
+            description = "surface temperature")
     public JAMSDouble surfacetemp;
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
-    update = JAMSVarDescription.UpdateType.RUN,
-    description = "ID")
+            update = JAMSVarDescription.UpdateType.RUN,
+            description = "ID")
     public JAMSDouble ID;
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
-    update = JAMSVarDescription.UpdateType.RUN,
-    description = "Bypass factor for surface runoff sediment from upstream",
-    lowerBound = 0,
-    upperBound = 1,
-    defaultValue = "0")
+            update = JAMSVarDescription.UpdateType.RUN,
+            description = "Bypass factor for surface runoff sediment from upstream",
+            lowerBound = 0,
+            upperBound = 1,
+            defaultValue = "0")
     public JAMSDouble Surrun_bypass;
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
-    update = JAMSVarDescription.UpdateType.RUN,
-    description = "Erosion calibration factor for reduction, longer timesteps lead to overestimation",
-    defaultValue = "1")
+            update = JAMSVarDescription.UpdateType.RUN,
+            description = "Erosion calibration factor for reduction, longer timesteps lead to overestimation",
+            defaultValue = "1")
     public JAMSDouble Redu_erosion;
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READWRITE,
-    update = JAMSVarDescription.UpdateType.RUN,
-    description = "HRU statevar sediment inflow")
+            update = JAMSVarDescription.UpdateType.RUN,
+            description = "HRU statevar sediment inflow")
     public JAMSDouble insed;
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READWRITE,
-    update = JAMSVarDescription.UpdateType.RUN,
-    description = "HRU statevar sediment outflow")
+            update = JAMSVarDescription.UpdateType.RUN,
+            description = "HRU statevar sediment outflow")
     public JAMSDouble sedpool;
 //Write Access variables
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.WRITE,
-    update = JAMSVarDescription.UpdateType.RUN,
-    description = "HRU statevar sediment outflow")
+            update = JAMSVarDescription.UpdateType.RUN,
+            description = "HRU statevar sediment outflow")
     public JAMSDouble outsed;
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.WRITE,
-    update = JAMSVarDescription.UpdateType.RUN,
-    description = "soil loss")
+            update = JAMSVarDescription.UpdateType.RUN,
+            description = "soil loss")
     public JAMSDouble gensed;
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
-    update = JAMSVarDescription.UpdateType.RUN,
-    description = "additional P-Factor, for scenario building")
+            update = JAMSVarDescription.UpdateType.RUN,
+            description = "additional P-Factor, for scenario building")
     public JAMSDouble p_managm;
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
-    update = JAMSVarDescription.UpdateType.RUN,
-    description = "HRU irrigation Waterinput  [l], Default = 0 ")
+            update = JAMSVarDescription.UpdateType.RUN,
+            description = "HRU irrigation Waterinput  [l], Default = 0 ")
     public JAMSDouble irrigation_act;
 
     public void run() throws JAMSEntity.NoSuchAttributeException {
@@ -130,15 +134,13 @@ public class JAMSMusle_j2ks extends JAMSComponent {
         Double sedpool = this.sedpool.getValue();
         outRD1 = outRD1 * (1 - Surrun_bypass.getValue());
         bysurrun = outRD1 * (Surrun_bypass.getValue());
-        
+
         bysed = insed * (Surrun_bypass.getValue());
         insed = insed * (1 - Surrun_bypass.getValue());
-        
+
         Double irri_act = irrigation_act.getValue();
-        
+
         // calling the oms3 execute
-
-
         Double gensed = 0.0;
         double area_ha = area / 10000; //m2 to ha
 
@@ -165,40 +167,37 @@ public class JAMSMusle_j2ks extends JAMSComponent {
             double Pfac = slopelength < HLkrit ? Pvorl : 1;
             double ROKF = Math.pow(Math.E, -0.053 * ROK);
             double p_mgt = 1;
-            if (p_managm != null){
+            if (p_managm != null) {
                 p_mgt = p_managm.getValue();
             }
             //method used for paddy rice fields (ponded water protects from erosion)
-            if (irri_act > 0){
+            if (irri_act > 0) {
                 p_mgt = 0;
             }
-            
-            
 
             double peaktime = 0; // hours
-            if (time.get(Calendar.MONTH) > 4 & time.get(Calendar.MONTH) < 10) {
-                peaktime = 4;               // Summer
-            } else {
-                peaktime = 14;              // Winter
+            if (this.tempRes.getValue().equals("d")) {
+                if (time.get(Calendar.MONTH) > 4 & time.get(Calendar.MONTH) < 10) {
+                    peaktime = 4;               // Summer
+                } else {
+                    peaktime = 14;              // Winter
+                }
+
+                if ((precip == 0.0) && (outRD1 > 0)) { // only snowmelting
+                    //    //System.out.println(" outRD1:" + outRD1/area + " und NS:" + precip + " PeakTime old: "+ peaktime);
+                    peaktime = 24;
+                }
+            }else{
+                peaktime = 1;
             }
 
-            if ((precip == 0.0) && (outRD1 > 0)) { // only snowmelting
-                //    //System.out.println(" outRD1:" + outRD1/area + " und NS:" + precip + " PeakTime old: "+ peaktime);
-                peaktime = 24;
-            }
-
-            
             //double area_km2 = area / 1000000; //m2 to km2
             double Qsurf_peak_m3 = outRD1 / (1000 * area_ha); // m?
-            
-            
-
 
             // double Qsurf_mm_ha = (outRD1 / area) * 10000; Holm orginal
             double Qsurf_mm_ha = (outRD1 / area); //manfred new checked with SWAT sources
 
             //System.out.println("ID: "+ ID + " Qsurf_peak_m3:" + Qsurf_peak_m3 + " Qsurf_mm_ha:" + Qsurf_mm_ha + " und NS:" + precip + " PeakTime: "+ peaktime);
-
             double Qpeak = (0.278 * Qsurf_peak_m3) / (3.6 * peaktime);//--> m3/s
             //double Qpeak_m3_s = (0.278 * Qsurf_peak_m3) / (3.6 * peaktime) / area_ha;//--> (m3/s)/ha
             double Lamb = 11.8 * Math.pow((Qsurf_mm_ha * Qpeak * 1), 0.56); // SWAT-MULSE Williams, 1995
@@ -208,9 +207,8 @@ public class JAMSMusle_j2ks extends JAMSComponent {
 
         }
 
-
         double out = 0;
-        double bal = (gensed ) - insed;
+        double bal = (gensed) - insed;
         double neuaccpool = sedpool - bal;
 
         if (neuaccpool < 0) {
@@ -223,7 +221,7 @@ public class JAMSMusle_j2ks extends JAMSComponent {
                 if (outRD1 > 0) {
                     out = Redu_erosion.getValue() * acc;
                     neuaccpool = neuaccpool - out;
-                    
+
                 }
             }
         }
@@ -231,12 +229,9 @@ public class JAMSMusle_j2ks extends JAMSComponent {
         //if (out > 0) {
         //   System.out.println(" ID " + ID + " Pool: " + neuaccpool + " gen: " + gensed + " in: " + insed + " out: " + out);
         //}
-
         sedpool = neuaccpool;
 
         out = out + bysed;
-
-
 
         // reading the outs
         this.insed.setValue(0);

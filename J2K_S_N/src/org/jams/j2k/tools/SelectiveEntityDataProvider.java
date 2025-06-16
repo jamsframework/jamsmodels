@@ -48,8 +48,8 @@ public class SelectiveEntityDataProvider extends JAMSComponent {
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
     description = "Output entities")
     public Attribute.Integer ID;
-    @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
-    description = "Output Variable")
+    @JAMSVarDescription(access = JAMSVarDescription.AccessType.WRITE,
+    description = "Output Value")
     public Attribute.Double output;
 
     /*
