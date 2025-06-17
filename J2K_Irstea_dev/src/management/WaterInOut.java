@@ -31,7 +31,7 @@ import java.util.List;
  * @author Nico Hachgenei
  */
 @JAMSComponentDescription(
-        title = "",
+        title = "WaterInOut",
         author = "Nico Hachgenei",
         description = "Extraction of water from reaches (e.g. for drinking water)"
         + " and input into reach (e.g. treated waste water), using a file with one"
