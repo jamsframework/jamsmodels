@@ -37,7 +37,7 @@ import java.util.List;
         author = "Nico Hachgenei",
         description = "Extraction of water from reaches (e.g. for drinking water)"
         + " and input into reach (e.g. treated waste water), using a file with one"
-        + " value per tiem step and limit to available water."
+        + " value per time step and limit to available water."
 	+ " Water comes from incoming water to the reach and water inside the reach (inR.. / actR..)."
         + " Water is put into specified component or distributed."
         + " Modifications for tracking: 1) take proportionally from tracked volumes."
