@@ -38,7 +38,7 @@ import java.util.List;
         + "New names. Bugfix in water extraction from act. Use of more"
         + "internal variables. Application of extraction limitation to in and act, equal extraction"
         + "from both."
-        + "totalAvailable is written only for reach sources"
+        + "totalIrrigAvailableReach is written only for reach sources"
         + "multiple source extraction",
         date = "2015-08-13 / 2025-03-25",
         version = "4.0_0"
@@ -179,16 +179,16 @@ public class IrrigationMultipleSourceExtractionReach_NN extends JAMSComponent {
                     "demands of irrigated HRUs and writes this attribute. - output",
             unit = "L"
     )
-    public Attribute.Double totalDemand;
+    public Attribute.Double totalIrrigDemand;
 
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
-            description = "Total extraction for irrigation (= totalDemand, but limited to available water)."+
+            description = "Total extraction for irrigation (= totalIrrigDemand, but limited to available water)."+
                     "Calculated in this component. Losses due to poor efficiency are removed from this volume"+
                     "before transfer to irrigated HRUs. - output",
             unit = "L"
     )
-    public Attribute.Double totalExtraction;
+    public Attribute.Double totalIrrigExtractionReach;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
@@ -196,7 +196,7 @@ public class IrrigationMultipleSourceExtractionReach_NN extends JAMSComponent {
                     "BEFORE EXTRACTION. Not used. - output",
             unit = "L"
     )
-    public Attribute.Double totalAvailable;
+    public Attribute.Double totalIrrigAvailableReach;
 
     /*
      *  Component run stages
@@ -226,10 +226,10 @@ public class IrrigationMultipleSourceExtractionReach_NN extends JAMSComponent {
         double run_totalAct = run_actRD1 + run_actRD2 + run_actRG1 + run_actRG2; // all water in act (for proportional extraction)
         double run_totalStorage = run_totalIn + run_totalAct; // all water in inflow and act
         double run_inAvailable = run_allowedExtractionFraction * run_totalIn;
-        double run_actAvailable = run_allowedExtractionFraction * run_totalAct; // eau du reach dispo pour l'irrigation.
+        double run_actAvailable = run_allowedExtractionFraction * run_totalAct; // water in the reach for irrigation
         double run_totalAvailable = run_inAvailable + run_actAvailable; // all available water
-        totalAvailable.setValue(run_totalAvailable); // eau disponible pour l'irrigation à ce pas de temps
-        //totalAvailable.setValue(totalIn);
+        totalIrrigAvailableReach.setValue(run_totalAvailable); // water available for irrigation purpose at this time step
+        
         double run_totalDemand = 0;
         double run_providedFraction;
 
@@ -248,10 +248,10 @@ public class IrrigationMultipleSourceExtractionReach_NN extends JAMSComponent {
             double run_DemandRemaining = run_demand * (1-run_frac_irrig_applied);
             run_totalDemand += run_DemandRemaining;
         }
-        totalDemand.setValue(run_totalDemand);
+        totalIrrigDemand.setValue(run_totalDemand);
 
         //calculate proportion of total water that is needed
-        if ((run_totalAvailable != 0) & (run_totalDemand != 0)){ // if there is water available (in and/or act) AND demanded for irrigation
+        if ((run_totalAvailable != 0) && (run_totalDemand != 0)){ // if there is water available (in and/or act) AND demanded for irrigation
             
             double run_availableDemandFraction = run_totalDemand / run_totalAvailable;// fraction of available water that is demanded for irrigation
             
@@ -305,16 +305,11 @@ public class IrrigationMultipleSourceExtractionReach_NN extends JAMSComponent {
             inRD2.setValue(inRD2.getValue() + Math.max(0., run_totalExtraction - run_totalProvidedWater) );            
             
         } else { // no water available OR no water demanded for irrigation -> no extraction, no delivery
-            // -> no modification of available volume
-//            for (Attribute.Entity run_hru : run_l) {
-//                run_hru.setDouble(irrigationApplicationName.getValue(), 0); // no delivery
-//            }
             run_totalExtraction = 0; // No extraction
         }
         
-        totalExtraction.setValue(run_totalExtraction);
+        totalIrrigExtractionReach.setValue(run_totalExtraction);
         
-        // getModel().getRuntime().println("END - incoming RD1: "+inRD1.getValue()+", RD2: "+inRD2.getValue()+", RG1: "+inRG1.getValue()+", RG2: "+inRG2.getValue()+"; actRD1: "+actRD1.getValue()+", actRD2: "+actRD2.getValue()+", actRG1: "+actRG1.getValue()+", actRG2: "+actRG2.getValue()+". Reach "+currentReach.getObject("ID"));
         //remove all HRUs from demand list
         run_l.removeAll(run_l);
     }
