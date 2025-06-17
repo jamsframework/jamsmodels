@@ -43,10 +43,13 @@ import java.util.List;
         + " Modifications for tracking: 1) take proportionally from tracked volumes."
         + " 2) track injected wastewater",
         date = "2024-05-30",
-        version = "1.0_0"
+        version = "2.0_0"
 )
 @VersionComments(entries = {
-    @VersionComments.Entry(version = "1.0_0", comment = "Initial version")
+    @VersionComments.Entry(version = "1.0_0", comment = "Initial version"),
+    @VersionComments.Entry(version = "2.0_0", comment = "improved variable names,"
+            + "take water proportionally from both, in and act,"
+            + "corrected fractions.")
 })
 public class WaterInOut_track extends JAMSComponent {
 
@@ -63,7 +66,7 @@ public class WaterInOut_track extends JAMSComponent {
             access = JAMSVarDescription.AccessType.READ,
             description = "Volume to extract (negative) or inject (positive)"
     )
-    public Attribute.Double Volume;
+    public Attribute.Double VolumeIO;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
@@ -119,53 +122,55 @@ public class WaterInOut_track extends JAMSComponent {
     )
     public Attribute.Double actRG2;
 
-    @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
-            description = "Ratio of water available for extraction / water present in the reach (actR..)",
+    @JAMSVarDescription(
+            access = JAMSVarDescription.AccessType.READ,
+            description = "Ratio of water available (allowed to be taken) for extraction over water present"+
+                    "in the reach (actR..). Between 0 and 1. - parameter",
             defaultValue = "1.0"
     )
-    public Attribute.Double actPrel;
+    public Attribute.Double allowedIOExtractionFraction;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
             description = "Total demand of water. For verification purposes"
     )
-    public Attribute.Double totalDemand;
+    public Attribute.Double totalIODemand;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
             description = "Total input of water. For verification purposes"
     )
-    public Attribute.Double totalInput;
+    public Attribute.Double totalIOInput;
 
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
             description = "volume extracted, cummulative -> all reaches"
     )
-    public Attribute.Double ExtractedAll;
+    public Attribute.Double IOExtractedAll;
 
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
             description = "volume extracted from current reach"
     )
-    public Attribute.Double ExtractedR;
+    public Attribute.Double IOExtractedR;
 
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
             description = "volume added, cummulative -> all reaches"
     )
-    public Attribute.Double addedAll;
+    public Attribute.Double IOaddedAll;
 
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
             description = "volume added to current reach"
     )
-    public Attribute.Double addedR;
+    public Attribute.Double IOaddedR;
     
-    @JAMSVarDescription(
-            access = JAMSVarDescription.AccessType.WRITE,
-            description = "Total water in the reach available for irrigation"
-    )
-    public Attribute.Double totalAvail;
+//    @JAMSVarDescription(
+//            access = JAMSVarDescription.AccessType.WRITE,
+//            description = "Total water in the reach available for irrigation"
+//    )
+//    public Attribute.Double totalAvail;
     
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
         description = "Array of reach names (IDs)")
@@ -343,10 +348,10 @@ public class WaterInOut_track extends JAMSComponent {
     @Override
     public void run() {
 
-        Attribute.Entity currentReach = reaches.getCurrent();
-        
-        boolean SewTrack = trackSewers.getValue() == 1;
-        boolean WWTrack = trackWW.getValue() == 1;
+//        Attribute.Entity currentReach = reaches.getCurrent();
+
+        boolean run_SewTrack = trackSewers.getValue() == 1;
+        boolean run_WWTrack = trackWW.getValue() == 1;
         
         // read tracked volumes of the current reach --> incoming
         double[] ArrayTrackedVolumeRD1 = trackedVolumeRD1Array.getValue();
@@ -367,14 +372,14 @@ public class WaterInOut_track extends JAMSComponent {
                 TrackedVolumeSewRD1_act, TrackedVolumeSewRD2_act, 
                 TrackedVolumeSewRG1_act, TrackedVolumeSewRG2_act, 
                 TrackedVolumeSewTotal_act,
-                WWin, TrackedVolumeWW, TrackedVolumeWW_act;
+                run_WWin, TrackedVolumeWW, TrackedVolumeWW_act;
         TrackedVolumeSewRD1 = TrackedVolumeSewRD2 = TrackedVolumeSewRG1 =
                 TrackedVolumeSewRG2 = TrackedVolumeSewTotal =
                 TrackedVolumeSewRD1_act = TrackedVolumeSewRD2_act = 
                 TrackedVolumeSewRG1_act = TrackedVolumeSewRG2_act =  
                 TrackedVolumeSewTotal_act = 
-                WWin = TrackedVolumeWW = TrackedVolumeWW_act = 0.0;
-        if(SewTrack){
+                run_WWin = TrackedVolumeWW = TrackedVolumeWW_act = 0.0;
+        if(run_SewTrack){
             // read tracked volumes of the current reach --> incoming
             TrackedVolumeSewRD1 = trackedVolumeSewRD1.getValue();
             TrackedVolumeSewRD2 = trackedVolumeSewRD2.getValue();
@@ -389,9 +394,9 @@ public class WaterInOut_track extends JAMSComponent {
             TrackedVolumeSewTotal_act = trackedVolumeSewTotal_act.getValue();
         }
         
-        if(WWTrack){
+        if(run_WWTrack){
             // read tracked volumes of the current reach --> incoming
-            WWin = InWW.getValue();
+            run_WWin = InWW.getValue();
             // available
             TrackedVolumeWW_act = trackedVolumeWW_act.getValue();
         }
@@ -407,217 +412,151 @@ public class WaterInOut_track extends JAMSComponent {
             }
         }
         
-        
+        // define internal variables
+        double run_inRD1 = inRD1.getValue();
+        double run_inRD2 = inRD2.getValue();
+        double run_inRG1 = inRG1.getValue();
+        double run_inRG2 = inRG2.getValue();
+        double run_actRD1 = actRD1.getValue();
+        double run_actRD2 = actRD2.getValue();
+        double run_actRG1 = actRG1.getValue();
+        double run_actRG2 = actRG2.getValue();
+        double run_allowedIOExtractionFraction = this.allowedIOExtractionFraction.getValue();
+
         // calculate water available for extraction
-        double totalIn = inRD1.getValue() + inRD2.getValue() + inRG1.getValue() + inRG2.getValue();
-        double totalAct = this.actPrel.getValue() * (actRD1.getValue() + actRD2.getValue() + actRG1.getValue() + actRG2.getValue()); // water in the reach that is available for animal needs
-        double totalAv = totalIn + totalAct; // all available water for extraction 
-        this.totalAvail.setValue(totalIn + totalAct); // all available water for extraction
+        double run_totalIn = run_inRD1 + run_inRD2 + run_inRG1 + run_inRG2; // all water in inflow (for proportional extraction)
+        double run_totalAct = run_actRD1 + run_actRD2 + run_actRG1 + run_actRG2; // all water in act (for proportional extraction)
+        double run_totalStorage = run_totalIn + run_totalAct; // all water in inflow and act
+        double run_inAvailable = run_allowedIOExtractionFraction * run_totalIn; // water inflow available for irrigation
+        double run_actAvailable = run_allowedIOExtractionFraction * run_totalAct; // water in the reach available for irrigation
+        double run_totalAvailable = run_inAvailable + run_actAvailable; // all available water
         
-        double totalDemand = 0;
-        double volume = Volume.getValue();
+        // define variables for storing extracted / added volumes
+        double run_IOExtractedR; // local variable to store actually extracted volume
+        double run_IOaddedR;
+        
+        double run_totalIODemand = 0;
+        double run_volume = VolumeIO.getValue();
         // check if extraction (negative Volume) or injection (positive Volume) or none (Volume = 0)
-        if (volume<0) { // extract water from the reach 
+        if ((run_totalAvailable != 0.0) & (run_volume<0)) { // if there is water available and water should be extracted, extract water from the reach 
             
-            totalDemand = volume * (-1);
-            this.totalDemand.setValue(totalDemand);
-
-            //calculate proportion of total water that is needed
-            if (totalAv != 0.0){ // if there is water available
-                if (totalIn != 0){ // if there is water coming into reach
-
-                    double frac = totalDemand /totalIn;
-
-                    if (frac <= 1) {
-
-                        //we can cover all only with input to the reach, reduce the components accordingly
-                        inRD1.setValue(inRD1.getValue() * (1 - frac));
-                        inRD2.setValue(inRD2.getValue() * (1 - frac));
-                        inRG1.setValue(inRG1.getValue() * (1 - frac));
-                        inRG2.setValue(inRG2.getValue() * (1 - frac));
-                        ExtractedR.setValue(totalDemand);
+            run_totalIODemand = run_volume * (-1);
+            this.totalIODemand.setValue(run_totalIODemand);
+            
+            double run_availableDemandFraction = run_totalIODemand / run_totalAvailable;// fraction of available water that is demanded for extraction
+            
+            if (run_availableDemandFraction <=1){ // demand can be satisfied with available water from inflow and act
+                double run_storageDemandFraction = run_totalIODemand / run_totalStorage;// fraction of all stored water that is demanded for extraction
+                run_IOExtractedR = run_totalIODemand; // we can satisfy the demand (extract everything that is needed)
+                
+                // extract proportionally from inflow (ratio demand over all water)
+                inRD1.setValue(run_inRD1 * (1 - run_storageDemandFraction));
+                inRD2.setValue(run_inRD2 * (1 - run_storageDemandFraction));
+                inRG1.setValue(run_inRG1 * (1 - run_storageDemandFraction));
+                inRG2.setValue(run_inRG2 * (1 - run_storageDemandFraction));
+                // extract proportionally from act (ratio demand over all water)
+                actRD1.setValue(run_actRD1 * (1 - run_storageDemandFraction));
+                actRD2.setValue(run_actRD2 * (1 - run_storageDemandFraction));
+                actRG1.setValue(run_actRG1 * (1 - run_storageDemandFraction));
+                actRG2.setValue(run_actRG2 * (1 - run_storageDemandFraction));
+                
+                // reduce tracked volumes proportionally
+                for(int i : listIndex){ // per upstream reach
+                    // tracked inflow
+                    ArrayTrackedVolumeRD1[i] = ArrayTrackedVolumeRD1[i] * (1 - run_storageDemandFraction);
+                    ArrayTrackedVolumeRD2[i] = ArrayTrackedVolumeRD2[i] * (1 - run_storageDemandFraction);
+                    ArrayTrackedVolumeRG1[i] = ArrayTrackedVolumeRG1[i] * (1 - run_storageDemandFraction);
+                    ArrayTrackedVolumeRG2[i] = ArrayTrackedVolumeRG2[i] * (1 - run_storageDemandFraction);
+                    ArrayTrackedVolumeTotal[i] = ArrayTrackedVolumeTotal[i] * (1 - run_storageDemandFraction);
                     
-                        // reduce tracked volumes proportionally
-                        for(int i : listIndex){
-                            ArrayTrackedVolumeRD1[i] = ArrayTrackedVolumeRD1[i] * (1 - frac);
-                            ArrayTrackedVolumeRD2[i] = ArrayTrackedVolumeRD2[i] * (1 - frac);
-                            ArrayTrackedVolumeRG1[i] = ArrayTrackedVolumeRG1[i] * (1 - frac);
-                            ArrayTrackedVolumeRG2[i] = ArrayTrackedVolumeRG2[i] * (1 - frac);
-                            ArrayTrackedVolumeTotal[i] = ArrayTrackedVolumeTotal[i] * (1 - frac);
-                        }
-                        if(SewTrack){
-                            // reduce tracked volumes from sewer proportionally
-                            TrackedVolumeSewRD1 = TrackedVolumeSewRD1 * (1 - frac);
-                            TrackedVolumeSewRD2 = TrackedVolumeSewRD2 * (1 - frac);
-                            TrackedVolumeSewRG1 = TrackedVolumeSewRG1 * (1 - frac);
-                            TrackedVolumeSewRG2 = TrackedVolumeSewRG2 * (1 - frac);
-                            TrackedVolumeSewTotal = TrackedVolumeSewTotal * (1 - frac);
-                        }
-                        if(WWTrack){
-                            // reduce tracked volumes from WWTP proportionally
-                            WWin = WWin * (1 - frac);
-                        }
-
-                    } else {
-                        //looking if we can cover the demand by including usable part of act...
-                        frac = totalDemand / (totalIn+totalAct);
-
-                        //we can cover only part of the demand with input, reduce the components to 0
-                        inRD1.setValue(0);
-                        inRD2.setValue(0);
-                        inRG1.setValue(0);
-                        inRG2.setValue(0);
-                    
-                        // set incoming tracked volumes to 0
-                        for(int i : listIndex){
-                            ArrayTrackedVolumeRD1[i] = 0;
-                            ArrayTrackedVolumeRD2[i] = 0;
-                            ArrayTrackedVolumeRG1[i] = 0;
-                            ArrayTrackedVolumeRG2[i] = 0;
-                            ArrayTrackedVolumeTotal[i] = 0;
-                        }
-                        if(SewTrack){
-                            // set incoming tracked sewer volumes to 0
-                            TrackedVolumeSewRD1 = 0;
-                            TrackedVolumeSewRD2 = 0;
-                            TrackedVolumeSewRG1 = 0;
-                            TrackedVolumeSewRG2 = 0;
-                            TrackedVolumeSewTotal = 0;
-                        }
-                        if(WWTrack){
-                            // set incoming tracked WW volumes to 0
-                            WWin = 0;
-                        }
-
-                        if (frac <= 1) {
-                            //we can cover all of the demand with input and act together, reduce the components accordingly
-                            double actDemand = 0;
-                            actDemand = totalDemand - totalIn;
-                            double frac2 = actDemand/totalAct;
-                            actRD1.setValue(actRD1.getValue() * (1 - frac2));
-                            actRD2.setValue(actRD2.getValue() * (1 - frac2));
-                            actRG1.setValue(actRG1.getValue() * (1 - frac2));
-                            actRG2.setValue(actRG2.getValue() * (1 - frac2));
-                            ExtractedR.setValue(totalDemand);
-
-                            // reduce tracked stocked volumes proportionally
-                            for(int i : listIndex){
-                                ArrayTrackedVolume_actRD1[i] = ArrayTrackedVolume_actRD1[i] * (1 - frac2);
-                                ArrayTrackedVolume_actRD2[i] = ArrayTrackedVolume_actRD2[i] * (1 - frac2);
-                                ArrayTrackedVolume_actRG1[i] = ArrayTrackedVolume_actRG1[i] * (1 - frac2);
-                                ArrayTrackedVolume_actRG2[i] = ArrayTrackedVolume_actRG2[i] * (1 - frac2);
-                                ArrayTrackedVolume_actTotal[i] = ArrayTrackedVolume_actTotal[i] * (1 - frac2);
-                            }
-                            if(SewTrack){
-                                // reduce tracked stocked volumes from sewer proportionally
-                                TrackedVolumeSewRD1_act = TrackedVolumeSewRD1_act * (1 - frac2);
-                                TrackedVolumeSewRD2_act = TrackedVolumeSewRD2_act * (1 - frac2);
-                                TrackedVolumeSewRG1_act = TrackedVolumeSewRG1_act * (1 - frac2);
-                                TrackedVolumeSewRG2_act = TrackedVolumeSewRG2_act * (1 - frac2);
-                                TrackedVolumeSewTotal_act = TrackedVolumeSewTotal_act * (1 - frac2);
-                            }
-                            if(WWTrack){
-                                // reduce tracked stocked volumes from WWTP proportionally
-                                TrackedVolumeWW_act = TrackedVolumeWW_act * (1 - frac2);
-                            }
-
-                        } else {
-                            // we can only cover part of the demand ; reduce the act... to (1 - actPrel)*act...
-                            actRD1.setValue(actRD1.getValue() * (1 - actPrel.getValue()));
-                            actRD2.setValue(actRD2.getValue() * (1 - actPrel.getValue()));
-                            actRG1.setValue(actRG1.getValue() * (1 - actPrel.getValue()));
-                            actRG2.setValue(actRG2.getValue() * (1 - actPrel.getValue()));
-                            ExtractedR.setValue(totalIn+totalAct);
-
-                            // reduce tracked volumes to zero (except leaving minimum flow)
-                            for(int i : listIndex){
-                                ArrayTrackedVolume_actRD1[i] = ArrayTrackedVolume_actRD1[i] * (1 - actPrel.getValue());
-                                ArrayTrackedVolume_actRD2[i] = ArrayTrackedVolume_actRD2[i] * (1 - actPrel.getValue());
-                                ArrayTrackedVolume_actRG1[i] = ArrayTrackedVolume_actRG1[i] * (1 - actPrel.getValue());
-                                ArrayTrackedVolume_actRG2[i] = ArrayTrackedVolume_actRG2[i] * (1 - actPrel.getValue());
-                                ArrayTrackedVolume_actTotal[i] = ArrayTrackedVolume_actTotal[i] * (1 - actPrel.getValue());
-                            }
-                            if(SewTrack){
-                                // reduce tracked stocked volumes from sewer to zero (except leaving minimum flow)
-                                TrackedVolumeSewRD1_act = TrackedVolumeSewRD1_act * (1 - actPrel.getValue());
-                                TrackedVolumeSewRD2_act = TrackedVolumeSewRD2_act * (1 - actPrel.getValue());
-                                TrackedVolumeSewRG1_act = TrackedVolumeSewRG1_act * (1 - actPrel.getValue());
-                                TrackedVolumeSewRG2_act = TrackedVolumeSewRG2_act * (1 - actPrel.getValue());
-                                TrackedVolumeSewTotal_act = TrackedVolumeSewTotal_act * (1 - actPrel.getValue());
-                            }
-                            if(WWTrack){
-                                // reduce tracked stocked volumes from WWTP to zero (except leaving minimum flow)
-                                TrackedVolumeWW_act = TrackedVolumeWW_act * (1 - actPrel.getValue());
-                            }
-                        }
-                    }
-
-                } else { // if no water coming into reach, but there is water in the reach act
-                    //looking if we can cover the demand by including usable part of act...
-                    double frac = totalDemand / (totalAct);
-                    if (frac <= 1) {
-                        //we can cover all of the demand with act, reduce the components accordingly
-                        actRD1.setValue(actRD1.getValue() * (1 - frac));
-                        actRD2.setValue(actRD2.getValue() * (1 - frac));
-                        actRG1.setValue(actRG1.getValue() * (1 - frac));
-                        actRG2.setValue(actRG2.getValue() * (1 - frac));
-                        ExtractedR.setValue(totalDemand);
-                        
-                        // reduce tracked volumes proportionally
-                        for(int i : listIndex){
-                            ArrayTrackedVolume_actRD1[i] = ArrayTrackedVolume_actRD1[i] * (1 - frac);
-                            ArrayTrackedVolume_actRD2[i] = ArrayTrackedVolume_actRD2[i] * (1 - frac);
-                            ArrayTrackedVolume_actRG1[i] = ArrayTrackedVolume_actRG1[i] * (1 - frac);
-                            ArrayTrackedVolume_actRG2[i] = ArrayTrackedVolume_actRG2[i] * (1 - frac);
-                            ArrayTrackedVolume_actTotal[i] = ArrayTrackedVolume_actTotal[i] * (1 - frac);
-                        }
-                        if(SewTrack){
-                            // reduce tracked stocked volumes from sewer proportionally
-                            TrackedVolumeSewRD1_act = TrackedVolumeSewRD1_act * (1 - frac);
-                            TrackedVolumeSewRD2_act = TrackedVolumeSewRD2_act * (1 - frac);
-                            TrackedVolumeSewRG1_act = TrackedVolumeSewRG1_act * (1 - frac);
-                            TrackedVolumeSewRG2_act = TrackedVolumeSewRG2_act * (1 - frac);
-                            TrackedVolumeSewTotal_act = TrackedVolumeSewTotal_act * (1 - frac);
-                        }
-                        if(WWTrack){
-                            // reduce tracked stocked volumes from WWTP proportionally
-                            TrackedVolumeWW_act = TrackedVolumeWW_act * (1 - frac);
-                        }
-
-                    } else {
-                        // we can only cover part of the demand ; reduce the act... to (1 - actPrel)*act...
-                        actRD1.setValue(actRD1.getValue() * (1 - actPrel.getValue()));
-                        actRD2.setValue(actRD2.getValue() * (1 - actPrel.getValue()));
-                        actRG1.setValue(actRG1.getValue() * (1 - actPrel.getValue()));
-                        actRG2.setValue(actRG2.getValue() * (1 - actPrel.getValue()));
-                        ExtractedR.setValue(totalAct);
-
-                        // reduce tracked volumes to zero (except leaving minimum flow)
-                        for(int i : listIndex){
-                            ArrayTrackedVolume_actRD1[i] = ArrayTrackedVolume_actRD1[i] * (1 - actPrel.getValue());
-                            ArrayTrackedVolume_actRD2[i] = ArrayTrackedVolume_actRD2[i] * (1 - actPrel.getValue());
-                            ArrayTrackedVolume_actRG1[i] = ArrayTrackedVolume_actRG1[i] * (1 - actPrel.getValue());
-                            ArrayTrackedVolume_actRG2[i] = ArrayTrackedVolume_actRG2[i] * (1 - actPrel.getValue());
-                            ArrayTrackedVolume_actTotal[i] = ArrayTrackedVolume_actTotal[i] * (1 - actPrel.getValue());
-                        }
-                        if(SewTrack){
-                            // reduce tracked stocked volumes from sewer to zero (except leaving minimum flow)
-                            TrackedVolumeSewRD1_act = TrackedVolumeSewRD1_act * (1 - actPrel.getValue());
-                            TrackedVolumeSewRD2_act = TrackedVolumeSewRD2_act * (1 - actPrel.getValue());
-                            TrackedVolumeSewRG1_act = TrackedVolumeSewRG1_act * (1 - actPrel.getValue());
-                            TrackedVolumeSewRG2_act = TrackedVolumeSewRG2_act * (1 - actPrel.getValue());
-                            TrackedVolumeSewTotal_act = TrackedVolumeSewTotal_act * (1 - actPrel.getValue());
-                        }
-                        if(WWTrack){
-                            // reduce tracked stocked volumes from WWTP proportionally
-                            TrackedVolumeWW_act = TrackedVolumeWW_act * (1 - actPrel.getValue());
-                        }
-                    }
+                    // tracked channel storage
+                    ArrayTrackedVolume_actRD1[i] = ArrayTrackedVolume_actRD1[i] * (1 - run_storageDemandFraction);
+                    ArrayTrackedVolume_actRD2[i] = ArrayTrackedVolume_actRD2[i] * (1 - run_storageDemandFraction);
+                    ArrayTrackedVolume_actRG1[i] = ArrayTrackedVolume_actRG1[i] * (1 - run_storageDemandFraction);
+                    ArrayTrackedVolume_actRG2[i] = ArrayTrackedVolume_actRG2[i] * (1 - run_storageDemandFraction);
+                    ArrayTrackedVolume_actTotal[i] = ArrayTrackedVolume_actTotal[i] * (1 - run_storageDemandFraction);
                 }
-            } else { 
-                this.ExtractedR.setValue(0.);
+                if(run_SewTrack){ // from sewer
+                    // in inflow
+                    TrackedVolumeSewRD1 = TrackedVolumeSewRD1 * (1 - run_storageDemandFraction);
+                    TrackedVolumeSewRD2 = TrackedVolumeSewRD2 * (1 - run_storageDemandFraction);
+                    TrackedVolumeSewRG1 = TrackedVolumeSewRG1 * (1 - run_storageDemandFraction);
+                    TrackedVolumeSewRG2 = TrackedVolumeSewRG2 * (1 - run_storageDemandFraction);
+                    TrackedVolumeSewTotal = TrackedVolumeSewTotal * (1 - run_storageDemandFraction);
+                    
+                    // in channel storage
+                    TrackedVolumeSewRD1_act = TrackedVolumeSewRD1_act * (1 - run_storageDemandFraction);
+                    TrackedVolumeSewRD2_act = TrackedVolumeSewRD2_act * (1 - run_storageDemandFraction);
+                    TrackedVolumeSewRG1_act = TrackedVolumeSewRG1_act * (1 - run_storageDemandFraction);
+                    TrackedVolumeSewRG2_act = TrackedVolumeSewRG2_act * (1 - run_storageDemandFraction);
+                    TrackedVolumeSewTotal_act = TrackedVolumeSewTotal_act * (1 - run_storageDemandFraction);
+                }
+                if(run_WWTrack){ // from WWTP
+                    // in inflow
+                    run_WWin = run_WWin * (1 - run_storageDemandFraction);
+                    
+                    // in channel storage
+                    TrackedVolumeWW_act = TrackedVolumeWW_act * (1 - run_storageDemandFraction);
+                }
+                
+            } else { // not all of the demand can be satisfied from available water. Only available (and allowed) water will be extracted
+                run_IOExtractedR = run_totalAvailable; // we extract all available water
+                
+                // extract proportionally from inflow (allowed fraction)
+                inRD1.setValue(run_inRD1 * (1 - run_allowedIOExtractionFraction));
+                inRD2.setValue(run_inRD2 * (1 - run_allowedIOExtractionFraction));
+                inRG1.setValue(run_inRG1 * (1 - run_allowedIOExtractionFraction));
+                inRG2.setValue(run_inRG2 * (1 - run_allowedIOExtractionFraction));
+                // extract proportionally from act (allowed fraction)
+                actRD1.setValue(run_actRD1 * (1 - run_allowedIOExtractionFraction));
+                actRD2.setValue(run_actRD2 * (1 - run_allowedIOExtractionFraction));
+                actRG1.setValue(run_actRG1 * (1 - run_allowedIOExtractionFraction));
+                actRG2.setValue(run_actRG2 * (1 - run_allowedIOExtractionFraction));
+                
+                
+                // reduce tracked volumes proportionally
+                for(int i : listIndex){ // per upstream reach
+                    // tracked inflow
+                    ArrayTrackedVolumeRD1[i] = ArrayTrackedVolumeRD1[i] * (1 - run_allowedIOExtractionFraction);
+                    ArrayTrackedVolumeRD2[i] = ArrayTrackedVolumeRD2[i] * (1 - run_allowedIOExtractionFraction);
+                    ArrayTrackedVolumeRG1[i] = ArrayTrackedVolumeRG1[i] * (1 - run_allowedIOExtractionFraction);
+                    ArrayTrackedVolumeRG2[i] = ArrayTrackedVolumeRG2[i] * (1 - run_allowedIOExtractionFraction);
+                    ArrayTrackedVolumeTotal[i] = ArrayTrackedVolumeTotal[i] * (1 - run_allowedIOExtractionFraction);
+                    
+                    // tracked channel storage
+                    ArrayTrackedVolume_actRD1[i] = ArrayTrackedVolume_actRD1[i] * (1 - run_allowedIOExtractionFraction);
+                    ArrayTrackedVolume_actRD2[i] = ArrayTrackedVolume_actRD2[i] * (1 - run_allowedIOExtractionFraction);
+                    ArrayTrackedVolume_actRG1[i] = ArrayTrackedVolume_actRG1[i] * (1 - run_allowedIOExtractionFraction);
+                    ArrayTrackedVolume_actRG2[i] = ArrayTrackedVolume_actRG2[i] * (1 - run_allowedIOExtractionFraction);
+                    ArrayTrackedVolume_actTotal[i] = ArrayTrackedVolume_actTotal[i] * (1 - run_allowedIOExtractionFraction);
+                }
+                if(run_SewTrack){ // from sewer
+                    // in inflow
+                    TrackedVolumeSewRD1 = TrackedVolumeSewRD1 * (1 - run_allowedIOExtractionFraction);
+                    TrackedVolumeSewRD2 = TrackedVolumeSewRD2 * (1 - run_allowedIOExtractionFraction);
+                    TrackedVolumeSewRG1 = TrackedVolumeSewRG1 * (1 - run_allowedIOExtractionFraction);
+                    TrackedVolumeSewRG2 = TrackedVolumeSewRG2 * (1 - run_allowedIOExtractionFraction);
+                    TrackedVolumeSewTotal = TrackedVolumeSewTotal * (1 - run_allowedIOExtractionFraction);
+                    
+                    // in channel storage
+                    TrackedVolumeSewRD1_act = TrackedVolumeSewRD1_act * (1 - run_allowedIOExtractionFraction);
+                    TrackedVolumeSewRD2_act = TrackedVolumeSewRD2_act * (1 - run_allowedIOExtractionFraction);
+                    TrackedVolumeSewRG1_act = TrackedVolumeSewRG1_act * (1 - run_allowedIOExtractionFraction);
+                    TrackedVolumeSewRG2_act = TrackedVolumeSewRG2_act * (1 - run_allowedIOExtractionFraction);
+                    TrackedVolumeSewTotal_act = TrackedVolumeSewTotal_act * (1 - run_allowedIOExtractionFraction);
+                }
+                if(run_WWTrack){ // from WWTP
+                    // in inflow
+                    run_WWin = run_WWin * (1 - run_allowedIOExtractionFraction);
+                    
+                    // in channel storage
+                    TrackedVolumeWW_act = TrackedVolumeWW_act * (1 - run_allowedIOExtractionFraction);
+                }
+                
             }
-        
+            
+            run_IOaddedR = 0.; // if water is extracted --> no water is added
+            
             // read tracked volumes of the current reach --> incoming
             trackedVolumeRD1Array.setValue(ArrayTrackedVolumeRD1);
             trackedVolumeRD2Array.setValue(ArrayTrackedVolumeRD2);
@@ -630,7 +569,7 @@ public class WaterInOut_track extends JAMSComponent {
             trackedVolumeRG1_actArray.setValue(ArrayTrackedVolume_actRG1);
             trackedVolumeRG2_actArray.setValue(ArrayTrackedVolume_actRG2);
             trackedVolumeTotal_actArray.setValue(ArrayTrackedVolume_actTotal);
-            if(SewTrack){
+            if(run_SewTrack){
                 // read tracked volumes of the current reach --> incoming
                 trackedVolumeSewRD1.setValue(TrackedVolumeSewRD1);
                 trackedVolumeSewRD2.setValue(TrackedVolumeSewRD2);
@@ -644,79 +583,79 @@ public class WaterInOut_track extends JAMSComponent {
                 trackedVolumeSewRG2_act.setValue(TrackedVolumeSewRG2_act);
                 trackedVolumeSewTotal_act.setValue(TrackedVolumeSewTotal_act);
             }
-            if(WWTrack){
+            if(run_WWTrack){
                 // read tracked volumes of the current reach --> incoming
                 trackedVolumeWW_act.setValue(TrackedVolumeWW_act);
                 // available
-                InWW.setValue(WWin);
+                InWW.setValue(run_WWin);
             }
-            // if water is extracted --> no water is added
-            this.addedR.setValue(0.);
-        } else if (volume > 0) { // water injected
-            double AddRD1, AddRD2, AddRG1, AddRG2;
-            AddRD1 = AddRD2 = AddRG1 = AddRG2 = 0.0;
-            if (targetComp.getValue() == "distr"){
-                // distribute incoming water over the four compounds, 
-                // - if any incoming water: distribute proportionally to what is incomping
-                // - else if any water in reach: distribute proportionally to what is in reach
-                // - else: distribute equally
-                if (totalIn > 0) { // if any incoming water: distribute proportionally to what is incoming
-                    AddRD1 = volume * inRD1.getValue() / totalIn;
-                    AddRD2 = volume * inRD2.getValue() / totalIn;
-                    AddRG1 = volume * inRG1.getValue() / totalIn;
-                    AddRG2 = volume * inRG2.getValue() / totalIn;
-                    
-                } else if (totalAct > 0) { // no incoming water, but water in reach: distribute proportionally to what is in reach
-                    AddRD1 = volume * actRD1.getValue() / totalAct;
-                    AddRD2 = volume * actRD2.getValue() / totalAct;
-                    AddRG1 = volume * actRG1.getValue() / totalAct;
-                    AddRG2 = volume * actRG2.getValue() / totalAct;
-                    
-                } else { // nothing coming in, nothing in stock: distribute equally
-                    AddRD1 = volume * 0.25;
-                    AddRD2 = volume * 0.25;
-                    AddRG1 = volume * 0.25;
-                    AddRG2 = volume * 0.25;
-                }
-            } else {
-                switch (targetComp.getValue()) {
-                    case "RD1":
-                        AddRD1 = volume;
-                        break;
-                    case "RD2":
-                        AddRD2 = volume;
-                        break;
-                    case "RG1":
-                        AddRG1 = volume;
-                        break;
-                    case "RG2":
-                        AddRG2 = volume;
-                        break;
-                    default:
-                        throw new IllegalArgumentException(targetComp.getValue() + " is not a valid target component. if there is a water input, targetComp needs to be in (RD1, RD2, RG1, RG2, distr)");
-                }
+        } else if (run_volume > 0) { // water injected
+            double run_AddRD1, run_AddRD2, run_AddRG1, run_AddRG2;
+            run_AddRD1 = run_AddRD2 = run_AddRG1 = run_AddRG2 = 0.0;
+            switch (targetComp.getValue()) {
+                case "distr":
+                    // distribute incoming water over the four compounds, 
+                    // - if any incoming water: distribute proportionally to what is incomping
+                    // - else if any water in reach: distribute proportionally to what is in reach
+                    // - else: distribute equally
+                    if (run_totalIn > 0) { // if any incoming water: distribute proportionally to what is incoming
+                        run_AddRD1 = run_volume * run_inRD1 / run_totalIn;
+                        run_AddRD2 = run_volume * run_inRD2 / run_totalIn;
+                        run_AddRG1 = run_volume * run_inRG1 / run_totalIn;
+                        run_AddRG2 = run_volume * run_inRG2 / run_totalIn;
+
+                    } else if (run_totalAct > 0) { // no incoming water, but water in reach: distribute proportionally to what is in reach
+                        run_AddRD1 = run_volume * run_actRD1 / run_totalAct;
+                        run_AddRD2 = run_volume * run_actRD2 / run_totalAct;
+                        run_AddRG1 = run_volume * run_actRG1 / run_totalAct;
+                        run_AddRG2 = run_volume * run_actRG2 / run_totalAct;
+
+                    } else { // nothing coming in, nothing in stock: distribute equally
+                        run_AddRD1 = run_volume * 0.25;
+                        run_AddRD2 = run_volume * 0.25;
+                        run_AddRG1 = run_volume * 0.25;
+                        run_AddRG2 = run_volume * 0.25;
+                    }
+                    break;
+                case "RD1":
+                    run_AddRD1 = run_volume;
+                    break;
+                case "RD2":
+                    run_AddRD2 = run_volume;
+                    break;
+                case "RG1":
+                    run_AddRG1 = run_volume;
+                    break;
+                case "RG2":
+                    run_AddRG2 = run_volume;
+                    break;
+                default:
+                    throw new IllegalArgumentException(targetComp.getValue() + " is not a valid target component. if there is a water input, targetComp needs to be in (RD1, RD2, RG1, RG2, distr)");
             }
-            if (WWTrack){
-                WWin = WWin + volume;
-                InWW.setValue(WWin);
+            if (run_WWTrack){
+                run_WWin = run_WWin + run_volume;
+                InWW.setValue(run_WWin);
             }
             
-            inRD1.setValue(inRD1.getValue() + AddRD1);
-            inRD2.setValue(inRD2.getValue() + AddRD2);
-            inRG1.setValue(inRG1.getValue() + AddRG1);
-            inRG2.setValue(inRG2.getValue() + AddRG2);
-            addedR.setValue(AddRD1 + AddRD2 + AddRG1 + AddRG2);
+            inRD1.setValue(run_inRD1 + run_AddRD1);
+            inRD2.setValue(run_inRD2 + run_AddRD2);
+            inRG1.setValue(run_inRG1 + run_AddRG1);
+            inRG2.setValue(run_inRG2 + run_AddRG2);
+            run_IOaddedR = run_AddRD1 + run_AddRD2 + run_AddRG1 + run_AddRG2;
+//            getModel().getRuntime().println("++ WW added "+run_IOaddedR);
             
-//            getModel().getRuntime().println("WIO -- tracked volume from WWTP "+trackedVolumeWW.getValue() + ". Incoming: "+ WWin);
+            run_IOExtractedR = 0.; // if water is added, no water is extracted
             
-        } else { // neither extraction nor injection (volume = 0)
-            this.ExtractedR.setValue(0.);
-            this.addedR.setValue(0.);
+        } else { // neither extraction nor injection (volume = 0), or extraction demanded but nothing available to extract
+            run_IOExtractedR = 0.;
+            run_IOaddedR = 0.;
         }
-        this.addedAll.setValue(this.addedAll.getValue() + this.addedR.getValue());
-        // extracted volume for all animals (cumulative over reaches)
-        this.ExtractedAll.setValue(this.ExtractedAll.getValue() + this.ExtractedR.getValue());
+        this.IOExtractedR.setValue(run_IOExtractedR);
+        this.IOaddedR.setValue(run_IOaddedR);
         
+        this.IOaddedAll.setValue(this.IOaddedAll.getValue() + run_IOaddedR);
+        // extracted volume for all animals (cumulative over reaches)
+        this.IOExtractedAll.setValue(this.IOExtractedAll.getValue() + run_IOExtractedR);
     }
        
     
