@@ -107,7 +107,10 @@ public class AnimalWaterExcretion extends JAMSComponent {
             run_HRUExcretion = run_currentHRU.getDouble("excr_wi");
         }
         
-        AnimExcreted.setValue(run_HRUExcretion); // store amount excreted by animals
+        if (AnimExcreted != null){ // store excreted volume if variable for storing is defined
+            AnimExcreted.setValue(run_HRUExcretion); // store amount excreted by animals
+        }
+        
         //double HRUExcretionInMM = HRUExcretion / area.getValue(); // only needed if adding to precip in mm, not for throughfall in L
         throughfall.setValue(throughfall.getValue() + run_HRUExcretion);
 
