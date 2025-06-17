@@ -34,13 +34,15 @@ import java.util.List;
         author = "Nathan Pellerin",
         description = "Transfer water from farmdams to HRUs depending on water"
         + " availability and irrigation demand."
-        + "totalAvailable is written only for farmdams sources"
+        + "totalIrrigAvailableFarmDam is written only for farmdams sources"
         + "multiple source extraction",
         date = "2025-03-25",
         version = "1.0_0"
 )
 @VersionComments(entries = {
-    @VersionComments.Entry(version = "1.0_0", comment = "Initial version")
+    @VersionComments.Entry(version = "1.0_0", comment = "Initial version"),
+    @VersionComments.Entry(version = "1.1_0", comment = "All variables contain irrigation terminology"
+            + "Extraction variable is subdivided into irrigation source")
 })
 public class IrrigationMultipleSourceExtractionFarmDams_NN extends JAMSComponent {
 
@@ -56,7 +58,7 @@ public class IrrigationMultipleSourceExtractionFarmDams_NN extends JAMSComponent
 
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
-            description = "Current time step RD2 inflow into reach. Will be updated by this component,"+
+            description = "Current time step RD2 inflow into hru. Will be updated by this component,"+
                     "extracting water for irrigation. - input / state variable",
             unit = "L"
     )
@@ -144,24 +146,24 @@ public class IrrigationMultipleSourceExtractionFarmDams_NN extends JAMSComponent
                     "demands of irrigated HRUs and writes this attribute. - output",
             unit = "L"
     )
-    public Attribute.Double totalDemand;
+    public Attribute.Double totalIrrigDemand;
 
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
-            description = "Total extraction for irrigation (= totalDemand, but limited to available water)."+
+            description = "Total extraction for irrigation (= totalIrrigDemand, but limited to available water)."+
                     "Calculated in this component. Losses due to poor efficiency are removed from this volume"+
                     "before transfer to irrigated HRUs. - output",
             unit = "L"
     )
-    public Attribute.Double totalExtraction;
+        public Attribute.Double totalIrrigExtractionFarmDam;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
-            description = "Total water available for irrigation in the reach (act+in) as sum of the four components"+
+            description = "Total water available for irrigation in the Farm Dams (hru reservoir)"+
                     "BEFORE EXTRACTION. Not used. - output",
             unit = "L"
     )
-    public Attribute.Double totalAvailable;
+    public Attribute.Double totalIrrigAvailableFarmDam;
 
     /*
      *  Component run stages
@@ -170,7 +172,7 @@ public class IrrigationMultipleSourceExtractionFarmDams_NN extends JAMSComponent
     @Override
     public void run() {
         Attribute.Entity run_currentHRU = hrus.getCurrent();
-        //check if this reach even has irrigated HRUs in its catchment
+        //check if this hru even has irrigated HRUs in its catchment
         if (!run_currentHRU.existsAttribute(irrigationFarmdamEntitiesListName.getValue())) { // no irrigated HRUs --> step out of function
             return;
         }
@@ -185,10 +187,11 @@ public class IrrigationMultipleSourceExtractionFarmDams_NN extends JAMSComponent
         // Consider restriction withdrawal on the maximum capacity of extraction
         double run_farmdamMaxExtractionActual = run_farmdamMaxExtraction * run_irrigFarmdamRestriction;
         double run_totalAvailable = Math.max(0, run_farmdamStorage - run_farmdamMinStorage);
-        totalAvailable.setValue(run_totalAvailable); // water available at this time step
+        totalIrrigAvailableFarmDam.setValue(run_totalAvailable); // water available at this time step
 
-        // totalDemand calulation
+        // totalIrrigDemand calulation
         double run_totalDemand = 0;
+        double run_totalDemandRemaining = 0;
         double run_providedFraction;
         List<Attribute.Entity> run_l = (List) run_currentHRU.getObject(irrigationFarmdamEntitiesListName.getValue());
         for (Attribute.Entity run_hru : run_l) {
@@ -203,26 +206,25 @@ public class IrrigationMultipleSourceExtractionFarmDams_NN extends JAMSComponent
             }
                         
             double run_DemandRemaining = run_demand * (1 - run_frac_irrig_applied);
-            run_totalDemand += run_DemandRemaining;
+            run_totalDemandRemaining += run_DemandRemaining;
+            run_totalDemand += run_demand;
         }
-        totalDemand.setValue(run_totalDemand);
+        totalIrrigDemand.setValue(run_totalDemand);
         
 
         //calculate proportion of total water that is needed
-        if ((run_totalAvailable != 0) & (run_totalDemand != 0)){ // if there is water available (in and/or act) AND demanded for irrigation
+        if ((run_totalAvailable != 0) && (run_totalDemandRemaining != 0)){ // if there is water available (in and/or act) AND demanded for irrigation
             
-            // Extraction of the totalDemand in the farm dam
+            // Extraction of the totalIrrigDemand in the farm dam
             // Define the maximum capacity of extraction in the farmdams in regard with the water available
             run_farmdamMaxExtractionActual = Math.min(run_farmdamMaxExtractionActual, run_totalAvailable);
             // Define the maximum capacity of extraction in the farmdams in regard with the irrigation demand
-            run_totalExtraction = Math.min(run_farmdamMaxExtractionActual, run_totalDemand);
+            run_totalExtraction = Math.min(run_farmdamMaxExtractionActual, run_totalDemandRemaining);
             // Storage update
-            farmdamStorage.setValue(run_farmdamStorage - run_totalExtraction); 
-            // Update of the total water extracted in the farm dams
-            totalExtraction.setValue(run_totalExtraction); 
+            farmdamStorage.setValue(run_farmdamStorage - run_totalExtraction);
 
             // Distribute total extracted water over all HRUs supllied by this farmdams
-            run_providedFraction = run_totalExtraction / run_totalDemand;
+            run_providedFraction = run_totalExtraction / run_totalDemandRemaining;
             
             //distribute total transfer over all HRUs
             double run_totalProvidedWater = 0.;
@@ -243,20 +245,22 @@ public class IrrigationMultipleSourceExtractionFarmDams_NN extends JAMSComponent
         } else { // no water available OR no water demanded for irrigation -> no extraction, no delivery
             run_totalExtraction = 0; // No extraction
         }
-        totalExtraction.setValue(run_totalExtraction);
+        totalIrrigExtractionFarmDam.setValue(run_totalExtraction);
         
-        if(run_totalDemand == 0) {
+        if(run_totalDemandRemaining == 0) {
             for (Attribute.Entity hru : run_l) {
-                hru.setDouble(irrigationApplicationName.getValue(), 0); 
                 hru.setDouble(irrigationApplicationFarmDamName.getValue(), 0); 
             }
-            totalExtraction.setValue(0); 
+        }
+        if(run_totalDemand == 0){
+            for (Attribute.Entity hru : run_l) {
+                hru.setDouble(irrigationApplicationName.getValue(), 0); 
+            }             
         }
         if(run_totalAvailable == 0) {
             for (Attribute.Entity hru : run_l) {
                 hru.setDouble(irrigationApplicationFarmDamName.getValue(), 0); 
             }
-            totalExtraction.setValue(0); 
         }
         
         //remove all HRUs from demand list
