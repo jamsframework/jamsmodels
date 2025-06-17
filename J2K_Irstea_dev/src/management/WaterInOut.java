@@ -39,10 +39,13 @@ import java.util.List;
 	+ " Water comes from incoming water to the reach and water inside the reach (inR.. / actR..)."
         + " Water is put into specified component or distributed",
         date = "2024-05-30",
-        version = "1.0_0"
+        version = "2.0_0"
 )
 @VersionComments(entries = {
-    @VersionComments.Entry(version = "1.0_0", comment = "Initial version")
+    @VersionComments.Entry(version = "1.0_0", comment = "Initial version"),
+    @VersionComments.Entry(version = "2.0_0", comment = "improved variable names,"
+            + "take water proportionally from both, in and act,"
+            + "corrected fractions.")
 })
 public class WaterInOut extends JAMSComponent {
 
@@ -60,7 +63,7 @@ public class WaterInOut extends JAMSComponent {
             description = "Volume to extract (negative) or inject (positive). Set by Regionalisation_WaterInOut component"+
                     "and read by this one. - input"
     )
-    public Attribute.Double Volume;
+    public Attribute.Double VolumeIO;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
@@ -132,49 +135,49 @@ public class WaterInOut extends JAMSComponent {
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
             description = "Ratio of water available (allowed to be taken) for extraction over water present"+
-                    "in the reach (actR..). - parameter",
+                    "in the reach (actR..). Between 0 and 1. - parameter",
             defaultValue = "1.0"
     )
-    public Attribute.Double actPrel;
+    public Attribute.Double allowedIOExtractionFraction;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
             description = "Total demand of water. For verification purposes, not needed."+
                     "Careful not to overwrite irrigation water demand with this! - output"
     )
-    public Attribute.Double totalDemand;
+    public Attribute.Double totalIODemand;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
             description = "Total input of water. For verification purposes, not needed. - output"
     )
-    public Attribute.Double totalInput;
+    public Attribute.Double totalIOInput;
 
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
             description = "Total volume extracted from all reaches -> cummulative, should be"+
                     "added to catchment resetter - output / state variable"
     )
-    public Attribute.Double ExtractedAll;
+    public Attribute.Double IOExtractedAll;
 
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
             description = "volume extracted from current reach - output"
     )
-    public Attribute.Double ExtractedR;
+    public Attribute.Double IOExtractedR;
 
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
             description = "Total volume added to all reaches -> cummulative, should be"+
                     "added to catchment resetter - output / state variable"
     )
-    public Attribute.Double addedAll;
+    public Attribute.Double IOaddedAll;
 
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
             description = "volume added to current reach - output"
     )
-    public Attribute.Double addedR;
+    public Attribute.Double IOaddedR;
     
 //    @JAMSVarDescription(
 //            access = JAMSVarDescription.AccessType.WRITE,
@@ -190,96 +193,74 @@ public class WaterInOut extends JAMSComponent {
     @Override
     public void run() {
 
-        Attribute.Entity run_currentReach = reaches.getCurrent();
+//        Attribute.Entity run_currentReach = reaches.getCurrent();
+        
+        // define internal variables
+        double run_inRD1 = inRD1.getValue();
+        double run_inRD2 = inRD2.getValue();
+        double run_inRG1 = inRG1.getValue();
+        double run_inRG2 = inRG2.getValue();
+        double run_actRD1 = actRD1.getValue();
+        double run_actRD2 = actRD2.getValue();
+        double run_actRG1 = actRG1.getValue();
+        double run_actRG2 = actRG2.getValue();
+        double run_allowedIOExtractionFraction = this.allowedIOExtractionFraction.getValue();
         
         // calculate water available for extraction
-        double run_totalIn = inRD1.getValue() + inRD2.getValue() + inRG1.getValue() + inRG2.getValue();
-        double run_totalAct = this.actPrel.getValue() * (actRD1.getValue() + actRD2.getValue() + actRG1.getValue() + actRG2.getValue()); // water in the reach that is available for animal needs
-        double run_totalAv = run_totalIn + run_totalAct; // all available water for extraction 
+        double run_totalIn = run_inRD1 + run_inRD2 + run_inRG1 + run_inRG2; // all water in inflow (for proportional extraction)
+        double run_totalAct = run_actRD1 + run_actRD2 + run_actRG1 + run_actRG2; // all water in act (for proportional extraction)
+        double run_totalStorage = run_totalIn + run_totalAct; // all water in inflow and act
+        double run_inAvailable = run_allowedIOExtractionFraction * run_totalIn; // water inflow available for irrigation
+        double run_actAvailable = run_allowedIOExtractionFraction * run_totalAct; // water in the reach available for irrigation
+        double run_totalAvailable = run_inAvailable + run_actAvailable; // all available water
+        
 //        this.totalAvail.setValue(run_totalIn + run_totalAct); // all available water for extraction
         
-        double run_totalDemand = 0;
-        double run_volume = Volume.getValue();
-        // check if extraction (negative Volume) or injection (positive Volume) or none (Volume = 0)
-        if (run_volume<0) { // extract water from the reach 
+        // define variables for storing extracted / added volumes
+        double run_IOExtractedR; // local variable to store actually extracted volume
+        double run_IOaddedR;
+        
+        double run_totalIODemand = 0;
+        double run_volume = VolumeIO.getValue();
+        // check if extraction (negative VolumeIO) or injection (positive VolumeIO) or none (VolumeIO = 0)
+        if ((run_totalAvailable != 0.0) & (run_volume<0)) { // if there is water available and water should be extracted, extract water from the reach 
             
-            run_totalDemand = run_volume * (-1);
-            this.totalDemand.setValue(run_totalDemand);
+            run_totalIODemand = run_volume * (-1);
+            this.totalIODemand.setValue(run_totalIODemand);
             
-            //calculate proportion of total water that is needed
-            if (run_totalAv != 0.0){ // if there is water available
-                if (run_totalIn != 0){ // if there is water coming into reach
-//                    getModel().getRuntime().println("DW ++ water coming in, "+run_totalAv+" available("+run_totalIn+" incoming, "+run_totalAct+" in reach), needing "+run_totalDemand+" . Reach "+currentReach.getObject("ID"));
-                    
-                    double run_frac = run_totalDemand /run_totalIn;
-
-                    if (run_frac <= 1) {
-
-                        //we can cover all only with input to the reach, reduce the components accordingly
-                        inRD1.setValue(inRD1.getValue() * (1 - run_frac));
-                        inRD2.setValue(inRD2.getValue() * (1 - run_frac));
-                        inRG1.setValue(inRG1.getValue() * (1 - run_frac));
-                        inRG2.setValue(inRG2.getValue() * (1 - run_frac));
-                        ExtractedR.setValue(run_totalDemand);
-
-                    } else {
-                        //looking if we can cover the demand by including usable part of act...
-                        run_frac = run_totalDemand / (run_totalIn+run_totalAct);
-
-                        //we can cover only part of the demand with input, reduce the components to 0
-                        inRD1.setValue(0);
-                        inRD2.setValue(0);
-                        inRG1.setValue(0);
-                        inRG2.setValue(0);
-
-                        if (run_frac <= 1) {
-                            //we can cover all of the demand with input and act together, reduce the components accordingly
-                            double run_actDemand;
-                            run_actDemand = run_totalDemand - run_totalIn;
-                            double run_frac2 = run_actDemand/run_totalAct;
-                            actRD1.setValue(actRD1.getValue() * (1 - run_frac2));
-                            actRD2.setValue(actRD2.getValue() * (1 - run_frac2));
-                            actRG1.setValue(actRG1.getValue() * (1 - run_frac2));
-                            actRG2.setValue(actRG2.getValue() * (1 - run_frac2));
-                            ExtractedR.setValue(run_totalDemand);
-
-                        } else {
-                            // we can only cover part of the demand ; reduce the act... to (1 - actPrel)*act...
-                            actRD1.setValue(actRD1.getValue() * (1 - actPrel.getValue()));
-                            actRD2.setValue(actRD2.getValue() * (1 - actPrel.getValue()));
-                            actRG1.setValue(actRG1.getValue() * (1 - actPrel.getValue()));
-                            actRG2.setValue(actRG2.getValue() * (1 - actPrel.getValue()));
-                            ExtractedR.setValue(run_totalIn+run_totalAct);
-                        }
-                    }
-//                    getModel().getRuntime().println("DW took "+ExtractedR.getValue());
-                } else { // if no water coming into reach, but there is water in the reach act
-//                    getModel().getRuntime().println("DW ++ water coming in, "+run_totalAv+" available("+run_totalIn+" incoming, "+run_totalAct+" in reach), needing "+run_totalDemand+" . Reach "+run_currentReach.getObject("ID"));
-                    //looking if we can cover the demand by including usable part of act...
-                    double run_frac = run_totalDemand / (run_totalAct);
-                    if (run_frac <= 1) {
-                        //we can cover all of the demand with act, reduce the components accordingly
-                        actRD1.setValue(actRD1.getValue() * (1 - run_frac));
-                        actRD2.setValue(actRD2.getValue() * (1 - run_frac));
-                        actRG1.setValue(actRG1.getValue() * (1 - run_frac));
-                        actRG2.setValue(actRG2.getValue() * (1 - run_frac));
-                        ExtractedR.setValue(run_totalDemand);
-
-                    } else {
-                        // we can only cover part of the demand ; reduce the act... to (1 - actPrel)*act...
-                        actRD1.setValue(actRD1.getValue() * (1 - actPrel.getValue()));
-                        actRD2.setValue(actRD2.getValue() * (1 - actPrel.getValue()));
-                        actRG1.setValue(actRG1.getValue() * (1 - actPrel.getValue()));
-                        actRG2.setValue(actRG2.getValue() * (1 - actPrel.getValue()));
-                        ExtractedR.setValue(run_totalAct);
-                    }
-//                    getModel().getRuntime().println("DW took "+ExtractedR.getValue());
-                }
-            } else { 
-                this.ExtractedR.setValue(0.);
+            double run_availableDemandFraction = run_totalIODemand / run_totalAvailable;// fraction of available water that is demanded for extraction
+            
+            if (run_availableDemandFraction <=1){ // demand can be satisfied with available water from inflow and act
+                double run_storageDemandFraction = run_totalIODemand / run_totalStorage;// fraction of all stored water that is demanded for extraction
+                run_IOExtractedR = run_totalIODemand; // we can satisfy the demand (extract everything that is needed)
+                
+                // extract proportionally from inflow (ratio demand over all water)
+                inRD1.setValue(run_inRD1 * (1 - run_storageDemandFraction));
+                inRD2.setValue(run_inRD2 * (1 - run_storageDemandFraction));
+                inRG1.setValue(run_inRG1 * (1 - run_storageDemandFraction));
+                inRG2.setValue(run_inRG2 * (1 - run_storageDemandFraction));
+                // extract proportionally from act (ratio demand over all water)
+                actRD1.setValue(run_actRD1 * (1 - run_storageDemandFraction));
+                actRD2.setValue(run_actRD2 * (1 - run_storageDemandFraction));
+                actRG1.setValue(run_actRG1 * (1 - run_storageDemandFraction));
+                actRG2.setValue(run_actRG2 * (1 - run_storageDemandFraction));
+            } else { // not all of the demand can be satisfied from available water. Only available water will be extracted
+                run_IOExtractedR = run_totalAvailable; // we extract all available water
+                
+                // extract proportionally from inflow (allowed fraction)
+                inRD1.setValue(run_inRD1 * (1 - run_allowedIOExtractionFraction));
+                inRD2.setValue(run_inRD2 * (1 - run_allowedIOExtractionFraction));
+                inRG1.setValue(run_inRG1 * (1 - run_allowedIOExtractionFraction));
+                inRG2.setValue(run_inRG2 * (1 - run_allowedIOExtractionFraction));
+                // extract proportionally from act (allowed fraction)
+                actRD1.setValue(run_actRD1 * (1 - run_allowedIOExtractionFraction));
+                actRD2.setValue(run_actRD2 * (1 - run_allowedIOExtractionFraction));
+                actRG1.setValue(run_actRG1 * (1 - run_allowedIOExtractionFraction));
+                actRG2.setValue(run_actRG2 * (1 - run_allowedIOExtractionFraction));
             }
-            // if water is extracted --> no water is added
-            this.addedR.setValue(0.);
+            
+            run_IOaddedR = 0.; // if water is extracted --> no water is added
+            
         } else if (run_volume > 0) { // water injected
 //            getModel().getRuntime().println("++ WW will be injecting "+run_volume);
             double run_AddRD1, run_AddRD2, run_AddRG1, run_AddRG2;
@@ -291,16 +272,16 @@ public class WaterInOut extends JAMSComponent {
                     // - else if any water in reach: distribute proportionally to what is in reach
                     // - else: distribute equally
                     if (run_totalIn > 0) { // if any incoming water: distribute proportionally to what is incoming
-                        run_AddRD1 = run_volume * inRD1.getValue() / run_totalIn;
-                        run_AddRD2 = run_volume * inRD2.getValue() / run_totalIn;
-                        run_AddRG1 = run_volume * inRG1.getValue() / run_totalIn;
-                        run_AddRG2 = run_volume * inRG2.getValue() / run_totalIn;
+                        run_AddRD1 = run_volume * run_inRD1 / run_totalIn;
+                        run_AddRD2 = run_volume * run_inRD2 / run_totalIn;
+                        run_AddRG1 = run_volume * run_inRG1 / run_totalIn;
+                        run_AddRG2 = run_volume * run_inRG2 / run_totalIn;
 
                     } else if (run_totalAct > 0) { // no incoming water, but water in reach: distribute proportionally to what is in reach
-                        run_AddRD1 = run_volume * actRD1.getValue() / run_totalAct;
-                        run_AddRD2 = run_volume * actRD2.getValue() / run_totalAct;
-                        run_AddRG1 = run_volume * actRG1.getValue() / run_totalAct;
-                        run_AddRG2 = run_volume * actRG2.getValue() / run_totalAct;
+                        run_AddRD1 = run_volume * run_actRD1 / run_totalAct;
+                        run_AddRD2 = run_volume * run_actRD2 / run_totalAct;
+                        run_AddRG1 = run_volume * run_actRG1 / run_totalAct;
+                        run_AddRG2 = run_volume * run_actRG2 / run_totalAct;
 
                     } else { // nothing coming in, nothing in stock: distribute equally
                         run_AddRD1 = run_volume * 0.25;
@@ -324,19 +305,25 @@ public class WaterInOut extends JAMSComponent {
                 default:
                     throw new IllegalArgumentException(targetComp.getValue() + " is not a valid target component. if there is a water input, targetComp needs to be in (RD1, RD2, RG1, RG2, distr)");
             }
-            inRD1.setValue(inRD1.getValue() + run_AddRD1);
-            inRD2.setValue(inRD2.getValue() + run_AddRD2);
-            inRG1.setValue(inRG1.getValue() + run_AddRG1);
-            inRG2.setValue(inRG2.getValue() + run_AddRG2);
-            addedR.setValue(run_AddRD1 + run_AddRD2 + run_AddRG1 + run_AddRG2);
-//            getModel().getRuntime().println("++ WW added "+addedR.getValue());
-        } else { // neither extraction nor injection (volume = 0)
-            this.ExtractedR.setValue(0.);
-            this.addedR.setValue(0.);
+            inRD1.setValue(run_inRD1 + run_AddRD1);
+            inRD2.setValue(run_inRD2 + run_AddRD2);
+            inRG1.setValue(run_inRG1 + run_AddRG1);
+            inRG2.setValue(run_inRG2 + run_AddRG2);
+            run_IOaddedR = run_AddRD1 + run_AddRD2 + run_AddRG1 + run_AddRG2;
+//            getModel().getRuntime().println("++ WW added "+run_IOaddedR);
+            
+            run_IOExtractedR = 0.; // if water is added, no water is extracted
+            
+        } else { // neither extraction nor injection (volume = 0), or extraction demanded but nothing available to extract
+            run_IOExtractedR = 0.;
+            run_IOaddedR = 0.;
         }
-        this.addedAll.setValue(this.addedAll.getValue() + this.addedR.getValue());
+        this.IOExtractedR.setValue(run_IOExtractedR);
+        this.IOaddedR.setValue(run_IOaddedR);
+        
+        this.IOaddedAll.setValue(this.IOaddedAll.getValue() + run_IOaddedR);
         // extracted volume for all animals (cumulative over reaches)
-        this.ExtractedAll.setValue(this.ExtractedAll.getValue() + this.ExtractedR.getValue());
+        this.IOExtractedAll.setValue(this.IOExtractedAll.getValue() + run_IOExtractedR);
     }
        
     
