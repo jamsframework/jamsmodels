@@ -79,7 +79,7 @@ public class ReservoirMan_plan extends J2KProcessReachRouting {
     )
     public Attribute.Double res_storage_RG2;
     
-    @JAMSVarDescription(
+/*    @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
             description = "RD1 storage in the reservoir",
             unit = "L"
@@ -105,7 +105,7 @@ public class ReservoirMan_plan extends J2KProcessReachRouting {
             description = "RG2 storage in the reservoir",
             unit = "L"
     )
-    public Attribute.Double res_init_RG2;
+    public Attribute.Double res_init_RG2;*/
 
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
@@ -114,15 +114,15 @@ public class ReservoirMan_plan extends J2KProcessReachRouting {
     )
     public Attribute.Double outflow;
 
-    @JAMSVarDescription(
+/*    @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
             description = "Number of Pools"
     )
     public Attribute.Integer numPools;
-
+*/
 //Berechnung
-    public void initAll() {
-        Attribute.Entity reach;
+    public void init() {
+        /*Attribute.Entity reach;
 
         Iterator<Attribute.Entity> reachIterator = entities.getEntities().iterator();
 
@@ -136,7 +136,7 @@ public class ReservoirMan_plan extends J2KProcessReachRouting {
                 res_storage_RG2.setValue(res_init_RG2.getValue());
             }
         }
-
+*/
     }
 
     public void run() {
@@ -156,16 +156,17 @@ public class ReservoirMan_plan extends J2KProcessReachRouting {
                 double run_rele = 0;
                 double run_outflow = 0;
                 int month = time.get(Attribute.Calendar.MONTH) + 1;
-                int nrPools = numPools.getValue();
+                //int nrPools = numPools.getValue();
+                int nrPools =  reach.getInt("nrPools");
                 int actPoolnr = 0;
 
-                double reservoir_V = res_storage.getValue();
+                //double reservoir_V = res_storage.getValue();
 
 
-                double RD1act = actRD1.getValue() + inRD1.getValue();
-                double RD2act = actRD2.getValue() + inRD2.getValue();
-                double RG1act = actRG1.getValue() + inRG1.getValue();
-                double RG2act = actRG2.getValue() + inRG2.getValue();
+                double RD1act =  inRD1.getValue();
+                double RD2act =  inRD2.getValue();
+                double RG1act =  inRG1.getValue();
+                double RG2act =  inRG2.getValue();
 
                 //double addInAct = actAddIn.getValue() + this.inAddIn.getValue();
 
@@ -176,10 +177,10 @@ public class ReservoirMan_plan extends J2KProcessReachRouting {
 
                 //inAddIn.setValue(0);
 
-                actRD1.setValue(0);
+               /* actRD1.setValue(0);
                 actRD2.setValue(0);
                 actRG1.setValue(0);
-                actRG2.setValue(0);
+                actRG2.setValue(0);*/
 
                 //actAddIn.setValue(0);
 
@@ -201,14 +202,27 @@ public class ReservoirMan_plan extends J2KProcessReachRouting {
                 i = 0;
                 while (i < nrPools) {
                     i++;
-                    getModel().getRuntime().sendErrorMsg("I Variable = " + i + "!");
-                    if (reach.getDouble("V_begin" + i) * 1000 <= reservoir_V && reach.getDouble("V_end" + i) * 1000 > reservoir_V) {
-                        run_outflow = 86400 * reach.getDouble("Q" + month + i);
+                    //getModel().getRuntime().sendErrorMsg("I Variable = " + i + "!");
+                    
+                    String begin = "V_begin" + i;
+                    String end = "V_end" + i;
+                    String begin1 = "V_begin" + i;
+                    String Q_Mon_Pool = "Q" + month + i;
+                    
+                    
+                    if (i < nrPools){
+                        begin1 = "V_begin" + (i+1);
+                    }
+                    
+                    
+                    
+                    if (reach.getDouble(begin) * 1000 <= run_res_storage && reach.getDouble(end) * 1000 > run_res_storage) {
+                        run_outflow = 86400 * reach.getDouble(Q_Mon_Pool);
                         run_outflow = Math.min(run_outflow, run_res_storage);
-                    } else if (reach.getDouble("V_begin" + (i + 1)) * 1000 <= reservoir_V && reach.getDouble("V_end" + i) * 1000 > reservoir_V) { // gap between pools
-                        run_outflow = 86400 * reach.getDouble("Q" + month + i);
+                    } else if (reach.getDouble(begin1) * 1000 <= run_res_storage && reach.getDouble(end) * 1000 > run_res_storage) { // gap between pools
+                        run_outflow = 86400 * reach.getDouble(Q_Mon_Pool);
                         run_outflow = Math.min(run_outflow, run_res_storage);
-                    } else if (reservoir_V > reach.getDouble("V_end" + nrPools) * 1000) {  //stage over capacity
+                    } else if (run_res_storage > reach.getDouble("V_end" + nrPools) * 1000) {  //stage over capacity
                         run_outflow = Math.max(86400 * reach.getDouble("Q" + month + nrPools), run_res_storageInput);
                         run_outflow = Math.min(run_outflow, run_res_storage);
                     }
@@ -243,8 +257,12 @@ public class ReservoirMan_plan extends J2KProcessReachRouting {
                 inRG2.setValue(run_RG2_outflow);
                 
                 
+            }else{
+            inRD1.setValue(inRD1.getValue());
+            inRD2.setValue(inRD2.getValue());
+            inRG1.setValue(inRG1.getValue());
+            inRG2.setValue(inRG2.getValue());
             }
-
         }
 
     }
