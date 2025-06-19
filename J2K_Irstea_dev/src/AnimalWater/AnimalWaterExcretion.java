@@ -31,7 +31,7 @@ import java.util.List;
  * @author Sven Kralisch <sven.kralisch at uni-jena.de>
  */
 @JAMSComponentDescription(
-        title = "",
+        title = "AnimalWaterExcretion",
         author = "Nico Hachgenei",
         description = "Excretion of water by animals into HRUs",
         date = "2024-04-16",
