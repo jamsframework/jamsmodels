@@ -31,7 +31,7 @@ import java.util.List;
  * @author Sven Kralisch <sven.kralisch at uni-jena.de>
  */
 @JAMSComponentDescription(
-        title = "",
+        title = "AnimalWaterExtraction",
         author = "Nico Hachgenei",
         description = "Extraction of water from reaches for animal consumption"
         + " using animal need and limit to available water"
