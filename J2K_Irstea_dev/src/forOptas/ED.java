@@ -29,7 +29,7 @@ import jams.model.*;
  * @author Nico Hachgenei
  */
 @JAMSComponentDescription(
-        title = "",
+        title = "EuclideanDistance",
         author = "Nico Hachgenei",
         description = "Calculation of Euclidian distance to one (or the defined optimum value)"+
                 "of a list of efficiencies. The closer to 0, the better the fit.",
