@@ -31,7 +31,7 @@ import jams.model.*;
  * @author c0krpe
  */
 @JAMSComponentDescription(
-        title="J2KGroundwater",
+        title="InitJ2KProcessGroundwater_spatialsetter",
         author="Peter Krause, Nico Hachgenei",
         description="Initialises the J2KGroundwater module by multiplying the "
         + "maximum storage capacity of the two groundwater storages RG1 and RG2"
@@ -55,7 +55,7 @@ import jams.model.*;
             access = JAMSVarDescription.AccessType.READ,
             description = "The collection of model HRUs."
             )
-            public Attribute.EntityCollection entities;
+            public Attribute.EntityCollection HRUs;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
@@ -143,8 +143,8 @@ import jams.model.*;
     @Override
     public void run() {
         
-        Attribute.Entity run_entity = entities.getCurrent();
-        double run_area = run_entity.getDouble("area");
+        Attribute.Entity run_HRU = HRUs.getCurrent();
+        double run_area = run_HRU.getDouble("area");
 //        maxRG1.setValue(entity.getDouble("RG1_max") * run_area);
 //        maxRG2.setValue(entity.getDouble("RG2_max") * run_area);
         
