@@ -6,7 +6,7 @@ import java.util.Calendar;
 
 @JAMSComponentDescription(title = "JAMSMusle_j2ks",
 description = "JAMS native Version of MusleMay",
-author = "Holm + Manfred")
+author = "Holm + Manfred + olivier champagne")
 public class JAMSMusle_j2ks_simple extends JAMSComponent {
 
 //Read access variables
@@ -97,6 +97,10 @@ public class JAMSMusle_j2ks_simple extends JAMSComponent {
     public JAMSDouble LSfac;
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
     update = JAMSVarDescription.UpdateType.RUN,
+    description = "factor sdr")
+    public JAMSDouble sdr;
+    @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
+    update = JAMSVarDescription.UpdateType.RUN,
     description = "additional P-Factor, for scenario building")
     public JAMSDouble p_managm;
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
@@ -115,6 +119,7 @@ public class JAMSMusle_j2ks_simple extends JAMSComponent {
         Double ROK = this.ROK.getValue();
         Double slopelength = this.flowlength.getValue();
         Double Kfac = this.Kfac.getValue();
+        Double sdr = this.sdr.getValue();
 
         Double outRD1 = this.outRD1.getValue();
         Double snowDepth = this.snowDepth.getValue();
@@ -203,7 +208,7 @@ public class JAMSMusle_j2ks_simple extends JAMSComponent {
             
             double sedperhainto = Lamb * allFac; // SWAT-MULSE Williams, 1995
             //gensed = (sedperhainto / 10000) * area;     // t / HRU
-            gensed = sedperhainto; // t / hru
+            gensed = sedperhainto * sdr; // sdr takes into account the connectivity of the HRU.
         }
 
         double out = gensed + insed;
