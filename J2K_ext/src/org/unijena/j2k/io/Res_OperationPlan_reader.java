@@ -58,15 +58,15 @@ public class Res_OperationPlan_reader extends JAMSComponent {
             description = "ID of reach where the reservoir is located"
     )
     public Attribute.Double RID;
-    
+
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
             description = "initial storage in the reservoir [m³]",
             unit = "m³",
             defaultValue = "0.0")
     public Attribute.Double res_init;
-    
-           @JAMSVarDescription(
+
+    @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
             description = "Initial RD1 storage proportion in the reservoir",
             unit = "-",
@@ -81,24 +81,24 @@ public class Res_OperationPlan_reader extends JAMSComponent {
             defaultValue = "0.25"
     )
     public Attribute.Double res_init_porp_RD2;
-    
-        @JAMSVarDescription(
+
+    @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
             description = "Initial RG1 storage proportion in the reservoir",
             unit = "-",
             defaultValue = "0.25"
     )
     public Attribute.Double res_init_porp_RG1;
-        
-        @JAMSVarDescription(
+
+    @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
             description = "Initial RG2 storage proportion in the reservoir",
             unit = "-",
             defaultValue = "0.25"
     )
     public Attribute.Double res_init_porp_RG2;
-            
-/*   @JAMSVarDescription(
+
+    /*   @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
             description = "initial storage in the reservoir [l]",
             unit = "l",
@@ -138,7 +138,7 @@ public class Res_OperationPlan_reader extends JAMSComponent {
             description = "Number of Pools"
     )
     public Attribute.Integer numPools;
-*/
+     */
     public void init() {
         //read lu parameter
         Attribute.EntityCollection PBOPS = getModel().getRuntime().getDataFactory().createEntityCollection();
@@ -181,28 +181,27 @@ public class Res_OperationPlan_reader extends JAMSComponent {
 
                     }
 
-
                     e.setObject("attributes", attrs);
 
                     //Object nrPoolso = nrPools;
                     //e.setObject((String) "nrPools", nrPoolso);
                     e.setInt("nrPools", nrPools);
-                    double res_storage =  res_init.getValue()*1000;                    
-                    double propsum  = res_init_porp_RD1.getValue() + res_init_porp_RD2.getValue() + res_init_porp_RG1.getValue() +res_init_porp_RG2.getValue();
-                    e.setDouble("res_storage", res_init.getValue()*1000);
-                    e.setDouble("res_storage_RD1",res_storage * res_init_porp_RD1.getValue() /propsum);
-                    e.setDouble("res_storage_RD2",res_storage * res_init_porp_RD2.getValue() /propsum);
-                    e.setDouble("res_storage_RG1",res_storage * res_init_porp_RG1.getValue() /propsum);
-                    e.setDouble("res_storage_RG2",res_storage * res_init_porp_RG2.getValue() /propsum);
-                
+
                 }
-                
+
+                double res_storage = res_init.getValue() * 1000;
+                double propsum = res_init_porp_RD1.getValue() + res_init_porp_RD2.getValue() + res_init_porp_RG1.getValue() + res_init_porp_RG2.getValue();
+                e.setDouble("res_storage", res_storage);
+                e.setDouble("res_storage_RD1", res_storage * res_init_porp_RD1.getValue() / propsum);
+                e.setDouble("res_storage_RD2", res_storage * res_init_porp_RD2.getValue() / propsum);
+                e.setDouble("res_storage_RG1", res_storage * res_init_porp_RG1.getValue() / propsum);
+                e.setDouble("res_storage_RG2", res_storage * res_init_porp_RG2.getValue() / propsum);
                 //numPools.setValue(nrPools);
-;
+                ;
 
             }
         }
-        getModel().getRuntime().println("Pool-based Operating Plan parameter file for RID: " + RID.getValue() +" processed", JAMS.VERBOSE);
+        getModel().getRuntime().println("Pool-based Operating Plan parameter file for RID: " + RID.getValue() + " processed", JAMS.VERBOSE);
     }
 
 }

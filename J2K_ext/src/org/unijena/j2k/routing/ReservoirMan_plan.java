@@ -22,9 +22,16 @@ import org.unijena.j2k.routing.J2KProcessReachRouting;
         date = "21.05.2025",
         version = "1.0"
 )
-public class ReservoirMan_plan extends J2KProcessReachRouting {
+public class ReservoirMan_plan extends JAMSComponent {
 
 
+    @JAMSVarDescription(
+            access = JAMSVarDescription.AccessType.READ,
+            description = "The reach collection"
+    )
+    
+    public Attribute.EntityCollection entities;
+    
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
             description = "time")
@@ -45,67 +52,75 @@ public class ReservoirMan_plan extends J2KProcessReachRouting {
     public Attribute.Double res_init_l;
 
     @JAMSVarDescription(
-            access = JAMSVarDescription.AccessType.READWRITE,
+            access = JAMSVarDescription.AccessType.WRITE,
             description = "storage in the reservoir",
             unit = "L"
     )
-    public Attribute.Double res_storage;
+    public Attribute.Double Res_Storage;
 
     @JAMSVarDescription(
-            access = JAMSVarDescription.AccessType.READWRITE,
+            access = JAMSVarDescription.AccessType.WRITE,
             description = "RD1 storage in the reservoir",
             unit = "L"
     )
-    public Attribute.Double res_storage_RD1;
+    public Attribute.Double Res_Storage_RD1;
 
     @JAMSVarDescription(
-            access = JAMSVarDescription.AccessType.READWRITE,
+            access = JAMSVarDescription.AccessType.WRITE,
             description = "RD2 storage in the reservoir",
             unit = "L"
     )
-    public Attribute.Double res_storage_RD2;
+    public Attribute.Double Res_Storage_RD2;
 
     @JAMSVarDescription(
-            access = JAMSVarDescription.AccessType.READWRITE,
+            access = JAMSVarDescription.AccessType.WRITE,
             description = "RG1 storage in the reservoir",
             unit = "L"
     )
-    public Attribute.Double res_storage_RG1;
+    public Attribute.Double Res_Storage_RG1;
+
+    @JAMSVarDescription(
+            access = JAMSVarDescription.AccessType.WRITE,
+            description = "RG2 storage in the reservoir",
+            unit = "L"
+    )
+    public Attribute.Double Res_Storage_RG2;
+    
+   @JAMSVarDescription(
+            access = JAMSVarDescription.AccessType.READWRITE,
+            description = "RD1 inflow to reach",
+            unit = "L"
+    )
+    public Attribute.Double inRD1;
 
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
-            description = "RG2 storage in the reservoir",
+            description = "RD2 inflow to reach",
             unit = "L"
     )
-    public Attribute.Double res_storage_RG2;
-    
-/*    @JAMSVarDescription(
-            access = JAMSVarDescription.AccessType.READ,
-            description = "RD1 storage in the reservoir",
-            unit = "L"
-    )
-    public Attribute.Double res_init_RD1;
+    public Attribute.Double inRD2;
 
     @JAMSVarDescription(
-            access = JAMSVarDescription.AccessType.READ,
-            description = "RD2 storage in the reservoir",
+            access = JAMSVarDescription.AccessType.READWRITE,
+            description = "RG1 inflow to reach",
             unit = "L"
     )
-    public Attribute.Double res_init_RD2;
-    
-        @JAMSVarDescription(
-            access = JAMSVarDescription.AccessType.READ,
-            description = "RG1 storage in the reservoir",
+    public Attribute.Double inRG1;
+
+    @JAMSVarDescription(
+            access = JAMSVarDescription.AccessType.READWRITE,
+            description = "RG2 inflow to reach",
             unit = "L"
     )
-    public Attribute.Double res_init_RG1;
-        
-        @JAMSVarDescription(
-            access = JAMSVarDescription.AccessType.READ,
-            description = "RG2 storage in the reservoir",
-            unit = "L"
+    public Attribute.Double inRG2;
+
+    @JAMSVarDescription(
+            access = JAMSVarDescription.AccessType.READWRITE,
+            description = "additional inflow to reach",
+            unit = "L",
+            defaultValue = "0"
     )
-    public Attribute.Double res_init_RG2;*/
+    public Attribute.Double inAddIn;
 
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
@@ -141,24 +156,27 @@ public class ReservoirMan_plan extends J2KProcessReachRouting {
 
     public void run() {
 
-        Attribute.Entity reach;
+        
+        //Attribute.Entity reach;
 
-        Iterator<Attribute.Entity> reachIterator = entities.getEntities().iterator();
+        //Iterator<Attribute.Entity> reachIterator = entities.getEntities().iterator();
+        Attribute.Entity reach = entities.getCurrent();
 
-        while (reachIterator.hasNext()) {
-            reach = reachIterator.next();
+        //while (reachIterator.hasNext()) {
+        //    reach = reachIterator.next();
             if (reach.existsAttribute("nrPools")) {
-                double pot_surplus = 0;
-                double run_res_storage = res_storage.getValue();
+                //double pot_surplus = 0;
+                double run_res_storage = reach.getDouble("res_storage");
+                
 
-                double run_demand = 0;
-                double pot_inter = 0;
-                double run_rele = 0;
+                //double run_demand = 0;
+                //double pot_inter = 0;
+                //double run_rele = 0;
                 double run_outflow = 0;
                 int month = time.get(Attribute.Calendar.MONTH) + 1;
                 //int nrPools = numPools.getValue();
                 int nrPools =  reach.getInt("nrPools");
-                int actPoolnr = 0;
+                //int actPoolnr = 0;
 
                 //double reservoir_V = res_storage.getValue();
 
@@ -184,10 +202,10 @@ public class ReservoirMan_plan extends J2KProcessReachRouting {
 
                 //actAddIn.setValue(0);
 
-                double run_res_storage_RD1 = res_storage_RD1.getValue() + RD1act;
-                double run_res_storage_RD2 = res_storage_RD2.getValue() + RD2act;
-                double run_res_storage_RG1 = res_storage_RG1.getValue() + RG1act;
-                double run_res_storage_RG2 = res_storage_RG2.getValue() + RG2act;
+                double run_res_storage_RD1 = reach.getDouble("res_storage_RD1") + RD1act;
+                double run_res_storage_RD2 = reach.getDouble("res_storage_RD2") + RD2act;
+                double run_res_storage_RG1 = reach.getDouble("res_storage_RG1") + RG1act;
+                double run_res_storage_RG2 = reach.getDouble("res_storage_RG2") + RG2act;
 
                 double run_res_storageInput = (RD1act + RD2act + RG1act + RG2act);
                 run_res_storage = run_res_storage + run_res_storageInput;
@@ -198,34 +216,28 @@ public class ReservoirMan_plan extends J2KProcessReachRouting {
                 double run_res_prop_RG2 = run_res_storage_RG2 / run_res_storage;
 
                 //Calculation of poolbased outflow
-                int i = 0;
-                i = 0;
-                while (i < nrPools) {
-                    i++;
+                int i = nrPools;
+                
+                while (i > 0) {
+                    
                     //getModel().getRuntime().sendErrorMsg("I Variable = " + i + "!");
                     
-                    String begin = "V_begin" + i;
+ 
                     String end = "V_end" + i;
-                    String begin1 = "V_begin" + i;
+                    Double end_l = reach.getDouble(end) * 1000;
+                      
                     String Q_Mon_Pool = "Q" + month + i;
                     
                     
-                    if (i < nrPools){
-                        begin1 = "V_begin" + (i+1);
-                    }
                     
-                    
-                    
-                    if (reach.getDouble(begin) * 1000 <= run_res_storage && reach.getDouble(end) * 1000 > run_res_storage) {
+                    if (end_l > run_res_storage) {
                         run_outflow = 86400 * reach.getDouble(Q_Mon_Pool);
                         run_outflow = Math.min(run_outflow, run_res_storage);
-                    } else if (reach.getDouble(begin1) * 1000 <= run_res_storage && reach.getDouble(end) * 1000 > run_res_storage) { // gap between pools
-                        run_outflow = 86400 * reach.getDouble(Q_Mon_Pool);
-                        run_outflow = Math.min(run_outflow, run_res_storage);
-                    } else if (run_res_storage > reach.getDouble("V_end" + nrPools) * 1000) {  //stage over capacity
+                    } else if (run_res_storage > end_l && i == nrPools) {  //stage over capacity
                         run_outflow = Math.max(86400 * reach.getDouble("Q" + month + nrPools), run_res_storageInput);
                         run_outflow = Math.min(run_outflow, run_res_storage);
                     }
+                    i--;
 
                 }
                 
@@ -235,21 +247,29 @@ public class ReservoirMan_plan extends J2KProcessReachRouting {
                 double run_RG1_outflow = run_outflow * run_res_prop_RG1;
                 double run_RG2_outflow = run_outflow * run_res_prop_RG2;
                 
-                res_storage_RD1.setValue(run_res_storage_RD1 - run_RD1_outflow);
-                res_storage_RD2.setValue(run_res_storage_RD2 - run_RD2_outflow);
-                res_storage_RG1.setValue(run_res_storage_RG1 - run_RG1_outflow);
-                res_storage_RG2.setValue(run_res_storage_RG2 - run_RG2_outflow);
                 
-                res_storage.setValue(run_res_storage - run_outflow);
+                reach.setDouble("res_storage", run_res_storage - run_outflow);
+                reach.setDouble("res_storage_RD1", run_res_storage_RD1 - run_RD1_outflow);
+                reach.setDouble("res_storage_RD2", run_res_storage_RD2 - run_RD2_outflow);
+                reach.setDouble("res_storage_RG1", run_res_storage_RG1 - run_RG1_outflow);
+                reach.setDouble("res_storage_RG2", run_res_storage_RG2 - run_RG2_outflow);
+                
+                
+                Res_Storage_RD1.setValue(run_res_storage_RD1 - run_RD1_outflow);
+                Res_Storage_RD2.setValue(run_res_storage_RD2 - run_RD2_outflow);
+                Res_Storage_RG1.setValue(run_res_storage_RG1 - run_RG1_outflow);
+                Res_Storage_RG2.setValue(run_res_storage_RG2 - run_RG2_outflow);
+                
+                Res_Storage.setValue(run_res_storage - run_outflow);
                                 
                 outflow.setValue(run_outflow);
                 
-                double res_storage_test = res_storage.getValue() - (res_storage_RD1.getValue() + res_storage_RD2.getValue() + res_storage_RG1.getValue() + res_storage_RG2.getValue());
+                /*double res_storage_test = res_storage.getValue() - (res_storage_RD1.getValue() + res_storage_RD2.getValue() + res_storage_RG1.getValue() + res_storage_RG2.getValue());
                 
                 
                 if (Math.abs(res_storage_test) > 0.1){
                     getModel().getRuntime().sendErrorMsg("Reservoir Storage Test not Zero = (" + res_storage_test + ")!");
-                }
+                }*/
                 
                 inRD1.setValue(run_RD1_outflow);
                 inRD2.setValue(run_RD2_outflow);
@@ -266,5 +286,3 @@ public class ReservoirMan_plan extends J2KProcessReachRouting {
         }
 
     }
-
-}
