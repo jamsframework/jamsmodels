@@ -64,14 +64,22 @@ public class IrrigationMultipleSourceExtractionFarmDams_NN extends JAMSComponent
     )
     public Attribute.Double inRD2;
     
+//    @JAMSVarDescription(
+//            access = JAMSVarDescription.AccessType.READ,
+//            description = "Maximum daily volume withdrawn from farmdams "
+//                    + "Pump or pipe maximum capacity",
+//            defaultValue = "0",
+//            unit = "L/d"
+//    )
+//    public Attribute.Double farmdamMaxExtraction;
+    
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
             description = "Maximum daily volume withdrawn from farmdams "
-                    + "Pump or pipe maximum capacity",
-            defaultValue = "0",
-            unit = "L/d"
+                    + "Pump or pipe maximum capacity (proportional to size)",
+            unit = "%"
     )
-    public Attribute.Double farmdamMaxExtraction;
+    public Attribute.Double maxIrrigationExtractionFrac;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
@@ -199,7 +207,8 @@ public class IrrigationMultipleSourceExtractionFarmDams_NN extends JAMSComponent
         }
         
         double run_frac_irrig_applied;
-        double run_farmdamMaxExtraction = farmdamMaxExtraction.getValue();
+//        double run_farmdamMaxExtraction = farmdamMaxExtraction.getValue();
+        
         double run_irrigFarmdamRestriction = irrigFarmdamRestriction.getValue();
         double run_farmdamStorage = farmdamStorage.getValue();
         
@@ -207,6 +216,8 @@ public class IrrigationMultipleSourceExtractionFarmDams_NN extends JAMSComponent
         double run_maxFarmdamStorage= farmdamPorosity.getValue() * farmdamDepth.getValue() * farmdamArea.getValue() * 1000;
         double run_farmdamMinStorage = farmdamMinStorageRatio.getValue() * run_maxFarmdamStorage;
         double run_totalExtraction; // local variable to store actually extracted volume        
+        
+        double run_farmdamMaxExtraction = run_maxFarmdamStorage * maxIrrigationExtractionFrac.getValue();
         
         // Consider restriction withdrawal on the maximum capacity of extraction
         double run_farmdamMaxExtractionActual = run_farmdamMaxExtraction * run_irrigFarmdamRestriction;
