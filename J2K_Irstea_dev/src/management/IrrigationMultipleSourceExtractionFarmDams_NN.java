@@ -89,11 +89,32 @@ public class IrrigationMultipleSourceExtractionFarmDams_NN extends JAMSComponent
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            description = "Minimum farm dam storage",
-            unit = "L",
-            defaultValue = "0"
+            description = "Farm dam area",
+            unit = "m²"
     )
-    public Attribute.Double farmdamMinStorage;
+    public Attribute.Double farmdamArea;
+    
+    @JAMSVarDescription(
+            access = JAMSVarDescription.AccessType.READ,
+            description = "Farm dam porosity",
+            unit = "-"
+    )
+    public Attribute.Double farmdamPorosity;
+    
+    @JAMSVarDescription(
+            access = JAMSVarDescription.AccessType.READ,
+            description = "Farm dam depth",
+            unit = "m"
+    )
+    public Attribute.Double farmdamDepth;
+    
+    @JAMSVarDescription(
+            access = JAMSVarDescription.AccessType.READ,
+            description = "Minimum farm dam storage ratio",
+            unit = "%",
+            defaultValue = "0.1"
+    )
+    public Attribute.Double farmdamMinStorageRatio;
 
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
@@ -181,7 +202,10 @@ public class IrrigationMultipleSourceExtractionFarmDams_NN extends JAMSComponent
         double run_farmdamMaxExtraction = farmdamMaxExtraction.getValue();
         double run_irrigFarmdamRestriction = irrigFarmdamRestriction.getValue();
         double run_farmdamStorage = farmdamStorage.getValue();
-        double run_farmdamMinStorage = farmdamMinStorage.getValue();
+        
+        //Calculate max volume of device in L; area and H in m -> m3, convert to L
+        double run_maxFarmdamStorage= farmdamPorosity.getValue() * farmdamDepth.getValue() * farmdamArea.getValue() * 1000;
+        double run_farmdamMinStorage = farmdamMinStorageRatio.getValue() * run_maxFarmdamStorage;
         double run_totalExtraction; // local variable to store actually extracted volume        
         
         // Consider restriction withdrawal on the maximum capacity of extraction
