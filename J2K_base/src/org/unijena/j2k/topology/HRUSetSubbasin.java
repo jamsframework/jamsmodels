@@ -24,17 +24,16 @@ package org.unijena.j2k.topology;
 
 import jams.data.*;
 import jams.model.*;
-import java.util.List;
 
 /**
  *
  * @author Sven Kralisch <sven at kralisch.com>
  */
 @JAMSComponentDescription(
-    title="Title",
-    author="Author",
-    description="Description",
-    date = "YYYY-MM-DD",
+    title="HRUSetSubbasin",
+    author="Sven Kralisch",
+    description="Assign HRUs their respective subbasin (independent of parameter file)",
+    date = "2025-07-01",
     version = "1.0_0"
 )
 @VersionComments(entries = {
