@@ -23,6 +23,7 @@ package management;
 
 import jams.data.*;
 import jams.model.*;
+import java.util.Calendar;
 import java.util.GregorianCalendar;
 
 /**
@@ -270,6 +271,18 @@ public class HRU_device extends JAMSComponent {
             description = "The time interval"
     )
     public Attribute.TimeInterval timeInterval;
+                
+    @JAMSVarDescription(
+            access = JAMSVarDescription.AccessType.READ,
+            description = "Julian day of device refill start"
+            )
+            public Attribute.Double deviceInterceptionStart;
+                
+    @JAMSVarDescription(
+            access = JAMSVarDescription.AccessType.READ,
+            description = "Julian day of device refill end"
+            )
+            public Attribute.Double deviceInterceptionEnd;
     
 //    //timestep
 //    @JAMSVarDescription(
@@ -356,7 +369,6 @@ public class HRU_device extends JAMSComponent {
         this.run_Qovf = 0;
         this.run_Qinf = 0; //infiltration flux set to zero
 
-
         
 
         // if no device (ie area == 0, do nothing and set all fluxes to zero
@@ -378,12 +390,23 @@ public class HRU_device extends JAMSComponent {
             // In flows            
             // interception of precipitation            
             this.run_Qrain = this.run_Precip * area; // rain in mm, area GI in m2 so Qrain in L
-
-            // interception of flows coming from the HRU
-            this.run_QRD1 = fracRD1 * this.run_InRD1;
-            this.run_QRD2 = fracRD2 * this.run_InRD2;
-            this.run_QRG1 = fracRG1 * this.run_InRG1;
-            this.run_QRG2 = fracRG2 * this.run_InRG2;
+            
+            //Check if we are in a filling period or not.
+            int jDay = time.get(Calendar.DAY_OF_YEAR);
+            if (jDay >= deviceInterceptionStart.getValue() || jDay <= deviceInterceptionEnd.getValue()) {
+                // interception of flows coming from the HRU
+                this.run_QRD1 = fracRD1 * this.run_InRD1;
+                this.run_QRD2 = fracRD2 * this.run_InRD2;
+                this.run_QRG1 = fracRG1 * this.run_InRG1;
+                this.run_QRG2 = fracRG2 * this.run_InRG2;
+            } else { //In case we are not, the the device will not extract water from its environment.
+                // No interception of flows coming from the HRU
+                this.run_QRD1 = 0;
+                this.run_QRD2 = 0;
+                this.run_QRG1 = 0;
+                this.run_QRG2 = 0;
+            }
+            
 
             this.run_Qin = this.run_QRD1 + this.run_QRD2
                     + this.run_QRG1 + this.run_QRG2; //FlowIn in L, Qin in L
