@@ -118,9 +118,9 @@ public class IrrigationMultipleSourceExtractionFarmDams_NN extends JAMSComponent
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            description = "Minimum farm dam storage ratio",
-            unit = "%",
-            defaultValue = "0.1"
+            description = "Farm dam volume not available for irrigation (fraction of the total volume)."
+                    + "Represents the difficulties in extracting the full volume from the farm dams.",
+            unit = "%"
     )
     public Attribute.Double farmdamMinStorageRatio;
 
