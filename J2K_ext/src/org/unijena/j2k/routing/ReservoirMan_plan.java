@@ -129,12 +129,14 @@ public class ReservoirMan_plan extends JAMSComponent {
     )
     public Attribute.Double outflow;
 
-/*    @JAMSVarDescription(
+    @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            description = "Number of Pools"
+            description = "Linear Calibration parameter of poolbased outflow",
+            unit = "-",
+            defaultValue = "1.0"
     )
-    public Attribute.Integer numPools;
-*/
+    public Attribute.Double cal_pool_out;
+
 //Berechnung
     public void init() {
         /*Attribute.Entity reach;
@@ -231,10 +233,10 @@ public class ReservoirMan_plan extends JAMSComponent {
                     
                     
                     if (end_l > run_res_storage) {
-                        run_outflow = 86400 * reach.getDouble(Q_Mon_Pool);
+                        run_outflow = 86400 * cal_pool_out.getValue() * reach.getDouble(Q_Mon_Pool);
                         run_outflow = Math.min(run_outflow, run_res_storage);
                     } else if (run_res_storage > end_l && i == nrPools) {  //stage over capacity
-                        run_outflow = Math.max(86400 * reach.getDouble("Q" + month + nrPools), run_res_storageInput);
+                        run_outflow = Math.max(86400 *  cal_pool_out.getValue() * reach.getDouble("Q" + month + nrPools), run_res_storageInput);
                         run_outflow = Math.min(run_outflow, run_res_storage);
                     }
                     i--;
