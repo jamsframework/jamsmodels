@@ -40,7 +40,7 @@ import java.util.List;
         + "internal variables. Application of extraction limitation to in and act, equal extraction"
         + "from both.",
         date = "2024-04-16 / 2025-06-04",
-        version = "2.0_0"
+        version = "2.1_0"
 )
 @VersionComments(entries = {
     @VersionComments.Entry(version = "1.0_0", comment = "Initial version"),
@@ -48,7 +48,9 @@ import java.util.List;
             + " but water is inside the reach --> now water will be extracted from the reach in this case."
             + "New names. Bugfix in water extraction from act. Use of more"
             + "internal variables. Application of extraction limitation to in and act, equal extraction"
-            + "from both. All variables contain animal terminology")
+            + "from both. All variables contain animal terminology"),
+    @VersionComments.Entry(version = "2.1_0", comment = "Added allowedMinDischarge -> min remaining discharge"
+            + " after extraction")
 })
 public class AnimalWaterExtraction extends JAMSComponent {
 
@@ -155,6 +157,15 @@ public class AnimalWaterExtraction extends JAMSComponent {
     public Attribute.Double allowedAnimExtractionFraction;
     
     @JAMSVarDescription(
+            access = JAMSVarDescription.AccessType.READ,
+            description = "Legal minimum discharge that needs to be kept in the stream after irrgigation"+
+                    " extraction - parameter",
+            defaultValue = "0.0",
+            unit = "L"
+    )
+    public Attribute.Double allowedMinDischarge;
+    
+    @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
             description = "Total demand of water for animal drinking. For verification purposes. No need to be defined. - output"
     )
@@ -198,11 +209,20 @@ public class AnimalWaterExtraction extends JAMSComponent {
         double run_actRG1 = actRG1.getValue();
         double run_actRG2 = actRG2.getValue();
         double run_allowedExtractionFraction = allowedAnimExtractionFraction.getValue();
+        double run_allowedMinDischarge = allowedMinDischarge.getValue();
         
         // calculate amount of water available
         double run_totalIn = run_inRD1 + run_inRD2 + run_inRG1 + run_inRG2; // all water in inflow (for proportional extraction)
         double run_totalAct = run_actRD1 + run_actRD2 + run_actRG1 + run_actRG2; // all water in act (for proportional extraction)
         double run_totalStorage = run_totalIn + run_totalAct; // all water in inflow and act
+        if (run_allowedMinDischarge > 0.0) { // there is a minimum absolute discharge to respect
+            if (run_totalStorage>run_allowedMinDischarge){ // there is more water -> we can extract
+                // limit allowed extraction fraction to whichever is smaller (run_allowedExtractionFraction or excess of run_allowedMinDischarge)
+                run_allowedExtractionFraction = Math.min( (run_totalStorage-run_allowedMinDischarge)/run_totalStorage , run_allowedExtractionFraction);              
+            } else { // there is not enough water -> no extraction allowed
+                run_allowedExtractionFraction = 0.0;
+            }
+        }
         // calculate part that is allowed to be taken
         double run_inAvailable = run_allowedExtractionFraction * run_totalIn;
         double run_actAvailable = run_allowedExtractionFraction * run_totalAct; // water in the reach for irrigation
