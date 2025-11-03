@@ -40,7 +40,7 @@ import java.util.List;
         + "from both."
         + "totalIrrigAvailable is written only for reach sources",
         date = "2015-08-13 / 2025-03-25",
-        version = "3.1_0"
+        version = "3.2_0"
 )
 @VersionComments(entries = {
     @VersionComments.Entry(version = "1.0_0", comment = "Initial version"),
@@ -49,7 +49,8 @@ import java.util.List;
     @VersionComments.Entry(version = "3.0_0", comment = "New names. Bugfix in water extraction from act. Use of more"
             + "internal variables. Application of extraction limitation to in and act, equal extraction"
             + "from both."),
-    @VersionComments.Entry(version = "3.1_0", comment = "All variables contain irrigation terminology")
+    @VersionComments.Entry(version = "3.1_0", comment = "All variables contain irrigation terminology"),
+    @VersionComments.Entry(version = "3.2_0", comment = "Added allowedMinDischarge -> min remaining discharge after extraction")
 })
 public class IrrigationExtractionReach_NN extends JAMSComponent {
 
@@ -172,6 +173,15 @@ public class IrrigationExtractionReach_NN extends JAMSComponent {
     public Attribute.Double allowedIrrigExtractionFraction;
     
     @JAMSVarDescription(
+            access = JAMSVarDescription.AccessType.READ,
+            description = "Legal minimum discharge that needs to be kept in the stream after irrgigation"+
+                    " extraction - parameter",
+            defaultValue = "0.0",
+            unit = "L"
+    )
+    public Attribute.Double allowedMinDischarge;
+    
+    @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
             description = "Total demand of water for irrigation, including the enhancement by poor efficiency."+
                     "Should be attribute of the ReachLoop to write. This component cumulates the irrigation"+ 
@@ -218,11 +228,20 @@ public class IrrigationExtractionReach_NN extends JAMSComponent {
         double run_actRG1 = actRG1.getValue();
         double run_actRG2 = actRG2.getValue();
         double run_allowedExtractionFraction = allowedIrrigExtractionFraction.getValue();
+        double run_allowedMinDischarge = allowedMinDischarge.getValue();
         
         double run_totalExtraction; // local variable to store actually extracted volume
         double run_totalIn = run_inRD1 + run_inRD2 + run_inRG1 + run_inRG2; // all water in inflow (for proportional extraction)
         double run_totalAct = run_actRD1 + run_actRD2 + run_actRG1 + run_actRG2; // all water in act (for proportional extraction)
         double run_totalStorage = run_totalIn + run_totalAct; // all water in inflow and act
+        if (run_allowedMinDischarge > 0.0) { // there is a minimum absolute discharge to respect
+            if (run_totalStorage>run_allowedMinDischarge){ // there is more water -> we can extract
+                // limit allowed extraction fraction to whichever is smaller (run_allowedExtractionFraction or excess of run_allowedMinDischarge)
+                run_allowedExtractionFraction = Math.min( (run_totalStorage-run_allowedMinDischarge)/run_totalStorage , run_allowedExtractionFraction);              
+            } else { // there is not enough water -> no extraction allowed
+                run_allowedExtractionFraction = 0.0;
+            }
+        }
         double run_inAvailable = run_allowedExtractionFraction * run_totalIn;
         double run_actAvailable = run_allowedExtractionFraction * run_totalAct; // water in the reach for irrigation
         double run_totalAvailable = run_inAvailable + run_actAvailable; // all available water
