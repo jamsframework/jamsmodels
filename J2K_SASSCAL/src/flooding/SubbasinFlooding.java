@@ -132,7 +132,7 @@ public class SubbasinFlooding extends JAMSComponent {
 
     @Override
     public void run() {
-
+        
         // calc overall sum and store proportions
         double sum = 0;
         double[] proportion = new double[runoffComponents.length];
