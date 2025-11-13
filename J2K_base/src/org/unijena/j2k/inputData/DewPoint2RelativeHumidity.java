@@ -31,14 +31,16 @@ import jams.model.*;
 @JAMSComponentDescription(
         title = "DewPoint2RelativeHumidity",
         author = "Sven Kralisch",
-        description = "Approximation of relative humidity from dew point, taken "
-                + "from https://en.wikipedia.org/wiki/Dew_point",
-        date = "2018-01-25",
-        version = "1.0_1"
+        description = "Calculation of relative humidity from dew point based "
+                + "on Magnus formula, taken from "
+                + "https://en.wikipedia.org/wiki/Dew_point",
+        date = "2025-02-16",
+        version = "1.0_2"
 )
 @VersionComments(entries = {
     @VersionComments.Entry(version = "1.0_0", comment = "Initial version"),
-    @VersionComments.Entry(version = "1.0_1", comment = "Muliplied rhum value by 100 to get \"%\"")
+    @VersionComments.Entry(version = "1.0_1", comment = "Muliplied rhum value by 100 to get \"%\""),
+    @VersionComments.Entry(version = "1.0_2", comment = "Calcultion slightly adapted and mode switch removed")
 })
 public class DewPoint2RelativeHumidity extends JAMSComponent {
 
@@ -47,31 +49,24 @@ public class DewPoint2RelativeHumidity extends JAMSComponent {
      */
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            description = "Description",
+            description = "dew point temperature",
             unit = "°C"
     )
     public Attribute.Double dewPoint;
 
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            description = "Description",
+            description = "temperature",
             unit = "°C"
     )
     public Attribute.Double temp;
 
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
-            description = "Description",
+            description = "relative humidity",
             unit = "%"
     )
     public Attribute.Double rhum;
-
-    @JAMSVarDescription(
-            access = JAMSVarDescription.AccessType.READ,
-            description = "0: Magnus formula; 1: Simple approximation",
-            defaultValue = "0"
-    )
-    public Attribute.Integer mode;
 
     /*
      *  Component run stages
@@ -83,34 +78,17 @@ public class DewPoint2RelativeHumidity extends JAMSComponent {
     @Override
     public void run() {
 
-        switch (mode.getValue()) {
+        double b = 17.62;
+        double c = 243.12;
+        double d = dewPoint.getValue();
+        double T = temp.getValue();
 
-            case 0:
+        double h = Math.exp((d * b) / (c + d) - (b * T) / (c + T));
 
-                double b = 17.67;
-                double c = 243.5;
-                double d = dewPoint.getValue();
-                double T = temp.getValue();
-
-                double h = Math.exp((d * b) / (c + d) - (b * T) / (c + T));
-
-                rhum.setValue(h * 100);
-
-                break;
-
-            case 1:
-
-                rhum.setValue(100 - 5 * (temp.getValue() - dewPoint.getValue()));
-
-                break;
-
-            default:
-                getModel().getRuntime().sendHalt("You must set a valid mode value!");
-                break;
-        }
-
+        rhum.setValue(h * 100);
+        
     }
-
+    
     @Override
     public void cleanup() {
     }
