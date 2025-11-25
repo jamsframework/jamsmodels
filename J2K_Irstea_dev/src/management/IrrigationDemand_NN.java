@@ -153,7 +153,8 @@ public class IrrigationDemand_NN extends JAMSComponent {
 
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            description = "Maximal dose for irrigation - parameter",
+            description = "Maximal dose for irrigation. Default = 0 is interpreted"+
+                    " as no limitation - parameter",
             unit = "mm",
             defaultValue = "0"
     )
@@ -220,7 +221,9 @@ public class IrrigationDemand_NN extends JAMSComponent {
     @Override
     public void run() {
 
-        if (potET.getValue() == 0) {
+        if (potET.getValue() == 0) { // if no potET -> only reset demanded water = 0 and step out of the function
+            irrigationDemand.setValue(0);
+            plantIrrigRequirements.setValue(0);
             return;
         }
 
