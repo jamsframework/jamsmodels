@@ -248,7 +248,9 @@ public class IrrigationMultipleSourceDemand_NN extends JAMSComponent {
     @Override
     public void run() {
 
-        if (potET.getValue() == 0) {
+        if (potET.getValue() == 0) { // if no potET -> only reset demanded water = 0 and step out of the function
+            irrigationDemand.setValue(0);
+            plantIrrigRequirements.setValue(0);
             return;
         }
 
