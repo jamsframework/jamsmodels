@@ -9,6 +9,7 @@
 <!-- in the project's Project Properties dialog box.-->
 <project name="J2K_iso" default="default" basedir=".">
     <description>Builds, tests, and runs the project J2K_iso.</description>
+    <import file="../jams-common.xml"/>
     <import file="nbproject/build-impl.xml"/>
     <!--
 
