@@ -102,12 +102,12 @@ public class IsotopeMixer extends JAMSComponent {
     )
     public Attribute.Double[] concB;
 
-    @JAMSVarDescription(
-            access = JAMSVarDescription.AccessType.READ,
-            description = "missingDataValue",
-            defaultValue = "-999"
-    )
-    public Attribute.Double missingDataValue;
+//    @JAMSVarDescription(
+//            access = JAMSVarDescription.AccessType.READ,
+//            description = "missingDataValue",
+//            defaultValue = "-999"
+//    )
+//    public Attribute.Double missingDataValue;
 
     /*
      *  Component run stages
@@ -118,9 +118,9 @@ public class IsotopeMixer extends JAMSComponent {
         for (int i = 0; i < volA.length; i++) {
             double x;
             double volA_, volB_;
-            if (mixingProportion.getValue() == 0 || concA[i].getValue() == missingDataValue.getValue()) {
-                continue;
-            }
+//            if (mixingProportion.getValue() == 0 || concA[i].getValue() == missingDataValue.getValue()) {
+//                continue;
+//            }
             volA_ = volA[i].getValue();
             volB_ = volB[i].getValue() / mixingProportion.getValue();
 
