@@ -107,7 +107,7 @@ public class Init_HRU_device extends JAMSComponent {
         double run_p = devicePorosity.getValue();
         
         //Calculate max volume of device in L; area and H in m -> m3, convert to L
-        double run_maxVolumeDevice = run_deviceArea * run_p * run_h * 1000;
+        double run_maxVolumeDevice = run_area * run_deviceArea * run_p * run_h * 1000;
         // Calculate the initial volume in the device, from the full capacity 
         double run_fracDeviceInitVol = fracDeviceInitVol.getValue();
         double run_deviceInitVol = run_fracDeviceInitVol * run_maxVolumeDevice;
