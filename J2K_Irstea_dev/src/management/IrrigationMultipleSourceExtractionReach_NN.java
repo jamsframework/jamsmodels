@@ -41,7 +41,7 @@ import java.util.List;
         + "totalIrrigAvailableReach is written only for reach sources"
         + "multiple source extraction",
         date = "2015-08-13 / 2025-03-25",
-        version = "4.0_0"
+        version = "4.1_0"
 )
 @VersionComments(entries = {
     @VersionComments.Entry(version = "1.0_0", comment = "Initial version"),
