@@ -137,13 +137,14 @@ public class IrrigationCounter extends JAMSComponent {
 
     @Override
     public void run() {
+        
+        double run_plantIrrigRequirements = plantIrrigRequirements.getValue();
+        previousPlantIrrigRequirements.setValue(run_plantIrrigRequirements);
 
         if (irrigationActive.getValue() == 1) {// if we are in the irrigation season -> add to counters
             // read area, water requirements and delivery
             double run_area = area.getValue();
-            double run_plantIrrigRequirements = plantIrrigRequirements.getValue();
             double run_irrigationApplication = irrigationApplication.getValue();
-            previousPlantIrrigRequirements.setValue(run_plantIrrigRequirements);
             
             // add HRU to counters of activated irrigation
             HRUIrrigSeasonCounter.setValue(HRUIrrigSeasonCounter.getValue() + 1);
