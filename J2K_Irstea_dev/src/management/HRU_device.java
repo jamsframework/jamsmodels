@@ -451,6 +451,8 @@ public class HRU_device extends JAMSComponent {
 
             // update volume
             this.run_actvolumeInDevice = Math.max(this.run_actvolumeInDevice - this.run_Qinf - this.run_ActET, 0);
+        }else{
+            getModel().getRuntime().println("Device area < 0 ! Not possible");
         }
 
         // write values  
