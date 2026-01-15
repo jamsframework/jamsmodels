@@ -320,7 +320,7 @@ public class HRU_device_daily extends JAMSComponent {
             } else {
                 run_Qovf = 0;
             }
-
+            
 
             // Outflows
             // Evaporation + Infiltration
