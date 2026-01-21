@@ -24,12 +24,6 @@ package management;
 
 import jams.data.*;
 import jams.model.*;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.List;
-import java.util.ArrayList;
-import java.util.stream.Collectors;
-//import java.jamsui.juice;
 
 
 /**
@@ -173,7 +167,7 @@ public class AEPExtractionReach extends JAMSComponent {
                 // Water already in the reach available for extraction 
                 // -- see if actPrel relevant in management scenarios
                 // -- set to 1 at first because AEP is generally prioritized over other uses
-                double totalAct = run_actPrel * (run_inRD1 + run_inRD2 + run_inRG1 + run_inRG2); // water available for drinking water
+                double totalAct = run_actPrel * (run_actRD1 + run_actRD2 + run_actRG1 + run_actRG2); // water available for drinking water
 
                 if(totalIn > 1E-20) {
 
