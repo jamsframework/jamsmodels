@@ -25,8 +25,7 @@ import jams.data.*;
 import jams.model.*;
 import java.util.HashSet;
 import java.util.Set;
-import java.util.stream.Collectors;
-
+import java.util.Arrays;
 
 
 @JAMSComponentDescription(
@@ -47,16 +46,15 @@ public class InitHRUIrrigationSource extends JAMSComponent {
     )
     public Attribute.EntityCollection hrus;
     
-    
     @JAMSVarDescription(
     access = JAMSVarDescription.AccessType.WRITE,
     description = "List of all HRU ID used as irrigation sources from GroundWater storage")
-    public Attribute.String irrigation_sources_GW_list;
+    public Attribute.StringArray irrigation_sources_GW_list;
     
     @JAMSVarDescription(
     access = JAMSVarDescription.AccessType.WRITE,
     description = "List of all HRU ID used as irrigation sources from Farm Dam storage")
-    public Attribute.String irrigation_source_farmdam_list;
+    public Attribute.StringArray irrigation_source_farmdam_list;
 
 
     @Override
@@ -79,18 +77,21 @@ public void init() {
             fdSources.add(fdsource_integer);
         }
     }
-    String gwlist = gwSources.stream()
-            .map(Object::toString)
-            .collect(Collectors.joining(";"));
-    irrigation_sources_GW_list.setValue(gwlist);  
-    
-    String fdlist = fdSources.stream()
-            .map(Object::toString)
-            .collect(Collectors.joining(";"));
-    irrigation_source_farmdam_list.setValue(fdlist);   
 
-    getModel().getRuntime().println("GW list = " + gwlist+
-            "FD list = " + fdlist);
+    String[] fdArray = fdSources.stream()
+        .map(Object::toString)
+        .toArray(String[]::new);
+
+    irrigation_source_farmdam_list.setValue(fdArray);
+
+    String[] gwArray = gwSources.stream()
+            .map(Object::toString)
+            .toArray(String[]::new);
+
+    irrigation_sources_GW_list.setValue(gwArray);
+
+    getModel().getRuntime().println("GW list = " + Arrays.toString(gwArray)+
+            " // FD list = " + Arrays.toString(fdArray));
 
 
     }
