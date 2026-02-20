@@ -31,22 +31,15 @@ import jams.model.*;
  * @author Sven Kralisch & Mériem Labbas & Christian Fischer
  */
 @JAMSComponentDescription(title = "AEP device to extract water from reach",
-        author = "Francois Tilmant & Flora Branger / LC & ALB",
-        description = "Component used for the simulation of drinking water extraction. It takes the different components outflows"
-        + "coming from a sewer reach (threshold test).",
-        version = "3.0_0",
+        author = "Francois Tilmant & Flora Branger / L Crochemore & AL Borgna",
+        description = "Component used for the simulation of drinking water extraction in the reach.",
+        version = "1.0_0",
         date = "2026-01-20")
 public class AEPExtractionReach extends JAMSComponent {
 
     /*
      * Component variables
-     */
-        @JAMSVarDescription(
-                access = JAMSVarDescription.AccessType.READ,
-                description = "HRUs list"
-        )
-        public Attribute.EntityCollection hrus;    
-    
+     */  
         @JAMSVarDescription(
                 access = JAMSVarDescription.AccessType.READ,
                 description = "Reach list"
@@ -55,83 +48,84 @@ public class AEPExtractionReach extends JAMSComponent {
         
         @JAMSVarDescription (
             access = JAMSVarDescription.AccessType.READ,
-            description = "regionalised data value (objective function)"
+            description = "Regionalised data value (objective function) of water extraction for drinking water. - input",
+            unit = "L"
         )
         public Attribute.Double FO;
                 
         @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
-            description = "RD1 inflow to reach",
+            description = "RD1 inflow to reach. - state variable",
             unit = "L"
         )
         public Attribute.Double inRD1;
     
         @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
-            description = "RD2 inflow to reach",
+            description = "RD2 inflow to reach. - state variable",
             unit = "L"
         )
         public Attribute.Double inRD2;
     
         @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
-            description = "RG1 inflow to reach",
+            description = "RG1 inflow to reach. - state variable",
             unit = "L"
         )
         public Attribute.Double inRG1;
     
         @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
-            description = "RG2 inflow to reach",
+            description = "RG2 inflow to reach. - state variable",
             unit = "L"
         )
         public Attribute.Double inRG2;
    
         @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
-            description = "actRD1 component in reach"
+            description = "actRD1 component in reach. - state variable"
         )
         public Attribute.Double actRD1;
         
         @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
-            description = "actRD2 component in reach"
+            description = "actRD2 component in reach. - state variable"
         )
         public Attribute.Double actRD2;
         
         @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
-            description = "actRG1 component in reach"
+            description = "actRG1 component in reach. - state variable"
         )
         public Attribute.Double actRG1;
             
         @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
-            description = "actRG2 component in reach"
+            description = "actRG2 component in reach. - state variable"
         )
         public Attribute.Double actRG2;
                  
         @JAMSVarDescription(
                 access = JAMSVarDescription.AccessType.READ,
-                description = "Ratio of water available for AEP / water present in the Reach"
+                description = "Ratio of water available for AEP / water present in the reach. - parameter"
         )
         public Attribute.Double actPrel;
         
         @JAMSVarDescription(
                 access = JAMSVarDescription.AccessType.READ,
-                description = "Expected losses through the pipe network"
+                description = "Expected losses through the pipe network. - parameter"
         )
         public Attribute.Double netLoss;
         
         @JAMSVarDescription(
                 access = JAMSVarDescription.AccessType.READ,
-                description = "Multiplicative factor for adjusting the consumption values in AEP.dat"
+                description = "Multiplicative factor for adjusting the consumption values in AEP.dat. - parameter"
         )
         public Attribute.Double aepFactor;
 
         @JAMSVarDescription(
                 access = JAMSVarDescription.AccessType.WRITE,
-            description = "Water volume effectively extracted from source (HRU or reach) for AEP."
+            description = "Water volume actually extracted from source (HRU or reach) for AEP."
                 +"Will be read by pointer aepExtractedVolumeName. - output",
             unit = "L"
         )
@@ -162,14 +156,14 @@ public class AEPExtractionReach extends JAMSComponent {
 //                 getModel().getRuntime().println("Extraction in reach (AEPExtractionReach):"+reaches.getCurrent().getId());
                 
                 // Total inflow
-                double totalIn = run_inRD1 + run_inRD2 + run_inRG1 + run_inRG2;
+                double run_totalIn = run_inRD1 + run_inRD2 + run_inRG1 + run_inRG2;
 
                 // Water already in the reach available for extraction 
                 // -- see if actPrel relevant in management scenarios
                 // -- set to 1 at first because AEP is generally prioritized over other uses
-                double totalAct = run_actPrel * (run_actRD1 + run_actRD2 + run_actRG1 + run_actRG2); // water available for drinking water
+                double run_totalAct = run_actPrel * (run_actRD1 + run_actRD2 + run_actRG1 + run_actRG2); // water available for drinking water
 
-                if(totalIn > 1E-20) {
+                if(run_totalIn+run_totalAct > 1E-10) {
 
                     // Water consumed
                     double FO_act = FO.getValue() * aepFactor.getValue();
@@ -178,26 +172,22 @@ public class AEPExtractionReach extends JAMSComponent {
                     FO_act = FO_act + run_netLoss * FO_act;
 
                     // looking if we can cover the demand with in
-                    double frac_in = FO_act/totalIn;
-                    if(Double.isInfinite(frac_in)){
-                        getModel().getRuntime().println("Infinite fraction:"+reaches.getCurrent().getId());
-                    }
+                    if (run_totalIn > 1E-10) { // to avoid division by zero
+                    double run_demandFractionOverInflow = FO_act/run_totalIn;
 
-                    if (frac_in >= -1) {
+                    if (run_demandFractionOverInflow >= -1) {
 
                         // we can cover all only with in to the reach, reduce the components accordingly
-                        inRD1.setValue(run_inRD1 * (1 - frac_in));
-                        inRD2.setValue(run_inRD2 * (1 - frac_in));
-                        inRG1.setValue(run_inRG1 * (1 - frac_in));
-                        inRG2.setValue(run_inRG2 * (1 - frac_in));
+                        inRD1.setValue(run_inRD1 * (1 - run_demandFractionOverInflow));
+                        inRD2.setValue(run_inRD2 * (1 - run_demandFractionOverInflow));
+                        inRG1.setValue(run_inRG1 * (1 - run_demandFractionOverInflow));
+                        inRG2.setValue(run_inRG2 * (1 - run_demandFractionOverInflow));
                         aepExtractedVolume.setValue(FO_act); // extracted volume = FO_act : FO_act demand fully satisfied. /!\ FO_act < 0
+                    }
 
                     } else {
                         // looking if we can cover the demand by including part of act...
-                        double frac_in_act = FO_act / (totalIn+totalAct);
-                        if(Double.isInfinite(frac_in_act)){
-                            getModel().getRuntime().println("Infinite fraction:"+reaches.getCurrent().getId());
-                        }
+                        double run_demandFractionOverTotalWater = FO_act / (run_totalIn + run_totalAct);
 
                         // we can cover only part of the demand with in, reduce the components to 0
                         inRD1.setValue(0);
@@ -205,22 +195,21 @@ public class AEPExtractionReach extends JAMSComponent {
                         inRG1.setValue(0);
                         inRG2.setValue(0);
 
-                        if (frac_in_act >= -1) {
+                        if (run_demandFractionOverTotalWater >= -1) {
                             // we can cover all of the demand but not only with in..., reduce the components accordingly
-                            double actDemand = 0;
-                            actDemand = FO_act + totalIn;
-                            double frac2 = -actDemand/totalAct;
-                            if(Double.isInfinite(frac2)){
-                                getModel().getRuntime().println("Infinite fraction:"+reaches.getCurrent().getId());
+                            double actDemand = FO_act + run_totalIn;
+                            
+                            if (run_totalAct > 1E-10) { // to avoid division by zero
+                                double run_actDemandFraction = -actDemand/run_totalAct;
+                                if(run_actDemandFraction<0) { // a supprimer ??
+                                    getModel().getRuntime().println("Warning: error in sign when extracting drinking water in reach");
+                                }
+                                actRD1.setValue(run_actRD1 * (1 - run_actDemandFraction));
+                                actRD2.setValue(run_actRD2 * (1 - run_actDemandFraction));
+                                actRG1.setValue(run_actRG1 * (1 - run_actDemandFraction));
+                                actRG2.setValue(run_actRG2 * (1 - run_actDemandFraction));
+                                aepExtractedVolume.setValue(FO_act); // extracted volume = FO_act : FO_act demand fully satisfied. /!\ FO_act < 0
                             }
-                            if(frac2<0) {
-                                getModel().getRuntime().println("Warning: error in sign when extracting drinking water in reach");
-                            }
-                            actRD1.setValue(run_actRD1 * (1 - frac2));
-                            actRD2.setValue(run_actRD2 * (1 - frac2));
-                            actRG1.setValue(run_actRG1 * (1 - frac2));
-                            actRG2.setValue(run_actRG2 * (1 - frac2));
-                            aepExtractedVolume.setValue(FO_act); // extracted volume = FO_act : FO_act demand fully satisfied. /!\ FO_act < 0
 
                         } else {
                             // we can cover part of the demand ; reduce the act... to (1 - actPrel)*act...
@@ -228,7 +217,7 @@ public class AEPExtractionReach extends JAMSComponent {
                             actRD2.setValue(run_actRD2 * (1 - run_actPrel));
                             actRG1.setValue(run_actRG1 * (1 - run_actPrel));
                             actRG2.setValue(run_actRG2 * (1 - run_actPrel));
-                            aepExtractedVolume.setValue(-(totalIn+totalAct)); // FO_act demand partially satisfied. /!\ < 0
+                            aepExtractedVolume.setValue(-(run_totalIn + run_totalAct)); // FO_act demand partially satisfied. /!\ < 0
                         }
                     }
 
