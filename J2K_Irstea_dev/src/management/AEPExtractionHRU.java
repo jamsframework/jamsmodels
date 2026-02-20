@@ -156,11 +156,9 @@ public class AEPExtractionHRU extends JAMSComponent {
                     FO_act = FO_act + run_netLoss * FO_act;
                     
                     // looking if we can cover the demand with in
+                    if (run_totalIn > 1E-10) { // to avoid division by zero
                     double run_demandFractionOverInflow = FO_act/run_totalIn;
 //                    getModel().getRuntime().println("run_demandFractionOverInflow = FO_act/run_totalIn:"+run_demandFractionOverInflow); // check
-                    if(Double.isInfinite(run_demandFractionOverInflow)){
-                        getModel().getRuntime().println("Infinite fraction:"+hrus.getCurrent().getId());
-                    }
 
                     if (run_demandFractionOverInflow >= -1) {
 
@@ -170,14 +168,12 @@ public class AEPExtractionHRU extends JAMSComponent {
                         inRG2.setValue(run_inRG2 * (1 + run_demandFractionOverInflow));
                         aepExtractedVolume.setValue(FO_act); // extracted volume = FO_act : FO_act demand fully satisfied. /!\ FO_act < 0
 //                        getModel().getRuntime().println("aepExtractedVolume apres avoir setValue - cas 1:"+aepExtractedVolume.getValue()); // check
+                    }
 
                     } else {
                         // looking if we can cover the demand by including part of act...
                         double run_demandFractionOverTotalWater = FO_act / (run_totalIn + run_totalAct);
 //                        getModel().getRuntime().println("run_demandFractionOverTotalWater = FO_act / (run_totalIn + run_totalAct):"+run_demandFractionOverTotalWater); // check
-                        if(Double.isInfinite(run_demandFractionOverTotalWater)){
-                            getModel().getRuntime().println("Infinite fraction:"+hrus.getCurrent().getId());
-                        }
 
                         // we can cover only part of the demand with in, reduce the components to 0
                         inRG1.setValue(0);
@@ -214,7 +210,7 @@ public class AEPExtractionHRU extends JAMSComponent {
 
                     // restitute lost water to RD2 (when efficiency of the network netLoss <1) :
                     inRD2.setValue(run_inRD2 + Math.max(0.,-run_netLoss * aepExtractedVolume.getValue()));
-                    getModel().getRuntime().println("AEPExtractionHRU - run_inRD2:"+run_inRD2); // check
+//                    getModel().getRuntime().println("AEPExtractionHRU - run_inRD2:"+run_inRD2); // check
 //                    getModel().getRuntime().println("AEPExtractionHRU - fuites:"+run_netLoss * -aepExtractedVolume.getValue()); // check
 
                     
