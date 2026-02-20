@@ -183,7 +183,8 @@ public class AEPExtractionHRU extends JAMSComponent {
                         if (run_demandFractionOverTotalWater >= -1) {
                             // we can cover all of the demand but not only with in..., reduce the components accordingly
                             double actDemand = FO_act + run_totalIn;
-                            getModel().getRuntime().println("actDemand:"+actDemand); // check
+//                            getModel().getRuntime().println("actDemand:"+actDemand); // check
+                            if (run_totalAct > 1E-10) { // to avoid division by zero
                             double run_actDemandFraction = -actDemand/run_totalAct;
 //                            getModel().getRuntime().println("run_actDemandFraction = -actDemand/run_totalAct:"+run_actDemandFraction); // check
                             if(Double.isInfinite(run_actDemandFraction)){
@@ -197,6 +198,7 @@ public class AEPExtractionHRU extends JAMSComponent {
                             actRG2.setValue(run_actRG2 * (1 - run_actDemandFraction));
                             aepExtractedVolume.setValue(FO_act); // extracted volume = FO_act : FO_act demand fully satisfied. /!\ FO_act < 0
 //                            getModel().getRuntime().println("aepExtractedVolume apres avoir setValue - cas 2:"+aepExtractedVolume.getValue()); // check
+                            }
 
                         } else {
                             // we can cover part of the demand ; reduce the act... to (1 - actPrel)*act...
