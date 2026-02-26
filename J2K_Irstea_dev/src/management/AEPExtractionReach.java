@@ -178,10 +178,10 @@ public class AEPExtractionReach extends JAMSComponent {
                     if (run_demandFractionOverInflow >= -1) {
 
                         // we can cover all only with in to the reach, reduce the components accordingly
-                        inRD1.setValue(run_inRD1 * (1 - run_demandFractionOverInflow));
-                        inRD2.setValue(run_inRD2 * (1 - run_demandFractionOverInflow));
-                        inRG1.setValue(run_inRG1 * (1 - run_demandFractionOverInflow));
-                        inRG2.setValue(run_inRG2 * (1 - run_demandFractionOverInflow));
+                        inRD1.setValue(run_inRD1 * (1 + run_demandFractionOverInflow));
+                        inRD2.setValue(run_inRD2 * (1 + run_demandFractionOverInflow));
+                        inRG1.setValue(run_inRG1 * (1 + run_demandFractionOverInflow));
+                        inRG2.setValue(run_inRG2 * (1 + run_demandFractionOverInflow));
                         aepExtractedVolume.setValue(FO_act); // extracted volume = FO_act : FO_act demand fully satisfied. /!\ FO_act < 0
                     }
 
