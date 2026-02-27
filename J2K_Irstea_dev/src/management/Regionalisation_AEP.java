@@ -36,8 +36,8 @@ import java.util.Map;
  * @author Sven Kralisch & Mériem Labbas & Christian Fischer
  */
 @JAMSComponentDescription(title = "Regionalisation_AEP",
-        author = "Francois Tilmant / LC",
-        description = "Component used extract the objective function at one reach",
+        author = "Francois Tilmant, L Crochemore",
+        description = "Component used to extract the objective function at one HRU or one reach",
         version = "1.0_0",
         date = "2014-06-04")
 public class Regionalisation_AEP extends JAMSComponent {
@@ -47,19 +47,21 @@ public class Regionalisation_AEP extends JAMSComponent {
      */
     @JAMSVarDescription (
             access = JAMSVarDescription.AccessType.READ,
-            description = "Array of data values for current time step"
+            description = "Array of data values for current time step",
+            unit = "L"
     )
     public Attribute.DoubleArray dataArray;
     
     @JAMSVarDescription (
             access = JAMSVarDescription.AccessType.WRITE,
-            description = "regionalised data value"
+            description = "regionalised data value",
+            unit = "L"
     )
     public Attribute.Double dataValue;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            description = "Array of station names"
+            description = "Array of HRUs/reaches in which extraction occurs"
     )
     public Attribute.DoubleArray names;
 
