@@ -226,17 +226,11 @@ public class AEPReleaseReach extends JAMSComponent {
             
             // release into the reach
             double run_totalIn = run_inRD1 + run_inRD2 + run_inRG1 + run_inRG2; // total inflow
-            double run_totalAct = run_actRD1 + run_actRD2 + run_actRG1 + run_actRG2; // total actual stock
-            double run_totalWater = run_totalIn + run_totalAct;
             
-            if (run_totalWater == 0) {
+            if (run_totalIn == 0) {
 //                getModel().getRuntime().println("Infinite fraction due to totalIn+totalAct=0. Reach "+reaches.getCurrent().getId());
-                // if no water, release 33% of TotalReleasedVolume in each component
-                double run_releasedVolumeForEach = run_aepTotalReleasedVolume/3;
-                inRD1.setValue(run_inRD1 + run_releasedVolumeForEach);
-                inRD2.setValue(run_inRD2 + run_releasedVolumeForEach);
-                inRG1.setValue(run_inRG1 + run_releasedVolumeForEach);
-//                inRG2.setValue(run_inRG2 + releasedVolumeForEach); // no RG2 for Rhone model
+                // if no water in totalIn, aepTotalReleasedVolume is added to inRD1 only (ratio run_fractionOverTotalWater = run_aepTotalReleasedVolume/run_totalIn can't be calculated)
+                inRD1.setValue(run_inRD1 + run_aepTotalReleasedVolume);
 //                getModel().getRuntime().println("run_aepTotalReleasedVolume:"+run_aepTotalReleasedVolume); // check
 //                getModel().getRuntime().println("inRD1 qd total=0 : "+inRD1.getValue()); // check
 //                getModel().getRuntime().println("inRD2 qd total=0 : "+inRD2.getValue()); // check
@@ -244,12 +238,12 @@ public class AEPReleaseReach extends JAMSComponent {
             }
             else {
             // aepTotalReleasedVolume is proportionally added to inRD1, inRD2, inRG1, inRG2
-                double run_fractionOverTotalWater = run_aepTotalReleasedVolume/run_totalWater;
+                double run_releasedFractionOverInflow = run_aepTotalReleasedVolume/run_totalIn;
             
-                inRD1.setValue(run_inRD1 + run_inRD1 * run_fractionOverTotalWater);
-                inRD2.setValue(run_inRD2 + run_inRD2 * run_fractionOverTotalWater);
-                inRG1.setValue(run_inRG1 + run_inRG1 * run_fractionOverTotalWater);
-                inRG2.setValue(run_inRG2 + run_inRG2 * run_fractionOverTotalWater);
+                inRD1.setValue(run_inRD1 + run_inRD1 * run_releasedFractionOverInflow);
+                inRD2.setValue(run_inRD2 + run_inRD2 * run_releasedFractionOverInflow);
+                inRG1.setValue(run_inRG1 + run_inRG1 * run_releasedFractionOverInflow);
+                inRG2.setValue(run_inRG2 + run_inRG2 * run_releasedFractionOverInflow);
 //                getModel().getRuntime().println("run_aepTotalReleasedVolume:"+run_aepTotalReleasedVolume); // check
 //                getModel().getRuntime().println("inRD1 qd rejet prop : "+inRD1.getValue()); // check
 //                getModel().getRuntime().println("run_inRD1 qd rejet prop : "+run_inRD1); // check
