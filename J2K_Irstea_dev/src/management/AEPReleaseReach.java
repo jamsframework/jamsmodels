@@ -122,9 +122,9 @@ public class AEPReleaseReach extends JAMSComponent {
             access = JAMSVarDescription.AccessType.READ,
             description = "Name of attribute that stores water extracted from an entity (HRU or reach) for drinking water."
                     + "Extracted volume will be read by this component. - parameter / pointer",
-            defaultValue = "aepExtractedVolume"
+            defaultValue = "aepNetExtractedVolume"
         )
-        public Attribute.String aepExtractedVolumeName;
+        public Attribute.String aepNetExtractedVolumeName;
         
         @JAMSVarDescription(
         access = JAMSVarDescription.AccessType.WRITE,
@@ -186,7 +186,7 @@ public class AEPReleaseReach extends JAMSComponent {
             
             List<Attribute.Entity> run_h = (List) run_currentReach.getObject(aepHRUEntitiesListName.getValue());
             for (Attribute.Entity run_hru : run_h) {
-                double run_ExtractedVolumeHRU = -run_hru.getDouble(aepExtractedVolumeName.getValue()); // NPO DE CHANGER LES SIGNES PLUS TARD
+                double run_ExtractedVolumeHRU = -run_hru.getDouble(aepNetExtractedVolumeName.getValue()); // NPO DE CHANGER LES SIGNES PLUS TARD
                 run_totalExtractedVolumeHRU += run_ExtractedVolumeHRU; // sum of all the extracted volumes from HRUs
                 }
             }
@@ -211,7 +211,7 @@ public class AEPReleaseReach extends JAMSComponent {
             
                 List<Attribute.Entity> run_r = (List) run_currentReach.getObject(aepReachEntitiesListName.getValue());
             for (Attribute.Entity run_reach : run_r) {
-                double run_ExtractedVolumeReach = -run_reach.getDouble(aepExtractedVolumeName.getValue()); // NPO DE CHANGER LES SIGNES PLUS TARD
+                double run_ExtractedVolumeReach = -run_reach.getDouble(aepNetExtractedVolumeName.getValue()); // NPO DE CHANGER LES SIGNES PLUS TARD
                 run_totalExtractedVolumeReach += run_ExtractedVolumeReach; // sum of all the extracted volumes from reaches
                 }
             }
