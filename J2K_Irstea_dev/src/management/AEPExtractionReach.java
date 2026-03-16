@@ -106,30 +106,45 @@ public class AEPExtractionReach extends JAMSComponent {
         public Attribute.Double actRG2;
                  
         @JAMSVarDescription(
-                access = JAMSVarDescription.AccessType.READ,
-                description = "Ratio of water available for AEP / water present in the reach. - parameter"
+            access = JAMSVarDescription.AccessType.READ,
+            description = "Ratio of water available for AEP / water present in the reach. - parameter"
         )
         public Attribute.Double actPrel;
         
         @JAMSVarDescription(
-                access = JAMSVarDescription.AccessType.READ,
-                description = "Expected losses through the pipe network. - parameter"
+            access = JAMSVarDescription.AccessType.READ,
+            description = "Factor to quantify expected losses through the pipe network. - parameter"
         )
-        public Attribute.Double netLoss;
+        public Attribute.Double aepLossesFactor;
         
         @JAMSVarDescription(
-                access = JAMSVarDescription.AccessType.READ,
-                description = "Multiplicative factor for adjusting the consumption values in AEP.dat. - parameter"
-        )
-        public Attribute.Double aepFactor;
-
-        @JAMSVarDescription(
-                access = JAMSVarDescription.AccessType.WRITE,
-            description = "Water volume actually extracted from source (HRU or reach) for AEP."
-                +"Will be read by pointer aepExtractedVolumeName. - output",
+            access = JAMSVarDescription.AccessType.WRITE,
+            description = "Water volume of expected losses through the pipe network. - output",
             unit = "L"
         )
-        public Attribute.Double aepExtractedVolume;
+        public Attribute.Double aepLosses;
+        
+        @JAMSVarDescription(
+            access = JAMSVarDescription.AccessType.READ,
+            description = "Multiplicative factor for adjusting the consumption values in AEP.dat. - parameter"
+        )
+        public Attribute.Double aepConsumptionFactor;
+
+        @JAMSVarDescription(
+            access = JAMSVarDescription.AccessType.WRITE,
+            description = "Water volume actually extracted from source (HRU or reach) for drinking water, "
+                    +"before network losses. - output",
+            unit = "L"
+        )
+        public Attribute.Double aepGrossExtractedVolume;
+        
+        @JAMSVarDescription(
+            access = JAMSVarDescription.AccessType.WRITE,
+            description = "Water volume actually extracted from source (HRU or reach) for drinking water, "
+                    +"after network losses. Will be read by pointer aepNetExtractedVolumeName. - output",
+            unit = "L"
+        )
+        public Attribute.Double aepNetExtractedVolume;
         
         @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
@@ -150,7 +165,7 @@ public class AEPExtractionReach extends JAMSComponent {
                 double run_actRG1 = actRG1.getValue();
                 double run_actRG2 = actRG2.getValue();
                 double run_actPrel = actPrel.getValue();
-                double run_netLoss = netLoss.getValue();
+                double run_aepLossesFactor = aepLossesFactor.getValue();
                             
                 // check
 //                 getModel().getRuntime().println("Extraction in reach (AEPExtractionReach):"+reaches.getCurrent().getId());
@@ -166,10 +181,10 @@ public class AEPExtractionReach extends JAMSComponent {
                 if(run_totalIn+run_totalAct > 1E-10) {
 
                     // Water consumed
-                    double FO_act = FO.getValue() * aepFactor.getValue();
+                    double FO_act = FO.getValue() * aepConsumptionFactor.getValue();
 
                     // Account for losses in the network
-                    FO_act = FO_act + run_netLoss * FO_act;
+                    FO_act = FO_act + run_aepLossesFactor * FO_act;
 
                     // looking if we can cover the demand with in
                     if (run_totalIn > 1E-10) { // to avoid division by zero
@@ -182,7 +197,7 @@ public class AEPExtractionReach extends JAMSComponent {
                         inRD2.setValue(run_inRD2 * (1 + run_demandFractionOverInflow));
                         inRG1.setValue(run_inRG1 * (1 + run_demandFractionOverInflow));
                         inRG2.setValue(run_inRG2 * (1 + run_demandFractionOverInflow));
-                        aepExtractedVolume.setValue(FO_act); // extracted volume = FO_act : FO_act demand fully satisfied. /!\ FO_act < 0
+                        aepGrossExtractedVolume.setValue(FO_act); // extracted volume = FO_act : FO_act demand fully satisfied. /!\ FO_act < 0
                     }
 
                     } else {
@@ -208,7 +223,7 @@ public class AEPExtractionReach extends JAMSComponent {
                                 actRD2.setValue(run_actRD2 * (1 - run_actDemandFraction));
                                 actRG1.setValue(run_actRG1 * (1 - run_actDemandFraction));
                                 actRG2.setValue(run_actRG2 * (1 - run_actDemandFraction));
-                                aepExtractedVolume.setValue(FO_act); // extracted volume = FO_act : FO_act demand fully satisfied. /!\ FO_act < 0
+                                aepGrossExtractedVolume.setValue(FO_act); // extracted volume = FO_act : FO_act demand fully satisfied. /!\ FO_act < 0
                             }
 
                         } else {
@@ -217,16 +232,26 @@ public class AEPExtractionReach extends JAMSComponent {
                             actRD2.setValue(run_actRD2 * (1 - run_actPrel));
                             actRG1.setValue(run_actRG1 * (1 - run_actPrel));
                             actRG2.setValue(run_actRG2 * (1 - run_actPrel));
-                            aepExtractedVolume.setValue(-(run_totalIn + run_totalAct)); // FO_act demand partially satisfied. /!\ < 0
+                            aepGrossExtractedVolume.setValue(-(run_totalIn + run_totalAct)); // FO_act demand partially satisfied. /!\ < 0
                         }
                     }
-
-                    // restitute lost water to RD2 (when efficiency of the network netLoss <1) :
-                    inRD2.setValue(run_inRD2 + Math.max(0.,-run_netLoss * aepExtractedVolume.getValue()));
+                    
+                    // restitute lost water to inRD2 (when efficiency of the network aepLossesFactor <1) :
+                    double run_aepLosses = Math.max(0.,(-1) * run_aepLossesFactor * aepGrossExtractedVolume.getValue());
+                    inRD2.setValue(run_inRD2 + run_aepLosses);
+                    aepLosses.setValue(run_aepLosses);
+//                    getModel().getRuntime().println("AEPExtractionHRU - run_inRD2:"+run_inRD2); // check
+//                    getModel().getRuntime().println("AEPExtractionHRU - fuites:"+run_netLoss * -aepExtractedVolume.getValue()); // check
+//                    getModel().getRuntime().println("AEPExtractionHRU - inRD2:"+inRD2.getValue()); // check
+                    
+                    // calculate volume that can be released into release reach (in component AEPReleaseReach) = extracted volume after losses
+                    double run_aepNetExtractedVolume = aepGrossExtractedVolume.getValue() + aepLosses.getValue();
+                    aepNetExtractedVolume.setValue(run_aepNetExtractedVolume);
                     
                 
                 } else { // no extraction (not enough water in reach)
-                    aepExtractedVolume.setValue(0.0);
+                    aepGrossExtractedVolume.setValue(0.0);
+                    aepNetExtractedVolume.setValue(0.0);
 
         }   
     }
