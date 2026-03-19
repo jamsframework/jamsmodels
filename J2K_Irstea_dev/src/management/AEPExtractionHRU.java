@@ -146,7 +146,7 @@ public class AEPExtractionHRU extends JAMSComponent {
                                 
                 // check
                 //getModel().getRuntime().println("Extraction in HRU (AEPExtractionHRU):"+hrus.getCurrent().getId());
-                               
+
                 // Total inflow
                 double run_totalIn = run_inRG1 + run_inRG2;
 
@@ -161,7 +161,7 @@ public class AEPExtractionHRU extends JAMSComponent {
                     double FO_act = FO.getValue() * aepConsumptionFactor.getValue();
 
                     // Account for losses in the network
-                    FO_act = FO_act + run_aepLossesFactor * FO_act;
+                    FO_act = FO.getValue() / (1 - run_aepLossesFactor);
                     
                     // looking if we can cover the demand with in
                     if (run_totalIn > 1E-10) { // to avoid division by zero
