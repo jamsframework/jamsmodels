@@ -144,14 +144,9 @@ public class AEPExtractionReach extends JAMSComponent {
                     +"after network losses. Will be read by pointer aepNetExtractedVolumeName. - output",
             unit = "L"
         )
-        public Attribute.Double aepNetExtractedVolume;
-        
-        @JAMSVarDescription(
-            access = JAMSVarDescription.AccessType.READ,
-            description = "Reach ID where release occurs (attribute release_reach_ID from reach.par). - parameter"
-        )
-        public Attribute.Double releaseReach;
+        public Attribute.Double aepNetExtractedVolume;       
           
+        
         
         @Override
         public void run() {
@@ -198,6 +193,8 @@ public class AEPExtractionReach extends JAMSComponent {
                         inRG1.setValue(run_inRG1 * (1 + run_demandFractionOverInflow));
                         inRG2.setValue(run_inRG2 * (1 + run_demandFractionOverInflow));
                         aepGrossExtractedVolume.setValue(FO_act); // extracted volume = FO_act : FO_act demand fully satisfied. /!\ FO_act < 0
+                        
+                        run_inRD2 = inRD2.getValue(); // update run_inRD2 for losses, thereafter
                     }
 
                     } else {
@@ -209,6 +206,8 @@ public class AEPExtractionReach extends JAMSComponent {
                         inRD2.setValue(0);
                         inRG1.setValue(0);
                         inRG2.setValue(0);
+                        
+                        run_inRD2 = inRD2.getValue(); // update run_inRD2 for losses, thereafter
 
                         if (run_demandFractionOverTotalWater >= -1) {
                             // we can cover all of the demand but not only with in..., reduce the components accordingly
@@ -240,9 +239,6 @@ public class AEPExtractionReach extends JAMSComponent {
                     double run_aepLosses = Math.max(0.,(-1) * run_aepLossesFactor * aepGrossExtractedVolume.getValue());
                     inRD2.setValue(run_inRD2 + run_aepLosses);
                     aepLosses.setValue(run_aepLosses);
-//                    getModel().getRuntime().println("AEPExtractionHRU - run_inRD2:"+run_inRD2); // check
-//                    getModel().getRuntime().println("AEPExtractionHRU - fuites:"+run_netLoss * -aepExtractedVolume.getValue()); // check
-//                    getModel().getRuntime().println("AEPExtractionHRU - inRD2:"+inRD2.getValue()); // check
                     
                     // calculate volume that can be released into release reach (in component AEPReleaseReach) = extracted volume after losses
                     double run_aepNetExtractedVolume = aepGrossExtractedVolume.getValue() + aepLosses.getValue();
