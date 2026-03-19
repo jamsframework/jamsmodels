@@ -100,7 +100,7 @@ public class AEPExtractionHRU extends JAMSComponent {
         
         @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
-            description = "Water voume of expected losses through the pipe network. - output",
+            description = "Water volume of expected losses through the pipe network. - output",
             unit = "L"
         )
         public Attribute.Double aepLosses;
@@ -114,7 +114,7 @@ public class AEPExtractionHRU extends JAMSComponent {
         @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.WRITE,
             description = "Water volume actually extracted from source (HRU or reach) for drinking water, "
-                    +"before network losses (aepLeakage). - output",
+                    +"before network losses. - output",
             unit = "L"
         )
         public Attribute.Double aepGrossExtractedVolume;
@@ -126,14 +126,9 @@ public class AEPExtractionHRU extends JAMSComponent {
             unit = "L"
         )
         public Attribute.Double aepNetExtractedVolume;
-
-        @JAMSVarDescription(
-            access = JAMSVarDescription.AccessType.READ,
-            description = "Reach ID where release occurs (attribute release_reach_ID from hru.par). - parameter"
-        )
-        public Attribute.Double releaseReach;
     
         
+
 
     /*
      *  Component run stages
@@ -154,15 +149,12 @@ public class AEPExtractionHRU extends JAMSComponent {
                                
                 // Total inflow
                 double run_totalIn = run_inRG1 + run_inRG2;
-//                getModel().getRuntime().println("run_totalIn:"+run_totalIn); // check
 
                 // Water already in the reach available for extraction 
                 // -- see if actPrel relevant in management scenarios
                 // -- set to 1 at first because AEP is generally prioritized over other uses
                 double run_totalAct = run_actPrel * (run_actRG1 + run_actRG2); // water available for drinking water
-//                getModel().getRuntime().println("run_totalAct:"+run_totalAct); // check
 
-//                getModel().getRuntime().println("- run_totalIn avant if totalIn+totalAct>1E-10:"+run_totalIn); // check
                 if(run_totalIn+run_totalAct > 1E-10) {
                     
                     // Water consumed
@@ -172,59 +164,44 @@ public class AEPExtractionHRU extends JAMSComponent {
                     FO_act = FO_act + run_aepLossesFactor * FO_act;
                     
                     // looking if we can cover the demand with in
-//                    getModel().getRuntime().println("- run_totalIn:"+run_totalIn); // check
                     if (run_totalIn > 1E-10) { // to avoid division by zero
-//                        getModel().getRuntime().println("- run_totalIn > 1E-10:"); // check
 
                     double run_demandFractionOverInflow = FO_act/run_totalIn;
-//                    getModel().getRuntime().println("run_demandFractionOverInflow = FO_act/run_totalIn:"+run_demandFractionOverInflow); // check
 
                     if (run_demandFractionOverInflow >= -1) {
 
                         // we can cover all only with in to the HRU, reduce the components accordingly
                         inRG1.setValue(run_inRG1 * (1 + run_demandFractionOverInflow));
-//                        getModel().getRuntime().println("inRG1 apres avoir setValue - cas 1:"+inRG1.getValue()); // check
                         inRG2.setValue(run_inRG2 * (1 + run_demandFractionOverInflow));
                         aepGrossExtractedVolume.setValue(FO_act); // extracted volume = FO_act : FO_act demand fully satisfied. /!\ FO_act < 0
-//                        getModel().getRuntime().println("aepExtractedVolume apres avoir setValue - cas 1:"+aepExtractedVolume.getValue()); // check
                     }
 
                     } else {
                         // looking if we can cover the demand by including part of act...
                         double run_demandFractionOverTotalWater = FO_act / (run_totalIn + run_totalAct);
-//                        getModel().getRuntime().println("run_demandFractionOverTotalWater = FO_act / (run_totalIn + run_totalAct):"+run_demandFractionOverTotalWater); // check
 
                         // we can cover only part of the demand with in, reduce the components to 0
                         inRG1.setValue(0);
-//                        getModel().getRuntime().println("inRG1 apres avoir setValue - cas 2: vaut 0 car on vide tt:"+inRG1.getValue()); // check
                         inRG2.setValue(0);
 
                         if (run_demandFractionOverTotalWater >= -1) {
                             // we can cover all of the demand but not only with in..., reduce the components accordingly
                             double actDemand = FO_act + run_totalIn;
-//                            getModel().getRuntime().println("actDemand:"+actDemand); // check
-//                            getModel().getRuntime().println("- run_totalAct:"+run_totalAct); // check
                             if (run_totalAct > 1E-10) { // to avoid division by zero
-//                                getModel().getRuntime().println("- run_totalAct > 1E-10:"); // check
                                 double run_actDemandFraction = -actDemand/run_totalAct;
-    //                            getModel().getRuntime().println("run_actDemandFraction = -actDemand/run_totalAct:"+run_actDemandFraction); // check
                                 if(run_actDemandFraction < 0) { // a supprimer ??
                                     getModel().getRuntime().println("Warning: error in sign when extracting drinking water in HRU");
                                 }
                                 actRG1.setValue(run_actRG1 * (1 - run_actDemandFraction));
-    //                            getModel().getRuntime().println("actRG1 apres avoir setValue - cas 2:"+actRG1.getValue()); // check
                                 actRG2.setValue(run_actRG2 * (1 - run_actDemandFraction));
                                 aepGrossExtractedVolume.setValue(FO_act); // extracted volume = FO_act : FO_act demand fully satisfied. /!\ FO_act < 0
-    //                            getModel().getRuntime().println("aepExtractedVolume apres avoir setValue - cas 2:"+aepExtractedVolume.getValue()); // check
                             }
 
                         } else {
                             // we can cover part of the demand ; reduce the act... to (1 - actPrel)*act...
                             actRG1.setValue(run_actRG1 * (1 - run_actPrel));
-//                            getModel().getRuntime().println("actRG1 apres avoir setValue - cas 3:"+actRG1.getValue()); // check
                             actRG2.setValue(run_actRG2 * (1 - run_actPrel));
                             aepGrossExtractedVolume.setValue(-(run_totalIn + run_totalAct)); // FO_act demand partially satisfied. /!\ < 0
-//                            getModel().getRuntime().println("aepExtractedVolume apres avoir setValue - cas 3:"+aepExtractedVolume.getValue()); // check
                         }
                     }
 
@@ -232,11 +209,8 @@ public class AEPExtractionHRU extends JAMSComponent {
                     double run_aepLosses = Math.max(0.,(-1) * run_aepLossesFactor * aepGrossExtractedVolume.getValue());
                     inRD2.setValue(run_inRD2 + run_aepLosses);
                     aepLosses.setValue(run_aepLosses);
-//                    getModel().getRuntime().println("AEPExtractionHRU - run_inRD2:"+run_inRD2); // check
-//                    getModel().getRuntime().println("AEPExtractionHRU - fuites:"+run_netLoss * -aepExtractedVolume.getValue()); // check
-//                    getModel().getRuntime().println("AEPExtractionHRU - inRD2:"+inRD2.getValue()); // check
                     
-                    // calculate volume that can be released into release reach (in component AEPReleaseReach)
+                    // calculate volume that can be released into release reach (in component AEPReleaseReach) = extracted volume after losses
                     double run_aepNetExtractedVolume = aepGrossExtractedVolume.getValue() + aepLosses.getValue();
                     aepNetExtractedVolume.setValue(run_aepNetExtractedVolume);
 
@@ -244,7 +218,6 @@ public class AEPExtractionHRU extends JAMSComponent {
                 } else { // no extraction (not enough water in HRU)
                     aepGrossExtractedVolume.setValue(0.0);
                     aepNetExtractedVolume.setValue(0.0);
-//                    getModel().getRuntime().println("aepExtractedVolume apres avoir setValue - cas no extraction:"+aepExtractedVolume.getValue()); // check
 
         }
     }
