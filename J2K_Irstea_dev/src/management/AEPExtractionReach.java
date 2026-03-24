@@ -175,11 +175,11 @@ public class AEPExtractionReach extends JAMSComponent {
 
                 if(run_totalIn+run_totalAct > 1E-10) {
 
-                    // Water consumed
-                    double FO_act = FO.getValue() * aepConsumptionFactor.getValue();
+                    // Water consumed (correction with aepConsumptionFactor)
+                    double FO_act_corr = FO.getValue() * aepConsumptionFactor.getValue();
 
                     // Account for losses in the network
-                    FO_act = FO_act + run_aepLossesFactor * FO_act;
+                    double FO_act = FO_act_corr / (1 - run_aepLossesFactor);
 
                     // looking if we can cover the demand with in
                     if (run_totalIn > 1E-10) { // to avoid division by zero
