@@ -54,14 +54,14 @@ public class irrigableHRU extends JAMSComponent {
             int v = Integer.parseInt(attr.getValue());
             if (run_landuseID == v) {
                 run_irrigable = 1;
-                getModel().getRuntime().println("Condition validée !");
+                //getModel().getRuntime().println("Condition validée !");
                 break;
             }
         }
         
         irrigable.setValue(run_irrigable);
         
-        getModel().getRuntime().println("LanduseID = " + run_landuseID +
-                " | irrigable = "+ run_irrigable);
+        //getModel().getRuntime().println("LanduseID = " + run_landuseID +
+        //        " | irrigable = "+ run_irrigable);
     }
 }
