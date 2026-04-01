@@ -165,8 +165,7 @@ public class AEPReleaseReach extends JAMSComponent {
 
             // check
 //            getModel().getRuntime().println("Reach de rejet (AEPReleaseReach):"+reaches.getCurrent().getId());
-            
-            
+                
             Attribute.Entity run_currentReach = reaches.getCurrent(); 
             double run_totalExtractedVolumeHRU = 0;
             double run_totalExtractedVolumeReach = 0;
@@ -179,7 +178,6 @@ public class AEPReleaseReach extends JAMSComponent {
             double run_actRG1 = actRG1.getValue();
             double run_actRG2 = actRG2.getValue();
             
-
             // loop on HRUs: recover data of extracted volumes from HRUs in which extraction occurs
             long release_reach = reaches.getCurrent().getId();
              if (run_reachMap.get(release_reach).existsAttribute(aepHRUEntitiesListName.getValue())) { // check if aepHRUEntities exists -- otherwise there will be error "Attribute aepHRUEntities not found!"      
@@ -189,22 +187,7 @@ public class AEPReleaseReach extends JAMSComponent {
                 double run_ExtractedVolumeHRU = -run_hru.getDouble(aepNetExtractedVolumeName.getValue()); // NPO DE CHANGER LES SIGNES PLUS TARD
                 run_totalExtractedVolumeHRU += run_ExtractedVolumeHRU; // sum of all the extracted volumes from HRUs
                 }
-            }
-            
-//            getModel().getRuntime().println("run_currentReach.getObject(aepHRUEntitiesListName.getValue() (AEPReleaseReach):"+run_currentReach.getObject(aepHRUEntitiesListName.getValue())); // check
-            
-            
-            // check : permet de print tous les ID des entités dans aepHRUEntities
-//                List<Attribute.Entity> liste = (List) run_currentReach.getObject(aepHRUEntitiesListName.getValue());
-//
-//                getModel().getRuntime().println("reach rejet (478600): $IDs = [");
-//                for (Attribute.Entity entite : liste) {
-//                    getModel().getRuntime().println(entite.getId() + ",");
-//                }
-//                getModel().getRuntime().println("]");                    
-//                getModel().getRuntime().println("- AEPReleaseReach - reach rejet (478600): $IDs dans aepEntities = " + ((List<Attribute.Entity>) run_currentReach.getObject(aepHRUEntitiesListName.getValue())).stream().map(e -> String.valueOf(e.getId())).collect(Collectors.joining(", ", "[", "]")));
-//                getModel().getRuntime().println("run_totalExtractedVolumeHRU:"+run_totalExtractedVolumeHRU); // check
-                
+            }  
              
             // loop on reaches: recover data of extracted volumes from reaches in which extraction occurs
              if (run_reachMap.get(release_reach).existsAttribute(aepReachEntitiesListName.getValue())) { // check if aepReachEntities exists -- otherwise there will be error "Attribute aepReachEntities not found!"      
@@ -215,28 +198,21 @@ public class AEPReleaseReach extends JAMSComponent {
                 run_totalExtractedVolumeReach += run_ExtractedVolumeReach; // sum of all the extracted volumes from reaches
                 }
             }
+             
+            // total extracted volume for the release reach
+            aepTotalExtractedVolume.setValue(run_totalExtractedVolumeHRU + run_totalExtractedVolumeReach);
             
-//            getModel().getRuntime().println("run_totalExtractedVolumeReach:"+run_totalExtractedVolumeReach); // check
-
-            aepTotalExtractedVolume.setValue(run_totalExtractedVolumeHRU + run_totalExtractedVolumeReach); // total extracted volume for the release reach
-            
-
-            aepTotalReleasedVolume.setValue(aepReleaseFactor.getValue() * aepTotalExtractedVolume.getValue()); // volume rejete = aepReleaseFactor * volume preleve
+            aepTotalReleasedVolume.setValue(aepReleaseFactor.getValue() * aepTotalExtractedVolume.getValue()); // released volume = aepReleaseFactor * extracted volume
             double run_aepTotalReleasedVolume = aepTotalReleasedVolume.getValue();
             
             // release into the reach
             double run_totalIn = run_inRD1 + run_inRD2 + run_inRG1 + run_inRG2; // total inflow
-            
+                    
             if (run_totalIn == 0) {
-//                getModel().getRuntime().println("Infinite fraction due to totalIn+totalAct=0. Reach "+reaches.getCurrent().getId());
                 // if no water in totalIn, aepTotalReleasedVolume is added to inRD1 only (ratio run_fractionOverTotalWater = run_aepTotalReleasedVolume/run_totalIn can't be calculated)
                 inRD1.setValue(run_inRD1 + run_aepTotalReleasedVolume);
-//                getModel().getRuntime().println("run_aepTotalReleasedVolume:"+run_aepTotalReleasedVolume); // check
-//                getModel().getRuntime().println("inRD1 qd total=0 : "+inRD1.getValue()); // check
-//                getModel().getRuntime().println("inRD2 qd total=0 : "+inRD2.getValue()); // check
-//                getModel().getRuntime().println("inRG1 qd total=0 : "+inRG1.getValue()); // check
-            }
-            else {
+
+            } else {
             // aepTotalReleasedVolume is proportionally added to inRD1, inRD2, inRG1, inRG2
                 double run_releasedFractionOverInflow = run_aepTotalReleasedVolume/run_totalIn;
             
@@ -244,15 +220,6 @@ public class AEPReleaseReach extends JAMSComponent {
                 inRD2.setValue(run_inRD2 + run_inRD2 * run_releasedFractionOverInflow);
                 inRG1.setValue(run_inRG1 + run_inRG1 * run_releasedFractionOverInflow);
                 inRG2.setValue(run_inRG2 + run_inRG2 * run_releasedFractionOverInflow);
-//                getModel().getRuntime().println("run_aepTotalReleasedVolume:"+run_aepTotalReleasedVolume); // check
-//                getModel().getRuntime().println("inRD1 qd rejet prop : "+inRD1.getValue()); // check
-//                getModel().getRuntime().println("run_inRD1 qd rejet prop : "+run_inRD1); // check
-//                getModel().getRuntime().println("run_inRD1 * run_fractionOverTotalWater qd rejet prop : "+run_inRD1 * run_fractionOverTotalWater); // check
-//                getModel().getRuntime().println("inRD2 qd rejet prop : "+inRD2.getValue()); // check
-//                getModel().getRuntime().println("run_inRD2 * run_fractionOverTotalWater qd rejet prop : "+run_inRD2 * run_fractionOverTotalWater); // check
-//                getModel().getRuntime().println("inRG1 qd rejet prop : "+inRG1.getValue()); // check
-//                getModel().getRuntime().println("run_inRG1 * run_fractionOverTotalWater qd rejet prop : "+run_inRG1 * run_fractionOverTotalWater); // check
-                
             
             }
             
