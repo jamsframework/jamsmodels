@@ -77,30 +77,6 @@ public class AEPReleaseReach extends JAMSComponent {
             unit = "L"
         )
         public Attribute.Double inRG2;
-        
-                @JAMSVarDescription(
-            access = JAMSVarDescription.AccessType.READWRITE,
-            description = "actRD1 component in reach. - state variable"
-        )
-        public Attribute.Double actRD1;
-        
-        @JAMSVarDescription(
-            access = JAMSVarDescription.AccessType.READWRITE,
-            description = "actRD2 component in reach. - state variable"
-        )
-        public Attribute.Double actRD2;
-        
-        @JAMSVarDescription(
-            access = JAMSVarDescription.AccessType.READWRITE,
-            description = "actRG1 component in reach. - state variable"
-        )
-        public Attribute.Double actRG1;
-            
-        @JAMSVarDescription(
-            access = JAMSVarDescription.AccessType.READWRITE,
-            description = "actRG2 component in reach. - state variable"
-        )
-        public Attribute.Double actRG2;
                 
         @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
@@ -173,10 +149,6 @@ public class AEPReleaseReach extends JAMSComponent {
             double run_inRD2 = inRD2.getValue();
             double run_inRG1 = inRG1.getValue();
             double run_inRG2 = inRG2.getValue();
-            double run_actRD1 = actRD1.getValue();
-            double run_actRD2 = actRD2.getValue();
-            double run_actRG1 = actRG1.getValue();
-            double run_actRG2 = actRG2.getValue();
             
             // loop on HRUs: recover data of extracted volumes from HRUs in which extraction occurs
             long release_reach = reaches.getCurrent().getId();
