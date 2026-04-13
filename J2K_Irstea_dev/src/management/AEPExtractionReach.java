@@ -178,81 +178,78 @@ public class AEPExtractionReach extends JAMSComponent {
                     // Water consumed (correction with aepConsumptionFactor)
                     double FO_act_corr = FO.getValue() * aepConsumptionFactor.getValue();
 
-                    // Account for losses in the network: case aepLossesFactor == 1
-                    if (run_aepLossesFactor == 1) { // 100% losses: no water available for drinking water
-                        getModel().getRuntime().println("Warning: aepLossesFactor = 1: 100% losses in the network, no water available for drinking water,");
-                        aepGrossExtractedVolume.setValue(0.0);
-                        aepNetExtractedVolume.setValue(0.0);
+                    // Account for losses in the network: case aepLossesFactor > 1
+                    if (run_aepLossesFactor > 1) { // this case is not possible: a warning is printed + aepLossesFactor is reset to 0.2
+                        getModel().getRuntime().println("Warning: aepLossesFactor > 1: error. aepLossesFactor is reset to 0.2");
+                        aepLossesFactor.setValue(0.2);
+                        run_aepLossesFactor = aepLossesFactor.getValue();
+                    }
                                            
-                    } else { // Account for losses in the network: case aepLossesFactor != 1
-                        double FO_act = FO_act_corr / (1 - run_aepLossesFactor);
+                    // Account for losses in the network: case aepLossesFactor != 1
+                    double FO_act = FO_act_corr / (1 - run_aepLossesFactor);
 
-                        // looking if we can cover the demand with in
-    //                    if (run_totalIn > 1E-10) { // to avoid division by zero // ANCIEN
-                        if (Math.abs(FO_act)<= run_totalIn) { // AJOUT
+                    // looking if we can cover the demand with in
+                    if (Math.abs(FO_act)<= run_totalIn) {
 
-                            if (run_totalIn > 1E-10) { // to avoid division by zero // AJOUT
+                        if (run_totalIn > 1E-10) { // to avoid division by zero
 
-                                double run_demandFractionOverInflow = FO_act/run_totalIn;
+                            double run_demandFractionOverInflow = FO_act/run_totalIn;
 
-    //                        if (run_demandFractionOverInflow >= -1) { // ANCIEN
+                            // we can cover all only with in to the reach, reduce the components accordingly
+                            inRD1.setValue(run_inRD1 * (1 - run_demandFractionOverInflow));
+                            inRD2.setValue(run_inRD2 * (1 - run_demandFractionOverInflow));
+                            inRG1.setValue(run_inRG1 * (1 - run_demandFractionOverInflow));
+                            inRG2.setValue(run_inRG2 * (1 - run_demandFractionOverInflow));
+                            aepGrossExtractedVolume.setValue(FO_act); // extracted volume = FO_act : FO_act demand fully satisfied
 
-                                // we can cover all only with in to the reach, reduce the components accordingly
-                                inRD1.setValue(run_inRD1 * (1 - run_demandFractionOverInflow));
-                                inRD2.setValue(run_inRD2 * (1 - run_demandFractionOverInflow));
-                                inRG1.setValue(run_inRG1 * (1 - run_demandFractionOverInflow));
-                                inRG2.setValue(run_inRG2 * (1 - run_demandFractionOverInflow));
+                            run_inRD2 = inRD2.getValue(); // update run_inRD2 for losses, thereafter
+                        }
+
+                    } else {
+                        // looking if we can cover the demand by including part of act...
+                        double run_demandFractionOverTotalWater = FO_act / (run_totalIn + run_totalAct);
+
+                        // we can cover only part of the demand with in, reduce the components to 0
+                        inRD1.setValue(0);
+                        inRD2.setValue(0);
+                        inRG1.setValue(0);
+                        inRG2.setValue(0);
+
+                        run_inRD2 = inRD2.getValue(); // update run_inRD2 for losses, thereafter
+
+                        if (run_demandFractionOverTotalWater <= 1) { // i.e. if FO_act <= totalIn+totalAct  
+
+                            if (run_totalAct > 1E-10) { // to avoid division by zero
+
+                                double actDemand = FO_act - run_totalIn;
+                                double run_actDemandFraction = actDemand/run_totalAct;
+
+                                // we can cover all of the demand but not only with in..., reduce the components accordingly
+                                actRD1.setValue(run_actRD1 * (1 - run_actDemandFraction));
+                                actRD2.setValue(run_actRD2 * (1 - run_actDemandFraction));
+                                actRG1.setValue(run_actRG1 * (1 - run_actDemandFraction));
+                                actRG2.setValue(run_actRG2 * (1 - run_actDemandFraction));
                                 aepGrossExtractedVolume.setValue(FO_act); // extracted volume = FO_act : FO_act demand fully satisfied
-
-                                run_inRD2 = inRD2.getValue(); // update run_inRD2 for losses, thereafter
                             }
 
                         } else {
-                            // looking if we can cover the demand by including part of act...
-                            double run_demandFractionOverTotalWater = FO_act / (run_totalIn + run_totalAct);
-
-                            // we can cover only part of the demand with in, reduce the components to 0
-                            inRD1.setValue(0);
-                            inRD2.setValue(0);
-                            inRG1.setValue(0);
-                            inRG2.setValue(0);
-
-                            run_inRD2 = inRD2.getValue(); // update run_inRD2 for losses, thereafter
-
-                            if (run_demandFractionOverTotalWater <= 1) { // i.e. if FO_act <= totalIn+totalAct  
-
-                                if (run_totalAct > 1E-10) { // to avoid division by zero
-                                    
-                                    double actDemand = FO_act - run_totalIn;
-                                    double run_actDemandFraction = actDemand/run_totalAct;
-                                    
-                                    // we can cover all of the demand but not only with in..., reduce the components accordingly
-                                    actRD1.setValue(run_actRD1 * (1 - run_actDemandFraction));
-                                    actRD2.setValue(run_actRD2 * (1 - run_actDemandFraction));
-                                    actRG1.setValue(run_actRG1 * (1 - run_actDemandFraction));
-                                    actRG2.setValue(run_actRG2 * (1 - run_actDemandFraction));
-                                    aepGrossExtractedVolume.setValue(FO_act); // extracted volume = FO_act : FO_act demand fully satisfied
-                                }
-
-                            } else {
-                                // we can cover part of the demand ; reduce the act... to (1 - actPrel)*act...
-                                actRD1.setValue(run_actRD1 * (1 - run_actPrel));
-                                actRD2.setValue(run_actRD2 * (1 - run_actPrel));
-                                actRG1.setValue(run_actRG1 * (1 - run_actPrel));
-                                actRG2.setValue(run_actRG2 * (1 - run_actPrel));
-                                aepGrossExtractedVolume.setValue(-(run_totalIn + run_totalAct)); // FO_act demand partially satisfied
-                            }
+                            // we can cover part of the demand ; reduce the act... to (1 - actPrel)*act...
+                            actRD1.setValue(run_actRD1 * (1 - run_actPrel));
+                            actRD2.setValue(run_actRD2 * (1 - run_actPrel));
+                            actRG1.setValue(run_actRG1 * (1 - run_actPrel));
+                            actRG2.setValue(run_actRG2 * (1 - run_actPrel));
+                            aepGrossExtractedVolume.setValue(-(run_totalIn + run_totalAct)); // FO_act demand partially satisfied
                         }
-
-                        // restitute lost water to inRD2 (when efficiency of the network aepLossesFactor <1) :
-                        double run_aepLosses = run_aepLossesFactor * aepGrossExtractedVolume.getValue();
-                        inRD2.setValue(run_inRD2 + run_aepLosses);
-                        aepLosses.setValue(run_aepLosses);
-
-                        // calculate volume that can be released into release reach (in component AEPReleaseReach) = extracted volume after losses
-                        double run_aepNetExtractedVolume = aepGrossExtractedVolume.getValue() - aepLosses.getValue();
-                        aepNetExtractedVolume.setValue(run_aepNetExtractedVolume);
                     }
+
+                    // restitute lost water to inRD2 (when efficiency of the network aepLossesFactor <1) :
+                    double run_aepLosses = run_aepLossesFactor * aepGrossExtractedVolume.getValue();
+                    inRD2.setValue(run_inRD2 + run_aepLosses);
+                    aepLosses.setValue(run_aepLosses);
+
+                    // calculate volume that can be released into release reach (in component AEPReleaseReach) = extracted volume after losses
+                    double run_aepNetExtractedVolume = aepGrossExtractedVolume.getValue() - aepLosses.getValue();
+                    aepNetExtractedVolume.setValue(run_aepNetExtractedVolume);
                     
                 } else { // no extraction (not enough water in reach)
                     aepGrossExtractedVolume.setValue(0.0);
