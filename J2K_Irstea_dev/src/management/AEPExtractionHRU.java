@@ -180,9 +180,9 @@ public class AEPExtractionHRU extends JAMSComponent {
 //                        if (run_demandFractionOverInflow >= -1) { // ANCIEN
 
                                 // we can cover all only with in to the HRU, reduce the components accordingly
-                                inRG1.setValue(run_inRG1 * (1 + run_demandFractionOverInflow));
-                                inRG2.setValue(run_inRG2 * (1 + run_demandFractionOverInflow));
-                                aepGrossExtractedVolume.setValue(FO_act); // extracted volume = FO_act : FO_act demand fully satisfied. /!\ FO_act < 0
+                                inRG1.setValue(run_inRG1 * (1 - run_demandFractionOverInflow));
+                                inRG2.setValue(run_inRG2 * (1 - run_demandFractionOverInflow));
+                                aepGrossExtractedVolume.setValue(FO_act); // extracted volume = FO_act : FO_act demand fully satisfied
                                 
                                 run_inRD2 = inRD2.getValue(); // update run_inRD2 for losses, thereafter
                             }
@@ -197,35 +197,34 @@ public class AEPExtractionHRU extends JAMSComponent {
                             
                             run_inRD2 = inRD2.getValue(); // update run_inRD2 for losses, thereafter
 
-                            if (run_demandFractionOverTotalWater >= -1) {
-                                // we can cover all of the demand but not only with in..., reduce the components accordingly
-                                double actDemand = FO_act + run_totalIn;
+                            if (run_demandFractionOverTotalWater <= 1) { // i.e. if FO_act <= totalIn+totalAct
                                 
                                 if (run_totalAct > 1E-10) { // to avoid division by zero
-                                    double run_actDemandFraction = -actDemand/run_totalAct;
-                                    if(run_actDemandFraction < 0) { // a supprimer ??
-                                        getModel().getRuntime().println("Warning: error in sign when extracting drinking water in HRU");
-                                    }
+                                    
+                                    double actDemand = FO_act - run_totalIn;
+                                    double run_actDemandFraction = actDemand/run_totalAct;
+                                    
+                                    // we can cover all of the demand but not only with in..., reduce the components accordingly
                                     actRG1.setValue(run_actRG1 * (1 - run_actDemandFraction));
                                     actRG2.setValue(run_actRG2 * (1 - run_actDemandFraction));
-                                    aepGrossExtractedVolume.setValue(FO_act); // extracted volume = FO_act : FO_act demand fully satisfied. /!\ FO_act < 0
+                                    aepGrossExtractedVolume.setValue(FO_act); // extracted volume = FO_act : FO_act demand fully satisfied
                                 }
 
                             } else {
                                 // we can cover part of the demand ; reduce the act... to (1 - actPrel)*act...
                                 actRG1.setValue(run_actRG1 * (1 - run_actPrel));
                                 actRG2.setValue(run_actRG2 * (1 - run_actPrel));
-                                aepGrossExtractedVolume.setValue(-(run_totalIn + run_totalAct)); // FO_act demand partially satisfied. /!\ < 0
+                                aepGrossExtractedVolume.setValue(run_totalIn + run_totalAct); // FO_act demand partially satisfied
                             }
                         }
 
                         // restitute lost water to inRD2 (when efficiency of the network aepLossesFactor <1) :
-                        double run_aepLosses = Math.max(0.,(-1) * run_aepLossesFactor * aepGrossExtractedVolume.getValue());
+                        double run_aepLosses = run_aepLossesFactor * aepGrossExtractedVolume.getValue();
                         inRD2.setValue(run_inRD2 + run_aepLosses);
                         aepLosses.setValue(run_aepLosses);
 
                         // calculate volume that can be released into release reach (in component AEPReleaseReach) = extracted volume after losses
-                        double run_aepNetExtractedVolume = aepGrossExtractedVolume.getValue() + aepLosses.getValue();
+                        double run_aepNetExtractedVolume = aepGrossExtractedVolume.getValue() - aepLosses.getValue();
                         aepNetExtractedVolume.setValue(run_aepNetExtractedVolume);
 
                     }
