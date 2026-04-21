@@ -230,7 +230,7 @@ public class HRU_device_daily extends JAMSComponent {
     public Attribute.Double deviceInterceptionEnd;
     
     @JAMSVarDescription(
-            access = JAMSVarDescription.AccessType.WRITE,
+            access = JAMSVarDescription.AccessType.READ,
             description = "Maximum capacity of the device",
             unit = "L")
     public Attribute.Double maxDeviceVol;
