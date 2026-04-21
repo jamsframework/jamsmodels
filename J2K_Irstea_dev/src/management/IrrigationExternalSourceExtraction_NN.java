@@ -42,13 +42,13 @@ public class IrrigationExternalSourceExtraction_NN extends JAMSComponent {
     /*
      *  Component attributes
      */
-    @JAMSVarDescription(
-            access = JAMSVarDescription.AccessType.READWRITE,
-            description = "Current time step RD1 inflow into hru. Will be updated by this component,"+
-                    "adding losses from poor efficiency. - input / state variable",
-            unit = "L"
-    )
-    public Attribute.Double inRD1;
+//    @JAMSVarDescription(
+//            access = JAMSVarDescription.AccessType.READWRITE,
+//            description = "Current time step RD1 inflow into hru. Will be updated by this component,"+
+//                    "adding losses from poor efficiency. - input / state variable",
+//            unit = "L"
+//    )
+//    public Attribute.Double inRD1;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
@@ -129,7 +129,7 @@ public class IrrigationExternalSourceExtraction_NN extends JAMSComponent {
     public void run() {
         double run_plantIrrigRequirements = plantIrrigRequirements.getValue() ;
         double run_irrigationApplication = irrigationApplication.getValue() ;
-
+        
         // check if this hru has an unsatisfied irrigation need
         if ( run_plantIrrigRequirements > run_irrigationApplication) {// there are unsatisfied irrigation requirements
             double run_irrigDeficit = run_plantIrrigRequirements - run_irrigationApplication ; // deficit of plat requirement
@@ -147,10 +147,10 @@ public class IrrigationExternalSourceExtraction_NN extends JAMSComponent {
             double run_irrigSeasonAvailableExternalVolume = run_irrigSeasonAllowedExternalVolume-run_totalExternalDemandSeason; //available volume is allowed - already taken
             
             if (run_irrigSeasonAvailableExternalVolume > 0) {// only run the following, if there is water available
-                double run_inRD1 = inRD1.getValue();
+//                double run_inRD1 = inRD1.getValue();
                 double run_externalUseDT; // initialize applied water from external source
                 double run_externalDemandDT; // initialize demand from external sources
-                double run_losses; // losses due to poor efficiency
+//                double run_losses; // losses due to poor efficiency
                 if (run_irrigSeasonAvailableExternalVolume > run_irrigDemandDeficit) { // enough water available to fulfill needs
                     // take all needed water from external source
                     run_externalDemandDT = run_irrigDemandDeficit ;
@@ -158,14 +158,19 @@ public class IrrigationExternalSourceExtraction_NN extends JAMSComponent {
                     run_externalDemandDT = run_irrigSeasonAvailableExternalVolume ;
                 }
                 run_externalUseDT = run_externalDemandDT * run_irrigEfficiency ; // part that actually reaches the plant
-                run_losses = run_externalDemandDT - run_externalUseDT;
+//                run_losses = run_externalDemandDT - run_externalUseDT;
+//                getModel().getRuntime().println("plant requirements: "+ run_plantIrrigRequirements + " L, "+
+//                        "internally supplied: " + run_irrigationApplication + " L.");
+//                getModel().getRuntime().println("--> applied "+ run_externalUseDT + " L from ext sources, "+
+//                        "demanded " + run_externalDemandDT + " L.");
                 irrigationApplication.setValue(run_irrigationApplication + run_externalUseDT);// add this HRUs external water use to irrigation volume
                 totalExternalIrrigUseDT.setValue(totalExternalIrrigUseDT.getValue() + run_externalUseDT); // add this HRUs external water use to total external water use of this time step
                 totalExternalIrrigUseSeason.setValue(run_totalExternalUseSeason + run_externalUseDT); // add this HRUs external water use to total external water use of this season
                 totalExternalIrrigDemandDT.setValue(totalExternalIrrigDemandDT.getValue() + run_externalDemandDT); // add this HRUs external water use to total external water use of this time step
                 totalExternalIrrigDemandSeason.setValue(run_totalExternalDemandSeason + run_externalDemandDT); // add this HRUs external water use to total external water use of this season
                 
-                inRD1.setValue(run_inRD1 + run_losses); // add losses from poor efficiency to RD1 inflow of HRU
+//                difference between demand and application exists, but losses are expected outside of the catchment
+//                inRD1.setValue(run_inRD1 + run_losses); // add losses from poor efficiency to RD1 inflow of HRU
                 
             } else {// no water remaining in external source
                 // no volumes to change (included for readability)
