@@ -502,7 +502,7 @@ public class HRU_device_mix extends JAMSComponent {
                 run_initFracRD2 = 0.4;
                 run_initFracRG1 = 0.2;
                 run_initFracRG2 = 0.0;
-                run_fracSum = run_initFracRD1 + run_initFracRD2 + run_initFracRG1 + run_initFracRG2;
+//                run_fracSum = run_initFracRD1 + run_initFracRD2 + run_initFracRG1 + run_initFracRG2;
             } else if (run_fracSum != 1.0) { // otherwise, adapt proportionally
                 getModel().getRuntime().println("WARNING: sum of device init fractions "
                 + " is "+ run_fracSum + ", will be corrected to 1.");
@@ -510,7 +510,7 @@ public class HRU_device_mix extends JAMSComponent {
                 run_initFracRD2 /= run_fracSum;
                 run_initFracRG1 /= run_fracSum;
                 run_initFracRG2 /= run_fracSum;
-                run_fracSum = run_initFracRD1 + run_initFracRD2 + run_initFracRG1 + run_initFracRG2;
+//                run_fracSum = run_initFracRD1 + run_initFracRD2 + run_initFracRG1 + run_initFracRG2;
             }
             
             this.Device_actRD1.setValue(run_initFracRD1 * run_initVol);
@@ -544,6 +544,10 @@ public class HRU_device_mix extends JAMSComponent {
         this.run_ActET = 0;
         this.run_Qout = 0;
         this.run_Qovf = 0;
+        this.run_outRD1 = 0;
+        this.run_outRD2 = 0;
+        this.run_outRG1 = 0;
+        this.run_outRG2 = 0;
         this.run_Qinf = 0; //infiltration flux set to zero
 
         
@@ -637,10 +641,10 @@ public class HRU_device_mix extends JAMSComponent {
             if (this.run_actVolDevice > MaxVolumeDevice) {
                 double run_maxFrac = MaxVolumeDevice / this.run_actVolDevice;
                 double run_outFrac = 1 - run_maxFrac;
-                double run_outRD1 = run_outFrac * this.run_actRD1;
-                double run_outRD2 = run_outFrac * this.run_actRD2;
-                double run_outRG1 = run_outFrac * this.run_actRG1;
-                double run_outRG2 = run_outFrac * this.run_actRG2;
+                this.run_outRD1 = run_outFrac * this.run_actRD1;
+                this.run_outRD2 = run_outFrac * this.run_actRD2;
+                this.run_outRG1 = run_outFrac * this.run_actRG1;
+                this.run_outRG2 = run_outFrac * this.run_actRG2;
                 
                 this.run_actRD1 -= this.run_outRD1;
                 this.run_actRD2 -= this.run_outRD2;
