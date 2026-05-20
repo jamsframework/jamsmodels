@@ -32,7 +32,7 @@ import java.util.GregorianCalendar;
  */
 @JAMSComponentDescription(
         title = "HRU device",
-        author = "Jérémie Bonneau, Flora Branger, Nico Hachgenei",
+        author = "Jérémie Bonneau, Flora Branger, Nico Hachgenei, Nathan Pellerin",
         description = "For any type of water management device located within the HRU - small farm dams, green infrastructures for urban water management",
         date = "2022-10-27",
         version = "2.0_0")
@@ -131,7 +131,8 @@ public class HRU_device_mix extends JAMSComponent {
 //// Parameters
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ, // type of access, i.e. READ, WRITE, READWRITE
-            description = "Crop coefficient for PotET calculation" // description of purpose
+            description = "Crop coefficient for PotET calculation", // description of purpose
+            unit = "-" 
     )
     public Attribute.Double deviceCropCoeff;    // for a list of attribute types, see jams.data.Attribute
 
@@ -139,6 +140,7 @@ public class HRU_device_mix extends JAMSComponent {
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ, // type of access, i.e. READ, WRITE, READWRITE
             description = "Fraction of RD1 from HRU to device", // description of purpose
+            unit = "-", 
             lowerBound = 0, // lowest allowed value
             upperBound = 1 // highest allowed value
     )
@@ -147,20 +149,23 @@ public class HRU_device_mix extends JAMSComponent {
     // Percentage of RD2 to flow into device 
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ, // type of access, i.e. READ, WRITE, READWRITE
-            description = "Fraction of RD2 from HRU to device" // description of purpose
+            description = "Fraction of RD2 from HRU to device", // description of purpose
+            unit = "-"
     )
     public Attribute.Double frac_RD2;    // for a list of attribute types, see jams.data.Attribute 
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ, // type of access, i.e. READ, WRITE, READWRITE
-            description = "Fraction of RG1 from HRU to device" // description of purpose
+            description = "Fraction of RG1 from HRU to device", // description of purpose
+            unit = "-"
     )
     public Attribute.Double frac_RG1;    // for a list of attribute types, see jams.data.Attribute  
     
     // Percentage of RD2 to flow into device 
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ, // type of access, i.e. READ, WRITE, READWRITE
-            description = "Fraction of RG2 from HRU to device" // description of purpose
+            description = "Fraction of RG2 from HRU to device", // description of purpose
+            unit = "-" 
     )
     public Attribute.Double frac_RG2;    // for a list of attribute types, see jams.data.Attribute 
     
@@ -421,13 +426,6 @@ public class HRU_device_mix extends JAMSComponent {
             description = "Julian day of device refill end"
             )
             public Attribute.Double deviceInterceptionEnd;
-    
-//    //timestep
-//    @JAMSVarDescription(
-//            access = JAMSVarDescription.AccessType.READ,
-//            description = "time interval",
-//            unit = "d")
-//    public Attribute.TimeInterval dt;
 
 //current timestep
 //    @JAMSVarDescription(
@@ -443,6 +441,7 @@ public class HRU_device_mix extends JAMSComponent {
             run_ActET, run_Qinf, run_Qout, run_Qovf, run_actVolDevice,
             run_actRD1, run_actRD2, run_actRG1, run_actRG2,
             run_outRD1, run_outRD2, run_outRG1, run_outRG2;
+    
     //private int seconds;
 
     /*
@@ -656,42 +655,46 @@ public class HRU_device_mix extends JAMSComponent {
             }
 
 
-
             // Outflows
-            // Evaporation or Evapotranspiration
-            // calculate Potential evapotranspiration and convert in L
-            this.run_PET = this.run_RefET * CropCoeff * area; // RefET in mm, area in m2 so PET in L
-            // calculate Actual Evapotranspiration (ActET) -simple
-            this.run_ActET = Math.min(this.run_PET, this.run_actVolDevice);
+            if (run_actVolDevice > 0) {
+                // Evaporation or Evapotranspiration
+                // calculate Potential evapotranspiration and convert in L
+                this.run_PET = this.run_RefET * CropCoeff * area; // RefET in mm, area in m2 so PET in L
+                // calculate Actual Evapotranspiration (ActET) -simple
+                this.run_ActET = Math.min(this.run_PET, this.run_actVolDevice);
 
-            // Infiltration 
+                // Infiltration 
                 if (this.run_actVolDevice > 0) {
                     this.run_Qinf = Math.min(area * Ks * 1000 * 3600, this.run_actVolDevice); //area in m2, Ks m/s, Qinf in L
                 } else if (this.run_actVolDevice == 0) {
                     this.run_Qinf = 0;
                 }//
 
-            // what if there is not enough water for ET and infiltration? split as a proportion
-            if (this.run_ActET + this.run_Qinf > this.run_actVolDevice) {
-                double share_Qet = this.run_ActET / (this.run_ActET + this.run_Qinf + 0.00001);
-                double share_Qinf = this.run_Qinf / (this.run_ActET + this.run_Qinf + 0.00001);
+                // what if there is not enough water for ET and infiltration? split as a proportion
+                if (this.run_ActET + this.run_Qinf > this.run_actVolDevice) {
+                    double share_Qet = this.run_ActET / (this.run_ActET + this.run_Qinf + 0.00001);
+                    double share_Qinf = this.run_Qinf / (this.run_ActET + this.run_Qinf + 0.00001);
 
-                this.run_ActET = this.run_actVolDevice * share_Qet;
-                this.run_Qinf = this.run_actVolDevice * share_Qinf;
+                    this.run_ActET = this.run_actVolDevice * share_Qet;
+                    this.run_Qinf = this.run_actVolDevice * share_Qinf;
+                }
+            
+                //Qout - underdrain flow - for the moment lets forget about that
+                this.run_Qout = 0; //Math.min(Cout * Math.sqrt(2 * g * volumeInGI/volumeGI) , volumeInGI) ; // in L 
+                //volumeInGI = Math.max(volumeInGI - Qout,0);
+
+                // update volume
+                double run_remainingFracETInf = 1 - Math.min((this.run_Qinf + this.run_ActET) / this.run_actVolDevice, 1);
+                this.run_actRD1 *= run_remainingFracETInf;
+                this.run_actRD2 *= run_remainingFracETInf;
+                this.run_actRG1 *= run_remainingFracETInf;
+                this.run_actRG2 *= run_remainingFracETInf;
+                this.run_actVolDevice *= run_remainingFracETInf;
+                //this.run_actVolDevice = Math.max(this.run_actVolDevice - this.run_Qinf - this.run_ActET, 0);
+            } else if (run_actVolDevice == 0) {
+                run_Qinf = 0;
+                run_ActET = 0;
             }
-            
-            //Qout - underdrain flow - for the moment lets forget about that
-            this.run_Qout = 0; //Math.min(Cout * Math.sqrt(2 * g * volumeInGI/volumeGI) , volumeInGI) ; // in L 
-            //volumeInGI = Math.max(volumeInGI - Qout,0);
-            
-            // update volume
-            double run_remainingFracETInf = 1 - Math.min((this.run_Qinf - this.run_ActET) / this.run_actVolDevice, 1);
-            this.run_actRD1 *= run_remainingFracETInf;
-            this.run_actRD2 *= run_remainingFracETInf;
-            this.run_actRG1 *= run_remainingFracETInf;
-            this.run_actRG2 *= run_remainingFracETInf;
-            this.run_actVolDevice *= run_remainingFracETInf;
-//            this.run_actVolDevice = Math.max(this.run_actVolDevice - this.run_Qinf - this.run_ActET, 0);
         }else{
             getModel().getRuntime().println("Device area < 0 ! Not possible");
         }
