@@ -656,20 +656,15 @@ public class HRU_device_mix extends JAMSComponent {
 
 
             // Outflows
-            if (run_actVolDevice > 0) {
-                // Evaporation or Evapotranspiration
-                // calculate Potential evapotranspiration and convert in L
-                this.run_PET = this.run_RefET * CropCoeff * area; // RefET in mm, area in m2 so PET in L
-                // calculate Actual Evapotranspiration (ActET) -simple
-                this.run_ActET = Math.min(this.run_PET, this.run_actVolDevice);
+            // Evaporation or Evapotranspiration
+            // calculate Potential evapotranspiration and convert in L
+            this.run_PET = this.run_RefET * CropCoeff * area; // RefET in mm, area in m2 so PET in L
+            // calculate Actual Evapotranspiration (ActET) -simple
+            this.run_ActET = Math.min(this.run_PET, this.run_actVolDevice);
 
-                // Infiltration 
-                if (this.run_actVolDevice > 0) {
-                    this.run_Qinf = Math.min(area * Ks * 1000 * 3600, this.run_actVolDevice); //area in m2, Ks m/s, Qinf in L
-                } else if (this.run_actVolDevice == 0) {
-                    this.run_Qinf = 0;
-                }//
-
+            // Infiltration 
+            if (this.run_actVolDevice > 0) {
+                this.run_Qinf = Math.min(area * Ks * 1000 * 3600, this.run_actVolDevice); //area in m2, Ks m/s, Qinf in L
                 // what if there is not enough water for ET and infiltration? split as a proportion
                 if (this.run_ActET + this.run_Qinf > this.run_actVolDevice) {
                     double share_Qet = this.run_ActET / (this.run_ActET + this.run_Qinf + 0.00001);
@@ -677,24 +672,24 @@ public class HRU_device_mix extends JAMSComponent {
 
                     this.run_ActET = this.run_actVolDevice * share_Qet;
                     this.run_Qinf = this.run_actVolDevice * share_Qinf;
+                    
+                    // update volume
+                    double run_remainingFracETInf = 1 - Math.min((this.run_Qinf + this.run_ActET) / this.run_actVolDevice, 1);
+                    this.run_actRD1 *= run_remainingFracETInf;
+                    this.run_actRD2 *= run_remainingFracETInf;
+                    this.run_actRG1 *= run_remainingFracETInf;
+                    this.run_actRG2 *= run_remainingFracETInf;
+                    this.run_actVolDevice *= run_remainingFracETInf;
                 }
+            } else if (this.run_actVolDevice == 0) {
+                this.run_Qinf = 0;
+                this.run_ActET = 0; // should not be necessary as allready limited to run_actVolDevice
+            }//
             
-                //Qout - underdrain flow - for the moment lets forget about that
-                this.run_Qout = 0; //Math.min(Cout * Math.sqrt(2 * g * volumeInGI/volumeGI) , volumeInGI) ; // in L 
-                //volumeInGI = Math.max(volumeInGI - Qout,0);
-
-                // update volume
-                double run_remainingFracETInf = 1 - Math.min((this.run_Qinf + this.run_ActET) / this.run_actVolDevice, 1);
-                this.run_actRD1 *= run_remainingFracETInf;
-                this.run_actRD2 *= run_remainingFracETInf;
-                this.run_actRG1 *= run_remainingFracETInf;
-                this.run_actRG2 *= run_remainingFracETInf;
-                this.run_actVolDevice *= run_remainingFracETInf;
-                //this.run_actVolDevice = Math.max(this.run_actVolDevice - this.run_Qinf - this.run_ActET, 0);
-            } else if (run_actVolDevice == 0) {
-                run_Qinf = 0;
-                run_ActET = 0;
-            }
+            //Qout - underdrain flow - for the moment lets forget about that
+            this.run_Qout = 0; //Math.min(Cout * Math.sqrt(2 * g * volumeInGI/volumeGI) , volumeInGI) ; // in L 
+            //volumeInGI = Math.max(volumeInGI - Qout,0);
+//            this.run_actVolDevice = Math.max(this.run_actVolDevice - this.run_Qinf - this.run_ActET, 0);
         }else{
             getModel().getRuntime().println("Device area < 0 ! Not possible");
         }
