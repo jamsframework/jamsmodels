@@ -31,18 +31,20 @@ import java.util.List;
  */
 @JAMSComponentDescription(
         title = "",
-        author = "Nathan Pellerin",
+        author = "Nathan Pellerin, Nico Hachgenei",
         description = "Transfer water from farmdams to HRUs depending on water"
         + " availability and irrigation demand."
         + "totalIrrigAvailableFarmDam is written only for farmdams sources"
         + "multiple source extraction",
         date = "2025-03-25",
-        version = "1.0_0"
+        version = "2.0_0"
 )
 @VersionComments(entries = {
     @VersionComments.Entry(version = "1.0_0", comment = "Initial version"),
     @VersionComments.Entry(version = "1.1_0", comment = "All variables contain irrigation terminology"
-            + "Extraction variable is subdivided into irrigation source")
+            + "Extraction variable is subdivided into irrigation source"),
+    @VersionComments.Entry(version = "2.0_0", comment = "updated component for use"
+            + " with HRU_device_mix, including tracked R.. flux origins")
 })
 public class IrrigationMultipleSourceExtractionFarmDams_mix extends JAMSComponent {
 
