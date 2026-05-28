@@ -596,8 +596,8 @@ public class HRU_device_mix extends JAMSComponent {
                     double run_inflowFrac = run_maxInputVol / run_totalInGoal;
                     this.run_QRD1 *= run_inflowFrac;
                     this.run_QRD2 *= run_inflowFrac;
-                    this.run_QRD1 *= run_inflowFrac;
-                    this.run_QRD1 *= run_inflowFrac;
+                    this.run_QRG1 *= run_inflowFrac;
+                    this.run_QRG2 *= run_inflowFrac;
                 } // otherwise keep as is (no need for else statement)
             }
             
