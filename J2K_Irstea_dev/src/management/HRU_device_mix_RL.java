@@ -540,13 +540,13 @@ public class HRU_device_mix_RL extends JAMSComponent {
             }
 
             // Outflows
+            // Evaporation or Evapotranspiration
+            // calculate Potential evapotranspiration and convert in L
+            run_PET = run_RefET * CropCoeff * run_deviceArea; // RefET in mm, area in m2 so PET in L
             if (run_actVolDevice > 0) {
                 // Infiltration
                 run_Qinf = Math.min(run_deviceArea * Ks * run_coef_Qinf, run_actVolDevice); //area in m2, Ks m/s, Qinf in L
                
-                // Evaporation or Evapotranspiration
-                // calculate Potential evapotranspiration and convert in L
-                run_PET = run_RefET * CropCoeff * run_deviceArea; // RefET in mm, area in m2 so PET in L
                 // calculate Actual Evapotranspiration (ActET) -simple
                 run_actET = Math.min(run_PET, run_actVolDevice);
                 
