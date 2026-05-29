@@ -195,7 +195,6 @@ public class Init_HRU_device extends JAMSComponent {
         // Calculate the initial volume in the device, from the full capacity 
         double run_fracDeviceInitVol = fracDeviceInitVol.getValue();
         double run_initVol = run_fracDeviceInitVol * run_maxVolumeDevice;
-        getModel().getRuntime().println("Initial FD volume : " + run_initVol);
         double run_initFracRD1 = DeviceInitFracRD1.getValue();
         double run_initFracRD2 = DeviceInitFracRD2.getValue();
         double run_initFracRG1 = DeviceInitFracRG1.getValue();
