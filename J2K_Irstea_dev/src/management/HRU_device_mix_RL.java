@@ -557,12 +557,6 @@ public class HRU_device_mix_RL extends JAMSComponent {
                     run_actET = run_actVolDevice * share_Qet;
                     run_Qinf = run_actVolDevice * share_Qinf;
                 }
-            
-                //Qout - underdrain flow - for the moment lets forget about that
-                run_Qout = 0; 
-                //Math.min(Cout * Math.sqrt(2 * g * volumeInGI/volumeGI) , volumeInGI) ; // in L 
-                //volumeInGI = Math.max(volumeInGI - Qout,0);
-
                 // update volume
                 double run_remainingFracETInf = 1 - Math.min((run_Qinf + run_actET) / run_actVolDevice, 1);
                 run_actRD1 *= run_remainingFracETInf;
@@ -576,6 +570,11 @@ public class HRU_device_mix_RL extends JAMSComponent {
                 run_Qinf = 0;
                 run_actET = 0;
             }
+            
+            //Qout - underdrain flow - for the moment lets forget about that
+            run_Qout = 0; 
+            //Math.min(Cout * Math.sqrt(2 * g * volumeInGI/volumeGI) , volumeInGI) ; // in L 
+            //volumeInGI = Math.max(volumeInGI - Qout,0);
             
         }else{
             getModel().getRuntime().println("Device area < 0 ! Not possible");
