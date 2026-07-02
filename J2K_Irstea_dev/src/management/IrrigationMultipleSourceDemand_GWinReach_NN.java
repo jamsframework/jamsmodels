@@ -138,14 +138,6 @@ public class IrrigationMultipleSourceDemand_GWinReach_NN extends JAMSComponent {
             defaultValue = "0.9"
     )
     public Attribute.Double etDeficit;
-
-    @JAMSVarDescription(
-            access = JAMSVarDescription.AccessType.READ,
-            description = "Name of list of irrigated HRUs in hru entities (GW reservoir). List will be read by this"+
-                    "component. - parameter / pointer",
-            defaultValue = "irrigationGWEntities"
-    )
-    public Attribute.String irrigationGWEntitiesListName;
     
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
