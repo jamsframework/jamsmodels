@@ -63,7 +63,7 @@ public class DamET extends JAMSComponent {
             access = JAMSVarDescription.AccessType.READ,
             description = "Potential evaporation",
             defaultValue = "0",
-            unit = "mm",
+            unit = "L",
             lowerBound = 0,
             upperBound = Double.POSITIVE_INFINITY
     )
@@ -83,7 +83,7 @@ public class DamET extends JAMSComponent {
             access = JAMSVarDescription.AccessType.WRITE,
             description = "Surface water evaporation",
             defaultValue = "0",
-            unit = "mm",
+            unit = "L",
             lowerBound = 0,
             upperBound = Double.POSITIVE_INFINITY
     )
@@ -104,7 +104,7 @@ public class DamET extends JAMSComponent {
             access = JAMSVarDescription.AccessType.READ,
             description = "Minimum surface area",
             defaultValue = "0",
-            unit = "L",
+            unit = "m2",
             lowerBound = 0,
             upperBound = Double.POSITIVE_INFINITY
     )
@@ -114,7 +114,7 @@ public class DamET extends JAMSComponent {
             access = JAMSVarDescription.AccessType.READ,
             description = "Maximum surface area",
             defaultValue = "0",
-            unit = "L",
+            unit = "m2",
             lowerBound = 0,
             upperBound = Double.POSITIVE_INFINITY
     )
