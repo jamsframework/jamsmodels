@@ -14,7 +14,11 @@
 
          Projects that are no longer actively maintained live under archive/
          (sources only, not part of this build). To reactivate one, give it
-         a pom and add it to the module list below. -->
+         a pom and add it to the module list below.
+
+         When adding or removing a module, also add/remove its IntelliJ run
+         configuration in .run/ (static files, not generated from this
+         list). -->
 
     <modules>
         <module>J2K_base</module>
