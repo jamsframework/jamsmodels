@@ -1,0 +1,15 @@
+# Maven build output
+target/
+
+# IDE
+.idea/
+*.iml
+nbactions.xml
+
+# macOS metadata (AppleDouble sidecars on exFAT volumes, Finder metadata)
+._*
+.DS_Store
+
+# JVM crash reports
+hs_err_pid*.log
+replay_pid*.log
