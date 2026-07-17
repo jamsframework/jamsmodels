@@ -62,3 +62,9 @@ them automatically when both are in such a directory.
 The complete Subversion history of the model projects (2005–2026) is
 preserved in this repository. Releases of the models built with the
 previous Ant/NetBeans setup were published via https://jams.uni-jena.de.
+
+## License
+
+Like the JAMS framework itself, the model components are free software,
+licensed under the [GNU Lesser General Public License v3](LICENSE)
+(see also [COPYING.GPL](COPYING.GPL) for the GNU GPL v3 that accompanies it).
