@@ -47,7 +47,10 @@ Then, in this repository:
 
 Each module produces a component jar in its `target/` directory; all
 built jars are additionally collected in the `components/` directory at
-the repository root, ready to be used by JAMS.
+the repository root, ready to be used by JAMS. External dependencies of
+the models (anything the JAMS runtime does not already provide) are
+copied to `components/lib/`, where the component jars find them via
+their manifest class path.
 
 To build only a single model (plus whatever it depends on), use:
 

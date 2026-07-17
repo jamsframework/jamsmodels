@@ -42,22 +42,62 @@
         <models.components.dir>${maven.multiModuleProjectDirectory}/components</models.components.dir>
     </properties>
 
-    <!-- every model component library builds against the JAMS framework -->
+    <!-- every model component library builds against the JAMS framework;
+         scope provided: zur Laufzeit stellt die JAMS-Installation diese
+         Artefakte (und ihre Abhaengigkeiten) selbst bereit -->
     <dependencies>
         <dependency>
             <groupId>org.jams</groupId>
             <artifactId>jams-api</artifactId>
             <version>${jams.version}</version>
+            <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>org.jams</groupId>
             <artifactId>jams-main</artifactId>
             <version>${jams.version}</version>
+            <scope>provided</scope>
         </dependency>
     </dependencies>
 
     <build>
         <plugins>
+            <!-- Manifest-Class-Path mit lib/-Praefix: so findet der
+                 JAMSClassLoader externe Abhaengigkeiten der Modell-Jars in
+                 components/lib. Eintraege, die dort nicht existieren (z.B.
+                 provided-Artefakte), ignoriert die JVM stillschweigend -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-jar-plugin</artifactId>
+                <configuration>
+                    <archive>
+                        <manifest>
+                            <addClasspath>true</addClasspath>
+                            <classpathPrefix>lib/</classpathPrefix>
+                        </manifest>
+                    </archive>
+                </configuration>
+            </plugin>
+            <!-- externe Laufzeit-Abhaengigkeiten (nicht org.jams, nicht
+                 provided) nach components/lib kopieren -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-dependency-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>collect-component-libs</id>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>copy-dependencies</goal>
+                        </goals>
+                        <configuration>
+                            <outputDirectory>${models.components.dir}/lib</outputDirectory>
+                            <includeScope>runtime</includeScope>
+                            <excludeGroupIds>org.jams</excludeGroupIds>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
             <!-- jedes Modul legt sein Jar zusaetzlich in components/ ab;
                  failonerror=false, damit der Schritt beim Parent (packaging
                  pom, kein Jar) stillschweigend uebersprungen wird -->
@@ -77,6 +117,15 @@
                                 <copy file="${project.build.directory}/${project.build.finalName}.jar"
                                       todir="${models.components.dir}"
                                       failonerror="false" quiet="true"/>
+                                <!-- macOS legt auf exFAT-Volumes AppleDouble-
+                                     Sidecars (._*.jar) an, die der JAMS-
+                                     Klassenlader faelschlich laden wuerde -->
+                                <delete failonerror="false" quiet="true">
+                                    <fileset dir="${models.components.dir}"
+                                             includes="**/._*"
+                                             defaultexcludes="false"
+                                             erroronmissingdir="false"/>
+                                </delete>
                             </target>
                         </configuration>
                     </execution>
