@@ -59,11 +59,8 @@ To build only a single model (plus whatever it depends on), use:
 ```
 
 Multiple modules can be listed comma-separated (`-pl DRYvER,Thornthwaite`).
-
-**IntelliJ IDEA** users get ready-made run configurations ("Build J2K_ext",
-"Build all models", "Clean all", …) out of the box — they are shipped in the
-[`.run/`](.run/) directory and appear in the run configuration dropdown as
-soon as the project is opened.
+In IntelliJ IDEA, the same is achieved by double-clicking a module's
+`package` goal in the Maven tool window.
 Single-module builds add their jars to `components/` without touching the
 others; `./mvnw clean` at the repository root empties the directory
 (cleaning a single module deliberately does not).
