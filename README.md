@@ -46,6 +46,14 @@ Then, in this repository:
 ```
 
 Each module produces a component jar in its `target/` directory.
+
+To build only a single model (plus whatever it depends on), use:
+
+```
+./mvnw package -pl J2K_ext -am
+```
+
+Multiple modules can be listed comma-separated (`-pl DRYvER,Thornthwaite`).
 Building only requires a JDK, version 11 or newer — Maven is provided
 by the included wrapper.
 
