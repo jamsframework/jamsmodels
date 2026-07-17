@@ -30,13 +30,13 @@ add it to the module list in the parent POM.
 
 ## Building
 
-The modules build against the JAMS framework artifacts. Install those
-into your local Maven repository first (one-time step, repeat after
-updating jams):
+The modules build against the JAMS framework artifacts. Build the
+framework first — its standard build command installs the artifacts
+into your local Maven repository (repeat after updating jams):
 
 ```
 git clone https://github.com/jamsframework/jams.git
-cd jams && ./mvnw install
+cd jams && ./mvnw install -pl jams-starter -am
 ```
 
 Then, in this repository:
