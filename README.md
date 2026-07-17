@@ -60,7 +60,12 @@ To build only a single model (plus whatever it depends on), use:
 
 Multiple modules can be listed comma-separated (`-pl DRYvER,Thornthwaite`).
 In IntelliJ IDEA, the same is achieved by double-clicking a module's
-`package` goal in the Maven tool window.
+`package` goal in the Maven tool window. Note for IDE builds of modules
+that depend on other models (e.g. `J2Kg` on `J2K_base`): run
+`./mvnw install -N` once at the repository root first — it puts the
+parent POM into your local Maven repository, which Maven needs to
+resolve inter-module dependencies outside the full reactor. Install the
+depended-on modules (e.g. `J2K_base`) the same way when they change.
 Single-module builds add their jars to `components/` without touching the
 others; `./mvnw clean` at the repository root empties the directory
 (cleaning a single module deliberately does not).
