@@ -27,7 +27,7 @@
         <module>J2K_Irstea_dev</module>
         <module>J2K_SASSCAL</module>
         <module>J2K_S_N</module>
-        <module>J2000g</module>
+        <module>J2Kg</module>
         <module>DRYvER</module>
         <module>Thornthwaite</module>
     </modules>

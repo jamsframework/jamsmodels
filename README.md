@@ -18,7 +18,7 @@ Friedrich Schiller University Jena and partner institutions since 2005.
 | `J2K_Africa`, `J2K_Himalaya`, `J2K_SASSCAL` | Regional J2000 adaptations |
 | `J2K_Irstea`, `J2K_Irstea_dev` | J2000 components developed at Irstea/INRAE |
 | `J2K_S_N` | J2000-S nitrogen/crop components |
-| `J2000g` | J2000g lumped model components (formerly built as `J2Kg.jar`) |
+| `J2Kg` | J2000g lumped model components |
 | `DRYvER` | Components developed in the DRYvER project |
 | `Thornthwaite` | Thornthwaite water balance model |
 

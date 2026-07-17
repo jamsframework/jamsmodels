@@ -8,7 +8,7 @@
         <artifactId>jamsmodels-parent</artifactId>
         <version>1.0-SNAPSHOT</version>
     </parent>
-    <artifactId>J2000g</artifactId>
+    <artifactId>J2Kg</artifactId>
     <dependencies>
         <dependency>
             <groupId>org.jams</groupId>
