@@ -45,7 +45,9 @@ Then, in this repository:
 ./mvnw package
 ```
 
-Each module produces a component jar in its `target/` directory.
+Each module produces a component jar in its `target/` directory; all
+built jars are additionally collected in the `components/` directory at
+the repository root, ready to be used by JAMS.
 
 To build only a single model (plus whatever it depends on), use:
 
@@ -54,16 +56,19 @@ To build only a single model (plus whatever it depends on), use:
 ```
 
 Multiple modules can be listed comma-separated (`-pl DRYvER,Thornthwaite`).
+Single-module builds add their jars to `components/` without touching the
+others; `./mvnw clean` at the repository root empties the directory
+(cleaning a single module deliberately does not).
 Building only requires a JDK, version 11 or newer — Maven is provided
 by the included wrapper.
 
 ## Using the model components
 
-Add the built jars to your JAMS installation by placing them in a
-directory that is listed in the semicolon-separated `libs` property of
-JAMS (`default.jap`, or via the settings dialog in JUICE). Components
-that depend on other model jars (e.g. `J2K_ext` on `J2K_base`) find
-them automatically when both are in such a directory.
+Simply add the `components/` directory of this repository to the
+semicolon-separated `libs` property of JAMS (`default.jap`, or via the
+settings dialog in JUICE) — every model you build becomes available to
+JAMS automatically. Components that depend on other model jars (e.g.
+`J2K_ext` on `J2K_base`) find them automatically when both are there.
 
 ## History
 

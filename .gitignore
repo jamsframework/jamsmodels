@@ -13,3 +13,6 @@ nbactions.xml
 # JVM crash reports
 hs_err_pid*.log
 replay_pid*.log
+
+# Collected component jars (populated by the build)
+/components/

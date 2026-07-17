@@ -36,6 +36,10 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <maven.compiler.release>11</maven.compiler.release>
         <jams.version>1.0-SNAPSHOT</jams.version>
+        <!-- Sammelordner fuer die gebauten Komponenten-Jars; darauf kann die
+             libs-Property von JAMS direkt zeigen. Wird von "mvn clean" auf
+             Root-Ebene geleert und liegt in .gitignore -->
+        <models.components.dir>${maven.multiModuleProjectDirectory}/components</models.components.dir>
     </properties>
 
     <!-- every model component library builds against the JAMS framework -->
@@ -53,6 +57,47 @@
     </dependencies>
 
     <build>
+        <plugins>
+            <!-- jedes Modul legt sein Jar zusaetzlich in components/ ab;
+                 failonerror=false, damit der Schritt beim Parent (packaging
+                 pom, kein Jar) stillschweigend uebersprungen wird -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-antrun-plugin</artifactId>
+                <version>3.1.0</version>
+                <executions>
+                    <execution>
+                        <id>collect-component-jar</id>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>run</goal>
+                        </goals>
+                        <configuration>
+                            <target>
+                                <copy file="${project.build.directory}/${project.build.finalName}.jar"
+                                      todir="${models.components.dir}"
+                                      failonerror="false" quiet="true"/>
+                            </target>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+            <!-- nur beim Clean des Root-Projekts (inherited=false): leert den
+                 components-Sammelordner. Das Clean einzelner Module loescht
+                 bewusst nur deren target/, nicht die Jars der Geschwister -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-clean-plugin</artifactId>
+                <inherited>false</inherited>
+                <configuration>
+                    <filesets>
+                        <fileset>
+                            <directory>${models.components.dir}</directory>
+                        </fileset>
+                    </filesets>
+                </configuration>
+            </plugin>
+        </plugins>
         <!-- NetBeans-Layout beibehalten: Ressourcen (Bilder, .properties,
              ResourceBundles) liegen neben den Java-Quellen in src/main/java -->
         <resources>
