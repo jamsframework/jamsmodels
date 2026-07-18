@@ -69,7 +69,7 @@ depended-on modules (e.g. `J2K_base`) the same way when they change.
 Single-module builds add their jars to `components/` without touching the
 others; `./mvnw clean` at the repository root empties the directory
 (cleaning a single module deliberately does not).
-Building only requires a JDK, version 11 or newer — Maven is provided
+Building only requires a JDK, version 17 or newer — Maven is provided
 by the included wrapper.
 
 ## Using the model components

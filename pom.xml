@@ -34,7 +34,7 @@
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <maven.compiler.release>11</maven.compiler.release>
+        <maven.compiler.release>17</maven.compiler.release>
         <jams.version>1.0-SNAPSHOT</jams.version>
         <!-- Sammelordner fuer die gebauten Komponenten-Jars; darauf kann die
              libs-Property von JAMS direkt zeigen. Wird von "mvn clean" auf
