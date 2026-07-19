@@ -52,7 +52,7 @@ the models (anything the JAMS runtime does not already provide) are
 copied to `components/lib/`, where the component jars find them via
 their manifest class path.
 
-To build only a single model library (plus whatever it depends on), use e.g.:
+To build only a single model library (e.g. J2K_ext), use:
 
 ```
 ./mvnw package -pl J2K_ext -am
