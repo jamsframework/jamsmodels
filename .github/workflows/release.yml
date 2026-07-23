@@ -68,9 +68,9 @@ jobs:
           cat > release-notes.md <<EOF
           Model component libraries for the JAMS framework (https://jamsframework.org).
 
-          Unzip and copy the contents into the \`libs\` folder of your JAMS
-          installation (or the \`libs\` path configured in \`default.jap\` /
-          the JUICE settings dialog).
+          Unzip and copy the contents into the \`components\` folder of your
+          JAMS installation (or the \`libs\` path configured in
+          \`default.jap\` / the JUICE settings dialog).
 
           Included components: J2K_base, J2K_ext, J2K_iso, J2K_highres,
           J2K_Africa, J2K_Himalaya, J2K_Irstea, J2K_Irstea_dev, J2K_SASSCAL,
