@@ -1,11 +1,11 @@
 name: Release
 
-# Triggered by pushing a version tag, e.g.:
-#   git tag v1.2.0 && git push origin v1.2.0
+# Manually triggered from the Actions tab ("Run workflow"). The release
+# version is computed by the workflow itself (JAMS API version + the most
+# recent commit date across the model library directories), so there is no
+# tag to prepare or type by hand beforehand.
 on:
-  push:
-    tags:
-      - 'v*'
+  workflow_dispatch: {}
 
 permissions:
   contents: write
@@ -16,6 +16,9 @@ jobs:
     steps:
       - name: Checkout jamsmodels
         uses: actions/checkout@v4
+        with:
+          # full history needed to find the most recent commit per library path
+          fetch-depth: 0
 
       - name: Set up JDK 17
         uses: actions/setup-java@v4
@@ -38,13 +41,27 @@ jobs:
         working-directory: jams
         run: echo "sha=$(git rev-parse --short HEAD)" >> "$GITHUB_OUTPUT"
 
+      - name: Determine release version
+        id: version
+        run: |
+          VERSION_FILE=jams/jams-main/src/main/java/resources/text/version.txt
+          API_MAJOR=$(grep '^api.majorversion=' "$VERSION_FILE" | cut -d= -f2)
+          API_MINOR=$(grep '^api.minorversion=' "$VERSION_FILE" | cut -d= -f2)
+
+          # keep in sync with the <modules> list in pom.xml
+          LIBS="J2K_base J2K_ext J2K_iso J2K_highres J2K_Africa J2K_Himalaya J2K_Irstea J2K_Irstea_dev J2K_SASSCAL J2K_S_N J2Kg DRYvER Thornthwaite"
+          LIBS_DATE=$(git log -1 --format=%cd --date=format:'%Y%m%d' -- $LIBS)
+
+          echo "version=v${API_MAJOR}.${API_MINOR}-${LIBS_DATE}" >> "$GITHUB_OUTPUT"
+          echo "api=${API_MAJOR}.${API_MINOR}" >> "$GITHUB_OUTPUT"
+
       - name: Build model components
         run: ./mvnw clean package -DskipTests -B
 
       - name: Zip components directory
         run: |
           cd components
-          zip -r "../jamsmodels-${GITHUB_REF_NAME}.zip" .
+          zip -r "../jamsmodels-${{ steps.version.outputs.version }}.zip" .
 
       - name: Write release notes
         run: |
@@ -59,12 +76,13 @@ jobs:
           J2K_Africa, J2K_Himalaya, J2K_Irstea, J2K_Irstea_dev, J2K_SASSCAL,
           J2K_S_N, J2Kg, DRYvER, Thornthwaite.
 
-          Built against JAMS (jamsframework/jams@${{ steps.jams.outputs.sha }}).
+          Built against JAMS API ${{ steps.version.outputs.api }} (jamsframework/jams@${{ steps.jams.outputs.sha }}).
           EOF
 
       - name: Create GitHub Release
         uses: softprops/action-gh-release@v2
         with:
-          name: jamsmodels ${{ github.ref_name }}
+          tag_name: ${{ steps.version.outputs.version }}
+          name: jamsmodels ${{ steps.version.outputs.version }}
           body_path: release-notes.md
-          files: jamsmodels-${{ github.ref_name }}.zip
+          files: jamsmodels-${{ steps.version.outputs.version }}.zip
