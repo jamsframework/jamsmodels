@@ -72,7 +72,18 @@ others; `./mvnw clean` at the repository root empties the directory
 Building only requires a JDK, version 17 or newer — Maven is provided
 by the included wrapper.
 
+Maintainers can cut a new release via the "Release" workflow in the
+[Actions tab](https://github.com/jamsframework/jamsmodels/actions/workflows/release.yml)
+("Run workflow") — it builds JAMS and the components, then publishes the
+result as a GitHub Release.
+
 ## Using the model components
+
+Pre-built component jars are published under
+[Releases](https://github.com/jamsframework/jamsmodels/releases) as a
+ready-to-use `components/` directory — no local build required. Each
+release is versioned as `v{JAMS-API-major}.{JAMS-API-minor}-{date}`, e.g.
+`v1.4-20260717`, reflecting the JAMS API version it was built against.
 
 Simply add the `components/` directory of this repository to the
 semicolon-separated `libs` property of JAMS (`default.jap`, or via the
