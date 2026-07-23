@@ -1,0 +1,4 @@
+# Maps old commit identities to their canonical name/email so that git shortlog,
+# git log --use-mailmap and GitHub's Contributors view group them correctly.
+# Format:  Proper Name <canonical@email> <old@email>
+Flora Branger <flora.branger@inrae.fr> <flora.branger@irstea.fr>
