@@ -1,4 +1,14 @@
-# Maps old commit identities to their canonical name/email so that git shortlog,
-# git log --use-mailmap and GitHub's Contributors view group them correctly.
-# Format:  Proper Name <canonical@email> <old@email>
-Flora Branger <flora.branger@inrae.fr> <flora.branger@irstea.fr>
+# Coalesce contributors who committed under more than one name/address, so that
+# git shortlog, git log --use-mailmap and GitHub's Contributors view group them
+# under a single identity. (The old irstea.fr -> inrae.fr change was applied to
+# the history itself, so it needs no entry here.)
+#
+# Format:  Proper Name <canonical@email> [<other@email>]
+
+# Same person, two addresses
+Sven Kralisch <sven@kralisch.com> <sven.kralisch@tlubn.thueringen.de>
+
+# Isabelle Gouttevin: unify the name on her inrae commits (committed as
+# "Ivan"/"Amina") and fold her gmail address into the same identity.
+Isabelle Gouttevin <isabelle.gouttevin@inrae.fr>
+Isabelle Gouttevin <isabelle.gouttevin@inrae.fr> <isabelle.gouttevin@gmail.com>
