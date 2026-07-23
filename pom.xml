@@ -61,6 +61,7 @@
     </dependencies>
 
     <build>
+        <finalName>${project.artifactId}</finalName>
         <plugins>
             <!-- macOS-AppleDouble-Sidecars (._Foo.java auf exFAT-Volumes)
                  matchen **/*.java und wuerden javac zum Absturz bringen -->
