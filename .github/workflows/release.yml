@@ -1,0 +1,70 @@
+name: Release
+
+# Triggered by pushing a version tag, e.g.:
+#   git tag v1.2.0 && git push origin v1.2.0
+on:
+  push:
+    tags:
+      - 'v*'
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout jamsmodels
+        uses: actions/checkout@v4
+
+      - name: Set up JDK 17
+        uses: actions/setup-java@v4
+        with:
+          java-version: '17'
+          distribution: 'temurin'
+
+      - name: Checkout JAMS framework
+        uses: actions/checkout@v4
+        with:
+          repository: jamsframework/jams
+          path: jams
+
+      - name: Build and install JAMS framework
+        working-directory: jams
+        run: ./mvnw install -pl jams-starter -am -DskipTests -B
+
+      - name: Record JAMS commit
+        id: jams
+        working-directory: jams
+        run: echo "sha=$(git rev-parse --short HEAD)" >> "$GITHUB_OUTPUT"
+
+      - name: Build model components
+        run: ./mvnw clean package -DskipTests -B
+
+      - name: Zip components directory
+        run: |
+          cd components
+          zip -r "../jamsmodels-${GITHUB_REF_NAME}.zip" .
+
+      - name: Write release notes
+        run: |
+          cat > release-notes.md <<EOF
+          Model component libraries for the JAMS framework (https://jamsframework.org).
+
+          Unzip and copy the contents into the \`libs\` folder of your JAMS
+          installation (or the \`libs\` path configured in \`default.jap\` /
+          the JUICE settings dialog).
+
+          Included components: J2K_base, J2K_ext, J2K_iso, J2K_highres,
+          J2K_Africa, J2K_Himalaya, J2K_Irstea, J2K_Irstea_dev, J2K_SASSCAL,
+          J2K_S_N, J2Kg, DRYvER, Thornthwaite.
+
+          Built against JAMS (jamsframework/jams@${{ steps.jams.outputs.sha }}).
+          EOF
+
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          name: jamsmodels ${{ github.ref_name }}
+          body_path: release-notes.md
+          files: jamsmodels-${{ github.ref_name }}.zip
