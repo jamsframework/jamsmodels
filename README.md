@@ -87,7 +87,9 @@ Pre-built component jars are published under
 [Releases](https://github.com/jamsframework/jamsmodels/releases) as a
 ready-to-use `components/` directory — no local build required. Each
 release is versioned as `v{JAMS-API-major}.{JAMS-API-minor}-{date}`, e.g.
-`v1.4-20260717`, reflecting the JAMS API version it was built against.
+`v1.4-20260717`, reflecting the JAMS API version it was built against. For
+how that JAMS-API version itself is versioned and released, see the
+[jams repo's README](https://github.com/jamsframework/jams#readme).
 
 Simply add the `components/` directory of this repository to the
 semicolon-separated `libs` property of JAMS (`default.jap`, or via the
