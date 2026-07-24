@@ -30,16 +30,20 @@ add it to the module list in the parent POM.
 
 ## Building
 
-The modules build against the JAMS framework artifacts. Build the
-framework first — its standard build command installs the artifacts
-into your local Maven repository (repeat after updating jams):
+The modules build against `jams-api`/`jams-main`. Get those two jars —
+either by building [jams](https://github.com/jamsframework/jams) from
+source (`jams-api/target/`, `jams-main/target/`), or from the `lib/`
+directory of a downloaded [JAMS release bundle](https://github.com/jamsframework/jams/releases)
+— drop them into `jams-libs/` in this repository, and run once:
 
 ```
-git clone https://github.com/jamsframework/jams.git
-cd jams && ./mvnw install -pl jams-starter -am
+./install-jams-libs.sh   # or install-jams-libs.ps1 on Windows
 ```
 
-Then, in this repository:
+This registers them in your local Maven repository under a fixed
+`org.jams:*:local` coordinate, regardless of the actual jams version —
+repeat only when you want to switch to a different jams build. Then, in
+this repository:
 
 ```
 ./mvnw package
