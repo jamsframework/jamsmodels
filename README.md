@@ -37,7 +37,7 @@ directory of a downloaded [JAMS release bundle](https://github.com/jamsframework
 — drop them into `jams-libs/` in this repository, and run once:
 
 ```
-./install-jams-libs.sh   # or install-jams-libs.ps1 on Windows
+./install-jams-libs.sh   # or install-jams-libs.bat on Windows
 ```
 
 This registers them in your local Maven repository under a fixed
