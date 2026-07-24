@@ -44,7 +44,7 @@ jobs:
       - name: Determine release version
         id: version
         run: |
-          VERSION_FILE=jams/jams-main/src/main/java/resources/text/version.txt
+          VERSION_FILE=jams/jams-main/target/classes/resources/text/version.txt
           API_MAJOR=$(grep '^api.majorversion=' "$VERSION_FILE" | cut -d= -f2)
           API_MINOR=$(grep '^api.minorversion=' "$VERSION_FILE" | cut -d= -f2)
 
