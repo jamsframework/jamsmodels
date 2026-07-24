@@ -16,3 +16,6 @@ replay_pid*.log
 
 # Collected component jars (populated by the build)
 /components/
+
+# Locally provided jams-api/jams-main jars (see jams-libs/README.md)
+/jams-libs/*.jar

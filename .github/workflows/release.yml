@@ -55,6 +55,12 @@ jobs:
           echo "version=v${API_MAJOR}.${API_MINOR}-${LIBS_DATE}" >> "$GITHUB_OUTPUT"
           echo "api=${API_MAJOR}.${API_MINOR}" >> "$GITHUB_OUTPUT"
 
+      - name: Register jams-api/jams-main locally
+        run: |
+          cp jams/jams-api/target/jams-api-*.jar jams-libs/
+          cp jams/jams-main/target/jams-main-*.jar jams-libs/
+          ./install-jams-libs.sh
+
       - name: Build model components
         run: ./mvnw clean package -DskipTests -B
 
