@@ -5,10 +5,6 @@
 #
 # Format:  Proper Name <canonical@email> [<other@email>]
 
-# Same person, two addresses
 Sven Kralisch <sven@kralisch.com> <sven.kralisch@tlubn.thueringen.de>
-
-# Isabelle Gouttevin: unify the name on her inrae commits (committed as
-# "Ivan"/"Amina") and fold her gmail address into the same identity.
 Isabelle Gouttevin <isabelle.gouttevin@inrae.fr>
 Isabelle Gouttevin <isabelle.gouttevin@inrae.fr> <isabelle.gouttevin@gmail.com>
