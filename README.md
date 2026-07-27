@@ -81,6 +81,8 @@ Maintainers can cut a new release via the "Release" workflow in the
 ("Run workflow") — it builds JAMS and the components, then publishes the
 result as a GitHub Release.
 
+Building behind an HTTP proxy? See the [jams repo's docs/proxy.md](https://github.com/jamsframework/jams/blob/main/docs/proxy.md).
+
 ## Using the model components
 
 Pre-built component jars are published under
