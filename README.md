@@ -1,4 +1,4 @@
-# jamsmodels – Model Component Libraries for JAMS
+# Model Component Libraries for JAMS
 
 This repository contains the domain-specific component libraries of the
 [JAMS framework](https://github.com/jamsframework/jams) — most notably the
