@@ -144,7 +144,7 @@ public class DamET2 extends JAMSComponent {
             potET = potET * facET.getValue();
             damArea = (0.0002 * damStorage) + 7455.4;
             potETm3 = potET / 1000;
-            damET = potETm3 / damArea;
+            damET = potETm3 * damArea;
             damETl = damET * 1000;
             damETl = Math.min(damStorage, damETl);
             damStorage = damStorage - damETl;

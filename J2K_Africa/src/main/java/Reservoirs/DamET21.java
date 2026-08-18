@@ -165,7 +165,7 @@ public class DamET21 extends JAMSComponent {
         if (damStorage > 0) {
             
             potET = potET * facET.getValue();
-            damArea = (maxArea - minArea)*(damStorage/damCapacity);
+            damArea = minArea + (maxArea - minArea)*(damStorage/damCapacity);
             potETm = potET / 1000;
             damET = potETm * damArea;
             damETl = damET * 1000;

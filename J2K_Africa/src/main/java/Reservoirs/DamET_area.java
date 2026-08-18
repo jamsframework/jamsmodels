@@ -156,7 +156,7 @@ public class DamET_area extends JAMSComponent {
         double damETl = this.damETl.getValue ();
         double damStorage = this.damStorage.getValue ();
         double maxArea = this.maxArea.getValue();
-        double minArea = this.maxArea.getValue();
+        double minArea = this.minArea.getValue();
 
         /*
    Conversion of Penman ET to Pan ET (to be used for Pot ET for reservoirs)
@@ -166,9 +166,9 @@ public class DamET_area extends JAMSComponent {
         if (damStorage > 0) {
             
             potET = potET * facET.getValue();
-            damArea = (maxArea - minArea)*(damStorage/damCapacity);
+            damArea = minArea + (maxArea - minArea)*(damStorage/damCapacity);
             potETm3 = potET / 1000;
-            damET = potETm3 / damArea;
+            damET = potETm3 * damArea;
             damETl = damET * 1000;
             damETl = Math.min(damStorage, damETl);
             damStorage = damStorage - damETl;
