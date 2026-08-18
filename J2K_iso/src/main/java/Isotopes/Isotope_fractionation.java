@@ -224,11 +224,11 @@ public class Isotope_fractionation extends JAMSComponent {
         epsimas = (alphamas - 1) * 1000;
         /* get kinetic fractionation factors value from Merlivat (1978) #permil notation       
          */
-        epsk_H = 0.9755 * (1 - 0.9755) * 1000 * (1 - rhum.getValue());
+        epsk_H = 12.5 * (1 - rhum.getValue() / 100.0);
 
-        /* compute the useful variables m and dstar ('enrichment slope and limiting isotopic composition)(Gibson et al.(2016))   
+        /* compute the useful variables m and dstar ('enrichment slope and limiting isotopic composition)(Gibson et al.(2016))
          */
-        enrichment_slope = (rhum.getValue() - Math.pow(10, -3) * (epsk_H + epsimas / alphamas)) / (1 - rhum.getValue() + Math.pow(10, -3) * epsk_H);
+        enrichment_slope = (rhum.getValue() / 100.0 - Math.pow(10, -3) * (epsk_H + epsimas / alphamas)) / (1 - rhum.getValue() / 100.0 + Math.pow(10, -3) * epsk_H);
         /*
         # get atmospheric composition from precipitation-equilibrium assumption (Gibson et al., 2008)k <- 1 #seasonality factor 
          */
@@ -236,7 +236,7 @@ public class Isotope_fractionation extends JAMSComponent {
         /*
        this is A/B in Gonfiantini 1986
          */
-        dstar = (rhum.getValue() * concA + epsk_H + epsimas / alphamas) / (rhum.getValue() - Math.pow(10, -3) * (epsk_H + epsimas / alphamas));
+        dstar = (rhum.getValue() / 100.0 * concA + epsk_H + epsimas / alphamas) / (rhum.getValue() / 100.0 - Math.pow(10, -3) * (epsk_H + epsimas / alphamas));
         /*
         compute the isotopic composition of the residual liquid,desiccating water body
          */
@@ -244,7 +244,7 @@ public class Isotope_fractionation extends JAMSComponent {
         /*
         compute vapor isotopic composition (Craig and Gordon 1965 formula, with notation by Gibson 2016)permil notation
          */
-        concE = ((concS - epsimas) / alphamas - rhum.getValue() * concA - epsk_H) / (1 - rhum.getValue() + Math.pow(10, -3) * epsk_H);
+        concE = ((concS - epsimas) / alphamas - rhum.getValue() / 100.0 * concA - epsk_H) / (1 - rhum.getValue() / 100.0 + Math.pow(10, -3) * epsk_H);
 
         this.concA.setValue(concA);
         this.concS.setValue(concS);
