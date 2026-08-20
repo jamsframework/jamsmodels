@@ -121,7 +121,9 @@ public class Dam_InflowFromReach extends JAMSComponent {
         //check if there is a dam
         if (damStorage.getValue() > 0) {
 
-            damStorage.setValue(damStorage.getValue() + riverInflowRD1.getValue()+riverInflowRD2.getValue()+riverInflowRG1.getValue()+riverInflowRG2.getValue());
+            double totalInflow = riverInflowRD1.getValue()+riverInflowRD2.getValue()+riverInflowRG1.getValue()+riverInflowRG2.getValue();
+            double headroom = Math.max(0, damCapacity.getValue() - damStorage.getValue());
+            damStorage.setValue(damStorage.getValue() + Math.min(headroom, totalInflow));
 
         } else {
             damStorage.setValue(0);

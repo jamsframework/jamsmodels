@@ -37,7 +37,7 @@ import jams.model.*;
 )
 @VersionComments(entries = {
     @VersionComments.Entry(version = "1.0_0", comment = "Initial version"),})
-public class DamET_area extends JAMSComponent {
+public class DamET21 extends JAMSComponent {
 
     @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READWRITE,
@@ -50,7 +50,7 @@ public class DamET_area extends JAMSComponent {
     public Attribute.Double damStorage;
 
     @JAMSVarDescription(
-            access = JAMSVarDescription.AccessType.READWRITE,
+            access = JAMSVarDescription.AccessType.WRITE,
             description = "Current dam surface area",
             defaultValue = "0",
             unit = "m2",
@@ -80,7 +80,7 @@ public class DamET_area extends JAMSComponent {
     public Attribute.Double potETm;
 
     @JAMSVarDescription(
-            access = JAMSVarDescription.AccessType.READ,
+            access = JAMSVarDescription.AccessType.READWRITE,
             description = "Scaling factor for PotET",
             defaultValue = "1",
             unit = "unitless",
@@ -90,7 +90,7 @@ public class DamET_area extends JAMSComponent {
     public Attribute.Double facET;
 
     @JAMSVarDescription(
-            access = JAMSVarDescription.AccessType.READWRITE,
+            access = JAMSVarDescription.AccessType.WRITE,
             description = "Surface water evaporation",
             defaultValue = "0",
             unit = "mm",
@@ -100,7 +100,7 @@ public class DamET_area extends JAMSComponent {
     public Attribute.Double damET;
     
         @JAMSVarDescription(
-            access = JAMSVarDescription.AccessType.READWRITE,
+            access = JAMSVarDescription.AccessType.WRITE,
             description = "Surface water evaporation",
             defaultValue = "0",
             unit = "l",
@@ -123,22 +123,21 @@ public class DamET_area extends JAMSComponent {
             access = JAMSVarDescription.AccessType.READ,
             description = "Minimum surface area",
             defaultValue = "0",
-            unit = "m2",
+            unit = "L",
             lowerBound = 0,
             upperBound = Double.POSITIVE_INFINITY
     )
     public Attribute.Double minArea;
                 
-                        @JAMSVarDescription(
+                                @JAMSVarDescription(
             access = JAMSVarDescription.AccessType.READ,
-            description = "Maximum surface area",
+            description = "Minimum surface area",
             defaultValue = "0",
-            unit = "m2",
+            unit = "L",
             lowerBound = 0,
             upperBound = Double.POSITIVE_INFINITY
     )
     public Attribute.Double maxArea;
-        
         
 
     @Override
@@ -150,13 +149,13 @@ public class DamET_area extends JAMSComponent {
 
         double damArea = this.damArea.getValue();
         double potET = this.potET.getValue();
-        double potETm3 = this.potETm.getValue();
-        double damET=this.damET.getValue();
+        double potETm;
+        double damET;
         double damCapacity = this.damCapacity.getValue();
         double damETl = this.damETl.getValue ();
         double damStorage = this.damStorage.getValue ();
-        double maxArea = this.maxArea.getValue();
-        double minArea = this.maxArea.getValue();
+        double maxArea= this.maxArea.getValue();
+        double minArea= this.minArea.getValue();
 
         /*
    Conversion of Penman ET to Pan ET (to be used for Pot ET for reservoirs)
@@ -166,9 +165,9 @@ public class DamET_area extends JAMSComponent {
         if (damStorage > 0) {
             
             potET = potET * facET.getValue();
-            damArea = (maxArea - minArea)*(damStorage/damCapacity);
-            potETm3 = potET / 1000;
-            damET = potETm3 / damArea;
+            damArea = minArea + (maxArea - minArea)*(damStorage/damCapacity);
+            potETm = potET / 1000;
+            damET = potETm * damArea;
             damETl = damET * 1000;
             damETl = Math.min(damStorage, damETl);
             damStorage = damStorage - damETl;
@@ -176,15 +175,14 @@ public class DamET_area extends JAMSComponent {
 
         } else {
 
-            
             damET = 0;
-            potETm3 = 0;
+            potETm = 0;
 
         }
 
         this.damArea.setValue(damArea);
         this.potET.setValue(potET);
-        this.potETm.setValue(potETm3);
+        this.potETm.setValue(potETm);
         this.damET.setValue(damET);
         this.damETl.setValue (damETl);
         this.damStorage.setValue(damStorage);

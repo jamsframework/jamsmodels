@@ -142,10 +142,10 @@ public class DamET extends JAMSComponent {
    Pot ET 1.05 =Pan ET     
          */
         if (damStorage > 0) {
-            
+
             damET = potET * facET.getValue();
-            damArea = (maxArea - minArea)*(damStorage/damCapacity);
-           // damET = Math.min(damStorage, damET);
+            damArea = minArea + (maxArea - minArea)*(damStorage/damCapacity);
+            damET = Math.min(damStorage, damET);
             damStorage = damStorage - damET;
           
         } else {

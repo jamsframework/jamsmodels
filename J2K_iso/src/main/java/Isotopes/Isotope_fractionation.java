@@ -79,8 +79,8 @@ public class Isotope_fractionation extends JAMSComponent {
             description = "Precipitation water vapor concentration",
             defaultValue = "0",
             unit = "permil",
-            lowerBound = 0,
-            upperBound = Double.NEGATIVE_INFINITY
+            lowerBound = Double.NEGATIVE_INFINITY,
+            upperBound = Double.POSITIVE_INFINITY
     )
     public Attribute.Double pConc;
 
@@ -89,8 +89,8 @@ public class Isotope_fractionation extends JAMSComponent {
             description = "concentration of water in the soil",
             defaultValue = "0",
             unit = "permil",
-            lowerBound = 0,
-            upperBound = Double.NEGATIVE_INFINITY
+            lowerBound = Double.NEGATIVE_INFINITY,
+            upperBound = Double.POSITIVE_INFINITY
     )
     public Attribute.Double concS;
 
@@ -99,8 +99,8 @@ public class Isotope_fractionation extends JAMSComponent {
             description = "isotopic composition of water in the atmosphere",
             defaultValue = "0",
             unit = "permil",
-            lowerBound = 0,
-            upperBound = Double.NEGATIVE_INFINITY
+            lowerBound = Double.NEGATIVE_INFINITY,
+            upperBound = Double.POSITIVE_INFINITY
     )
     public Attribute.Double concA;
 
@@ -109,8 +109,8 @@ public class Isotope_fractionation extends JAMSComponent {
             description = "isotopic composition of water evaporated from the soil",
             defaultValue = "0",
             unit = "permil",
-            lowerBound = 0,
-            upperBound = Double.NEGATIVE_INFINITY
+            lowerBound = Double.NEGATIVE_INFINITY,
+            upperBound = Double.POSITIVE_INFINITY
     )
     public Attribute.Double concE;
 
@@ -119,8 +119,8 @@ public class Isotope_fractionation extends JAMSComponent {
             description = "seasonality factor",
             defaultValue = "1",
             unit = "unitless",
-            lowerBound = 0,
-            upperBound = Double.NEGATIVE_INFINITY
+            lowerBound = Double.NEGATIVE_INFINITY,
+            upperBound = Double.POSITIVE_INFINITY
     )
     public Attribute.Double k;
 
@@ -129,8 +129,8 @@ public class Isotope_fractionation extends JAMSComponent {
             description = "exchange factor",
             defaultValue = "0.9",
             unit = "unitless",
-            lowerBound = 0,
-            upperBound = Double.NEGATIVE_INFINITY
+            lowerBound = Double.NEGATIVE_INFINITY,
+            upperBound = Double.POSITIVE_INFINITY
     )
     public Attribute.Double x;
 
@@ -139,8 +139,8 @@ public class Isotope_fractionation extends JAMSComponent {
             description = "initital soil-water Isototope composition",
             defaultValue = "0",
             unit = "permil",
-            lowerBound = 0,
-            upperBound = Double.NEGATIVE_INFINITY
+            lowerBound = Double.NEGATIVE_INFINITY,
+            upperBound = Double.POSITIVE_INFINITY
     )
     public Attribute.Double init_concS;
 
@@ -149,8 +149,8 @@ public class Isotope_fractionation extends JAMSComponent {
             description = "alphamas",
             defaultValue = "0",
             unit = "permil",
-            lowerBound = 0,
-            upperBound = Double.NEGATIVE_INFINITY
+            lowerBound = Double.NEGATIVE_INFINITY,
+            upperBound = Double.POSITIVE_INFINITY
     )
     public Attribute.Double alphamas;
 
@@ -159,8 +159,8 @@ public class Isotope_fractionation extends JAMSComponent {
             description = "epsimas",
             defaultValue = "0",
             unit = "permil",
-            lowerBound = 0,
-            upperBound = Double.NEGATIVE_INFINITY
+            lowerBound = Double.NEGATIVE_INFINITY,
+            upperBound = Double.POSITIVE_INFINITY
     )
     public Attribute.Double epsimas;
 
@@ -169,8 +169,8 @@ public class Isotope_fractionation extends JAMSComponent {
             description = "enrichment_slope",
             defaultValue = "0",
             unit = "permil",
-            lowerBound = 0,
-            upperBound = Double.NEGATIVE_INFINITY
+            lowerBound = Double.NEGATIVE_INFINITY,
+            upperBound = Double.POSITIVE_INFINITY
     )
     public Attribute.Double enrichment_slope;
 
@@ -179,8 +179,8 @@ public class Isotope_fractionation extends JAMSComponent {
             description = "dstar",
             defaultValue = "0",
             unit = "permil",
-            lowerBound = 0,
-            upperBound = Double.NEGATIVE_INFINITY
+            lowerBound = Double.NEGATIVE_INFINITY,
+            upperBound = Double.POSITIVE_INFINITY
     )
     public Attribute.Double dstar;
 
@@ -189,8 +189,8 @@ public class Isotope_fractionation extends JAMSComponent {
             description = "epsk_H",
             defaultValue = "0",
             unit = "permil",
-            lowerBound = 0,
-            upperBound = Double.NEGATIVE_INFINITY
+            lowerBound = Double.NEGATIVE_INFINITY,
+            upperBound = Double.POSITIVE_INFINITY
     )
     public Attribute.Double epsk_H;
 
@@ -213,7 +213,7 @@ public class Isotope_fractionation extends JAMSComponent {
         double enrichment_slope = this.enrichment_slope.getValue();
         double dstar = this.dstar.getValue();
 
-        tempK.setValue(273.13 + temp.getValue());
+        tempK.setValue(273.15 + temp.getValue());
 
         /* a+ is the liquid-vapor equilibrium isotopic fractionation, (Horita and Wesolowski)    
          */
@@ -224,27 +224,27 @@ public class Isotope_fractionation extends JAMSComponent {
         epsimas = (alphamas - 1) * 1000;
         /* get kinetic fractionation factors value from Merlivat (1978) #permil notation       
          */
-        epsk_H = 0.9755 * (1 - 0.9755) * 1000 * (1 - rhum.getValue());
+        epsk_H = 12.5 * (1 - rhum.getValue() / 100.0);
 
-        /* compute the useful variables m and dstar ('enrichment slope and limiting isotopic composition)(Gibson et al.(2016))   
+        /* compute the useful variables m and dstar ('enrichment slope and limiting isotopic composition)(Gibson et al.(2016))
          */
-        enrichment_slope = (rhum.getValue() - Math.pow(10, -3) * (epsk_H + epsimas / alphamas)) / (1 - rhum.getValue() + Math.pow(10, -3) * epsk_H);
+        enrichment_slope = (rhum.getValue() / 100.0 - Math.pow(10, -3) * (epsk_H + epsimas / alphamas)) / (1 - rhum.getValue() / 100.0 + Math.pow(10, -3) * epsk_H);
         /*
         # get atmospheric composition from precipitation-equilibrium assumption (Gibson et al., 2008)k <- 1 #seasonality factor 
          */
-        concA = (pConc.getValue() - k.getValue() * epsimas) / (1 + epsimas * Math.pow(10, -3));
+        concA = (pConc.getValue() - k.getValue() * epsimas) / (1 + k.getValue() * epsimas * Math.pow(10, -3));
         /*
        this is A/B in Gonfiantini 1986
          */
-        dstar = (rhum.getValue() * concA + epsk_H + epsimas / alphamas) / (rhum.getValue() - Math.pow(10, -3) * (epsk_H + epsimas / alphamas));
+        dstar = (rhum.getValue() / 100.0 * concA + epsk_H + epsimas / alphamas) / (rhum.getValue() / 100.0 - Math.pow(10, -3) * (epsk_H + epsimas / alphamas));
         /*
         compute the isotopic composition of the residual liquid,desiccating water body
          */
-        concS = (init_concS.getValue() - dstar * Math.pow(1 - x.getValue(), enrichment_slope) + dstar);
+        concS = dstar + (init_concS.getValue() - dstar) * Math.pow(1 - x.getValue(), enrichment_slope);
         /*
         compute vapor isotopic composition (Craig and Gordon 1965 formula, with notation by Gibson 2016)permil notation
          */
-        concE = ((concS - epsimas) / alphamas - rhum.getValue() * concA - epsk_H) / (1 - rhum.getValue() + Math.pow(10, -3) * epsk_H);
+        concE = ((concS - epsimas) / alphamas - rhum.getValue() / 100.0 * concA - epsk_H) / (1 - rhum.getValue() / 100.0 + Math.pow(10, -3) * epsk_H);
 
         this.concA.setValue(concA);
         this.concS.setValue(concS);

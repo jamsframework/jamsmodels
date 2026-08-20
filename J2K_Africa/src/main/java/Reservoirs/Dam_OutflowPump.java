@@ -136,6 +136,7 @@ public class Dam_OutflowPump extends JAMSComponent {
         } else {
             _PumpOutDam = 0;
         }
+        _PumpOutDam = Math.min(_PumpOutDam, damStorage.getValue());
         damStorage.setValue(damStorage.getValue() - _PumpOutDam);
 
         pumpProgram.setValue(_PumpOutDam);

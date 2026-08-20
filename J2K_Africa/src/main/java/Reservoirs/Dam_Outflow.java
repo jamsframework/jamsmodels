@@ -120,24 +120,21 @@ public class Dam_Outflow extends JAMSComponent {
     
     @Override
     public void run() {
-     
-       double _damRelease;
 
-        if (damStorage.getValue() > 0) {
-            if (damStorage.getValue() <= ((damReleaseAdapt.getValue()
-                    * damCapacity.getValue()))) {
+        double _damRelease;
 
-                //remove water from the dam
-                _damRelease = 0;
-            }
-
-            //now generate a timeseries of the release
+        if (damStorage.getValue() > 0 && damStorage.getValue() > (damReleaseAdapt.getValue()
+                * damCapacity.getValue())) {
+            //proportional release between minRelease (empty) and maxRelease (full)
+            _damRelease = minRelease.getValue()
+                    + (maxRelease.getValue() - minRelease.getValue()) * (damStorage.getValue() / damCapacity.getValue());
         } else {
+            //storage at or below the adaptation threshold -- no release
             _damRelease = 0;
         }
-        _damRelease=(maxRelease.getValue() - minRelease.getValue())*(damStorage.getValue()/damCapacity.getValue());
+        _damRelease = Math.min(_damRelease, damStorage.getValue());
         damStorage.setValue(damStorage.getValue() - _damRelease);
-        
+
         releaseProgram.setValue(_damRelease);
         }
    
