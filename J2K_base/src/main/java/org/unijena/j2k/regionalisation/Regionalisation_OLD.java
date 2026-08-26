@@ -1,0 +1,231 @@
+/*
+ * Regionalisation.java
+ * Created on 17. November 2005, 14:20
+ *
+ * This file is part of JAMS
+ * Copyright (C) 2005 S. Kralisch and P. Krause
+ *
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU Lesser General Public License
+ * as published by the Free Software Foundation; either version 3
+ * of the License, or (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
+ *
+ */
+package org.unijena.j2k.regionalisation;
+
+import jams.JAMS;
+import java.io.*;
+import jams.data.*;
+import jams.model.*;
+
+/**
+ *
+ * @author Peter Krause
+ */
+@JAMSComponentDescription(title = "Regionalisation",
+        author = "Peter Krause",
+        version = "1.2_0",
+        description = "Calculate local (regionalised) input values based on the "
+        + "inverse distance weighting procedure.")
+@VersionComments(entries = {
+    @VersionComments.Entry(version = "1.0_0", comment = "Initial version"),
+    @VersionComments.Entry(version = "1.1_0", comment = "Added option to output "
+            + "actual weights for individual stations in order to find out "
+            + "which stations were used in each time step and for each "
+            + "modelling unit."),
+    @VersionComments.Entry(version = "1.2_0", comment = "Changed weight output "
+            + "such that all weights are provided. Changed datatype from "
+            + "Double[] to DoubleArray.")
+})
+public class Regionalisation_OLD extends JAMSComponent {
+
+    @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
+            description = "Array of data values for current time step")
+    public Attribute.DoubleArray dataArray;
+
+    @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
+            description = "Regression coefficients")
+    public Attribute.DoubleArray regCoeff;
+
+    @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
+            description = "Array of station elevations")
+    public Attribute.DoubleArray statElevation;
+
+    @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
+            description = "Array of station's weights")
+    public Attribute.DoubleArray statWeights;
+
+    @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
+            description = "Array position of weights")
+    public Attribute.IntegerArray statOrder;
+
+    @JAMSVarDescription(access = JAMSVarDescription.AccessType.WRITE,
+            description = "regionalised data value")
+    public Attribute.Double dataValue;
+
+    @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
+            description = "Attribute name elevation")
+    public Attribute.Double entityElevation;
+
+    @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
+            description = "Number of IDW stations")
+    public Attribute.Integer nidw;
+
+    @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
+            description = "Apply elevation correction to measured data")
+    public Attribute.Boolean elevationCorrection;
+
+    @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
+            description = "Minimum r² value for elevation correction application")
+    public Attribute.Double rsqThreshold;
+
+    @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
+            description = "Absolute possible minimum value for data set",
+            defaultValue = "-Infinity")
+    public Attribute.Double fixedMinimum;
+
+    @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
+            description = "Absolute possible maximum value for data set",
+            defaultValue = "Infinity")
+    public Attribute.Double fixedMaximum;
+
+    @JAMSVarDescription(access = JAMSVarDescription.AccessType.READ,
+            description = "Ignore invalid datasets?",
+            defaultValue = "false")
+    public Attribute.Boolean ignoreInvalid;
+
+    @JAMSVarDescription(access = JAMSVarDescription.AccessType.WRITE,
+            description = "Weights of individual stations (first element equals first station in list)")
+    public Attribute.Double[] actualWeights;
+
+    @JAMSVarDescription(access = JAMSVarDescription.AccessType.WRITE,
+            description = "Weighted average elevation of source stations")
+    public Attribute.Double averageSourceElevation;
+
+    boolean invalidDatasetReported = false;
+
+    ArrayPool<double[]> memPool = new ArrayPool<>(double.class);
+    ArrayPool<int[]> imemPool = new ArrayPool<>(int.class);
+
+    @Override
+    public void run() throws IOException {
+
+        //Retreiving data, elevations and weights
+        double[] regCoeff = this.regCoeff.getValue();
+        double gradient = regCoeff[1];
+        double rsq = regCoeff[2];
+
+        double[] sourceElevations = statElevation.getValue();
+        double[] sourceData = dataArray.getValue();
+        double[] sourceWeights = statWeights.getValue();
+        double targetElevation = entityElevation.getValue();
+        int[] wA = this.statOrder.getValue();
+
+        double value = 0;
+        double deltaElev = 0;
+
+        int nIDW = this.nidw.getValue();
+        double[] data = memPool.alloc(nIDW);
+        double[] weights = memPool.alloc(nIDW);
+        double[] elev = memPool.alloc(nIDW);
+        int[] station = imemPool.alloc(nIDW);
+
+        if (actualWeights != null) {
+            for (Attribute.Double w : actualWeights) {
+                w.setValue(0);
+            }
+        }
+
+//@TODO: Recheck this for correct calculation, the Doug Boyle Problem!!
+        int counter = 0, element = 0;
+        boolean valid = false;
+
+        while (counter < nIDW) {
+            int t = wA[element];
+            //check if data is valid or no data
+            if (sourceData[t] == JAMS.getMissingDataValue()) {
+                element++;
+                if (element >= wA.length) {
+                    //getModel().getRuntime().println("BREAK1: too less data NIDW had been reduced!");
+                    break;
+                }
+            } else {
+                valid = true;
+                station[counter] = t;
+                data[counter] = sourceData[t];
+                weights[counter] = sourceWeights[t];
+                elev[counter] = sourceElevations[t];
+
+                counter++;
+                element++;
+                if (element >= wA.length) {
+                    break;
+                }
+            }
+        }
+
+        //normalising weights
+        double weightsum = 0;
+        for (int i = 0; i < counter; i++) {
+            weightsum += weights[i];
+        }
+        for (int i = 0; i < counter; i++) {
+            weights[i] = weights[i] / weightsum;
+        }
+
+        if (valid) {
+
+            for (int i = 0; i < counter; i++) {
+                if (actualWeights != null) {
+                    actualWeights[station[i]].setValue(weights[i]);
+                }
+                if ((elevationCorrection.getValue()) && (rsq >= rsqThreshold.getValue())) {  //Elevation correction is applied
+                    deltaElev = targetElevation - elev[i];  //Elevation difference between unit and Station
+                    double tVal = ((deltaElev * gradient + data[i]) * weights[i]);
+                    value = value + tVal;
+                } else { //No elevation correction
+                    value = value + (data[i] * weights[i]);
+                }
+            }
+
+            //checking for minimum/maximum
+            value = Math.max(value, fixedMinimum.getValue());
+            value = Math.min(value, fixedMaximum.getValue());
+
+            if (averageSourceElevation != null) {
+                double avgElev = 0;
+                for (int i = 0; i < counter; i++) {
+                    avgElev += elev[i] * weights[i];
+                }
+                averageSourceElevation.setValue(avgElev);
+            }
+
+        } else {
+            if (!invalidDatasetReported) {     //only report once
+                //in this case simulation should end, because it affects model behaviour seriously!
+                if (!ignoreInvalid.getValue()) {
+                    getModel().getRuntime().sendHalt("Invalid dataset found while regionalizing data in component " + this.getInstanceName() + "."
+                            + "\nThis might occur if all of the provided values are missing data values.");
+                }
+                invalidDatasetReported = true;
+            }
+            value = JAMS.getMissingDataValue();
+        }
+
+        dataValue.setValue(value);
+
+        //free data
+        data = memPool.free(data);
+        weights = memPool.free(weights);
+        elev = memPool.free(elev);
+    }
+}

@@ -1,0 +1,185 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <groupId>org.jams</groupId>
+    <artifactId>jamsmodels-parent</artifactId>
+    <version>1.0-SNAPSHOT</version>
+    <packaging>pom</packaging>
+
+    <!-- Component libraries for the JAMS framework. Building requires the
+         JAMS artifacts in the local Maven repository - run "./mvnw install"
+         in the jams repository once before building this one.
+
+         Projects that are no longer actively maintained live under archive/
+         (sources only, not part of this build). To reactivate one, give it
+         a pom and add it to the module list below. -->
+
+    <modules>
+        <module>J2K_base</module>
+        <module>J2K_ext</module>
+        <module>J2K_iso</module>
+        <module>J2K_highres</module>
+        <module>J2K_Africa</module>
+        <module>J2K_Himalaya</module>
+        <module>J2K_Irstea</module>
+        <module>J2K_Irstea_dev</module>
+        <module>J2K_SASSCAL</module>
+        <module>J2K_S_N</module>
+        <module>J2Kg</module>
+        <module>DRYvER</module>
+        <module>Thornthwaite</module>
+    </modules>
+
+    <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <maven.compiler.release>17</maven.compiler.release>
+        <jams.version>local</jams.version>
+        <!-- Sammelordner fuer die gebauten Komponenten-Jars; darauf kann die
+             libs-Property von JAMS direkt zeigen. Wird von "mvn clean" auf
+             Root-Ebene geleert und liegt in .gitignore -->
+        <models.components.dir>${maven.multiModuleProjectDirectory}/components</models.components.dir>
+    </properties>
+
+    <!-- every model component library builds against the JAMS framework;
+         scope provided: zur Laufzeit stellt die JAMS-Installation diese
+         Artefakte (und ihre Abhaengigkeiten) selbst bereit -->
+    <dependencies>
+        <dependency>
+            <groupId>org.jams</groupId>
+            <artifactId>jams-api</artifactId>
+            <version>${jams.version}</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.jams</groupId>
+            <artifactId>jams-main</artifactId>
+            <version>${jams.version}</version>
+            <scope>provided</scope>
+        </dependency>
+    </dependencies>
+
+    <build>
+        <finalName>${project.artifactId}</finalName>
+        <plugins>
+            <!-- macOS-AppleDouble-Sidecars (._Foo.java auf exFAT-Volumes)
+                 matchen **/*.java und wuerden javac zum Absturz bringen -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>3.13.0</version>
+                <configuration>
+                    <excludes>
+                        <exclude>**/._*.java</exclude>
+                    </excludes>
+                </configuration>
+            </plugin>
+            <!-- Manifest-Class-Path mit lib/-Praefix: so findet der
+                 JAMSClassLoader externe Abhaengigkeiten der Modell-Jars in
+                 components/lib. Eintraege, die dort nicht existieren (z.B.
+                 provided-Artefakte), ignoriert die JVM stillschweigend -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-jar-plugin</artifactId>
+                <version>3.4.1</version>
+                <configuration>
+                    <archive>
+                        <manifest>
+                            <addClasspath>true</addClasspath>
+                            <classpathPrefix>lib/</classpathPrefix>
+                        </manifest>
+                    </archive>
+                </configuration>
+            </plugin>
+            <!-- externe Laufzeit-Abhaengigkeiten (nicht org.jams, nicht
+                 provided) nach components/lib kopieren -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-dependency-plugin</artifactId>
+                <version>3.7.1</version>
+                <executions>
+                    <execution>
+                        <id>collect-component-libs</id>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>copy-dependencies</goal>
+                        </goals>
+                        <configuration>
+                            <outputDirectory>${models.components.dir}/lib</outputDirectory>
+                            <includeScope>runtime</includeScope>
+                            <excludeGroupIds>org.jams</excludeGroupIds>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+            <!-- jedes Modul legt sein Jar zusaetzlich in components/ ab;
+                 failonerror=false, damit der Schritt beim Parent (packaging
+                 pom, kein Jar) stillschweigend uebersprungen wird -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-antrun-plugin</artifactId>
+                <version>3.1.0</version>
+                <executions>
+                    <execution>
+                        <id>collect-component-jar</id>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>run</goal>
+                        </goals>
+                        <configuration>
+                            <target>
+                                <copy file="${project.build.directory}/${project.build.finalName}.jar"
+                                      todir="${models.components.dir}"
+                                      failonerror="false" quiet="true"/>
+                                <!-- macOS legt auf exFAT-Volumes AppleDouble-
+                                     Sidecars (._*.jar) an, die der JAMS-
+                                     Klassenlader faelschlich laden wuerde -->
+                                <delete failonerror="false" quiet="true">
+                                    <fileset dir="${models.components.dir}"
+                                             includes="**/._*"
+                                             defaultexcludes="false"
+                                             erroronmissingdir="false"/>
+                                </delete>
+                            </target>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+            <!-- nur beim Clean des Root-Projekts (inherited=false): leert den
+                 components-Sammelordner. Das Clean einzelner Module loescht
+                 bewusst nur deren target/, nicht die Jars der Geschwister -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-clean-plugin</artifactId>
+                <version>3.4.0</version>
+                <inherited>false</inherited>
+                <configuration>
+                    <filesets>
+                        <fileset>
+                            <directory>${models.components.dir}</directory>
+                        </fileset>
+                    </filesets>
+                </configuration>
+            </plugin>
+        </plugins>
+        <!-- NetBeans-Layout beibehalten: Ressourcen (Bilder, .properties,
+             ResourceBundles) liegen neben den Java-Quellen in src/main/java -->
+        <resources>
+            <resource>
+                <directory>src/main/java</directory>
+                <excludes>
+                    <exclude>**/*.java</exclude>
+                    <!-- macOS-AppleDouble-Sidecars (exFAT) nicht ins JAR kopieren -->
+                    <exclude>**/._*</exclude>
+                </excludes>
+            </resource>
+            <resource>
+                <directory>src/main/resources</directory>
+                <excludes>
+                    <exclude>**/._*</exclude>
+                </excludes>
+            </resource>
+        </resources>
+    </build>
+</project>

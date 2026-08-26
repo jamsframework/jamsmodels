@@ -1,0 +1,28 @@
+# Maven build output
+target/
+
+# IDE
+.idea/
+*.iml
+nbactions.xml
+
+# macOS metadata (AppleDouble sidecars on exFAT volumes, Finder metadata)
+._*
+.DS_Store
+
+# JVM crash reports
+hs_err_pid*.log
+replay_pid*.log
+
+# Collected component jars (populated by the build)
+/components/
+
+# Locally provided jams-api/jams-main jars (see jams-libs/README.md)
+/jams-libs/*.jar
+
+# Local-only scratch files (not part of upstream jamsmodels)
+/fbip_archive_downloader.py
+/project_overview_diagram.*
+/water_balance_*_diagram.*
+/bug_check.png
+/gpd_test.png
