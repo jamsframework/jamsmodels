@@ -5,6 +5,7 @@ target/
 .idea/
 *.iml
 nbactions.xml
+.claude/
 
 # macOS metadata (AppleDouble sidecars on exFAT volumes, Finder metadata)
 ._*
