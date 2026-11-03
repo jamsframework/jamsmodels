@@ -85,10 +85,26 @@ jobs:
           Built against JAMS API ${{ steps.version.outputs.api }} (jamsframework/jams@${{ steps.jams.outputs.sha }}).
           EOF
 
+      # Zenodo reads .zenodo.json from the tagged commit, so the creators are
+      # merged from the modules' authors.json files and committed before the
+      # release (and its tag) is created on that commit.
+      - name: Update Zenodo metadata
+        id: zenodo
+        run: |
+          python3 tools/zenodo_authors.py build --zenodo .zenodo.json
+          if ! git diff --quiet -- .zenodo.json; then
+            git config user.name "github-actions[bot]"
+            git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+            git commit -m "Update Zenodo metadata for ${{ steps.version.outputs.version }}" -- .zenodo.json
+            git push origin "HEAD:${GITHUB_REF_NAME}"
+          fi
+          echo "sha=$(git rev-parse HEAD)" >> "$GITHUB_OUTPUT"
+
       - name: Create GitHub Release
         uses: softprops/action-gh-release@v2
         with:
           tag_name: ${{ steps.version.outputs.version }}
+          target_commitish: ${{ steps.zenodo.outputs.sha }}
           name: jamsmodels ${{ steps.version.outputs.version }}
           body_path: release-notes.md
           files: jamsmodels-${{ steps.version.outputs.version }}.zip
