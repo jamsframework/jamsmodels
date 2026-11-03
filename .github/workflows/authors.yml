@@ -1,0 +1,31 @@
+# Warns when a commit changes a model library whose authors.json does not
+# list the commit author. The authors.json files feed the Zenodo creators of
+# jams and jamsmodels releases (see tools/zenodo_authors.py). Only warnings
+# are reported, the check never fails.
+name: Authors
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Check authors.json
+        env:
+          BEFORE: ${{ github.event.before }}
+          BASE: ${{ github.event.pull_request.base.sha }}
+          HEAD: ${{ github.event.pull_request.head.sha || github.sha }}
+        run: |
+          FROM="${BASE:-$BEFORE}"
+          # first push of a branch has no "before" commit
+          if [ -z "$FROM" ] || ! git cat-file -e "$FROM^{commit}" 2>/dev/null; then
+            FROM="$HEAD^"
+          fi
+          python3 tools/zenodo_authors.py check --range "$FROM..$HEAD"

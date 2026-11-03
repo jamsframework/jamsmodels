@@ -1,0 +1,195 @@
+{
+  "title": "JAMS model component libraries",
+  "upload_type": "software",
+  "description": "Model component libraries for the JAMS framework (J2000 model family and related models). The libraries are used with the JAMS framework and its model editor JUICE.",
+  "license": "LGPL-3.0-or-later",
+  "creators": [
+    {
+      "name": "Krause, Peter",
+      "affiliation": "Friedrich Schiller University Jena"
+    },
+    {
+      "name": "Kralisch, Sven"
+    },
+    {
+      "name": "Watson, Andrew",
+      "affiliation": "Stellenbosch University"
+    },
+    {
+      "name": "Künne, Annika",
+      "affiliation": "Friedrich Schiller University Jena"
+    },
+    {
+      "name": "Fischer, Christian",
+      "affiliation": "Friedrich Schiller University Jena"
+    },
+    {
+      "name": "Nepal, Santosh"
+    },
+    {
+      "name": "Fink, Manfred",
+      "affiliation": "Friedrich Schiller University Jena"
+    },
+    {
+      "name": "Michel, Christin",
+      "affiliation": "Friedrich Schiller University Jena"
+    },
+    {
+      "name": "Pfennig, Bjoern",
+      "affiliation": "Friedrich Schiller University Jena"
+    },
+    {
+      "name": "Kipka, Holm",
+      "affiliation": "Friedrich Schiller University Jena"
+    },
+    {
+      "name": "Birkel, Christian"
+    },
+    {
+      "name": "Tilmant, François",
+      "affiliation": "INRAE"
+    },
+    {
+      "name": "Labbas, Mériem",
+      "affiliation": "INRAE"
+    },
+    {
+      "name": "Bolibar, Jordi"
+    },
+    {
+      "name": "Branger, Flora",
+      "affiliation": "INRAE"
+    },
+    {
+      "name": "Gouttevin, Isabelle",
+      "affiliation": "INRAE"
+    },
+    {
+      "name": "Bonneau, Jérémie",
+      "affiliation": "INRAE"
+    },
+    {
+      "name": "Mimeau, Louise",
+      "affiliation": "INRAE"
+    },
+    {
+      "name": "Adamovic, Marko",
+      "affiliation": "INRAE"
+    },
+    {
+      "name": "Cipriani, Thomas"
+    },
+    {
+      "name": "Hachgenei, Nico",
+      "affiliation": "INRAE"
+    },
+    {
+      "name": "Pellerin, Nathan"
+    },
+    {
+      "name": "Crochemore, Louise",
+      "affiliation": "INRAE"
+    },
+    {
+      "name": "Grandjouan, Olivier",
+      "affiliation": "INRAE"
+    },
+    {
+      "name": "Borgna, Anne-Lou",
+      "affiliation": "INRAE"
+    },
+    {
+      "name": "Champagne, Olivier",
+      "affiliation": "INRAE"
+    },
+    {
+      "name": "Meinhardt, Markus",
+      "affiliation": "Friedrich Schiller University Jena"
+    },
+    {
+      "name": "Bende-Michl, Ulrike",
+      "affiliation": "CSIRO"
+    }
+  ],
+  "related_identifiers": [
+    {
+      "identifier": "10.5281/zenodo.23761584",
+      "relation": "requires",
+      "resource_type": "software",
+      "scheme": "doi"
+    }
+  ],
+  "keywords": [
+    "hydrology",
+    "environmental modelling",
+    "J2000",
+    "JAMS"
+  ],
+  "contributors": [
+    {
+      "name": "Manusch, Corina",
+      "affiliation": "Friedrich Schiller University Jena",
+      "type": "Other"
+    },
+    {
+      "name": "Busch, Heiko",
+      "affiliation": "Friedrich Schiller University Jena",
+      "type": "Other"
+    },
+    {
+      "name": "Scheffler, Cornelia",
+      "affiliation": "Friedrich Schiller University Jena",
+      "type": "Other"
+    },
+    {
+      "name": "Penedo, Santiago",
+      "affiliation": "TH Köln",
+      "type": "Other"
+    },
+    {
+      "name": "Busch, Carsten",
+      "affiliation": "Friedrich Schiller University Jena",
+      "type": "Other"
+    },
+    {
+      "name": "Santos, Daniel",
+      "affiliation": "Friedrich Schiller University Jena",
+      "type": "Other"
+    },
+    {
+      "name": "Biskop, Sophie",
+      "affiliation": "Friedrich Schiller University Jena",
+      "type": "Other"
+    },
+    {
+      "name": "Rabotin, Michael",
+      "affiliation": "INRAE",
+      "type": "Other"
+    },
+    {
+      "name": "Turko, Maxime",
+      "affiliation": "INRAE",
+      "type": "Other"
+    },
+    {
+      "name": "Fleischer, Melanie",
+      "affiliation": "Friedrich Schiller University Jena",
+      "type": "Other"
+    },
+    {
+      "name": "Braud, Isabelle",
+      "affiliation": "INRAE",
+      "type": "Other"
+    },
+    {
+      "name": "Wetzel, Marcel",
+      "affiliation": "Friedrich Schiller University Jena",
+      "type": "Other"
+    },
+    {
+      "name": "Baese, Frank",
+      "affiliation": "Friedrich Schiller University Jena",
+      "type": "Other"
+    }
+  ]
+}
