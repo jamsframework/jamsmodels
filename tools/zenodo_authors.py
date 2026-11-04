@@ -7,19 +7,25 @@ optional "orcid" and "affiliation"; contributors need a "type", e.g.
 "Researcher"). The lists are maintained by hand following these rules, which
 also apply to the jams people in the jams .zenodo.json (see also README.md):
 
-  creator      named as author (@author tag or author attribute of the
-               component description) in a file the module ships, or at
-               least 50 changed lines of code in one file of the module,
-               summed over all commits of that person
-  contributor  smaller code changes, translations, documentation
+  creator      named as author in a file the module ships, where the author
+               tag was added in this module, or at least 50 own lines of
+               code in one file of the module
+  contributor  any other commit to code the module ships: smaller code
+               changes, checking in code of others, translations,
+               documentation
   not listed   trivial changes (one or two lines), code that is no longer
                shipped, only commits that touch more than 20 files
 
-Only code lines count: comments, license headers, annotations, imports,
-blank lines and whitespace changes do not. Only commits made in the module
-(including its former directory names) count; work done on a file in another
-module before it was copied counts there. Adding a file whose author tag
-names someone else, and changes that were reverted later, do not count.
+The author attribute of the component description wins over the @author
+tag; a tag taken over from a file copied or derived from another module (or
+from jams) counts for that module. Only code lines count: comments, license
+headers, annotations, imports, blank lines and whitespace changes do not.
+Lines are summed per person and file, so reverted changes cancel out. Only
+commits made in the module (including its former directory names) count;
+work done on a file in another module before it was copied counts there.
+Moving or re-adding a file does not count, a derived file counts only its
+new lines, and adding a file whose author tag names someone else counts no
+lines. People are ordered by their own work in the module.
 
 The optional "aliases" list of a person holds git author names, e-mail
 addresses or source code tags that differ from the name; it is only used by

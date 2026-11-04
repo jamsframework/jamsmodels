@@ -35,20 +35,31 @@ apply to the jams people in the jams `.zenodo.json`):
 
 | Role | Criterion |
 |---|---|
-| creator | named as author (`@author` tag or `author` attribute of the component description) in a file the library ships, **or** at least 50 changed lines of code in one file of the library, summed over all commits of that person |
-| contributor | smaller code changes, translations, documentation |
+| creator | named as author in a file the library ships, where the author tag was added in this library, **or** at least 50 own lines of code in one file of the library |
+| contributor | any other commit to code the library ships: smaller code changes, checking in code of others, translations, documentation |
 | not listed | trivial changes (one or two lines), code that is no longer shipped, only commits that touch more than 20 files (API changes, renames, formatting) |
+
+How author tags are read:
+
+- The `author` attribute of the component description wins over the
+  `@author` javadoc tag.
+- A tag taken over from a file that was copied or derived from another
+  library (or from jams) counts for that library, not for the copy.
 
 How lines are counted:
 
 - Only code lines count: comments, license headers, annotations, imports,
   blank lines and whitespace changes do not.
+- Lines are summed per person and file over all commits, so changes that
+  were reverted later cancel out.
 - Only commits made in the library (including its former directory names)
   count. Work done on a file in another library before it was copied counts
   for that other library.
-- Adding a file whose author tag names someone else (a copy or a commit of
-  someone else's work) does not count, nor do changes that were reverted
-  later.
+- Moving or re-adding a file does not count. For a file derived from an
+  existing one only the new lines count; adding a file whose author tag
+  names someone else (a commit of someone else's work) counts no lines.
+
+Within each list people are ordered by their own work in the library.
 
 ### Releases
 
