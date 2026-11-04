@@ -74,7 +74,11 @@ merge the library lists into it with
   release; contributors stay contributors with the type from their file.
   Adding more libraries to a release adds people, it never changes anyone's
   role.
-- The description gets a generated list of the people of each library.
+- The release lists the library people in alphabetical order (in the jams
+  release after the jams people, who keep their order), since work in
+  libraries maintained independently cannot be compared.
+- The description gets a generated list of the people of each library, in
+  the order of the library's `.zenodo.json`.
 - The merged file is committed only on the tagged release commit, so the
   maintained files on `main` stay unchanged.
 

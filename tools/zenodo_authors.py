@@ -38,9 +38,10 @@ tagged release commit, so the maintained file on the branch stays unchanged.
 
   build   add the creators and contributors of the module lists to a
           .zenodo.json file and list the people of each module at the end of
-          its description (all other fields are kept). A person listed more
-          than once keeps the first position; a creator of any list is a
-          creator of the release.
+          its description (all other fields are kept). The people already
+          in the file keep their order, the module people follow in
+          alphabetical order; a creator of any list is a creator of the
+          release.
   check   warn about commit authors that are missing from the .zenodo.json
           of a module they changed
 """
@@ -126,15 +127,21 @@ def clean(person):
     return {k: v for k, v in person.items() if k != 'aliases'}
 
 
-def merge(lists, seen):
-    """Persons of the lists in order of first appearance, without duplicates."""
+def sort_key(person):
+    """Family name first, accents ignored."""
+    name = unicodedata.normalize('NFKD', person['name']).encode('ascii', 'ignore').decode()
+    return ' '.join(name.lower().split())
+
+
+def merge(own, lists, seen):
+    """The record's own persons in their order, then the persons of the lists
+    in alphabetical order, without duplicates."""
     result = []
-    for people in lists:
-        for person in people:
-            if keys(person) & seen:
-                continue
-            seen.update(keys(person))
-            result.append(clean(person))
+    for person in own + sorted((p for people in lists for p in people), key=sort_key):
+        if keys(person) & seen:
+            continue
+        seen.update(keys(person))
+        result.append(clean(person))
     return result
 
 
@@ -147,8 +154,8 @@ def build(args):
     # creators first: anyone who is a creator in one list is not repeated as
     # contributor from another list
     seen = set()
-    creators = merge([meta.get('creators', [])] + [c for c, _ in per_module.values()], seen)
-    contributors = merge([meta.get('contributors', [])] + [c for _, c in per_module.values()], seen)
+    creators = merge(meta.get('creators', []), [c for c, _ in per_module.values()], seen)
+    contributors = merge(meta.get('contributors', []), [c for _, c in per_module.values()], seen)
     for person in contributors:
         person['type'] = person.get('type') or DEFAULT_TYPE
 
