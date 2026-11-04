@@ -1,7 +1,7 @@
-# Warns when a commit changes a model library whose authors.json does not
-# list the commit author. The authors.json files feed the Zenodo creators of
-# jams and jamsmodels releases (see tools/zenodo_authors.py). Only warnings
-# are reported, the check never fails.
+# Warns when a commit changes a model library whose .zenodo.json does not
+# list the commit author. These files feed the Zenodo creators and
+# contributors of jams and jamsmodels releases (see tools/zenodo_authors.py).
+# Only warnings are reported, the check never fails.
 name: Authors
 
 on:
@@ -17,7 +17,7 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: Check authors.json
+      - name: Check module author lists
         env:
           BEFORE: ${{ github.event.before }}
           BASE: ${{ github.event.pull_request.base.sha }}

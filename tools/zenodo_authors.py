@@ -1,32 +1,45 @@
 #!/usr/bin/env python3
-"""Maintain Zenodo creator lists from per-module author files.
+"""Merge the Zenodo author lists of the model libraries into a release record.
 
-Every model library directory keeps an ``authors.json`` with the people who
-contributed to it. Release workflows merge these lists into the ``creators``
-and ``contributors`` of a ``.zenodo.json`` file, so the Zenodo record of a
-release names the people behind exactly the libraries that are part of it.
+Every model library directory keeps a ``.zenodo.json`` that only holds its
+``creators`` and ``contributors`` in Zenodo format ("name" as "Family, Given",
+optional "orcid" and "affiliation"; contributors need a "type", e.g.
+"Researcher"). The lists are maintained by hand following these rules, which
+also apply to the jams people in the jams .zenodo.json (see also README.md):
 
-authors.json is a JSON array of Zenodo creator objects ("name" as
-"Family, Given", optional "affiliation" and "orcid"). The lists are
-maintained by hand. A person is an author of a module if they are named as
-author of a class or component in it, or if they substantially changed one
-of its files within the module (code, not comments or annotations); people
-with smaller changes get "role": "contributor" (optional "type", default
-"Other"). The optional "aliases" list holds git author names, e-mail
+  creator      named as author (@author tag or author attribute of the
+               component description) in a file the module ships, or at
+               least 50 changed lines of code in one file of the module,
+               summed over all commits of that person
+  contributor  smaller code changes, translations, documentation
+  not listed   trivial changes (one or two lines), code that is no longer
+               shipped, only commits that touch more than 20 files
+
+Only code lines count: comments, license headers, annotations, imports,
+blank lines and whitespace changes do not. Only commits made in the module
+(including its former directory names) count; work done on a file in another
+module before it was copied counts there. Adding a file whose author tag
+names someone else, and changes that were reverted later, do not count.
+
+The optional "aliases" list of a person holds git author names, e-mail
 addresses or source code tags that differ from the name; it is only used by
-the check and never written to .zenodo.json.
+the check and never written to a release record.
 
-  build   merge base list(s) and module lists into the creators and
-          contributors of a .zenodo.json file and list the authors of each
-          module at the end of its description (all other fields are kept);
-          with --modules-as contributor (used for the jams record) only the
-          base lists provide creators and all module authors become
-          contributors of type "Researcher"
-  check   warn about commit authors that are missing from the authors.json
+The ``.zenodo.json`` of a repository root is the release record Zenodo reads
+from the tagged commit. Its own creators and contributors are kept; the
+release workflows add the module people and commit the result only on the
+tagged release commit, so the maintained file on the branch stays unchanged.
+
+  build   add the creators and contributors of the module lists to a
+          .zenodo.json file and list the people of each module at the end of
+          its description (all other fields are kept). A person listed more
+          than once keeps the first position; a creator of any list is a
+          creator of the release.
+  check   warn about commit authors that are missing from the .zenodo.json
           of a module they changed
 """
-import html
 import argparse
+import html
 import json
 import os
 import re
@@ -36,6 +49,8 @@ import unicodedata
 import xml.etree.ElementTree as ET
 
 POM_NS = {'m': 'http://maven.apache.org/POM/4.0.0'}
+DEFAULT_TYPE = 'Researcher'
+MODULE_SECTION = '<h3>Authors of the model component libraries</h3>'
 
 
 def read_json(path):
@@ -87,50 +102,60 @@ def with_dependencies(root, modules):
     return ordered
 
 
-def module_authors(root, module):
-    path = os.path.join(root, module, 'authors.json')
+def module_people(root, module):
+    """(creators, contributors) of a module."""
+    path = os.path.join(root, module, '.zenodo.json')
     if not os.path.exists(path):
         print(f'warning: {path} not found', file=sys.stderr)
-        return []
-    return read_json(path)
+        return [], []
+    meta = read_json(path)
+    return meta.get('creators', []), meta.get('contributors', [])
+
+
+def keys(person):
+    return {person.get('orcid') or normalize(person['name']), normalize(person['name'])}
+
+
+def clean(person):
+    return {k: v for k, v in person.items() if k != 'aliases'}
+
+
+def merge(lists, seen):
+    """Persons of the lists in order of first appearance, without duplicates."""
+    result = []
+    for people in lists:
+        for person in people:
+            if keys(person) & seen:
+                continue
+            seen.update(keys(person))
+            result.append(clean(person))
+    return result
 
 
 def build(args):
     modules = split(args.modules) or all_modules(args.root)
     modules = with_dependencies(args.root, modules)
-    base = [read_json(b) for b in args.base or []]
-    per_module = {m: module_authors(args.root, m) for m in modules}
-
-    if args.modules_as == 'contributor':
-        # module authors are credited as researchers, not as creators of the
-        # framework; the base contributors keep their own type
-        module_people = [[dict(p, role='contributor', type='Researcher') for p in people]
-                         for people in per_module.values()]
-    else:
-        module_people = list(per_module.values())
-    lists = base + module_people
+    per_module = {m: module_people(args.root, m) for m in modules}
+    meta = read_json(args.zenodo)
 
     # creators first: anyone who is a creator in one list is not repeated as
     # contributor from another list
-    creators = merge(lists, lambda p: p.get('role', 'creator') == 'creator', set())
-    seen = {key for p in creators for key in keys(p)}
-    contributors = merge(lists, lambda p: p.get('role') == 'contributor', seen)
+    seen = set()
+    creators = merge([meta.get('creators', [])] + [c for c, _ in per_module.values()], seen)
+    contributors = merge([meta.get('contributors', [])] + [c for _, c in per_module.values()], seen)
     for person in contributors:
-        person['type'] = person.pop('type', None) or 'Other'
+        person['type'] = person.get('type') or DEFAULT_TYPE
 
-    meta = read_json(args.zenodo)
     meta['creators'] = creators
     if contributors:
         meta['contributors'] = contributors
     else:
         meta.pop('contributors', None)
     meta['description'] = with_module_section(meta.get('description', ''), per_module)
-    changed = write_json(args.zenodo, meta)
-    print(f'{len(creators)} creators, {len(contributors)} contributors from {", ".join(modules)}'
-          f'{" (updated)" if changed else " (unchanged)"}')
-
-
-MODULE_SECTION = '<h3>Authors of the model component libraries</h3>'
+    output = args.output or args.zenodo
+    changed = write_json(output, meta)
+    print(f'{len(creators)} creators, {len(contributors)} contributors '
+          f'from {", ".join(modules)} -> {output}{" (updated)" if changed else " (unchanged)"}')
 
 
 def display_name(person):
@@ -142,32 +167,14 @@ def with_module_section(description, per_module):
     """Replace the generated per-module author list at the end of the description."""
     intro = description.split(MODULE_SECTION, 1)[0].rstrip()
     items = []
-    for module, people in per_module.items():
-        authors = [display_name(p) for p in people if p.get('role', 'creator') == 'creator']
-        others = [display_name(p) for p in people if p.get('role') == 'contributor']
-        line = f'<li><strong>{html.escape(module)}</strong>: {", ".join(authors)}'
-        if others:
-            line += f' (contributors: {", ".join(others)})'
+    for module, (module_creators, module_contributors) in per_module.items():
+        line = f'<li><strong>{html.escape(module)}</strong>: {", ".join(map(display_name, module_creators))}'
+        if module_contributors:
+            line += f' (contributors: {", ".join(map(display_name, module_contributors))})'
         items.append(line + '</li>')
     if not items:
         return intro
     return f'{intro}\n{MODULE_SECTION}\n<ul>\n' + '\n'.join(items) + '\n</ul>'
-
-
-def keys(person):
-    return {person.get('orcid') or normalize(person['name']), normalize(person['name'])}
-
-
-def merge(lists, accept, seen):
-    """Persons accepted by the filter, in list order, without duplicates."""
-    result = []
-    for people in lists:
-        for person in people:
-            if not accept(person) or keys(person) & seen:
-                continue
-            seen.update(keys(person))
-            result.append({k: v for k, v in person.items() if k not in ('aliases', 'role')})
-    return result
 
 
 def check(args):
@@ -182,19 +189,20 @@ def check(args):
             commit = line[1:].split('|')
             continue
         module = line.split('/', 1)[0]
-        if not line or module not in modules or line == f'{module}/authors.json':
+        if not line or module not in modules or line == f'{module}/.zenodo.json':
             continue
         sha, name, mail = commit
         known = set()
-        for person in module_authors(args.root, module):
-            known.add(normalize(person['name']))
-            known.update(normalize(a) for a in person.get('aliases', []))
+        for people in module_people(args.root, module):
+            for person in people:
+                known.add(normalize(person['name']))
+                known.update(normalize(a) for a in person.get('aliases', []))
         if normalize(name) not in known and mail.lower() not in known:
             missing.setdefault((module, name), sha)
     for (module, name), sha in sorted(missing.items()):
         # GitHub Actions annotation; shows up as warning in the run summary
-        print(f'::warning file={module}/authors.json::{name} ({sha}) changed {module} '
-              f'but is not listed in {module}/authors.json')
+        print(f'::warning file={module}/.zenodo.json::{name} ({sha}) changed {module} '
+              f'but is not listed in {module}/.zenodo.json')
     if not missing:
         print('all commit authors are listed')
 
@@ -206,15 +214,13 @@ def split(value):
 def main():
     parser = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     sub = parser.add_subparsers(dest='cmd', required=True)
-    b = sub.add_parser('build', help='write the creators of a .zenodo.json file')
+    b = sub.add_parser('build', help='add the module people to a .zenodo.json file')
     b.add_argument('--root', default='.', help='jamsmodels directory')
     b.add_argument('--modules', help='modules to include (default: all modules in pom.xml)')
-    b.add_argument('--base', action='append', help='authors.json listed before the module authors')
-    b.add_argument('--zenodo', default='.zenodo.json', help='.zenodo.json to update')
-    b.add_argument('--modules-as', choices=['creator', 'contributor'], default='creator',
-                   help='how module authors are listed (default: creator)')
+    b.add_argument('--zenodo', default='.zenodo.json', help='release record to read')
+    b.add_argument('--output', help='file to write (default: the --zenodo file)')
     b.set_defaults(func=build)
-    c = sub.add_parser('check', help='warn about commit authors missing in authors.json')
+    c = sub.add_parser('check', help='warn about commit authors missing in the module lists')
     c.add_argument('--root', default='.', help='jamsmodels directory')
     c.add_argument('--range', required=True, help='git revision range, e.g. origin/main..HEAD')
     c.set_defaults(func=check)

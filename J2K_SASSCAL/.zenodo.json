@@ -1,0 +1,21 @@
+{
+  "creators": [
+    {
+      "name": "Kralisch, Sven",
+      "orcid": "0000-0003-2895-540X"
+    },
+    {
+      "name": "Meinhardt, Markus"
+    },
+    {
+      "name": "Krause, Peter"
+    }
+  ],
+  "contributors": [
+    {
+      "name": "Watson, Andrew",
+      "orcid": "0000-0001-5998-6933",
+      "type": "Researcher"
+    }
+  ]
+}

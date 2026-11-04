@@ -85,19 +85,22 @@ jobs:
           Built against JAMS API ${{ steps.version.outputs.api }} (jamsframework/jams@${{ steps.jams.outputs.sha }}).
           EOF
 
-      # Zenodo reads .zenodo.json from the tagged commit, so the creators are
-      # merged from the modules' authors.json files and committed before the
-      # release (and its tag) is created on that commit.
-      - name: Update Zenodo metadata
+      # Zenodo reads .zenodo.json from the tagged commit. The creators and
+      # contributors of the libraries (their .zenodo.json files) are merged
+      # into it on a release commit that is only reachable through the tag,
+      # so the maintained .zenodo.json on the branch stays unchanged.
+      - name: Add library people to Zenodo metadata and create tag
         id: zenodo
         run: |
+          VERSION="${{ steps.version.outputs.version }}"
           python3 tools/zenodo_authors.py build --zenodo .zenodo.json
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           if ! git diff --quiet -- .zenodo.json; then
-            git config user.name "github-actions[bot]"
-            git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-            git commit -m "Update Zenodo metadata for ${{ steps.version.outputs.version }}" -- .zenodo.json
-            git push origin "HEAD:${GITHUB_REF_NAME}"
+            git commit -m "Zenodo metadata for $VERSION" -- .zenodo.json
           fi
+          git tag "$VERSION"
+          git push origin "$VERSION"
           echo "sha=$(git rev-parse HEAD)" >> "$GITHUB_OUTPUT"
 
       - name: Create GitHub Release
