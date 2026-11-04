@@ -1,10 +1,10 @@
 package Isotopes.tools;
 
-import jams.components.machineLearning.kernels.Kernel;
-import jams.components.machineLearning.kernels.MaternClass;
-import jams.components.machineLearning.kernels.LinearMeanModell;
-import jams.components.machineLearning.kernels.FixedMeanModell;
-import jams.components.machineLearning.kernels.MeanModell;
+import Isotopes.gp.Kernel;
+import Isotopes.gp.MaternClass;
+import Isotopes.gp.LinearMeanModell;
+import Isotopes.gp.FixedMeanModell;
+import Isotopes.gp.MeanModell;
 
 import Jama.CholeskyDecomposition;
 import Jama.LUDecomposition;

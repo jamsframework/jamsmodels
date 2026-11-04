@@ -1,10 +1,10 @@
 package Isotopes.tools;
 
-import jams.components.machineLearning.kernels.Kernel;
-import jams.components.machineLearning.kernels.MaternClass;
-import jams.components.machineLearning.kernels.FixedMeanModell;
-import jams.components.machineLearning.kernels.LinearMeanModell;
-import jams.components.machineLearning.kernels.MeanModell;
+import Isotopes.gp.Kernel;
+import Isotopes.gp.MaternClass;
+import Isotopes.gp.FixedMeanModell;
+import Isotopes.gp.LinearMeanModell;
+import Isotopes.gp.MeanModell;
 
 import Jama.CholeskyDecomposition;
 import Jama.LUDecomposition;
@@ -22,7 +22,7 @@ import java.util.Map;
 
 /**
  * Produces genuinely out-of-sample predictions for the precipitation-isotope GP,
- * computed with the SAME jams.components.machineLearning classes the model runs -
+ * computed with the SAME Isotopes.gp classes the model runs -
  * MaternClass, LinearMeanModell and Jama - through the same arithmetic
  * IsoMLBiasCorrection uses at prediction time.
  *

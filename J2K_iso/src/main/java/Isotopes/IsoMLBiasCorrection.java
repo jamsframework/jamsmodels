@@ -24,11 +24,11 @@ package Isotopes;
 import jams.data.*;
 import jams.model.*;
 import jams.tools.FileTools;
-import jams.components.machineLearning.kernels.FixedMeanModell;
-import jams.components.machineLearning.kernels.Kernel;
-import jams.components.machineLearning.kernels.LinearMeanModell;
-import jams.components.machineLearning.kernels.MaternClass;
-import jams.components.machineLearning.kernels.MeanModell;
+import Isotopes.gp.FixedMeanModell;
+import Isotopes.gp.Kernel;
+import Isotopes.gp.LinearMeanModell;
+import Isotopes.gp.MaternClass;
+import Isotopes.gp.MeanModell;
 
 import Jama.Matrix;
 import Jama.CholeskyDecomposition;
@@ -63,7 +63,10 @@ import jams.JAMS;
  * independently reads the exact same file format GaussianLearner.serializeModel()
  * writes, and replicates its getMean()/getVariance() math using the same public
  * Jama/Kernel/MeanModell APIs. If GaussianLearner's serialization format ever
- * changes, this class needs to change with it.
+ * changes, this class needs to change with it. The kernel and mean model
+ * classes are J2K_iso's own copies in Isotopes.gp, so model files must be
+ * written by IsoGpModelBuilder (files written by GaussianLearner itself name
+ * the jams-components classes and cannot be read).
  *
  * The feature vector is NOT hard-coded: it is read from the featureListFile
  * IsoBiasTrainingCollector wrote during training, and assembled by name. That

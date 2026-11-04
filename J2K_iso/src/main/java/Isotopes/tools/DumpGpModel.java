@@ -1,7 +1,7 @@
 package Isotopes.tools;
 
-import jams.components.machineLearning.kernels.Kernel;
-import jams.components.machineLearning.kernels.MeanModell;
+import Isotopes.gp.Kernel;
+import Isotopes.gp.MeanModell;
 
 import Jama.CholeskyDecomposition;
 import Jama.LUDecomposition;

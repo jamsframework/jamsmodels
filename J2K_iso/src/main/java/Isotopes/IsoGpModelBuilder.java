@@ -4,10 +4,10 @@ import jams.data.*;
 import jams.model.*;
 import jams.tools.FileTools;
 
-import jams.components.machineLearning.kernels.FixedMeanModell;
-import jams.components.machineLearning.kernels.LinearMeanModell;
-import jams.components.machineLearning.kernels.MaternClass;
-import jams.components.machineLearning.kernels.MeanModell;
+import Isotopes.gp.FixedMeanModell;
+import Isotopes.gp.LinearMeanModell;
+import Isotopes.gp.MaternClass;
+import Isotopes.gp.MeanModell;
 
 import Jama.CholeskyDecomposition;
 import Jama.LUDecomposition;
