@@ -36,7 +36,7 @@ jobs:
       NOTES: ${{ inputs.notes }}
     steps:
       - name: Checkout jamsmodels
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
         with:
           # full history needed to find the most recent commit of the library
           fetch-depth: 0
@@ -52,13 +52,13 @@ jobs:
           echo "MODULES=$MODULES" >> "$GITHUB_ENV"
 
       - name: Set up JDK 17
-        uses: actions/setup-java@v4
+        uses: actions/setup-java@v5
         with:
           java-version: '17'
           distribution: 'temurin'
 
       - name: Checkout JAMS framework
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
         with:
           repository: jamsframework/jams
           path: jams
@@ -100,6 +100,8 @@ jobs:
         env:
           ZENODO_TOKEN: ${{ secrets.ZENODO_TOKEN }}
         run: |
+          # without pipefail, tee would hide a failed upload
+          set -o pipefail
           # the commit, not the tag: a draft published by hand on zenodo.org gets no tag
           ARGS=(--tag-url "https://github.com/${GITHUB_REPOSITORY}/tree/${GITHUB_SHA}")
           if [ "${{ inputs.publish }}" = true ]; then
