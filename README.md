@@ -1,5 +1,7 @@
 # jamsmodels
 
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.23761918.svg)](https://doi.org/10.5281/zenodo.23761918)
+
 Model component libraries for the [JAMS](https://github.com/jamsframework/jams)
 framework (J2000 model family and related models). Each library is a Maven
 module in its own directory (see the `<modules>` list in [pom.xml](pom.xml)).
