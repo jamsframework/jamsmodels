@@ -82,5 +82,13 @@ merge the library lists into it with
 - The merged file is committed only on the tagged release commit, so the
   maintained files on `main` stay unchanged.
 
+A single library can also be published as a Zenodo record of its own with
+the [Library release](.github/workflows/library-release.yml) workflow and
+[tools/zenodo_upload.py](tools/zenodo_upload.py): every library gets its own
+concept DOI, each upload a new version. The archive also contains the
+libraries it depends on, whose people follow in alphabetical order. By
+default the upload stays a draft on zenodo.org, to be checked and published
+(or deleted) there.
+
 The [Authors](.github/workflows/authors.yml) workflow warns when a commit
 changes a library whose `.zenodo.json` does not list the commit author.
