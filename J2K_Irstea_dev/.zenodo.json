@@ -1,25 +1,16 @@
 {
   "creators": [
     {
-      "name": "Kralisch, Sven",
-      "orcid": "0000-0003-2895-540X"
-    },
-    {
       "name": "Hachgenei, Nico",
       "orcid": "0000-0002-0490-2103"
     },
     {
-      "name": "Tilmant, François"
-    },
-    {
-      "name": "Labbas, Mériem"
-    },
-    {
-      "name": "Fischer, Christian"
-    },
-    {
       "name": "Pellerin, Nathan",
       "orcid": "0000-0002-8229-1176"
+    },
+    {
+      "name": "Borgna, Anne-Lou",
+      "orcid": "0009-0006-1195-7096"
     },
     {
       "name": "Crochemore, Louise",
@@ -30,49 +21,29 @@
       "orcid": "0000-0003-4273-8938"
     },
     {
-      "name": "Krause, Peter"
+      "name": "Bonneau, Jérémie"
+    },
+    {
+      "name": "Champagne, Olivier"
+    },
+    {
+      "name": "Tilmant, François"
     },
     {
       "name": "Grandjouan, Olivier",
       "orcid": "0009-0006-4844-7460"
     },
     {
-      "name": "Borgna, Anne-Lou",
-      "orcid": "0009-0006-1195-7096"
-    },
-    {
-      "name": "Bonneau, Jérémie"
-    },
-    {
       "name": "Thiercelin, Vincent",
       "aliases": [
         "VT"
       ]
-    },
+    }
+  ],
+  "contributors": [
     {
-      "name": "Fink, Manfred",
-      "orcid": "0000-0001-6272-8564"
-    },
-    {
-      "name": "Champagne, Olivier"
-    },
-    {
-      "name": "Kipka, Holm"
-    },
-    {
-      "name": "Nepal, Santosh",
-      "orcid": "0000-0002-7415-2299"
-    },
-    {
-      "name": "Gouttevin, Isabelle",
-      "orcid": "0000-0002-1801-684X"
-    },
-    {
-      "name": "Bolibar, Jordi",
-      "orcid": "0000-0002-0791-0731",
-      "aliases": [
-        "Jordi"
-      ]
+      "name": "Rabotin, Michael",
+      "type": "Researcher"
     }
   ]
 }

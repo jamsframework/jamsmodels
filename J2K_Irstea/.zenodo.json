@@ -1,20 +1,22 @@
 {
   "creators": [
     {
-      "name": "Kralisch, Sven",
-      "orcid": "0000-0003-2895-540X"
+      "name": "Labbas, Mériem"
     },
     {
-      "name": "Krause, Peter"
+      "name": "Branger, Flora",
+      "orcid": "0000-0003-4273-8938"
     },
     {
       "name": "Tilmant, François"
     },
     {
-      "name": "Labbas, Mériem"
+      "name": "Gouttevin, Isabelle",
+      "orcid": "0000-0002-1801-684X"
     },
     {
-      "name": "Fischer, Christian"
+      "name": "Kralisch, Sven",
+      "orcid": "0000-0003-2895-540X"
     },
     {
       "name": "Bolibar, Jordi",
@@ -24,23 +26,11 @@
       ]
     },
     {
-      "name": "Branger, Flora",
-      "orcid": "0000-0003-4273-8938"
-    },
-    {
-      "name": "Gouttevin, Isabelle",
-      "orcid": "0000-0002-1801-684X"
-    },
-    {
       "name": "Bonneau, Jérémie"
     },
     {
       "name": "Mimeau, Louise",
       "orcid": "0000-0002-3437-5746"
-    },
-    {
-      "name": "Nepal, Santosh",
-      "orcid": "0000-0002-7415-2299"
     },
     {
       "name": "Adamovic, Marko"
@@ -51,7 +41,12 @@
   ],
   "contributors": [
     {
-      "name": "Rabotin, Michael",
+      "name": "Turko, Maxime",
+      "type": "Researcher"
+    },
+    {
+      "name": "Hachgenei, Nico",
+      "orcid": "0000-0002-0490-2103",
       "type": "Researcher"
     },
     {
@@ -60,8 +55,7 @@
       "type": "Researcher"
     },
     {
-      "name": "Hachgenei, Nico",
-      "orcid": "0000-0002-0490-2103",
+      "name": "Rabotin, Michael",
       "type": "Researcher"
     }
   ]

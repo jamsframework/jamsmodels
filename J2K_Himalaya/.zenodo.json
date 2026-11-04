@@ -5,17 +5,21 @@
       "orcid": "0000-0002-7415-2299"
     },
     {
-      "name": "Krause, Peter"
-    },
-    {
       "name": "Fink, Manfred",
       "orcid": "0000-0001-6272-8564"
+    },
+    {
+      "name": "Krause, Peter"
     }
   ],
   "contributors": [
     {
       "name": "Kralisch, Sven",
       "orcid": "0000-0003-2895-540X",
+      "type": "Researcher"
+    },
+    {
+      "name": "Fischer, Christian",
       "type": "Researcher"
     }
   ]

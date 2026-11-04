@@ -4,19 +4,19 @@
       "name": "Krause, Peter"
     },
     {
+      "name": "Fischer, Christian"
+    },
+    {
       "name": "Kralisch, Sven",
       "orcid": "0000-0003-2895-540X"
     },
     {
-      "name": "Fischer, Christian"
+      "name": "Künne, Annika",
+      "orcid": "0000-0002-4925-0882"
     },
     {
       "name": "Watson, Andrew",
       "orcid": "0000-0001-5998-6933"
-    },
-    {
-      "name": "Künne, Annika",
-      "orcid": "0000-0002-4925-0882"
     },
     {
       "name": "Nepal, Santosh",
@@ -24,6 +24,11 @@
     }
   ],
   "contributors": [
+    {
+      "name": "Fink, Manfred",
+      "orcid": "0000-0001-6272-8564",
+      "type": "Researcher"
+    },
     {
       "name": "Busch, Heiko",
       "type": "Researcher"
@@ -34,15 +39,6 @@
     },
     {
       "name": "Manusch, Corina",
-      "type": "Researcher"
-    },
-    {
-      "name": "Michel, Christin",
-      "type": "Researcher"
-    },
-    {
-      "name": "Fink, Manfred",
-      "orcid": "0000-0001-6272-8564",
       "type": "Researcher"
     }
   ]

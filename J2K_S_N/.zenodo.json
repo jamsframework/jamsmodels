@@ -5,9 +5,6 @@
       "orcid": "0000-0001-6272-8564"
     },
     {
-      "name": "Krause, Peter"
-    },
-    {
       "name": "Bende-Michl, Ulrike",
       "orcid": "0000-0002-4798-4858",
       "aliases": [
@@ -15,17 +12,14 @@
       ]
     },
     {
-      "name": "Göhman, Hendrik",
-      "aliases": [
-        "c6gohe2"
-      ]
+      "name": "Kralisch, Sven",
+      "orcid": "0000-0003-2895-540X"
     },
     {
       "name": "Kipka, Holm"
     },
     {
-      "name": "Kralisch, Sven",
-      "orcid": "0000-0003-2895-540X"
+      "name": "Fischer, Christian"
     },
     {
       "name": "Pfennig, Bjoern",
@@ -34,16 +28,22 @@
       ]
     },
     {
-      "name": "Fischer, Christian"
+      "name": "Künne, Annika",
+      "orcid": "0000-0002-4925-0882"
+    },
+    {
+      "name": "Krause, Peter"
+    },
+    {
+      "name": "Göhman, Hendrik",
+      "aliases": [
+        "c6gohe2"
+      ]
     }
   ],
   "contributors": [
     {
       "name": "Wetzel, Marcel",
-      "type": "Researcher"
-    },
-    {
-      "name": "Baese, Frank",
       "type": "Researcher"
     },
     {

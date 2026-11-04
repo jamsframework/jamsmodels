@@ -1,37 +1,43 @@
 {
   "creators": [
     {
-      "name": "Krause, Peter"
+      "name": "Fischer, Christian"
     },
     {
-      "name": "Kralisch, Sven",
-      "orcid": "0000-0003-2895-540X"
+      "name": "Michel, Christin"
+    },
+    {
+      "name": "Krause, Peter"
     },
     {
       "name": "Fink, Manfred",
       "orcid": "0000-0001-6272-8564"
     },
     {
-      "name": "Michel, Christin"
-    },
-    {
-      "name": "Pfennig, Bjoern"
-    },
-    {
-      "name": "Varga, Daniel"
-    },
-    {
-      "name": "Fischer, Christian"
-    },
-    {
-      "name": "Nepal, Santosh",
-      "orcid": "0000-0002-7415-2299"
+      "name": "Kralisch, Sven",
+      "orcid": "0000-0003-2895-540X"
     },
     {
       "name": "Kipka, Holm"
     },
     {
       "name": "Busch, Heiko"
+    },
+    {
+      "name": "Nepal, Santosh",
+      "orcid": "0000-0002-7415-2299"
+    },
+    {
+      "name": "Busch, Carsten"
+    },
+    {
+      "name": "Pfennig, Bjoern",
+      "aliases": [
+        "Bjoern"
+      ]
+    },
+    {
+      "name": "Varga, Daniel"
     }
   ],
   "contributors": [
