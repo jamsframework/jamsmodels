@@ -6,12 +6,6 @@ Model component libraries for the [JAMS](https://github.com/jamsframework/jams)
 framework (J2000 model family and related models). Each library is a Maven
 module in its own directory (see the `<modules>` list in [pom.xml](pom.xml)).
 
-Libraries also published as Zenodo records of their own:
-
-| Library | DOI |
-|---|---|
-| J2K_iso | [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.23965456.svg)](https://doi.org/10.5281/zenodo.23965456) |
-
 ## Authors and Zenodo metadata
 
 Every library directory has a `.zenodo.json` with the people behind that
