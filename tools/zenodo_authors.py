@@ -5,7 +5,7 @@ Every model library directory keeps a ``.zenodo.json`` that only holds its
 ``creators`` and ``contributors`` in Zenodo format ("name" as "Family, Given",
 optional "orcid" and "affiliation"; contributors need a "type", e.g.
 "Researcher"). The lists are maintained by hand following these rules, which
-also apply to the jams people in the jams .zenodo.json (see also README.md):
+also apply to the jams people in the jams .zenodo.json (see also docs/zenodo.md):
 
   creator      named as author in a file the module ships, where the author
                tag was added in this module, or at least 50 own lines of

@@ -45,7 +45,7 @@ jobs:
           ZENODO_TOKEN: ${{ secrets.ZENODO_TOKEN }}
         run: |
           if [ -z "$ZENODO_TOKEN" ]; then
-            echo "::error::No ZENODO_TOKEN secret. Run this workflow in your own fork of $UPSTREAM with your own Zenodo token as repository secret ZENODO_TOKEN (see the README)."
+            echo "::error::No ZENODO_TOKEN secret. Run this workflow in your own fork of $UPSTREAM with your own Zenodo token as repository secret ZENODO_TOKEN (see docs/zenodo.md)."
             exit 1
           fi
 
