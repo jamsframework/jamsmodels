@@ -12,6 +12,8 @@ permissions:
 
 jobs:
   release:
+    # not in forks: their releases would look like jamsmodels releases
+    if: github.repository == 'jamsframework/jamsmodels'
     runs-on: ubuntu-latest
     steps:
       - name: Checkout jamsmodels

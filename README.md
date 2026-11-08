@@ -82,13 +82,34 @@ merge the library lists into it with
 - The merged file is committed only on the tagged release commit, so the
   maintained files on `main` stay unchanged.
 
-A single library can also be published as a Zenodo record of its own with
-the [Library release](.github/workflows/library-release.yml) workflow and
-[tools/zenodo_upload.py](tools/zenodo_upload.py): every library gets its own
-concept DOI, each upload a new version. The archive also contains the
-libraries it depends on, whose people follow in alphabetical order. By
-default the upload stays a draft on zenodo.org, to be checked and published
-(or deleted) there.
-
 The [Authors](.github/workflows/authors.yml) workflow warns when a commit
 changes a library whose `.zenodo.json` does not list the commit author.
+
+### DOI for a single library
+
+A single library can also be published as a Zenodo record of its own, in the
+Zenodo account of the group that maintains it, with the
+[Library release](.github/workflows/library-release.yml) workflow and
+[tools/zenodo_upload.py](tools/zenodo_upload.py). Every library gets its own
+concept DOI, each upload a new version. The archive contains the built
+library, the libraries it depends on (whose people follow in alphabetical
+order) and the source code. The workflow runs in a fork, never in this
+repository:
+
+1. Fork this repository on GitHub (once).
+2. In the fork, enable the workflows under *Actions* (once).
+3. Create a Zenodo token on zenodo.org (*Account* → *Applications* →
+   *Personal access tokens*, scopes `deposit:write` and `deposit:actions`)
+   and add it to the fork as repository secret `ZENODO_TOKEN` (*Settings* →
+   *Secrets and variables* → *Actions*; once).
+4. Before each upload, bring the fork up to date with *Sync fork*. The fork
+   must not contain commits of its own; changes go to this repository first.
+5. In the fork, open *Actions* → *Library release* → *Run workflow*, enter the
+   library directory (e.g. `J2K_Irstea_dev`) and start it.
+6. The upload stays a draft in your Zenodo account. Check it on zenodo.org
+   (*Upload*), then publish it to get the DOI.
+
+The version is the JAMS API version plus the date of the last commit of the
+library (e.g. `v1.4-20261104`), so a new version needs a new commit. The
+record links to the commit in this repository. Do not enable the fork in the
+GitHub settings of Zenodo; the workflow uploads on its own.

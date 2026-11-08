@@ -1,15 +1,17 @@
 name: Library release
 
-# Manually triggered from the Actions tab ("Run workflow"). Publishes a single
-# model library (plus the libraries it depends on) as its own Zenodo record
-# with tools/zenodo_upload.py. No GitHub release is created: the Zenodo GitHub
+# Manually triggered from the Actions tab ("Run workflow") of a fork of
+# jamsmodels. Publishes a single model library (plus the libraries it depends
+# on) as its own Zenodo record with tools/zenodo_upload.py, in the Zenodo
+# account of the fork owner. No GitHub release is created: the Zenodo GitHub
 # integration would otherwise archive the whole repository as a new jamsmodels
 # version. By default the upload stays a draft on zenodo.org to be checked and
 # published there (or deleted); with "publish" it is published directly and
-# gets the git tag <library>/<version>.
+# gets the git tag <library>/<version> in the fork.
 #
-# Secret: ZENODO_TOKEN, a zenodo.org personal access token with deposit:write
-# and deposit:actions.
+# Secret (in the fork): ZENODO_TOKEN, a zenodo.org personal access token with
+# deposit:write and deposit:actions. The main repository has no such secret,
+# so that nobody publishes in someone else's Zenodo account.
 on:
   workflow_dispatch:
     inputs:
@@ -28,6 +30,9 @@ on:
 permissions:
   contents: write
 
+env:
+  UPSTREAM: jamsframework/jamsmodels
+
 jobs:
   release:
     runs-on: ubuntu-latest
@@ -35,11 +40,30 @@ jobs:
       LIBRARY: ${{ inputs.library }}
       NOTES: ${{ inputs.notes }}
     steps:
+      - name: Check Zenodo token
+        env:
+          ZENODO_TOKEN: ${{ secrets.ZENODO_TOKEN }}
+        run: |
+          if [ -z "$ZENODO_TOKEN" ]; then
+            echo "::error::No ZENODO_TOKEN secret. Run this workflow in your own fork of $UPSTREAM with your own Zenodo token as repository secret ZENODO_TOKEN (see the README)."
+            exit 1
+          fi
+
       - name: Checkout jamsmodels
         uses: actions/checkout@v5
         with:
           # full history needed to find the most recent commit of the library
           fetch-depth: 0
+
+      - name: Check that the fork is in sync
+        run: |
+          # the Zenodo record links to the commit in the main repository, so
+          # the fork must not contain commits of its own
+          git fetch -q "https://github.com/$UPSTREAM" main
+          if ! git merge-base --is-ancestor HEAD FETCH_HEAD; then
+            echo "::error::$GITHUB_SHA is not part of $UPSTREAM. Bring the fork up to date with \"Sync fork\" (and discard commits of its own), then run the workflow again."
+            exit 1
+          fi
 
       - name: Check library
         run: |
@@ -102,8 +126,9 @@ jobs:
         run: |
           # without pipefail, tee would hide a failed upload
           set -o pipefail
-          # the commit, not the tag: a draft published by hand on zenodo.org gets no tag
-          ARGS=(--tag-url "https://github.com/${GITHUB_REPOSITORY}/tree/${GITHUB_SHA}")
+          # the commit in the main repository, not the tag: a draft published by
+          # hand on zenodo.org gets no tag, and the fork may be deleted later
+          ARGS=(--tag-url "https://github.com/${UPSTREAM}/tree/${GITHUB_SHA}")
           if [ "${{ inputs.publish }}" = true ]; then
             ARGS+=(--publish)
           fi
