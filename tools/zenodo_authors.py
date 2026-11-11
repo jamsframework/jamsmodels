@@ -58,6 +58,8 @@ import xml.etree.ElementTree as ET
 POM_NS = {'m': 'http://maven.apache.org/POM/4.0.0'}
 DEFAULT_TYPE = 'Researcher'
 MODULE_SECTION = '<h3>Authors of the model component libraries</h3>'
+# empty line before the generated section (the form Zenodo's editor uses)
+SECTION_SPACER = '<p><br></p>'
 
 
 def read_json(path):
@@ -179,6 +181,8 @@ def display_name(person):
 def with_module_section(description, per_module):
     """Replace the generated per-module author list at the end of the description."""
     intro = description.split(MODULE_SECTION, 1)[0].rstrip()
+    while intro.endswith(SECTION_SPACER):
+        intro = intro[:-len(SECTION_SPACER)].rstrip()
     items = []
     for module, (module_creators, module_contributors) in per_module.items():
         line = f'<li><strong>{html.escape(module)}</strong>: {", ".join(map(display_name, module_creators))}'
@@ -187,7 +191,7 @@ def with_module_section(description, per_module):
         items.append(line + '</li>')
     if not items:
         return intro
-    return f'{intro}\n{MODULE_SECTION}\n<ul>\n' + '\n'.join(items) + '\n</ul>'
+    return f'{intro}\n{SECTION_SPACER}\n{MODULE_SECTION}\n<ul>\n' + '\n'.join(items) + '\n</ul>'
 
 
 def check(args):
