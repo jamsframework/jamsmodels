@@ -21,10 +21,13 @@
  */
 package management;
 
-import jams.data.*;
-import jams.model.*;
 import java.util.Calendar;
-import java.util.GregorianCalendar;
+
+import jams.data.Attribute;
+import jams.model.JAMSComponent;
+import jams.model.JAMSComponentDescription;
+import jams.model.JAMSVarDescription;
+import jams.model.VersionComments;
 
 /**
  *
@@ -45,7 +48,9 @@ import java.util.GregorianCalendar;
             + "instead of all RD1. "
             + "2) optional limitation of inflow to filling fraction threshold, "
             + "allowing to bypass HRU if [almost] full. "
-            + "3) optional, external input (e.g. treated waste water). ")
+            + "3) optional, external input (e.g. treated waste water). "),
+            @VersionComments.Entry(version = "3.0_0", 
+            comment = "Equivalent drained surface factor added ")
 })
 public class HRU_device_mix_RL extends JAMSComponent {
 
@@ -223,6 +228,13 @@ public class HRU_device_mix_RL extends JAMSComponent {
             unit = "L")
     public Attribute.Double maxDeviceVol;
     
+    @JAMSVarDescription(
+            access = JAMSVarDescription.AccessType.READ,
+            description = "Equivalent drained area factor (0-1), applied to intercept flux",
+            unit = "-", 
+            defaultValue = "1")
+    public Attribute.Double deviceEquiSDfactor;
+    
 //    // Device Discharge coefficient
 //    @JAMSVarDescription(
 //            access = JAMSVarDescription.AccessType.READ,
@@ -382,7 +394,7 @@ public class HRU_device_mix_RL extends JAMSComponent {
     
 
     //internal state variables
-    double run_deviceArea, run_Precip, run_sourceRD1, run_sourceRD2, run_sourceRG1, run_sourceRG2, 
+    double run_deviceEquiSDfactor, run_deviceArea, run_Precip, run_sourceRD1, run_sourceRD2, run_sourceRG1, run_sourceRG2, 
             run_addInflow, run_RefET, run_coef_Qinf,
             run_QRD1, run_QRD2, run_QRG1, run_QRG2, run_Qin, run_Qrain, run_PET,
             run_actET, run_Qinf, run_Qout, run_Qovf, run_actVolDevice,
@@ -399,7 +411,8 @@ public class HRU_device_mix_RL extends JAMSComponent {
     @Override
     public void run() {
         
-        run_deviceArea = DeviceArea.getValue();      
+        run_deviceArea = DeviceArea.getValue();
+        run_deviceEquiSDfactor = deviceEquiSDfactor.getValue();
 
         // if no device (ie run_deviceArea == 0, do nothing and set all fluxes to zero
         if (run_deviceArea == 0) {
@@ -407,10 +420,11 @@ public class HRU_device_mix_RL extends JAMSComponent {
         } //if not, calculate fluxes
         else if (run_deviceArea > 0) {
 
-        double fracRD1 = frac_RD1.getValue(); //fraction of RD1 in device
-        double fracRD2 = frac_RD2.getValue(); //fraction of RD2 in device
-        double fracRG1 = frac_RG1.getValue(); //fraction of RG1 in device
-        double fracRG2 = frac_RG2.getValue(); //fraction of RG2 in device
+        // fractions of Flux intercepted in device are modified by the equivalent drained area factor
+        double fracRD1 = frac_RD1.getValue() * run_deviceEquiSDfactor; //fraction of RD1 in device
+        double fracRD2 = frac_RD2.getValue() * run_deviceEquiSDfactor; //fraction of RD2 in device
+        double fracRG1 = frac_RG1.getValue() * run_deviceEquiSDfactor; //fraction of RG1 in device
+        double fracRG2 = frac_RG2.getValue() * run_deviceEquiSDfactor; //fraction of RG2 in device
 
         double Ks = DeviceKs.getValue();
         double CropCoeff = DeviceCropCoeff.getValue();
