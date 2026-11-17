@@ -5,6 +5,7 @@ target/
 .idea/
 *.iml
 nbactions.xml
+.claude/
 
 # macOS metadata (AppleDouble sidecars on exFAT volumes, Finder metadata)
 ._*
@@ -19,3 +20,10 @@ replay_pid*.log
 
 # Locally provided jams-api/jams-main jars (see jams-libs/README.md)
 /jams-libs/*.jar
+
+# Local-only scratch files (not part of upstream jamsmodels)
+/fbip_archive_downloader.py
+/project_overview_diagram.*
+/water_balance_*_diagram.*
+/bug_check.png
+/gpd_test.png

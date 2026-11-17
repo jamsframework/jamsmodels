@@ -211,7 +211,6 @@ public class DwReleaseReach extends JAMSComponent {
             // release into the reach
             
             if (run_totalIn + run_totalAct > 1E-10) {
-                getModel().getRuntime().println("- release : run_totalIn+Act > 1E-10");
                 
                 double run_storageReleasedFraction = run_dwTotalReleasedVolume / run_totalStorage;// fraction of all stored water that is released
 
@@ -229,7 +228,6 @@ public class DwReleaseReach extends JAMSComponent {
             }
             
             else { // if no water in inflow and act, everything is released into inRD1 and actRD1
-                getModel().getRuntime().println("- release : else : run_totalIn+Act = 0");
                 
                 inRD1.setValue(run_dwTotalReleasedVolume / 2);
                 actRD1.setValue(run_dwTotalReleasedVolume / 2);

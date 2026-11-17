@@ -12,22 +12,24 @@ permissions:
 
 jobs:
   release:
+    # not in forks: their releases would look like jamsmodels releases
+    if: github.repository == 'jamsframework/jamsmodels'
     runs-on: ubuntu-latest
     steps:
       - name: Checkout jamsmodels
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
         with:
           # full history needed to find the most recent commit per library path
           fetch-depth: 0
 
       - name: Set up JDK 17
-        uses: actions/setup-java@v4
+        uses: actions/setup-java@v5
         with:
           java-version: '17'
           distribution: 'temurin'
 
       - name: Checkout JAMS framework
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
         with:
           repository: jamsframework/jams
           path: jams
@@ -85,10 +87,29 @@ jobs:
           Built against JAMS API ${{ steps.version.outputs.api }} (jamsframework/jams@${{ steps.jams.outputs.sha }}).
           EOF
 
+      # Zenodo reads .zenodo.json from the tagged commit. The creators and
+      # contributors of the libraries (their .zenodo.json files) are merged
+      # into it on a release commit that is only reachable through the tag,
+      # so the maintained .zenodo.json on the branch stays unchanged.
+      - name: Add library people to Zenodo metadata and create tag
+        id: zenodo
+        run: |
+          VERSION="${{ steps.version.outputs.version }}"
+          python3 tools/zenodo_authors.py build --zenodo .zenodo.json
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          if ! git diff --quiet -- .zenodo.json; then
+            git commit -m "Zenodo metadata for $VERSION" -- .zenodo.json
+          fi
+          git tag "$VERSION"
+          git push origin "$VERSION"
+          echo "sha=$(git rev-parse HEAD)" >> "$GITHUB_OUTPUT"
+
       - name: Create GitHub Release
         uses: softprops/action-gh-release@v2
         with:
           tag_name: ${{ steps.version.outputs.version }}
+          target_commitish: ${{ steps.zenodo.outputs.sha }}
           name: jamsmodels ${{ steps.version.outputs.version }}
           body_path: release-notes.md
           files: jamsmodels-${{ steps.version.outputs.version }}.zip

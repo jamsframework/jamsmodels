@@ -1,0 +1,62 @@
+{
+  "creators": [
+    {
+      "name": "Labbas, Mériem"
+    },
+    {
+      "name": "Branger, Flora",
+      "orcid": "0000-0003-4273-8938"
+    },
+    {
+      "name": "Tilmant, François"
+    },
+    {
+      "name": "Gouttevin, Isabelle",
+      "orcid": "0000-0002-1801-684X"
+    },
+    {
+      "name": "Kralisch, Sven",
+      "orcid": "0000-0003-2895-540X"
+    },
+    {
+      "name": "Bolibar, Jordi",
+      "orcid": "0000-0002-0791-0731",
+      "aliases": [
+        "Jordi"
+      ]
+    },
+    {
+      "name": "Bonneau, Jérémie"
+    },
+    {
+      "name": "Mimeau, Louise",
+      "orcid": "0000-0002-3437-5746"
+    },
+    {
+      "name": "Adamovic, Marko"
+    },
+    {
+      "name": "Cipriani, Thomas"
+    }
+  ],
+  "contributors": [
+    {
+      "name": "Turko, Maxime",
+      "type": "Researcher"
+    },
+    {
+      "name": "Hachgenei, Nico",
+      "orcid": "0000-0002-0490-2103",
+      "type": "Researcher"
+    },
+    {
+      "name": "Crochemore, Louise",
+      "orcid": "0000-0001-5776-6275",
+      "type": "Researcher"
+    },
+    {
+      "name": "Rabotin, Michael",
+      "type": "Researcher"
+    }
+  ]
+}

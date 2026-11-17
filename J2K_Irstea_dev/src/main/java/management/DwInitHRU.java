@@ -105,23 +105,6 @@ public class DwInitHRU extends JAMSComponent {
 
             run_l.add(run_entity); // add extraction HRU to the list of extraction HRUs, list that belongs to the corresponding release reach
 
-
-            // check
-             long ID_reach_rejet_1 = 478600;
-             if (run_reachMap.get(ID_reach_rejet_1).existsAttribute(dwHRUEntitiesListName.getValue())) {
-                getModel().getRuntime().println("- DwInitHRU - reach rejet (" + ID_reach_rejet_1 + "): $IDs dans dwHRUEntities = " + ((List<Attribute.Entity>) run_reachMap.get(ID_reach_rejet_1).getObject(dwHRUEntitiesListName.getValue())).stream().map(e -> String.valueOf(e.getId())).collect(Collectors.joining(", ", "[", "]")));
-             }
-             
-             long ID_reach_rejet_2 = 478400;
-             if (run_reachMap.get(ID_reach_rejet_2).existsAttribute(dwHRUEntitiesListName.getValue())) {
-                getModel().getRuntime().println("- DwInitHRU - reach rejet (" + ID_reach_rejet_2 + "): $IDs dans dwHRUEntities = " + ((List<Attribute.Entity>) run_reachMap.get(ID_reach_rejet_2).getObject(dwHRUEntitiesListName.getValue())).stream().map(e -> String.valueOf(e.getId())).collect(Collectors.joining(", ", "[", "]")));
-             }
-             
-             long ID_reach_rejet_3 = 478201;
-             if (run_reachMap.get(ID_reach_rejet_3).existsAttribute(dwHRUEntitiesListName.getValue())) {
-                getModel().getRuntime().println("- DwInitHRU - reach rejet (" + ID_reach_rejet_3 + "): $IDs dans dwHRUEntities = " + ((List<Attribute.Entity>) run_reachMap.get(ID_reach_rejet_3).getObject(dwHRUEntitiesListName.getValue())).stream().map(e -> String.valueOf(e.getId())).collect(Collectors.joining(", ", "[", "]")));
-             }
-
     }
 }
 

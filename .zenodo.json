@@ -1,0 +1,20 @@
+{
+  "title": "JAMS model component libraries",
+  "upload_type": "software",
+  "description": "Model component libraries for the JAMS framework (J2000 model family and related models). The libraries are used with the JAMS framework and its model editor JUICE.",
+  "license": "LGPL-3.0-or-later",
+  "related_identifiers": [
+    {
+      "identifier": "10.5281/zenodo.23761584",
+      "relation": "requires",
+      "resource_type": "software",
+      "scheme": "doi"
+    }
+  ],
+  "keywords": [
+    "hydrology",
+    "environmental modelling",
+    "J2000",
+    "JAMS"
+  ]
+}
