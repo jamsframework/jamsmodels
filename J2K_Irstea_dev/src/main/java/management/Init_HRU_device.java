@@ -23,8 +23,6 @@ package management;
 
 import jams.data.*;
 import jams.model.*;
-import java.util.Calendar;
-import java.util.GregorianCalendar;
 
 
 
@@ -34,12 +32,13 @@ import java.util.GregorianCalendar;
         description = "Initialise device area and its volume in the Initialization Context."
                 + "Initialise infiltration constants",
         date = "2025-12-09",
-        version = "1.0_0")
+        version = "2.0_0")
 
 @VersionComments(entries = {
     @VersionComments.Entry(version = "1.0_0", comment = "Initial version"),
     @VersionComments.Entry(version = "1.1_0", comment = "Equivalent surface of device are declared in hru.par"),
-    @VersionComments.Entry(version = "1.1_1", comment = "Initialise infiltration constants")
+    @VersionComments.Entry(version = "1.1_1", comment = "Initialise infiltration constants"),
+    @VersionComments.Entry(version = "2.0_0", comment = "Equivalent drained surface factor added")
 })
 
 public class Init_HRU_device extends JAMSComponent {
@@ -121,6 +120,51 @@ public class Init_HRU_device extends JAMSComponent {
     )
     public Attribute.Double DeviceInitFracRG2;
     
+    @JAMSVarDescription(
+            access = JAMSVarDescription.AccessType.READ,
+            description = "Equivalent drained area factor (0-1), applied to intercept flux",
+            unit = "-", 
+            defaultValue = "1")
+    public Attribute.Double deviceEquiSDfactor;
+    
+    // Percentage of RD1 to flow into device 
+    @JAMSVarDescription(
+            access = JAMSVarDescription.AccessType.READWRITE, 
+            description = "Fraction of RD1 from HRU to device",
+            unit = "-", 
+            lowerBound = 0, 
+            upperBound = 1 
+    )
+    public Attribute.Double frac_RD1;   
+    
+    // Percentage of RD2 to flow into device 
+    @JAMSVarDescription(
+            access = JAMSVarDescription.AccessType.READWRITE, 
+            description = "Fraction of RD2 from HRU to device", 
+            unit = "-", 
+            lowerBound = 0, 
+            upperBound = 1
+    )
+    public Attribute.Double frac_RD2; 
+    
+    @JAMSVarDescription(
+            access = JAMSVarDescription.AccessType.READWRITE,
+            description = "Fraction of RG1 from HRU to device",
+            unit = "-", 
+            lowerBound = 0, 
+            upperBound = 1
+    )
+    public Attribute.Double frac_RG1;    
+    
+    // Percentage of RD2 to flow into device 
+    @JAMSVarDescription(
+            access = JAMSVarDescription.AccessType.READWRITE,
+            description = "Fraction of RG2 from HRU to device", 
+            unit = "-", 
+            lowerBound = 0,
+            upperBound = 1 
+    )
+    public Attribute.Double frac_RG2;   
     
     @JAMSVarDescription(access = JAMSVarDescription.AccessType.WRITE,
             description = "HRU area minus the device",
@@ -189,6 +233,12 @@ public class Init_HRU_device extends JAMSComponent {
         double run_h = deviceDepth.getValue();  //in m
         double run_p = devicePorosity.getValue();
         
+        double run_frac_RD1 = frac_RD1.getValue();
+        double run_frac_RD2 = frac_RD2.getValue();
+        double run_frac_RG1 = frac_RG1.getValue();
+        double run_frac_RG2 = frac_RG2.getValue();
+        double run_deviceEquiSDfactor = deviceEquiSDfactor.getValue();
+                
         //Calculate max volume of device in L; area and H in m -> m3, convert to L
         double run_maxVolumeDevice = run_deviceArea * run_p * run_h * 1000;
         
@@ -240,6 +290,11 @@ public class Init_HRU_device extends JAMSComponent {
         this.Device_actRG2.setValue(run_initFracRG2 * run_initVol);
         this.deviceVol.setValue(run_initVol);
         this.coef_Qinf.setValue(run_coef_Qinf);
+        
+        this.frac_RD1.setValue(run_frac_RD1 * run_deviceEquiSDfactor);
+        this.frac_RD2.setValue(run_frac_RD2 * run_deviceEquiSDfactor);
+        this.frac_RG1.setValue(run_frac_RG1 * run_deviceEquiSDfactor);
+        this.frac_RG2.setValue(run_frac_RG2 * run_deviceEquiSDfactor);
     }
 
     @Override
