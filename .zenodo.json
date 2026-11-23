@@ -1,7 +1,7 @@
 {
   "title": "JAMS model component libraries",
   "upload_type": "software",
-  "description": "Model component libraries for the JAMS framework (J2000 model family and related models). The libraries are used with the JAMS framework and its model editor JUICE.",
+  "description": "Model component libraries for the JAMS framework (J2000 model family and related models). The libraries are used with the JAMS framework and its model editor JUICE.\n<p><br></p>\n<h3>Authors of the model component libraries</h3>\n<ul>\n<li><strong>J2K_base</strong>: Peter Krause, Christian Fischer, Sven Kralisch, Annika Künne, Andrew Watson, Santosh Nepal (contributors: Manfred Fink, Heiko Busch, Holm Kipka, Corina Manusch)</li>\n<li><strong>J2K_ext</strong>: Christian Fischer, Christin Michel, Peter Krause, Manfred Fink, Sven Kralisch, Holm Kipka, Heiko Busch, Santosh Nepal, Carsten Busch, Bjoern Pfennig, Daniel Varga (contributors: Sophie Biskop)</li>\n<li><strong>J2K_iso</strong>: Andrew Watson, Sven Kralisch, Christian Birkel</li>\n<li><strong>J2K_highres</strong>: Manfred Fink (contributors: Sven Kralisch)</li>\n<li><strong>J2K_Africa</strong>: Andrew Watson (contributors: Sven Kralisch)</li>\n<li><strong>J2K_Himalaya</strong>: Santosh Nepal, Manfred Fink, Peter Krause (contributors: Sven Kralisch, Christian Fischer)</li>\n<li><strong>J2K_Irstea</strong>: Mériem Labbas, Flora Branger, François Tilmant, Isabelle Gouttevin, Sven Kralisch, Jordi Bolibar, Jérémie Bonneau, Louise Mimeau, Marko Adamovic, Thomas Cipriani (contributors: Maxime Turko, Nico Hachgenei, Louise Crochemore, Michael Rabotin)</li>\n<li><strong>J2K_Irstea_dev</strong>: Nico Hachgenei, Nathan Pellerin, Anne-Lou Borgna, Louise Crochemore, Flora Branger, Jérémie Bonneau, Olivier Champagne, François Tilmant, Olivier Grandjouan, Vincent Thiercelin (contributors: Michael Rabotin)</li>\n<li><strong>J2K_SASSCAL</strong>: Sven Kralisch, Markus Meinhardt (contributors: Andrew Watson)</li>\n<li><strong>J2K_S_N</strong>: Manfred Fink, Ulrike Bende-Michl, Sven Kralisch, Holm Kipka, Christian Fischer, Bjoern Pfennig, Annika Künne, Peter Krause, Hendrik Göhmann (contributors: Marcel Wetzel, François Tilmant)</li>\n<li><strong>J2Kg</strong>: Peter Krause, Christian Fischer, Manfred Fink, Sven Kralisch</li>\n<li><strong>DRYvER</strong>: Annika Künne, Sven Kralisch, Peter Krause</li>\n<li><strong>Thornthwaite</strong>: Sven Kralisch, Manfred Fink</li>\n</ul>",
   "license": "LGPL-3.0-or-later",
   "related_identifiers": [
     {
@@ -16,5 +16,145 @@
     "environmental modelling",
     "J2000",
     "JAMS"
+  ],
+  "creators": [
+    {
+      "name": "Adamovic, Marko"
+    },
+    {
+      "name": "Bende-Michl, Ulrike",
+      "orcid": "0000-0002-4798-4858"
+    },
+    {
+      "name": "Birkel, Christian",
+      "orcid": "0000-0002-6792-852X"
+    },
+    {
+      "name": "Bolibar, Jordi",
+      "orcid": "0000-0002-0791-0731"
+    },
+    {
+      "name": "Bonneau, Jérémie"
+    },
+    {
+      "name": "Borgna, Anne-Lou",
+      "orcid": "0009-0006-1195-7096"
+    },
+    {
+      "name": "Branger, Flora",
+      "orcid": "0000-0003-4273-8938"
+    },
+    {
+      "name": "Busch, Carsten"
+    },
+    {
+      "name": "Busch, Heiko"
+    },
+    {
+      "name": "Champagne, Olivier"
+    },
+    {
+      "name": "Cipriani, Thomas"
+    },
+    {
+      "name": "Crochemore, Louise",
+      "orcid": "0000-0001-5776-6275"
+    },
+    {
+      "name": "Fink, Manfred",
+      "orcid": "0000-0001-6272-8564"
+    },
+    {
+      "name": "Fischer, Christian"
+    },
+    {
+      "name": "Göhmann, Hendrik"
+    },
+    {
+      "name": "Gouttevin, Isabelle",
+      "orcid": "0000-0002-1801-684X"
+    },
+    {
+      "name": "Grandjouan, Olivier",
+      "orcid": "0009-0006-4844-7460"
+    },
+    {
+      "name": "Hachgenei, Nico",
+      "orcid": "0000-0002-0490-2103"
+    },
+    {
+      "name": "Kipka, Holm"
+    },
+    {
+      "name": "Kralisch, Sven",
+      "orcid": "0000-0003-2895-540X"
+    },
+    {
+      "name": "Krause, Peter"
+    },
+    {
+      "name": "Künne, Annika",
+      "orcid": "0000-0002-4925-0882"
+    },
+    {
+      "name": "Labbas, Mériem"
+    },
+    {
+      "name": "Meinhardt, Markus"
+    },
+    {
+      "name": "Michel, Christin"
+    },
+    {
+      "name": "Mimeau, Louise",
+      "orcid": "0000-0002-3437-5746"
+    },
+    {
+      "name": "Nepal, Santosh",
+      "orcid": "0000-0002-7415-2299"
+    },
+    {
+      "name": "Pellerin, Nathan",
+      "orcid": "0000-0002-8229-1176"
+    },
+    {
+      "name": "Pfennig, Bjoern"
+    },
+    {
+      "name": "Thiercelin, Vincent"
+    },
+    {
+      "name": "Tilmant, François"
+    },
+    {
+      "name": "Varga, Daniel"
+    },
+    {
+      "name": "Watson, Andrew",
+      "orcid": "0000-0001-5998-6933"
+    }
+  ],
+  "contributors": [
+    {
+      "name": "Biskop, Sophie",
+      "orcid": "0009-0005-4734-7903",
+      "type": "Researcher"
+    },
+    {
+      "name": "Manusch, Corina",
+      "type": "Researcher"
+    },
+    {
+      "name": "Rabotin, Michael",
+      "type": "Researcher"
+    },
+    {
+      "name": "Turko, Maxime",
+      "type": "Researcher"
+    },
+    {
+      "name": "Wetzel, Marcel",
+      "type": "Researcher"
+    }
   ]
 }
